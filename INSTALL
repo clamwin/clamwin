@@ -1,0 +1,93 @@
+Prerequisites
+=============
+
+You need to have Python 2.2 or higher (Python 2.3 is required for
+MS Windows Tray Module). You can download Python from
+<http://www.python.org/download/>.
+
+You also need version 2.4.2.4 of the wxPython package. Please do
+not use wxPython 2.5 as the code is not yet compatible. You need
+to apply the following patches that fix some bugs in wxPython:
+clamwin/patches/wxPython-2424.maskededit.patch 
+clamwin/patches/wxPython-2424.throbber.patch 	
+clamwin/patches/wxPython-2424.timectrl.patch
+
+Main Application (ClamWin.py) will run on Unix (tested on RH 9)
+provided you have Python 2.2 or higher and wxPython (with GTK) 
+2.4.0.7 or higher.
+
+For the MS Windows Tray Module and Outlook Addin you also need to
+have the pywin32 extensions  installed (pywin32-201 or above),
+which you can get from <http://starship.python.net/crew/mhammond>.
+
+You also need to apply a patch 
+clamwin/patches/pywin32-201.win32gui.patch to pywin32-201 source
+and rebuild pywin32-201 extensions. Otherwise Shell_NotifyIcon 
+will not work in the Tray Module. For Windows98 version, where 
+there is no balloon notifications you need to build 
+clamwin/py/BalloonTip extension module with Visual C++ Toolkit 2003
+(see below for instructions)
+
+To build Outlook Addin you need to have msoutl9.tlb (version 9.0.0)
+regsitered. This is part of Microsoft Office 2000. This version
+is used for compatibility reasons.
+
+To build Microsoft Windows binary files from python source 
+you need py2exe distutils extension  version 0.50 or above which you 
+can get from <http://starship.python.net/crew/theller/py2exe/>. 
+
+To buld Context Menu Module for Windows Explorer you need 
+free Visual C++ Toolkit 2003, get it from:
+<http://msdn.microsoft.com/visualc/vctoolkit2003/>
+Also you need Platform SDK, which you can get at
+<http://www.microsoft.com/msdownload/platformsdk/sdkupdate/>
+
+To build the setup program you need InnoSetup 4.18 or higher and
+ISTool 4.18 or higher. You can get InnoSetup from 
+<http://www.jrsoftware.org/isdl.php> and ISTool from
+<http://www.istool.org/downloads.aspx>
+
+And of course you need the excellent GPL Antivirus Toolkit - 
+Clam Antivirus (ClamAV). You can get the latest version from www.clamav.net
+
+To build ClamAV for MS Windows you need Cygwin which you can het from 
+<http://www.cygwin.com>
+
+
+Getting the software
+====================
+
+If you don't already have it, you can download the latest release of
+ClamWin for MS Windows or the source code from 
+<http://sourceforge.net/projects/clamwin/>.
+
+
+Installation
+============
+For you convenience a binary package for MS Windows has been put to
+SourceForge download area for the project.
+
+If you wish to build ClamWin from the source tree then read below.
+
+The first thing you need to do put Clam Antivirus source tree in
+clamav-devel folder and build the binaries on Cygwin.
+Then change directory to Setup/py2exe and run python setup_all.py, this
+will put windows binary files in Setup/py2exe/dist directory.
+To build the setup program you need to run 
+ISTool -compile <full path to the Setup.iss>. This should produce
+Setup/Output/setup.exe file.
+
+Or you may use build.bat file provided for your convenience. Please
+Note that you need to edit the batch file in order to set your own
+software location directories.
+
+On Unix systems get Python 2.2 or higher (pretty much standard in
+major ditributions), wxPython 2.2.4 and apply 
+clamwin/patches/wxPython-2424.throbber.patch by copying it to
+to /usr/lib/Python2.2/wxPython/lib and executing 
+patch < wxPython-2424.throbber.patch in the 
+/usr/lib/Python2.2/wxPython/lib folder.
+All of the above assumes that you have Python 2.2 installed in
+/usr, if your system is different then amend the pathes accordingly
+
+
