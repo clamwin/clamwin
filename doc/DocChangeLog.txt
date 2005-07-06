@@ -1,0 +1,3 @@
+Thu, 23 Jun 2005
+	Install - Added paragraph about international help files
+	
