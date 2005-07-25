@@ -1,32 +1,33 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML>
 <HEAD>
-	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
 	<TITLE></TITLE>
-	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.4  (Win32)">
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.3  (Linux)">
 	<META NAME="CREATED" CONTENT="20040426;21532900">
-	<META NAME="CHANGEDBY" CONTENT="Russell Phillips">
-	<META NAME="CHANGED" CONTENT="20050610;9474402">
+	<META NAME="CHANGED" CONTENT="20050711;22162000">
 	<STYLE>
 	<!--
 		@page { size: 8.27in 11.69in; margin: 0.79in }
 		P { margin-bottom: 0.08in }
 		P.western { font-family: "Arial", sans-serif }
-		H1 { margin-bottom: 0.08in; text-align: center }
-		H1.western { font-family: "Arial", sans-serif; font-size: 16pt }
-		H1.cjk { font-family: "Mincho"; font-size: 16pt }
-		H1.ctl { font-family: "Tahoma"; font-size: 16pt }
-		H4 { margin-bottom: 0.08in }
-		H4.western { font-family: "Arial", sans-serif; font-size: 11pt; font-style: italic }
-		H4.cjk { font-family: "Mincho"; font-size: 11pt; font-style: italic }
-		H4.ctl { font-size: 11pt; font-style: italic }
+		H1 { margin-bottom: 0.08in; text-align: center; page-break-after: avoid }
+		H1.western { font-family: "Arial", sans-serif; font-size: 16pt; font-weight: bold }
+		H1.cjk { font-family: "Mincho"; font-size: 16pt; font-weight: bold }
+		H1.ctl { font-family: "Tahoma"; font-size: 16pt; font-weight: bold }
+		H4 { margin-bottom: 0.08in; page-break-after: avoid }
+		H4.western { font-family: "Arial", sans-serif; font-size: 11pt; font-style: italic; font-weight: bold }
+		H4.cjk { font-family: "Mincho"; font-size: 11pt; font-style: italic; font-weight: bold }
+		H4.ctl { font-family: "Tahoma"; font-size: 11pt; font-style: italic; font-weight: bold }
 		P.monospace-western { font-family: "Courier New", monospace; font-size: 11pt; page-break-before: auto }
 		P.monospace-cjk { page-break-before: auto }
 		P.monospace-ctl { page-break-before: auto }
+		A:link { color: #000080; text-decoration: underline }
+		A:visited { color: #800000; text-decoration: underline }
 	-->
 	</STYLE>
 </HEAD>
-<BODY LANG="en-GB" DIR="LTR">
+<BODY LANG="en-GB" LINK="#000080" VLINK="#800000" DIR="LTR">
 <H1 CLASS="western">FAQ: Frequently Asked Questions</H1>
 <H4 CLASS="western">Q: Why does the following message appear in
 update reports, even when ClamWin is regularly updated?:</H4>
@@ -38,8 +39,7 @@ released with important extra functionality. Upgrading ClamWin will
 prevent this message appearing again.</P>
 <P CLASS="western">ClamWin's automatic updates do not currently
 upgrade the software itself - they just update the virus database.
-The automatic software update in <SPAN LANG="en-GB">ClamWin</SPAN> is
-being developed.</P>
+The automatic software update in clamwin is being developed.</P>
 <H4 CLASS="western">Q: Can I use ClamWin without installing it?</H4>
 <P CLASS="western">A: You can create a copy of ClamWin on a CD or USB
 flash drive to use on a PC that does not have ClamWin installed.
@@ -61,8 +61,8 @@ and/or FAQ into your language, please contact Russ Phillips at
 <H4 CLASS="western">Q: Can I upgrade an existing version of ClamWin?</H4>
 <P CLASS="western">A: Yes, just run the normal <SPAN LANG="en-GB">set
 up</SPAN> program, and install over the top of the existing version.</P>
-<H4 CLASS="western">Q: Why doesn't the &quot;Integration with
-Microsoft Outlook&quot; option appear during installation?</H4>
+<H4 CLASS="western">Q: Why doesn't the Integration with Microsoft
+Outlook option appear during installation?</H4>
 <P CLASS="western">A: This option only appears if Microsoft Outlook
 is installed on the computer. Note that Outlook (which is part of the
 Microsoft Office suite) and Outlook Express (which comes as part of
@@ -106,21 +106,11 @@ on-line form at <A HREF="http://www.clamav.net/sendvirus.html" NAME="Form to sub
 Please make sure that you have updated your database to the latest
 version before using this form. False positives can also be reported
 here.</P>
-<H4 CLASS="western">Q: I just installed ClamWin and it found some
-viruses. Now what?</H4>
-<P CLASS="western">A: You can either set ClamWin to quarantine the
-files or <SPAN LANG="en-GB">alternatively</SPAN> locate the infected
-files by examining the reports and manually delete them. If the
-Outlook integration option was chosen during installation, ClamWin
-will automatically remove infected attachments from emails in
-Outlook.</P>
-<H4 CLASS="western">Q: Do I have to configure ClamWin individually
-for each user?</H4>
-<P CLASS="western">A: ClamWin stores each user's configuration
-<SPAN LANG="en-GB">separately</SPAN>, so they can each have different
-settings. However, you can alter what ClamWin uses as the default
-configuration. See &quot;Modifying ClamWin's Default Configuration&quot;
-section in the Advanced section.</P>
+<H4 CLASS="western">Q: Does ClamWin scan BLOBs (Binary Large OBjects)
+in databases?</H4>
+<P CLASS="western">A: No, the only way to do this is export the
+object to a file and scan the exported file. Ideally, the objects
+should be scanned <I>before</I> they are entered into the database.</P>
 <P CLASS="western"><BR><BR>
 </P>
 </BODY>
