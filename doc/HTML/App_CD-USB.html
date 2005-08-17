@@ -3,10 +3,10 @@
 <HEAD>
 	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
 	<TITLE>ClamWin CD/USB - HowTo</TITLE>
-	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.4  (Win32)">
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.9.122  (Win32)">
 	<META NAME="CREATED" CONTENT="20050531;10214200">
 	<META NAME="CHANGEDBY" CONTENT="Russell Phillips">
-	<META NAME="CHANGED" CONTENT="20050531;10284139">
+	<META NAME="CHANGED" CONTENT="20050817;11443141">
 	<STYLE>
 	<!--
 		@page { size: 8.27in 11.69in; margin-left: 0.79in; margin-right: 0.79in; margin-top: 0.79in; margin-bottom: 0.79in }
@@ -68,7 +68,7 @@ database=..\db
 quarantinedir=
 logfile=
 [Updates]
-dbupdatelogfile=
+dbupdatelogfile=..\freshclam.txt
 time=</PRE><P>
 In the <TT>C:\ClamWin-CD</TT> folder, create two text files, named
 <TT>autorun.inf</TT> &amp; <TT>RUN_ME.vbs</TT>. Ensure that they do
@@ -96,14 +96,16 @@ then the PC either does not have the Windows Script Host installed,
 or it is disabled. In this case, you can manually run ClamWin by
 double-clicking on the <TT>ClamWin.exe</TT> file in the <TT>ClamWin\bin</TT>
 folder.</P>
-<P>ClamWin should operate normally, but if run from CD, it will have
-the following restrictions: 
+<P>ClamWin should operate normally, but if run from CD or read-only
+USB drive, it will have the following restrictions: 
 </P>
 <UL>
 	<LI><P STYLE="margin-bottom: 0in">Files will not be quarantined</P>
 	<LI><P STYLE="margin-bottom: 0in">Internet updates will not work</P>
 	<LI><P>Preferences cannot be changed</P>
 </UL>
+<P>These restrictions will not apply if it is run from a USB drive
+with read-write permissions.</P>
 <P><BR><BR>
 </P>
 </BODY>
