@@ -1,40 +1,25 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML>
 <HEAD>
-	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
 	<TITLE>ClamWin CD/USB - HowTo</TITLE>
-<<<<<<< App_CD-USB.html
-	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.3  (Linux)">
-=======
 	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.9.122  (Win32)">
->>>>>>> 1.2
 	<META NAME="CREATED" CONTENT="20050531;10214200">
-<<<<<<< App_CD-USB.html
-	<META NAME="CHANGED" CONTENT="20050817;18494400">
-=======
 	<META NAME="CHANGEDBY" CONTENT="Russell Phillips">
-	<META NAME="CHANGED" CONTENT="20050817;11443141">
->>>>>>> 1.2
+	<META NAME="CHANGED" CONTENT="20050825;16193964">
 	<STYLE>
 	<!--
 		@page { size: 8.27in 11.69in; margin-left: 0.79in; margin-right: 0.79in; margin-top: 0.79in; margin-bottom: 0.79in }
 		P { color: #000000; font-family: "Arial", sans-serif; font-size: 12pt }
-		H1 { color: #000000; text-align: center; page-break-after: avoid }
-		H1.western { font-family: "Arial", sans-serif; font-size: 16pt; font-weight: bold }
-		H1.cjk { font-family: "HG Mincho Light J"; font-size: 24pt; font-weight: bold }
-		H1.ctl { font-family: "Arial Unicode MS"; font-size: 24pt; font-weight: bold }
-		H2 { color: #000000; page-break-after: avoid }
-		H2.western { font-family: "Arial", sans-serif; font-size: 14pt; font-style: italic; font-weight: bold }
-		H2.cjk { font-family: "Arial Unicode MS"; font-size: 18pt; font-weight: bold }
-		H2.ctl { font-family: "Tahoma"; font-size: 18pt; font-weight: bold }
-		PRE { color: #000000; font-family: "Courier New", monospace; font-size: 10pt }
-		A:link { color: #000080; text-decoration: underline }
-		A:visited { color: #800000; text-decoration: underline }
-		TT { font-family: "Courier New", monospace }
+		H1 { color: #000000; text-align: center }
+		H1.western { font-family: "Arial", sans-serif; font-size: 16pt }
+		H2 { color: #000000 }
+		H2.western { font-family: "Arial", sans-serif; font-size: 14pt; font-style: italic }
+		PRE { color: #000000 }
 	-->
 	</STYLE>
 </HEAD>
-<BODY LANG="en-GB" TEXT="#000000" LINK="#000080" VLINK="#800000" BGCOLOR="#ffffff" DIR="LTR">
+<BODY LANG="en-GB" TEXT="#000000" BGCOLOR="#ffffff" DIR="LTR">
 <H1 CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=5 STYLE="font-size: 16pt">Appendix
 A</FONT></FONT></H1>
 <H1 CLASS="western">How to Run ClamWin from CD or USB</H1>
@@ -56,75 +41,44 @@ will not be able to update the virus definitions without creating a
 new CD, since a CD is read-only.</P>
 <H2 CLASS="western">Copy Folders</H2>
 <P>Create a working folder in a convenient location to hold the files
-that are to be copied onto CD/USB, eg <TT>C:\ClamWin-CD</TT><BR>In
-the working folder, create a folder named <TT>ClamWin</TT>.<BR>Copy
-the ClamWin program folder into <TT>C:\ClamWin-CD\ClamWin</TT>. By
-default, the ClamWin program folder is installed to <TT>C:\Program
-Files\ClamWin</TT><BR>Copy the ClamWin database folder into
-<TT>C:\ClamWin-CD\ClamWin</TT>. In Windows 2000/XP, the ClamWin
-database folder defaults to <TT>C:\Documents and
-Settings\USERNAME\.clamwin\db</TT>, where <TT>USERNAME</TT> is your
-login name (if it was installed for a single user) or <TT>C:\Documents
-and Settings\All Users\.clamwin\db</TT> (if it was installed for all
-users).</P>
-<P>You should now have the following folders:</P>
+that are to be copied onto CD/USB, eg <TT>C:\ClamWin-CD</TT>.</P>
+<P>In the working folder, create a folder named <TT>ClamWin</TT>.</P>
+<P>Copy the contents of the ClamWin program folder into
+<TT>C:\ClamWin-CD\ClamWin</TT>. By default, the ClamWin program
+folder is installed to <TT>C:\Program Files\ClamWin</TT></P>
+<P>Create folders named <TT>log</TT>, <TT>db</TT> and <TT>quarantine</TT>
+in <TT>C:\ClamWin-CD\ClamWin</TT></P>
+<P>Copy the ClamWin database files (<TT>main.cvd</TT> &amp;
+<TT>daily.cvd</TT>) into <TT>C:\ClamWin-CD\ClamWin\db</TT>. In
+Windows 2000/XP, the ClamWin database folder defaults to <TT>C:\Documents
+and Settings\USERNAME\.clamwin\db</TT>, where <TT>USERNAME</TT> is
+your login name (if it was installed for a single user) or
+<TT>C:\Documents and Settings\All Users\.clamwin\db</TT> (if it was
+installed for all users).</P>
+
+<P>Copy <a href = "clamwin.conf">this config file</a> to <tt>C:\ClamWin-CD\ClamWin\bin\clamwin.conf</tt></P>
+
+<P>
+You should now have the following folders:</P>
 <PRE>C:\ClamWin-CD
 C:\ClamWin-CD\ClamWin\bin
 C:\ClamWin-CD\ClamWin\db
-C:\ClamWin-CD\ClamWin\lib</PRE><H2 CLASS="western">
-Edit Config &amp; Create Auto-Run Files</H2>
-<P>Open the file <TT>C:\ClamWin-CD\ClamWin\bin\ClamWin.conf</TT> in a
-text editor, such as Windows Notepad. Edit it so that it looks like
-the example below:</P>
-<PRE>[ClamAV]
-clamscan=clamscan.exe
-freshclam=freshclam.exe
-database=..\db
-quarantinedir=
-logfile=
-[Updates]
-dbupdatelogfile=..\freshclam.txt
-time=</PRE><P>
-In the <TT>C:\ClamWin-CD</TT> folder, create two text files, named
-<TT>autorun.inf</TT> &amp; <TT>RUN_ME.vbs</TT>. Ensure that they do
-not have a <TT>.txt</TT> extension.<BR>Edit <TT>autorun.inf</TT> and
-edit it so that it only has the three lines below:</P>
-<PRE>[autorun]
-OPEN=RUN_ME.vbs
-icon=ClamWin\bin\img\TrayIcon.ico</PRE><P>
-Edit <TT>RUN_ME.vbs</TT> and edit it so that it only has the three
-lines below:</P>
-<PRE>set oShell = WScript.CreateObject (&quot;WScript.Shell&quot;)
-oShell.Run &quot;ClamWin\bin\ClamWin.exe&quot;
-set oShell = Nothing</PRE><H2 CLASS="western">
+C:\ClamWin-CD\ClamWin\lib
+C:\ClamWin-CD\ClamWin\quarantine</PRE><H2 CLASS="western">
 Copy Files to CD/USB</H2>
 <P>Now you just need to copy the contents of <TT>C:\ClamWin-CD</TT>
 to a CD or USB key. Do not copy the <TT>C:\ClamWin-CD</TT> folder
 itself, only the contents. Exactly how this is done will depend on
 whether a CD or USB key is to be used, and what software is to be
 used.</P>
-<H2 CLASS="western">Using the CD/USB</H2>
-<<<<<<< App_CD-USB.html
-<P>To use it, insert the CD/USB into the PC to be scanned. ClamWin
-will automatically run if Windows is set up appropriately. If it does
-not, double-click on the <TT>RUN_ME.vbs</TT> file. If this does not
-work, then the PC either does not have the Windows Script Host
-installed, or it is disabled. In this case, you can manually run
+<H2 CLASS="western"></H2>
+<H2 CLASS="western" STYLE="page-break-before: always">Using the
+CD/USB</H2>
+<P>To use it, insert the CD/USB into the PC to be scanned. Run
 ClamWin by double-clicking on the <TT>ClamWin.exe</TT> file in the
 <TT>ClamWin\bin</TT> folder.</P>
-<P>ClamWin should operate normally, but if run from CD, it will have
-the following restrictions: 
-=======
-<P>To use it, insert the CD/USB into the PC to be scanned. If Windows
-is set up correctly, ClamWin will automatically run. If it does not,
-double-click on the <TT>RUN_ME.vbs</TT> file. If this does not work,
-then the PC either does not have the Windows Script Host installed,
-or it is disabled. In this case, you can manually run ClamWin by
-double-clicking on the <TT>ClamWin.exe</TT> file in the <TT>ClamWin\bin</TT>
-folder.</P>
 <P>ClamWin should operate normally, but if run from CD or read-only
 USB drive, it will have the following restrictions: 
->>>>>>> 1.2
 </P>
 <UL>
 	<LI><P STYLE="margin-bottom: 0in">Files will not be quarantined</P>
