@@ -2,8 +2,12 @@ Thu, 23 Jun 2005
 	Install - Added paragraph about international help files
 
 Thu, 25 Aug 2005
-Updated instructions for running from CD/USB
-Minor change to intro
-Updated usage - new screenshots and instructions for new system tray icon menu options
-FAQ: Mentioned Appendix A in "Can I run ClamWin without installing it?"
-FAQ: Reworded the "How often is the virus database updated?" question
+	Updated instructions for running from CD/USB
+	Minor change to intro
+	Updated usage - new screenshots and instructions for new system tray icon menu options
+	FAQ: Mentioned Appendix A in "Can I run ClamWin without installing it?"
+	FAQ: Reworded the "How often is the virus database updated?" question
+
+Mon, 12 Sep 2005
+	Future documentation updates will be HTML (.chm) only
+	Config: Removed default list of exclude filters
