@@ -1,7 +1,7 @@
-Version 0.86.1 - 24 June 1975
+Version 0.86.1 - 24 June 2005
  - Upgraded clamav to 0.86.1 - fixes possible crash when unpacking Microsoft CAB files
 
-Version 0.86 - 22 June 1975
+Version 0.86 - 22 June 2005
  - Upgraded clamav to 0.86
  - ClamWin has got new graphics special thanks to FinnDesign.fi
  - Added French pdf manual (thanks to Pierre Slamich) 
