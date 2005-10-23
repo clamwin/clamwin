@@ -9,29 +9,37 @@
 
 <!-- Short description -->
 
-	<shortdesc xml:lang="en">
+	<shortdesc xml:lang="en_US">
 	MS Windows front-end to Clam Antivirus (http://www.clamav.net). Includes scheduler, virus database updates, standalone scanner, context menu integration to MS Windows Explorer and Addin to MS Outlook. Also features easy setup program.
 	</shortdesc>
 
-	<shortdesc xml:lang="fr">
-	Port sous MS Windows de Clam Antivirus (http://www.clamav.net). Inclue : planificateur, mise ‡ jour des bases virales, scanner autonome, intÈgration au menu contextuel de l'Explorateur Windows et module pour MS Outlook. L'assistant d'installation est Ègalement trËs facile ‡ utiliser.
+	<shortdesc xml:lang="de_DE">
+	Clamav ist eine Grafische Oberfl√§che zu Clam Antivirus (http://www.clamav.net).Inklusive Kalender , Virusdatenbankupdates, Standart Scanner, integration in das Ms Windows Explorer Contexmen√º und einbindung in den Ms Outlook √ºber ein Addon. Die Installation wird √ºber einen einfach Installer abgewickelt!
+	</shortdesc>
+
+	<shortdesc xml:lang="fr_FR">
+	Port sous MS Windows de Clam Antivirus (http://www.clamav.net). Inclue : planificateur, mise √† jour des bases virales, scanner autonome, int√©gration au menu contextuel de l'Explorateur Windows et module pour MS Outlook. L'assistant d'installation est √©galement tr√®s facile √† utiliser.
 	</shortdesc>
 
 	<shortdesc xml:lang="pt_PT">
-	Ambiente gr·fico para o MS Windows Clam Antivirus (http://www.clamav.net). Inclui programador de acÁıes, actualizaÁ„o de bases da base de dados de virus, pesquisador de virus independente, integraÁ„o no menu de contexto do Windows Explorer e addin para o MS Outlook. TambÈm inclui um programa de instalaÁ„o simples e f·cil de usar.
+	Ambiente gr√°fico para o MS Windows Clam Antivirus (http://www.clamav.net). Inclui programador de ac√ß√µes, actualiza√ß√£o de bases da base de dados de virus, pesquisador de virus independente, integra√ß√£o no menu de contexto do Windows Explorer e addin para o MS Outlook. Tamb√©m inclui um programa de instala√ß√£o simples e f√°cil de usar.
 	</shortdesc>
 <!-- Description -->
 
-	<description xml:lang="en">
-	ClamWin is an open source virus scanner for Windows. It is very feature rich including a scheduler, virus database updates, standalone scanner, context  integration to MS Windows Explorer and Addin to MS Outlook. The installation utilizes an easy to use installer. 
+	<description xml:lang="en_US">
+	ClamWin is an open source virus scanner for Windows. It is very feature rich including a scheduler, virus database updates, standalone scanner, context  integration to MS Windows Explorer and Addin to MS Outlook. The installation utilizes an easy to use installer.
 	</description>
 
-	<description xml:lang="fr">
-	ClamWin est un scanner antivirus Open Source pour Windows. Il est riche en fonctionalitÈs, incluant un planificateur, des mises ‡ jour des bases virales, une intÈgration dans le menu contextuel de Windows et un module pour l'intÈgration ‡ MS Outlook. L'installation est trËs facile d'utilisation gr‚ce ‡ l'assistant installateur. 
+	<description xml:lang="de_DE">
+	Clamwin ist ein Opensource Virenscanner f√ºr Windows. Es hat viele Feature enthalten unter anderem einen Kalender, Virusdatenbankupdate, Stantardscanner, integration in das Ms Windows Explorer Contexmen√º und einbindung in den Ms Outlook √ºber ein Addon. Die Installation wird √ºber einen einfach Installer abgewickelt!
+	</description>
+
+	<description xml:lang="fr_FR">
+	ClamWin est un scanner antivirus Open Source pour Windows. Il est riche en fonctionalit√©s, incluant un planificateur, des mises √† jour des bases virales, une int√©gration dans le menu contextuel de Windows et un module pour l'int√©gration √† MS Outlook. L'installation est tr√®s facile d'utilisation gr√¢ce √† l'assistant installateur.
 	</description>
 
 	<description xml:lang="pt_PT">
-	O ClamWin È um AntiVirus OpenSource para o Windows. Inclui programador de acÁıes, actualizaÁ„o de bases da base de dados de virus, pesquisador de virus independente, integraÁ„o no menu de contexto do Windows Explorer e addin para o MS Outlook. TambÈm inclui um programa de instalaÁ„o simples e f·cil de usar. 
+	O ClamWin √© um AntiVirus OpenSource para o Windows. Inclui programador de ac√ß√µes, actualiza√ß√£o de bases da base de dados de virus, pesquisador de virus independente, integra√ß√£o no menu de contexto do Windows Explorer e addin para o MS Outlook. Tamb√©m inclui um programa de instala√ß√£o simples e f√°cil de usar.
 	</description>
 
 	<mailing-list rdf:resource="http://sourceforge.net/mail/?group_id=105508" />
@@ -42,12 +50,12 @@
 		</foaf:Person>
 	</maintainer>
 
-	<developer>                
-		<foaf:Person>                        
-			<foaf:name>Mick Weiss</foaf:name>                        
-			<foaf:mbox rdf:resource="mailto:micklweiss@users.sourceforge.net" />                        
-			<rdfs:seeAlso rdf:resource="http://www.sourceforge.net/users/micklweiss" />                
-		</foaf:Person>        
+	<developer>
+		<foaf:Person>
+			<foaf:name>Mick Weiss</foaf:name>
+			<foaf:mbox rdf:resource="mailto:micklweiss@users.sourceforge.net" />
+			<rdfs:seeAlso rdf:resource="http://www.sourceforge.net/users/micklweiss" />
+		</foaf:Person>
 	</developer>
 
 	<translator>
@@ -55,6 +63,14 @@
 			<foaf:name>Mick Weiss</foaf:name>
 			<foaf:mbox rdf:resource="mailto:micklweiss@users.sourceforge.net" />
 			<rdfs:seeAlso rdf:resource="http://www.sourceforge.net/users/micklweiss" />
+		</foaf:Person>
+	</translator>
+
+	<translator>
+		<foaf:Person>
+			<foaf:name>Michael Silius</foaf:name>
+			<foaf:mbox rdf:resource="mailto:micliu@users.sourceforge.net" />
+			<rdfs:seeAlso rdf:resource="http://www.sourceforge.net/users/micliu" />
 		</foaf:Person>
 	</translator>
 
