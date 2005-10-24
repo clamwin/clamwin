@@ -12,3 +12,6 @@ Mon, 12 Sep 2005
 	Future documentation updates will be HTML (.chm) only
 	Config: Removed default list of exclude filters
 	Started moving from OOo-generated HTML to hand-written HTML/CSS
+
+Mon, 24 Oct 2005
+	Added clamwin-docs.css
