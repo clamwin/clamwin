@@ -621,7 +621,7 @@ class wxPreferencesDlg(wxDialog):
               label='&Update Virus Database On Logon',
               name='checkBoxUpdateLogon', parent=self._panelInternetUpdate,
               pos=wxPoint(6, 138), size=wxSize(322, 20), style=0)
-        self.checkBoxUpdateLogon.SetToolTipString('Select if you wish to update the virus databses just after you logged on')
+        self.checkBoxUpdateLogon.SetToolTipString('Select if you wish to update the virus databases just after you logged on')
         self.checkBoxUpdateLogon.SetValue(False)
         EVT_CHECKBOX(self.checkBoxUpdateLogon,
               wxID_WXPREFERENCESDLGCHECKBOXUPDATELOGON,
