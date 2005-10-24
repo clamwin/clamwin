@@ -44,6 +44,7 @@
 
 	<mailing-list rdf:resource="http://sourceforge.net/mail/?group_id=105508" />
 
+	<!-- Developers -->
 	<maintainer>
 		<foaf:Person>
 			<foaf:name>Alch</foaf:name>
@@ -58,6 +59,9 @@
 		</foaf:Person>
 	</developer>
 
+	<!-- Translators -->
+
+	<!-- German Team -->
 	<translator>
 		<foaf:Person>
 			<foaf:name>Mick Weiss</foaf:name>
@@ -74,6 +78,7 @@
 		</foaf:Person>
 	</translator>
 
+	<!-- Portuguese Team -->
 	<translator>
 		<foaf:Person>
 			<foaf:name>Artur Ferreira</foaf:name>
@@ -81,8 +86,6 @@
 			<rdfs:seeAlso rdf:resource="http://www.kernel.ws" />
 		</foaf:Person>
 	</translator>
-
-	<!-- To Do: add every translator / developer -->
 
 	<!-- currently supported versions -->
 	<release>
@@ -99,6 +102,8 @@
 
 	<license rdf:resource="www.gnu.org/copyleft/gpl.html" />
 
+	<bug-database rdf:resource="http://sourceforge.net/tracker/?group_id=105508&atid=641462" />
+	
 	<repository>
 		<CVSRepository>
 			<location rdf:resource="http://sourceforge.net/cvs/?group_id=105508" />
