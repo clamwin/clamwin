@@ -156,7 +156,7 @@ class MainWindow:
             scheduler.start()        
             self._schedulers.append(scheduler)
         
-        # cerate a scheduler thread for DB updates        
+        # create a scheduler thread for DB updates        
         if self._config.Get('Updates', 'Enable') == '1':            
             scheduler = Scheduler.Scheduler(self._config.Get('Updates', 'Frequency'),
                             self._config.Get('Updates', 'Time'),
@@ -373,7 +373,7 @@ class MainWindow:
             freshclam_conf = Utils.SaveFreshClamConf(self._config)
             try:
                 if not len(freshclam_conf):
-                    win32gui.MessageBox(self.hwnd, 'Unable to cerate freshclam configuration file. Please check there is enough space on the disk', 'Error', win32con.MB_OK | win32con.MB_ICONSTOP)
+                    win32gui.MessageBox(self.hwnd, 'Unable to create freshclam configuration file. Please check there is enough space on the disk', 'Error', win32con.MB_OK | win32con.MB_ICONSTOP)
                     return
                 # create database folder before downloading
                 dbdir = self._config.Get('ClamAV', 'Database')                
