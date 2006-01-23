@@ -111,7 +111,7 @@ class wxMainFrame(wxFrame):
 
         parent.Append(helpString='Displays ClamWin Manual',
               id=wxID_WXMAINFRAMEHELPHELP, item='&Help', kind=wxITEM_NORMAL)
-        parent.Append(helpString='Checks for the Latest Vesrion',
+        parent.Append(helpString='Checks for the Latest Version',
               id=wxID_WXMAINFRAMEHELPUPDATE, item='&Check Latest Version', kind=wxITEM_NORMAL)
         parent.Append(helpString='Opens ClamWin Website',
               id=wxID_WXMAINFRAMEHELPWEBSITE, item='ClamWin &Website', kind=wxITEM_NORMAL)
