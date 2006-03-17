@@ -3,7 +3,7 @@
 
 [Setup]
 AppName=ClamWin Free Antivirus
-AppVerName=ClamWin Free Antivirus 0.86.1
+AppVerName=ClamWin Free Antivirus 0.88
 AppPublisher=alch
 AppPublisherURL=http://clamwin.sourceforge.net/
 AppSupportURL=http://clamwin.sourceforge.net/
@@ -38,6 +38,7 @@ Source: py2exe\dist\bin\ClamTray.exe; DestDir: {app}\bin; Components: ClamWin; F
 Source: py2exe\dist\bin\ClamWin.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\doc\HTML\clam.chm; DestDir: {app}\bin; Components: ClamWin; Flags: replacesameversion; DestName: manual.chm
 Source: ..\doc\l10n\RussianManual.chm; DestDir: {app}\bin; Components: InternationalHelp\Russian; Flags: replacesameversion
+;Source: ..\doc\l10n\ItalianManual.chm; DestDir: {app}\bin; Components: InternationalHelp\Italian; Flags: replacesameversion
 Source: ..\doc\manual.pdf; DestDir: {app}\bin; Components: ClamWin; Flags: replacesameversion
 Source: ..\doc\l10n\FrenchManual.pdf; DestDir: {app}\bin; Components: InternationalHelp\French; Flags: replacesameversion
 Source: py2exe\dist\bin\img\Clam.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: replacesameversion
@@ -100,8 +101,9 @@ Name: {group}\Virus Scanner; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\
 Name: {code:DesktopDir}\ClamWin Antivirus; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: ClamWin; Tasks: desktopicon
 Name: {group}\Help\Printable Manual; Filename: {app}\bin\manual.pdf; Components: ; WorkingDir: {app}\bin
 Name: {group}\Help\Online Help; Filename: {app}\bin\manual.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: ClamWin
-Name: {group}\Help\International\Russian Help; Filename: {app}\bin\RussianManual.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: ClamWin
-Name: {group}\Help\International\French Help; Filename: {app}\bin\FrenchManual.pdf; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: ClamWin
+Name: {group}\Help\International\Russian Help; Filename: {app}\bin\RussianManual.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: InternationalHelp\Russian
+Name: {group}\Help\International\French Help; Filename: {app}\bin\FrenchManual.pdf; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: InternationalHelp\French
+;Name: {group}\Help\International\Italian Help; Filename: {app}\bin\ItalianManual.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: InternationalHelp\Italian
 
 [Run]
 ; NOTE: The following entry contains an English phrase ("Launch"). You are free to translate it into another language if required.
@@ -132,6 +134,7 @@ Name: OutlookAddin; Description: Integration with Microsoft Outlook; Types: full
 Name: InternationalHelp; Description: International Help Files; Types: full
 Name: InternationalHelp\Russian; Description: Russian Help Files; Types: full
 Name: InternationalHelp\French; Description: French Help Files; Types: full
+;Name: InternationalHelp\Italian; Description: Italian Help Files; Types: full
 Name: Sources; Description: Download Source Code; ExtraDiskSpaceRequired: 9437184; Types: full
 [INI]
 Filename: {app}\bin\ClamWin.conf; Section: ClamAV; Key: clamscan; String: {app}\bin\clamscan.exe; Check: IsIniValueEmpty(ExpandConstant('ClamAV*clamscan*{app}\bin\ClamWin.conf'))
@@ -143,9 +146,9 @@ Filename: {app}\bin\ClamWin.conf; Section: Updates; Key: dbupdatelogfile; String
 Filename: {app}\bin\ClamWin.conf; Section: Updates; Key: time; String: {code:CurTime}; Check: IsIniValueEmpty(ExpandConstant('Updates*time*{app}\bin\ClamWin.conf'))
 
 [_ISToolDownload]
-Name: Sources_ClamWin; Description: ClamWin Source Code; GroupDescription: Source Code; Flags: unchecked; Source: http://osdn.dl.sourceforge.net/sourceforge/clamwin/clamwin-0.86.1-src.zip; DestDir: {%TEMP|{localappdata}}; DestName: clamwin-src.zip; Components: Sources
-Name: Sources_ClamAV; Description: ClamAV Source Code; GroupDescription: Source Code; Flags: unchecked; Source: http://osdn.dl.sourceforge.net/sourceforge/clamav/clamav-0.86.1.tar.gz; DestDir: {%TEMP|{localappdata}}; DestName: clamav-src.tar.gz; Components: Sources
-Name: Sources_Cygwin; Description: Cygwin Source Code; GroupDescription: Source Codes; Flags: unchecked; Source: http://mirrors.kernel.org/sources.redhat.com/cygwin/release/cygwin/cygwin-1.5.17-1-src.tar.bz2; DestDir: {%TEMP|{localappdata}}; DestName: cygwin-src.tar.bz2; Components: Sources
+Name: Sources_ClamWin; Description: ClamWin Source Code; GroupDescription: Source Code; Flags: unchecked; Source: http://osdn.dl.sourceforge.net/sourceforge/clamwin/clamwin-0.88-src.zip; DestDir: {%TEMP|{localappdata}}; DestName: clamwin-src.zip; Components: Sources
+Name: Sources_ClamAV; Description: ClamAV Source Code; GroupDescription: Source Code; Flags: unchecked; Source: http://osdn.dl.sourceforge.net/sourceforge/clamav/clamav-0.88.tar.gz; DestDir: {%TEMP|{localappdata}}; DestName: clamav-src.tar.gz; Components: Sources
+Name: Sources_Cygwin; Description: Cygwin Source Code; GroupDescription: Source Codes; Flags: unchecked; Source: http://mirrors.kernel.org/sources.redhat.com/cygwin/release/cygwin/cygwin-1.5.18-1-src.tar.bz2; DestDir: {%TEMP|{localappdata}}; DestName: cygwin-src.tar.bz2; Components: Sources
 
 [Types]
 Name: typical; Description: Typical Installation
@@ -165,7 +168,7 @@ Name: {code:CommonProfileDir}\.clamwin; Type: filesandordirs
 ; ClamWin entries
 Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: ClamWin; ValueData: """{app}\bin\ClamTray.exe"" --logon"; Flags: uninsdeletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKLM; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
-Root: HKLM; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 374; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
+Root: HKLM; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 880; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKCU; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: ClamWin; ValueData: """{app}\bin\ClamTray.exe"" --logon"; Flags: uninsdeletevalue; Components: ClamWin; Check: NotIsAllUsers
 Root: HKCU; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: NotIsAllUsers
 Root: HKCU; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 374; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: NotIsAllUsers

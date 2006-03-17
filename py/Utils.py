@@ -287,6 +287,10 @@ def SaveFreshClamConf(config):
         return name        
                     
 def GetScanCmd(config, path, scanlog):
+    # append / to a DRIVE letter as our regexep relacer needs that
+    # i.e C: will become C:\
+    path = re.sub('([A-Za-z]):("|$)', r'\1:/\2', path)
+        
     cmd = '--tempdir "%s"' % tempfile.gettempdir().replace('\\', '/').rstrip('/')
     if config.Get('ClamAV', 'Debug') == '1':
         cmd += ' --debug'
@@ -574,6 +578,8 @@ def SetCygwinTemp():
 def ReformatLog(data, rtf):
     # retrieve the pure report strings
     rex = re.compile('(.*?Scan started\:.*?\n\n)(.*)(-- summary --.*)(Infected files: \d*?\n)(.*)', re.M|re.S)
+    #rex = re.compile('(\n-------------------------------------------------------------------------------\n\n)(.*)(----------- SCAN SUMMARY -----------.*)(Infected files: \d*?\n)(.*)', re.M|re.S)    
+
     r = rex.search(data.replace('\r\n', '\n'))
     if r is not None:     	          
         found = ''
@@ -611,5 +617,5 @@ def ReformatLog(data, rtf):
          		
          
 if __name__ == '__main__':
-    f = file('c:\\report.txt', 'rt')
+    f = file('c:\\1.txt', 'rt')
     ReformatLog(f.read(), True)
