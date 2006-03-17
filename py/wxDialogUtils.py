@@ -35,7 +35,7 @@ def wxUpdateVirDB(parent, config, autoClose = False):
     exit_code = -1
     freshclam_conf = Utils.SaveFreshClamConf(config)
     if not len(freshclam_conf):
-        MsgBox.ErrorBox(parent, 'Unable to cerate freshclam configutration file. Please check there is enough space on the disk')
+        MsgBox.ErrorBox(parent, 'Unable to create freshclam configutration file. Please check there is enough space on the disk')
         return
     updatelog = tempfile.mktemp()       
     dbdir = config.Get('ClamAV', 'Database')
