@@ -66,7 +66,7 @@ class StatusUpdateBuffer(Process.IOBuffer):
         for line in lines:              
             if sys.platform.startswith('win'):        
                 # replace cygwin-like pathes with windows-like
-                line = re.sub('/cygdrive/([A-Za-z])/', r'\1:/', line).replace('/', '\\')
+                line = re.sub('/cygdrive/([A-Za-z])/', r'\1:/', line).replace('/', '\\')                
             self.update(self._caller, line)             
             
         
