@@ -3,10 +3,10 @@
 <HEAD>
 	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
 	<TITLE></TITLE>
-	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.4  (Win32)">
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.9.122  (Win32)">
 	<META NAME="CREATED" CONTENT="20040426;21532900">
 	<META NAME="CHANGEDBY" CONTENT="Russell Phillips">
-	<META NAME="CHANGED" CONTENT="20050610;9474402">
+	<META NAME="CHANGED" CONTENT="20050825;17054928">
 	<STYLE>
 	<!--
 		@page { size: 8.27in 11.69in; margin: 0.79in }
@@ -20,9 +20,7 @@
 		H4.western { font-family: "Arial", sans-serif; font-size: 11pt; font-style: italic }
 		H4.cjk { font-family: "Mincho"; font-size: 11pt; font-style: italic }
 		H4.ctl { font-size: 11pt; font-style: italic }
-		P.monospace-western { font-family: "Courier New", monospace; font-size: 11pt; page-break-before: auto }
-		P.monospace-cjk { page-break-before: auto }
-		P.monospace-ctl { page-break-before: auto }
+		P.monospace-western { font-family: "Courier New", monospace; font-size: 11pt }
 	-->
 	</STYLE>
 </HEAD>
@@ -38,12 +36,12 @@ released with important extra functionality. Upgrading ClamWin will
 prevent this message appearing again.</P>
 <P CLASS="western">ClamWin's automatic updates do not currently
 upgrade the software itself - they just update the virus database.
-The automatic software update in <SPAN LANG="en-GB">ClamWin</SPAN> is
-being developed.</P>
-<H4 CLASS="western">Q: Can I use ClamWin without installing it?</H4>
+The automatic software update in clamwin is being developed.</P>
+<H4 CLASS="western">Q: Can I use ClamWin without installing it, from
+a CD or a USB drive?</H4>
 <P CLASS="western">A: You can create a copy of ClamWin on a CD or USB
 flash drive to use on a PC that does not have ClamWin installed.
-There is a tutorial explaining how to do this at
+There is a tutorial explaining how to do this in Appendix A, and at
 <A HREF="http://www.phillipsuk.org/howto/ClamWin-CDUSB.html">http://www.phillipsuk.org/howto/ClamWin-CDUSB.html</A></P>
 <H4 CLASS="western">Q: Is a localised version available? Can I
 translate ClamWin into my language?</H4>
@@ -56,13 +54,13 @@ available in the <A HREF="http://sourceforge.net/docman/?group_id=105508" TARGET
 section of the ClamWin SourceForge.net <A HREF="http://sourceforge.net/projects/clamwin/" TARGET="_top">project</A>
 web site.</P>
 <P CLASS="western">If you would like to translate the ClamWin manual
-and/or FAQ into your language, please contact Russ Phillips at
-<A HREF="mailto:avantman42@users.sourceforge.net?subject=Translating ClamWin documentation">avantman42@users.sourceforge.net</A></P>
+and/or FAQ into your language, please contact Mick Weiss at
+<A HREF="mailto:micklweiss@users.sourceforge.net">micklweiss@users.sourceforge.net</A></P>
 <H4 CLASS="western">Q: Can I upgrade an existing version of ClamWin?</H4>
 <P CLASS="western">A: Yes, just run the normal <SPAN LANG="en-GB">set
 up</SPAN> program, and install over the top of the existing version.</P>
-<H4 CLASS="western">Q: Why doesn't the &quot;Integration with
-Microsoft Outlook&quot; option appear during installation?</H4>
+<H4 CLASS="western">Q: Why doesn't the Integration with Microsoft
+Outlook option appear during installation?</H4>
 <P CLASS="western">A: This option only appears if Microsoft Outlook
 is installed on the computer. Note that Outlook (which is part of the
 Microsoft Office suite) and Outlook Express (which comes as part of
@@ -98,7 +96,7 @@ viruses. E-mails are checked automatically when they are opened. If
 an incoming e-mail has a virus attachment, the attachment will be
 replaced with a report file.</P>
 <H4 CLASS="western">Q: How can I report a virus that ClamWin doesn't
-recognise?</H4>
+recognise? Or a false positive?</H4>
 <P CLASS="western">A: ClamWin uses the same database as ClamAV
 (<A HREF="http://www.clamav.net/" NAME="ClamAV home page" TARGET="_top">www.clamav.net</A>).
 Viruses that are not in the database can be reported using the
@@ -106,21 +104,16 @@ on-line form at <A HREF="http://www.clamav.net/sendvirus.html" NAME="Form to sub
 Please make sure that you have updated your database to the latest
 version before using this form. False positives can also be reported
 here.</P>
-<H4 CLASS="western">Q: I just installed ClamWin and it found some
-viruses. Now what?</H4>
-<P CLASS="western">A: You can either set ClamWin to quarantine the
-files or <SPAN LANG="en-GB">alternatively</SPAN> locate the infected
-files by examining the reports and manually delete them. If the
-Outlook integration option was chosen during installation, ClamWin
-will automatically remove infected attachments from emails in
-Outlook.</P>
-<H4 CLASS="western">Q: Do I have to configure ClamWin individually
-for each user?</H4>
-<P CLASS="western">A: ClamWin stores each user's configuration
-<SPAN LANG="en-GB">separately</SPAN>, so they can each have different
-settings. However, you can alter what ClamWin uses as the default
-configuration. See &quot;Modifying ClamWin's Default Configuration&quot;
-section in the Advanced section.</P>
+<H4 CLASS="western">Q: Does ClamWin scan BLOBs (Binary Large OBjects)
+in databases?</H4>
+<P CLASS="western">A: No, the only way to do this is export the
+object to a file and scan the exported file. Ideally, the objects
+should be scanned <I>before</I> they are entered into the database.</P>
+<H4 CLASS="western">Q: How often is the virus database updated?</H4>
+<P CLASS="western">The virus database is usually updated several
+times a week. News of releases are posted to the clamav-virusdb
+mailing list, a web-based archive of which is at
+<A HREF="http://lurker.clamav.net/list/clamav-virusdb.html">http://lurker.clamav.net/list/clamav-virusdb.html</A></P>
 <P CLASS="western"><BR><BR>
 </P>
 </BODY>

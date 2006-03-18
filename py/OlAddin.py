@@ -316,8 +316,13 @@ def ScanMailItem(item, sending, added_attachments = None):
     # then when message is next accessed we compare the saved version
     # with the current version and if they're different then 
     # we rescan the message
-    virdb_ver = Utils.GetDBInfo(os.path.join(config.Get('ClamAV', 'Database'), 'daily.cvd'))[0]
-    dbg_print('Daily.cvd Version: %s' % str(virdb_ver))
+    
+    # disabled as it is of little use and causes outlook 
+    # to switch to RTF winmail.dat format
+    # when replying or forwarding a scanned message
+        
+    # virdb_ver = Utils.GetDBInfo(os.path.join(config.Get('ClamAV', 'Database'), 'daily.cvd'))[0]
+    # dbg_print('Daily.cvd Version: %s' % str(virdb_ver))
     
     dir = ''; path = ''; statusfile = ''        
     infected = []; attachments = []
@@ -325,12 +330,16 @@ def ScanMailItem(item, sending, added_attachments = None):
         attachments = item.Attachments            
         
         # see if the message has already been scanned
-        userProps = item.UserProperties    
-        prop = userProps.Find('Scanned By ClamWin')
-        if prop is not None:            
-            if prop.Value == virdb_ver:
-                dbg_print('ScanMailItem: Already Scanned')
-                return 0
+        # disabled as it is of little use and causes outlook 
+		  # to switch to RTF winmail.dat format
+        # when replying or forwarding a scanned message
+
+        #userProps = item.UserProperties    
+        #prop = userProps.Find('Scanned By ClamWin')
+        #if prop is not None:            
+        #    if prop.Value == virdb_ver:
+        #        dbg_print('ScanMailItem: Already Scanned')
+        #        return 0
             
         waitCursor = WaitCursor()              
         for num in range(1, attachments.Count+1):
@@ -415,18 +424,22 @@ def ScanMailItem(item, sending, added_attachments = None):
         # so we don't have to scan it in future
         # we save the daily.cvd version        
         # so message gets rescanned if database is updated
-        if virdb_ver is not None:
-            prop = userProps.Add('Scanned By ClamWin', constants.olNumber, False)
-            prop.Value = virdb_ver
-            dbg_print('ScanMailItem: Saving MailItem')
-            try:
-	             item.Save()           
-            except pythoncom.com_error, e:
-                # read only message store (hotmail, etc)
-                # ignore save errors
-                hr, desc, exc, argErr = e
-                if hr != -2147352567:
-                    raise e
+        
+        # disabled as it is of little use and causes outlook 
+        # to switch to RTF winmail.dat format
+        # when replying or forwarding a scanned message
+        #if virdb_ver is not None:
+        #    prop = userProps.Add('Scanned By ClamWin', constants.olNumber, False)
+        #    prop.Value = virdb_ver
+        #    dbg_print('ScanMailItem: Saving MailItem')
+        #    try:
+	     #      item.Save()           
+        #    except pythoncom.com_error, e:
+        #       # read only message store (hotmail, etc)
+        #        # ignore save errors
+        #        hr, desc, exc, argErr = e
+        #        if hr != -2147352567:
+        #            raise e
         
         if len(infected) > 0:                        
             # for Outlook 2000 we need to display a message box in order to 
@@ -801,10 +814,14 @@ class MailItemWithEvents(ObjectWithEvents):
     
     def OnWrite(self, cancel):
         dbg_print('MailItemWithEvents:OnWrite')
-        if self.Sent and not self._scanned:
-            prop = self.UserProperties.Find('Scanned By ClamWin')
-            if prop is not None:
-                prop.Delete()
+        # disabled as it is of little use and causes outlook 
+        # to switch to RTF winmail.dat format
+        # when replying or forwarding a scanned message
+
+        #if self.Sent and not self._scanned:
+        #    prop = self.UserProperties.Find('Scanned By ClamWin')
+        #    if prop is not None:
+        #        prop.Delete()
                                 
     def OnSend(self, cancel):        
         dbg_print('MailItemWithEvents:OnSend')

@@ -1,10 +1,10 @@
 rem @echo off
 set CYGWINDIR=d:\cygwin
-set THISDIR=l:\Projects\ClamWin\0.35\clamwin
+set THISDIR=l:\Projects\ClamWin\clamwin
 set ISTOOLDIR=D:\Program Files\ISTool
 
 set VC7DIR=D:\Program Files\Microsoft Visual C++ Toolkit 2003
-set MSSDKDIR=H:\MSSDK_XP
+set MSSDKDIR=D:\Program Files\Microsoft Platform SDK.2003
 set PYTHONDIR=c:\python23
 
 call "%VC7DIR%\vcvars32.bat"
