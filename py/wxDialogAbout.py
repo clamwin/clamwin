@@ -54,11 +54,11 @@ class wxAboutDlg(wxDialog):
         # generated method, don't edit
         wxDialog.__init__(self, id=wxID_WXABOUTDLG, name='wxAboutDlg',
               parent=prnt, pos=wxPoint(340, 258), size=wxSize(471, 346),
-              style=wxDEFAULT_DIALOG_STYLE, title='About ClamWin')
+              style=wxDEFAULT_DIALOG_STYLE, title='About ClamWin Free Antivirus')
         self.SetClientSize(wxSize(463, 319))
         self.SetBackgroundColour(wxColour(255, 255, 255))
         self.SetAutoLayout(false)
-        self.SetToolTipString('About ClamWin')
+        self.SetToolTipString('About ClamWin Free Antivirus')
         self.Center(wxBOTH)
         EVT_CHAR_HOOK(self, self.OnCharHook)
 

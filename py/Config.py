@@ -39,19 +39,20 @@ class Settings:
         'ClamAV':
         [0, {'ClamScan': '', 'FreshClam': '', 'Database': '',
              'RemoveInfected': '0', 'ScanRecursive': '1', 'InfectedOnly': '0',
-             'Priority': 'Normal', 'EnableMbox': '0', 'ScanOle2': '1',
+             'Priority': 'Low', 'EnableMbox': '0', 'ScanOle2': '1',
              'ScanArchives': '1', 'MaxSize': '10', 'MaxFiles': '500',
              'MaxRecursion': '5', 'LogFile': '', 'MaxLogSize': '1',
              'MoveInfected': '0', 'QuarantineDir': '',  'Debug': '0',
              'IncludePatterns': '', 
-             'ExcludePatterns': REGEX_SEPARATOR.join(('*.dbx','*.tbb','*.pst', '*.dat', '*.log', '*.evt', '*.nsf', '*.ntf')),}],
+             'ExcludePatterns': REGEX_SEPARATOR.join(('*.dbx','*.tbb','*.pst', '*.dat', '*.log', '*.evt', '*.nsf', '*.ntf', '*.chm')),}],
         'Proxy':
         [0, {'Host': '', 'Port': '3128', 'User':'',
              'Password': ''}],              
         'Updates':
         [0, {'Enable': '1', 'Frequency': 'Daily', 'Time': '10:00:00', 
             'WeekDay': '2', 'DBMirror': 'database.clamav.net', 
-            'DBUpdateLogFile': '', 'UpdateOnLogon': '0',}],  
+            'DBUpdateLogFile': '', 'UpdateOnLogon': '0',
+            'CheckVersion': '1', 'CheckVersionURL': 'http://clamwin.sourceforge.net/clamwin2.ver'}],  
         'EmailAlerts':
         [0, {'Enable': '0',
              'SMTPHost': '', 'SMTPPort': '25', 'SMTPUser':'',
@@ -93,7 +94,7 @@ class Settings:
                         if self._settings[sect][0]: # is binary?
                             val = binascii.b2a_hex(val)
                         conf.set(sect, option = name, value = val)
-            conf.write(file(self._filename, 'w'))
+            conf.write(file(self._filename, 'w'))           
         except (ConfigParser.Error, IOError):
             return False
         return True

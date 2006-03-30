@@ -23,14 +23,13 @@
 
 #-----------------------------------------------------------------------------
 import os, sys, time, tempfile, shutil, locale
-import Config
-import re, fnmatch
+import Config, ConfigParser
+import re, fnmatch, urllib2
 
-if sys.platform.startswith("win"):    
-    import win32api, win32con, win32gui, win32event, pywintypes
-    from win32com.shell import shell, shellcon
-    if win32api.GetVersionEx()[3] != win32con.VER_PLATFORM_WIN32_WINDOWS:
-        import win32security
+import win32api, win32con, win32gui, win32event, win32con, pywintypes
+from win32com.shell import shell, shellcon
+if win32api.GetVersionEx()[3] != win32con.VER_PLATFORM_WIN32_WINDOWS:
+    import win32security
         
     
 
@@ -87,8 +86,12 @@ def ShowBalloon(ret_code, balloon_info, hwnd = None):
                 hwnd = win32gui.FindWindow('ClamWinTrayWindow', 'ClamWin')                        
             except:
                 return                        
-        try:                  
-            if ret_code == balloon_info[0][1]:
+        try:
+            if balloon_info[0] is None:
+                tuple = balloon_info[1]
+            elif balloon_info[1] is None:
+                tuple = balloon_info[0]              
+            elif ret_code == balloon_info[0][1]:
                 tuple = balloon_info[0]                    
             elif ret_code != balloon_info[1][1]:
                 tuple = balloon_info[1]                    
@@ -284,12 +287,18 @@ def SaveFreshClamConf(config):
         finally:            
             if fd != -1:
                 os.close(fd)                                                
-        return name        
-                    
+        return name
+                                    
+                            
 def GetScanCmd(config, path, scanlog):
+    # 2006-03-18 alch moving to native win32 clamav binaries
+    # remove all /cygdrive/ referneces and slash conversions
+    
     # append / to a DRIVE letter as our regexep relacer needs that
-    # i.e C: will become C:\
+    # i.e C: will become C:/
+    
     path = re.sub('([A-Za-z]):("|$)', r'\1:/\2', path)
+    print "Scanning: %s" % path
         
     cmd = '--tempdir "%s"' % tempfile.gettempdir().replace('\\', '/').rstrip('/')
     if config.Get('ClamAV', 'Debug') == '1':
@@ -329,7 +338,7 @@ def GetScanCmd(config, path, scanlog):
                                 
     if sys.platform.startswith('win'):
         # replace windows path with cygwin-like one        
-        cmd = re.sub('([A-Za-z]):[/\\\\]', r'/cygdrive/\1/', cmd).replace('\\', '/')
+        cmd = cmd.replace('\\', '/')
         
     # add --exlude=win386.swp to fix the bug 939877
     # see http://sourceforge.net/tracker/index.php?func=detail&aid=939877&group_id=105508&atid=641462
@@ -341,7 +350,7 @@ def GetScanCmd(config, path, scanlog):
      # add include and exclude patterns    
     for patterns in (['--include', config.Get('ClamAV', 'IncludePatterns')],
                     ['--exclude', config.Get('ClamAV', 'ExcludePatterns')]):
-        patterns[1] = re.sub('([A-Za-z]):[/\\\\]', r'/cygdrive/\1/', patterns[1]).replace('\\', '/')            
+        patterns[1] = patterns[1].replace('\\', '/')            
         for pat in patterns[1].split(Config.REGEX_SEPARATOR):
             if len(pat):            
                 # proper regular expressions are started with ':'
@@ -363,12 +372,12 @@ def GetScanCmd(config, path, scanlog):
                     
                 cmd += ' %s="%s"' % (patterns[0], pat)
    
-    cmd = '"%s" %s' % (config.Get('ClamAV', 'ClamScan'), cmd)    
+    cmd = '"%s" %s' % (config.Get('ClamAV', 'ClamScan'), cmd)
     return cmd
 
         
 def AppendLogFile(logfile, appendfile, maxsize):    
-    try:        
+    try:
         # create logs folder before appending     
         if logfile:
             logsdir = os.path.split(logfile)[0]
@@ -395,25 +404,35 @@ def AppendLogFile(logfile, appendfile, maxsize):
             except win32api.error, e:
                 print('Could not create mutex %s. Error: %s' % (name, str(e)))  
         
-        # read text from our temporary log file
-        text = ReformatLog(file(appendfile, 'rt').read(), False)
+        ftemp = file(appendfile, 'rt')
+               
+        # check if the file is larger then maxsize and read last maxsize bytes
+        # go to end of file
+        ftemp.seek(0, 2)        
+        tempsize = ftemp.tell()
+        if tempsize > maxsize:
+            ftemp.seek(-maxsize, 2)
+        else: 
+            # read from the beginning
+            ftemp.seek(0, 0) 
 
-        if sys.platform.startswith('win'):
-            # replace cygwin-like pathes with windows-like
-            text = re.sub('/cygdrive/([A-Za-z])/', r'\1:/', text).replace('/', '\\').replace('I\\O', 'I/O')
-
-        # truncate text length if it exceeds max log size
-        if len(text) > maxsize:
-            text = text[len(text)-maxsize:]
-        # open file for appending        
+        # open main file for appending        
         f = file(logfile, 'a+t')
         # get the file size
         f.seek(0, 2)        
         # empty the file if longer than log size limit 
         # shall implement rotation here, when have time
-        if f.tell() > maxsize - len(text):            
+        if f.tell() > maxsize - tempsize:            
             f.truncate(0)             
-        f.write(text)        
+
+        # copy data in using 64Kb buffer
+        bufsize = 65535
+        pos = 0
+        while pos < tempsize:                     
+            # read text from our temporary log file
+            text = ftemp.read(min(bufsize, tempsize - pos)).replace('\r\n', '\n')
+            f.write(text)
+            pos = pos + bufsize        
     except IOError, e:
         print('Could not write to the log file %s. Error: %s' % (logfile, str(e)))        
     
@@ -577,14 +596,14 @@ def SetCygwinTemp():
 
 def ReformatLog(data, rtf):
     # retrieve the pure report strings
-    rex = re.compile('(.*?Scan started\:.*?\n\n)(.*)(-- summary --.*)(Infected files: \d*?\n)(.*)', re.M|re.S)
-    #rex = re.compile('(\n-------------------------------------------------------------------------------\n\n)(.*)(----------- SCAN SUMMARY -----------.*)(Infected files: \d*?\n)(.*)', re.M|re.S)    
+    #rex = re.compile('(.*?Scan started\:.*?\n\n)(.*)(-- summary --.*)(Infected files: \d*?\n)(.*)', re.M|re.S)
+    rex = re.compile('(.*)(----------- SCAN SUMMARY -----------.*)(Infected files: \d*?\n)(.*)', re.M|re.S)    
 
     r = rex.search(data.replace('\r\n', '\n'))
     if r is not None:     	          
         found = ''
         other = ''
-        lines = r.group(2).splitlines()   
+        lines = r.group(1).splitlines()   
         # get all infections first
         for line in lines:
             if line.endswith('FOUND'):            
@@ -592,15 +611,16 @@ def ReformatLog(data, rtf):
                     found += '\\cf1\\b %s\\cf0\\b0\n' % line.replace('\\', '\\\\')
                 else:
                     found += line + '\n'
-            else:                 
+            elif not line.endswith('OK'):                 
                 if rtf:
                     other += line.replace('\\', '\\\\') + '\n'
                 else:
                     other += line + '\n'
             	         
-        data = r.group(1) + '%s%s' + r.group(3) + "%s" + r.group(5)         
+        data = '-------------------------------------------------------------------------------\n\n' + \
+        			'%s%s' + r.group(2) + "%s" + r.group(4)         
         # line with number of infected files
-        infected = r.group(4)    	                      	         
+        infected = r.group(3)    	                      	         
         if rtf:
             num = re.match('.*?(\d*?)$', infected)
             if num is not None and int(num.group(1)) > 0:            
@@ -614,8 +634,82 @@ def ReformatLog(data, rtf):
         if rtf:
             data = r'{\rtf1{\colortbl ;\red128\green0\blue0;;\red0\green128\blue0;}%s}' % data.replace('\n', '\\par\r\n')
     return data    
-         		
+
+# returns tuple (version, url, changelog)
+# exception on error
+def GetOnlineVersion(config):
+     tmpfile = None
+     url = config.Get('Updates', 'CheckVersionURL')
+     try:
+         # add proxy info
+         if config.Get('Proxy', 'Host') != '':
+             proxy_info = {
+                 'user' : config.Get('Proxy', 'User'),
+                 'pass' : config.Get('Proxy', 'Password'),
+                 'host' : config.Get('Proxy', 'Host'),
+                 'port' : config.Get('Proxy', 'Port')
+                 }
+             if proxy_info['user'] != '':
+                 proxy_url = "http://%(user)s:%(pass)s@%(host)s:%(port)s"
+             else: 
+                 proxy_url = "http://%(host)s:%(port)s"
+                 
+             proxy_url = proxy_url % proxy_info    
+
+             proxy_support = urllib2.ProxyHandler({"http": proxy_url})
+             opener = urllib2.build_opener(proxy_support, urllib2.HTTPHandler())
+             urllib2.install_opener(opener)
+         f = urllib2.urlopen(url)    
+         verinfo = f.read()
+         #write to a temp file
+         tmpfile = tempfile.mktemp()
+         file(tmpfile, 'wt').write(verinfo)
          
+         # read ini file
+         conf = ConfigParser.ConfigParser()
+         conf.read(tmpfile) 
+         os.unlink(tmpfile)
+         tmpfile = None
+         
+         # get our data           
+         version = conf.get('VERSION', 'VER') 
+
+         if conf.has_option('CHANGELOG', 'HTML'):
+             changelog = conf.get('CHANGELOG', 'HTML')
+         elif conf.has_option('CHANGELOG', 'TEXT'):
+             changelog = conf.get('CHANGELOG', 'TEXT')
+         else:
+             changelog = None    
+         changelog = changelog.replace('\\n', '\n')
+         
+         url = conf.get('DOWNLOAD', 'WEB')      	                               
+     except Exception, e:
+         if tmpfile is not None:
+             try:                    
+                 os.unlink(tmpfile)
+             except:
+                 pass
+         raise e
+     return (version, url, changelog)
+
+def CheckDatabase(config):
+    path = config.Get('ClamAV', 'Database')
+    if path == '':
+        return False
+    return os.path.isfile(os.path.join(path, 'main.cvd')) and \
+           os.path.isfile(os.path.join(path, 'daily.cvd'))
+
+
+                             		         
 if __name__ == '__main__':
-    f = file('c:\\1.txt', 'rt')
-    ReformatLog(f.read(), True)
+    #f = file('c:\\2.txt', 'rt')
+    #file('c:\\3.rtf', 'wt').write(ReformatLog(f.read(), True))
+    #AppendLogFile('c:\\1.txt',  'C:\\MSDE2kLog.txt', 30000)
+    #currentDir = GetCurrentDir(True)
+    #os.chdir(currentDir)        
+    #CreateProfile()
+    config_file = os.path.join(GetProfileDir(True),'ClamWin.conf')                          
+    config = Config.Settings(config_file)    
+    b = config.Read()
+    print GetOnlineVersion(config)
+    print CheckDatabase(config)

@@ -109,17 +109,17 @@ class wxMainFrame(wxFrame):
     def _init_coll_Help_Items(self, parent):
         # generated method, don't edit
 
-        parent.Append(helpString='Displays ClamWin Manual',
+        parent.Append(helpString='Displays ClamWin Free Antivirus Manual',
               id=wxID_WXMAINFRAMEHELPHELP, item='&Help', kind=wxITEM_NORMAL)
         parent.Append(helpString='Checks for the Latest Version',
               id=wxID_WXMAINFRAMEHELPUPDATE, item='&Check Latest Version', kind=wxITEM_NORMAL)
-        parent.Append(helpString='Opens ClamWin Website',
+        parent.Append(helpString='Opens ClamWin Free Antivirus Website',
               id=wxID_WXMAINFRAMEHELPWEBSITE, item='ClamWin &Website', kind=wxITEM_NORMAL)
 
         parent.Append(helpString='Opens Frequently Asked Questions Page in the Web Browser',
               id=wxID_WXMAINFRAMEHELPFAQ, item='&FAQ', kind=wxITEM_NORMAL)
         parent.AppendSeparator()
-        parent.Append(helpString='Displays the  About Box',
+        parent.Append(helpString='Displays the About Box',
               id=wxID_WXMAINFRAMEHELPABOUT, item='&About', kind=wxITEM_NORMAL)
         EVT_MENU(self, wxID_WXMAINFRAMEHELPABOUT, self.OnHelpAbout)
         EVT_MENU(self, wxID_WXMAINFRAMEHELPHELP, self.OnHelpHelp)
@@ -221,7 +221,7 @@ class wxMainFrame(wxFrame):
         self._init_utils()
         self.SetClientSize(wxSize(560, 403))
         self.SetMenuBar(self.menuBar)
-        self.SetHelpText('ClamWin Virus Scanner')
+        self.SetHelpText('ClamWin Free Antivirus')
         self.Center(wxBOTH)
 
         self.toolBar = wxToolBar(id=wxID_WXMAINFRAMETOOLBAR, name='toolBar',
@@ -333,20 +333,30 @@ class wxMainFrame(wxFrame):
             # or no item is selected in the tree
             configured = self._IsConfigured()       
             if not configured:
-                if wxID_YES == MsgBox.MessageBox(None, 'ClamWin', 'ClamWin is not configured. Would you like to configure it now?', wxYES_NO | wxICON_QUESTION):
+                if wxID_YES == MsgBox.MessageBox(None, 'ClamWin Free Antivirus', 'ClamWin Free Antivirus is not configured. Would you like to configure it now?', wxYES_NO | wxICON_QUESTION):
                     wxDialogUtils.wxConfigure(None, self._config)
-                    configured = self._IsConfigured()       
-            self.buttonScan.Enable(configured)
+                    configured = self._IsConfigured()
+
+            hasdb = Utils.CheckDatabase(self._config)      
+            if not hasdb:
+                if wxID_YES == MsgBox.MessageBox(None, 'ClamWin Free Antivirus', 'You have not yet downloaded Virus Definitions Database. Would you like to download it now?', wxYES_NO | wxICON_QUESTION):
+                    wxDialogUtils.wxUpdateVirDB(self, self._config)
+                    hasdb = Utils.CheckDatabase(self._config)
+
+            self.buttonScan.Enable(configured and hasdb)
             self.toolBar.EnableTool(wxID_WXMAINFRAMETOOLBARTOOLS_INETUPDATE, configured)    
-            self.toolBar.EnableTool(wxID_WXMAINFRAMETOOLBARTOOLS_SCAN, configured)    
+            self.toolBar.EnableTool(wxID_WXMAINFRAMETOOLBARTOOLS_SCAN, configured and hasdb)    
+            
+            
+            
         except Exception, e:
             print 'An Error occured while updating UI selection. %s' % str(e)
 
     def OnScanButton(self, event):
         scanPath = ''
         for path in self.dirCtrlScan.GetMultiplePath():
-            if sys.platform.startswith("win"):                           
-                path = path.replace('\\', '/')                                    
+            #if sys.platform.startswith("win"):                           
+            #    path = path.replace('\\', '/')                                    
             scanPath += "\"%s\" " % path                             
         wxDialogUtils.wxScan(self, self._config, scanPath)        
 

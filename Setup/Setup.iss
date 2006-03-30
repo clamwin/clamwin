@@ -3,7 +3,7 @@
 
 [Setup]
 AppName=ClamWin Free Antivirus
-AppVerName=ClamWin Free Antivirus 0.88.1
+AppVerName=ClamWin Free Antivirus 0.88.901
 AppPublisher=alch
 AppPublisherURL=http://clamwin.sourceforge.net/
 AppSupportURL=http://clamwin.sourceforge.net/
@@ -25,77 +25,94 @@ WizardImageFile=Setupfiles\WizModernImage.bmp
 WizardSmallImageFile=Setupfiles\WizModernSmallImage.bmp
 [Files]
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
-Source: cygwin\cygwin1.dll; DestDir: {app}\bin; Components: Cygwin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: cygwin\cygbz2-1.dll; DestDir: {app}\bin; Components: Cygwin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: cygwin\cyggmp-3.dll; DestDir: {app}\bin; Components: Cygwin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: cygwin\cygminires.dll; DestDir: {app}\bin; Components: Cygwin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: cygwin\cygz.dll; DestDir: {app}\bin; Components: Cygwin; Flags: restartreplace uninsrestartdelete replacesameversion
+;Source: cygwin\cygwin1.dll; DestDir: {app}\bin; Components: Cygwin; Flags: restartreplace uninsrestartdelete replacesameversion
+;Source: cygwin\cygbz2-1.dll; DestDir: {app}\bin; Components: Cygwin; Flags: restartreplace uninsrestartdelete replacesameversion
+;Source: cygwin\cyggmp-3.dll; DestDir: {app}\bin; Components: Cygwin; Flags: restartreplace uninsrestartdelete replacesameversion
+;Source: cygwin\cygminires.dll; DestDir: {app}\bin; Components: Cygwin; Flags: restartreplace uninsrestartdelete replacesameversion
+;Source: cygwin\cygz.dll; DestDir: {app}\bin; Components: Cygwin; Flags: restartreplace uninsrestartdelete replacesameversion
 ;Source: cygwin\cygcrypto-0.9.7.dll; DestDir: {app}\bin; Components: Cygwin; Flags: restartreplace uninsrestartdelete replacesameversion replacesameversion
 ;Source: cygwin\cygssl-0.9.7.dll; DestDir: {app}\bin; Components: Cygwin; Flags: restartreplace uninsrestartdelete replacesameversion replacesameversion
 ;Source: cygwin\cygcurl-2.dll; DestDir: {app}\bin; Components: Cygwin; Flags: restartreplace uninsrestartdelete replacesameversion replacesameversion
-Source: py2exe\dist\bin\python23.dll; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: py2exe\dist\bin\python23.dll; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 Source: py2exe\dist\bin\ClamTray.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: py2exe\dist\bin\ClamWin.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\doc\HTML\clam.chm; DestDir: {app}\bin; Components: ClamWin; Flags: replacesameversion; DestName: manual.chm
-Source: ..\doc\l10n\RussianManual.chm; DestDir: {app}\bin; Components: InternationalHelp\Russian; Flags: replacesameversion
+Source: ..\doc\HTML\clam.chm; DestDir: {app}\bin; Components: ClamWin; Flags: ignoreversion; DestName: manual.chm
+Source: ..\doc\l10n\RussianManual.chm; DestDir: {app}\bin; Components: InternationalHelp\Russian; Flags: ignoreversion
 ;Source: ..\doc\l10n\ItalianManual.chm; DestDir: {app}\bin; Components: InternationalHelp\Italian; Flags: replacesameversion
-Source: ..\doc\manual.pdf; DestDir: {app}\bin; Components: ClamWin; Flags: replacesameversion
-Source: ..\doc\l10n\FrenchManual.pdf; DestDir: {app}\bin; Components: InternationalHelp\French; Flags: replacesameversion
-Source: py2exe\dist\bin\img\Clam.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: replacesameversion
-Source: py2exe\dist\bin\img\ClamAV.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: replacesameversion
-Source: py2exe\dist\bin\img\Control.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: replacesameversion
-Source: py2exe\dist\bin\img\Scan.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: replacesameversion
-Source: py2exe\dist\bin\img\FrameIcon.ico; DestDir: {app}\bin\img; Components: ClamWin; Flags: replacesameversion
-Source: py2exe\dist\bin\img\TrayIcon.ico; DestDir: {app}\bin\img; Components: ClamWin; Flags: replacesameversion
-Source: py2exe\dist\bin\img\Title.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: replacesameversion
-Source: py2exe\dist\bin\img\FD-logo.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: replacesameversion
-Source: py2exe\dist\bin\img\PythonPowered.gif; DestDir: {app}\bin\img; Components: ClamWin; Flags: replacesameversion
-Source: py2exe\dist\bin\img\World.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: replacesameversion
-Source: py2exe\dist\bin\img\Support.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: replacesameversion
-Source: py2exe\dist\bin\img\ListScan.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: replacesameversion
-Source: py2exe\dist\bin\img\Splash.bmp; DestDir: {app}\bin\img; Components: ClamWin; Flags: replacesameversion
-Source: ..\clamav-stable\clamscan\clamscan.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\clamav-stable\freshclam\freshclam.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\clamav-stable\sigtool\sigtool.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\cpp\Release\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\doc\manual.pdf; DestDir: {app}\bin; Components: ClamWin; Flags: ignoreversion
+Source: ..\doc\l10n\FrenchManual.pdf; DestDir: {app}\bin; Components: InternationalHelp\French; Flags: ignoreversion
+Source: py2exe\dist\bin\img\Clam.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
+Source: py2exe\dist\bin\img\ClamAV.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
+Source: py2exe\dist\bin\img\Control.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
+Source: py2exe\dist\bin\img\Scan.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
+Source: py2exe\dist\bin\img\FrameIcon.ico; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
+Source: py2exe\dist\bin\img\TrayIcon.ico; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
+Source: py2exe\dist\bin\img\Title.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
+Source: py2exe\dist\bin\img\FD-logo.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
+Source: py2exe\dist\bin\img\PythonPowered.gif; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
+Source: py2exe\dist\bin\img\World.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
+Source: py2exe\dist\bin\img\Support.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
+Source: py2exe\dist\bin\img\ListScan.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
+Source: py2exe\dist\bin\img\Splash.bmp; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
+Source: ..\clamav-devel\contrib\msvc\Release\clamscan.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\clamav-devel\contrib\msvc\Release\freshclam.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\clamav-devel\contrib\msvc\Release\sigtool.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\clamav-devel\contrib\msvc\Release\libclamav.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
+
+; on xp and greater VC80 CRT needs to be installed in Microsoft.VC80.CRT
+Source: Microsoft.VC80.CRT\Microsoft.VC80.CRT.manifest; DestDir: {app}\bin\Microsoft.VC80.CRT; Components: ClamAV; Check: IsXPOrLater
+Source: Microsoft.VC80.CRT\msvcm80.dll; DestDir: {app}\bin\Microsoft.VC80.CRT; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: IsXPOrLater
+Source: Microsoft.VC80.CRT\msvcr80.dll; DestDir: {app}\bin\Microsoft.VC80.CRT; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: IsXPOrLater
+Source: Microsoft.VC80.CRT\msvcp80.dll; DestDir: {app}\bin\Microsoft.VC80.CRT; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: IsXPOrLater
+; on 2000 and 98 VC80 CRT needs to be installed in the same dir; no manifest
+Source: Microsoft.VC80.CRT\msvcm80.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: NotIsXPOrLater
+Source: Microsoft.VC80.CRT\msvcr80.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: NotIsXPOrLater
+Source: Microsoft.VC80.CRT\msvcp80.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: NotIsXPOrLater
+
+
+;Source: ..\clamav-stable\sigtool\sigtool.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
+; Copy Unicode build in NT and ANSI in 9x
+Source: ..\cpp\Release\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: IsWin9x
+Source: ..\cpp\Release_Unicode\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: UsingWinNT
+
 Source: py2exe\dist\bin\WClose.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: py2exe\dist\lib\w9xpopen.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: py2exe\dist\bin\OlAddin.exe; DestDir: {app}\bin; Components: OutlookAddin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: {%TEMP|{localappdata}}\clamwin-src.zip; DestDir: {app}\src; Components: Sources; Flags: external replacesameversion
-Source: {%TEMP|{localappdata}}\clamav-src.tar.gz; DestDir: {app}\src; Components: Sources; Flags: external replacesameversion
-Source: {%TEMP|{localappdata}}\cygwin-src.tar.bz2; DestDir: {app}\src; Components: Sources; Flags: external replacesameversion
+Source: {%TEMP|{localappdata}}\clamwin-src.zip; DestDir: {app}\src; Components: Sources; Flags: external ignoreversion
+Source: {%TEMP|{localappdata}}\clamav-src.tar.gz; DestDir: {app}\src; Components: Sources; Flags: external ignoreversion
+;Source: {%TEMP|{localappdata}}\cygwin-src.tar.bz2; DestDir: {app}\src; Components: Sources; Flags: external replacesameversion
 
-Source: py2exe\dist\lib\_socket.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\_sre.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\_ssl.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\_bsddb.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\_winreg.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\clamwin.zip; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\datetime.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\mxDateTime.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\exchange.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\exchdapi.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\shell.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\htmlc.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\gizmosc.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\mapi.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\pythoncom23.dll; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\pywintypes23.dll; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\unicodedata.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\w9xpopen.exe; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\win32api.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\win32clipboard.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\win32event.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\win32file.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\win32gui.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\win32pipe.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\win32process.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\win32trace.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\win32security.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\wxc.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\wxmsw24h.dll; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\zlib.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\BalloonTip.pyd; DestDir: {app}\lib; Components: ClamWin; Check: IsWin9x; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: py2exe\dist\lib\_socket.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\_sre.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\_ssl.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\_bsddb.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\_winreg.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\clamwin.zip; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\datetime.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\mxDateTime.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\exchange.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\exchdapi.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\shell.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\htmlc.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\gizmosc.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\mapi.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\pythoncom23.dll; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\pywintypes23.dll; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\unicodedata.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\w9xpopen.exe; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\win32api.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\win32clipboard.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\win32event.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\win32file.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\win32gui.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\win32pipe.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\win32process.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\win32trace.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\win32security.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\wxc.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\wxmsw24h.dll; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\zlib.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\BalloonTip.pyd; DestDir: {app}\lib; Components: ClamWin; Check: IsWin9x; Flags: restartreplace uninsrestartdelete
 [Icons]
 Name: {group}\Virus Scanner; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: ClamWin
 Name: {code:DesktopDir}\ClamWin Antivirus; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: ClamWin; Tasks: desktopicon
@@ -118,7 +135,7 @@ Name: {code:CommonProfileDir}\.clamwin\quarantine; Components: ClamAV; Permissio
 Name: {code:CommonProfileDir}\.clamwin\db; Components: ClamAV; Check: NotIsAllUsers
 Name: {code:CommonProfileDir}\.clamwin\log; Components: ClamAV; Check: NotIsAllUsers
 Name: {code:CommonProfileDir}\.clamwin\quarantine; Components: ClamAV; Check: NotIsAllUsers
-Name: {app}\bin; Components: ExplorerShell ClamWin Cygwin
+Name: {app}\bin; Components: ExplorerShell ClamWin
 Name: {app}\lib; Components: ClamWin
 Name: {app}\bin\img; Components: ClamWin
 
@@ -126,7 +143,7 @@ Name: {app}\src; Components: Sources
 [_ISTool]
 OutputExeFilename=L:\Projects\ClamWin\Setup\Output\setup.exe
 [Components]
-Name: Cygwin; Description: Cygwin Files; Flags: fixed; Types: full custom typical
+;Name: Cygwin; Description: Cygwin Files; Flags: fixed; Types: full custom typical
 Name: ClamAV; Description: ClamAV Files; Flags: fixed; Types: full custom typical
 Name: ClamWin; Description: ClamWin Files; Flags: fixed; Types: full custom typical
 Name: ExplorerShell; Description: Integration with Windows Explorer; Types: full custom typical
@@ -148,7 +165,7 @@ Filename: {app}\bin\ClamWin.conf; Section: Updates; Key: time; String: {code:Cur
 [_ISToolDownload]
 Name: Sources_ClamWin; Description: ClamWin Source Code; GroupDescription: Source Code; Flags: unchecked; Source: http://osdn.dl.sourceforge.net/sourceforge/clamwin/clamwin-0.88-src.zip; DestDir: {%TEMP|{localappdata}}; DestName: clamwin-src.zip; Components: Sources
 Name: Sources_ClamAV; Description: ClamAV Source Code; GroupDescription: Source Code; Flags: unchecked; Source: http://osdn.dl.sourceforge.net/sourceforge/clamav/clamav-0.88.tar.gz; DestDir: {%TEMP|{localappdata}}; DestName: clamav-src.tar.gz; Components: Sources
-Name: Sources_Cygwin; Description: Cygwin Source Code; GroupDescription: Source Codes; Flags: unchecked; Source: http://mirrors.kernel.org/sources.redhat.com/cygwin/release/cygwin/cygwin-1.5.18-1-src.tar.bz2; DestDir: {%TEMP|{localappdata}}; DestName: cygwin-src.tar.bz2; Components: Sources
+;Name: Sources_Cygwin; Description: Cygwin Source Code; GroupDescription: Source Codes; Flags: unchecked; Source: http://mirrors.kernel.org/sources.redhat.com/cygwin/release/cygwin/cygwin-1.5.18-1-src.tar.bz2; DestDir: {%TEMP|{localappdata}}; DestName: cygwin-src.tar.bz2; Components: Sources
 
 [Types]
 Name: typical; Description: Typical Installation
@@ -168,7 +185,7 @@ Name: {code:CommonProfileDir}\.clamwin; Type: filesandordirs
 ; ClamWin entries
 Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: ClamWin; ValueData: """{app}\bin\ClamTray.exe"" --logon"; Flags: uninsdeletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKLM; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
-Root: HKLM; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 880; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
+Root: HKLM; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 881; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKCU; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: ClamWin; ValueData: """{app}\bin\ClamTray.exe"" --logon"; Flags: uninsdeletevalue; Components: ClamWin; Check: NotIsAllUsers
 Root: HKCU; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: NotIsAllUsers
 Root: HKCU; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 374; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: NotIsAllUsers
@@ -390,6 +407,17 @@ begin
 	Result := not UsingWinNT();
 end;
 
+function IsXPOrLater(): Boolean;
+begin
+	Result:= (GetWindowsVersion() >= $05010000);
+end;
+
+function NotIsXPOrLater(): Boolean;
+begin
+	Result := not IsXPOrLater();
+end;
+
+
 function IsAllUsers(): Boolean;
 begin
 	if not UsingWinNT() then
@@ -436,7 +464,7 @@ begin
 	else
 		AllUsers := IsAdminLoggedOn();
 
-	ThisVersion := 831;
+	ThisVersion := 881;
 	value := 0;
 	if not RegQueryDWordValue(HKEY_CURRENT_USER, 'SOFTWARE\Clamwin', 'Version',  value) then begin
 		value := 0;
@@ -463,7 +491,7 @@ var
 begin
 	DeleteFile(ExpandConstant('{%TEMP|{localappdata}}\clamwin-src.zip'));
 	DeleteFile(ExpandConstant('{%TEMP|{localappdata}}\clamav-src.tar.gz'));
-	DeleteFile(ExpandConstant('{%TEMP|{localappdata}}\cygwin-src.tar.bz2'));
+	//DeleteFile(ExpandConstant('{%TEMP|{localappdata}}\cygwin-src.tar.bz2'));
 	if (SetupCompleted) and (PreviousVersion < 35) then begin
 		filename := ExpandConstant('{app}\bin\Tray.exe');
 		if (FileExists(filename)) then begin

@@ -66,7 +66,7 @@ class StatusUpdateBuffer(Process.IOBuffer):
         for line in lines:              
             if sys.platform.startswith('win'):        
                 # replace cygwin-like pathes with windows-like
-                line = re.sub('/cygdrive/([A-Za-z])/', r'\1:/', line).replace('/', '\\')                
+                line = line.replace('/', '\\')                
             self.update(self._caller, line)             
             
         
@@ -120,7 +120,7 @@ class wxDialogStatus(wxDialog):
         # generated method, don't edit
         wxDialog.__init__(self, id=wxID_WXDIALOGSTATUS, name='wxDialogStatus',
               parent=prnt, pos=wxPoint(449, 269), size=wxSize(568, 392),
-              style=wxDEFAULT_DIALOG_STYLE, title='ClamWin Status')
+              style=wxDEFAULT_DIALOG_STYLE, title='ClamWin Free Antivirus Status')
         self.SetClientSize(wxSize(560, 365))
         self.SetAutoLayout(false)
         self.Center(wxBOTH)
@@ -188,6 +188,11 @@ class wxDialogStatus(wxDialog):
         self.textCtrlStatus.SetBackgroundColour(wxSystemSettings_GetColour(wxSYS_COLOUR_BTNFACE))        
         
         # spawn and monitor our process
+        # clamav stopped writing start time of the scan to the log file
+        try:
+            file(logfile, 'wt').write('Scan Started %s\n' % time.ctime(time.time()))
+        except:
+            pass    
         try:
             self._SpawnProcess(cmd, priority)            
         except Process.ProcessError, e:
@@ -273,7 +278,7 @@ class wxDialogStatus(wxDialog):
                     dlg = wxMessageDialog(self, 'Could not save report to the file ' + \
                                             filename + ". Please check that you have write "
                                             "permissions to the folder and there is enough space on the disk.",
-                      'ClamWin', wxOK | wxICON_ERROR)
+                      'ClamWin Free Antivirus', wxOK | wxICON_ERROR)
                     try:
                         dlg.ShowModal()
                     finally:
@@ -306,12 +311,22 @@ class wxDialogStatus(wxDialog):
         data = ''
         if self._logfile is not None:
             try:
-                data = file(self._logfile, 'rt').read()
+                # read last 30000 bytes form the log file 
+                # as our edit control is incapable of displaying more
+                maxsize = 29000
+                flog = file(self._logfile, 'rt')
+                flog.seek(0, 2)
+                size = flog.tell()
+                if size > maxsize:
+                    flog.seek(-maxsize, 2)
+                else:
+                    flog.seek(0, 0)
+                data = flog.read()
             except Exception, e:
                 print 'Could not read from log file %s. Error: %s' % (self._logfile, str(e))
         if sys.platform.startswith('win'):
             # replace cygwin-like pathes with windows-like
-            data = re.sub('/cygdrive/([A-Za-z])/', r'\1:/', data).replace('/', '\\').replace('I\\O', 'I/O')  
+            data = data.replace('/', '\\').replace('I\\O', 'I/O')  
             data = Utils.ReformatLog(data, win32api.GetVersionEx()[0] >= 5)
         else:
             data = Utils.ReformatLog(data, False)
@@ -358,29 +373,14 @@ class wxDialogStatus(wxDialog):
             
             line_number = ctrl.GetNumberOfLines() - 2
             # detect progress message in the new text
-            progress_markers = ['[|]', '[/]', '[-]', '[\]', '[*]']
-            print_over = False
-            # check if the current line contains progress marker
-            for marker in progress_markers:
-                if text.find(marker) != -1:
-                    print_over = True                    
-                    break
-            if print_over:
-                print_over = False
-                # check if we need to overwrite last line
-                # (it contains progress marker)
-                last_line_text = ctrl.GetLineText(line_number)                
-                for marker in progress_markers:
-                    if last_line_text.find(marker) != -1:
-                        print_over = True
-                        break            
+            print_over = re.search('\[[\d ]?[\d ]?\d\%\]', ctrl.GetLineText(line_number)) is not None                                
             if print_over:
                 line_end = ctrl.GetLastPosition()
                 line_start = ctrl.GetLastPosition() - \
                                 ctrl.GetLineLength(line_number) - _NEWLINE_LEN                                                
-                ctrl.Remove(line_start, line_end)
-
-            ctrl.AppendText(text)
+                ctrl.Replace(line_start+1, line_end, text)
+            else:
+                ctrl.AppendText(text)
         else:
             ctrl.SetValue(text)    
         
@@ -391,10 +391,10 @@ class wxDialogStatus(wxDialog):
         # initialise environment var TMPDIR
         try:
             if os.getenv('TMPDIR') is None:
-                os.putenv('TMPDIR', 
-                           re.sub('([A-Za-z]):[/\\\\]', r'/cygdrive/\1/', 
-                           tempfile.gettempdir()).replace('\\', '/'))
-            Utils.SetCygwinTemp()
+                os.putenv('TMPDIR', tempfile.gettempdir().replace('\\', '/'))
+                #           re.sub('([A-Za-z]):[/\\\\]', r'/cygdrive/\1/', 
+                #           tempfile.gettempdir()).replace('\\', '/'))
+            #Utils.SetCygwinTemp()
         except Exception, e:
             print str(e)            
             
@@ -426,4 +426,4 @@ class wxDialogStatus(wxDialog):
         # therefore start it in OnInitDialog   
         self.throbber.Start()
         event.Skip()
-                    	                	    
+                        	                	    

@@ -45,7 +45,7 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLGBUTTONTASKACTIVATE, wxID_WXPREFERENCESDLGBUTTONTASKADD, 
  wxID_WXPREFERENCESDLGBUTTONTASKDEACTIVATE, 
  wxID_WXPREFERENCESDLGBUTTONTASKEDIT, wxID_WXPREFERENCESDLGBUTTONTASKREMOVE, 
- wxID_WXPREFERENCESDLGBUTTONVIRDB, 
+ wxID_WXPREFERENCESDLGBUTTONVIRDB, wxID_WXPREFERENCESDLGCHECKBOXCHECKVERSION, 
  wxID_WXPREFERENCESDLGCHECKBOXENABLEAUTOUPDATE, 
  wxID_WXPREFERENCESDLGCHECKBOXENABLEMBOX, 
  wxID_WXPREFERENCESDLGCHECKBOXENABLEOLE2, 
@@ -74,19 +74,21 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLGSTATICBOXSCANOPTIONS, 
  wxID_WXPREFERENCESDLGSTATICBOXSMTPCONNECTION, 
  wxID_WXPREFERENCESDLGSTATICLINEUPDATETIMECTRL, 
- wxID_WXPREFERENCESDLGSTATICTEXT2, wxID_WXPREFERENCESDLGSTATICTEXTCLAMSCAN, 
- wxID_WXPREFERENCESDLGSTATICTEXTDBMIRROR, 
+ wxID_WXPREFERENCESDLGSTATICTEXT1, wxID_WXPREFERENCESDLGSTATICTEXT2, 
+ wxID_WXPREFERENCESDLGSTATICTEXTCLAMSCAN, 
  wxID_WXPREFERENCESDLGSTATICTEXTDBUPDATELOGFILE, 
  wxID_WXPREFERENCESDLGSTATICTEXTEXPLAIN, wxID_WXPREFERENCESDLGSTATICTEXTFILES, 
- wxID_WXPREFERENCESDLGSTATICTEXTFILTREDESC1, 
  wxID_WXPREFERENCESDLGSTATICTEXTFILTERSEXCLUDE, 
  wxID_WXPREFERENCESDLGSTATICTEXTFILTERSINCLUDE, 
+ wxID_WXPREFERENCESDLGSTATICTEXTFILTREDESC1, 
  wxID_WXPREFERENCESDLGSTATICTEXTFRESHCLAM, 
  wxID_WXPREFERENCESDLGSTATICTEXTLIMITFILES, 
  wxID_WXPREFERENCESDLGSTATICTEXTLOGFILE, 
  wxID_WXPREFERENCESDLGSTATICTEXTMAXLOGSIZE, 
  wxID_WXPREFERENCESDLGSTATICTEXTMAXSIZE, wxID_WXPREFERENCESDLGSTATICTEXTMB1, 
- wxID_WXPREFERENCESDLGSTATICTEXTMB2, wxID_WXPREFERENCESDLGSTATICTEXTPRIORITY, 
+ wxID_WXPREFERENCESDLGSTATICTEXTMB2, 
+ wxID_WXPREFERENCESDLGSTATICTEXTNOPERSONAL, 
+ wxID_WXPREFERENCESDLGSTATICTEXTPRIORITY, 
  wxID_WXPREFERENCESDLGSTATICTEXTPROXYHOST, 
  wxID_WXPREFERENCESDLGSTATICTEXTPROXYPASSWORD, 
  wxID_WXPREFERENCESDLGSTATICTEXTPROXYPORT, 
@@ -123,7 +125,7 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLG_PANELINTERNETUPDATE, 
  wxID_WXPREFERENCESDLG_PANELOPTIONS, wxID_WXPREFERENCESDLG_PANELPROXY, 
  wxID_WXPREFERENCESDLG_PANELREPORTS, wxID_WXPREFERENCESDLG_PANELSCHEDULER, 
-] = map(lambda _init_ctrls: wxNewId(), range(107))
+] = map(lambda _init_ctrls: wxNewId(), range(109))
 
 class wxPreferencesDlg(wxDialog):
     def _init_coll_imageListScheduler_Images(self, parent):
@@ -301,9 +303,9 @@ class wxPreferencesDlg(wxDialog):
               wxID_WXPREFERENCESDLGCHECKBOXENABLEAUTOUPDATE,
               self.OnCheckBoxEnableAutoUpdate)
 
-        self.staticTextDBMirror = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTDBMIRROR,
-              label='Download &Site :', name='staticTextDBMirror',
-              parent=self._panelInternetUpdate, pos=wxPoint(24, 42),
+        self.staticText1 = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXT1,
+              label='Download &Site :', name='staticText1',
+              parent=self._panelInternetUpdate, pos=wxPoint(24, 43),
               size=wxSize(81, 13), style=0)
 
         self.textCtrlDBMirror = wxTextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLDBMIRROR,
@@ -311,17 +313,23 @@ class wxPreferencesDlg(wxDialog):
               pos=wxPoint(126, 37), size=wxSize(243, 21), style=0, value='')
         self.textCtrlDBMirror.SetToolTipString('Specify Database Mirror Site here. Usually this is database.clamav.net')
 
-        self.spinButtonUpdateTime = wxSpinButton(id=wxID_WXPREFERENCESDLGSPINBUTTONUPDATETIME,
-              name='spinButtonUpdateTime', parent=self._panelInternetUpdate,
-              pos=wxPoint(353, 65), size=wxSize(16, 23),
-              style=wxSP_ARROW_KEYS | wxSP_VERTICAL)
-        self.spinButtonUpdateTime.SetToolTipString('')
-
         self.staticTextUpdateFrequency = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTUPDATEFREQUENCY,
               label='&Update Frequency:', name='staticTextUpdateFrequency',
               parent=self._panelInternetUpdate, pos=wxPoint(23, 70),
               size=wxSize(98, 18), style=0)
         self.staticTextUpdateFrequency.SetToolTipString('')
+
+        self.choiceUpdateFrequency = wxChoice(choices=['Hourly', 'Daily',
+              'Workdays', 'Weekly'],
+              id=wxID_WXPREFERENCESDLGCHOICEUPDATEFREQUENCY,
+              name='choiceUpdateFrequency', parent=self._panelInternetUpdate,
+              pos=wxPoint(126, 67), size=wxSize(110, 21), style=0)
+        self.choiceUpdateFrequency.SetColumns(2)
+        self.choiceUpdateFrequency.SetToolTipString('How often virus database is downloaded')
+        self.choiceUpdateFrequency.SetStringSelection('Daily')
+        EVT_CHOICE(self.choiceUpdateFrequency,
+              wxID_WXPREFERENCESDLGCHOICEUPDATEFREQUENCY,
+              self.OnChoiceUpdateFrequency)
 
         self.staticTextClamScan = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTCLAMSCAN,
               label='&ClamScan Location:', name='staticTextClamScan',
@@ -386,23 +394,16 @@ class wxPreferencesDlg(wxDialog):
               18), style=0)
         self.checkBoxScanRecursive.SetToolTipString('Select if you wish to scan in subdirectories recursively')
 
-        self.choiceUpdateFrequency = wxChoice(choices=['Hourly', 'Daily',
-              'Workdays', 'Weekly'],
-              id=wxID_WXPREFERENCESDLGCHOICEUPDATEFREQUENCY,
-              name='choiceUpdateFrequency', parent=self._panelInternetUpdate,
-              pos=wxPoint(126, 67), size=wxSize(110, 21), style=0)
-        self.choiceUpdateFrequency.SetColumns(2)
-        self.choiceUpdateFrequency.SetToolTipString('How often virus database is downloaded')
-        self.choiceUpdateFrequency.SetStringSelection('Daily')
-        EVT_CHOICE(self.choiceUpdateFrequency,
-              wxID_WXPREFERENCESDLGCHOICEUPDATEFREQUENCY,
-              self.OnChoiceUpdateFrequency)
+        self.staticTextUpdateTime = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTUPDATETIME,
+              label='&Time:', name='staticTextUpdateTime',
+              parent=self._panelInternetUpdate, pos=wxPoint(240, 70),
+              size=wxSize(33, 18), style=0)
 
-        self.staticLineUpdateTimeCtrl = wxStaticLine(id=wxID_WXPREFERENCESDLGSTATICLINEUPDATETIMECTRL,
-              name='staticLineUpdateTimeCtrl', parent=self._panelInternetUpdate,
-              pos=wxPoint(277, 66), size=wxSize(74, 22), style=0)
-        self.staticLineUpdateTimeCtrl.Show(False)
-        self.staticLineUpdateTimeCtrl.SetToolTipString('When the download should be started')
+        self.spinButtonUpdateTime = wxSpinButton(id=wxID_WXPREFERENCESDLGSPINBUTTONUPDATETIME,
+              name='spinButtonUpdateTime', parent=self._panelInternetUpdate,
+              pos=wxPoint(353, 65), size=wxSize(16, 23),
+              style=wxSP_ARROW_KEYS | wxSP_VERTICAL)
+        self.spinButtonUpdateTime.SetToolTipString('')
 
         self.checkBoxScanArchives = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXSCANARCHIVES,
               label='&Scan In Archives', name='checkBoxScanArchives',
@@ -541,10 +542,11 @@ class wxPreferencesDlg(wxDialog):
               wxID_WXPREFERENCESDLGBUTTONBROWSEUPDATELOG,
               self.OnButtonBrowseUpdateLog)
 
-        self.staticTextUpdateTime = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTUPDATETIME,
-              label='&Time:', name='staticTextUpdateTime',
-              parent=self._panelInternetUpdate, pos=wxPoint(240, 70),
-              size=wxSize(33, 18), style=0)
+        self.staticLineUpdateTimeCtrl = wxStaticLine(id=wxID_WXPREFERENCESDLGSTATICLINEUPDATETIMECTRL,
+              name='staticLineUpdateTimeCtrl', parent=self._panelInternetUpdate,
+              pos=wxPoint(277, 66), size=wxSize(74, 22), style=0)
+        self.staticLineUpdateTimeCtrl.Show(False)
+        self.staticLineUpdateTimeCtrl.SetToolTipString('When the download should be started')
 
         self.staticTextUpdateDay = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTUPDATEDAY,
               label='&Day Of The Week:', name='staticTextUpdateDay',
@@ -620,7 +622,7 @@ class wxPreferencesDlg(wxDialog):
         self.checkBoxUpdateLogon = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXUPDATELOGON,
               label='&Update Virus Database On Logon',
               name='checkBoxUpdateLogon', parent=self._panelInternetUpdate,
-              pos=wxPoint(6, 138), size=wxSize(322, 20), style=0)
+              pos=wxPoint(6, 139), size=wxSize(322, 20), style=0)
         self.checkBoxUpdateLogon.SetToolTipString('Select if you wish to update the virus databases just after you logged on')
         self.checkBoxUpdateLogon.SetValue(False)
         EVT_CHECKBOX(self.checkBoxUpdateLogon,
@@ -844,6 +846,21 @@ class wxPreferencesDlg(wxDialog):
               wxID_WXPREFERENCESDLGBUTTONTASKACTIVATE,
               self.OnButtonTaskActivate)
 
+        self.checkBoxCheckVersion = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXCHECKVERSION,
+              label='&Notify About New ClamWin Releases',
+              name='checkBoxCheckVersion', parent=self._panelInternetUpdate,
+              pos=wxPoint(6, 172), size=wxSize(322, 20), style=0)
+        self.checkBoxCheckVersion.SetToolTipString('Select if you wish to get a notification message when ClamWin Free Antivirus program has been updated')
+        self.checkBoxCheckVersion.SetValue(False)
+        EVT_CHECKBOX(self.checkBoxCheckVersion,
+              wxID_WXPREFERENCESDLGCHECKBOXCHECKVERSION,
+              self.OnCheckBoxCheckVersionCheckbox)
+
+        self.staticTextNoPersonal = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTNOPERSONAL,
+              label='(No personal information is transmitted during this check)',
+              name='staticTextNoPersonal', parent=self._panelInternetUpdate,
+              pos=wxPoint(27, 193), size=wxSize(265, 13), style=0)
+
         self._init_coll_notebook_Pages(self.notebook)
 
     def __init__(self, parent, config, switchToSchedule):
@@ -875,16 +892,13 @@ class wxPreferencesDlg(wxDialog):
         # added check for self._config.Get('UI', 'Standalone')
         # to enable running the scanner only with no scheduler
         # needed in clamwin plugin to BartPE <http://oss.netfarm.it/winpe/>
-        if not sys.platform.startswith("win") or self._config.Get('UI', 'Standalone') == '1':        
+        if self._config.Get('UI', 'Standalone') == '1':        
             # remove internet updates page on unix
             init_pages.remove(self._ScheduledScanPageInit)
             init_pages.remove(self._InternetUpdatePageInit)            
             self.notebook.RemovePage(4)
             self.notebook.RemovePage(2)
             
-            # hide process priority control on Unix
-            self.choicePriority.Show(False)
-            self.staticTextPriority.Show(False)
             
         for init_page in init_pages:
             init_page()
@@ -1004,6 +1018,7 @@ class wxPreferencesDlg(wxDialog):
         #self.timeUpdate.BindSpinButton(self.spinButtonUpdateTime)            
         self.textCtrlDBMirror.SetValidator(MyValidator(config=self._config, section='Updates', value='DBMirror', canEmpty=False))        
         self.checkBoxEnableAutoUpdate.SetValidator(MyValidator(config=self._config, section='Updates', value='Enable'))
+        self.checkBoxCheckVersion.SetValidator(MyValidator(config=self._config, section='Updates', value='CheckVersion'))
         self.choiceUpdateFrequency.SetValidator(MyValidator(config=self._config, section='Updates', value='Frequency'))        
         self.timeUpdate.SetValidator(MyValidator(config=self._config, section='Updates', value='Time'))
         if sys.platform.startswith('win'):
@@ -1323,6 +1338,9 @@ class wxPreferencesDlg(wxDialog):
         self.listViewScheduledTasks.SetItem(item)
         self.UpdateScheduledTasksButtons()
 
+    def OnCheckBoxCheckVersionCheckbox(self, event):
+        event.Skip()
+
 class MyBaseValidator(wxPyValidator):
      def __init__(self, config, section, value, canEmpty=True):          
          wxPyValidator.__init__(self)         
@@ -1365,7 +1383,7 @@ class MyValidator(MyBaseValidator):
             text = ctrl.GetValue()
         if len(text) == 0:
             page = self.GetWindow().GetParent()
-            wxMessageBox("Value cannot be empty", "ClamWin", style=wxICON_EXCLAMATION|wxOK)
+            wxMessageBox("Value cannot be empty", "ClamWin Free Antivirus", style=wxICON_EXCLAMATION|wxOK)
             ctrl.SetBackgroundColour("yellow")
             ctrl.SetFocus()
             ctrl.Refresh()
@@ -1418,7 +1436,7 @@ class MyFolderPromptCreateValidator(MyValidator):
         # offer to create a folder if it doesn't exist
         if not os.path.isdir(path):
             main_win = win.GetParent()
-            choice = MsgBox.MessageBox(main_win, 'ClamWin', 
+            choice = MsgBox.MessageBox(main_win, 'ClamWin Free Antivirus', 
                         'The folder you selected does not exist. Would you like to create %s now?' % path, 
                         wxYES_NO  | wxICON_QUESTION)
             if choice == wxID_YES:
@@ -1436,7 +1454,7 @@ class MyPatternValidator(MyBaseValidator):
         strings = ctrl.GetStrings()
         if len(strings) == 0:
             page = self.GetWindow().GetParent()
-            wxMessageBox("Value cannot be empty", "ClamWin", style=wxICON_EXCLAMATION|wxOK)            
+            wxMessageBox("Value cannot be empty", "ClamWin Free Antivirus", style=wxICON_EXCLAMATION|wxOK)            
             ctrl.GetListCtrl().SetBackgroundColour("yellow")
             ctrl.SetFocus()
             ctrl.Refresh()            

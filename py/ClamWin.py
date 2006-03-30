@@ -44,6 +44,7 @@ modules ={'ClamTray': [0, '', 'ClamTray.py'],
  'SplashScreen': [0, '', 'SplashScreen.py'],
  'Utils': [0, '', 'Utils.py'],
  'wxDialogAbout': [0, '', 'wxDialogAbout.py'],
+ 'wxDialogCheckUpdate': [0, '', 'wxDialogCheckUpdate.py'],
  'wxDialogLogViewer': [0, '', 'wxDialogLogViewer.py'],
  'wxDialogPreferences': [0, '', 'wxDialogPreferences.py'],
  'wxDialogScheduledScan': [0, '', 'wxDialogScheduledScan.py'],
@@ -74,6 +75,8 @@ class BoaApp(wxApp):
             wxDialogUtils.wxAbout(parent=None, config=self.config)
         elif self.mode == 'viewlog':   
             wxDialogUtils.wxShowLog(parent=None, logfile=self.path.strip('"'))
+        elif self.mode == 'checkversion':   
+            wxDialogUtils.wxCheckUpdate(parent=None, config=self.config)
         else: #  mode == 'main'
             self.main = wxFrameMain.create(parent=None, config=self.config)
             self.main.Show()
@@ -120,6 +123,7 @@ if __name__ == '__main__':
             path += '"' + arg[len('--path='):] + '" '
         if arg.find('--config_file=') == 0:
             config_file = arg[len('--config_file='):]                                
-        
+
+    print "command line path: %s" % path.strip()            
     exit_code = main(mode=mode, autoClose=close, path=path.strip(), config_file=config_file)
     sys.exit(exit_code)

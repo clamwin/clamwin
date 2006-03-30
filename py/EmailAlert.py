@@ -44,9 +44,9 @@ class EmailMsg(MIMEMultipart):
         self.attach(MIMEText(Body))        
         for attachment in Reports:
             report = file(attachment, 'rt').read()
-            if sys.platform.startswith('win'):
+            #if sys.platform.startswith('win'):
                 # replace cygwin-like pathes with windows-like
-                report = re.sub('/cygdrive/([A-Za-z])/', r'\1:/', report).replace('/', '\\')  
+                #report = re.sub('/cygdrive/([A-Za-z])/', r'\1:/', report).replace('/', '\\')  
             part = MIMEText(report)
             reprot = None
 

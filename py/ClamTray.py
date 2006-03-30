@@ -114,7 +114,7 @@ class MainWindow:
                 #wait to finish                  
                 if self._IsProcessRunning(proc, True):       
                     #still running - complain and terminate
-                    win32gui.MessageBox(self.hwnd, 'Unable to stop scheduled process, terminating', 'ClamWin', win32con.MB_OK | win32con.MB_ICONSTOP)
+                    win32gui.MessageBox(self.hwnd, 'Unable to stop scheduled process, terminating', 'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONSTOP)
                     os._exit(0)  
                 proc.close()
                 
@@ -174,7 +174,18 @@ class MainWindow:
                             int(scan.WeekDay), 
                             self.ScanPath, (self, scan.Path, scan.Description))            
                 scheduler.start()        
-                self._schedulers.append(scheduler)        
+                self._schedulers.append(scheduler)   
+                
+        # create scheduler thread for program version check                    
+        if self._config.Get('Updates', 'CheckVersion') == '1':
+            curDir = Utils.GetCurrentDir(True)      
+            scheduler = Scheduler.Scheduler('Daily', # check once aday
+                            time.strftime('%H:%M:%S', time.localtime(time.time() + 300)), # 5 minutes after start
+                            1, # unused
+                            Utils.SpawnPyOrExe, (os.path.join(curDir, 'ClamWin'), ' --mode=checkversion'),
+                            ('ClamWin_CheckVer_Info', 'ClamWin_CheckVer_Time'))            
+            scheduler.start()        
+            self._schedulers.append(scheduler)
 
     def _Terminate(self):
         # terminate running threads
@@ -325,7 +336,7 @@ class MainWindow:
                 except Exception, e:
                     win32gui.MessageBox(self.hwnd, 
                             'Could not launch ClamWin Scanner. Error: %s' % str(e), 
-                            'ClamWin', win32con.MB_OK | win32con.MB_ICONERROR)
+                            'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONERROR)
                 
             
     def OnConfigUpdated(self, hwnd, msg, wparam, lparam):
@@ -349,7 +360,7 @@ class MainWindow:
             Utils.SpawnPyOrExe(os.path.join(curDir, 'ClamWin'), *params)                
         except Exception, e:            
             win32gui.MessageBox(self.hwnd, 'An error occured while displaying log file %s.\nError: %s' % (logfile, str(e)),
-                                 'ClamWin', win32con.MB_OK | win32con.MB_ICONERROR)                                                               
+                                 'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONERROR)                                                               
                                  
     def _ShowClamWin(self, path=''):        
         try:              
@@ -359,7 +370,7 @@ class MainWindow:
                 params = (' --mode=main',)
             Utils.SpawnPyOrExe(os.path.join(Utils.GetCurrentDir(True), 'ClamWin'), *params)
         except Exception, e:            
-            win32gui.MessageBox(self.hwnd, 'An error occured while starting ClamWin scanner.\n' + str(e), 'ClamWin', win32con.MB_OK | win32con.MB_ICONERROR)                              
+            win32gui.MessageBox(self.hwnd, 'An error occured while starting ClamWin Free Antivirus scanner.\n' + str(e), 'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONERROR)                              
     
     def _UpdateDB(self, hide):                
         if not hide:                        
@@ -367,7 +378,7 @@ class MainWindow:
                 params = (' --mode=update', ' --config_file="%s"' % self._config.GetFilename())
                 Utils.SpawnPyOrExe(os.path.join(Utils.GetCurrentDir(True), 'ClamWin'), *params)                                
             except Exception, e:
-                win32gui.MessageBox(self.hwnd, 'An error occured while starting ClamWin Update.\n' + str(e), 'ClamWin', win32con.MB_OK | win32con.MB_ICONERROR)                                  
+                win32gui.MessageBox(self.hwnd, 'An error occured while starting ClamWin Free Antivirus Update.\n' + str(e), 'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONERROR)                                  
         else:                        
             # update virus db silently
             freshclam_conf = Utils.SaveFreshClamConf(self._config)
@@ -385,7 +396,7 @@ class MainWindow:
                 updatelog = tempfile.mktemp()
                 cmd = '--stdout --datadir="' + dbdir + '"' + \
                         ' --config-file="%s" --log="%s"' % (freshclam_conf, updatelog)                                
-                cmd = re.sub('([A-Za-z]):[/\\\\]', r'/cygdrive/\1/', cmd).replace('\\', '/')
+                cmd = cmd.replace('\\', '/')
                 cmd = '"%s" %s' % (self._config.Get('ClamAV', 'FreshClam'), cmd)
                 try:
                     if self._config.Get('UI', 'TrayNotify') == '1':
@@ -427,7 +438,7 @@ class MainWindow:
             import webbrowser
             webbrowser.open(url)
         except ImportError:
-            win32gui.MessageBox(self.hwnd, 'Please point your browser at: %s' % url, 'ClamWin', win32con.MB_OK | win32con.MB_ICONINFORMATION)
+            win32gui.MessageBox(self.hwnd, 'Please point your browser at: %s' % url, 'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONINFORMATION)
             
         
     def _ShowConfigure(self, switchToSchedule = False):
@@ -441,7 +452,7 @@ class MainWindow:
                         ' --config_file="%s"' % self._config.GetFilename())            
             Utils.SpawnPyOrExe(os.path.join(curDir, 'ClamWin'), *params)
         except Exception, e:            
-            win32gui.MessageBox(self.hwnd, 'An error occured while starting ClamWin Preferences.\n' + str(e), 'ClamWin', win32con.MB_OK | win32con.MB_ICONERROR)
+            win32gui.MessageBox(self.hwnd, 'An error occured while starting ClamWin Free Antivirus Preferences.\n' + str(e), 'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONERROR)
 
     # returns process and stdout buffer
     def _SpawnProcess(self, cmd, proc_priority, finished_func, finished_params):
@@ -449,10 +460,8 @@ class MainWindow:
         # for clamav
         try:
             if os.getenv('TMPDIR') is None:
-                os.putenv('TMPDIR', 
-                           re.sub('([A-Za-z]):[/\\\\]', r'/cygdrive/\1/', 
-                           tempfile.gettempdir()).replace('\\', '/'))
-            Utils.SetCygwinTemp()
+                os.putenv('TMPDIR', tempfile.gettempdir().replace('\\', '/'))
+            #Utils.SetCygwinTemp()
         except Exception, e:
             print str(e)                        
             
@@ -494,7 +503,12 @@ class MainWindow:
             try:
                 priority = self._config.Get('ClamAV', 'Priority')[:1].lower()
             except:
-                priority = 'n'      
+                priority = 'n'
+            # clamav stopped writing start time of the scan to the log file
+            try:
+                file(scanlog, 'wt').write('Scan Started %s\n' % time.ctime(time.time()))      
+            except:
+                pass
             proc = self._SpawnProcess(cmd, 
                         priority,
                         self.ProcessFinished,
@@ -525,7 +539,7 @@ class MainWindow:
     NotifyConfig = staticmethod(NotifyConfig)
 
     def DBUpdateProcessFinished(self, process, dbpath, log, appendlog, email_alert, balloon_info):
-        Utils.SetDbFilesPermissions(dbpath)
+        #Utils.SetDbFilesPermissions(dbpath)
         self.ProcessFinished(self, process, log, appendlog, email_alert, balloon_info)        
     DBUpdateProcessFinished = staticmethod(DBUpdateProcessFinished)
 

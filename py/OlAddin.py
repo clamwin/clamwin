@@ -195,7 +195,7 @@ def HelpAbout():
         curDir = Utils.GetCurrentDir(True)
         Utils.SpawnPyOrExe(os.path.join(curDir, 'ClamWin'), ' --mode=about')        
     except Exception, e:            
-        win32gui.MessageBox(GetWindow(), 'An error occured while in ClamWin About Box.\n' + str(e), 'ClamWin', win32con.MB_OK | win32con.MB_ICONERROR)
+        win32gui.MessageBox(GetWindow(), 'An error occured in ClamWin Free Antivirus About Box.\n' + str(e), 'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONERROR)
 
 # Helpers to work with images on buttons/toolbars.
 def SetButtonImage(button, fname):
@@ -230,26 +230,27 @@ class ScanError(Exception):
     def __init__(self, msg):
         Exception.__init__(self, msg)        
 
-def ScanFile(path, config):        
+def ScanFile(path, config, attname):        
     # initialise environment var TMPDIR
     # for clamav    
     try:
         if os.getenv('TMPDIR') is None:
-            os.putenv('TMPDIR', 
-                       re.sub('([A-Za-z]):[/\\\\]', r'/cygdrive/\1/', 
-                       tempfile.gettempdir()).replace('\\', '/'))
-        Utils.SetCygwinTemp()
+            os.putenv('TMPDIR', tempfile.gettempdir().replace('\\', '/'))
+                       #re.sub('([A-Za-z]):[/\\\\]', r'/cygdrive/\1/', 
+                       #tempfile.gettempdir()).replace('\\', '/'))
+        #Utils.SetCygwinTemp()
     except Exception, e:
         print str(e)                    
             
         
-    logfile = path + ' - Virus Deleted by ClamWin.txt'
+    logfile = os.path.split(path)[0]+'\\Virus Deleted by ClamWin.txt'
     cmd = '--tempdir "%s"' % tempfile.gettempdir().replace('\\', '/').rstrip('/')
 
+    path = path.replace('\\', '/')
     cmd = '--max-ratio=0 --stdout --database="%s" --log="%s" "%s"' % \
             (config.Get('ClamAV', 'Database'), logfile, path)
          
-    cmd = re.sub('([A-Za-z]):[/\\\\]', r'/cygdrive/\1/', cmd).replace('\\', '/')
+    cmd = cmd.replace('\\', '/')
     cmd = '"%s" %s' % (config.Get('ClamAV', 'ClamScan'), cmd)
                 
     scanstatus = ''        
@@ -280,18 +281,17 @@ def ScanFile(path, config):
         # error, raise an exception
         try:
             error = file(logfile, 'rt').read()
-            error = re.sub('/cygdrive/([A-Za-z])/', r'\1:/', error).replace('/', '\\')
+            #error = re.sub('/cygdrive/([A-Za-z])/', r'\1:/', error).replace('/', '\\')
             safe_remove(logfile)
         except Exception, e:
             raise ScanError('An Error occured reading clamscan report: %s' % str(e))
         raise ScanError('An Error occured whilst scanning:\n%s' % error)
                     
-    # replace \n's with \r\n's
+    # replace \n's with \r\n's   
     # so it can be shown in notepad
+    # also replace temp filename with real attachment name
     try:
-        text = file(logfile, 'rt').read().replace('\n', '\r\n')        
-        # remove leading path to a file name
-        text = re.sub('.*/(.*\:)', '\\1', text)
+        text = file(logfile, 'rt').read().replace('\n', '\r\n').replace(path, attname)        
         file(logfile, 'wt').write(text)
     except Exception, e:
         safe_remove(logfile)
@@ -324,6 +324,18 @@ def ScanMailItem(item, sending, added_attachments = None):
     # virdb_ver = Utils.GetDBInfo(os.path.join(config.Get('ClamAV', 'Database'), 'daily.cvd'))[0]
     # dbg_print('Daily.cvd Version: %s' % str(virdb_ver))
     
+    # check that there are database files and display an error ballon if not
+    hasdb = Utils.CheckDatabase(config)      
+    if not hasdb:
+        if config.Get('UI', 'TrayNotify') == '1':
+            import win32gui
+            tray_notify_params = (('Virus Definitions Database Not Found! Please download it now.', 
+            -1, win32gui.NIIF_ERROR, 30000), None)
+            # show balloon
+            Utils.ShowBalloon(-1, tray_notify_params)
+            return 0
+
+    
     dir = ''; path = ''; statusfile = ''        
     infected = []; attachments = []
     try:
@@ -344,25 +356,11 @@ def ScanMailItem(item, sending, added_attachments = None):
         waitCursor = WaitCursor()              
         for num in range(1, attachments.Count+1):
             att = attachments.Item(num)
-            # bugfix [930909]
-            # remove str(), was ausing unicode woes
-            name = att.DisplayName            
-            # normalise the filename so it contains alfanumeric characters only
-            # and can be used as a filename                       
-            if not name.isalnum():    
-                new_name = ''
-                for i in range(0, min(len(name), 255)):                    
-                    if not name[i].isalnum():
-                        new_name += '_'
-                    else:
-                        new_name += name[i]
-            else:
-                new_name = name    
             
             # create a temporary folder to save the attachment to
             dir = tempfile.mktemp()
             os.mkdir(dir)
-            path = os.path.join(dir, new_name)
+            path = tempfile.mktemp(dir=dir)
             dbg_print('ScanMailItem: saving attachment - ', path)
             try:
                 att.SaveAsFile(path)
@@ -377,7 +375,13 @@ def ScanMailItem(item, sending, added_attachments = None):
                 else:
                     raise e
         
-            code, statusfile = ScanFile(path, config)            
+            try:
+                attName = att.DisplayName.encode('ascii', 'replace')
+            except:
+                attName = 'Attached File'
+                
+            code, statusfile = ScanFile(path, config, attName)
+                            
             # remove saved and scanned attachment  file
             safe_remove(path)                              
             if code == 0:            
@@ -390,12 +394,12 @@ def ScanMailItem(item, sending, added_attachments = None):
                 if sending:     
                     # for messages being sent display message box once and exit               
                     try:                    
-                        msg = file(statusfile, 'rt').read()                                               
+                        msg = file(statusfile, 'rt').read()                                                
                         # remove the scan status file
                         # along with temp dir
                         safe_remove(statusfile, True)
                     except Exception, e:
-                        msg = 'ClamWin could not scan file%s\n.Error: %s' % (statusfile, str(e))                        
+                        msg = 'ClamWin Free Antivirus could not scan file%s\n.Error: %s' % (statusfile, str(e))                        
                     win32gui.MessageBox(GetWindow(), msg, 'ClamWin Free Antivirus', win32con.MB_ICONERROR | win32con.MB_OK)
                     return 1
                 else:
@@ -447,7 +451,7 @@ def ScanMailItem(item, sending, added_attachments = None):
             # the event handlers
             if int(item.Application.Version.split('.', 1)[0]) < 10:                
                 msg = 'ClamWin Free Antivirus has detected a virus in the message attachments!'
-                win32gui.MessageBox(GetWindow(), msg, 'ClamWin Found A Virus!', win32con.MB_ICONERROR | win32con.MB_OK)                            
+                win32gui.MessageBox(GetWindow(), msg, 'Virus Detected!', win32con.MB_ICONERROR | win32con.MB_OK)                            
             elif config.Get('UI', 'TrayNotify') == '1':       
                 # show balloon in outlook 2002 +
                 tray_notify_params = (('Virus has been detected in an email attachment! The attachment was replaced with the report file.', 1, 
@@ -468,7 +472,7 @@ def ScanMailItem(item, sending, added_attachments = None):
         safe_remove(dir)   
         
         # display error   
-        win32gui.MessageBox(GetWindow(), str(e), 'ClamWin', win32con.MB_OK | win32con.MB_ICONERROR)        
+        win32gui.MessageBox(GetWindow(), str(e), 'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONERROR)        
         return True        
 
     return len(infected)
@@ -809,7 +813,7 @@ class MailItemWithEvents(ObjectWithEvents):
             except Exception, e:
                 for saved in saved_attachments:
                     safe_remove(saved[1], True)
-                msg = 'ClamWin could not replace an attachment. Error: %s' % str(e)
+                msg = 'ClamWin Free Antivirus could not replace an attachment. Error: %s' % str(e)
                 win32gui.MessageBox(GetWindow(), msg, 'ClamWin Free Antivirus!', win32con.MB_ICONERROR | win32con.MB_OK)                                                                                      
     
     def OnWrite(self, cancel):

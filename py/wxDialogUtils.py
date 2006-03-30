@@ -24,11 +24,11 @@
 #-----------------------------------------------------------------------------
 
 import os, sys, tempfile, time, re
-import wxDialogStatus, wxDialogPreferences, wxDialogAbout
+import wxDialogStatus, wxDialogPreferences, wxDialogAbout, wxDialogCheckUpdate
 import wxDialogLogViewer
 from wxPython.wx import wxBitmap, wxTextCtrl
 from wxPython.lib.dialogs import wxScrolledMessageDialog
-import MsgBox, EmailAlert, Utils
+import MsgBox, EmailAlert, Utils, version
 
 
 def wxUpdateVirDB(parent, config, autoClose = False):        
@@ -47,7 +47,7 @@ def wxUpdateVirDB(parent, config, autoClose = False):
             pass
     cmd = '--stdout --datadir="' + dbdir.replace('\\', '/') + '"' + \
           ' --config-file="%s" --log="%s"' % (freshclam_conf, updatelog)
-    cmd = re.sub('([A-Za-z]):[/\\\\]', r'/cygdrive/\1/', cmd).replace('\\', '/')
+    cmd = cmd.replace('\\', '/')
     if config.Get('ClamAV', 'Debug') == '1':
         cmd += ' --debug'    
     cmd = '"%s" %s' % (config.Get('ClamAV', 'FreshClam'), cmd)
@@ -62,12 +62,12 @@ def wxUpdateVirDB(parent, config, autoClose = False):
         tray_notify_params = None
 
     dlg = wxDialogStatus.create(parent, cmd, None, 'n', 'update', tray_notify_params)
-    dlg.SetTitle('ClamWin Internet Update Status')
+    dlg.SetTitle('ClamWin Free Antivirus: Downloading Update...')
     dlg.SetAutoClose(autoClose)
     try:
         dlg.ShowModal()
         exit_code = dlg.GetExitCode()
-        Utils.SetDbFilesPermissions(config.Get('ClamAV', 'Database'))
+        #Utils.SetDbFilesPermissions(config.Get('ClamAV', 'Database'))
         maxsize = int(config.Get('ClamAV', 'MaxLogSize'))*1048576        
         logfile = config.Get('Updates', 'DBUpdateLogFile')
         Utils.AppendLogFile(logfile, updatelog, maxsize)       
@@ -97,8 +97,31 @@ def wxScan(parent, config, path, autoClose = False):
     try:
         priority = config.Get('ClamAV', 'Priority')[:1].lower()
     except:
-        priority = 'n'      
-    if sys.platform.startswith('win') and config.Get('UI', 'TrayNotify') == '1':
+        priority = 'n'
+
+        #check if we have downloaded the virus database and bail out if not    
+    hasdb = Utils.CheckDatabase(config)      
+    if not hasdb:
+        if config.Get('UI', 'TrayNotify') == '1':
+            import win32gui
+            tray_notify_params = (('Virus Definitions Database Not Found! Please download it now.', -1, 
+                    win32gui.NIIF_ERROR, 30000), None)
+            # show balloon
+            Utils.ShowBalloon(-1, tray_notify_params)
+            
+            #add to logfile
+            logfile = config.Get('ClamAV', 'LogFile')
+            if logfile != '':
+                file(scanlog, 'wt').write('\n-----------------------------\n'
+                    'Scan Started %s\nERROR: Virus Definitions Database Not Found! Please download it now.\n'
+                    '-----------------------------' % time.asctime())
+                maxsize = int(config.Get('ClamAV', 'MaxLogSize'))*1048576        
+                Utils.AppendLogFile(logfile, scanlog, maxsize)        
+                os.remove(scanlog)
+            return
+                        
+     
+    if config.Get('UI', 'TrayNotify') == '1':
         import win32gui
         tray_notify_params = (('Virus has been detected during scan! Please review the scan report.', 1, 
                         win32gui.NIIF_ERROR, 30000),
@@ -107,7 +130,7 @@ def wxScan(parent, config, path, autoClose = False):
     else:
         tray_notify_params = None
     dlg = wxDialogStatus.create(parent, cmd, scanlog, priority, "scanprogress", tray_notify_params)
-    dlg.SetTitle("ClamWin Scan Status")
+    dlg.SetTitle("ClamWin Free Antivirus: Scanning...")
     dlg.SetAutoClose(autoClose, 0)
     try:
         dlg.ShowModal()         
@@ -183,3 +206,34 @@ def wxGoToInternetUrl(url):
         wxMessageBox('Please point your browser at: %s' % url)
     else:
         webbrowser.open(url)
+        
+def wxCheckUpdate(parent, config):
+    if not config.Get('Updates', 'CheckVersion'):
+        return
+    # if we have a window with such name don't show a second one
+    try:
+        import win32gui
+        hwnd = win32gui.FindWindow('#32770', 'ClamWin Update')
+        if hwnd:
+            return
+    except:
+        pass
+    
+        
+    try:
+        ver, url, changelog = Utils.GetOnlineVersion(config)
+        if ver <= version.clamwin_version:
+            return
+    except Exception, e:
+        if config.Get('UI', 'TrayNotify') == '1':
+            import win32gui
+            tray_notify_params = (('Unable to retrieve ClamWin Free Antivirus online version infomation. Error: %s' % str(e), 0, 
+                        win32gui.NIIF_WARNING, 30000), None)
+            Utils.ShowBalloon(0, tray_notify_params)
+        return
+        
+    try:
+        dlg = wxDialogCheckUpdate.create(parent, config, ver, url, changelog)
+        dlg.ShowModal()
+    finally:
+        dlg.Destroy()   
