@@ -46,6 +46,7 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLGBUTTONTASKDEACTIVATE, 
  wxID_WXPREFERENCESDLGBUTTONTASKEDIT, wxID_WXPREFERENCESDLGBUTTONTASKREMOVE, 
  wxID_WXPREFERENCESDLGBUTTONVIRDB, wxID_WXPREFERENCESDLGCHECKBOXCHECKVERSION, 
+ wxID_WXPREFERENCESDLGCHECKBOXDETECTBROKEN, 
  wxID_WXPREFERENCESDLGCHECKBOXENABLEAUTOUPDATE, 
  wxID_WXPREFERENCESDLGCHECKBOXENABLEMBOX, 
  wxID_WXPREFERENCESDLGCHECKBOXENABLEOLE2, 
@@ -75,6 +76,7 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLGSTATICBOXSMTPCONNECTION, 
  wxID_WXPREFERENCESDLGSTATICLINEUPDATETIMECTRL, 
  wxID_WXPREFERENCESDLGSTATICTEXT1, wxID_WXPREFERENCESDLGSTATICTEXT2, 
+ wxID_WXPREFERENCESDLGSTATICTEXTADDITIONALPARAMS, 
  wxID_WXPREFERENCESDLGSTATICTEXTCLAMSCAN, 
  wxID_WXPREFERENCESDLGSTATICTEXTDBUPDATELOGFILE, 
  wxID_WXPREFERENCESDLGSTATICTEXTEXPLAIN, wxID_WXPREFERENCESDLGSTATICTEXTFILES, 
@@ -106,8 +108,9 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLGSTATICTEXTUPDATEDAY, 
  wxID_WXPREFERENCESDLGSTATICTEXTUPDATEFREQUENCY, 
  wxID_WXPREFERENCESDLGSTATICTEXTUPDATETIME, 
- wxID_WXPREFERENCESDLGSTATICTEXTVIRDB, wxID_WXPREFERENCESDLGTEXTCTRLCLAMSCAN, 
- wxID_WXPREFERENCESDLGTEXTCTRLDBMIRROR, 
+ wxID_WXPREFERENCESDLGSTATICTEXTVIRDB, 
+ wxID_WXPREFERENCESDLGTEXTCTRLADDITIONALPARAMS, 
+ wxID_WXPREFERENCESDLGTEXTCTRLCLAMSCAN, wxID_WXPREFERENCESDLGTEXTCTRLDBMIRROR, 
  wxID_WXPREFERENCESDLGTEXTCTRLFRESHCLAM, 
  wxID_WXPREFERENCESDLGTEXTCTRLPROXYHOST, 
  wxID_WXPREFERENCESDLGTEXTCTRLPROXYPASSWORD, 
@@ -125,7 +128,7 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLG_PANELINTERNETUPDATE, 
  wxID_WXPREFERENCESDLG_PANELOPTIONS, wxID_WXPREFERENCESDLG_PANELPROXY, 
  wxID_WXPREFERENCESDLG_PANELREPORTS, wxID_WXPREFERENCESDLG_PANELSCHEDULER, 
-] = map(lambda _init_ctrls: wxNewId(), range(109))
+] = map(lambda _init_ctrls: wxNewId(), range(112))
 
 class wxPreferencesDlg(wxDialog):
     def _init_coll_imageListScheduler_Images(self, parent):
@@ -176,7 +179,7 @@ class wxPreferencesDlg(wxDialog):
     def _init_ctrls(self, prnt):
         # generated method, don't edit
         wxDialog.__init__(self, id=wxID_WXPREFERENCESDLG, name='', parent=prnt,
-              pos=wxPoint(523, 290), size=wxSize(419, 351),
+              pos=wxPoint(366, 256), size=wxSize(419, 351),
               style=wxDEFAULT_DIALOG_STYLE, title='ClamWin Preferences')
         self._init_utils()
         self.SetClientSize(wxSize(411, 324))
@@ -468,39 +471,37 @@ class wxPreferencesDlg(wxDialog):
         self.checkBoxEnableOLE2 = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXENABLEOLE2,
               label='&Extract Attachments and Macros from MS Office Documents',
               name='checkBoxEnableOLE2', parent=self._panelAdvanced,
-              pos=wxPoint(6, 37), size=wxSize(381, 18), style=0)
+              pos=wxPoint(6, 33), size=wxSize(381, 18), style=0)
         self.checkBoxEnableOLE2.SetToolTipString('Select if you wish to scan OLE attachments and macros in MS Office Documents')
         self.checkBoxEnableOLE2.SetValue(False)
 
+        self.checkBoxDetectBroken = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXDETECTBROKEN,
+              label='&Detect Broken Executables', name='checkBoxDetectBroken',
+              parent=self._panelAdvanced, pos=wxPoint(6, 55), size=wxSize(381,
+              18), style=0)
+        self.checkBoxDetectBroken.SetToolTipString('Select if you wish to scan OLE attachments and macros in MS Office Documents')
+        self.checkBoxDetectBroken.SetValue(False)
+
+        self.staticTextAdditionalParams = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTADDITIONALPARAMS,
+              label='&Additional Clamscan Command Line Parameters:',
+              name='staticTextAdditionalParams', parent=self._panelAdvanced,
+              pos=wxPoint(6, 79), size=wxSize(378, 13), style=0)
+
+        self.textCtrlAdditionalParams = wxTextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLADDITIONALPARAMS,
+              name='textCtrlAdditionalParams', parent=self._panelAdvanced,
+              pos=wxPoint(6, 97), size=wxSize(379, 21), style=0, value='')
+
         self.staticTextMaxLogSize = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTMAXLOGSIZE,
               label='Limit Log File Size To:', name='staticTextMaxLogSize',
-              parent=self._panelAdvanced, pos=wxPoint(6, 66), size=wxSize(170,
+              parent=self._panelAdvanced, pos=wxPoint(6, 136), size=wxSize(170,
               17), style=0)
 
         self.spinCtrlMaxLogSize = wxSpinCtrl(id=wxID_WXPREFERENCESDLGSPINCTRLMAXLOGSIZE,
               initial=0, max=4096, min=1, name='spinCtrlMaxLogSize',
-              parent=self._panelAdvanced, pos=wxPoint(6, 85), size=wxSize(122,
+              parent=self._panelAdvanced, pos=wxPoint(6, 155), size=wxSize(129,
               21), style=wxSP_ARROW_KEYS)
         self.spinCtrlMaxLogSize.SetToolTipString('Select maximum size for the logfile')
         self.spinCtrlMaxLogSize.SetValue(1)
-
-        self.staticTextMB2 = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTMB2,
-              label='MegaBytes', name='staticTextMB2',
-              parent=self._panelAdvanced, pos=wxPoint(137, 88), size=wxSize(74,
-              16), style=0)
-
-        self.staticTextPriority = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTPRIORITY,
-              label='Scanner &Priority:', name='staticTextPriority',
-              parent=self._panelAdvanced, pos=wxPoint(6, 116), size=wxSize(103,
-              17), style=0)
-
-        self.choicePriority = wxChoice(choices=['Low', 'Normal'],
-              id=wxID_WXPREFERENCESDLGCHOICEPRIORITY, name='choicePriority',
-              parent=self._panelAdvanced, pos=wxPoint(6, 135), size=wxSize(125,
-              21), style=0)
-        self.choicePriority.SetToolTipString('Specify the process priority for the virus scanner.')
-        self.choicePriority.SetStringSelection('Normal')
-        self.choicePriority.SetLabel('')
 
         self.staticTextLogFIle = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTLOGFILE,
               label='&Scan Report File:', name='staticTextLogFIle',
@@ -861,6 +862,24 @@ class wxPreferencesDlg(wxDialog):
               name='staticTextNoPersonal', parent=self._panelInternetUpdate,
               pos=wxPoint(27, 193), size=wxSize(265, 13), style=0)
 
+        self.staticTextMB2 = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTMB2,
+              label='MegaBytes', name='staticTextMB2',
+              parent=self._panelAdvanced, pos=wxPoint(144, 156), size=wxSize(74,
+              16), style=0)
+
+        self.staticTextPriority = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTPRIORITY,
+              label='Scanner &Priority:', name='staticTextPriority',
+              parent=self._panelAdvanced, pos=wxPoint(252, 136),
+              size=wxSize(103, 17), style=0)
+
+        self.choicePriority = wxChoice(choices=['Low', 'Normal'],
+              id=wxID_WXPREFERENCESDLGCHOICEPRIORITY, name='choicePriority',
+              parent=self._panelAdvanced, pos=wxPoint(252, 155),
+              size=wxSize(134, 21), style=0)
+        self.choicePriority.SetToolTipString('Specify the process priority for the virus scanner.')
+        self.choicePriority.SetStringSelection('Normal')
+        self.choicePriority.SetLabel('')
+
         self._init_coll_notebook_Pages(self.notebook)
 
     def __init__(self, parent, config, switchToSchedule):
@@ -1103,6 +1122,8 @@ class wxPreferencesDlg(wxDialog):
         self.spinCtrlMaxLogSize.SetValidator(MyValidator(self._config, section='ClamAV', value='MaxLogSize', canEmpty=False))        
         self.checkBoxEnableMbox.SetValidator(MyValidator(config=self._config, section='ClamAV', value='EnableMbox'))
         self.checkBoxEnableOLE2.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ScanOle2'))
+        self.checkBoxDetectBroken.SetValidator(MyValidator(config=self._config, section='ClamAV', value='DetectBroken'))
+        self.textCtrlAdditionalParams.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ClamScanParams', canEmpty=True))        
           
     def _ListAddScheduledScan(self, sc, pos = -1):
         if pos == -1:

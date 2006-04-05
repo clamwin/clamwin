@@ -25,6 +25,7 @@
 #-----------------------------------------------------------------------------
 import ConfigParser
 import Utils
+import version
 import binascii
 import sys
 if sys.platform.startswith("win"):
@@ -43,6 +44,7 @@ class Settings:
              'ScanArchives': '1', 'MaxSize': '10', 'MaxFiles': '500',
              'MaxRecursion': '5', 'LogFile': '', 'MaxLogSize': '1',
              'MoveInfected': '0', 'QuarantineDir': '',  'Debug': '0',
+             'DetectBroken': '0', 'ClamScanParams':'',
              'IncludePatterns': '', 
              'ExcludePatterns': REGEX_SEPARATOR.join(('*.dbx','*.tbb','*.pst', '*.dat', '*.log', '*.evt', '*.nsf', '*.ntf', '*.chm')),}],
         'Proxy':
@@ -52,7 +54,7 @@ class Settings:
         [0, {'Enable': '1', 'Frequency': 'Daily', 'Time': '10:00:00', 
             'WeekDay': '2', 'DBMirror': 'database.clamav.net', 
             'DBUpdateLogFile': '', 'UpdateOnLogon': '0',
-            'CheckVersion': '1', 'CheckVersionURL': 'http://clamwin.sourceforge.net/clamwin2.ver'}],  
+            'CheckVersion': '1', 'CheckVersionURL': 'http://clamwin.sourceforge.net/clamwin.ver'}],  
         'EmailAlerts':
         [0, {'Enable': '0',
              'SMTPHost': '', 'SMTPPort': '25', 'SMTPUser':'',
@@ -60,7 +62,7 @@ class Settings:
              'From': 'clamwin@yourdomain', 'To': 'admin@yourdomain', 
              'Subject': 'ClamWin Virus Alert'}], 
         'UI':
-        [0, {'TrayNotify': '1', 'ReportInfected': '1', 'Standalone': '0',}],                
+        [0, {'TrayNotify': '1', 'ReportInfected': '1', 'Standalone': '0', 'Version': ''}],                
         'Schedule':
         [0, {'Path': '', }],                            
         }        
@@ -70,8 +72,7 @@ class Settings:
             conf = ConfigParser.ConfigParser()
             conf.read(self._filename)
         except ConfigParser.Error:
-            return False
-        
+            return False        
         for sect in self._settings:
             for name in self._settings[sect][1]:
                 try:                    
@@ -80,7 +81,11 @@ class Settings:
                         val = binascii.a2b_hex(val)
                     self._settings[sect][1][name] = val
                 except ConfigParser.Error:
-                    pass                
+                    pass
+        # for older version set display infected only to 1
+        if self._settings['UI'][1]['Version'] == '':
+            self._settings['ClamAV'][1]['InfectedOnly'] = '1'
+            self._settings['UI'][1]['Version'] = version.clamwin_version
         return True
 
     def Write(self):        

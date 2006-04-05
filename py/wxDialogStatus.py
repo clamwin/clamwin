@@ -36,7 +36,7 @@ import os, sys
 import re
 import MsgBox
 import Utils
-
+import wxDialogUtils
 
 _WAIT_TIMEOUT = 5
 if sys.platform.startswith("win"):    
@@ -128,10 +128,16 @@ class wxDialogStatus(wxDialog):
         EVT_CLOSE(self, self.OnWxDialogStatusClose)
         EVT_INIT_DIALOG(self, self.OnInitDialog)
 
+        winstyle = wxTAB_TRAVERSAL | wxTE_RICH | wxTE_MULTILINE | wxTE_READONLY
+        # enable wxTE_AUTO_URL on XP only
+        # 98 produces some weird scrolling behaviour
+        if win32api.GetVersionEx()[0] >= 5 and self._bitmapMask == 'update': 
+            winstyle = winstyle | wxTE_AUTO_URL
+            
         self.textCtrlStatus = wxTextCtrl(id=wxID_WXDIALOGSTATUSTEXTCTRLSTATUS,
               name='textCtrlStatus', parent=self, pos=wxPoint(89, 11),
               size=wxSize(455, 300),
-              style=wxTAB_TRAVERSAL | wxTE_RICH | wxTE_MULTILINE | wxTE_READONLY, value='')
+              style=winstyle, value='')
               
         self.staticBitmap1 = wxStaticBitmap(bitmap=wxNullBitmap,
               id=wxID_WXDIALOGSTATUSSTATICBITMAP1, name='staticBitmap1',
@@ -163,12 +169,18 @@ class wxDialogStatus(wxDialog):
         self._out = None
         self._proc = None         
         self._notify_params = notify_params
+        self._bitmapMask = bitmapMask
+        self._previousStart = 0
         
         self._init_ctrls(parent)
+                
         
         # bind thread notification events
         EVT_THREADFINISHED(self, self.OnThreadFinished)        
         EVT_THREADUPDATESTATUS(self, self.OnThreadUpdateStatus)                
+
+        # add url click handler        
+        EVT_TEXT_URL(self, wxID_WXDIALOGSTATUSTEXTCTRLSTATUS, self.OnClickURL)
         
         # initilaise our throbber (an awkward way to display animated images)
         images = [throbImages.catalog[i].getBitmap()
@@ -306,8 +318,7 @@ class wxDialogStatus(wxDialog):
         self.throbber.Rest()
         self.buttonStop.SetFocus()
         self.buttonStop.SetLabel('&Close')                   
-                
-       
+                               
         data = ''
         if self._logfile is not None:
             try:
@@ -324,26 +335,23 @@ class wxDialogStatus(wxDialog):
                 data = flog.read()
             except Exception, e:
                 print 'Could not read from log file %s. Error: %s' % (self._logfile, str(e))
-        if sys.platform.startswith('win'):
-            # replace cygwin-like pathes with windows-like
-            data = data.replace('/', '\\').replace('I\\O', 'I/O')  
-            data = Utils.ReformatLog(data, win32api.GetVersionEx()[0] >= 5)
-        else:
-            data = Utils.ReformatLog(data, False)
                 
+        # replace cygwin-like pathes with windows-like
+        data = data.replace('/', '\\').replace('I\\O', 'I/O')  
+        data = Utils.ReformatLog(data, win32api.GetVersionEx()[0] >= 5)
+        
         if len(data.splitlines()) > 1:
             self.ThreadUpdateStatus(self, data, False)
         
         if not self._cancelled:    
            self.ThreadUpdateStatus(self, "\n-------------------\nCompleted\n-------------------\n")                  
         else:
-            self.ThreadUpdateStatus(self, "\n-------------------\nCommand has been interrupted...\n-------------------\n")        
+           self.ThreadUpdateStatus(self, "\n-------------------\nCommand has been interrupted...\n-------------------\n")        
             
-        if sys.platform.startswith('win'):    
-            win32api.PostMessage(self.textCtrlStatus.GetHandle(), win32con.EM_SCROLLCARET, 0, 0)
-        else:
-            self.textCtrlStatus.SetInsertionPointEnd()                        
-            self.textCtrlStatus.ShowPosition(self.textCtrl.GetLastPosition())                
+        win32api.PostMessage(self.textCtrlStatus.GetHandle(), win32con.EM_SCROLLCARET, 0, 0)
+        self.textCtrlStatus.SetInsertionPointEnd()                        
+        self.textCtrlStatus.ShowPosition(self.textCtrlStatus.GetLastPosition())                
+ 
         
         try:                
             self._returnCode = self._proc.wait(_WAIT_TIMEOUT)            
@@ -360,29 +368,41 @@ class wxDialogStatus(wxDialog):
             e = wxCommandEvent(wxEVT_COMMAND_BUTTON_CLICKED, self.buttonStop.GetId())
             self.buttonStop.AddPendingEvent(e)                                                
                     
-    def OnThreadUpdateStatus(self, event):
-        ctrl = self.textCtrlStatus
-           
-        text = event.text           
-        if event.append == True:
-            
+    def OnThreadUpdateStatus(self, event): 
+        ctrl = self.textCtrlStatus               
+        lastPos =	ctrl.GetLastPosition()
+        text = Utils.ReplaceClamAVWarnings(event.text)
+        if event.append == True:            
             # Check if we reached 30000 characters
-            # and need to purge topmost line           
-            if ctrl.GetLastPosition() + len(text) + _NEWLINE_LEN >= 30000:
-                ctrl.Clear()
-            
-            line_number = ctrl.GetNumberOfLines() - 2
+            # and need to purge topmost line            
+            if lastPos + len(text) + _NEWLINE_LEN >= 30000:
+                ctrl.Clear()            
             # detect progress message in the new text
-            print_over = re.search('\[[\d ]?[\d ]?\d\%\]', ctrl.GetLineText(line_number)) is not None                                
-            if print_over:
-                line_end = ctrl.GetLastPosition()
-                line_start = ctrl.GetLastPosition() - \
-                                ctrl.GetLineLength(line_number) - _NEWLINE_LEN                                                
-                ctrl.Replace(line_start+1, line_end, text)
-            else:
-                ctrl.AppendText(text)
+            print_over = re.search('\[[\d ]?[\d ]?\d?\%?[|/\-\\\*]?\]', 
+                ctrl.GetRange(self._previousStart, lastPos)) is not None                                
+            if print_over:                
+                # prevent form blinking text by disabling richedit selection here
+                win32api.SendMessage(ctrl.GetHandle(),Utils.EM_HIDESELECTION, 1, 0)
+                # replace the text 
+                ctrl.Replace(self._previousStart, ctrl.GetLastPosition(), text)               
+                lastPos =	self._previousStart
+            else:                    
+                ctrl.AppendText(text)                    
+            # highlight FOUND entries in red                
+            if text.endswith(' FOUND\n'):
+                ctrl.SetStyle(lastPos, ctrl.GetLastPosition() - 1, 
+                    wxTextAttr(colText = wxColour(128,0,0), 
+                        font = wxFont(0, wxDEFAULT, wxNORMAL, wxBOLD, False)))
         else:
-            ctrl.SetValue(text)    
+            ctrl.Clear()
+            ctrl.SetDefaultStyle(wxTextAttr(wxNullColour))
+            ctrl.SetValue(text)            
+        
+        # this is thread unsafe however it doesn't matter as only one thread writes 
+        # to the status window
+        self._previousStart = lastPos
+
+            
         
     def GetExitCode(self):
         return self._returnCode 
@@ -410,7 +430,7 @@ class wxDialogStatus(wxDialog):
                 raise Process.ProcessError('Could not start process.\n%s\nFile does not exist.' % executable)                
             # create our stdout implementation that updates status window                
             self._out = StatusUpdateBuffer(self, self.ThreadUpdateStatus, self.ThreadFinished)                                                    
-            self._proc = Process.ProcessProxy(cmd, stdout=self._out, priority=priority)                                                                
+            self._proc = Process.ProcessProxy(cmd, stdout=self._out, stderr=self._out, priority=priority)                                                                
             self._proc.wait(_WAIT_NOWAIT)
         except Exception, e:             
             if isinstance(e, Process.ProcessError):
@@ -425,5 +445,11 @@ class wxDialogStatus(wxDialog):
         # to display transparent animation properly
         # therefore start it in OnInitDialog   
         self.throbber.Start()
+        event.Skip()
+        
+    def OnClickURL(self, event):
+        if event.GetMouseEvent().LeftIsDown():
+            url = self.textCtrlStatus.GetRange(event.GetURLStart(), event.GetURLEnd())
+            wxDialogUtils.wxGoToInternetUrl(url)
         event.Skip()
                         	                	    

@@ -217,8 +217,7 @@ def wxCheckUpdate(parent, config):
         if hwnd:
             return
     except:
-        pass
-    
+        pass    
         
     try:
         ver, url, changelog = Utils.GetOnlineVersion(config)
@@ -237,3 +236,14 @@ def wxCheckUpdate(parent, config):
         dlg.ShowModal()
     finally:
         dlg.Destroy()   
+
+        
+if __name__ == '__main__':
+    import Config
+    from wxPython.wx import *
+    config_file = os.path.join(Utils.GetProfileDir(True),'ClamWin.conf')                          
+    config = Config.Settings(config_file)    
+    b = config.Read()
+    app = wxPySimpleApp()
+    wxScan(None, config, 'c:/1Test')
+    app.MainLoop()

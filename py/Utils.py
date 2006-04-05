@@ -33,7 +33,8 @@ if win32api.GetVersionEx()[3] != win32con.VER_PLATFORM_WIN32_WINDOWS:
         
     
 
-
+EM_AUTOURLDETECT=1115
+EM_HIDESELECTION=1087
 CONFIG_EVENT='ClamWinConfigUpdateEvent01'
 _FRESHCLAM_CONF_GENERAL = """
 DNSDatabaseInfo current.cvd.clamav.net
@@ -289,7 +290,17 @@ def SaveFreshClamConf(config):
                 os.close(fd)                                                
         return name
                                     
-                            
+def GetExcludeSysLockedFiles():
+    configDir = os.path.join(win32api.GetSystemDirectory(), 'config')
+    regFiles = ('default', 'SAM', 'SECURITY', 
+             'software', 'software.alt', 'system', 
+             'system.alt')
+    ret = ''
+    for regFile in regFiles:
+        ret += ' --exclude="%s"' % os.path.join(configDir, regFile).replace('\\', '/')   
+    return ret
+
+                                    
 def GetScanCmd(config, path, scanlog):
     # 2006-03-18 alch moving to native win32 clamav binaries
     # remove all /cygdrive/ referneces and slash conversions
@@ -321,7 +332,11 @@ def GetScanCmd(config, path, scanlog):
     if config.Get('ClamAV', 'EnableMbox') != '1':
         cmd += ' --no-mail'
     if config.Get('ClamAV', 'ScanOle2') != '1':
-        cmd += ' --no-ole2'    
+        cmd += ' --no-ole2'            
+    if config.Get('ClamAV', 'DetectBroken') == '1':
+        cmd += ' --detect-broken'
+    if config.Get('ClamAV', 'ClamScanParams') != '':
+        cmd += ' ' + config.Get('ClamAV', 'ClamScanParams')
     if config.Get('ClamAV', 'InfectedOnly') == '1':
         cmd += ' --infected'    
     if config.Get('ClamAV', 'ScanArchives') == '1':
@@ -332,7 +347,7 @@ def GetScanCmd(config, path, scanlog):
     else:
         cmd += ' --no-archive' 
               
-    cmd += ' --stdout --database="%s" --log="%s" %s' % \
+    cmd += ' --show-progress --stdout --database="%s" --log="%s" %s' % \
             (config.Get('ClamAV', 'Database'), 
             scanlog, path)          
                                 
@@ -345,9 +360,12 @@ def GetScanCmd(config, path, scanlog):
     if sys.platform.startswith('win'):
         # Win 98/ME
         if win32api.GetVersionEx()[3] == win32con.VER_PLATFORM_WIN32_WINDOWS:
-            cmd += ' --exclude=win386.swp'    
+            cmd += ' --exclude=win386.swp --exclude=pagefile.sys'
+
+    # add annoying registry files to exclude as they're locked by OS
+    cmd += GetExcludeSysLockedFiles()
            
-     # add include and exclude patterns    
+    # add include and exclude patterns    
     for patterns in (['--include', config.Get('ClamAV', 'IncludePatterns')],
                     ['--exclude', config.Get('ClamAV', 'ExcludePatterns')]):
         patterns[1] = patterns[1].replace('\\', '/')            
@@ -595,11 +613,12 @@ def SetCygwinTemp():
         raise Exception("An Error occured whilst configuring Temporary Folder. Error:  %s" % str(e))
 
 def ReformatLog(data, rtf):
+    data = ReplaceClamAVWarnings(data.replace('\r\n', '\n'))
     # retrieve the pure report strings
     #rex = re.compile('(.*?Scan started\:.*?\n\n)(.*)(-- summary --.*)(Infected files: \d*?\n)(.*)', re.M|re.S)
     rex = re.compile('(.*)(----------- SCAN SUMMARY -----------.*)(Infected files: \d*?\n)(.*)', re.M|re.S)    
 
-    r = rex.search(data.replace('\r\n', '\n'))
+    r = rex.search(data)
     if r is not None:     	          
         found = ''
         other = ''
@@ -634,6 +653,17 @@ def ReformatLog(data, rtf):
         if rtf:
             data = r'{\rtf1{\colortbl ;\red128\green0\blue0;;\red0\green128\blue0;}%s}' % data.replace('\n', '\\par\r\n')
     return data    
+
+# replaces clamav warnings with ours
+def ReplaceClamAVWarnings(data):
+    # reformat database update warnings to our FAQ
+    data = data.replace('Please check if ClamAV tools are linked against proper version of libclamav\n', '')
+    data = data.replace(r'http:\\www.clamav.net\faq.html', 'http://www.clamwin.com/content/view/10/27/')
+    
+    # remove XXX: Excluded lines
+    data = re.sub('.*\: Excluded\n', '', data)
+    
+    return data
 
 # returns tuple (version, url, changelog)
 # exception on error
