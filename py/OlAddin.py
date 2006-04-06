@@ -302,6 +302,8 @@ def ScanFile(path, config, attname):
 def ScanMailItem(item, sending, added_attachments = None):     
     if not item.Attachments.Count:
         return 0
+
+    import win32gui, win32con   
     
     config_file = os.path.join(Utils.GetProfileDir(True),'ClamWin.conf')
     if not os.path.isfile(config_file):
@@ -471,7 +473,7 @@ def ScanMailItem(item, sending, added_attachments = None):
             safe_remove(info[1], True) 
         safe_remove(dir)   
         
-        # display error   
+        # display error
         win32gui.MessageBox(GetWindow(), str(e), 'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONERROR)        
         return True        
 

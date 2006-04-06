@@ -615,8 +615,8 @@ def SetCygwinTemp():
 def ReformatLog(data, rtf):
     data = ReplaceClamAVWarnings(data.replace('\r\n', '\n'))
     # retrieve the pure report strings
-    #rex = re.compile('(.*?Scan started\:.*?\n\n)(.*)(-- summary --.*)(Infected files: \d*?\n)(.*)', re.M|re.S)
-    rex = re.compile('(.*)(----------- SCAN SUMMARY -----------.*)(Infected files: \d*?\n)(.*)', re.M|re.S)    
+    rex = re.compile('(.*)(-- summary --.*)(Infected files: \d*?\n)(.*)', re.M|re.S)
+    #rex = re.compile('(.*)(----------- SCAN SUMMARY -----------.*)(Infected files: \d*?\n)(.*)', re.M|re.S)    
 
     r = rex.search(data)
     if r is not None:     	          
@@ -636,8 +636,7 @@ def ReformatLog(data, rtf):
                 else:
                     other += line + '\n'
             	         
-        data = '-------------------------------------------------------------------------------\n\n' + \
-        			'%s%s' + r.group(2) + "%s" + r.group(4)         
+        data = '%s%s' + r.group(2) + "%s" + r.group(4)         
         # line with number of infected files
         infected = r.group(3)    	                      	         
         if rtf:
@@ -732,8 +731,8 @@ def CheckDatabase(config):
 
                              		         
 if __name__ == '__main__':
-    #f = file('c:\\2.txt', 'rt')
-    #file('c:\\3.rtf', 'wt').write(ReformatLog(f.read(), True))
+    f = file('c:\\2.txt', 'rt')
+    file('c:\\3.rtf', 'wt').write(ReformatLog(f.read(), True))
     #AppendLogFile('c:\\1.txt',  'C:\\MSDE2kLog.txt', 30000)
     #currentDir = GetCurrentDir(True)
     #os.chdir(currentDir)        

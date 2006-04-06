@@ -37,6 +37,7 @@ import re
 import MsgBox
 import Utils
 import wxDialogUtils
+import win32gui
 
 _WAIT_TIMEOUT = 5
 if sys.platform.startswith("win"):    
@@ -200,11 +201,11 @@ class wxDialogStatus(wxDialog):
         self.textCtrlStatus.SetBackgroundColour(wxSystemSettings_GetColour(wxSYS_COLOUR_BTNFACE))        
         
         # spawn and monitor our process
-        # clamav stopped writing start time of the scan to the log file
-        try:
-            file(logfile, 'wt').write('Scan Started %s\n' % time.ctime(time.time()))
-        except:
-            pass    
+        # clamav stopped writing start time of the scan to the log file        
+        #try:
+        #    file(logfile, 'wt').write('Scan Started %s\n' % time.ctime(time.time()))
+        #except:
+        #    pass    
         try:
             self._SpawnProcess(cmd, priority)            
         except Process.ProcessError, e:
@@ -378,13 +379,16 @@ class wxDialogStatus(wxDialog):
             if lastPos + len(text) + _NEWLINE_LEN >= 30000:
                 ctrl.Clear()            
             # detect progress message in the new text
-            print_over = re.search('\[[\d ]?[\d ]?\d?\%?[|/\-\\\*]?\]', 
+            #print_over = re.search('\[[\d ]?[\d ]?\d?\%?[|/\-\\\*]?\]', 
+            print_over = re.search('\[( {0,2}\d{1,3}\%)?[|/\-\\\*]?\]', 
                 ctrl.GetRange(self._previousStart, lastPos)) is not None                                
             if print_over:                
                 # prevent form blinking text by disabling richedit selection here
                 win32api.SendMessage(ctrl.GetHandle(),Utils.EM_HIDESELECTION, 1, 0)
                 # replace the text 
                 ctrl.Replace(self._previousStart, ctrl.GetLastPosition(), text)               
+                
+                win32api.PostMessage(self.textCtrlStatus.GetHandle(), win32con.EM_SCROLLCARET, 0, 0)
                 lastPos =	self._previousStart
             else:                    
                 ctrl.AppendText(text)                    
@@ -445,6 +449,7 @@ class wxDialogStatus(wxDialog):
         # to display transparent animation properly
         # therefore start it in OnInitDialog   
         self.throbber.Start()
+        win32gui.SetForegroundWindow(self.GetHandle())
         event.Skip()
         
     def OnClickURL(self, event):

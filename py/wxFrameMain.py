@@ -338,7 +338,7 @@ class wxMainFrame(wxFrame):
                     configured = self._IsConfigured()
 
             hasdb = Utils.CheckDatabase(self._config)      
-            if not hasdb:
+            if configured and not hasdb:
                 if wxID_YES == MsgBox.MessageBox(None, 'ClamWin Free Antivirus', 'You have not yet downloaded Virus Definitions Database. Would you like to download it now?', wxYES_NO | wxICON_QUESTION):
                     wxDialogUtils.wxUpdateVirDB(self, self._config)
                     hasdb = Utils.CheckDatabase(self._config)

@@ -3,7 +3,7 @@
 
 [Setup]
 AppName=ClamWin Free Antivirus
-AppVerName=ClamWin Free Antivirus Beta 0.88.903
+AppVerName=ClamWin Free Antivirus 0.88.1
 AppPublisher=alch
 AppPublisherURL=http://clamwin.sourceforge.net/
 AppSupportURL=http://clamwin.sourceforge.net/
@@ -54,10 +54,10 @@ Source: py2exe\dist\bin\img\World.png; DestDir: {app}\bin\img; Components: ClamW
 Source: py2exe\dist\bin\img\Support.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
 Source: py2exe\dist\bin\img\ListScan.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
 Source: py2exe\dist\bin\img\Splash.bmp; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
-Source: ..\clamav-devel\contrib\msvc\Release\clamscan.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\clamav-devel\contrib\msvc\Release\freshclam.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\clamav-devel\contrib\msvc\Release\sigtool.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\clamav-devel\contrib\msvc\Release\libclamav.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\clamav-release\contrib\msvc\Release\clamscan.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\clamav-release\contrib\msvc\Release\freshclam.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\clamav-release\contrib\msvc\Release\sigtool.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\clamav-release\contrib\msvc\Release\libclamav.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
 
 ; on xp and greater VC80 CRT needs to be installed in Microsoft.VC80.CRT
 Source: Microsoft.VC80.CRT\Microsoft.VC80.CRT.manifest; DestDir: {app}\bin\Microsoft.VC80.CRT; Components: ClamAV; Check: IsXPOrLater
@@ -163,8 +163,8 @@ Filename: {app}\bin\ClamWin.conf; Section: Updates; Key: dbupdatelogfile; String
 Filename: {app}\bin\ClamWin.conf; Section: Updates; Key: time; String: {code:CurTime}; Check: IsIniValueEmpty(ExpandConstant('Updates*time*{app}\bin\ClamWin.conf'))
 
 [_ISToolDownload]
-Name: Sources_ClamWin; Description: ClamWin Source Code; GroupDescription: Source Code; Flags: unchecked; Source: http://osdn.dl.sourceforge.net/sourceforge/clamwin/clamwin-0.88-src.zip; DestDir: {%TEMP|{localappdata}}; DestName: clamwin-src.zip; Components: Sources
-Name: Sources_ClamAV; Description: ClamAV Source Code; GroupDescription: Source Code; Flags: unchecked; Source: http://osdn.dl.sourceforge.net/sourceforge/clamav/clamav-0.88.tar.gz; DestDir: {%TEMP|{localappdata}}; DestName: clamav-src.tar.gz; Components: Sources
+Name: Sources_ClamWin; Description: ClamWin Source Code; GroupDescription: Source Code; Flags: unchecked; Source: http://osdn.dl.sourceforge.net/sourceforge/clamwin/clamwin-0.88.1-src.zip; DestDir: {%TEMP|{localappdata}}; DestName: clamwin-src.zip; Components: Sources
+Name: Sources_ClamAV; Description: ClamAV Source Code; GroupDescription: Source Code; Flags: unchecked; Source: http://osdn.dl.sourceforge.net/sourceforge/clamav/clamav-0.88.1.tar.gz; DestDir: {%TEMP|{localappdata}}; DestName: clamav-src.tar.gz; Components: Sources
 ;Name: Sources_Cygwin; Description: Cygwin Source Code; GroupDescription: Source Codes; Flags: unchecked; Source: http://mirrors.kernel.org/sources.redhat.com/cygwin/release/cygwin/cygwin-1.5.18-1-src.tar.bz2; DestDir: {%TEMP|{localappdata}}; DestName: cygwin-src.tar.bz2; Components: Sources
 
 [Types]
