@@ -114,30 +114,15 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 	for(int i = 0; i < numFiles; i++)
 	{
 		DragQueryFile((HDROP)medium.hGlobal, i, szPath, sizeof(szPath));
-		// check the long path validity for a unicode build
-#if defined UNICODE || defined _UNICODE
-		{
-			CHAR atemp[MAX_PATH];			
-			BOOL invalid;
-			if(!WideCharToMultiByte(CP_OEMCP, WC_NO_BEST_FIT_CHARS, szPath, -1, 
-      		  atemp, sizeof(atemp), NULL, &invalid) || invalid)
-    		{
-    			WCHAR wtemp[MAX_PATH];
-    			// unicode name is not directly tranleatable to ascii, use the shortname instead        		 
-       		if(GetShortPathNameW(szPath, wtemp, sizeof(wtemp)) > 0)
-   	  			wcscpy(szPath, wtemp);
-    		}    		
-		}
-#endif
 		// convert \ to / so cygwin doesn't go crazy (particularly over UNC names)
 		_tcsreplace(szPath, _T('\\'), _T('/'));
 		len = _tcslen(szPath);
 		// remove last slash from the scanning path
         if(szPath[len-1] == _T('/'))
             szPath[len-1] = _T('\0');
-        _tcsncat(m_szPath, _T(" --path=\""), cbPath);
+        _tcsncat(m_szPath, " --path=\"", cbPath);
         _tcsncat(m_szPath, szPath, cbPath);
-        _tcsncat(m_szPath, _T("\""), cbPath);
+        _tcsncat(m_szPath, "\"", cbPath);
 	}	
 	::ReleaseStgMedium(&medium);
 	
@@ -172,7 +157,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,UINT indexMenu,UINT idCmdFi
 	
 	// Seperator
 	::InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL);
-	::InsertMenu(hMenu, indexMenu++, MF_STRING|MF_BYPOSITION, idCmd++, _T("Scan with ClamWin Free Antivirus"));
+	::InsertMenu(hMenu, indexMenu++, MF_STRING|MF_BYPOSITION, idCmd++, _T("Scan For Viruses With ClamWin"));
 	// Seperator
 	::InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL);
 	
@@ -185,7 +170,7 @@ BOOL CShellExt::Scan(HWND hwnd)
     DWORD len;
     if(!m_szPath || !_tcslen(m_szPath))
     {
-        MessageBox(hwnd, _T("Error: Unable to retrieve Path."), _T("ClamWin Free Antivirus"), MB_OK | MB_ICONERROR);
+        MessageBox(hwnd, _T("Error: Unable to retrieve Path."), _T("ClamWin"), MB_OK | MB_ICONERROR);
         return FALSE;
     }            
     
@@ -229,7 +214,7 @@ BOOL CShellExt::Scan(HWND hwnd)
     len = _tcslen(szClamWinPath);
     if(!len)
     {
-        MessageBox(hwnd, _T("Error: Unable to retrieve path to ClamWin. Please reinstall ClamWin Free Antivirus"), _T("ClamWin Free Antivirus"), MB_OK | MB_ICONERROR);
+        MessageBox(hwnd, _T("Error: Unable to retrieve path to ClamWin. Please reinstall ClamWin"), _T("ClamWin"), MB_OK | MB_ICONERROR);
         delete [] szCmd;
         return FALSE;
     }
@@ -283,8 +268,8 @@ BOOL CShellExt::Scan(HWND hwnd)
     )    
     {
         TCHAR szMsg[MAX_PATH*2];
-        _sntprintf(szMsg, sizeof(szMsg), _T("Error: Unable to execute command %s."), szCmd);
-        MessageBox(hwnd, szMsg, _T("ClamWin Free Antivirus"), MB_OK | MB_ICONERROR);        
+        _sntprintf(szMsg, sizeof(szMsg), "Error: Unable to execute command %s.", szCmd);
+        MessageBox(hwnd, szMsg, "ClamWin", MB_OK | MB_ICONERROR);        
         delete [] szCmd;
         return FALSE;
     }
@@ -351,16 +336,13 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 //
 //  COMMENTS:
 //
-STDMETHODIMP CShellExt::GetCommandString(UINT idCmd,UINT uFlags,UINT FAR *reserved,LPSTR pszName,UINT cchMax)
+STDMETHODIMP CShellExt::GetCommandString(UINT idCmd,UINT uFlags,UINT FAR *reserved,LPTSTR pszName,UINT cchMax)
 {
 	
 	switch (idCmd)
 	{
 	case 0:	
-		if (GCS_HELPTEXTW == uFlags)
-			wcsncpy((LPWSTR)pszName, L"ClamWin Free Antivirus", cchMax);	
-		else if (GCS_HELPTEXTA == uFlags)
-			strncpy(pszName, "ClamWin Free Antivirus", cchMax);
+		_tcsncpy(pszName, _T("ClamWin Antivirus"), cchMax);
 		break;
    }
 	return NOERROR;
