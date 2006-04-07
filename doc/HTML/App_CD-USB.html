@@ -1,20 +1,21 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML>
 <HEAD>
-	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1251">
 	<TITLE>ClamWin CD/USB - HowTo</TITLE>
-	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.9.122  (Win32)">
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.0  (Win32)">
 	<META NAME="CREATED" CONTENT="20050531;10214200">
-	<META NAME="CHANGEDBY" CONTENT="Russell Phillips">
-	<META NAME="CHANGED" CONTENT="20050825;16193964">
+	<META NAME="CHANGEDBY" CONTENT="Alex Cherney">
+	<META NAME="CHANGED" CONTENT="20060328;22223600">
 	<STYLE>
 	<!--
-		@page { size: 8.27in 11.69in; margin-left: 0.79in; margin-right: 0.79in; margin-top: 0.79in; margin-bottom: 0.79in }
+		@page { size: 21.01cm 29.69cm; margin-left: 2cm; margin-right: 2.01cm; margin-top: 2.01cm; margin-bottom: 2.01cm }
 		P { color: #000000; font-family: "Arial", sans-serif; font-size: 12pt }
 		H1 { color: #000000; text-align: center }
 		H1.western { font-family: "Arial", sans-serif; font-size: 16pt }
 		H2 { color: #000000 }
 		H2.western { font-family: "Arial", sans-serif; font-size: 14pt; font-style: italic }
+		H2.cjk { font-family: "Arial Unicode MS" }
 		PRE { color: #000000 }
 	-->
 	</STYLE>
@@ -27,10 +28,7 @@ A</FONT></FONT></H1>
 <P>This tutorial explains how to create a CD or USB key with <A HREF="http://www.clamwin.com/">ClamWin</A>,
 to allow a Windows PC to be scanned for viruses without having to
 install ClamWin. Note that the CD/USB key is <I>not</I> bootable, and
-so can only be used on a working Windows PC. This tutorial was
-written to satisfy a feature request logged with the ClamWin project
-(<A HREF="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=945882&amp;group_id=105508&amp;atid=641465">RFE
-945882</A>)</P>
+so can only be used on a working Windows PC.</P>
 <P>The PC that is used to create the CD/USB will need to have ClamWin
 installed, and be able to copy files/folders to a CD or USB key.</P>
 <H2 CLASS="western">Preparation</H2>
@@ -55,10 +53,64 @@ and Settings\USERNAME\.clamwin\db</TT>, where <TT>USERNAME</TT> is
 your login name (if it was installed for a single user) or
 <TT>C:\Documents and Settings\All Users\.clamwin\db</TT> (if it was
 installed for all users).</P>
+<P>Copy the following into a text file named
+<TT>C:\ClamWin-CD\ClamWin\bin\clamwin.conf</TT></P>
+<PRE>[Schedule]
+path = .\
 
-<P>Copy <a href = "clamwin.conf">this config file</a> to <tt>C:\ClamWin-CD\ClamWin\bin\clamwin.conf</tt></P>
+[ClamAV]
+clamscan = .\clamscan.exe
+enablembox = 0
+maxfiles = 500
+infectedonly = 0
+database = ..\db
+includepatterns = 
+scanole2 = 1
+excludepatterns = *.dbx|CLAMWIN_SEP|*.tbb|CLAMWIN_SEP|*.pst|CLAMWIN_SEP|*.dat|CLAMWIN_SEP|*.log|CLAMWIN_SEP|*.nsf|CLAMWIN_SEP|*.ntf|CLAMWIN_SEP|*.chm
+maxsize = 10
+scanarchives = 1
+priority = Low
+maxrecursion = 5
+maxlogsize = 1
+moveinfected = 0
+debug = 0
+logfile = ..\log\ClamScanLog.txt
+scanrecursive = 1
+freshclam = .\freshclam.exe
+quarantinedir = ..\quarantine 
+removeinfected = 0
 
-<P>
+[UI]
+reportinfected = 1
+traynotify = 0
+standalone = 1
+
+[Updates]
+dbupdatelogfile = ..\log\ClamUpdateLog.txt
+enable = 1
+dbmirror = database.clamav.net
+updateonlogon = 0
+frequency = Daily
+weekday = 2
+time = 12:00:00
+
+[EmailAlerts]
+enable = 0
+from = clamwin@yourdomain
+to = admin@yourdomain
+smtppassword = 
+smtpuser = 
+smtphost = 
+smtpport = 25
+subject = ClamWin Virus Alert
+
+[Proxy]
+host = 
+password = 
+port = 3128
+user = 
+
+</PRE><P>
 You should now have the following folders:</P>
 <PRE>C:\ClamWin-CD
 C:\ClamWin-CD\ClamWin\bin
@@ -81,8 +133,8 @@ ClamWin by double-clicking on the <TT>ClamWin.exe</TT> file in the
 USB drive, it will have the following restrictions: 
 </P>
 <UL>
-	<LI><P STYLE="margin-bottom: 0in">Files will not be quarantined</P>
-	<LI><P STYLE="margin-bottom: 0in">Internet updates will not work</P>
+	<LI><P STYLE="margin-bottom: 0cm">Files will not be quarantined</P>
+	<LI><P STYLE="margin-bottom: 0cm">Internet updates will not work</P>
 	<LI><P>Preferences cannot be changed</P>
 </UL>
 <P>These restrictions will not apply if it is run from a USB drive

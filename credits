@@ -2,6 +2,10 @@ Tomasz Kojm, Nigel Horne and all ClamAV team
 <http.www.clamav.net/team.html> for their efforts to produce and 
 maintain excellent GPL anti-virus toolkit.
 
+Gianluigi Tiesi <http://oss.netfarm.it> for spending sleepless nights
+in getting native win32 clamav port done. We don't have enough words to 
+express our gratitude.
+
 Russell Phillips for maintaining ClamWin documentation.
 
 All developers of:
@@ -27,7 +31,7 @@ Sergey Pronin and Mia Kalenius from Finndesign <http://www.finndesign.fi>
 for most beautiful artwork with icons and animations used in ClamWin.
 
 Joshua Heyer for Balloon tooltip class, that is used on Windows 98, where
-native ablloon tray notification tooltips are not yet available.
+native balloon tray notification tooltips are not available.
 
 Joe O'Leary for StdString C++ class
 
