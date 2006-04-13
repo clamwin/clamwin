@@ -39,7 +39,8 @@ class Settings:
         self._settings = {
         'ClamAV':
         [0, {'ClamScan': '', 'FreshClam': '', 'Database': '',
-             'RemoveInfected': '0', 'ScanRecursive': '1', 'InfectedOnly': '0',
+             'RemoveInfected': '0', 'ScanRecursive': '1', 
+             'InfectedOnly': '0', 'ShowProgress': '1', 
              'Priority': 'Low', 'EnableMbox': '0', 'ScanOle2': '1',
              'ScanArchives': '1', 'MaxSize': '10', 'MaxFiles': '500',
              'MaxRecursion': '5', 'LogFile': '', 'MaxLogSize': '1',

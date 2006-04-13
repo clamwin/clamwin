@@ -53,6 +53,7 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLGCHECKBOXINFECTEDONLY, 
  wxID_WXPREFERENCESDLGCHECKBOXSCANARCHIVES, 
  wxID_WXPREFERENCESDLGCHECKBOXSCANRECURSIVE, 
+ wxID_WXPREFERENCESDLGCHECKBOXSHOWPROGRESS, 
  wxID_WXPREFERENCESDLGCHECKBOXSMTPENABLE, 
  wxID_WXPREFERENCESDLGCHECKBOXTRAYNOTIFY, 
  wxID_WXPREFERENCESDLGCHECKBOXUPDATELOGON, 
@@ -128,7 +129,7 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLG_PANELINTERNETUPDATE, 
  wxID_WXPREFERENCESDLG_PANELOPTIONS, wxID_WXPREFERENCESDLG_PANELPROXY, 
  wxID_WXPREFERENCESDLG_PANELREPORTS, wxID_WXPREFERENCESDLG_PANELSCHEDULER, 
-] = map(lambda _init_ctrls: wxNewId(), range(112))
+] = map(lambda _init_ctrls: wxNewId(), range(113))
 
 class wxPreferencesDlg(wxDialog):
     def _init_coll_imageListScheduler_Images(self, parent):
@@ -179,7 +180,7 @@ class wxPreferencesDlg(wxDialog):
     def _init_ctrls(self, prnt):
         # generated method, don't edit
         wxDialog.__init__(self, id=wxID_WXPREFERENCESDLG, name='', parent=prnt,
-              pos=wxPoint(366, 256), size=wxSize(419, 351),
+              pos=wxPoint(384, 238), size=wxSize(419, 351),
               style=wxDEFAULT_DIALOG_STYLE, title='ClamWin Preferences')
         self._init_utils()
         self.SetClientSize(wxSize(411, 324))
@@ -295,7 +296,7 @@ class wxPreferencesDlg(wxDialog):
         self.staticBoxScanOptions = wxStaticBox(id=wxID_WXPREFERENCESDLGSTATICBOXSCANOPTIONS,
               label='Scanning Options', name='staticBoxScanOptions',
               parent=self._panelOptions, pos=wxPoint(6, 11), size=wxSize(376,
-              65), style=0)
+              88), style=0)
 
         self.checkBoxEnableAutoUpdate = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXENABLEAUTOUPDATE,
               label='&Enable Automatic Virus Database Updates',
@@ -632,20 +633,20 @@ class wxPreferencesDlg(wxDialog):
 
         self.staticBoxInfected = wxStaticBox(id=wxID_WXPREFERENCESDLGSTATICBOXINFECTED,
               label='Infected Files', name='staticBoxInfected',
-              parent=self._panelOptions, pos=wxPoint(6, 84), size=wxSize(376,
+              parent=self._panelOptions, pos=wxPoint(6, 110), size=wxSize(376,
               106), style=0)
 
         self.radioButtonReport = wxRadioButton(id=wxID_WXPREFERENCESDLGRADIOBUTTONREPORT,
               label='&Report Only', name='radioButtonReport',
-              parent=self._panelOptions, pos=wxPoint(15, 102), size=wxSize(354,
+              parent=self._panelOptions, pos=wxPoint(15, 128), size=wxSize(354,
               18), style=0)
         self.radioButtonReport.SetValue(False)
         EVT_RADIOBUTTON(self.radioButtonReport,
               wxID_WXPREFERENCESDLGRADIOBUTTONREPORT, self.OnRadioInfected)
 
         self.radioButtonRemoveInfected = wxRadioButton(id=wxID_WXPREFERENCESDLGRADIOBUTTONREMOVEINFECTED,
-              label='&Remove (Use Carefully)', name='radioButtonRemoveInfected',
-              parent=self._panelOptions, pos=wxPoint(15, 120), size=wxSize(354,
+              label='R&emove (Use Carefully)', name='radioButtonRemoveInfected',
+              parent=self._panelOptions, pos=wxPoint(15, 146), size=wxSize(354,
               18), style=0)
         self.radioButtonRemoveInfected.SetValue(False)
         EVT_RADIOBUTTON(self.radioButtonRemoveInfected,
@@ -654,7 +655,7 @@ class wxPreferencesDlg(wxDialog):
 
         self.radioButtonQuarantine = wxRadioButton(id=wxID_WXPREFERENCESDLGRADIOBUTTONQUARANTINE,
               label='&Move To Quarantine Folder:', name='radioButtonQuarantine',
-              parent=self._panelOptions, pos=wxPoint(15, 139), size=wxSize(354,
+              parent=self._panelOptions, pos=wxPoint(15, 165), size=wxSize(354,
               18), style=0)
         self.radioButtonQuarantine.SetValue(False)
         EVT_RADIOBUTTON(self.radioButtonQuarantine,
@@ -662,12 +663,12 @@ class wxPreferencesDlg(wxDialog):
 
         self.textCtrlQuarantine = wxTextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLQUARANTINE,
               name='textCtrlQuarantine', parent=self._panelOptions,
-              pos=wxPoint(31, 159), size=wxSize(319, 20), style=0, value='')
+              pos=wxPoint(31, 185), size=wxSize(319, 20), style=0, value='')
         self.textCtrlQuarantine.SetToolTipString('Specify location for a quarantine folder')
 
         self.buttonBrowseQuarantine = wxButton(id=wxID_WXPREFERENCESDLGBUTTONBROWSEQUARANTINE,
               label='...', name='buttonBrowseQuarantine',
-              parent=self._panelOptions, pos=wxPoint(351, 159), size=wxSize(20,
+              parent=self._panelOptions, pos=wxPoint(351, 185), size=wxSize(20,
               20), style=0)
         self.buttonBrowseQuarantine.SetToolTipString('Click to browse for a quarantine folder')
         EVT_BUTTON(self.buttonBrowseQuarantine,
@@ -880,6 +881,13 @@ class wxPreferencesDlg(wxDialog):
         self.choicePriority.SetStringSelection('Normal')
         self.choicePriority.SetLabel('')
 
+        self.checkBoxShowProgress = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXSHOWPROGRESS,
+              label='Display &File Scanned % Progress Indicator',
+              name='checkBoxShowProgress', parent=self._panelOptions,
+              pos=wxPoint(15, 72), size=wxSize(354, 18), style=0)
+        self.checkBoxShowProgress.SetValue(False)
+        self.checkBoxShowProgress.SetToolTipString('Select if you wish to display infected files only in the scan progress window')
+
         self._init_coll_notebook_Pages(self.notebook)
 
     def __init__(self, parent, config, switchToSchedule):
@@ -996,6 +1004,7 @@ class wxPreferencesDlg(wxDialog):
     def _OptionsPageInit(self):        
         self.choicePriority.SetValidator(MyValidator(config=self._config, section='ClamAV', value='Priority'))        
         self.checkBoxInfectedOnly.SetValidator(MyValidator(config=self._config, section='ClamAV', value='InfectedOnly'))
+        self.checkBoxShowProgress.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ShowProgress'))
         self.checkBoxScanRecursive.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ScanRecursive'))                
         self.radioButtonReport.SetValidator(MyValidator(config=self._config, section='UI', value='ReportInfected'))
         self.radioButtonRemoveInfected.SetValidator(MyValidator(config=self._config, section='ClamAV', value='RemoveInfected'))

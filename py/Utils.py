@@ -346,8 +346,11 @@ def GetScanCmd(config, path, scanlog):
             int(config.Get('ClamAV', 'MaxRecursion')))
     else:
         cmd += ' --no-archive' 
-              
-    cmd += ' --show-progress --stdout --database="%s" --log="%s" %s' % \
+
+    if config.Get('ClamAV', 'ShowProgress') == '1': 
+        cmd += ' --show-progress'             
+        
+    cmd += ' --stdout --database="%s" --log="%s" %s' % \
             (config.Get('ClamAV', 'Database'), 
             scanlog, path)          
                                 
