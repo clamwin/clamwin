@@ -86,7 +86,8 @@ class Settings:
         # for older version set display infected only to 1
         if self._settings['UI'][1]['Version'] == '':
             self._settings['ClamAV'][1]['InfectedOnly'] = '1'
-            self._settings['UI'][1]['Version'] = version.clamwin_version
+                   
+        self._settings['UI'][1]['Version'] = version.clamwin_version
         return True
 
     def Write(self):        
