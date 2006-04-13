@@ -245,5 +245,6 @@ if __name__ == '__main__':
     config = Config.Settings(config_file)    
     b = config.Read()
     app = wxPySimpleApp()
-    wxScan(None, config, 'c:/1Test')
+    #wxScan(None, config, 'c:/1Test')
+    wxCheckUpdate(None, config) 
     app.MainLoop()

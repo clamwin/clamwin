@@ -61,22 +61,21 @@ class StatusUpdateBuffer(Process.IOBuffer):
         self.notify = notify        
         
     def _doWrite(self, s):
-        # sometimes there is more than one line in the buffer
-        # so we need to call update method for every new line                                
-        lines = s.replace('\r', '\n').splitlines(True)        
-        for line in lines:              
-            if sys.platform.startswith('win'):        
-                # replace cygwin-like pathes with windows-like
-                line = line.replace('/', '\\')                
-            self.update(self._caller, line)             
-            
-        
-        
-        # do not call original implementation
-        # Process.IOBuffer._doWrite(self, s)
+        if self.update is not None:
+            # sometimes there is more than one line in the buffer
+            # so we need to call update method for every new line                                
+            lines = s.replace('\r', '\n').splitlines(True)        
+            for line in lines:              
+                if sys.platform.startswith('win'):        
+                    # replace cygwin-like pathes with windows-like
+                    line = line.replace('/', '\\')                
+                self.update(self._caller, line)                                         
+            # do not call original implementation
+            # Process.IOBuffer._doWrite(self, s)
         
     def _doClose(self):
-        self.notify(self._caller)
+        if self.notify is not None:
+            self.notify(self._caller)
         Process.IOBuffer._doClose(self)
 
 # custom command events sent from worker thread when it finishes    
@@ -172,6 +171,7 @@ class wxDialogStatus(wxDialog):
         self._notify_params = notify_params
         self._bitmapMask = bitmapMask
         self._previousStart = 0
+        self._alreadyCalled = False
         
         self._init_ctrls(parent)
                 
@@ -211,8 +211,8 @@ class wxDialogStatus(wxDialog):
         except Process.ProcessError, e:
             event = ThreadUpdateStatusEvent(self.GetId(), str(e), False)                         
             self.GetEventHandler().AddPendingEvent(event)                 
-            event = ThreadFinishedEvent(self.GetId()) 
-            self.GetEventHandler().AddPendingEvent(event)                             
+            #event = ThreadFinishedEvent(self.GetId()) 
+            #self.GetEventHandler().AddPendingEvent(event)                             
         
     def SetAutoClose(self, autoClose, closeRetCode=None):
         self._autoClose = autoClose
@@ -265,7 +265,8 @@ class wxDialogStatus(wxDialog):
                     os._exit(0)      
                     
             self._proc.close()
-            self._out.close()                                                    
+            self._out.close()
+            self._err.close()                                             
                 
     def OnButtonStop(self, event):      
         if self._IsProcessRunning():           
@@ -315,6 +316,11 @@ class wxDialogStatus(wxDialog):
     ThreadUpdateStatus = staticmethod(ThreadUpdateStatus)
     
     def OnThreadFinished(self, event):
+        if self._alreadyCalled:
+            return
+            
+        self._alreadyCalled = True
+        
         self.buttonSave.Enable(True)
         self.throbber.Rest()
         self.buttonStop.SetFocus()
@@ -345,9 +351,9 @@ class wxDialogStatus(wxDialog):
             self.ThreadUpdateStatus(self, data, False)
         
         if not self._cancelled:    
-           self.ThreadUpdateStatus(self, "\n-------------------\nCompleted\n-------------------\n")                  
+           self.ThreadUpdateStatus(self, "\n--------------------------------------\nCompleted\n--------------------------------------\n")                  
         else:
-           self.ThreadUpdateStatus(self, "\n-------------------\nCommand has been interrupted...\n-------------------\n")        
+           self.ThreadUpdateStatus(self, "\n--------------------------------------\nCancelled\n--------------------------------------\n")        
             
         win32api.PostMessage(self.textCtrlStatus.GetHandle(), win32con.EM_SCROLLCARET, 0, 0)
         self.textCtrlStatus.SetInsertionPointEnd()                        
@@ -432,9 +438,11 @@ class wxDialogStatus(wxDialog):
             executable = cmd.split('" ' ,1)[0].lstrip('"')
             if not os.path.exists(executable):
                 raise Process.ProcessError('Could not start process.\n%s\nFile does not exist.' % executable)                
-            # create our stdout implementation that updates status window                
-            self._out = StatusUpdateBuffer(self, self.ThreadUpdateStatus, self.ThreadFinished)                                                    
-            self._proc = Process.ProcessProxy(cmd, stdout=self._out, stderr=self._out, priority=priority)                                                                
+            # create our stdout/stderr implementation that updates status window                            
+            self._alreadyCalled = False
+            self._out = StatusUpdateBuffer(self, self.ThreadUpdateStatus, self.ThreadFinished)
+            self._err = StatusUpdateBuffer(self, self.ThreadUpdateStatus, None)                                                                                                      
+            self._proc = Process.ProcessProxy(cmd, stdout=self._out, stderr=self._err, priority=priority)                                                                
             self._proc.wait(_WAIT_NOWAIT)
         except Exception, e:             
             if isinstance(e, Process.ProcessError):

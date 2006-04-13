@@ -362,6 +362,7 @@ class wxMainFrame(wxFrame):
 
     def OnToolsUpdate(self, event):
         wxDialogUtils.wxUpdateVirDB(self, self._config)
+        self._UpdateState()
 
     def OnButtonClose(self, event):
         self.Close()        
