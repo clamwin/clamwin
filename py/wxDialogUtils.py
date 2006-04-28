@@ -226,7 +226,7 @@ def wxCheckUpdate(parent, config):
     except Exception, e:
         if config.Get('UI', 'TrayNotify') == '1':
             import win32gui
-            tray_notify_params = (('Unable to retrieve ClamWin Free Antivirus online version infomation. Error: %s' % str(e), 0, 
+            tray_notify_params = (('Unable to retrieve online version. Most likely it\'s a temporary connectivity error and you don\'t have to do anything.\nIf you see this error often then check proxy settings in ClamWin and allow clamwin.exe in your firewall.\n(%s)' % str(e), 0, 
                         win32gui.NIIF_WARNING, 30000), None)
             Utils.ShowBalloon(0, tray_notify_params)
         return

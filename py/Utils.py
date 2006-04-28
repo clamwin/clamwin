@@ -301,7 +301,7 @@ def GetExcludeSysLockedFiles():
     return ret
 
                                     
-def GetScanCmd(config, path, scanlog):
+def GetScanCmd(config, path, scanlog, noprint = False):
     # 2006-03-18 alch moving to native win32 clamav binaries
     # remove all /cygdrive/ referneces and slash conversions
     
@@ -337,7 +337,7 @@ def GetScanCmd(config, path, scanlog):
         cmd += ' --detect-broken'
     if config.Get('ClamAV', 'ClamScanParams') != '':
         cmd += ' ' + config.Get('ClamAV', 'ClamScanParams')
-    if config.Get('ClamAV', 'InfectedOnly') == '1':
+    if config.Get('ClamAV', 'InfectedOnly') == '1' or noprint:
         cmd += ' --infected'    
     if config.Get('ClamAV', 'ScanArchives') == '1':
         cmd += ' --max-files=%i --max-space=%i --max-recursion=%i' % \
@@ -347,7 +347,7 @@ def GetScanCmd(config, path, scanlog):
     else:
         cmd += ' --no-archive' 
 
-    if config.Get('ClamAV', 'ShowProgress') == '1': 
+    if not noprint and config.Get('ClamAV', 'ShowProgress') == '1': 
         cmd += ' --show-progress'             
         
     cmd += ' --stdout --database="%s" --log="%s" %s' % \
@@ -433,6 +433,7 @@ def AppendLogFile(logfile, appendfile, maxsize):
         tempsize = ftemp.tell()
         if tempsize > maxsize:
             ftemp.seek(-maxsize, 2)
+            tempsize = maxsize
         else: 
             # read from the beginning
             ftemp.seek(0, 0) 

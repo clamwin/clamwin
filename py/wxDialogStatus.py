@@ -131,7 +131,7 @@ class wxDialogStatus(wxDialog):
         winstyle = wxTAB_TRAVERSAL | wxTE_RICH | wxTE_MULTILINE | wxTE_READONLY
         # enable wxTE_AUTO_URL on XP only
         # 98 produces some weird scrolling behaviour
-        if win32api.GetVersionEx()[0] >= 5 and self._bitmapMask == 'update': 
+        if win32api.GetVersionEx()[0] >= 5 and not self._scan: 
             winstyle = winstyle | wxTE_AUTO_URL
             
         self.textCtrlStatus = wxTextCtrl(id=wxID_WXDIALOGSTATUSTEXTCTRLSTATUS,
@@ -169,7 +169,7 @@ class wxDialogStatus(wxDialog):
         self._out = None
         self._proc = None         
         self._notify_params = notify_params
-        self._bitmapMask = bitmapMask
+        self._scan = (bitmapMask != 'update')
         self._previousStart = 0
         self._alreadyCalled = False
         
@@ -378,16 +378,18 @@ class wxDialogStatus(wxDialog):
     def OnThreadUpdateStatus(self, event): 
         ctrl = self.textCtrlStatus               
         lastPos =	ctrl.GetLastPosition()
-        text = Utils.ReplaceClamAVWarnings(event.text)
+        text = event.text
+        if not self._scan:
+            text = Utils.ReplaceClamAVWarnings(text)
         if event.append == True:            
             # Check if we reached 30000 characters
             # and need to purge topmost line            
             if lastPos + len(text) + _NEWLINE_LEN >= 30000:
                 ctrl.Clear()            
             # detect progress message in the new text
-            #print_over = re.search('\[[\d ]?[\d ]?\d?\%?[|/\-\\\*]?\]', 
-            print_over = re.search('\[( {0,2}\d{1,3}\%)?[|/\-\\\*]?\]', 
-                ctrl.GetRange(self._previousStart, lastPos)) is not None                                
+            #print_over = re.search('\[( {0,2}\d{1,3}\%)?[|/\-\\\*]?\]', 
+            #    ctrl.GetRange(self._previousStart, lastPos)) is not None
+            print_over = ctrl.GetRange(self._previousStart, lastPos).endswith(']\n')
             if print_over:                
                 # prevent form blinking text by disabling richedit selection here
                 win32api.SendMessage(ctrl.GetHandle(),Utils.EM_HIDESELECTION, 1, 0)

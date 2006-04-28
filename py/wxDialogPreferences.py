@@ -180,7 +180,7 @@ class wxPreferencesDlg(wxDialog):
     def _init_ctrls(self, prnt):
         # generated method, don't edit
         wxDialog.__init__(self, id=wxID_WXPREFERENCESDLG, name='', parent=prnt,
-              pos=wxPoint(384, 238), size=wxSize(419, 351),
+              pos=wxPoint(366, 256), size=wxSize(419, 351),
               style=wxDEFAULT_DIALOG_STYLE, title='ClamWin Preferences')
         self._init_utils()
         self.SetClientSize(wxSize(411, 324))
@@ -296,7 +296,7 @@ class wxPreferencesDlg(wxDialog):
         self.staticBoxScanOptions = wxStaticBox(id=wxID_WXPREFERENCESDLGSTATICBOXSCANOPTIONS,
               label='Scanning Options', name='staticBoxScanOptions',
               parent=self._panelOptions, pos=wxPoint(6, 11), size=wxSize(376,
-              88), style=0)
+              86), style=0)
 
         self.checkBoxEnableAutoUpdate = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXENABLEAUTOUPDATE,
               label='&Enable Automatic Virus Database Updates',
@@ -394,7 +394,7 @@ class wxPreferencesDlg(wxDialog):
 
         self.checkBoxScanRecursive = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXSCANRECURSIVE,
               label='&Scan In Subdirectories', name='checkBoxScanRecursive',
-              parent=self._panelOptions, pos=wxPoint(15, 29), size=wxSize(354,
+              parent=self._panelOptions, pos=wxPoint(15, 49), size=wxSize(354,
               18), style=0)
         self.checkBoxScanRecursive.SetToolTipString('Select if you wish to scan in subdirectories recursively')
 
@@ -607,7 +607,7 @@ class wxPreferencesDlg(wxDialog):
 
         self.checkBoxInfectedOnly = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXINFECTEDONLY,
               label='&Display Infected Files Only', name='checkBoxInfectedOnly',
-              parent=self._panelOptions, pos=wxPoint(15, 49), size=wxSize(354,
+              parent=self._panelOptions, pos=wxPoint(15, 29), size=wxSize(354,
               18), style=0)
         self.checkBoxInfectedOnly.SetValue(False)
         self.checkBoxInfectedOnly.SetToolTipString('Select if you wish to display infected files only in the scan progress window')
@@ -884,7 +884,7 @@ class wxPreferencesDlg(wxDialog):
         self.checkBoxShowProgress = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXSHOWPROGRESS,
               label='Display &File Scanned % Progress Indicator',
               name='checkBoxShowProgress', parent=self._panelOptions,
-              pos=wxPoint(15, 72), size=wxSize(354, 18), style=0)
+              pos=wxPoint(15, 70), size=wxSize(354, 18), style=0)
         self.checkBoxShowProgress.SetValue(False)
         self.checkBoxShowProgress.SetToolTipString('Select if you wish to display infected files only in the scan progress window')
 

@@ -1,3 +1,9 @@
+Version 0.88.1.2 - 28 April 2006
+ - Fixed external archivers bug
+ - Fixed high CPU usage issues in scheduler and scanner
+ - Fixed database update issues in Windows 98
+ - Added "show % scanned" option, switching off may reduce CPU usage
+  
 Version 0.88.1 - 7 April 2006
 - Upgraded clamav to 0.88.1
 - Use clamav native win32 build instead of cygwin. Many thanks to 

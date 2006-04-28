@@ -98,6 +98,7 @@ class wxDialogUpdateChecker(wxDialog):
               label='&Download', name='buttonDownload', parent=self,
               pos=wxPoint(143, 212), size=wxSize(75, 23), style=0)
         self.buttonDownload.SetToolTipString('')
+        self.buttonDownload.SetDefault()
         EVT_BUTTON(self.buttonDownload,
               wxID_WXDIALOGUPDATECHECKERBUTTONDOWNLOAD, self.OnButtonDownload)
 
@@ -112,6 +113,7 @@ class wxDialogUpdateChecker(wxDialog):
         self._init_ctrls(parent)
         self.html = wxHtmlWindow(parent = self, id = -1, pos = self.staticLineHtml.GetPosition(), 
                     size = self.staticLineHtml.GetSize(), style = wxSTATIC_BORDER)
+        
         
         #move window above tray
         try:
@@ -152,12 +154,12 @@ class wxDialogUpdateChecker(wxDialog):
         event.Skip()
 
     def OnButtonClose(self, event):
-        self._config.Set('Updates', 'CheckVersion', not self.checkBoxDontCheck.GetValue())
+        self._config.Set('Updates', 'CheckVersion', int(not self.checkBoxDontCheck.GetValue()))
         self.EndModal(wxID_OK)
         event.Skip()
 
     def OnButtonDownload(self, event):
-        self._config.Set('Updates', 'CheckVersion', not self.checkBoxDontCheck.GetValue())
+        self._config.Set('Updates', 'CheckVersion', int(not self.checkBoxDontCheck.GetValue()))
         self.EndModal(wxID_OK)
         wxDialogUtils.wxGoToInternetUrl(self._url)
         event.Skip()
@@ -184,7 +186,8 @@ if __name__ == '__main__':
         dlg.ShowModal()                    
     finally:
         dlg.Destroy()
-            
+
+    config.Write()            
     app.MainLoop()
 
  

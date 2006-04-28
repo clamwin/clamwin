@@ -490,7 +490,7 @@ class MainWindow:
     def ScanPath(self, path, description):
         scanlog = tempfile.mktemp()
         path = '"%s"' % path.rstrip('\\').strip('"')
-        cmd = Utils.GetScanCmd(self._config, path, scanlog)        
+        cmd = Utils.GetScanCmd(self._config, path, scanlog, True)        
         try:            
             if self._config.Get('UI', 'TrayNotify') == '1':
                 balloon = (('Virus has been detected during scheduled scan! Please review the scan report.', 1, 
@@ -597,7 +597,23 @@ class OutBuffer(Process.IOBuffer):
         self._caller = caller
         self._params = params        
         self._proc = None
-                                                        
+
+    # we don't need any input or output here    
+    def _doWrite(self, s):
+        return
+    def _doRead(self, n):
+        return
+    def write(self, s):
+        return
+    def writelines(self, list):
+        return
+    def read(self, n=-1):
+        return
+    def readline(self, n=None):
+        return
+    def readlines(self):
+        return
+                                                          
     def _doClose(self):                
         self.notify(self._caller, self._proc, *self._params) 
         if self._proc:
@@ -606,6 +622,7 @@ class OutBuffer(Process.IOBuffer):
         
     def AttachProcess(self, proc):
         self._proc = proc
+        
     
     
 # this thread monitors changes to config files
