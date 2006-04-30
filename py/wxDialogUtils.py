@@ -226,25 +226,25 @@ def wxCheckUpdate(parent, config):
     except Exception, e:
         if config.Get('UI', 'TrayNotify') == '1':
             import win32gui
-            tray_notify_params = (('Unable to retrieve online version. Most likely it\'s a temporary connectivity error and you don\'t have to do anything.\nIf you see this error often then check proxy settings in ClamWin and allow clamwin.exe in your firewall.\n(%s)' % str(e), 0, 
-                        win32gui.NIIF_WARNING, 30000), None)
-            Utils.ShowBalloon(0, tray_notify_params)
-        return
+            tray_notify_params = (('Unable to get online version. Most likely it\'s a temporary connectivity error and you don\'t have to do anything.\nIf you see this error often then allow clamwin.exe in your firewall and check proxy settings.\n(%s)' % str(e) , 0, 
+                        win32gui.NIIF_WARNING, 30000), None)            
+            Utils.ShowBalloon(0, tray_notify_params, None, True)
+            return
         
     try:
         dlg = wxDialogCheckUpdate.create(parent, config, ver, url, changelog)
-        dlg.ShowModal()
+        dlg.ShowModal()        
     finally:
         dlg.Destroy()   
 
         
 if __name__ == '__main__':
     import Config
-    from wxPython.wx import *
+    import wxPython.wx 
     config_file = os.path.join(Utils.GetProfileDir(True),'ClamWin.conf')                          
     config = Config.Settings(config_file)    
     b = config.Read()
-    app = wxPySimpleApp()
+    app = wxPython.wx.wxPySimpleApp()
     #wxScan(None, config, 'c:/1Test')
     wxCheckUpdate(None, config) 
     app.MainLoop()

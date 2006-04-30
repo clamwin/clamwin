@@ -75,11 +75,11 @@ def _ShowOwnBalloon(title, text, icon, hwnd, timeout):
         
     #display balloon tooltip                       	
     BalloonTip.ShowBalloonTip(title, text, (rect[0], rect[1]), icon,         
-                            flags, hwnd, '', timeout)		
+                            flags, hwnd, '', timeout)
 
 # balloon_info tuple contains 2 tuples for error and success notifications
 # each tuple has (HeaderMessage, Expected Retcode, ICON_ID, Timeout)                         
-def ShowBalloon(ret_code, balloon_info, hwnd = None):        
+def ShowBalloon(ret_code, balloon_info, hwnd = None, wait = False):        
     if sys.platform.startswith("win"):   
         # no hwnd supplied - find it
         if hwnd is None:
@@ -117,7 +117,13 @@ def ShowBalloon(ret_code, balloon_info, hwnd = None):
                     icon = win32con.IDI_ERROR
                 elif icon == win32gui.NIIF_NONE:
                     icon = 0    
-                _ShowOwnBalloon(title, txt, icon, hwnd, timeout)                
+                _ShowOwnBalloon(title, txt, icon, hwnd, timeout)
+                if wait:
+                    i = 0
+                    while i < timeout/500: 
+                        win32gui.PumpWaitingMessages()	
+                        time.sleep(0.5)
+                        i+=1                               
             else:                
                 nid = (hwnd, 0, win32gui.NIF_INFO, 0, 0, "", txt, timeout, title, icon)
                 win32gui.Shell_NotifyIcon(win32gui.NIM_MODIFY, nid)

@@ -306,7 +306,7 @@ class wxMainFrame(wxFrame):
             self.Help.Remove(wxID_WXMAINFRAMEHELPHELP)
 
         self._UpdateState()
-        
+                
 
     def OnFileExit(self, event):
         self.Close()
