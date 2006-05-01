@@ -42,10 +42,10 @@ ISTool 5 or higher. You can get InnoSetup from
 And of course you need the excellent GPL Antivirus Toolkit - 
 Clam Antivirus (ClamAV). You can get the latest version from www.clamav.net
 
-To build ClamAV for MS Windows you to apply the clamav-native patch found
-in patches directory and then use MSVC6 or MSVC8 to build. Project files
-can be found in contrib/msvc directory after applying a patch to the 
-clamav tree 
+To build ClamAV for MS Windows you to apply the clamav-native and 
+clamav-native-msvc patches found in patches directory and then use 
+MSVC6 or MSVC8 to build. Project files can be found in contrib/msvc 
+directory after applying a patch to the clamav tree 
 
 
 Getting the software

@@ -161,7 +161,7 @@ class wxDialogUpdateChecker(wxDialog):
 
     def OnButtonDownload(self, event):
         self._config.Set('Updates', 'CheckVersion', int(not self.checkBoxDontCheck.GetValue()))
-        self_config.Write()
+        self._config.Write()
         self.EndModal(wxID_OK)
         wxDialogUtils.wxGoToInternetUrl(self._url)
         event.Skip()
