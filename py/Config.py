@@ -86,6 +86,12 @@ class Settings:
         # for older version set display infected only to 1
         if self._settings['UI'][1]['Version'] == '':
             self._settings['ClamAV'][1]['InfectedOnly'] = '1'
+            
+        # turn detect broken executables option off for versions lower then 0.88.2.2
+        # due to high rate of falsepositives
+        if self._settings['UI'][1]['Version'] < '0.88.2.2':
+            self._settings['ClamAV'][1]['DetectBroken'] = '0'
+        
                    
         self._settings['UI'][1]['Version'] = version.clamwin_version
         return True

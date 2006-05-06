@@ -1,3 +1,10 @@
+Version 0.88.2.2 - 6 May 2006
+ - Fixed temporary directory permissions problem for users 
+   without write access to the root drive (c:\) when scanning
+   archives
+ - set "Detect Broken Executalbes" option Off due to large volume of
+   false positives
+   
 Version 0.88.2.1 - 30 April 2006
  - Upgraded ClamAV to 0.88.2
  - Fixed external archivers bug
