@@ -3,7 +3,7 @@
 
 [Setup]
 AppName=ClamWin Free Antivirus
-AppVerName=ClamWin Free Antivirus 0.88.2.2
+AppVerName=ClamWin Free Antivirus 0.88.2.3
 AppPublisher=alch
 AppPublisherURL=http://clamwin.sourceforge.net/
 AppSupportURL=http://clamwin.sourceforge.net/
@@ -163,7 +163,7 @@ Filename: {app}\bin\ClamWin.conf; Section: Updates; Key: dbupdatelogfile; String
 Filename: {app}\bin\ClamWin.conf; Section: Updates; Key: time; String: {code:CurTime}; Check: IsIniValueEmpty(ExpandConstant('Updates*time*{app}\bin\ClamWin.conf'))
 
 [_ISToolDownload]
-Name: Sources_ClamWin; Description: ClamWin Source Code; GroupDescription: Source Code; Flags: unchecked; Source: http://osdn.dl.sourceforge.net/sourceforge/clamwin/clamwin-0.88.2.2-src.zip; DestDir: {%TEMP|{localappdata}}; DestName: clamwin-src.zip; Components: Sources
+Name: Sources_ClamWin; Description: ClamWin Source Code; GroupDescription: Source Code; Flags: unchecked; Source: http://osdn.dl.sourceforge.net/sourceforge/clamwin/clamwin-0.88.2.3-src.zip; DestDir: {%TEMP|{localappdata}}; DestName: clamwin-src.zip; Components: Sources
 Name: Sources_ClamAV; Description: ClamAV Source Code; GroupDescription: Source Code; Flags: unchecked; Source: http://osdn.dl.sourceforge.net/sourceforge/clamav/clamav-0.88.2.tar.gz; DestDir: {%TEMP|{localappdata}}; DestName: clamav-src.tar.gz; Components: Sources
 ;Name: Sources_Cygwin; Description: Cygwin Source Code; GroupDescription: Source Codes; Flags: unchecked; Source: http://mirrors.kernel.org/sources.redhat.com/cygwin/release/cygwin/cygwin-1.5.18-1-src.tar.bz2; DestDir: {%TEMP|{localappdata}}; DestName: cygwin-src.tar.bz2; Components: Sources
 

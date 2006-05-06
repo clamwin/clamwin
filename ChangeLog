@@ -1,3 +1,5 @@
+Version 0.88.2.3 - 6 May 2006
+ - Fixed an issue with not removing temporary files after scanning archives 
 Version 0.88.2.2 - 6 May 2006
  - Fixed temporary directory permissions problem for users 
    without write access to the root drive (c:\) when scanning
