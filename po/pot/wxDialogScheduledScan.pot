@@ -1,0 +1,155 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: Sun Apr 30 15:47:17 2006\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: ENCODING\n"
+"Generated-By: pygettext.py 1.5\n"
+
+
+#: wxDialogScheduledScan.py:37 wxDialogScheduledScan.py:66
+#: wxDialogScheduledScan.py:173 wxDialogScheduledScan.py:179
+msgid "Daily"
+msgstr ""
+
+#: wxDialogScheduledScan.py:66 wxDialogScheduledScan.py:173
+msgid "Hourly"
+msgstr ""
+
+#: wxDialogScheduledScan.py:66 wxDialogScheduledScan.py:173
+msgid "Workdays"
+msgstr ""
+
+#: wxDialogScheduledScan.py:66 wxDialogScheduledScan.py:174
+#: wxDialogScheduledScan.py:281 wxDialogScheduledScan.py:290
+msgid "Weekly"
+msgstr ""
+
+#: wxDialogScheduledScan.py:119
+msgid "Could not open persistent storage for scheduled scans. Error: %s"
+msgstr ""
+
+#: wxDialogScheduledScan.py:130
+msgid "Could not save scheduled scans to persistent storage. Error: %s"
+msgstr ""
+
+#: wxDialogScheduledScan.py:158
+msgid "Scheduled Scan"
+msgstr ""
+
+#: wxDialogScheduledScan.py:165
+msgid "Schedule"
+msgstr ""
+
+#: wxDialogScheduledScan.py:169
+msgid "Scanning &Frequency:"
+msgstr ""
+
+#: wxDialogScheduledScan.py:178
+msgid "How often the schedule is executed"
+msgstr ""
+
+#: wxDialogScheduledScan.py:185
+msgid "&Time:"
+msgstr ""
+
+#: wxDialogScheduledScan.py:192
+msgid "When the schedule should be started"
+msgstr ""
+
+#: wxDialogScheduledScan.py:200
+msgid "&Day Of The Week:"
+msgstr ""
+
+#: wxDialogScheduledScan.py:204
+msgid "Monday"
+msgstr ""
+
+#: wxDialogScheduledScan.py:204
+msgid "Wednesday"
+msgstr ""
+
+#: wxDialogScheduledScan.py:204 wxDialogScheduledScan.py:210
+msgid "Tuesday"
+msgstr ""
+
+#: wxDialogScheduledScan.py:205
+msgid "Friday"
+msgstr ""
+
+#: wxDialogScheduledScan.py:205
+msgid "Saturday"
+msgstr ""
+
+#: wxDialogScheduledScan.py:205
+msgid "Sunday"
+msgstr ""
+
+#: wxDialogScheduledScan.py:205
+msgid "Thursday"
+msgstr ""
+
+#: wxDialogScheduledScan.py:209
+msgid "When schedule frequency is weekly select day of the week"
+msgstr ""
+
+#: wxDialogScheduledScan.py:213
+msgid "&Scan Folder:"
+msgstr ""
+
+#: wxDialogScheduledScan.py:220
+msgid "Specify a folder to be scanned"
+msgstr ""
+
+#: wxDialogScheduledScan.py:225
+msgid "Click to browse for a folder"
+msgstr ""
+
+#: wxDialogScheduledScan.py:231
+msgid "D&escription:"
+msgstr ""
+
+#: wxDialogScheduledScan.py:238
+msgid "Specify a friendly description for the scheduled scan"
+msgstr ""
+
+#: wxDialogScheduledScan.py:241
+msgid "&Activate This Schedule"
+msgstr ""
+
+#: wxDialogScheduledScan.py:244
+msgid "Select if you wish to enable this schedule"
+msgstr ""
+
+#: wxDialogScheduledScan.py:247
+msgid "OK"
+msgstr ""
+
+#: wxDialogScheduledScan.py:250
+msgid "Closes the dialog and applies the settings"
+msgstr ""
+
+#: wxDialogScheduledScan.py:254
+msgid "Cancel"
+msgstr ""
+
+#: wxDialogScheduledScan.py:256
+msgid "Closes the dialog and discards the changes"
+msgstr ""
+
+#: wxDialogScheduledScan.py:336
+msgid "Value cannot be empty"
+msgstr ""
+
+#: wxDialogScheduledScan.py:339
+msgid "Specified path is invalid. Plese verify your selection."
+msgstr ""
+
