@@ -30,11 +30,11 @@ from wxPython.lib.timectrl import *
 import os, sys, time, locale
 import Utils
 import shelve
-
+from I18N import getClamString as _
 # scheduled scan information holder
 # it is used for persistent storage
 class ScheduledScanInfo(list):
-    def __init__(self, frequency='Daily', time='18:30:00', weekDay=3, path='', description='', active=True):
+    def __init__(self, frequency=_('Daily'), time='18:30:00', weekDay=3, path='', description='', active=True):
         list.__init__(self, [frequency, time, weekDay, path, description, active])            
         
     def __getFrequency(self): return self[0]
@@ -61,6 +61,35 @@ class ScheduledScanInfo(list):
     def __setActive(self, value): self[5] = value    
     Active = property(__getActive, __setActive)
     
+def _getFrequencies():
+    # get the frequencies in the current language
+    choiceFrequencies=[_('Hourly'), _('Daily'), _('Workdays'), _('Weekly')]
+    return choiceFrequencies
+
+def _getEnglishFrequency(transFrequency):
+    # take a translated frequency and return the English frequency selected
+    englishFrequencies=['Hourly', 'Daily', 'Workdays', 'Weekly']
+    choiceFrequences=_getFrequencies()
+    freqIndex = choiceFrequences.index(transFrequency)
+    if freqIndex >= 0:
+        return englishFrequencies[freqIndex]
+    raise "Could not find translated frequency %s" % transFrequency
+
+def _getLocalFrequency(englishFrequency):
+    choiceFrequencies=_getFrequencies()
+    englishFrequencies=['Hourly', 'Daily', 'Workdays', 'Weekly']
+    freqIndex = englishFrequencies.index(englishFrequency)
+    if freqIndex >= 0:
+        return choiceFrequencies[freqIndex]
+    raise "Could not find local frequency %s" % englishFrequency
+
+def _convertDataToEnglish(scheduledScans):
+    for schedScan in scheduledScans:
+        schedScan.Frequency = _getEnglishFrequency(schedScan.Frequency)
+
+def _convertDataFromEnglish(scheduledScans):
+    for schedScan in scheduledScans:
+        schedScan.Frequency = _getLocalFrequency(schedScan.Frequency)
 
 def LoadPersistentScheduledScans(filename):
     try:              
@@ -87,17 +116,18 @@ def LoadPersistentScheduledScans(filename):
             _shelve['ScheduledScans'] = scheduledScans
     except Exception, e:       
         scheduledScans = [] 
-        print 'Could not open persistent storage for scheduled scans. Error: %s' % str(e)            
-    
+        print _('Could not open persistent storage for scheduled scans. Error: %s') % str(e)            
+    _convertDataFromEnglish(scheduledScans)
     return scheduledScans
 
 def SavePersistentScheduledScans(filename, scheduledScans):
+    _convertDataToEnglish(scheduledScans)
     try:
         _shelve = shelve.open(filename)        
         _shelve['ScheduledScans'] = scheduledScans
         _shelve['version'] = 2
     except Exception, e:               
-        print 'Could not save scheduled scans to persistent storage. Error: %s' % str(e)                
+        print _('Could not save scheduled scans to persistent storage. Error: %s') % str(e)                
     
 def create(parent, scanInfo):
     return wxDialogScheduledScan(parent, scanInfo)
@@ -125,41 +155,41 @@ class wxDialogScheduledScan(wxDialog):
         wxDialog.__init__(self, id=wxID_WXDIALOGSCHEDULEDSCAN,
               name='wxDialogScheduledScan', parent=prnt, pos=wxPoint(427, 201),
               size=wxSize(311, 301), style=wxDEFAULT_DIALOG_STYLE,
-              title='Scheduled Scan')
+              title=_('Scheduled Scan'))
         self.SetClientSize(wxSize(303, 274))
         self.SetToolTipString('')
         self.Center(wxBOTH)
         EVT_CHAR_HOOK(self, self.OnCharHook)
 
         self.staticBox1 = wxStaticBox(id=wxID_WXDIALOGSCHEDULEDSCANSTATICBOX1,
-              label='Schedule', name='staticBox1', parent=self, pos=wxPoint(11,
+              label=_('Schedule'), name='staticBox1', parent=self, pos=wxPoint(11,
               8), size=wxSize(282, 104), style=0)
 
         self.staticTextFrequency = wxStaticText(id=wxID_WXDIALOGSCHEDULEDSCANSTATICTEXTFREQUENCY,
-              label='Scanning &Frequency:', name='staticTextFrequency',
+              label=_('Scanning &Frequency:'), name='staticTextFrequency',
               parent=self, pos=wxPoint(25, 30), size=wxSize(131, 13), style=0)
         self.staticTextFrequency.SetToolTipString('')
 
-        self.choiceFrequency = wxChoice(choices=['Hourly', 'Daily', 'Workdays',
-              'Weekly'], id=wxID_WXDIALOGSCHEDULEDSCANCHOICEFREQUENCY,
+        self.choiceFrequency = wxChoice(choices=[_('Hourly'), _('Daily'), _('Workdays'),
+                _('Weekly')], id=wxID_WXDIALOGSCHEDULEDSCANCHOICEFREQUENCY,
               name='choiceFrequency', parent=self, pos=wxPoint(171, 27),
               size=wxSize(107, 21), style=0)
         self.choiceFrequency.SetColumns(2)
-        self.choiceFrequency.SetToolTipString('How often the schedule is executed')
-        self.choiceFrequency.SetStringSelection('Daily')
+        self.choiceFrequency.SetToolTipString(_('How often the schedule is executed'))
+        self.choiceFrequency.SetStringSelection(_('Daily'))
         EVT_CHOICE(self.choiceFrequency,
               wxID_WXDIALOGSCHEDULEDSCANCHOICEFREQUENCY,
               self.OnChoiceFrequency)
 
         self.staticTextTime = wxStaticText(id=wxID_WXDIALOGSCHEDULEDSCANSTATICTEXTTIME,
-              label='&Time:', name='staticTextTime', parent=self,
+              label=_('&Time:'), name='staticTextTime', parent=self,
               pos=wxPoint(25, 56), size=wxSize(121, 18), style=0)
 
         self.staticLineTimeCtrl = wxStaticLine(id=wxID_WXDIALOGSCHEDULEDSCANSTATICLINETIMECTRL,
               name='staticLineTimeCtrl', parent=self, pos=wxPoint(171, 54),
               size=wxSize(90, 22), style=0)
         self.staticLineTimeCtrl.Show(False)
-        self.staticLineTimeCtrl.SetToolTipString('When the schedule should be started')
+        self.staticLineTimeCtrl.SetToolTipString(_('When the schedule should be started'))
 
         self.spinButtonTime = wxSpinButton(id=wxID_WXDIALOGSCHEDULEDSCANSPINBUTTONTIME,
               name='spinButtonTime', parent=self, pos=wxPoint(261, 53),
@@ -167,63 +197,63 @@ class wxDialogScheduledScan(wxDialog):
         self.spinButtonTime.SetToolTipString('')
 
         self.staticTextDay = wxStaticText(id=wxID_WXDIALOGSCHEDULEDSCANSTATICTEXTDAY,
-              label='&Day Of The Week:', name='staticTextDay', parent=self,
+              label=_('&Day Of The Week:'), name='staticTextDay', parent=self,
               pos=wxPoint(25, 85), size=wxSize(123, 18), style=0)
         self.staticTextDay.SetToolTipString('')
 
-        self.choiceDay = wxChoice(choices=['Monday', 'Tuesday', 'Wednesday',
-              'Thursday', 'Friday', 'Saturday', 'Sunday'],
+        self.choiceDay = wxChoice(choices=[_('Monday'), _('Tuesday'), _('Wednesday'),
+              _('Thursday'), _('Friday'), _('Saturday'), _('Sunday')],
               id=wxID_WXDIALOGSCHEDULEDSCANCHOICEDAY, name='choiceDay',
               parent=self, pos=wxPoint(171, 82), size=wxSize(107, 21), style=0)
         self.choiceDay.SetColumns(2)
-        self.choiceDay.SetToolTipString('When schedule frequency is weekly select day of the week')
-        self.choiceDay.SetStringSelection('Tuesday')
+        self.choiceDay.SetToolTipString(_('When schedule frequency is weekly select day of the week'))
+        self.choiceDay.SetStringSelection(_('Tuesday'))
 
         self.staticTextFolder = wxStaticText(id=wxID_WXDIALOGSCHEDULEDSCANSTATICTEXTFOLDER,
-              label='&Scan Folder:', name='staticTextFolder', parent=self,
+              label=_('&Scan Folder:'), name='staticTextFolder', parent=self,
               pos=wxPoint(11, 121), size=wxSize(78, 15), style=0)
         self.staticTextFolder.SetToolTipString('')
 
         self.textCtrlFolder = wxTextCtrl(id=wxID_WXDIALOGSCHEDULEDSCANTEXTCTRLFOLDER,
               name='textCtrlFolder', parent=self, pos=wxPoint(11, 139),
               size=wxSize(260, 20), style=0, value='')
-        self.textCtrlFolder.SetToolTipString('Specify a folder to be scanned')
+        self.textCtrlFolder.SetToolTipString(_('Specify a folder to be scanned'))
 
         self.buttonBrowseFolder = wxButton(id=wxID_WXDIALOGSCHEDULEDSCANBUTTONBROWSEFOLDER,
               label='...', name='buttonBrowseFolder', parent=self,
               pos=wxPoint(273, 139), size=wxSize(20, 20), style=0)
-        self.buttonBrowseFolder.SetToolTipString('Click to browse for a folder')
+        self.buttonBrowseFolder.SetToolTipString(_('Click to browse for a folder'))
         EVT_BUTTON(self.buttonBrowseFolder,
               wxID_WXDIALOGSCHEDULEDSCANBUTTONBROWSEFOLDER,
               self.OnButtonBrowseFolder)
 
         self.staticTextDescription = wxStaticText(id=wxID_WXDIALOGSCHEDULEDSCANSTATICTEXTDESCRIPTION,
-              label='D&escription:', name='staticTextDescription', parent=self,
+              label=_('D&escription:'), name='staticTextDescription', parent=self,
               pos=wxPoint(11, 164), size=wxSize(68, 16), style=0)
         self.staticTextDescription.SetToolTipString('')
 
         self.textCtrlDescription = wxTextCtrl(id=wxID_WXDIALOGSCHEDULEDSCANTEXTCTRLDESCRIPTION,
               name='textCtrlDescription', parent=self, pos=wxPoint(11, 182),
               size=wxSize(282, 20), style=0, value='')
-        self.textCtrlDescription.SetToolTipString('Specify a friendly description for the scheduled scan')
+        self.textCtrlDescription.SetToolTipString(_('Specify a friendly description for the scheduled scan'))
 
         self.checkBoxEnabled = wxCheckBox(id=wxID_WXDIALOGSCHEDULEDSCANCHECKBOXENABLED,
-              label='&Activate This Schedule', name='checkBoxEnabled',
+              label=_('&Activate This Schedule'), name='checkBoxEnabled',
               parent=self, pos=wxPoint(11, 213), size=wxSize(278, 15), style=0)
         self.checkBoxEnabled.SetValue(False)
-        self.checkBoxEnabled.SetToolTipString('Select if you wish to enable this schedule')
+        self.checkBoxEnabled.SetToolTipString(_('Select if you wish to enable this schedule'))
 
         self.buttonOK = wxButton(id=wxID_WXDIALOGSCHEDULEDSCANBUTTONOK,
-              label='OK', name='buttonOK', parent=self, pos=wxPoint(73, 242),
+              label=_('OK'), name='buttonOK', parent=self, pos=wxPoint(73, 242),
               size=wxSize(75, 23), style=0)
         self.buttonOK.SetDefault()
-        self.buttonOK.SetToolTipString('Closes the dialog and applies the settings')
+        self.buttonOK.SetToolTipString(_('Closes the dialog and applies the settings'))
         EVT_BUTTON(self.buttonOK, wxID_WXDIALOGSCHEDULEDSCANBUTTONOK, self.OnOK)
 
         self.buttonCancel = wxButton(id=wxID_WXDIALOGSCHEDULEDSCANBUTTONCANCEL,
-              label='Cancel', name='buttonCancel', parent=self, pos=wxPoint(160,
+              label=_('Cancel'), name='buttonCancel', parent=self, pos=wxPoint(160,
               242), size=wxSize(75, 23), style=0)
-        self.buttonCancel.SetToolTipString('Closes the dialog and discards the changes')
+        self.buttonCancel.SetToolTipString(_('Closes the dialog and discards the changes'))
         EVT_BUTTON(self.buttonCancel, wxID_WXDIALOGSCHEDULEDSCANBUTTONCANCEL,
               self.OnCancel)
 
@@ -248,7 +278,7 @@ class wxDialogScheduledScan(wxDialog):
         self.checkBoxEnabled.SetValidator(MyValidator(self._scanInfo, 'Active'))                
         self.TransferDataToWindow()	  
         
-        self.choiceDay.Enable(self.choiceFrequency.GetStringSelection() == 'Weekly')        
+        self.choiceDay.Enable(self.choiceFrequency.GetStringSelection() == _('Weekly'))        
         
     def _Apply(self):                       
         if not self.Validate():
@@ -257,7 +287,7 @@ class wxDialogScheduledScan(wxDialog):
         return True        
     
     def OnChoiceFrequency(self, event):        
-        self.choiceDay.Enable(self.choiceFrequency.GetStringSelection() == 'Weekly')
+        self.choiceDay.Enable(self.choiceFrequency.GetStringSelection() == _('Weekly'))
         event.Skip()
   
     def OnOK(self, event):
@@ -303,10 +333,10 @@ class MyValidator(wxPyValidator):
             text = ctrl.GetValue()
         invalid = False
         if len(text) == 0:            
-            wxMessageBox("Value cannot be empty", "ClamWin", style=wxICON_EXCLAMATION|wxOK)
+            wxMessageBox(_("Value cannot be empty"), "ClamWin", style=wxICON_EXCLAMATION|wxOK)
             invalid = True            
         elif ctrl.GetName() == 'textCtrlFolder' and not os.path.exists(text):
-            wxMessageBox("Specified path is invalid. Plese verify your selection.", "ClamWin", style=wxICON_EXCLAMATION|wxOK)
+            wxMessageBox(_("Specified path is invalid. Plese verify your selection."), "ClamWin", style=wxICON_EXCLAMATION|wxOK)
             invalid = True            
         else:
             ctrl.SetBackgroundColour(wxSystemSettings_GetColour(wxSYS_COLOUR_WINDOW))

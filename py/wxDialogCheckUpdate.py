@@ -51,13 +51,13 @@ class wxDialogUpdateChecker(wxDialog):
               name='wxDialogUpdateChecker', parent=prnt, pos=wxPoint(229, 314),
               size=wxSize(324, 272),
               style=wxDEFAULT_DIALOG_STYLE|wxSTAY_ON_TOP|wxMINIMIZE_BOX,
-              title='ClamWin Update')
+              title=_('ClamWin Update'))
         self.SetClientSize(wxSize(316, 245))
         EVT_CHAR_HOOK(self, self.OnCharHook)
         EVT_INIT_DIALOG(self, self.OnInitDialog)
 
         self.staticTextAnnounce = wxStaticText(id=wxID_WXDIALOGUPDATECHECKERSTATICTEXTANNOUNCE,
-              label='An update of ClamWin Free Antivirus has been released. Please click on Download button and download the latest version %s',
+              label=_('An update of ClamWin Free Antivirus has been released. Please click on Download button and download the latest version %s'),
               name='staticTextAnnounce', parent=self, pos=wxPoint(13, 8),
               size=wxSize(296, 40), style=wxST_NO_AUTORESIZE)
         self.staticTextAnnounce.SetForegroundColour(wxColour(170, 0, 0))
@@ -66,14 +66,14 @@ class wxDialogUpdateChecker(wxDialog):
               False, 'MS Shell Dlg'))
 
         self.staticTextInstructions = wxStaticText(id=wxID_WXDIALOGUPDATECHECKERSTATICTEXTINSTRUCTIONS,
-              label='After you download the latest version setup file simply run it and install over the existing version.',
+              label=_('After you download the latest version setup file simply run it and install over the existing version.'),
               name='staticTextInstructions', parent=self, pos=wxPoint(13, 50),
               size=wxSize(296, 28), style=0)
         self.staticTextInstructions.SetForegroundColour(wxColour(0, 0, 0))
         self.staticTextInstructions.SetToolTipString('')
 
         self.staticTextChangelog = wxStaticText(id=wxID_WXDIALOGUPDATECHECKERSTATICTEXTCHANGELOG,
-              label='List Of Changes in Version %s:',
+              label=_('List Of Changes in Version %s:'),
               name='staticTextChangelog', parent=self, pos=wxPoint(13, 80),
               size=wxSize(296, 13), style=wxST_NO_AUTORESIZE)
         self.staticTextChangelog.SetToolTipString('')
@@ -85,7 +85,7 @@ class wxDialogUpdateChecker(wxDialog):
         self.staticLineHtml.SetToolTipString('')
 
         self.checkBoxDontCheck = wxCheckBox(id=wxID_WXDIALOGUPDATECHECKERCHECKBOXDONTCHECK,
-              label='&Do Not Check for Updates in Future',
+              label=_('&Do Not Check for Updates in Future'),
               name='checkBoxDontCheck', parent=self, pos=wxPoint(16, 190),
               size=wxSize(288, 13), style=0)
         self.checkBoxDontCheck.SetValue(False)
@@ -95,7 +95,7 @@ class wxDialogUpdateChecker(wxDialog):
               self.OnCheckBoxDontCheckCheckbox)
 
         self.buttonDownload = wxButton(id=wxID_WXDIALOGUPDATECHECKERBUTTONDOWNLOAD,
-              label='&Download', name='buttonDownload', parent=self,
+              label=_('&Download'), name='buttonDownload', parent=self,
               pos=wxPoint(143, 212), size=wxSize(75, 23), style=0)
         self.buttonDownload.SetToolTipString('')
         self.buttonDownload.SetDefault()
@@ -103,7 +103,7 @@ class wxDialogUpdateChecker(wxDialog):
               wxID_WXDIALOGUPDATECHECKERBUTTONDOWNLOAD, self.OnButtonDownload)
 
         self.buttonClose = wxButton(id=wxID_WXDIALOGUPDATECHECKERBUTTONCLOSE,
-              label='Close', name='buttonClose', parent=self, pos=wxPoint(230,
+              label=_('Close'), name='buttonClose', parent=self, pos=wxPoint(230,
               212), size=wxSize(75, 23), style=0)
         self.buttonClose.SetToolTipString('')
         EVT_BUTTON(self.buttonClose, wxID_WXDIALOGUPDATECHECKERBUTTONCLOSE,

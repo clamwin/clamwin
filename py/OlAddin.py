@@ -171,8 +171,8 @@ try:
     from win32com.client import CastTo, WithEvents
 except ImportError:
     print "*" * 50
-    print "You appear to be running a win32all version pre 151, which is pretty old"
-    print "I'm afraid it is time to upgrade"
+    print _("You appear to be running a win32all version pre 151, which is pretty old")
+    print _("I'm afraid it is time to upgrade")
     raise
 # we seem to have all the COM support we need - let's rock!
 
@@ -195,7 +195,7 @@ def HelpAbout():
         curDir = Utils.GetCurrentDir(True)
         Utils.SpawnPyOrExe(os.path.join(curDir, 'ClamWin'), ' --mode=about')        
     except Exception, e:            
-        win32gui.MessageBox(GetWindow(), 'An error occured in ClamWin Free Antivirus About Box.\n' + str(e), 'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONERROR)
+        win32gui.MessageBox(GetWindow(), _('An error occurred in ClamWin Free Antivirus About Box.\n') + str(e), _('ClamWin Free Antivirus'), win32con.MB_OK | win32con.MB_ICONERROR)
 
 # Helpers to work with images on buttons/toolbars.
 def SetButtonImage(button, fname):
@@ -209,7 +209,7 @@ def SetButtonImage(button, fname):
         # images relative to the application path
         fname = os.path.join(Utils.GetCurrentDir(False),"images", fname)
         if not os.path.isfile(fname):
-            print "WARNING - Trying to use image '%s', but it doesn't exist" % (fname,)
+            print _("WARNING - Trying to use image '%s', but it doesn't exist") % (fname,)
             return None
         handle = win32gui.LoadImage(0, fname, win32con.IMAGE_BITMAP, 0, 0, win32con.LR_DEFAULTSIZE | win32con.LR_LOADFROMFILE)
     win32clipboard.OpenClipboard()
@@ -268,7 +268,7 @@ def ScanFile(path, config, attname):
         if proc is not None:
             proc.close()
         safe_remove(logfile)
-        raise ScanError('An Error occured whilst starting clamscan: %s' % str(e))
+        raise ScanError(_('An Error occurred whilst starting clamscan: %s') % str(e))
         
     if proc is not None:
         proc.close()
@@ -284,8 +284,8 @@ def ScanFile(path, config, attname):
             #error = re.sub('/cygdrive/([A-Za-z])/', r'\1:/', error).replace('/', '\\')
             safe_remove(logfile)
         except Exception, e:
-            raise ScanError('An Error occured reading clamscan report: %s' % str(e))
-        raise ScanError('An Error occured whilst scanning:\n%s' % error)
+            raise ScanError(_('An Error occurred reading clamscan report: %s') % str(e))
+        raise ScanError(_('An Error occurred whilst scanning:\n%s') % error)
                     
     # replace \n's with \r\n's   
     # so it can be shown in notepad
@@ -295,7 +295,7 @@ def ScanFile(path, config, attname):
         file(logfile, 'wt').write(text)
     except Exception, e:
         safe_remove(logfile)
-        raise ScanError('An Error occured whilst converting clamscan report: %s' % str(e))    
+        raise ScanError(_('An Error occurred whilst converting clamscan report: %s') % str(e))    
     return (virusFound, logfile)
             
 # returns 0 if everything is okay, or number fo infected files                     
@@ -331,7 +331,7 @@ def ScanMailItem(item, sending, added_attachments = None):
     if not hasdb:
         if config.Get('UI', 'TrayNotify') == '1':
             import win32gui
-            tray_notify_params = (('Virus Definitions Database Not Found! Please download it now.', 
+            tray_notify_params = ((_('Virus Definitions Database Not Found! Please download it now.'), 
             -1, win32gui.NIIF_ERROR, 30000), None)
             # show balloon
             Utils.ShowBalloon(-1, tray_notify_params)
@@ -401,8 +401,8 @@ def ScanMailItem(item, sending, added_attachments = None):
                         # along with temp dir
                         safe_remove(statusfile, True)
                     except Exception, e:
-                        msg = 'ClamWin Free Antivirus could not scan file%s\n.Error: %s' % (statusfile, str(e))                        
-                    win32gui.MessageBox(GetWindow(), msg, 'ClamWin Free Antivirus', win32con.MB_ICONERROR | win32con.MB_OK)
+                        msg = _('ClamWin Free Antivirus could not scan file%s\n.Error: %s') % (statusfile, str(e))                        
+                    win32gui.MessageBox(GetWindow(), msg, _('ClamWin Free Antivirus'), win32con.MB_ICONERROR | win32con.MB_OK)
                     return 1
                 else:
                     # bugfix [930909]
@@ -452,13 +452,13 @@ def ScanMailItem(item, sending, added_attachments = None):
             # warn a user becuase it will not change the attachments info in
             # the event handlers
             if int(item.Application.Version.split('.', 1)[0]) < 10:                
-                msg = 'ClamWin Free Antivirus has detected a virus in the message attachments!'
-                win32gui.MessageBox(GetWindow(), msg, 'Virus Detected!', win32con.MB_ICONERROR | win32con.MB_OK)                            
+                msg = _('ClamWin Free Antivirus has detected a virus in the message attachments!')
+                win32gui.MessageBox(GetWindow(), msg, _('Virus Detected!'), win32con.MB_ICONERROR | win32con.MB_OK)                            
             elif config.Get('UI', 'TrayNotify') == '1':       
                 # show balloon in outlook 2002 +
-                tray_notify_params = (('Virus has been detected in an email attachment! The attachment was replaced with the report file.', 1, 
+                tray_notify_params = ((_('Virus has been detected in an email attachment! The attachment was replaced with the report file.'), 1, 
                                 win32gui.NIIF_ERROR, 30000),
-                ('An error occured whilst scanning email message.', 0, 
+                (_('An error occurred whilst scanning email message.'), 0, 
                 win32gui.NIIF_WARNING, 30000))
                 Utils.ShowBalloon(1, tray_notify_params)
 
@@ -474,7 +474,7 @@ def ScanMailItem(item, sending, added_attachments = None):
         safe_remove(dir)   
         
         # display error
-        win32gui.MessageBox(GetWindow(), str(e), 'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONERROR)        
+        win32gui.MessageBox(GetWindow(), str(e), _('ClamWin Free Antivirus'), win32con.MB_OK | win32con.MB_ICONERROR)        
         return True        
 
     return len(infected)
@@ -490,7 +490,7 @@ def safe_remove(path, removeLastDir = False):
             if os.path.exists(dir):
                 os.rmdir(dir)              
     except Exception, e:
-        print 'Could not remove file: %s. Error: %s' % (path, str(e))
+        print _('Could not remove file: %s. Error: %s') % (path, str(e))
 
 class WaitCursor:    
     def __init__(self):
@@ -562,8 +562,8 @@ class ExplorerWithEvents(ObjectWithEvents):
         child = self._AddControl(popup,
                        constants.msoControlButton,
                        ButtonEvent, (HelpAbout, ),
-                       Caption="&About ClamWin Free Antivirus",
-                       TooltipText = "Shows the ClamWin About Box",
+                       Caption=_("&About ClamWin Free Antivirus"),
+                       TooltipText = _("Shows the ClamWin About Box"),
                        Enabled = True,
                        Visible=True,
                        Tag = "ClamWin.About")
@@ -815,8 +815,8 @@ class MailItemWithEvents(ObjectWithEvents):
             except Exception, e:
                 for saved in saved_attachments:
                     safe_remove(saved[1], True)
-                msg = 'ClamWin Free Antivirus could not replace an attachment. Error: %s' % str(e)
-                win32gui.MessageBox(GetWindow(), msg, 'ClamWin Free Antivirus!', win32con.MB_ICONERROR | win32con.MB_OK)                                                                                      
+                msg = _('ClamWin Free Antivirus could not replace an attachment. Error: %s') % str(e)
+                win32gui.MessageBox(GetWindow(), msg, _('ClamWin Free Antivirus!'), win32con.MB_ICONERROR | win32con.MB_OK)                                                                                      
     
     def OnWrite(self, cancel):
         dbg_print('MailItemWithEvents:OnWrite')
@@ -883,10 +883,10 @@ class OutlookAddin(ObjectsEvent):
                 # bootstrap code that can't happen until startup is complete.
                 self.OnStartupComplete(None)
         except:
-            print "Error connecting to Outlook!"
+            print _("Error connecting to Outlook!")
             traceback.print_exc()
-            print "There was an error initializing the ClamWin addin\r\n\r\n"\
-                "Please re-start Outlook and try again."
+            print _("There was an error initializing the ClamWin addin\r\n\r\n"\
+                "Please re-start Outlook and try again.")
 
     def OnStartupComplete(self, custom):
         dbg_print('OutlookAddin:OnStartupComplete')
@@ -896,7 +896,7 @@ class OutlookAddin(ObjectsEvent):
             splash = os.path.join(Utils.GetCurrentDir(False), "img\\Splash.bmp")
             SplashScreen.ShowSplashScreen(splash, 5)
         except Exception, e:           
-            print "An error occured whilst displaying the spashscreen %s. Error: %s." % (splash, str(e))
+            print _("An error occurred whilst displaying the spashscreen %s. Error: %s.") % (splash, str(e))
         # Setup all our filters and hooks.  We used to do this in OnConnection,
         # but a number of 'strange' bugs were reported which I suspect would
         # go away if done during this later event - and this later place
@@ -933,7 +933,7 @@ class OutlookAddin(ObjectsEvent):
         self.event_handlers = []        
         self.application = None
 
-        print "Addin terminating: %d COM client and %d COM servers exist." \
+        print _("Addin terminating: %d COM client and %d COM servers exist.") \
               % (pythoncom._GetInterfaceCount(), pythoncom._GetGatewayCount())
         try:
             # will be available if "python_d addin.py" is used to
@@ -985,15 +985,15 @@ def DllInstall(bInstall, cmdline):
         rootkey = None
         if cmdline.lower().find('hkey_local_machine')>=0:                    
             rootkey = _winreg.HKEY_LOCAL_MACHINE
-            print "Registering (in HKEY_LOCAL_MACHINE)..."
+            print _("Registering (in HKEY_LOCAL_MACHINE)...")
         elif cmdline.lower().find('hkey_current_user')>=0:                    
             rootkey = _winreg.HKEY_CURRENT_USER
-            print "Registering (in HKEY_CURRENT_USER)..."
+            print _("Registering (in HKEY_CURRENT_USER)...")
         if rootkey is not None:
             # Don't catch exceptions here - if it fails, the Dll registration
             # must fail.
             _DoRegister(klass, _winreg.HKEY_LOCAL_MACHINE)
-            print "Registration Complete"            
+            print _("Registration Complete")            
 
 def DllRegisterServer():
     klass = OutlookAddin
@@ -1009,7 +1009,7 @@ def DllRegisterServer():
     except WindowsError:
         pass
     _DoRegister(klass, _winreg.HKEY_CURRENT_USER)
-    print "Registration complete."
+    print _("Registration complete.")
 
 def DllUnregisterServer():
     klass = OutlookAddin

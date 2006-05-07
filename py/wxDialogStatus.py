@@ -36,6 +36,7 @@ import os, sys
 import re
 import MsgBox
 import Utils
+from I18N import getClamString as _
 import wxDialogUtils
 import win32gui
 
@@ -120,7 +121,7 @@ class wxDialogStatus(wxDialog):
         # generated method, don't edit
         wxDialog.__init__(self, id=wxID_WXDIALOGSTATUS, name='wxDialogStatus',
               parent=prnt, pos=wxPoint(449, 269), size=wxSize(568, 392),
-              style=wxDEFAULT_DIALOG_STYLE, title='ClamWin Free Antivirus Status')
+              style=wxDEFAULT_DIALOG_STYLE, title=_('ClamWin Free Antivirus Status'))
         self.SetClientSize(wxSize(560, 365))
         self.SetAutoLayout(false)
         self.Center(wxBOTH)
@@ -145,7 +146,7 @@ class wxDialogStatus(wxDialog):
               style=wxTRANSPARENT_WINDOW)
 
         self.buttonStop = wxButton(id=wxID_WXDIALOGSTATUSBUTTONSTOP,
-              label='&Stop', name='buttonStop', parent=self, pos=wxPoint(291,
+              label=_('&Stop'), name='buttonStop', parent=self, pos=wxPoint(291,
               328), size=wxSize(85, 24), style=0)
         self.buttonStop.Enable(True)
         self.buttonStop.SetDefault()
@@ -153,7 +154,7 @@ class wxDialogStatus(wxDialog):
               self.OnButtonStop)
 
         self.buttonSave = wxButton(id=wxID_WXDIALOGSTATUSBUTTONSAVE,
-              label='S&ave Report', name='buttonSave', parent=self,
+              label=_('S&ave Report'), name='buttonSave', parent=self,
               pos=wxPoint(192, 328), size=wxSize(86, 24), style=0)
         self.buttonSave.Enable(False)
         EVT_BUTTON(self.buttonSave, wxID_WXDIALOGSTATUSBUTTONSAVE,
@@ -261,7 +262,7 @@ class wxDialogStatus(wxDialog):
                 
                 # last resort if failed to kill the process
                 if self._IsProcessRunning():       
-                    MsgBox.ErrorBox(self, 'Unable to stop runner thread, terminating')
+                    MsgBox.ErrorBox(self, _('Unable to stop runner thread, terminating'))
                     os._exit(0)      
                     
             self._proc.close()
@@ -279,20 +280,20 @@ class wxDialogStatus(wxDialog):
         filename = "clamav_report_" + time.strftime("%d%m%y_%H%M%S")
         if sys.platform.startswith("win"):
             filename +=  ".txt"
-            mask = "Report files (*.txt)|*.txt|All files (*.*)|*.*"
+            mask = _("Report files (*.txt)|*.txt|All files (*.*)|*.*")
         else:            
-            mask = "All files (*)|*"
-        dlg = wxFileDialog(self, "Choose a file", ".", filename, mask, wxSAVE)
+            mask = _("All files (*)|*")
+        dlg = wxFileDialog(self, _("Choose a file"), ".", filename, mask, wxSAVE)
         try:
             if dlg.ShowModal() == wxID_OK:
                 filename = dlg.GetPath()
                 try:
                     file(filename, "w").write(self.textCtrlStatus.GetLabel())
                 except:
-                    dlg = wxMessageDialog(self, 'Could not save report to the file ' + \
-                                            filename + ". Please check that you have write "
-                                            "permissions to the folder and there is enough space on the disk.",
-                      'ClamWin Free Antivirus', wxOK | wxICON_ERROR)
+                    dlg = wxMessageDialog(self, _('Could not save report to the file ') + \
+                                            filename + _(". Please check that you have write ") +
+                                            _("permissions to the folder and there is enough space on the disk."),
+                      _('ClamWin Free Antivirus'), wxOK | wxICON_ERROR)
                     try:
                         dlg.ShowModal()
                     finally:
@@ -324,7 +325,8 @@ class wxDialogStatus(wxDialog):
         self.buttonSave.Enable(True)
         self.throbber.Rest()
         self.buttonStop.SetFocus()
-        self.buttonStop.SetLabel('&Close')                   
+        self.buttonStop.SetLabel(_('&Close'))                   
+                
                                
         data = ''
         if self._logfile is not None:
@@ -341,7 +343,7 @@ class wxDialogStatus(wxDialog):
                     flog.seek(0, 0)
                 data = flog.read()
             except Exception, e:
-                print 'Could not read from log file %s. Error: %s' % (self._logfile, str(e))
+                print _('Could not read from log file %s. Error: %s') % (self._logfile, str(e))
                 
         # replace cygwin-like pathes with windows-like
         data = data.replace('/', '\\').replace('I\\O', 'I/O')  
@@ -351,9 +353,9 @@ class wxDialogStatus(wxDialog):
             self.ThreadUpdateStatus(self, data, False)
         
         if not self._cancelled:    
-           self.ThreadUpdateStatus(self, "\n--------------------------------------\nCompleted\n--------------------------------------\n")                  
+           self.ThreadUpdateStatus(self, _("\n--------------------------------------\nCompleted\n--------------------------------------\n"))                  
         else:
-           self.ThreadUpdateStatus(self, "\n--------------------------------------\nCancelled\n--------------------------------------\n")        
+           self.ThreadUpdateStatus(self, _("\n--------------------------------------\nCancelled\n--------------------------------------\n"))        
             
         win32api.PostMessage(self.textCtrlStatus.GetHandle(), win32con.EM_SCROLLCARET, 0, 0)
         self.textCtrlStatus.SetInsertionPointEnd()                        
@@ -432,14 +434,14 @@ class wxDialogStatus(wxDialog):
             
         # check that we got the command line        
         if cmd is None:   
-            raise Process.ProcessError('Could not start process. No Command Line specified')                                                     
+            raise Process.ProcessError(_('Could not start process. No Command Line specified'))                                                     
         
         # start our process    
         try:                
             # check if the file exists first
             executable = cmd.split('" ' ,1)[0].lstrip('"')
             if not os.path.exists(executable):
-                raise Process.ProcessError('Could not start process.\n%s\nFile does not exist.' % executable)                
+                raise Process.ProcessError(_('Could not start process.\n%s\nFile does not exist.') % executable)                
             # create our stdout/stderr implementation that updates status window                            
             self._alreadyCalled = False
             self._out = StatusUpdateBuffer(self, self.ThreadUpdateStatus, self.ThreadFinished)
@@ -449,9 +451,9 @@ class wxDialogStatus(wxDialog):
         except Exception, e:             
             if isinstance(e, Process.ProcessError):
                 if e.errno != Process.ProcessProxy.WAIT_TIMEOUT:                                       
-                    raise Process.ProcessError('Could not start process:\n%s\nError: %s' % (cmd, str(e)))                     
+                    raise Process.ProcessError(_('Could not start process:\n%s\nError: %s') % (cmd, str(e)))                     
             else:
-                raise Process.ProcessError('Could not start process:\n%s\nError: %s' % (cmd, str(e)))
+                raise Process.ProcessError(_('Could not start process:\n%s\nError: %s') % (cmd, str(e)))
 
     def OnInitDialog(self, event):
         # start animation

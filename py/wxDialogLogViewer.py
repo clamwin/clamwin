@@ -28,7 +28,7 @@
 
 from wxPython.wx import *
 import os
-
+from I18N import getClamString as _
 def create(parent, text, scroll_down = False):
     return wxDialogLogView(parent, text, scroll_down)
 
@@ -65,7 +65,7 @@ class wxDialogLogView(wxDialog):
         wxDialog.__init__(self, id=wxID_WXDIALOGLOGVIEW, name='wxDialogLogView',
               parent=prnt, pos=wxPoint(450, 251), size=wxSize(566, 428),
               style=wxRESIZE_BORDER | wxDEFAULT_DIALOG_STYLE,
-              title='ClamWin Log Viewer')
+              title=_('ClamWin Log Viewer'))
         self.SetClientSize(wxSize(558, 401))
         self.Center(wxBOTH)
         EVT_CHAR_HOOK(self, self.OnCharHook)
@@ -77,7 +77,7 @@ class wxDialogLogView(wxDialog):
         self.textCtrl.SetToolTipString('')
         self.textCtrl.Center(wxBOTH)
 
-        self.buttonOK = wxButton(id=wxID_WXDIALOGLOGVIEWBUTTONOK, label='OK',
+        self.buttonOK = wxButton(id=wxID_WXDIALOGLOGVIEWBUTTONOK, label=_('OK'),
               name='buttonOK', parent=self, pos=wxPoint(241, 368),
               size=wxSize(75, 23), style=0)
         self.buttonOK.SetToolTipString('')

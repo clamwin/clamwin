@@ -37,7 +37,7 @@ import EmailAlert
 import threading
 import Utils, wxDialogScheduledScan
 import version
-
+from I18N import getClamString as _
 
 class MainWindow:    
     MENU_OPEN_CLAM, MENU_UPDATE_DB, MENU_CHECK_UPDATE, MENU_CLAMWIN_WEB, MENU_CONFIGURE, MENU_SHOWSCANLOG, \
@@ -114,7 +114,7 @@ class MainWindow:
                 #wait to finish                  
                 if self._IsProcessRunning(proc, True):       
                     #still running - complain and terminate
-                    win32gui.MessageBox(self.hwnd, 'Unable to stop scheduled process, terminating', 'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONSTOP)
+                    win32gui.MessageBox(self.hwnd, _('Unable to stop scheduled process, terminating'), _('ClamWin Free Antivirus'), win32con.MB_OK | win32con.MB_ICONSTOP)
                     os._exit(0)  
                 proc.close()
                 
@@ -128,7 +128,7 @@ class MainWindow:
                 # wait for completion
                 scheduler.join(2)                
             except Exception, e:
-                print 'An error occured whilst termintaing scheduler thread. Error: %s' % str(e)
+                print _('An error occurred whilst terminating scheduler thread. Error: %s') % str(e)
         self._schedulers = []             
         
     def _InitSchedulers(self, logon=False):              
@@ -234,7 +234,7 @@ class MainWindow:
             # create scheduler menu
             scheduler_popup = win32gui.CreatePopupMenu()
             win32gui.AppendMenu(scheduler_popup, win32con.MF_STRING, 
-                self.MENU_CONFIGURESCHEDULER, "&Configure Scheduler")
+                self.MENU_CONFIGURESCHEDULER, _("&Configure Scheduler"))
             
             if not self._processes:
                 flags = win32con.MF_GRAYED
@@ -254,11 +254,11 @@ class MainWindow:
                 flags2 = 0
             win32gui.InsertMenu(scheduler_popup, self.MENU_CONFIGURESCHEDULER,
                             win32con.MF_BYCOMMAND | win32con.MF_POPUP | flags2,
-                            tasks_popup, "&Run Scheduled Scan")                                            
+                            tasks_popup, _("&Run Scheduled Scan"))                                            
                 
             win32gui.InsertMenu(scheduler_popup, flags, 
                                 win32con.MF_BYCOMMAND | win32con.MF_STRING | flags, 
-                                self.MENU_TERMINATESCHEDULE, "&Stop All Running Tasks Now")                        
+                                self.MENU_TERMINATESCHEDULE, _("&Stop All Running Tasks Now"))                        
                                 
             # create reports menu
             reports_popup = win32gui.CreatePopupMenu()            
@@ -268,27 +268,27 @@ class MainWindow:
                 flags = 0
             win32gui.InsertMenu( reports_popup, 0, 
                                 win32con.MF_BYCOMMAND | win32con.MF_STRING | flags, 
-                                self.MENU_SHOWSCANLOG, "&Virus Scan Report")                        
+                                self.MENU_SHOWSCANLOG, _("&Virus Scan Report"))                        
             if not len(self._config.Get('Updates', 'DBUpdateLogFile')):
                 flags = win32con.MF_GRAYED
             else:
                 flags = 0
             win32gui.InsertMenu( reports_popup, self.MENU_SHOWSCANLOG,
                                 win32con.MF_BYCOMMAND | win32con.MF_STRING | flags,
-                                self.MENU_SHOWUPDATELOG, "&Virus Database Update Report")                        
+                                self.MENU_SHOWUPDATELOG, _("&Virus Database Update Report"))                        
 
             # create main menu
             menu = win32gui.CreatePopupMenu()                                                        
-            win32gui.AppendMenu( menu, win32con.MF_STRING, self.MENU_OPEN_CLAM, "&Open ClamWin")
-            win32gui.AppendMenu( menu, win32con.MF_STRING, self.MENU_UPDATE_DB, "&Download Virus Database Update")
-            win32gui.AppendMenu( menu, win32con.MF_STRING, self.MENU_CONFIGURE, "&Configure ClamWin")                   
-            win32gui.AppendMenu( menu, win32con.MF_POPUP, scheduler_popup, "&Scheduler")                     
-            win32gui.AppendMenu( menu, win32con.MF_POPUP, reports_popup, "Display &Reports")                
+            win32gui.AppendMenu( menu, win32con.MF_STRING, self.MENU_OPEN_CLAM, _("&Open ClamWin"))
+            win32gui.AppendMenu( menu, win32con.MF_STRING, self.MENU_UPDATE_DB, _("&Download Virus Database Update"))
+            win32gui.AppendMenu( menu, win32con.MF_STRING, self.MENU_CONFIGURE, _("&Configure ClamWin"))                   
+            win32gui.AppendMenu( menu, win32con.MF_POPUP, scheduler_popup, _("&Scheduler"))                     
+            win32gui.AppendMenu( menu, win32con.MF_POPUP, reports_popup, _("Display &Reports"))                
             win32gui.AppendMenu( menu, win32con.MF_SEPARATOR, 0, "" )                                
-            win32gui.AppendMenu( menu, win32con.MF_STRING, self.MENU_CHECK_UPDATE, "Check &Latest Version")
-            win32gui.AppendMenu( menu, win32con.MF_STRING, self.MENU_CLAMWIN_WEB, "&Visit ClamWin Website")
+            win32gui.AppendMenu( menu, win32con.MF_STRING, self.MENU_CHECK_UPDATE, _("Check &Latest Version"))
+            win32gui.AppendMenu( menu, win32con.MF_STRING, self.MENU_CLAMWIN_WEB, _("&Visit ClamWin Website"))
             win32gui.AppendMenu( menu, win32con.MF_SEPARATOR, 0, "" )                                
-            win32gui.AppendMenu( menu, win32con.MF_STRING, self.MENU_EXIT, "&Exit" )                        
+            win32gui.AppendMenu( menu, win32con.MF_STRING, self.MENU_EXIT, _("&Exit") )                        
             
             pos = win32gui.GetCursorPos()
             # See http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winui/menus_0hdi.asp
@@ -312,7 +312,7 @@ class MainWindow:
         elif id == self.MENU_CHECK_UPDATE:
             self._OpenWebPage('http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version='+version.clamwin_version)
         elif id == self.MENU_CLAMWIN_WEB:
-            self._OpenWebPage('http://www.clamwin.com')
+            self._OpenWebPage(_('http://www.clamwin.com'))
         elif id == self.MENU_CONFIGURE:
             self._ShowConfigure()
         elif id == self.MENU_SHOWSCANLOG:            
@@ -335,8 +335,8 @@ class MainWindow:
                     self._ShowClamWin(path) 
                 except Exception, e:
                     win32gui.MessageBox(self.hwnd, 
-                            'Could not launch ClamWin Scanner. Error: %s' % str(e), 
-                            'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONERROR)
+                            _('Could not launch ClamWin Scanner. Error: %s') % str(e), 
+                            _('ClamWin Free Antivirus'), win32con.MB_OK | win32con.MB_ICONERROR)
                 
             
     def OnConfigUpdated(self, hwnd, msg, wparam, lparam):
@@ -348,7 +348,7 @@ class MainWindow:
             try:                
                 Utils.ShowBalloon(wparam, self._balloon_info, self.hwnd)                
             except Exception, e:
-                print 'Could not display balloon tooltip. Error: %s' % str(e)
+                print _('Could not display balloon tooltip. Error: %s') % str(e)
                                              
     def OnExit(self):
         win32gui.DestroyWindow(self.hwnd)                        
@@ -359,8 +359,8 @@ class MainWindow:
             params = (' --mode=viewlog',  '--path="%s"' % logfile)
             Utils.SpawnPyOrExe(os.path.join(curDir, 'ClamWin'), *params)                
         except Exception, e:            
-            win32gui.MessageBox(self.hwnd, 'An error occured while displaying log file %s.\nError: %s' % (logfile, str(e)),
-                                 'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONERROR)                                                               
+            win32gui.MessageBox(self.hwnd, _('An error occurred while displaying log file %s.\nError: %s') % (logfile, str(e)),
+                                 _('ClamWin Free Antivirus'), win32con.MB_OK | win32con.MB_ICONERROR)                                                               
                                  
     def _ShowClamWin(self, path=''):        
         try:              
@@ -370,7 +370,7 @@ class MainWindow:
                 params = (' --mode=main',)
             Utils.SpawnPyOrExe(os.path.join(Utils.GetCurrentDir(True), 'ClamWin'), *params)
         except Exception, e:            
-            win32gui.MessageBox(self.hwnd, 'An error occured while starting ClamWin Free Antivirus scanner.\n' + str(e), 'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONERROR)                              
+            win32gui.MessageBox(self.hwnd, _('An error occurred while starting ClamWin Free Antivirus scanner.\n') + str(e), _('ClamWin Free Antivirus'), win32con.MB_OK | win32con.MB_ICONERROR)                              
     
     def _UpdateDB(self, hide):                
         if not hide:                        
@@ -378,13 +378,13 @@ class MainWindow:
                 params = (' --mode=update', ' --config_file="%s"' % self._config.GetFilename())
                 Utils.SpawnPyOrExe(os.path.join(Utils.GetCurrentDir(True), 'ClamWin'), *params)                                
             except Exception, e:
-                win32gui.MessageBox(self.hwnd, 'An error occured while starting ClamWin Free Antivirus Update.\n' + str(e), 'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONERROR)                                  
+                win32gui.MessageBox(self.hwnd, _('An error occurred while starting ClamWin Free Antivirus Update.\n') + str(e), _('ClamWin Free Antivirus'), win32con.MB_OK | win32con.MB_ICONERROR)                                  
         else:                        
             # update virus db silently
             freshclam_conf = Utils.SaveFreshClamConf(self._config)
             try:
                 if not len(freshclam_conf):
-                    win32gui.MessageBox(self.hwnd, 'Unable to create freshclam configuration file. Please check there is enough space on the disk', 'Error', win32con.MB_OK | win32con.MB_ICONSTOP)
+                    win32gui.MessageBox(self.hwnd, _('Unable to create freshclam configuration file. Please check there is enough space on the disk'), _('Error'), win32con.MB_OK | win32con.MB_ICONSTOP)
                     return
                 # create database folder before downloading
                 dbdir = self._config.Get('ClamAV', 'Database')                
@@ -400,9 +400,9 @@ class MainWindow:
                 cmd = '"%s" %s' % (self._config.Get('ClamAV', 'FreshClam'), cmd)
                 try:
                     if self._config.Get('UI', 'TrayNotify') == '1':
-                        balloon = (('Virus database has been updated.', 0, 
+                        balloon = ((_('Virus database has been updated.'), 0, 
                                    win32gui.NIIF_INFO, 10000),
-                                   ('An error occured during Scheduled Virus Database Update. Please review the update report.', 1, 
+                                   (_('An error occurred during Scheduled Virus Database Update. Please review the update report.'), 1, 
                                    win32gui.NIIF_WARNING, 30000))
                     else:
                         balloon = None                    
@@ -415,7 +415,7 @@ class MainWindow:
                         balloon))                             
                     self._processes.append(proc)
                 except Process.ProcessError, e:
-                    print 'Unable to spawn scheduled process.\nCommand line: %s\nError: %s' % (cmd , str(e))
+                    print _('Unable to spawn scheduled process.\nCommand line: %s\nError: %s') % (cmd , str(e))
                     try:
                         os.remove(freshclam_conf)
                         os.remove(updatelog)
@@ -430,7 +430,7 @@ class MainWindow:
                     pass
                 os.remove(freshclam_conf)
             except Exception, e:                            
-                print 'Error performing Scheduled Update.', str(e)
+                print _('Error performing Scheduled Update.'), str(e)
                 os.remove(freshclam_conf)                  
                                 
     def _OpenWebPage(self, url):
@@ -438,7 +438,7 @@ class MainWindow:
             import webbrowser
             webbrowser.open(url)
         except ImportError:
-            win32gui.MessageBox(self.hwnd, 'Please point your browser at: %s' % url, 'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONINFORMATION)
+            win32gui.MessageBox(self.hwnd, _('Please point your browser at: %s') % url, _('ClamWin Free Antivirus'), win32con.MB_OK | win32con.MB_ICONINFORMATION)
             
         
     def _ShowConfigure(self, switchToSchedule = False):
@@ -452,7 +452,7 @@ class MainWindow:
                         ' --config_file="%s"' % self._config.GetFilename())            
             Utils.SpawnPyOrExe(os.path.join(curDir, 'ClamWin'), *params)
         except Exception, e:            
-            win32gui.MessageBox(self.hwnd, 'An error occured while starting ClamWin Free Antivirus Preferences.\n' + str(e), 'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONERROR)
+            win32gui.MessageBox(self.hwnd, _('An error occurred while starting ClamWin Free Antivirus Preferences.\n') + str(e), _('ClamWin Free Antivirus'), win32con.MB_OK | win32con.MB_ICONERROR)
 
     # returns process and stdout buffer
     def _SpawnProcess(self, cmd, proc_priority, finished_func, finished_params):
@@ -467,14 +467,14 @@ class MainWindow:
             
         # check that we got the command line        
         if cmd is None:   
-            raise Process.ProcessError('Could not start process. No Command Line specified')                                                     
+            raise Process.ProcessError(_('Could not start process. No Command Line specified'))                                                     
         
         # start our process    
         try:                
             # check if the file exists first            
             executable = cmd.split('" ' ,1)[0].lstrip('"')
             if not os.path.exists(executable):
-                raise Process.ProcessError('Could not start process.\n%s\nFile does not exist.' % executable)                            
+                raise Process.ProcessError(_('Could not start process.\n%s\nFile does not exist.') % executable)                            
             out = OutBuffer(self, finished_func, finished_params)
             proc = Process.ProcessProxy(cmd, stdout=out, priority=proc_priority)            
             out.AttachProcess(proc)
@@ -482,20 +482,20 @@ class MainWindow:
         except Exception, e:             
             if isinstance(e, Process.ProcessError):
                 if e.errno != Process.ProcessProxy.WAIT_TIMEOUT:                                       
-                    raise Process.ProcessError('Could not start process:\n%s\nError: %s' % (cmd, str(e)))                     
+                    raise Process.ProcessError(_('Could not start process:\n%s\nError: %s') % (cmd, str(e)))                     
             else:
-                raise Process.ProcessError('Could not start process:\n%s\nError: %s' % (cmd, str(e)))                             
+                raise Process.ProcessError(_('Could not start process:\n%s\nError: %s') % (cmd, str(e)))                             
         return proc
     
     def ScanPath(self, path, description):
         scanlog = tempfile.mktemp()
         path = '"%s"' % path.rstrip('\\').strip('"')
-        cmd = Utils.GetScanCmd(self._config, path, scanlog, True)        
+        cmd = Utils.GetScanCmd(self._config, path, scanlog)        
         try:            
             if self._config.Get('UI', 'TrayNotify') == '1':
-                balloon = (('Virus has been detected during scheduled scan! Please review the scan report.', 1, 
+                balloon = ((_('Virus has been detected during scheduled scan! Please review the scan report.'), 1, 
                           win32gui.NIIF_ERROR, 30000),
-                          ('An error occured during scheduled scan. Please review the scan report.', 0, 
+                          (_('An error occurred during scheduled scan. Please review the scan report.'), 0, 
                           win32gui.NIIF_WARNING, 30000))
             else:
                 balloon = None
@@ -527,9 +527,9 @@ class MainWindow:
                pass
             print str(e)
         if self._config.Get('UI', 'TrayNotify') == '1':  
-            balloon_info = (('Running Scheduled Task:\n'+description, 0, 
+            balloon_info = ((_('Running Scheduled Task:\n')+description, 0, 
                             win32gui.NIIF_INFO, 10000),
-                            ('An error occured whilst running Running Scheduled Task '+description, 1, 
+                            (_('An error occurred whilst running Running Scheduled Task ')+description, 1, 
                             win32gui.NIIF_WARNING, 30000))                                      
             self.ShowBalloon(result, balloon_info)        
     ScanPath = staticmethod(ScanPath)
@@ -552,7 +552,7 @@ class MainWindow:
                     msg = EmailAlert.ConfigVirusAlertMsg(self._config, (appendlog,))
                     msg.Send()
             except Exception, e:
-                print 'Could not send email alert. Error: %s' % str(e)
+                print _('Could not send email alert. Error: %s') % str(e)
                                    
         maxsize = int(self._config.Get('ClamAV', 'MaxLogSize'))*1048576                
         Utils.AppendLogFile(log, appendlog, maxsize)                   
@@ -560,7 +560,7 @@ class MainWindow:
         try:
             os.remove(appendlog)
         except Exception, e:
-            print 'could not remove file: %s. Error: %s' % (appendlog, str(e))
+            print _('Could not remove file: %s. Error: %s') % (appendlog, str(e))
                             
         if not process.isKilled() and balloon_info is not None:                        
             # show balloon

@@ -35,7 +35,7 @@ def wxUpdateVirDB(parent, config, autoClose = False):
     exit_code = -1
     freshclam_conf = Utils.SaveFreshClamConf(config)
     if not len(freshclam_conf):
-        MsgBox.ErrorBox(parent, 'Unable to create freshclam configutration file. Please check there is enough space on the disk')
+        MsgBox.ErrorBox(parent, _('Unable to create freshclam configutration file. Please check there is enough space on the disk'))
         return
     updatelog = tempfile.mktemp()       
     dbdir = config.Get('ClamAV', 'Database')
@@ -53,16 +53,16 @@ def wxUpdateVirDB(parent, config, autoClose = False):
     cmd = '"%s" %s' % (config.Get('ClamAV', 'FreshClam'), cmd)
     if sys.platform.startswith('win') and config.Get('UI', 'TrayNotify') == '1':        
         import win32gui
-        tray_notify_params = (('Virus Database has been updated.', 0, 
+        tray_notify_params = ((_('Virus Database has been updated.'), 0, 
                            win32gui.NIIF_INFO, 10000),
-                           ('An error occured during Virus Database Update. Please review the update report.', 1, 
+                           (_('An error occurred during Virus Database Update. Please review the update report.'), 1, 
                            win32gui.NIIF_WARNING, 30000)
                            )
     else:
         tray_notify_params = None
 
     dlg = wxDialogStatus.create(parent, cmd, None, 'n', 'update', tray_notify_params)
-    dlg.SetTitle('ClamWin Free Antivirus: Downloading Update...')
+    dlg.SetTitle(_('ClamWin Free Antivirus: Downloading Update...'))
     dlg.SetAutoClose(autoClose)
     try:
         dlg.ShowModal()
@@ -75,12 +75,12 @@ def wxUpdateVirDB(parent, config, autoClose = False):
         try:
             os.remove(updatelog)
         except Exception, e:
-            print 'Unable to remove file %s. Error: %s' % (updatelog, str(e))
+            print _('Unable to remove file %s. Error: %s') % (updatelog, str(e))
         dlg.Destroy()         
         try:
             os.remove(freshclam_conf)        
         except Exception, e:
-            print "couldn't remove file %s. Error: %s" % (freshclam_conf, str(e))        
+            print _("Couldn't remove file %s. Error: %s") % (freshclam_conf, str(e))        
         if exit_code == 1:
             try:
                 f = file(os.path.join(tempfile.gettempdir(), 'ClamWin_Upadte_Time'), 'w')
@@ -104,7 +104,7 @@ def wxScan(parent, config, path, autoClose = False):
     if not hasdb:
         if config.Get('UI', 'TrayNotify') == '1':
             import win32gui
-            tray_notify_params = (('Virus Definitions Database Not Found! Please download it now.', -1, 
+            tray_notify_params = ((_('Virus Definitions Database Not Found! Please download it now.'), -1, 
                     win32gui.NIIF_ERROR, 30000), None)
             # show balloon
             Utils.ShowBalloon(-1, tray_notify_params)
@@ -112,9 +112,9 @@ def wxScan(parent, config, path, autoClose = False):
             #add to logfile
             logfile = config.Get('ClamAV', 'LogFile')
             if logfile != '':
-                file(scanlog, 'wt').write('\n-----------------------------\n'
-                    'Scan Started %s\nERROR: Virus Definitions Database Not Found! Please download it now.\n'
-                    '-----------------------------' % time.asctime())
+                file(scanlog, 'wt').write(_('\n-----------------------------\n')
+                    _('Scan Started %s\nERROR: Virus Definitions Database Not Found! Please download it now.\n')
+                    _('-----------------------------') % time.asctime())
                 maxsize = int(config.Get('ClamAV', 'MaxLogSize'))*1048576        
                 Utils.AppendLogFile(logfile, scanlog, maxsize)        
                 os.remove(scanlog)
@@ -123,14 +123,14 @@ def wxScan(parent, config, path, autoClose = False):
      
     if config.Get('UI', 'TrayNotify') == '1':
         import win32gui
-        tray_notify_params = (('Virus has been detected during scan! Please review the scan report.', 1, 
+        tray_notify_params = ((_('Virus has been detected during scan! Please review the scan report.'), 1, 
                         win32gui.NIIF_ERROR, 30000),
-                        ('An error occured during virus scan. Please review the scan report.', 0, 
+                        (_('An error occurred during virus scan. Please review the scan report.'), 0, 
                         win32gui.NIIF_WARNING, 30000))      
     else:
         tray_notify_params = None
     dlg = wxDialogStatus.create(parent, cmd, scanlog, priority, "scanprogress", tray_notify_params)
-    dlg.SetTitle("ClamWin Free Antivirus: Scanning...")
+    dlg.SetTitle(_("ClamWin Free Antivirus: Scanning..."))
     dlg.SetAutoClose(autoClose, 0)
     try:
         dlg.ShowModal()         
@@ -147,14 +147,14 @@ def wxScan(parent, config, path, autoClose = False):
                     msg = EmailAlert.ConfigVirusAlertMsg(config, (scanlog,))
                     msg.Send()                
             except Exception, e:
-                print 'Could not send email alert. Error: %s' % str(e)
+                print _('Could not send email alert. Error: %s') % str(e)
               
     finally:
         if os.path.exists(scanlog):
              try:
                  os.remove(scanlog)
              except IOError, e:
-                 print 'could not delete logfile : %s. Error: %s' % (scanlog, str(e))                 
+                 print _('Could not delete logfile : %s. Error: %s') % (scanlog, str(e))                 
         dlg.Destroy()
         return exit_code
 
@@ -176,7 +176,7 @@ def wxAbout(parent, config):
 def wxShowLog(parent, logfile):
         maxlogsize = 524288 #512 KB        
         if not len(logfile):
-            MsgBox.ErrorBox(parent, 'Log files are not properly configured. Please review ClamWin configuration')        
+            MsgBox.ErrorBox(parent, _('Log files are not properly configured. Please review ClamWin configuration'))        
         try:                        
             if not os.path.isfile(logfile):
                 text = ''
@@ -189,7 +189,7 @@ def wxShowLog(parent, logfile):
                 else:
                     text = file(logfile, 'rt').read()                                    
         except Exception, e:
-            MsgBox.ErrorBox(parent, 'Unable to read from the log file. Error: %s' % str(e))
+            MsgBox.ErrorBox(parent, _('Unable to read from the log file. Error: %s') % str(e))
             
         dlg = wxDialogLogViewer.create(parent, text, True)        
         try:
@@ -203,7 +203,7 @@ def wxGoToInternetUrl(url):
     try:
         import webbrowser
     except ImportError:
-        wxMessageBox('Please point your browser at: %s' % url)
+        wxMessageBox(_('Please point your browser at: %s') % url)
     else:
         webbrowser.open(url)
         
@@ -226,7 +226,7 @@ def wxCheckUpdate(parent, config):
     except Exception, e:
         if config.Get('UI', 'TrayNotify') == '1':
             import win32gui
-            tray_notify_params = (('Unable to get online version. Most likely it\'s a temporary connectivity error and you don\'t have to do anything.\nIf you see this error often then allow clamwin.exe in your firewall and check proxy settings.\n(%s)' % str(e) , 0, 
+            tray_notify_params = ((_('Unable to get online version. Most likely it\'s a temporary connectivity error and you don\'t have to do anything.\nIf you see this error often then allow clamwin.exe in your firewall and check proxy settings.\n(%s)') % str(e) , 0, 
                         win32gui.NIIF_WARNING, 30000), None)            
             Utils.ShowBalloon(0, tray_notify_params, None, True)
             return

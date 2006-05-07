@@ -79,11 +79,11 @@ class EmailMsg(MIMEMultipart):
                 s.sendmail(From, To, Body)
                 s.quit()
                 s.close()
-                print 'Email alert to %s has been sent successfully.' % To
+                print _('Email alert to %s has been sent successfully.') % To
                 return (True, '')
             except Exception, e:
                 error = str(e)
-                print 'Could not send an email. Error: %s' % error                                        
+                print _('Could not send an email. Error: %s') % error                                        
         return (False, error)         
     _Send = staticmethod(_Send)    
         
@@ -92,8 +92,8 @@ class VirusAlertMsg(EmailMsg):
                 User, Password, Reports=(), Body=None):                                    
         if Body is None:
             # get computer name for the message body                          
-            Body = 'ClamWin detected a virus on the following computer: %s\n\n' \
-                    'Please review the attached log files for more details.\n' % Utils.GetHostName()
+            Body = _('ClamWin detected a virus on the following computer: %s\n\n' \
+                    'Please review the attached log files for more details.\n') % Utils.GetHostName()
         
         self._host = Host
         self._port = Port
