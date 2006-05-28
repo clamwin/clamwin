@@ -5,18 +5,18 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Sun Apr 30 15:47:53 2006\n"
+"POT-Creation-Date: Sun May 28 21:28:32 2006\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: ENCODING\n"
 "Generated-By: pygettext.py 1.5\n"
 
 
 #: wxDialogUtils.py:38
-msgid "Unable to create freshclam configutration file. Please check there is enough space on the disk"
+msgid "Unable to create freshclam configuration file. Please check there is enough space on the disk"
 msgstr ""
 
 #: wxDialogUtils.py:56
@@ -92,6 +92,9 @@ msgid "Please point your browser at: %s"
 msgstr ""
 
 #: wxDialogUtils.py:229
-msgid "Unable to retrieve ClamWin Free Antivirus online version infomation. Error: %s"
+msgid ""
+"Unable to get online version. Most likely it's a temporary connectivity error and you don't have to do anything.\n"
+"If you see this error often then allow clamwin.exe in your firewall and check proxy settings.\n"
+"(%s)"
 msgstr ""
 
