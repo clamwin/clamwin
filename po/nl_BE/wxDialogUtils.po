@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.2.3\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-05-21 14:33+0100\n"
+"PO-Revision-Date: 2006-05-29 21:30+0100\n"
 "Last-Translator: Peter Budts <budtse@users.sourceforge.net>\n"
 "Language-Team: ClamWin Free Antivirus <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -13,7 +13,8 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: wxDialogUtils.py:38
-msgid "Unable to create freshclam configutration file. Please check there is enough space on the disk"
+#, fuzzy
+msgid "Unable to create freshclam configuration file. Please check there is enough space on the disk"
 msgstr "Kan geen FreshClam configuratiebestand aanmaken. Gelieve de schijfruimte te controleren."
 
 #: wxDialogUtils.py:56
@@ -93,6 +94,12 @@ msgid "Please point your browser at: %s"
 msgstr "Gelieve uw browser te openen met: %s"
 
 #: wxDialogUtils.py:229
-msgid "Unable to retrieve ClamWin Free Antivirus online version infomation. Error: %s"
-msgstr "Kan ClamWin Free Antivirus online versie informatie niet ophalen. Fout: %s"
+msgid ""
+"Unable to get online version. Most likely it's a temporary connectivity error and you don't have to do anything.\n"
+"If you see this error often then allow clamwin.exe in your firewall and check proxy settings.\n"
+"(%s)"
+msgstr ""
+"Kan online versie niet bepalen.  Waarschijnlijk is dit een tijdelijk probleem met de verbinding en moet u niets doen.\n"
+"Als u deze fout regelmatig ziet, geef clamwin.exe dan toelating in uw firewall en kijk de proxy settings na.\n"
+"(%s)"
 

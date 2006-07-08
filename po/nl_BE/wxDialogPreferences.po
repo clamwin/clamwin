@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.2.3\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-05-21 20:46+0100\n"
+"PO-Revision-Date: 2006-05-29 21:18+0100\n"
 "Last-Translator: Peter Budts <budtse@users.sourceforge.net>\n"
 "Language-Team: ClamWin Free Antivirus <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -149,23 +149,23 @@ msgstr "&Update Frekwentie:"
 
 #: wxDialogPreferences.py:339
 #: wxDialogPreferences.py:346
-#: wxDialogPreferences.py:1423
+#: wxDialogPreferences.py:1453
 msgid "Daily"
 msgstr "Dagelijks"
 
 #: wxDialogPreferences.py:339
-#: wxDialogPreferences.py:1423
+#: wxDialogPreferences.py:1453
 msgid "Hourly"
 msgstr "Om het uur"
 
 #: wxDialogPreferences.py:340
-#: wxDialogPreferences.py:1047
-#: wxDialogPreferences.py:1423
+#: wxDialogPreferences.py:1077
+#: wxDialogPreferences.py:1453
 msgid "Weekly"
 msgstr "Wekelijks"
 
 #: wxDialogPreferences.py:340
-#: wxDialogPreferences.py:1423
+#: wxDialogPreferences.py:1453
 msgid "Workdays"
 msgstr "Op werkdagen"
 
@@ -230,7 +230,7 @@ msgid "Do Not Scan Archives Larger Than"
 msgstr "Scan geen gecomprimeerde bestanden groter dan"
 
 #: wxDialogPreferences.py:445
-#: wxDialogPreferences.py:883
+#: wxDialogPreferences.py:913
 msgid "MegaBytes"
 msgstr "MegaBytes"
 
@@ -334,7 +334,7 @@ msgid "&Display Infected Files Only"
 msgstr "&Enkel besmette bestanden tonen"
 
 #: wxDialogPreferences.py:626
-#: wxDialogPreferences.py:905
+#: wxDialogPreferences.py:935
 msgid "Select if you wish to display infected files only in the scan progress window"
 msgstr "Vink aan als u enkel besmette bestanden wil zin in het vooruitgangsvenster"
 
@@ -492,96 +492,121 @@ msgid "&Exclude Matching Filenames:"
 msgstr "Passende Bestandsnamen &Uitsluiten"
 
 #: wxDialogPreferences.py:837
-#: wxDialogPreferences.py:847
+#: wxDialogPreferences.py:862
 msgid "Patterns"
 msgstr "Patronen"
 
 #: wxDialogPreferences.py:842
+#: wxDialogPreferences.py:867
+msgid "Move up"
+msgstr "Hogerop plaatsen"
+
+#: wxDialogPreferences.py:845
+#: wxDialogPreferences.py:870
+msgid "Move down"
+msgstr "Lager plaatsen"
+
+#: wxDialogPreferences.py:848
+#: wxDialogPreferences.py:873
+msgid "New item"
+msgstr "Nieuw item"
+
+#: wxDialogPreferences.py:851
+#: wxDialogPreferences.py:876
+msgid "Delete item"
+msgstr "Item verwijderen"
+
+#: wxDialogPreferences.py:854
+#: wxDialogPreferences.py:879
+msgid "Edit item"
+msgstr "Item aanpassen"
+
+#: wxDialogPreferences.py:857
 msgid "&Scan Only Matching Filenames:"
 msgstr "Enkel passende namen &Scannen"
 
-#: wxDialogPreferences.py:852
+#: wxDialogPreferences.py:882
 msgid "&Deactivate"
 msgstr "&Deactiveren"
 
-#: wxDialogPreferences.py:860
+#: wxDialogPreferences.py:890
 msgid "A&ctivate"
 msgstr "A&ctiveren"
 
-#: wxDialogPreferences.py:868
+#: wxDialogPreferences.py:898
 msgid "&Notify About New ClamWin Releases"
 msgstr "&Waarschuwen bij nieuwe ClamWin Releases"
 
-#: wxDialogPreferences.py:871
+#: wxDialogPreferences.py:901
 msgid "Select if you wish to get a notification message when ClamWin Free Antivirus program has been updated"
 msgstr "Vink dit aan als u wil gewaarschuwd worden wanneer een nieuwe versie van ClamWin Free Antivirus beschikbaar is "
 
-#: wxDialogPreferences.py:878
+#: wxDialogPreferences.py:908
 msgid "(No personal information is transmitted during this check)"
 msgstr "(Bij deze controle wordt geen persoonlijke informatie doorgezonden)"
 
-#: wxDialogPreferences.py:888
+#: wxDialogPreferences.py:918
 msgid "Scanner &Priority:"
 msgstr "Scanner &Prioriteit"
 
-#: wxDialogPreferences.py:892
-#: wxDialogPreferences.py:897
-#: wxDialogPreferences.py:1447
-#: wxDialogPreferences.py:1455
+#: wxDialogPreferences.py:922
+#: wxDialogPreferences.py:927
+#: wxDialogPreferences.py:1477
+#: wxDialogPreferences.py:1485
 msgid "Normal"
 msgstr "Normaal"
 
-#: wxDialogPreferences.py:892
-#: wxDialogPreferences.py:1445
-#: wxDialogPreferences.py:1453
+#: wxDialogPreferences.py:922
+#: wxDialogPreferences.py:1475
+#: wxDialogPreferences.py:1483
 msgid "Low"
 msgstr "Laag"
 
-#: wxDialogPreferences.py:896
+#: wxDialogPreferences.py:926
 msgid "Specify the process priority for the virus scanner."
 msgstr "Geef de proces prioriteit voor de virus scanner"
 
-#: wxDialogPreferences.py:901
+#: wxDialogPreferences.py:931
 msgid "Display &File Scanned % Progress Indicator"
 msgstr "Toon de vooruitgang Bestand Gescand %"
 
-#: wxDialogPreferences.py:985
+#: wxDialogPreferences.py:1015
 msgid "An error occurred whilst saving configuration file %s. Please check that you have write permission to the configuration file."
 msgstr "Fout bij het bewaren van het configuratiebestand %s.  Controleer aub uw schrijfpermissie voor het configuratiebestand."
 
-#: wxDialogPreferences.py:1003
+#: wxDialogPreferences.py:1033
 msgid "Event Failed"
 msgstr "Gebeurtenis mislukt"
 
-#: wxDialogPreferences.py:1175
-#: wxDialogPreferences.py:1191
+#: wxDialogPreferences.py:1205
+#: wxDialogPreferences.py:1221
 msgid "Executable files (*.exe)|*.exe|All files (*.*)|*.*"
 msgstr "Uitvoerbare bestanden (*.exe)|*.exe|Alle bestanden (*.*)|*.*"
 
-#: wxDialogPreferences.py:1178
-#: wxDialogPreferences.py:1194
-#: wxDialogPreferences.py:1220
-#: wxDialogPreferences.py:1236
+#: wxDialogPreferences.py:1208
+#: wxDialogPreferences.py:1224
+#: wxDialogPreferences.py:1250
+#: wxDialogPreferences.py:1266
 msgid "All files (*)|*"
 msgstr "Alle bestanden (*)|*"
 
-#: wxDialogPreferences.py:1179
-#: wxDialogPreferences.py:1195
-#: wxDialogPreferences.py:1221
-#: wxDialogPreferences.py:1237
+#: wxDialogPreferences.py:1209
+#: wxDialogPreferences.py:1225
+#: wxDialogPreferences.py:1251
+#: wxDialogPreferences.py:1267
 msgid "Choose a file"
 msgstr "Kies een bestand"
 
-#: wxDialogPreferences.py:1217
-#: wxDialogPreferences.py:1233
+#: wxDialogPreferences.py:1247
+#: wxDialogPreferences.py:1263
 msgid "Text Files (*.txt)|*.txt|All files (*.*)|*.*"
 msgstr "Tekst bestanden (*.txt)|*.txt|Alle bestanden (*.*)|*.*"
 
-#: wxDialogPreferences.py:1261
+#: wxDialogPreferences.py:1291
 msgid "Maximum amount of schdeuled items (20) has been reached."
 msgstr "Het maximum aantal geplande scans (20) is bereikt"
 
-#: wxDialogPreferences.py:1349
+#: wxDialogPreferences.py:1379
 msgid ""
 "This is a test message sent during configuration of ClamWin Free Antivirus on the following computer: %s.\n"
 "Please do not be alarmed.\n"
@@ -589,30 +614,30 @@ msgstr ""
 "Dit is een test boodschap verzonden tijdens de configuratie van ClamWin Free Antivirus op de volgende computer: %s.\n"
 "Wees niet ongerust.\n"
 
-#: wxDialogPreferences.py:1354
+#: wxDialogPreferences.py:1384
 msgid "Test Email has been sent successfully."
 msgstr "Test email is met succes verzonden"
 
-#: wxDialogPreferences.py:1356
+#: wxDialogPreferences.py:1386
 msgid "Could not send the email. Please ensure you are connected to the internet. Error: %s"
 msgstr "Kan geen email verzenden. Gelieve uw internet verbinding na te kijken. Fout: %s"
 
-#: wxDialogPreferences.py:1471
-#: wxDialogPreferences.py:1534
-#: wxDialogPreferences.py:1552
+#: wxDialogPreferences.py:1501
+#: wxDialogPreferences.py:1564
+#: wxDialogPreferences.py:1582
 msgid "ClamWin Free Antivirus"
 msgstr "ClamWin Free Antivirus"
 
-#: wxDialogPreferences.py:1471
-#: wxDialogPreferences.py:1552
+#: wxDialogPreferences.py:1501
+#: wxDialogPreferences.py:1582
 msgid "Value cannot be empty"
 msgstr "Veld mag niet leeg zijn"
 
-#: wxDialogPreferences.py:1535
+#: wxDialogPreferences.py:1565
 msgid "The folder you selected does not exist. Would you like to create %s now?"
 msgstr "De geselecteerde map bestaat niet. Wil u %s nu aanmaken ?"
 
-#: wxDialogPreferences.py:1541
+#: wxDialogPreferences.py:1571
 msgid "Unable to create folder %s. Error: %s"
 msgstr "Kan map %s niet aanmaken. Fout: %s"
 

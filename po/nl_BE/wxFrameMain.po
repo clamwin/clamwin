@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.2.3\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-05-21 20:04+0100\n"
+"PO-Revision-Date: 2006-05-29 21:14+0100\n"
 "Last-Translator: Peter Budts <budtse@users.sourceforge.net>\n"
 "Language-Team: ClamWin Free Antivirus <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -12,157 +12,157 @@ msgstr ""
 "X-Poedit-Country: Belgium\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: wxFrameMain.py:89
+#: wxFrameMain.py:90
 msgid "Displays the configuration window"
 msgstr "Toont de instellingen"
 
-#: wxFrameMain.py:90
+#: wxFrameMain.py:91
 msgid "&Preferences"
 msgstr "&Voorkeuren"
 
-#: wxFrameMain.py:92
+#: wxFrameMain.py:93
 msgid "Downloads latest virus database from the Internet"
 msgstr "Download de recentste virus database van het Internet"
 
-#: wxFrameMain.py:94
+#: wxFrameMain.py:95
 msgid "Download &Virus Database Update"
 msgstr "Download &Virus Database Update"
 
-#: wxFrameMain.py:95
+#: wxFrameMain.py:96
 msgid "Displays ClamWin Log Files"
 msgstr "Toont de ClamWin Logbestanden"
 
-#: wxFrameMain.py:96
+#: wxFrameMain.py:97
 msgid "&Display Reports"
 msgstr "&Toon rapporten"
 
-#: wxFrameMain.py:105
+#: wxFrameMain.py:106
 msgid "&File"
 msgstr "&Bestand"
 
-#: wxFrameMain.py:106
+#: wxFrameMain.py:107
 msgid "&Tools"
 msgstr "&Extra"
 
-#: wxFrameMain.py:107
-#: wxFrameMain.py:113
+#: wxFrameMain.py:108
+#: wxFrameMain.py:114
 msgid "&Help"
 msgstr "&Help"
 
-#: wxFrameMain.py:112
+#: wxFrameMain.py:113
 msgid "Displays ClamWin Free Antivirus Manual"
 msgstr "Open ClamWin Free Antivirus Handleiding"
 
-#: wxFrameMain.py:114
+#: wxFrameMain.py:115
 msgid "Checks for the Latest Version"
 msgstr "Controleer de recentste versie"
 
-#: wxFrameMain.py:115
+#: wxFrameMain.py:116
 msgid "&Check Latest Version"
 msgstr "&Controleer Recentste Versie"
 
-#: wxFrameMain.py:116
+#: wxFrameMain.py:117
 msgid "Opens ClamWin Free Antivirus Website"
 msgstr "Opent de ClamWin Free Antivirus Website"
 
-#: wxFrameMain.py:117
+#: wxFrameMain.py:118
 msgid "ClamWin &Website"
 msgstr "ClamWin &Website"
 
-#: wxFrameMain.py:119
+#: wxFrameMain.py:120
 msgid "Opens Frequently Asked Questions Page in the Web Browser"
 msgstr "Opent Vaakgestelde Vragen (FAQ) in uw Web Browser"
 
-#: wxFrameMain.py:120
+#: wxFrameMain.py:121
 msgid "&FAQ"
 msgstr "&FAQ"
 
-#: wxFrameMain.py:122
+#: wxFrameMain.py:123
 msgid "Displays the  About Box"
 msgstr "Toont het Info Venster"
 
-#: wxFrameMain.py:123
+#: wxFrameMain.py:124
 msgid "&About"
 msgstr "&Info"
 
-#: wxFrameMain.py:133
+#: wxFrameMain.py:134
 msgid "Displays Virus Database Update Log FIle"
 msgstr "Toont het Virus Database Update Logbestand"
 
-#: wxFrameMain.py:135
+#: wxFrameMain.py:136
 msgid "&Virus Database Update Report"
 msgstr "&Virus Database Update Rapport"
 
-#: wxFrameMain.py:136
+#: wxFrameMain.py:137
 msgid "Displays Virus Scan Log File"
 msgstr "Toont het Virus Scan Logbestand"
 
-#: wxFrameMain.py:137
+#: wxFrameMain.py:138
 msgid "&Scan Report"
 msgstr "&Scan Rapport"
 
-#: wxFrameMain.py:145
+#: wxFrameMain.py:146
 msgid "Scans Files or Folders for Computer Viruses"
 msgstr "Controleert bestanden of mappen op virussen"
 
-#: wxFrameMain.py:146
-#: wxFrameMain.py:256
+#: wxFrameMain.py:147
+#: wxFrameMain.py:257
 msgid "&Scan"
 msgstr "&Scannen"
 
-#: wxFrameMain.py:148
+#: wxFrameMain.py:149
 msgid "Exits the application"
 msgstr "Sluit de applicatie af"
 
-#: wxFrameMain.py:149
+#: wxFrameMain.py:150
 msgid "E&xit"
 msgstr "&Afsluiten"
 
-#: wxFrameMain.py:158
+#: wxFrameMain.py:159
 msgid "Preferences"
 msgstr "Voorkeuren"
 
-#: wxFrameMain.py:159
 #: wxFrameMain.py:160
+#: wxFrameMain.py:161
 msgid "Displays Preferences Window"
 msgstr "Toont het instellingen venster"
 
-#: wxFrameMain.py:164
+#: wxFrameMain.py:165
 msgid "Update"
 msgstr "Upate"
 
-#: wxFrameMain.py:165
+#: wxFrameMain.py:166
 msgid "Updates virus databases over the Internet"
 msgstr "Update de virus database via het Internet"
 
-#: wxFrameMain.py:166
+#: wxFrameMain.py:167
 msgid "Starts Internet Update"
 msgstr "Start de Internet Update"
 
-#: wxFrameMain.py:170
+#: wxFrameMain.py:171
 msgid "Scan"
 msgstr "Scannen"
 
-#: wxFrameMain.py:171
+#: wxFrameMain.py:172
 msgid "Scans Selected File or Folder for Computer Viruses"
 msgstr "Controleert de geselecteerde bestanden of mappen op virussen"
 
-#: wxFrameMain.py:172
+#: wxFrameMain.py:173
 msgid "Scans For Viruses"
 msgstr "Controleert op Virussen"
 
-#: wxFrameMain.py:220
-#: wxFrameMain.py:224
-#: wxFrameMain.py:336
-#: wxFrameMain.py:342
+#: wxFrameMain.py:221
+#: wxFrameMain.py:225
+#: wxFrameMain.py:337
+#: wxFrameMain.py:343
 msgid "ClamWin Free Antivirus"
 msgstr "ClamWin Free Antivirus"
 
-#: wxFrameMain.py:238
+#: wxFrameMain.py:239
 msgid "Status Bar"
 msgstr "Statusbalk"
 
-#: wxFrameMain.py:246
+#: wxFrameMain.py:247
 msgid ""
 "Select a folder or a file to scan\n"
 "(Hold Shift key to select multiple files or folders)"
@@ -170,31 +170,35 @@ msgstr ""
 "Selecteer een map of bestand om te scannen\n"
 "(Houdt de Shift toets ingedrukt voor meerder bestanden of mappen)"
 
-#: wxFrameMain.py:264
+#: wxFrameMain.py:265
 msgid "&Close"
 msgstr "&Afsluiten"
 
-#: wxFrameMain.py:336
+#: wxFrameMain.py:337
 msgid "ClamWin Free Antivirus is not configured. Would you like to configure it now?"
 msgstr "ClamWin Free Antivirus is niet goed ingesteld. Wil u het nu instellen?"
 
-#: wxFrameMain.py:342
+#: wxFrameMain.py:343
 msgid "You have not yet downloaded Virus Definitions Database. Would you like to download it now?"
 msgstr "U hebt de Virus Definitie Database nog niet opgehaald. Wilt u deze nu downloaden?"
 
-#: wxFrameMain.py:353
+#: wxFrameMain.py:354
 msgid "An Error occurred while updating UI selection. %s"
 msgstr "Fout bij het bijwerken van de UI selectie. %s"
 
-#: wxFrameMain.py:382
+#: wxFrameMain.py:383
 msgid "Could not open help file - %s not found."
 msgstr "Kan helpbestand niet openen - %s niet gevonden."
 
-#: wxFrameMain.py:389
+#: wxFrameMain.py:390
 msgid "Could not open help file. Please ensure that you have Adobe Acrobat Reader installed."
 msgstr "Kan helpbestand niet openen. Gelieve na te kijken of Adobe Acrobat Reader is geïnstalleerd."
 
-#: wxFrameMain.py:400
+#: wxFrameMain.py:393
+msgid "http://www.clamwin.com/content/category/3/7/27/"
+msgstr "http://nl.clamwin.com/content/category/3/7/27/"
+
+#: wxFrameMain.py:401
 msgid "http://www.clamwin.com"
 msgstr "http://nl.clamwin.com"
 
