@@ -36,11 +36,11 @@ WizardSmallImageFile=Setupfiles\WizModernSmallImage.bmp
 Source: py2exe\dist\bin\python23.dll; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 Source: py2exe\dist\bin\ClamTray.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: py2exe\dist\bin\ClamWin.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\doc\HTML\clam.chm; DestDir: {app}\bin; Components: ClamWin; Flags: ignoreversion; DestName: manual.chm
-Source: ..\doc\l10n\RussianManual.chm; DestDir: {app}\bin; Components: InternationalHelp\Russian; Flags: ignoreversion
-;Source: ..\doc\l10n\ItalianManual.chm; DestDir: {app}\bin; Components: InternationalHelp\Italian; Flags: replacesameversion
-Source: ..\doc\manual.pdf; DestDir: {app}\bin; Components: ClamWin; Flags: ignoreversion
-Source: ..\doc\l10n\FrenchManual.pdf; DestDir: {app}\bin; Components: InternationalHelp\French; Flags: ignoreversion
+Source: ..\doc\en_UK\manual_en.chm; DestDir: {app}\bin; Components: ClamWin; Flags: ignoreversion; DestName: manual_en.chm
+Source: ..\doc\ru_RU\manual_ru.chm; DestDir: {app}\bin; Components: InternationalHelp\Russian; Flags: ignoreversion
+;Source: ..\doc\it_IT\manual_it.chm; DestDir: {app}\bin; Components: InternationalHelp\Italian; Flags: ignoreversion
+Source: ..\doc\en_UK\manual_en.pdf; DestDir: {app}\bin; Components: ClamWin; Flags: ignoreversion
+Source: ..\doc\fr_FR\manual_fr.pdf; DestDir: {app}\bin; Components: InternationalHelp\French; Flags: ignoreversion
 Source: py2exe\dist\bin\img\Clam.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
 Source: py2exe\dist\bin\img\ClamAV.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
 Source: py2exe\dist\bin\img\Control.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
@@ -116,11 +116,11 @@ Source: py2exe\dist\lib\BalloonTip.pyd; DestDir: {app}\lib; Components: ClamWin;
 [Icons]
 Name: {group}\Virus Scanner; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: ClamWin
 Name: {code:DesktopDir}\ClamWin Antivirus; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: ClamWin; Tasks: desktopicon
-Name: {group}\Help\Printable Manual; Filename: {app}\bin\manual.pdf; Components: ; WorkingDir: {app}\bin
-Name: {group}\Help\Online Help; Filename: {app}\bin\manual.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: ClamWin
-Name: {group}\Help\International\Russian Help; Filename: {app}\bin\RussianManual.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: InternationalHelp\Russian
-Name: {group}\Help\International\French Help; Filename: {app}\bin\FrenchManual.pdf; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: InternationalHelp\French
-;Name: {group}\Help\International\Italian Help; Filename: {app}\bin\ItalianManual.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: InternationalHelp\Italian
+Name: {group}\Help\Printable Manual; Filename: {app}\bin\manual_en.pdf; Components: ; WorkingDir: {app}\bin
+Name: {group}\Help\Online Help; Filename: {app}\bin\manual_en.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: ClamWin
+Name: {group}\Help\International\Russian Help; Filename: {app}\bin\manual_ru.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: InternationalHelp\Russian
+Name: {group}\Help\International\French Help; Filename: {app}\bin\manual_fr.pdf; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: InternationalHelp\French
+;Name: {group}\Help\International\Italian Help; Filename: {app}\bin\manual_it.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: InternationalHelp\Italian
 
 [Run]
 ; NOTE: The following entry contains an English phrase ("Launch"). You are free to translate it into another language if required.
