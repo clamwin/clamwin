@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Sun May 28 21:38:03 2006\n"
+"POT-Creation-Date: Tue Jul 04 09:55:01 2006\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -578,7 +578,7 @@ msgid "Text Files (*.txt)|*.txt|All files (*.*)|*.*"
 msgstr ""
 
 #: wxDialogPreferences.py:1291
-msgid "Maximum amount of schdeuled items (20) has been reached."
+msgid "Maximum amount of scheduled items (20) has been reached."
 msgstr ""
 
 #: wxDialogPreferences.py:1379

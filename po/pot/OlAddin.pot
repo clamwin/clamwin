@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Sun Apr 30 15:45:12 2006\n"
+"POT-Creation-Date: Tue Jul 04 09:53:22 2006\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,115 +23,119 @@ msgstr ""
 msgid "I'm afraid it is time to upgrade"
 msgstr ""
 
-#: OlAddin.py:198
+#: OlAddin.py:199
 msgid ""
 "An error occurred in ClamWin Free Antivirus About Box.\n"
 msgstr ""
 
-#: OlAddin.py:198 OlAddin.py:405 OlAddin.py:477
+#: OlAddin.py:199 OlAddin.py:419 OlAddin.py:492
 msgid "ClamWin Free Antivirus"
 msgstr ""
 
-#: OlAddin.py:212
+#: OlAddin.py:213
 msgid "WARNING - Trying to use image '%s', but it doesn't exist"
 msgstr ""
 
-#: OlAddin.py:271
+#: OlAddin.py:248
+msgid "Virus Deleted by ClamWin.txt"
+msgstr ""
+
+#: OlAddin.py:275 OlAddin.py:1031
+msgid "Registration complete."
+msgstr ""
+
+#: OlAddin.py:277
 msgid "An Error occurred whilst starting clamscan: %s"
 msgstr ""
 
-#: OlAddin.py:287
+#: OlAddin.py:294
 msgid "An Error occurred reading clamscan report: %s"
 msgstr ""
 
-#: OlAddin.py:288
+#: OlAddin.py:296
 msgid ""
 "An Error occurred whilst scanning:\n"
 "%s"
 msgstr ""
 
-#: OlAddin.py:298
+#: OlAddin.py:306
 msgid "An Error occurred whilst converting clamscan report: %s"
 msgstr ""
 
-#: OlAddin.py:334
+#: OlAddin.py:344
 msgid "Virus Definitions Database Not Found! Please download it now."
 msgstr ""
 
-#: OlAddin.py:404
+#: OlAddin.py:418
 msgid ""
 "ClamWin Free Antivirus could not scan file%s\n"
 ".Error: %s"
 msgstr ""
 
-#: OlAddin.py:455
+#: OlAddin.py:470
 msgid "ClamWin Free Antivirus has detected a virus in the message attachments!"
 msgstr ""
 
-#: OlAddin.py:456
+#: OlAddin.py:471
 msgid "Virus Detected!"
 msgstr ""
 
-#: OlAddin.py:459
+#: OlAddin.py:474
 msgid "Virus has been detected in an email attachment! The attachment was replaced with the report file."
 msgstr ""
 
-#: OlAddin.py:461
+#: OlAddin.py:476
 msgid "An error occurred whilst scanning email message."
 msgstr ""
 
-#: OlAddin.py:493
+#: OlAddin.py:508
 msgid "Could not remove file: %s. Error: %s"
 msgstr ""
 
-#: OlAddin.py:565
+#: OlAddin.py:580
 msgid "&About ClamWin Free Antivirus"
 msgstr ""
 
-#: OlAddin.py:566
+#: OlAddin.py:581
 msgid "Shows the ClamWin About Box"
 msgstr ""
 
-#: OlAddin.py:818
+#: OlAddin.py:836
 msgid "ClamWin Free Antivirus could not replace an attachment. Error: %s"
 msgstr ""
 
-#: OlAddin.py:819
+#: OlAddin.py:837
 msgid "ClamWin Free Antivirus!"
 msgstr ""
 
-#: OlAddin.py:886
+#: OlAddin.py:905
 msgid "Error connecting to Outlook!"
 msgstr ""
 
-#: OlAddin.py:888
+#: OlAddin.py:907
 msgid ""
 "There was an error initializing the ClamWin addin\r\n"
 "\r\n"
 "Please re-start Outlook and try again."
 msgstr ""
 
-#: OlAddin.py:899
-msgid "An error occurred whilst displaying the spashscreen %s. Error: %s."
+#: OlAddin.py:918
+msgid "An error occurred whilst displaying the splashscreen %s. Error: %s."
 msgstr ""
 
-#: OlAddin.py:936
+#: OlAddin.py:955
 msgid "Addin terminating: %d COM client and %d COM servers exist."
 msgstr ""
 
-#: OlAddin.py:988
+#: OlAddin.py:1007
 msgid "Registering (in HKEY_LOCAL_MACHINE)..."
 msgstr ""
 
-#: OlAddin.py:991
+#: OlAddin.py:1010
 msgid "Registering (in HKEY_CURRENT_USER)..."
 msgstr ""
 
-#: OlAddin.py:996
+#: OlAddin.py:1015
 msgid "Registration Complete"
-msgstr ""
-
-#: OlAddin.py:1012
-msgid "Registration complete."
 msgstr ""
 

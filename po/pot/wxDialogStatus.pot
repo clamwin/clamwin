@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Sun Apr 30 15:47:34 2006\n"
+"POT-Creation-Date: Mon Jul 17 16:01:51 2006\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,67 +15,207 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 
-#: wxDialogStatus.py:124
-msgid "ClamWin Free Antivirus Status"
+#: wxDialogStatus.py:115
+msgid "FOUND"
+msgstr ""
+
+#: wxDialogStatus.py:117
+msgid "ClamAV update process started at"
+msgstr ""
+
+#: wxDialogStatus.py:119
+msgid "ERROR: DNS Resolver:"
+msgstr ""
+
+#: wxDialogStatus.py:121
+msgid "WARNING: Invalid DNS reply. Falling back to HTTP mode."
+msgstr ""
+
+#: wxDialogStatus.py:123
+msgid "ERROR: Can't get information about database.clamav.net:"
+msgstr ""
+
+#: wxDialogStatus.py:125
+msgid "Can't query"
+msgstr ""
+
+#: wxDialogStatus.py:127
+msgid "No IP address"
+msgstr ""
+
+#: wxDialogStatus.py:129
+msgid "ERROR: No servers could be reached. Giving up"
+msgstr ""
+
+#: wxDialogStatus.py:131
+msgid "Trying again in 5 secs..."
+msgstr ""
+
+#: wxDialogStatus.py:133
+msgid "Giving up on"
+msgstr ""
+
+#: wxDialogStatus.py:135
+msgid "ERROR: Update failed. Your network may be down or none of the mirrors listed in freshclam.conf is working."
+msgstr ""
+
+#: wxDialogStatus.py:137
+msgid "Scan started:"
+msgstr ""
+
+#: wxDialogStatus.py:139
+msgid "-- summary --"
+msgstr ""
+
+#: wxDialogStatus.py:141
+msgid "Known viruses:"
+msgstr ""
+
+#: wxDialogStatus.py:143
+msgid "Engine version:"
+msgstr ""
+
+#: wxDialogStatus.py:145
+msgid "Scanned directories:"
+msgstr ""
+
+#: wxDialogStatus.py:147
+msgid "Scanned files:"
 msgstr ""
 
 #: wxDialogStatus.py:149
-msgid "&Stop"
+msgid "Infected files:"
+msgstr ""
+
+#: wxDialogStatus.py:151
+msgid "Data scanned:"
+msgstr ""
+
+#: wxDialogStatus.py:153
+msgid "Time:"
+msgstr ""
+
+#: wxDialogStatus.py:155
+msgid "WARNING: Your ClamAV installation is OUTDATED!"
 msgstr ""
 
 #: wxDialogStatus.py:157
+msgid "WARNING: Local version:"
+msgstr ""
+
+#: wxDialogStatus.py:159
+msgid "Recommended version:"
+msgstr ""
+
+#: wxDialogStatus.py:161
+msgid "DON'T PANIC! Read"
+msgstr ""
+
+#: wxDialogStatus.py:163
+msgid "is up to date"
+msgstr ""
+
+#: wxDialogStatus.py:165
+msgid "sigs:"
+msgstr ""
+
+#: wxDialogStatus.py:167
+msgid "f-level:"
+msgstr ""
+
+#: wxDialogStatus.py:169
+msgid "builder:"
+msgstr ""
+
+#: wxDialogStatus.py:171
+msgid "Database updated"
+msgstr ""
+
+#: wxDialogStatus.py:173
+msgid "signatures"
+msgstr ""
+
+#: wxDialogStatus.py:175
+msgid "from"
+msgstr ""
+
+#: wxDialogStatus.py:177
+msgid "Control+C pressed, aborting..."
+msgstr ""
+
+#: wxDialogStatus.py:179
+msgid "Downloading"
+msgstr ""
+
+#: wxDialogStatus.py:187
+msgid "version:"
+msgstr ""
+
+#: wxDialogStatus.py:189
+msgid "updated"
+msgstr ""
+
+#: wxDialogStatus.py:219
+msgid "ClamWin Free Antivirus Status"
+msgstr ""
+
+#: wxDialogStatus.py:243
+msgid "&Stop"
+msgstr ""
+
+#: wxDialogStatus.py:251
 msgid "S&ave Report"
 msgstr ""
 
-#: wxDialogStatus.py:265
+#: wxDialogStatus.py:358
 msgid "Unable to stop runner thread, terminating"
 msgstr ""
 
-#: wxDialogStatus.py:283
+#: wxDialogStatus.py:376
 msgid "Report files (*.txt)|*.txt|All files (*.*)|*.*"
 msgstr ""
 
-#: wxDialogStatus.py:285
+#: wxDialogStatus.py:378
 msgid "All files (*)|*"
 msgstr ""
 
-#: wxDialogStatus.py:286
+#: wxDialogStatus.py:379
 msgid "Choose a file"
 msgstr ""
 
-#: wxDialogStatus.py:293
+#: wxDialogStatus.py:386
 msgid "Could not save report to the file "
 msgstr ""
 
-#: wxDialogStatus.py:294
+#: wxDialogStatus.py:387
 msgid ". Please check that you have write "
 msgstr ""
 
-#: wxDialogStatus.py:295
+#: wxDialogStatus.py:388
 msgid "permissions to the folder and there is enough space on the disk."
 msgstr ""
 
-#: wxDialogStatus.py:296
+#: wxDialogStatus.py:389
 msgid "ClamWin Free Antivirus"
 msgstr ""
 
-#: wxDialogStatus.py:328
+#: wxDialogStatus.py:424
 msgid "&Close"
 msgstr ""
 
-#: wxDialogStatus.py:346
+#: wxDialogStatus.py:455
 msgid "Could not read from log file %s. Error: %s"
 msgstr ""
 
-#: wxDialogStatus.py:356
+#: wxDialogStatus.py:465
 msgid ""
 "\n"
-"-------------------\n"
+"--------------------------------------\n"
 "Completed\n"
-"-------------------\n"
+"--------------------------------------\n"
 msgstr ""
 
-#: wxDialogStatus.py:358
+#: wxDialogStatus.py:467
 msgid ""
 "\n"
 "--------------------------------------\n"
@@ -83,18 +223,18 @@ msgid ""
 "--------------------------------------\n"
 msgstr ""
 
-#: wxDialogStatus.py:435
+#: wxDialogStatus.py:550
 msgid "Could not start process. No Command Line specified"
 msgstr ""
 
-#: wxDialogStatus.py:442
+#: wxDialogStatus.py:557
 msgid ""
 "Could not start process.\n"
 "%s\n"
 "File does not exist."
 msgstr ""
 
-#: wxDialogStatus.py:451 wxDialogStatus.py:453
+#: wxDialogStatus.py:567 wxDialogStatus.py:569
 msgid ""
 "Could not start process:\n"
 "%s\n"
