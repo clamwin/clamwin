@@ -3,7 +3,7 @@
 
 [Setup]
 AppName=ClamWin Free Antivirus
-AppVerName=ClamWin Free Antivirus 0.88.2.3
+AppVerName=ClamWin Free Antivirus 0.88.3.1
 AppPublisher=alch
 AppPublisherURL=http://clamwin.sourceforge.net/
 AppSupportURL=http://clamwin.sourceforge.net/
@@ -36,7 +36,7 @@ WizardSmallImageFile=Setupfiles\WizModernSmallImage.bmp
 Source: py2exe\dist\bin\python23.dll; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 Source: py2exe\dist\bin\ClamTray.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: py2exe\dist\bin\ClamWin.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\doc\en_UK\manual_en.chm; DestDir: {app}\bin; Components: ClamWin; Flags: ignoreversion; DestName: manual_en.chm
+Source: ..\doc\en_UK\manual_en.chm; DestDir: {app}\bin; Components: ClamWin; Flags: ignoreversion; DestName: manual.chm
 Source: ..\doc\ru_RU\manual_ru.chm; DestDir: {app}\bin; Components: InternationalHelp\Russian; Flags: ignoreversion
 ;Source: ..\doc\it_IT\manual_it.chm; DestDir: {app}\bin; Components: InternationalHelp\Italian; Flags: ignoreversion
 Source: ..\doc\en_UK\manual_en.pdf; DestDir: {app}\bin; Components: ClamWin; Flags: ignoreversion
@@ -78,8 +78,8 @@ Source: ..\cpp\Release_Unicode\ExpShell.dll; DestDir: {app}\bin; Components: Exp
 Source: py2exe\dist\bin\WClose.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: py2exe\dist\lib\w9xpopen.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: py2exe\dist\bin\OlAddin.exe; DestDir: {app}\bin; Components: OutlookAddin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: {%TEMP|{localappdata}}\clamwin-src.zip; DestDir: {app}\src; Components: Sources; Flags: external ignoreversion
-Source: {%TEMP|{localappdata}}\clamav-src.tar.gz; DestDir: {app}\src; Components: Sources; Flags: external ignoreversion
+;Source: {%TEMP|{localappdata}}\clamwin-src.zip; DestDir: {app}\src; Components: Sources; Flags: external ignoreversion
+;Source: {%TEMP|{localappdata}}\clamav-src.tar.gz; DestDir: {app}\src; Components: Sources; Flags: external ignoreversion
 ;Source: {%TEMP|{localappdata}}\cygwin-src.tar.bz2; DestDir: {app}\src; Components: Sources; Flags: external replacesameversion
 
 Source: py2exe\dist\lib\_socket.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
@@ -117,7 +117,7 @@ Source: py2exe\dist\lib\BalloonTip.pyd; DestDir: {app}\lib; Components: ClamWin;
 Name: {group}\Virus Scanner; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: ClamWin
 Name: {code:DesktopDir}\ClamWin Antivirus; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: ClamWin; Tasks: desktopicon
 Name: {group}\Help\Printable Manual; Filename: {app}\bin\manual_en.pdf; Components: ; WorkingDir: {app}\bin
-Name: {group}\Help\Online Help; Filename: {app}\bin\manual_en.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: ClamWin
+Name: {group}\Help\Online Help; Filename: {app}\bin\manual.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: ClamWin
 Name: {group}\Help\International\Russian Help; Filename: {app}\bin\manual_ru.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: InternationalHelp\Russian
 Name: {group}\Help\International\French Help; Filename: {app}\bin\manual_fr.pdf; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: InternationalHelp\French
 ;Name: {group}\Help\International\Italian Help; Filename: {app}\bin\manual_it.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: InternationalHelp\Italian
@@ -138,8 +138,7 @@ Name: {code:CommonProfileDir}\.clamwin\quarantine; Components: ClamAV; Check: No
 Name: {app}\bin; Components: ExplorerShell ClamWin
 Name: {app}\lib; Components: ClamWin
 Name: {app}\bin\img; Components: ClamWin
-
-Name: {app}\src; Components: Sources
+;Name: {app}\src; Components: Sources
 [_ISTool]
 OutputExeFilename=L:\Projects\ClamWin\Setup\Output\setup.exe
 [Components]
@@ -152,7 +151,7 @@ Name: InternationalHelp; Description: International Help Files; Types: full
 Name: InternationalHelp\Russian; Description: Russian Help Files; Types: full
 Name: InternationalHelp\French; Description: French Help Files; Types: full
 ;Name: InternationalHelp\Italian; Description: Italian Help Files; Types: full
-Name: Sources; Description: Download Source Code; ExtraDiskSpaceRequired: 9437184; Types: full
+;Name: Sources; Description: Download Source Code; ExtraDiskSpaceRequired: 9437184; Types: full
 [INI]
 Filename: {app}\bin\ClamWin.conf; Section: ClamAV; Key: clamscan; String: {app}\bin\clamscan.exe; Check: IsIniValueEmpty(ExpandConstant('ClamAV*clamscan*{app}\bin\ClamWin.conf'))
 Filename: {app}\bin\ClamWin.conf; Section: ClamAV; Key: freshclam; String: {app}\bin\freshclam.exe; Check: IsIniValueEmpty(ExpandConstant('ClamAV*freshclam*{app}\bin\ClamWin.conf'))
@@ -162,9 +161,9 @@ Filename: {app}\bin\ClamWin.conf; Section: ClamAV; Key: logfile; String: {code:C
 Filename: {app}\bin\ClamWin.conf; Section: Updates; Key: dbupdatelogfile; String: {code:CommonProfileDir}\.clamwin\log\ClamUpdateLog.txt; Check: IsIniValueEmpty(ExpandConstant('Updates*dbupdatelogfile*{app}\bin\ClamWin.conf'))
 Filename: {app}\bin\ClamWin.conf; Section: Updates; Key: time; String: {code:CurTime}; Check: IsIniValueEmpty(ExpandConstant('Updates*time*{app}\bin\ClamWin.conf'))
 
-[_ISToolDownload]
-Name: Sources_ClamWin; Description: ClamWin Source Code; GroupDescription: Source Code; Flags: unchecked; Source: http://osdn.dl.sourceforge.net/sourceforge/clamwin/clamwin-0.88.2.3-src.zip; DestDir: {%TEMP|{localappdata}}; DestName: clamwin-src.zip; Components: Sources
-Name: Sources_ClamAV; Description: ClamAV Source Code; GroupDescription: Source Code; Flags: unchecked; Source: http://osdn.dl.sourceforge.net/sourceforge/clamav/clamav-0.88.2.tar.gz; DestDir: {%TEMP|{localappdata}}; DestName: clamav-src.tar.gz; Components: Sources
+;[_ISToolDownload]
+;Name: Sources_ClamWin; Description: ClamWin Source Code; GroupDescription: Source Code; Flags: unchecked; Source: http://osdn.dl.sourceforge.net/sourceforge/clamwin/clamwin-0.88.3-src.zip; DestDir: {%TEMP|{localappdata}}; DestName: clamwin-src.zip; Components: Sources
+;Name: Sources_ClamAV; Description: ClamAV Source Code; GroupDescription: Source Code; Flags: unchecked; Source: http://osdn.dl.sourceforge.net/sourceforge/clamav/clamav-0.88.3.tar.gz; DestDir: {%TEMP|{localappdata}}; DestName: clamav-src.tar.gz; Components: Sources
 ;Name: Sources_Cygwin; Description: Cygwin Source Code; GroupDescription: Source Codes; Flags: unchecked; Source: http://mirrors.kernel.org/sources.redhat.com/cygwin/release/cygwin/cygwin-1.5.18-1-src.tar.bz2; DestDir: {%TEMP|{localappdata}}; DestName: cygwin-src.tar.bz2; Components: Sources
 
 [Types]
@@ -344,7 +343,7 @@ end;
 
 function NextButtonClick(CurPage: Integer): Boolean;
 begin
-	Result := istool_download(CurPage);
+	// Result := istool_download(CurPage);
 	if CurPage = wpFinished then
 		SetupCompleted := True
 	else if CurPage = AllUsersPage.ID then begin
@@ -355,6 +354,7 @@ begin
 		if ((not IsAdminLoggedOn()) and (not AllUsers)) then
 			RemoveSetup('SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\ClamWin Antivirus_is1');
 	end;
+	Result := True;
 end;
 
 
@@ -464,7 +464,7 @@ begin
 	else
 		AllUsers := IsAdminLoggedOn();
 
-	ThisVersion := 882;
+	ThisVersion := 883;
 	value := 0;
 	if not RegQueryDWordValue(HKEY_CURRENT_USER, 'SOFTWARE\Clamwin', 'Version',  value) then begin
 		value := 0;

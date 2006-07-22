@@ -328,6 +328,8 @@ class wxDialogStatus(wxDialog):
                                
         data = ''
         if self._logfile is not None:
+            # new 22/07/07 added sleep becuase clamscan does not immediately release the handle
+            time.sleep(0.5)
             try:
                 # read last 30000 bytes form the log file 
                 # as our edit control is incapable of displaying more
@@ -341,7 +343,8 @@ class wxDialogStatus(wxDialog):
                     flog.seek(0, 0)
                 data = flog.read()
             except Exception, e:
-                print 'Could not read from log file %s. Error: %s' % (self._logfile, str(e))
+                print 'OnThreadFinished: Could not read from log file %s. Error: %s' % (self._logfile, str(e))
+                data = self.textCtrlStatus.GetLabel()
                 
         # replace cygwin-like pathes with windows-like
         data = data.replace('/', '\\').replace('I\\O', 'I/O')  

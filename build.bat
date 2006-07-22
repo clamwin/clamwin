@@ -1,12 +1,12 @@
 rem @echo off
 set CYGWINDIR=d:\cygwin
 set THISDIR=l:\Projects\ClamWin\clamwin
-set ISTOOLDIR=D:\Program Files\ISTool
+set ISTOOLDIR=C:\Program Files (x86)\ISTool
 
-set VC7DIR=D:\Program Files\Microsoft Visual C++ Toolkit 2003
-set VC8BUILD=D:\Program Files\Microsoft Visual Studio 8\VC\VCPackages\vcbuild.exe
-set MSSDKDIR=D:\Program Files\Microsoft Platform SDK.2003
-set PYTHONDIR=c:\python23
+set VC7DIR=C:\Program Files (x86)\Microsoft Visual C++ Toolkit 2003
+set VC8BUILD=C:\Program Files\Microsoft Visual Studio 8\VC\VCPackages\vcbuild.exe
+set MSSDKDIR=C:\Program Files\Microsoft Platform SDK
+set PYTHONDIR=C:\python23
 
 set MSRC=%MSSDKDIR%\Bin\RC.exe
 set MSCL=%VC7DIR%\bin\cl.exe
@@ -33,7 +33,7 @@ if not "%ERRORLEVEL%"=="0" goto ERROR
 cd ..\..\
 rem build py2exe binaries
 cd setup\py2exe
-call python setup_all.py 
+call %PYTHONDIR%\python setup_all.py 
 if not "%ERRORLEVEL%"=="0" goto ERROR  
 rem build setup
 call "%ISTOOLDIR%\ISTool.exe" -compile "%THISDIR%\Setup\Setup.iss"
