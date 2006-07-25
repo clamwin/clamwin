@@ -1,0 +1,101 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2006-07-25 11:44+0100\n"
+"Last-Translator: Peter Budts <budtse@users.sourceforge.net>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: wxDialogUtils.py:38
+msgid "Unable to create freshclam configuration file. Please check there is enough space on the disk"
+msgstr "Impossible de créer le fichier de configuration de freshclam. Veuillez vérifier qu'il y a assez d'espace libre sur le disque."
+
+#: wxDialogUtils.py:56
+msgid "Virus Database has been updated."
+msgstr "La base de données de virus a été mise à jour."
+
+#: wxDialogUtils.py:58
+msgid "An error occurred during Virus Database Update. Please review the update report."
+msgstr "Une erreur s'est produite pendant la mise à jour de la base de données de virus. Veuillez lire le rapport de mise à jour."
+
+#: wxDialogUtils.py:65
+msgid "ClamWin Free Antivirus: Downloading Update..."
+msgstr "Antivirus Libre et gratuit ClamWin: Téléchargement de la mise à jour en cours..."
+
+#: wxDialogUtils.py:78
+msgid "Unable to remove file %s. Error: %s"
+msgstr "Impossible de supprimer le fichier %s. Erreur: %s"
+
+#: wxDialogUtils.py:83
+msgid "Couldn't remove file %s. Error: %s"
+msgstr "Le fichier %s n'a pu être supprimé. Erreur: %s"
+
+#: wxDialogUtils.py:107
+msgid "Virus Definitions Database Not Found! Please download it now."
+msgstr "La base de définitions de virus n'a pu être trouvée! Veuillez la télécharger dès maintenant."
+
+#: wxDialogUtils.py:115
+msgid ""
+"\n"
+"-----------------------------\n"
+msgstr ""
+"\n"
+"-----------------------------\n"
+
+#: wxDialogUtils.py:116
+msgid ""
+"Scan Started %s\n"
+"ERROR: Virus Definitions Database Not Found! Please download it now.\n"
+msgstr ""
+"Analyse démarrée %s\n"
+"ERREUR: La base de définition de virus n'a pu être trouvée! Veuillez la télécharger maintenant.\n"
+
+#: wxDialogUtils.py:117
+msgid "-----------------------------"
+msgstr "-----------------------------"
+
+#: wxDialogUtils.py:126
+msgid "Virus has been detected during scan! Please review the scan report."
+msgstr "Un virus a été détecté pendant l'analyse! Veuillez lire le rapport d'analyse."
+
+#: wxDialogUtils.py:128
+msgid "An error occurred during virus scan. Please review the scan report."
+msgstr "Une erreur est survenue pendant l'analyse! Veuillez lire le rapport d'analyse."
+
+#: wxDialogUtils.py:133
+msgid "ClamWin Free Antivirus: Scanning..."
+msgstr "Antivirus Libre et gratuit ClamWin: Analyse en cours..."
+
+#: wxDialogUtils.py:150
+msgid "Could not send email alert. Error: %s"
+msgstr "Impossible d'envoyer un mail d'alerte. Erreur: %s"
+
+#: wxDialogUtils.py:157
+msgid "Could not delete logfile : %s. Error: %s"
+msgstr "Impossible de supprimer le fichier journal: %s. Erreur: %s"
+
+#: wxDialogUtils.py:179
+msgid "Log files are not properly configured. Please review ClamWin configuration"
+msgstr "Les fichiers journaux ne sont pas correctement configurés. Veuillez vérifier votre configuration de ClamWin"
+
+#: wxDialogUtils.py:192
+msgid "Unable to read from the log file. Error: %s"
+msgstr "Impossible de lire le fichier journal. Erreur: %s"
+
+#: wxDialogUtils.py:206
+msgid "Please point your browser at: %s"
+msgstr "Veuillez aller à l'adresse internet suivante: %s"
+
+#: wxDialogUtils.py:229
+msgid ""
+"Unable to get online version. Most likely it's a temporary connectivity error and you don't have to do anything.\n"
+"If you see this error often then allow clamwin.exe in your firewall and check proxy settings.\n"
+"(%s)"
+msgstr ""
+"Impossible d'obtenir la version en ligne. C'est probablement un problème de connexion temporaire et vous n'avez rien à faire.\n"
+"Si vous voyez souvent cette erreur, alors autorisez clamwin.exe à passer à travers votre firewall et vérifiez vos paramètres de proxy.\n"
+"(%s)"
+
