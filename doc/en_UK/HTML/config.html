@@ -1,12 +1,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML>
 <HEAD>
-	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1251">
 	<TITLE></TITLE>
 	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.0  (Win32)">
 	<META NAME="CREATED" CONTENT="20040426;21532900">
-	<META NAME="CHANGEDBY" CONTENT="Peter Budts">
-	<META NAME="CHANGED" CONTENT="20060507;19173500">
+	<META NAME="CHANGED" CONTENT="20060710;18421157">
 	<META NAME="SDFOOTNOTE" CONTENT=";;;;P">
 	<META NAME="SDENDNOTE" CONTENT="ARABIC">
 	<STYLE>
@@ -100,8 +99,14 @@ and including a *  at the end, eg:</P>
 <P CLASS="western"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">C:\Path\to\folder\*</FONT></FONT></P>
 <P CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=3>Note
 that * will not match \, so if you want to include or exclude a
-folder with all subfolders you need to add .* (dot star) at the end:</FONT></FONT></P>
-<P CLASS="western"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">C:\Path\to\folder\.*</FONT></FONT></P>
+folder with all subfolders you need to use a regular expression
+syntax and add .* (dot star) at the end:</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">&lt;C:<A HREF="//Path//to//folder//">\\Path\\to\\folder\\</A>.*&gt;</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=3>Regular
+expressions are enclosed in &lt;&gt; tags and \\ is needed because \
+is a reserved character.</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
 <P CLASS="western">Regular expressions can be used for greater
 flexibility, but must be contained within angle brackets
 (&lt;RegularExpression&gt;). Information about regular expressions,
