@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.2.3\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-05-21 20:15+0100\n"
+"PO-Revision-Date: 2006-07-24 17:16+0100\n"
 "Last-Translator: Peter Budts <budtse@users.sourceforge.net>\n"
 "Language-Team: ClamWin Free Antivirus <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -12,71 +12,211 @@ msgstr ""
 "X-Poedit-Country: Belgium\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: wxDialogStatus.py:124
+#: wxDialogStatus.py:115
+msgid "FOUND"
+msgstr "GEVONDEN"
+
+#: wxDialogStatus.py:117
+msgid "ClamAV update process started at"
+msgstr "ClamAV update proces gestart om"
+
+#: wxDialogStatus.py:119
+msgid "ERROR: DNS Resolver:"
+msgstr "FOUT: DNS Vertaler:"
+
+#: wxDialogStatus.py:121
+msgid "WARNING: Invalid DNS reply. Falling back to HTTP mode."
+msgstr "WAARSCHUWING: Ongeldig DNS antwoord. Val terug op HTTP mode."
+
+#: wxDialogStatus.py:123
+msgid "ERROR: Can't get information about database.clamav.net:"
+msgstr "FOUT: Kan geen informatie vinden over database.clamav.net"
+
+#: wxDialogStatus.py:125
+msgid "Can't query"
+msgstr "Fout bij bevragen van"
+
+#: wxDialogStatus.py:127
+msgid "No IP address"
+msgstr "Geen IP adres"
+
+#: wxDialogStatus.py:129
+msgid "ERROR: No servers could be reached. Giving up"
+msgstr "FOUT: Kan geen server contacteren. Breek af."
+
+#: wxDialogStatus.py:131
+msgid "Trying again in 5 secs..."
+msgstr "Zal opnieuw proberen over 5 seconden..."
+
+#: wxDialogStatus.py:133
+msgid "Giving up on"
+msgstr "Actie wordt afgebroken"
+
+#: wxDialogStatus.py:135
+msgid "ERROR: Update failed. Your network may be down or none of the mirrors listed in freshclam.conf is working."
+msgstr "FOUT: Update is mislukt. Uw netwerk kan onderbroken zijn of de mirror servers in freshclam.conf werken niet."
+
+#: wxDialogStatus.py:137
+msgid "Scan started:"
+msgstr "Scan gestart:"
+
+#: wxDialogStatus.py:139
+msgid "-- summary --"
+msgstr "-- samenvatting --"
+
+#: wxDialogStatus.py:141
+msgid "Known viruses:"
+msgstr "Gekende virussen:"
+
+#: wxDialogStatus.py:143
+msgid "Engine version:"
+msgstr "Engine versie:"
+
+#: wxDialogStatus.py:145
+msgid "Scanned directories:"
+msgstr "Gescande mappen:"
+
+#: wxDialogStatus.py:147
+msgid "Scanned files:"
+msgstr "Gescande bestanden:"
+
+#: wxDialogStatus.py:149
+msgid "Infected files:"
+msgstr "Geïnfecteerde bestanden:"
+
+#: wxDialogStatus.py:151
+msgid "Data scanned:"
+msgstr "Gescande data:"
+
+#: wxDialogStatus.py:153
+msgid "Time:"
+msgstr "Tijd:"
+
+#: wxDialogStatus.py:155
+msgid "WARNING: Your ClamAV installation is OUTDATED!"
+msgstr "WAARSCHUWING: Uw ClamAV installatie is VEROUDERD!"
+
+#: wxDialogStatus.py:157
+msgid "WARNING: Local version:"
+msgstr "WAARSCHUWING: Lokale versie:"
+
+#: wxDialogStatus.py:159
+msgid "Recommended version:"
+msgstr "Aangeraden versie:"
+
+#: wxDialogStatus.py:161
+msgid "DON'T PANIC! Read"
+msgstr "GEEN PANIEK! Lees"
+
+#: wxDialogStatus.py:163
+msgid "is up to date"
+msgstr "is up to date"
+
+#: wxDialogStatus.py:165
+msgid "sigs:"
+msgstr "sigs:"
+
+#: wxDialogStatus.py:167
+msgid "f-level:"
+msgstr "f-level:"
+
+#: wxDialogStatus.py:169
+msgid "builder:"
+msgstr "builder:"
+
+#: wxDialogStatus.py:171
+msgid "Database updated"
+msgstr "Database bijgewerkt"
+
+#: wxDialogStatus.py:173
+msgid "signatures"
+msgstr "signaturen:"
+
+#: wxDialogStatus.py:175
+msgid "from"
+msgstr "van"
+
+#: wxDialogStatus.py:177
+msgid "Control+C pressed, aborting..."
+msgstr "Control+C gedrukt, afbreken..."
+
+#: wxDialogStatus.py:179
+msgid "Downloading"
+msgstr "Bezig met downloaden"
+
+#: wxDialogStatus.py:187
+msgid "version:"
+msgstr "Versie:"
+
+#: wxDialogStatus.py:189
+msgid "updated"
+msgstr "bijgewerkt"
+
+#: wxDialogStatus.py:219
 msgid "ClamWin Free Antivirus Status"
 msgstr "ClamWin Free Antivirus Status"
 
-#: wxDialogStatus.py:149
+#: wxDialogStatus.py:243
 msgid "&Stop"
 msgstr "&Stop"
 
-#: wxDialogStatus.py:157
+#: wxDialogStatus.py:251
 msgid "S&ave Report"
 msgstr "&Bewaar Rapport"
 
-#: wxDialogStatus.py:265
+#: wxDialogStatus.py:358
 msgid "Unable to stop runner thread, terminating"
 msgstr "Kan proces niet stoppen, afbreken"
 
-#: wxDialogStatus.py:283
+#: wxDialogStatus.py:376
 msgid "Report files (*.txt)|*.txt|All files (*.*)|*.*"
 msgstr "Rapport bestanden (*.txt)|*.txt|Alle bestanden (*.*)|*.*"
 
-#: wxDialogStatus.py:285
+#: wxDialogStatus.py:378
 msgid "All files (*)|*"
 msgstr "Alle bestanden (*)|*"
 
-#: wxDialogStatus.py:286
+#: wxDialogStatus.py:379
 msgid "Choose a file"
 msgstr "Kies een bestand"
 
-#: wxDialogStatus.py:293
+#: wxDialogStatus.py:386
 msgid "Could not save report to the file "
 msgstr "Kan het rapport niet bewaren in bestand"
 
-#: wxDialogStatus.py:294
+#: wxDialogStatus.py:387
 msgid ". Please check that you have write "
 msgstr ". Gelieve schrijfpermissies"
 
-#: wxDialogStatus.py:295
+#: wxDialogStatus.py:388
 msgid "permissions to the folder and there is enough space on the disk."
 msgstr "op de map en schijfruimte na te kijken"
 
-#: wxDialogStatus.py:296
+#: wxDialogStatus.py:389
 msgid "ClamWin Free Antivirus"
 msgstr "ClamWin Free Antivirus"
 
-#: wxDialogStatus.py:328
+#: wxDialogStatus.py:424
 msgid "&Close"
 msgstr "&Afsluiten"
 
-#: wxDialogStatus.py:346
+#: wxDialogStatus.py:455
 msgid "Could not read from log file %s. Error: %s"
 msgstr "Kan logbestand %s niet lezen. Fout: %s"
 
-#: wxDialogStatus.py:356
+#: wxDialogStatus.py:465
 msgid ""
 "\n"
-"-------------------\n"
+"--------------------------------------\n"
 "Completed\n"
-"-------------------\n"
+"--------------------------------------\n"
 msgstr ""
 "\n"
-"-------------------\n"
+"--------------------------------------\n"
 "Voltooid\n"
-"-------------------\n"
+"--------------------------------------\n"
 
-#: wxDialogStatus.py:358
+#: wxDialogStatus.py:467
 msgid ""
 "\n"
 "--------------------------------------\n"
@@ -88,11 +228,11 @@ msgstr ""
 "Afgebroken\n"
 "--------------------------------------\n"
 
-#: wxDialogStatus.py:435
+#: wxDialogStatus.py:550
 msgid "Could not start process. No Command Line specified"
 msgstr "Kan proces niet starten. Geen opdrachtregel opgegeven"
 
-#: wxDialogStatus.py:442
+#: wxDialogStatus.py:557
 msgid ""
 "Could not start process.\n"
 "%s\n"
@@ -102,8 +242,8 @@ msgstr ""
 "%s\n"
 "Bestand bestaat niet."
 
-#: wxDialogStatus.py:451
-#: wxDialogStatus.py:453
+#: wxDialogStatus.py:567
+#: wxDialogStatus.py:569
 msgid ""
 "Could not start process:\n"
 "%s\n"
