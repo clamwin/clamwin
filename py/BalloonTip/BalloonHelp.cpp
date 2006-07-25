@@ -222,9 +222,9 @@ CBalloonHelp::CBalloonHelp()
       m_nMouseMoveTolerance = nTol;
 
    // setup hook procedures
-   BHKeybHookThunk<CBalloonHelp>::InitThunk((TMFP)KeyboardHookProc, this);
-   BHMouseHookThunk<CBalloonHelp>::InitThunk((TMFP)MouseHookProc, this);
-   BHCallWndRetHookThunk<CBalloonHelp>::InitThunk((TMFP)CallWndRetProc, this);
+   BHKeybHookThunk<CBalloonHelp>::InitThunk((TMFP)&CBalloonHelp::KeyboardHookProc, this);
+   BHMouseHookThunk<CBalloonHelp>::InitThunk((TMFP)&CBalloonHelp::MouseHookProc, this);
+   BHCallWndRetHookThunk<CBalloonHelp>::InitThunk((TMFP)&CBalloonHelp::CallWndRetProc, this);
 }
 
 CBalloonHelp::~CBalloonHelp()

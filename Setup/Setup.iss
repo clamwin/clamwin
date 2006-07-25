@@ -65,16 +65,16 @@ Source: Microsoft.VC80.CRT\msvcm80.dll; DestDir: {app}\bin\Microsoft.VC80.CRT; C
 Source: Microsoft.VC80.CRT\msvcr80.dll; DestDir: {app}\bin\Microsoft.VC80.CRT; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: IsXPOrLater
 Source: Microsoft.VC80.CRT\msvcp80.dll; DestDir: {app}\bin\Microsoft.VC80.CRT; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: IsXPOrLater
 ; on 2000 and 98 VC80 CRT needs to be installed in the same dir; no manifest
-Source: Microsoft.VC80.CRT\msvcm80.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: NotIsXPOrLater
-Source: Microsoft.VC80.CRT\msvcr80.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: NotIsXPOrLater
-Source: Microsoft.VC80.CRT\msvcp80.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: NotIsXPOrLater
+Source: Microsoft.VC80.CRT\msvcm80.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: not IsXPOrLater
+Source: Microsoft.VC80.CRT\msvcr80.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: not IsXPOrLater
+Source: Microsoft.VC80.CRT\msvcp80.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: not IsXPOrLater
 
 
 ;Source: ..\clamav-stable\sigtool\sigtool.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
 ; Copy Unicode build in NT and ANSI in 9x
 Source: ..\cpp\Release\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete 32bit; Check: IsWin9x
 Source: ..\cpp\Release_Unicode\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete 32bit; Check: UsingWinNT
-Source: ..\cpp\Release_x64\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete 64bit
+Source: ..\cpp\Release_x64\ExpShell64.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete 64bit; Check: IsWin64
 
 Source: py2exe\dist\bin\WClose.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: py2exe\dist\lib\w9xpopen.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
@@ -133,9 +133,9 @@ Name: {code:CommonProfileDir}\.clamwin\db; Components: ClamAV; Permissions: auth
 Name: {code:CommonProfileDir}\.clamwin\log; Components: ClamAV; Permissions: authusers-full; Check: IsAllUsers
 Name: {code:CommonProfileDir}\.clamwin\quarantine; Components: ClamAV; Permissions: authusers-full; Check: IsAllUsers
 ;for non-admin user create tese folders in user's profile dir, don't modify security
-Name: {code:CommonProfileDir}\.clamwin\db; Components: ClamAV; Check: NotIsAllUsers
-Name: {code:CommonProfileDir}\.clamwin\log; Components: ClamAV; Check: NotIsAllUsers
-Name: {code:CommonProfileDir}\.clamwin\quarantine; Components: ClamAV; Check: NotIsAllUsers
+Name: {code:CommonProfileDir}\.clamwin\db; Components: ClamAV; Check: not IsAllUsers
+Name: {code:CommonProfileDir}\.clamwin\log; Components: ClamAV; Check: not IsAllUsers
+Name: {code:CommonProfileDir}\.clamwin\quarantine; Components: ClamAV; Check: not IsAllUsers
 Name: {app}\bin; Components: ExplorerShell ClamWin
 Name: {app}\lib; Components: ClamWin
 Name: {app}\bin\img; Components: ClamWin
@@ -185,35 +185,28 @@ Name: {code:CommonProfileDir}\.clamwin; Type: filesandordirs
 ; ClamWin entries
 Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: ClamWin; ValueData: """{app}\bin\ClamTray.exe"" --logon"; Flags: uninsdeletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKLM; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
-Root: HKLM; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 882; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
-Root: HKCU; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: ClamWin; ValueData: """{app}\bin\ClamTray.exe"" --logon"; Flags: uninsdeletevalue; Components: ClamWin; Check: NotIsAllUsers
-Root: HKCU; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: NotIsAllUsers
-Root: HKCU; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 374; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: NotIsAllUsers
+Root: HKLM64; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers and IsWin64
+Root: HKLM; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 883; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
+Root: HKCU; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: ClamWin; ValueData: """{app}\bin\ClamTray.exe"" --logon"; Flags: uninsdeletevalue; Components: ClamWin; Check: not IsAllUsers
+Root: HKCU; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
+Root: HKCU64; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers and IsWin64
+Root: HKCU; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 883; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
 
 ; ExplorerShell entries
 Root: HKCR; Subkey: CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueData: {app}\bin\ExpShell.dll; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers
+Root: HKCR64; Subkey: CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueData: {app}\bin\ExpShell64.dll; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers and IsWin64
 Root: HKCR; Subkey: CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueData: Apartment; Flags: uninsdeletekey; ValueName: ThreadingModel; Components: ExplorerShell; Check: IsAllUsers
+Root: HKCR64; Subkey: CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueData: Apartment; Flags: uninsdeletekey; ValueName: ThreadingModel; Components: ExplorerShell; Check: IsAllUsers and IsWin64
 Root: HKCR; Subkey: *\shellex\ContextMenuHandlers\ClamWin; ValueType: string; ValueData: {{65713842-C410-4f44-8383-BFE01A398C90}; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers
 Root: HKCR; Subkey: Folder\shellex\ContextMenuHandlers\ClamWin; ValueType: string; ValueData: {{65713842-C410-4f44-8383-BFE01A398C90}; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers
-Root: HKCU; Subkey: Software\Classes\CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueData: {app}\bin\ExpShell.dll; Flags: uninsdeletekey; Components: ExplorerShell; Check: NotIsAllUsers
-Root: HKCU; Subkey: Software\Classes\CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueData: Apartment; Flags: uninsdeletekey; ValueName: ThreadingModel; Components: ExplorerShell; Check: NotIsAllUsers
-Root: HKCU; Subkey: Software\Classes\*\shellex\ContextMenuHandlers\ClamWin; ValueType: string; ValueData: {{65713842-C410-4f44-8383-BFE01A398C90}; Flags: uninsdeletekey; Components: ExplorerShell; Check: NotIsAllUsers
-Root: HKCU; Subkey: Software\Classes\Folder\shellex\ContextMenuHandlers\ClamWin; ValueType: string; ValueData: {{65713842-C410-4f44-8383-BFE01A398C90}; Flags: uninsdeletekey; Components: ExplorerShell; Check: NotIsAllUsers
 
-; Cygwin entries
-;Root: HKLM; Subkey: Software\Cygnus Solutions; Flags: uninsdeletekeyifempty; Check: NoCygWinAllUsers
-;Root: HKLM; Subkey: Software\Cygnus Solutions\Cygwin; Flags: uninsdeletekeyifempty; Check: NoCygWinAllUsers
-;Root: HKLM; Subkey: Software\Cygnus Solutions\Cygwin\Program Options; Flags: uninsdeletekeyifempty; Check: NoCygWinAllUsers
-;Root: HKLM; Subkey: Software\Cygnus Solutions\Cygwin\mounts v2; Flags: uninsdeletekeyifempty; Check: NoCygWinAllUsers
-;Root: HKLM; Subkey: Software\Cygnus Solutions\Cygwin\mounts v2\/tmp; ValueType: string; ValueName: native; ValueData: {code:TempDir}; Flags: uninsdeletekeyifempty uninsdeletevalue; Check: NoCygWinAllUsers
-;Root: HKLM; Subkey: Software\Cygnus Solutions\Cygwin\mounts v2\/tmp; ValueType: dword; ValueName: flags; ValueData: 10; Flags: uninsdeletekeyifempty uninsdeletevalue; Check: NoCygWinAllUsers
-;Root: HKCU; Subkey: Software\Cygnus Solutions; Flags: uninsdeletekeyifempty; Check: NoCygWinNotAllUsers
-;Root: HKCU; Subkey: Software\Cygnus Solutions\Cygwin; Flags: uninsdeletekeyifempty; Check: NoCygWinNotAllUsers
-;Root: HKCU; Subkey: Software\Cygnus Solutions\Cygwin\Program Options; Flags: uninsdeletekeyifempty; Check: NoCygWinNotAllUsers
-;Root: HKCU; Subkey: Software\Cygnus Solutions\Cygwin\mounts v2; Flags: uninsdeletekeyifempty; Check: NoCygWinNotAllUsers
-;Root: HKCU; Subkey: Software\Cygnus Solutions\Cygwin\mounts v2\/tmp; ValueType: string; ValueName: native; ValueData: {code:TempDir}; Flags: uninsdeletekeyifempty uninsdeletevalue; Check: NoCygWinNotAllUsers
-;Root: HKCU; Subkey: Software\Cygnus Solutions\Cygwin\mounts v2\/tmp; ValueType: dword; ValueName: flags; ValueData: 10; Flags: uninsdeletekeyifempty uninsdeletevalue; Check: NoCygWinNotAllUsers
-;Root: HKLM; Subkey: Software\Cygnus Solutions\Cygwin\Program Options; Flags: uninsdeletekeyifempty; Check: NoCygWinAllUsers
+
+Root: HKCU; Subkey: Software\Classes\CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueData: {app}\bin\ExpShell.dll; Flags: uninsdeletekey; Components: ExplorerShell; Check: not IsAllUsers
+Root: HKCU64; Subkey: Software\Classes\CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueData: {app}\bin\ExpShell64.dll; Flags: uninsdeletekey; Components: ExplorerShell; Check: not IsAllUsers and IsWin64
+Root: HKCU; Subkey: Software\Classes\CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueData: Apartment; Flags: uninsdeletekey; ValueName: ThreadingModel; Components: ExplorerShell; Check: not IsAllUsers
+Root: HKCU64; Subkey: Software\Classes\CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueData: Apartment; Flags: uninsdeletekey; ValueName: ThreadingModel; Components: ExplorerShell; Check: not IsAllUsers and IsWin64
+Root: HKCU; Subkey: Software\Classes\*\shellex\ContextMenuHandlers\ClamWin; ValueType: string; ValueData: {{65713842-C410-4f44-8383-BFE01A398C90}; Flags: uninsdeletekey; Components: ExplorerShell; Check: not IsAllUsers
+Root: HKCU; Subkey: Software\Classes\Folder\shellex\ContextMenuHandlers\ClamWin; ValueType: string; ValueData: {{65713842-C410-4f44-8383-BFE01A398C90}; Flags: uninsdeletekey; Components: ExplorerShell; Check: not IsAllUsers
 
 ; OutlookAddin entries for all users
 ;delete COM InprocServer32 key if present (we moved to EXE COM server)
@@ -238,27 +231,27 @@ Root: HKLM; Subkey: Software\Microsoft\Office\Outlook\Addins\ClamWin.OutlookAddi
 
 ; OutlookAddin entries for current user
 ;delete COM InprocServer32 key if present (we moved to EXE COM server)
-Root: HKCU; Subkey: Software\Classes\CLSID\{{E77FA584-1433-4af3-800D-AEC49BCCCB11}\InprocServer32; Components: OutlookAddin; Check: NotIsAllUsers; Flags: deletekey dontcreatekey noerror
+Root: HKCU; Subkey: Software\Classes\CLSID\{{E77FA584-1433-4af3-800D-AEC49BCCCB11}\InprocServer32; Components: OutlookAddin; Check: not IsAllUsers; Flags: deletekey dontcreatekey noerror
 ;install new COM EXE server
-Root: HKCU; Subkey: Software\Classes\AppID\{{E77FA584-1433-4af3-800D-AEC49BCCCB11}; ValueType: string; ValueData: ClamWin.OutlookAddin; Flags: uninsdeletekey; Components: OutlookAddin; Check: NotIsAllUsers
-Root: HKCU; Subkey: Software\Classes\CLSID\{{E77FA584-1433-4af3-800D-AEC49BCCCB11}; ValueType: string; ValueData: ClamWin.OutlookAddin; Flags: uninsdeletekey; Components: OutlookAddin; Check: NotIsAllUsers
-Root: HKCU; Subkey: Software\Classes\CLSID\{{E77FA584-1433-4af3-800D-AEC49BCCCB11}\LocalServer32; ValueType: string; ValueData: {app}\bin\OlAddin.exe /Automate; Flags: uninsdeletekey; Components: OutlookAddin; Check: NotIsAllUsers
-Root: HKCU; Subkey: Software\Classes\CLSID\{{E77FA584-1433-4af3-800D-AEC49BCCCB11}\PythonCOM; ValueType: string; ValueData: OlAddin.OutlookAddin; Flags: uninsdeletekey; Components: OutlookAddin; Check: NotIsAllUsers
-Root: HKCU; Subkey: Software\Classes\CLSID\{{E77FA584-1433-4af3-800D-AEC49BCCCB11}\PythonCOMPolicy; ValueType: string; ValueData: win32com.server.policy.EventHandlerPolicy; Flags: uninsdeletekey; Components: OutlookAddin; Check: NotIsAllUsers
-Root: HKCU; Subkey: Software\Classes\CLSID\{{E77FA584-1433-4af3-800D-AEC49BCCCB11}\PythonCOMPath; ValueType: string; ValueData: {app}\bin; Flags: uninsdeletekey; Components: OutlookAddin; Check: NotIsAllUsers
-Root: HKCU; Subkey: Software\Classes\CLSID\{{E77FA584-1433-4af3-800D-AEC49BCCCB11}\Implemented Categories\{{B3EF80D0-68E2-11D0-A689-00C04FD658FF}; Flags: uninsdeletekey; Components: OutlookAddin; Check: NotIsAllUsers
-Root: HKCU; Subkey: Software\Classes\CLSID\{{E77FA584-1433-4af3-800D-AEC49BCCCB11}\Debugging; ValueType: string; ValueData: 0; Flags: uninsdeletekey; Components: OutlookAddin; Check: NotIsAllUsers
-Root: HKCU; Subkey: Software\Classes\CLSID\{{E77FA584-1433-4af3-800D-AEC49BCCCB11}\ProgID; ValueType: string; ValueData: ClamWin.OutlookAddin; Flags: uninsdeletekey; Components: OutlookAddin; Check: NotIsAllUsers
-Root: HKCU; Subkey: Software\Classes\ClamWin.OutlookAddin; ValueType: string; ValueData: ClamWin.OutlookAddin; Flags: uninsdeletekey; Components: OutlookAddin; Check: NotIsAllUsers
-Root: HKCU; Subkey: Software\Classes\ClamWin.OutlookAddin\CLSID; ValueType: string; ValueData: {{E77FA584-1433-4af3-800D-AEC49BCCCB11}; Flags: uninsdeletekey; Components: OutlookAddin; Check: NotIsAllUsers
+Root: HKCU; Subkey: Software\Classes\AppID\{{E77FA584-1433-4af3-800D-AEC49BCCCB11}; ValueType: string; ValueData: ClamWin.OutlookAddin; Flags: uninsdeletekey; Components: OutlookAddin; Check: not IsAllUsers
+Root: HKCU; Subkey: Software\Classes\CLSID\{{E77FA584-1433-4af3-800D-AEC49BCCCB11}; ValueType: string; ValueData: ClamWin.OutlookAddin; Flags: uninsdeletekey; Components: OutlookAddin; Check: not IsAllUsers
+Root: HKCU; Subkey: Software\Classes\CLSID\{{E77FA584-1433-4af3-800D-AEC49BCCCB11}\LocalServer32; ValueType: string; ValueData: {app}\bin\OlAddin.exe /Automate; Flags: uninsdeletekey; Components: OutlookAddin; Check: not IsAllUsers
+Root: HKCU; Subkey: Software\Classes\CLSID\{{E77FA584-1433-4af3-800D-AEC49BCCCB11}\PythonCOM; ValueType: string; ValueData: OlAddin.OutlookAddin; Flags: uninsdeletekey; Components: OutlookAddin; Check: not IsAllUsers
+Root: HKCU; Subkey: Software\Classes\CLSID\{{E77FA584-1433-4af3-800D-AEC49BCCCB11}\PythonCOMPolicy; ValueType: string; ValueData: win32com.server.policy.EventHandlerPolicy; Flags: uninsdeletekey; Components: OutlookAddin; Check: not IsAllUsers
+Root: HKCU; Subkey: Software\Classes\CLSID\{{E77FA584-1433-4af3-800D-AEC49BCCCB11}\PythonCOMPath; ValueType: string; ValueData: {app}\bin; Flags: uninsdeletekey; Components: OutlookAddin; Check: not IsAllUsers
+Root: HKCU; Subkey: Software\Classes\CLSID\{{E77FA584-1433-4af3-800D-AEC49BCCCB11}\Implemented Categories\{{B3EF80D0-68E2-11D0-A689-00C04FD658FF}; Flags: uninsdeletekey; Components: OutlookAddin; Check: not IsAllUsers
+Root: HKCU; Subkey: Software\Classes\CLSID\{{E77FA584-1433-4af3-800D-AEC49BCCCB11}\Debugging; ValueType: string; ValueData: 0; Flags: uninsdeletekey; Components: OutlookAddin; Check: not IsAllUsers
+Root: HKCU; Subkey: Software\Classes\CLSID\{{E77FA584-1433-4af3-800D-AEC49BCCCB11}\ProgID; ValueType: string; ValueData: ClamWin.OutlookAddin; Flags: uninsdeletekey; Components: OutlookAddin; Check: not IsAllUsers
+Root: HKCU; Subkey: Software\Classes\ClamWin.OutlookAddin; ValueType: string; ValueData: ClamWin.OutlookAddin; Flags: uninsdeletekey; Components: OutlookAddin; Check: not IsAllUsers
+Root: HKCU; Subkey: Software\Classes\ClamWin.OutlookAddin\CLSID; ValueType: string; ValueData: {{E77FA584-1433-4af3-800D-AEC49BCCCB11}; Flags: uninsdeletekey; Components: OutlookAddin; Check: not IsAllUsers
 
-Root: HKCU; Subkey: Software\Microsoft\Office\Outlook\Addins\ClamWin.OutlookAddin; ValueType: dword; ValueName: CommandLineSafe; ValueData: 0; Flags: uninsdeletekey; Components: OutlookAddin; Check: NotIsAllUsers
-Root: HKCU; Subkey: Software\Microsoft\Office\Outlook\Addins\ClamWin.OutlookAddin; ValueType: dword; ValueName: LoadBehavior; ValueData: 3; Flags: uninsdeletekey; Components: OutlookAddin; Check: NotIsAllUsers
-Root: HKCU; Subkey: Software\Microsoft\Office\Outlook\Addins\ClamWin.OutlookAddin; ValueType: string; ValueName: Description; ValueData: ClamWin Antivirus; Flags: uninsdeletekey; Components: OutlookAddin; Check: NotIsAllUsers
-Root: HKCU; Subkey: Software\Microsoft\Office\Outlook\Addins\ClamWin.OutlookAddin; ValueType: string; ValueName: FriendlyName; ValueData: ClamWin Antivirus; Flags: uninsdeletekey; Components: OutlookAddin; Check: NotIsAllUsers
+Root: HKCU; Subkey: Software\Microsoft\Office\Outlook\Addins\ClamWin.OutlookAddin; ValueType: dword; ValueName: CommandLineSafe; ValueData: 0; Flags: uninsdeletekey; Components: OutlookAddin; Check: not IsAllUsers
+Root: HKCU; Subkey: Software\Microsoft\Office\Outlook\Addins\ClamWin.OutlookAddin; ValueType: dword; ValueName: LoadBehavior; ValueData: 3; Flags: uninsdeletekey; Components: OutlookAddin; Check: not IsAllUsers
+Root: HKCU; Subkey: Software\Microsoft\Office\Outlook\Addins\ClamWin.OutlookAddin; ValueType: string; ValueName: Description; ValueData: ClamWin Antivirus; Flags: uninsdeletekey; Components: OutlookAddin; Check: not IsAllUsers
+Root: HKCU; Subkey: Software\Microsoft\Office\Outlook\Addins\ClamWin.OutlookAddin; ValueType: string; ValueName: FriendlyName; ValueData: ClamWin Antivirus; Flags: uninsdeletekey; Components: OutlookAddin; Check: not IsAllUsers
 
 [Tasks]
-Name: DownloadDB; Description: Download Virus Database Files. (Do Not Select if you connect via a Proxy Server); GroupDescription: Download; Components: ClamAV
+Name: DownloadDB; Description: Download Virus Database Files. (Do not Select if you connect via a Proxy Server); GroupDescription: Download; Components: ClamAV
 ; NOTE: The following entry contains English phrases ("Create a desktop icon" and "Additional icons"). You are free to translate them into another language if required.
 Name: desktopicon; Description: Create a &desktop icon; GroupDescription: Additional icons:; Flags: unchecked
 [UninstallRun]
@@ -413,10 +406,6 @@ begin
 	Result:= (GetWindowsVersion() >= $05010000);
 end;
 
-function NotIsXPOrLater(): Boolean;
-begin
-	Result := not IsXPOrLater();
-end;
 
 
 function IsAllUsers(): Boolean;
@@ -427,10 +416,6 @@ begin
 		Result := AllUsers;
 end;
 
-function NotIsAllUsers(): Boolean;
-begin
-	Result := not IsAllUsers();
-end;
 
 procedure CloseClamWin();
 var

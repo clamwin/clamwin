@@ -1,5 +1,4 @@
 @echo off
-set VCINSTALLDIR=C:\Program Files\Microsoft Visual Studio 8\VC
 
 set LIBS=kernel32.lib user32.lib advapi32.lib shell32.lib ole32.lib
 set DEFINES=/D "WIN32" /D "_CRT_SECURE_NO_DEPRECATE" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "EXPLORERSHELL_EXPORTS"
@@ -28,7 +27,7 @@ link.exe /OUT:".\Release/ExpShell.dll" /INCREMENTAL:NO /NOLOGO /DLL /DEF:".\Expl
 if not "%ERRORLEVEL%"=="0" goto END  
 
 :: 64 bit unicode
-call "%VCINSTALLDIR%\vcvarsall.bat" x86_amd64
+call "%VCINSTALLDIR%\vcvarsall.bat" amd64
 
 echo Building 64bit Release Unicode
 mkdir Release_x64
@@ -36,7 +35,7 @@ rc.exe /d "NDEBUG" /l 0x409 /fo".\Release_x64/ExplorerShell.res" .\ExplorerShell
 if not "%ERRORLEVEL%"=="0" goto END
 cl /Wp64 /O1 %DEFINES% /O1 /FD /EHsc /MT /Fo".\Release_x64/" /Fd".\Release_x64/" /W3 /c /TP .\ShellExtImpl.cpp .\ShellExt.cpp
 if not "%ERRORLEVEL%"=="0" goto END  
-link.exe /OUT:".\Release_x64/ExpShell.dll" /INCREMENTAL:NO /NOLOGO /DLL /DEF:".\ExplorerShell.def" /PDB:".\Release_x64/ExplorerShell.pdb" /IMPLIB:".\Release_x64/ExplorerShell.lib" /MACHINE:X64 .\Release_x64\ExplorerShell.res .\Release_x64\ShellExt.obj .\Release_x64\ShellExtImpl.obj %LIBS%
+link.exe /OUT:".\Release_x64/ExpShell64.dll" /INCREMENTAL:NO /NOLOGO /DLL /DEF:".\ExplorerShell.def" /PDB:".\Release_x64/ExplorerShell.pdb" /IMPLIB:".\Release_x64/ExplorerShell.lib" /MACHINE:X64 .\Release_x64\ExplorerShell.res .\Release_x64\ShellExt.obj .\Release_x64\ShellExtImpl.obj %LIBS%
 if not "%ERRORLEVEL%"=="0" goto END  
 
 :END
