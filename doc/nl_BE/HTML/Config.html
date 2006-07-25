@@ -6,7 +6,7 @@
 	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.0  (Win32)">
 	<META NAME="CREATED" CONTENT="20040426;21532900">
 	<META NAME="CHANGEDBY" CONTENT="Peter Budts">
-	<META NAME="CHANGED" CONTENT="20060706;20081000">
+	<META NAME="CHANGED" CONTENT="20060723;14295300">
 	<META NAME="SDFOOTNOTE" CONTENT=";;;;P">
 	<META NAME="SDENDNOTE" CONTENT="ARABIC">
 	<STYLE>
@@ -108,15 +108,16 @@ de locatie (inclusief *) in te geven.  Bijvoorbeeld :</P>
 <P LANG="nl-NL" CLASS="western"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">C:\Path\to\folder\*</FONT></FONT></P>
 <P CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=3>Let
 erop dat * niet hetzelfde is als \, dus wanneer u een map met alle
-submappen wil uitfilteren, zal u .* (punt ster) moeten toevoegen op
-het einde:</FONT></FONT></P>
-<P LANG="nl-NL" CLASS="western"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">C:\Path\to\folder\.*</FONT></FONT></P>
-<P CLASS="western"><SPAN LANG="nl-NL">U kunt reguliere expressies
-gebruiken voor een grotere flexibiliteit, maar deze moeten dan binnen
-punthaken geplaatst worden ( &lt;Reguliere expressie&gt; ). 
-Informatie en tutorials over reguliere expressies zijn te vinden op
-het Internet.  Gebruik hiervoor uw favoriete searchengine en zoek op
-<B>regular expression tutorial</B>.</SPAN></P>
+submappen wil uitfilteren, zal u een reguliere expressie moeten
+gebruiken en .* (punt ster) moeten toevoegen op het einde:</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">&lt;C:\\Path\\to\\folder\\.*&gt;</FONT></FONT></P>
+<P LANG="nl-NL" CLASS="western">U kunt reguliere expressies gebruiken
+voor een grotere flexibiliteit, maar deze moeten dan binnen punthaken
+geplaatst worden ( &lt;Reguliere expressie&gt; ).  U moet ook \\
+gebruiken omdat \ een gereserveerd karrakter is.  Meer informatie en
+tutorials over reguliere expressies zijn te vinden op het Internet. 
+Gebruik hiervoor uw favoriete searchengine en zoek op <B>regular
+expression tutorial</B>.</P>
 <P LANG="nl-NL" CLASS="western">Standaard worden de volgende
 bestandstypen uitgesloten van de virus scans :</P>
 <P LANG="nl-NL" CLASS="western">*.dbx (gebruikt door Microsoft
