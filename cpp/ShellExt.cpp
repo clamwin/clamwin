@@ -45,7 +45,7 @@ extern "C" int APIENTRY DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpRe
 	if (dwReason == DLL_PROCESS_ATTACH)
 		g_hmodThisDll = hInstance;
 	
-	return 1;   // ok
+	return TRUE;   // ok
 }
 
 //---------------------------------------------------------------------------

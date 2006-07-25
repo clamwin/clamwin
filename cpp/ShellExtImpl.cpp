@@ -74,7 +74,8 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 	STGMEDIUM medium;
 	FORMATETC fmte = {CF_HDROP, NULL, DVASPECT_CONTENT, -1, TYMED_HGLOBAL};
 	TCHAR szPath[MAX_PATH];
-	INT len, numFiles;
+	INT numFiles;
+	size_t len;
 	
 	
 	// Initialize can be called more than once
@@ -182,7 +183,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,UINT indexMenu,UINT idCmdFi
 
 BOOL CShellExt::Scan(HWND hwnd)
 {
-    DWORD len;
+    size_t len;
     if(!m_szPath || !_tcslen(m_szPath))
     {
         MessageBox(hwnd, _T("Error: Unable to retrieve Path."), _T("ClamWin Free Antivirus"), MB_OK | MB_ICONERROR);
@@ -190,7 +191,7 @@ BOOL CShellExt::Scan(HWND hwnd)
     }            
     
     DWORD dwType, cbData;
-    DWORD szCmdSize = MAX_PATH*3 + _tcslen(m_szPath);
+    size_t szCmdSize = MAX_PATH*3 + _tcslen(m_szPath);
     PTCHAR szCmd = new TCHAR[szCmdSize];
     TCHAR szClamWinPath[MAX_PATH] = _T("");
     TCHAR szParams[MAX_PATH*2] = _T("");
@@ -351,15 +352,15 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 //
 //  COMMENTS:
 //
-STDMETHODIMP CShellExt::GetCommandString(UINT idCmd,UINT uFlags,UINT FAR *reserved,LPSTR pszName,UINT cchMax)
+STDMETHODIMP CShellExt::GetCommandString(UINT_PTR idCmd, UINT uType, UINT *pwReserved, LPSTR pszName, UINT cchMax)
 {
 	
 	switch (idCmd)
 	{
 	case 0:	
-		if (GCS_HELPTEXTW == uFlags)
+		if (GCS_HELPTEXTW == uType)
 			wcsncpy((LPWSTR)pszName, L"ClamWin Free Antivirus", cchMax);	
-		else if (GCS_HELPTEXTA == uFlags)
+		else if (GCS_HELPTEXTA == uType)
 			strncpy(pszName, "ClamWin Free Antivirus", cchMax);
 		break;
    }

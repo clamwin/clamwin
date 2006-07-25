@@ -72,8 +72,9 @@ Source: Microsoft.VC80.CRT\msvcp80.dll; DestDir: {app}\bin; Components: ClamAV; 
 
 ;Source: ..\clamav-stable\sigtool\sigtool.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
 ; Copy Unicode build in NT and ANSI in 9x
-Source: ..\cpp\Release\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: IsWin9x
-Source: ..\cpp\Release_Unicode\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: UsingWinNT
+Source: ..\cpp\Release\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete 32bit; Check: IsWin9x
+Source: ..\cpp\Release_Unicode\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete 32bit; Check: UsingWinNT
+Source: ..\cpp\Release_x64\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete 64bit
 
 Source: py2exe\dist\bin\WClose.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: py2exe\dist\lib\w9xpopen.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
