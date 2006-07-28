@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Mon May 29 08:17:15 2006\n"
+"POT-Creation-Date: Fri Jul 28 15:23:43 2006\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -181,19 +181,23 @@ msgstr ""
 msgid "An Error occurred while updating UI selection. %s"
 msgstr ""
 
-#: wxFrameMain.py:383
+#: wxFrameMain.py:387
 msgid "Could not open help file - %s not found."
 msgstr ""
 
-#: wxFrameMain.py:390
+#: wxFrameMain.py:394
 msgid "Could not open help file. Please ensure that you have Adobe Acrobat Reader installed."
 msgstr ""
 
-#: wxFrameMain.py:393
+#: wxFrameMain.py:397
 msgid "http://www.clamwin.com/content/category/3/7/27/"
 msgstr ""
 
 #: wxFrameMain.py:401
+msgid "http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version="
+msgstr ""
+
+#: wxFrameMain.py:405
 msgid "http://www.clamwin.com"
 msgstr ""
 

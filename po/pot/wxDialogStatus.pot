@@ -5,209 +5,301 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Mon Jul 17 16:01:51 2006\n"
+"POT-Creation-Date: Fri Jul 28 16:24:27 2006\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: ENCODING\n"
 "Generated-By: pygettext.py 1.5\n"
 
 
-#: wxDialogStatus.py:115
+#: wxDialogStatus.py:116
 msgid "FOUND"
 msgstr ""
 
-#: wxDialogStatus.py:117
+#: wxDialogStatus.py:118
 msgid "ClamAV update process started at"
 msgstr ""
 
-#: wxDialogStatus.py:119
+#: wxDialogStatus.py:120
 msgid "ERROR: DNS Resolver:"
 msgstr ""
 
-#: wxDialogStatus.py:121
+#: wxDialogStatus.py:122
 msgid "WARNING: Invalid DNS reply. Falling back to HTTP mode."
 msgstr ""
 
-#: wxDialogStatus.py:123
+#: wxDialogStatus.py:124
 msgid "ERROR: Can't get information about database.clamav.net:"
 msgstr ""
 
-#: wxDialogStatus.py:125
+#: wxDialogStatus.py:126
 msgid "Can't query"
 msgstr ""
 
-#: wxDialogStatus.py:127
+#: wxDialogStatus.py:128
 msgid "No IP address"
 msgstr ""
 
-#: wxDialogStatus.py:129
+#: wxDialogStatus.py:130
 msgid "ERROR: No servers could be reached. Giving up"
 msgstr ""
 
-#: wxDialogStatus.py:131
+#: wxDialogStatus.py:132
 msgid "Trying again in 5 secs..."
 msgstr ""
 
-#: wxDialogStatus.py:133
+#: wxDialogStatus.py:134
 msgid "Giving up on"
 msgstr ""
 
-#: wxDialogStatus.py:135
+#: wxDialogStatus.py:136
 msgid "ERROR: Update failed. Your network may be down or none of the mirrors listed in freshclam.conf is working."
 msgstr ""
 
-#: wxDialogStatus.py:137
+#: wxDialogStatus.py:138
 msgid "Scan started:"
 msgstr ""
 
-#: wxDialogStatus.py:139
+#: wxDialogStatus.py:140
 msgid "-- summary --"
 msgstr ""
 
-#: wxDialogStatus.py:141
+#: wxDialogStatus.py:142
 msgid "Known viruses:"
 msgstr ""
 
-#: wxDialogStatus.py:143
+#: wxDialogStatus.py:144
 msgid "Engine version:"
 msgstr ""
 
-#: wxDialogStatus.py:145
+#: wxDialogStatus.py:146
 msgid "Scanned directories:"
 msgstr ""
 
-#: wxDialogStatus.py:147
+#: wxDialogStatus.py:148
 msgid "Scanned files:"
 msgstr ""
 
-#: wxDialogStatus.py:149
+#: wxDialogStatus.py:150
 msgid "Infected files:"
 msgstr ""
 
-#: wxDialogStatus.py:151
+#: wxDialogStatus.py:152
 msgid "Data scanned:"
 msgstr ""
 
-#: wxDialogStatus.py:153
+#: wxDialogStatus.py:154
 msgid "Time:"
 msgstr ""
 
-#: wxDialogStatus.py:155
+#: wxDialogStatus.py:156
 msgid "WARNING: Your ClamAV installation is OUTDATED!"
 msgstr ""
 
-#: wxDialogStatus.py:157
+#: wxDialogStatus.py:158
 msgid "WARNING: Local version:"
 msgstr ""
 
-#: wxDialogStatus.py:159
+#: wxDialogStatus.py:160
 msgid "Recommended version:"
 msgstr ""
 
-#: wxDialogStatus.py:161
+#: wxDialogStatus.py:162
 msgid "DON'T PANIC! Read"
 msgstr ""
 
-#: wxDialogStatus.py:163
+#: wxDialogStatus.py:164
 msgid "is up to date"
 msgstr ""
 
-#: wxDialogStatus.py:165
+#: wxDialogStatus.py:166
 msgid "sigs:"
 msgstr ""
 
-#: wxDialogStatus.py:167
+#: wxDialogStatus.py:168
 msgid "f-level:"
 msgstr ""
 
-#: wxDialogStatus.py:169
+#: wxDialogStatus.py:170
 msgid "builder:"
 msgstr ""
 
-#: wxDialogStatus.py:171
+#: wxDialogStatus.py:172
 msgid "Database updated"
 msgstr ""
 
-#: wxDialogStatus.py:173
+#: wxDialogStatus.py:174
 msgid "signatures"
 msgstr ""
 
-#: wxDialogStatus.py:175
+#: wxDialogStatus.py:176
 msgid "from"
 msgstr ""
 
-#: wxDialogStatus.py:177
+#: wxDialogStatus.py:178
 msgid "Control+C pressed, aborting..."
 msgstr ""
 
-#: wxDialogStatus.py:179
+#: wxDialogStatus.py:180
 msgid "Downloading"
 msgstr ""
 
-#: wxDialogStatus.py:187
+#: wxDialogStatus.py:182
+msgid "Connection with"
+msgstr ""
+
+#: wxDialogStatus.py:184
+msgid "http:\\\\www.clamav.net\\faq.html"
+msgstr ""
+
+#: wxDialogStatus.py:186
+msgid "http://www.clamwin.com/content/view/10/27/"
+msgstr ""
+
+#: wxDialogStatus.py:192
+msgid "Mon "
+msgstr ""
+
+#: wxDialogStatus.py:194
+msgid "Tue "
+msgstr ""
+
+#: wxDialogStatus.py:196
+msgid "Wed "
+msgstr ""
+
+#: wxDialogStatus.py:198
+msgid "Thu "
+msgstr ""
+
+#: wxDialogStatus.py:200
+msgid "Fri "
+msgstr ""
+
+#: wxDialogStatus.py:202
+msgid "Sat "
+msgstr ""
+
+#: wxDialogStatus.py:204
+msgid "Sun "
+msgstr ""
+
+#: wxDialogStatus.py:206
+msgid "Jan "
+msgstr ""
+
+#: wxDialogStatus.py:208
+msgid "Feb "
+msgstr ""
+
+#: wxDialogStatus.py:210
+msgid "Mar "
+msgstr ""
+
+#: wxDialogStatus.py:212
+msgid "Apr "
+msgstr ""
+
+#: wxDialogStatus.py:214
+msgid "May "
+msgstr ""
+
+#: wxDialogStatus.py:216
+msgid "Jun "
+msgstr ""
+
+#: wxDialogStatus.py:218
+msgid "Jul "
+msgstr ""
+
+#: wxDialogStatus.py:220
+msgid "Aug "
+msgstr ""
+
+#: wxDialogStatus.py:222
+msgid "Sep "
+msgstr ""
+
+#: wxDialogStatus.py:224
+msgid "Oct "
+msgstr ""
+
+#: wxDialogStatus.py:226
+msgid "Nov "
+msgstr ""
+
+#: wxDialogStatus.py:228
+msgid "Dec "
+msgstr ""
+
+#: wxDialogStatus.py:235
 msgid "version:"
 msgstr ""
 
-#: wxDialogStatus.py:189
+#: wxDialogStatus.py:237
 msgid "updated"
 msgstr ""
 
-#: wxDialogStatus.py:219
+#: wxDialogStatus.py:239
+msgid "failed"
+msgstr ""
+
+#: wxDialogStatus.py:288
 msgid "ClamWin Free Antivirus Status"
 msgstr ""
 
-#: wxDialogStatus.py:243
+#: wxDialogStatus.py:312
 msgid "&Stop"
 msgstr ""
 
-#: wxDialogStatus.py:251
+#: wxDialogStatus.py:320
 msgid "S&ave Report"
 msgstr ""
 
-#: wxDialogStatus.py:358
+#: wxDialogStatus.py:427
 msgid "Unable to stop runner thread, terminating"
 msgstr ""
 
-#: wxDialogStatus.py:376
+#: wxDialogStatus.py:445
 msgid "Report files (*.txt)|*.txt|All files (*.*)|*.*"
 msgstr ""
 
-#: wxDialogStatus.py:378
+#: wxDialogStatus.py:447
 msgid "All files (*)|*"
 msgstr ""
 
-#: wxDialogStatus.py:379
+#: wxDialogStatus.py:448
 msgid "Choose a file"
 msgstr ""
 
-#: wxDialogStatus.py:386
+#: wxDialogStatus.py:455
 msgid "Could not save report to the file "
 msgstr ""
 
-#: wxDialogStatus.py:387
+#: wxDialogStatus.py:456
 msgid ". Please check that you have write "
 msgstr ""
 
-#: wxDialogStatus.py:388
+#: wxDialogStatus.py:457
 msgid "permissions to the folder and there is enough space on the disk."
 msgstr ""
 
-#: wxDialogStatus.py:389
+#: wxDialogStatus.py:458
 msgid "ClamWin Free Antivirus"
 msgstr ""
 
-#: wxDialogStatus.py:424
+#: wxDialogStatus.py:494
 msgid "&Close"
 msgstr ""
 
-#: wxDialogStatus.py:455
+#: wxDialogStatus.py:525
 msgid "Could not read from log file %s. Error: %s"
 msgstr ""
 
-#: wxDialogStatus.py:465
+#: wxDialogStatus.py:535
 msgid ""
 "\n"
 "--------------------------------------\n"
@@ -215,7 +307,7 @@ msgid ""
 "--------------------------------------\n"
 msgstr ""
 
-#: wxDialogStatus.py:467
+#: wxDialogStatus.py:537
 msgid ""
 "\n"
 "--------------------------------------\n"
@@ -223,18 +315,18 @@ msgid ""
 "--------------------------------------\n"
 msgstr ""
 
-#: wxDialogStatus.py:550
+#: wxDialogStatus.py:620
 msgid "Could not start process. No Command Line specified"
 msgstr ""
 
-#: wxDialogStatus.py:557
+#: wxDialogStatus.py:627
 msgid ""
 "Could not start process.\n"
 "%s\n"
 "File does not exist."
 msgstr ""
 
-#: wxDialogStatus.py:567 wxDialogStatus.py:569
+#: wxDialogStatus.py:637 wxDialogStatus.py:639
 msgid ""
 "Could not start process:\n"
 "%s\n"
