@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.2.3\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-05-29 21:14+0100\n"
+"PO-Revision-Date: 2006-07-30 13:02+0100\n"
 "Last-Translator: Peter Budts <budtse@users.sourceforge.net>\n"
 "Language-Team: ClamWin Free Antivirus <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -186,19 +186,23 @@ msgstr "U hebt de Virus Definitie Database nog niet opgehaald. Wilt u deze nu do
 msgid "An Error occurred while updating UI selection. %s"
 msgstr "Fout bij het bijwerken van de UI selectie. %s"
 
-#: wxFrameMain.py:383
+#: wxFrameMain.py:387
 msgid "Could not open help file - %s not found."
 msgstr "Kan helpbestand niet openen - %s niet gevonden."
 
-#: wxFrameMain.py:390
+#: wxFrameMain.py:394
 msgid "Could not open help file. Please ensure that you have Adobe Acrobat Reader installed."
 msgstr "Kan helpbestand niet openen. Gelieve na te kijken of Adobe Acrobat Reader is geïnstalleerd."
 
-#: wxFrameMain.py:393
+#: wxFrameMain.py:397
 msgid "http://www.clamwin.com/content/category/3/7/27/"
 msgstr "http://nl.clamwin.com/content/category/3/7/27/"
 
 #: wxFrameMain.py:401
+msgid "http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version="
+msgstr "http://nl.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version="
+
+#: wxFrameMain.py:405
 msgid "http://www.clamwin.com"
 msgstr "http://nl.clamwin.com"
 
