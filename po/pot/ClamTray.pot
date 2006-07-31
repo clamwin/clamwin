@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: Sun Apr 30 15:44:21 2006\n"
+"POT-Creation-Date: Mon Jul 31 09:48:29 2006\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -78,6 +78,10 @@ msgstr ""
 
 #: ClamTray.py:291
 msgid "&Exit"
+msgstr ""
+
+#: ClamTray.py:313
+msgid "http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version="
 msgstr ""
 
 #: ClamTray.py:315
