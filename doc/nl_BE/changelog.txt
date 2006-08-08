@@ -1,0 +1,6 @@
+Thu, 6 June 2006
+	Changed the screenshots to the localised versions and compiled first .chm file
+
+Sun, 23 July 2006
+	Config.odt : Changed the sample for regular expressions
+	Changed the links (www.clamwin.com FAQ) to point to nl.clamwin.com
