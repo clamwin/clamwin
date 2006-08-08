@@ -3,7 +3,7 @@
 
 [Setup]
 AppName=ClamWin Free Antivirus
-AppVerName=ClamWin Free Antivirus 0.88.3.1
+AppVerName=ClamWin Free Antivirus 0.88.4
 AppPublisher=alch
 AppPublisherURL=http://clamwin.sourceforge.net/
 AppSupportURL=http://clamwin.sourceforge.net/

@@ -377,12 +377,15 @@ def GetScanCmd(config, path, scanlog, noprint = False):
     # add annoying registry files to exclude as they're locked by OS
     cmd += GetExcludeSysLockedFiles()
 
+    # FIX 8 August 2006
+    # added root drive detection: os.path.splitdrive(path_element)[1]=='/'
     # new 22 July 2006
-    # now check if the path contains any dirs
+    # now check if the path contains any dirs  or drives
     # if not (only files selected to scan) then do not apply the include/exclude patterns
     has_dirs = False
     for path_element in path.split('" "'):
-        if os.path.isdir(path_element.strip('"')):
+        path_element = path_element.strip(' "')
+        if os.path.isdir(path_element) or os.path.splitdrive(path_element)[1]=='/':
             has_dirs = True
             break
     if has_dirs:

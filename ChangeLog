@@ -1,3 +1,9 @@
+Version 0.88.4 - 8 August 2006
+ - Upgraded clamav to 0.88.4
+ - Fixed bug when filters where not applied when scanning a whole disk only
+ - Added Explorer context menu for 64-bit Windows
+ 
+ 
 Version 0.88.3.1 - 22 July 2006
  - fixed crash with password proteced RAR archives
  - added --keep-mbox parameter to leave Thunderbird mailbox files intact when 
