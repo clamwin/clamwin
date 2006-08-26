@@ -15,5 +15,5 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 #: ShellExtImpl.cpp: 292
-msgid "Scan For Viruses With ClamWin"
+msgid "Scan with ClamWin Free Antivirus"
 msgstr ""
