@@ -6,23 +6,23 @@
 //
 // Created:     2004/19/03
 // Copyright:   Copyright alch (c) 2004
-// Licence:     
+// Licence:
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License as published by
 //   the Free Software Foundation; either version 2 of the License, or
 //   (at your option) any later version.
-// 
+//
 //   This program is distributed in the hope that it will be useful,
 //   but WITHOUT ANY WARRANTY; without even the implied warranty of
 //   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //   GNU General Public License for more details.
-// 
+//
 //   You should have received a copy of the GNU General Public License
 //   along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 //-----------------------------------------------------------------------------
- 
+
 //
 // Initialize GUIDs (should be done only and at-least once per DLL/EXE)
 //
@@ -32,7 +32,7 @@
 #include <initguid.h>
 #include <shlguid.h>
 #include "ShellExt.h"
-
+#include <stdio.h>
 
 //
 // Global variables
@@ -44,8 +44,8 @@ extern "C" int APIENTRY DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpRe
 {
 	if (dwReason == DLL_PROCESS_ATTACH)
 		g_hmodThisDll = hInstance;
-	
-	return 1;   // ok
+
+	return TRUE;   // ok
 }
 
 //---------------------------------------------------------------------------
@@ -62,14 +62,14 @@ STDAPI  DllCanUnloadNow(void)
 STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppvOut)
 {
 	*ppvOut = NULL;
-	
+
 	if (IsEqualIID(rclsid, CLSID_ShellExtension))
 	{
 		CShellExtClassFactory *pcf = new CShellExtClassFactory;
-		
+
 		return pcf->QueryInterface(riid, ppvOut);
 	}
-	
+
 	return CLASS_E_CLASSNOTAVAILABLE;
 }
 
@@ -80,15 +80,15 @@ STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppvOut)
 CShellExtClassFactory::CShellExtClassFactory()
 {
 	m_cRef = 0L;
-	
-	g_cRefThisDll++;    
+
+	g_cRefThisDll++;
 }
 
 //---------------------------------------------------------------------------
 // CShellExtClassFactory::~CShellExtClassFactory
 //---------------------------------------------------------------------------
 
-CShellExtClassFactory::~CShellExtClassFactory()                         
+CShellExtClassFactory::~CShellExtClassFactory()
 {
 	g_cRefThisDll--;
 }
@@ -101,20 +101,20 @@ STDMETHODIMP CShellExtClassFactory::QueryInterface(REFIID riid,
                                                    LPVOID FAR *ppv)
 {
 	*ppv = NULL;
-	
+
 	// Any interface on this object is the object pointer
-	
+
 	if (IsEqualIID(riid, IID_IUnknown) || IsEqualIID(riid, IID_IClassFactory))
 	{
 		*ppv = (LPCLASSFACTORY)this;
-		
+
 		AddRef();
-		
+
 		return NOERROR;
 	}
-	
+
 	return E_NOINTERFACE;
-}       
+}
 
 //---------------------------------------------------------------------------
 // CShellExtClassFactory::AddRef
@@ -133,9 +133,9 @@ STDMETHODIMP_(ULONG) CShellExtClassFactory::Release()
 {
 	if (--m_cRef)
 		return m_cRef;
-	
+
 	delete this;
-	
+
 	return 0L;
 }
 
@@ -148,21 +148,21 @@ STDMETHODIMP CShellExtClassFactory::CreateInstance(LPUNKNOWN pUnkOuter,
 																	LPVOID *ppvObj)
 {
 	*ppvObj = NULL;
-	
+
 	// Shell extensions typically don't support aggregation (inheritance)
-	
+
 	if (pUnkOuter)
 		return CLASS_E_NOAGGREGATION;
-	
+
 	// Create the main shell extension object.  The shell will then call
 	// QueryInterface with IID_IShellExtInit--this is how shell extensions are
 	// initialized.
-	
+
 	LPCSHELLEXT pShellExt = new CShellExt();  //Create the CShellExt object
-	
+
 	if (NULL == pShellExt)
 		return E_OUTOFMEMORY;
-	
+
 	return pShellExt->QueryInterface(riid, ppvObj);
 }
 
@@ -186,7 +186,7 @@ CShellExt::CShellExt()
 	m_cRef = 0L;
 	m_pDataObj = NULL;
 	m_szPath = NULL;
-	
+
 	g_cRefThisDll++;
 }
 
@@ -200,7 +200,7 @@ CShellExt::~CShellExt()
         delete [] m_szPath;
 	if (m_pDataObj)
 		m_pDataObj->Release();
-	
+
 	g_cRefThisDll--;
 }
 
@@ -211,7 +211,7 @@ CShellExt::~CShellExt()
 STDMETHODIMP CShellExt::QueryInterface(REFIID riid, LPVOID FAR *ppv)
 {
 	*ppv = NULL;
-	
+
 	if (IsEqualIID(riid, IID_IShellExtInit) || IsEqualIID(riid, IID_IUnknown))
 		*ppv = (LPSHELLEXTINIT)this;
 	else if (IsEqualIID(riid, IID_IContextMenu))
@@ -241,8 +241,8 @@ STDMETHODIMP_(ULONG) CShellExt::Release()
 {
 	if (--m_cRef)
 		return m_cRef;
-	
+
 	delete this;
-	
+
 	return 0L;
 }
