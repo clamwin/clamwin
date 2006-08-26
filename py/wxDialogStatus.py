@@ -39,6 +39,8 @@ import Utils
 from I18N import getClamString as _
 import wxDialogUtils
 import win32gui
+import shutil
+import locale
 
 _WAIT_TIMEOUT = 5
 if sys.platform.startswith("win"):    
@@ -107,7 +109,169 @@ class ThreadUpdateStatusEvent(wxPyCommandEvent):
  
     def Clone( self ): 
         self.__class__( self.GetId() )
+
+def translateClamAVLines(lines):
+    # Translate a list of lines of ClamAV output based on 0.88.2 output
+    dClamAVStrings = {
+            'FOUND':
+                _('FOUND'),
+            'ClamAV update process started at':
+                _('ClamAV update process started at'),
+            'ERROR: DNS Resolver:':
+                _('ERROR: DNS Resolver:'),
+            'WARNING: Invalid DNS reply. Falling back to HTTP mode.':
+                _('WARNING: Invalid DNS reply. Falling back to HTTP mode.'),
+            'ERROR: Can\'t get information about database.clamav.net:':
+                _('ERROR: Can\'t get information about database.clamav.net:'),
+            'Can\'t query':
+                _('Can\'t query'),
+            'No IP address':
+                _('No IP address'),
+            'ERROR: No servers could be reached. Giving up':
+                _('ERROR: No servers could be reached. Giving up'),
+            'Trying again in 5 secs...':
+                _('Trying again in 5 secs...'),
+            'Giving up on':
+                _('Giving up on'),
+            'ERROR: Update failed. Your network may be down or none of the mirrors listed in freshclam.conf is working.':
+                _('ERROR: Update failed. Your network may be down or none of the mirrors listed in freshclam.conf is working.'),
+            'Scan started:':
+                _('Scan started:'),
+            '-- summary --':
+                _('-- summary --'),
+            'Known viruses:':
+                _('Known viruses:'),
+            'Engine version:':
+                _('Engine version:'),
+            'Scanned directories:':
+                _('Scanned directories:'),
+            'Scanned files:':
+                _('Scanned files:'),
+            'Infected files:':
+                _('Infected files:'),
+            'Data scanned:':
+                _('Data scanned:'),
+            'Time:':
+                _('Time:'),
+            'WARNING: Your ClamAV installation is OUTDATED!':
+                _('WARNING: Your ClamAV installation is OUTDATED!'),
+            'WARNING: Local version:':
+                _('WARNING: Local version:'),
+            'Recommended version:':
+                _('Recommended version:'),
+            'DON\'T PANIC! Read':
+                _('DON\'T PANIC! Read'),
+            'is up to date':
+                _('is up to date'),
+            'sigs:':
+                _('sigs:'),
+            'f-level:':
+                _('f-level:'),
+            'builder:':
+                _('builder:'),
+            'Database updated':
+                _('Database updated'),
+            'signatures':
+                _('signatures'),
+            'from':
+                _('from'),
+            'Control+C pressed, aborting...':
+                _('Control+C pressed, aborting...'),
+            'Downloading':
+                _('Downloading'),
+            'Connection with':
+                _('Connection with'),
+            'http:\\\\www.clamav.net\\faq.html':
+                _('http:\\\\www.clamav.net\\faq.html'),
+            'http://www.clamwin.com/content/view/10/27/':
+                _('http://www.clamwin.com/content/view/10/27/')
+            
+        }
+
+    dDateStrings = {
+            'Mon ':
+                _('Mon '),
+            'Tue ':
+                _('Tue '),
+            'Wed ':
+                _('Wed '),
+            'Thu ':
+                _('Thu '),
+            'Fri ':
+                _('Fri '),
+            'Sat ':
+                _('Sat '),
+            'Sun ':
+                _('Sun '),
+            'Jan ':
+                _('Jan '),
+            'Feb ':
+                _('Feb '),
+            'Mar ':
+                _('Mar '),
+            'Apr ':
+                _('Apr '),
+            'May ':
+                _('May '),
+            'Jun ':
+                _('Jun '),
+            'Jul ':
+                _('Jul '),
+            'Aug ':
+                _('Aug '),
+            'Sep ':
+                _('Sep '),
+            'Oct ':
+                _('Oct '),
+            'Nov ':
+                _('Nov '),
+            'Dec ':
+                _('Dec ')
+        }
+
+    # These are strings that must be replaced afterwards as
+    # they are substrings of the above strings
+    dClamAVAfterStrings = {
+            'version:':
+                _('version:'),
+            'updated':
+                _('updated'),
+            'failed':
+                _('failed')
+
+        }
+
+
+    locale.setlocale(locale.LC_ALL, '')
+    decimalPoint = locale.localeconv()['decimal_point']
+    translatedLines = []
+    doneDate = False
+    regexPattern = re.compile("[0-9]+\.[0-9]+")
+    
+    for line in lines:
+        if not doneDate:
+            if line.find("Scan started:") >= 0 or line.find("ClamAV update process started at") >= 0:
+                for sToReplace in dDateStrings.keys():
+                    sToEncode = dDateStrings[sToReplace].encode('utf-8')
+                    line = line.replace(sToReplace, sToEncode)
+                doneDate = True
         
+        if regexPattern.search(line):
+            line = line.replace(".", decimalPoint)
+        
+        for sToReplace in dClamAVStrings.keys():
+            sToEncode = dClamAVStrings[sToReplace].encode('utf-8')
+            line = line.replace(sToReplace, sToEncode)
+        for sToReplace in dClamAVAfterStrings.keys():
+            sToEncode = dClamAVAfterStrings[sToReplace].encode('utf-8')
+            line = line.replace(sToReplace, sToEncode)
+
+        translatedLines.append(line)
+
+    locale.setlocale(locale.LC_ALL, 'C')
+
+    return translatedLines
+
 def create(parent, cmd, logfile, priority, bitmap_mask, notify_params=None):
     return wxDialogStatus(parent, cmd, logfile, priority, bitmap_mask, notify_params)                 
 
@@ -147,7 +311,7 @@ class wxDialogStatus(wxDialog):
 
         self.buttonStop = wxButton(id=wxID_WXDIALOGSTATUSBUTTONSTOP,
               label=_('&Stop'), name='buttonStop', parent=self, pos=wxPoint(291,
-              328), size=wxSize(85, 24), style=0)
+              328), size=wxSize(125, 24), style=0)
         self.buttonStop.Enable(True)
         self.buttonStop.SetDefault()
         EVT_BUTTON(self.buttonStop, wxID_WXDIALOGSTATUSBUTTONSTOP,
@@ -155,7 +319,7 @@ class wxDialogStatus(wxDialog):
 
         self.buttonSave = wxButton(id=wxID_WXDIALOGSTATUSBUTTONSAVE,
               label=_('S&ave Report'), name='buttonSave', parent=self,
-              pos=wxPoint(192, 328), size=wxSize(86, 24), style=0)
+              pos=wxPoint(152, 328), size=wxSize(125, 24), style=0)
         self.buttonSave.Enable(False)
         EVT_BUTTON(self.buttonSave, wxID_WXDIALOGSTATUSBUTTONSAVE,
               self.OnButtonSave)
@@ -175,7 +339,7 @@ class wxDialogStatus(wxDialog):
         self._alreadyCalled = False
         
         self._init_ctrls(parent)
-                
+        
         
         # bind thread notification events
         EVT_THREADFINISHED(self, self.OnThreadFinished)        
@@ -310,7 +474,9 @@ class wxDialogStatus(wxDialog):
     ThreadFinished = staticmethod(ThreadFinished)
     
     def ThreadUpdateStatus(owner, text, append=True):
-        if owner.terminating:            
+        text = translateClamAVLines([text])[0]
+        if owner.terminating:
+            text = ''
             return
         event = ThreadUpdateStatusEvent(owner.GetId(), text, append)             
         owner.GetEventHandler().AddPendingEvent(event)                    
@@ -319,21 +485,36 @@ class wxDialogStatus(wxDialog):
     def OnThreadFinished(self, event):
         if self._alreadyCalled:
             return
-            
+
         self._alreadyCalled = True
         
         self.buttonSave.Enable(True)
         self.throbber.Rest()
         self.buttonStop.SetFocus()
-        self.buttonStop.SetLabel(_('&Close'))                   
-                
-                               
+        self.buttonStop.SetLabel(_('&Close'))
+        
         data = ''
         if self._logfile is not None:
+            # new 22/07/07 added sleep becuase clamscan does not immediately release the handle
+            time.sleep(0.5)
             try:
+                # translate self._logfile and copy the translation to self._logfile
+                translatedlog = tempfile.mktemp()
+                logfileobj = file(self._logfile, "r")
+                lines = logfileobj.readlines()
+                logfileobj.close()
+                translatedLines = translateClamAVLines(lines)
+                translogobj = file(translatedlog, "w")
+                translogobj.writelines(translatedLines)
+                translogobj.close()
+                os.remove(self._logfile)
+                shutil.copyfile(translatedlog, self._logfile)
+                os.remove(translatedlog)
+
                 # read last 30000 bytes form the log file 
                 # as our edit control is incapable of displaying more
                 maxsize = 29000
+                #flog = file(self._logfile, 'rb')
                 flog = file(self._logfile, 'rt')
                 flog.seek(0, 2)
                 size = flog.tell()
@@ -343,7 +524,8 @@ class wxDialogStatus(wxDialog):
                     flog.seek(0, 0)
                 data = flog.read()
             except Exception, e:
-                print _('Could not read from log file %s. Error: %s') % (self._logfile, str(e))
+                print 'OnThreadFinished: ' + _('Could not read from log file %s. Error: %s') % (self._logfile, str(e))
+                data = self.textCtrlStatus.GetLabel()
                 
         # replace cygwin-like pathes with windows-like
         data = data.replace('/', '\\').replace('I\\O', 'I/O')  
@@ -356,12 +538,15 @@ class wxDialogStatus(wxDialog):
            self.ThreadUpdateStatus(self, _("\n--------------------------------------\nCompleted\n--------------------------------------\n"))                  
         else:
            self.ThreadUpdateStatus(self, _("\n--------------------------------------\nCancelled\n--------------------------------------\n"))        
+
+        if self._scan:
+            win32api.PostMessage(self.textCtrlStatus.GetHandle(), win32con.EM_SCROLLCARET, 0, 0)
+            self.textCtrlStatus.SetInsertionPointEnd()                        
+            self.textCtrlStatus.ShowPosition(self.textCtrlStatus.GetLastPosition())                
+        else:
+            win32api.PostMessage(self.textCtrlStatus.GetHandle(), win32con.EM_SCROLL, win32con.SB_PAGEUP, 0)
+            #self.textCtrlStatus.ShowPosition(0)
             
-        win32api.PostMessage(self.textCtrlStatus.GetHandle(), win32con.EM_SCROLLCARET, 0, 0)
-        self.textCtrlStatus.SetInsertionPointEnd()                        
-        self.textCtrlStatus.ShowPosition(self.textCtrlStatus.GetLastPosition())                
- 
-        
         try:                
             self._returnCode = self._proc.wait(_WAIT_TIMEOUT)            
         except:            
@@ -375,7 +560,8 @@ class wxDialogStatus(wxDialog):
            (self._closeRetCode is None or self._closeRetCode == self._returnCode):             
             time.sleep(0)
             e = wxCommandEvent(wxEVT_COMMAND_BUTTON_CLICKED, self.buttonStop.GetId())
-            self.buttonStop.AddPendingEvent(e)                                                
+            self.buttonStop.AddPendingEvent(e)
+
                     
     def OnThreadUpdateStatus(self, event): 
         ctrl = self.textCtrlStatus               
@@ -396,7 +582,7 @@ class wxDialogStatus(wxDialog):
                 # prevent form blinking text by disabling richedit selection here
                 win32api.SendMessage(ctrl.GetHandle(),Utils.EM_HIDESELECTION, 1, 0)
                 # replace the text 
-                ctrl.Replace(self._previousStart, ctrl.GetLastPosition(), text)               
+                ctrl.Replace(self._previousStart, ctrl.GetLastPosition(), text.decode('utf-8'))
                 
                 win32api.PostMessage(self.textCtrlStatus.GetHandle(), win32con.EM_SCROLLCARET, 0, 0)
                 lastPos =	self._previousStart
@@ -410,7 +596,7 @@ class wxDialogStatus(wxDialog):
         else:
             ctrl.Clear()
             ctrl.SetDefaultStyle(wxTextAttr(wxNullColour))
-            ctrl.SetValue(text)            
+            ctrl.SetValue(text.decode('utf-8'))            
         
         # this is thread unsafe however it doesn't matter as only one thread writes 
         # to the status window
@@ -445,7 +631,7 @@ class wxDialogStatus(wxDialog):
             # create our stdout/stderr implementation that updates status window                            
             self._alreadyCalled = False
             self._out = StatusUpdateBuffer(self, self.ThreadUpdateStatus, self.ThreadFinished)
-            self._err = StatusUpdateBuffer(self, self.ThreadUpdateStatus, None)                                                                                                      
+            self._err = StatusUpdateBuffer(self, self.ThreadUpdateStatus, None)
             self._proc = Process.ProcessProxy(cmd, stdout=self._out, stderr=self._err, priority=priority)                                                                
             self._proc.wait(_WAIT_NOWAIT)
         except Exception, e:             
@@ -469,4 +655,4 @@ class wxDialogStatus(wxDialog):
             url = self.textCtrlStatus.GetRange(event.GetURLStart(), event.GetURLEnd())
             wxDialogUtils.wxGoToInternetUrl(url)
         event.Skip()
-                        	                	    
+

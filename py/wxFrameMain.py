@@ -28,6 +28,7 @@ import sys, os
 from wxPython.wx import *
 import MsgBox, Utils, wxDialogUtils, version
 from I18N import getClamString as _
+import I18N
 def create(parent, config):
     return wxMainFrame(parent, config)
 
@@ -376,24 +377,27 @@ class wxMainFrame(wxFrame):
     def OnHelpHelp(self, event):        
         if sys.platform.startswith('win'):            
             import win32api, win32con
-            curDir = Utils.GetCurrentDir(True)
-            helpfile = os.path.join(curDir, 'manual.chm')
+            # kleankoder: commented out the following two lines
+            #curDir = Utils.GetCurrentDir(True)
+            #helpfile = os.path.join(curDir, 'manual_en.chm')
+            helpfile = I18N.getHelpFilePath()
+            helppath = helpfile[:helpfile.rfind("\\")]
             if not os.path.isfile(helpfile):
                 MsgBox.ErrorBox(self, _('Could not open help file - %s not found.') % helpfile)
             else:    
                 try:                
                     win32api.ShellExecute(self.GetHandle(), 'open', 
                         helpfile,
-                        None, curDir, win32con.SW_SHOWNORMAL)
+                        None, helppath, win32con.SW_SHOWNORMAL)
                 except Exception, e:
                     MsgBox.ErrorBox(self, _('Could not open help file. Please ensure that you have Adobe Acrobat Reader installed.'))
 
     def OnHelpFAQ(self, event):
-        wxDialogUtils.wxGoToInternetUrl('http://sourceforge.net/docman/display_doc.php?docid=22588&group_id=105508')
+        wxDialogUtils.wxGoToInternetUrl(_('http://www.clamwin.com/content/category/3/7/27/'))
         
         
     def OnHelpUpdate(self, event):
-        wxDialogUtils.wxGoToInternetUrl('http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version='+version.clamwin_version)
+        wxDialogUtils.wxGoToInternetUrl(_('http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version=')+version.clamwin_version)
         
                 
     def OnHelpWebsite(self, event):

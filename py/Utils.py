@@ -356,7 +356,10 @@ def GetScanCmd(config, path, scanlog, noprint = False):
     if not noprint and config.Get('ClamAV', 'ShowProgress') == '1': 
         cmd += ' --show-progress'             
         
-    cmd += ' --stdout --database="%s" --log="%s" %s' % \
+    # 22 July 2006
+    # added --keep-mbox to leave thunderbird files intact when removing or quarantining
+            
+    cmd += ' --keep-mbox --stdout --database="%s" --log="%s" %s' % \
             (config.Get('ClamAV', 'Database'), 
             scanlog, path)          
                                 
@@ -374,36 +377,48 @@ def GetScanCmd(config, path, scanlog, noprint = False):
     # add annoying registry files to exclude as they're locked by OS
     cmd += GetExcludeSysLockedFiles()
            
-    # add include and exclude patterns    
-    for patterns in (['--include', config.Get('ClamAV', 'IncludePatterns')],
-                    ['--exclude', config.Get('ClamAV', 'ExcludePatterns')]):
-        patterns[1] = patterns[1].replace('\\', '/')            
-        for pat in patterns[1].split(Config.REGEX_SEPARATOR):
-            if len(pat):            
-                # proper regular expressions are started with ':'
-                if pat.startswith('<') and pat.endswith('>'):
-                    pat = pat[1:len(pat)-1].replace('//', '/')
-                else:
-                    # not a regular expression
-                    # translate glob style to regex
-                    pat = fnmatch.translate(pat)
-                    
-                    # '?' and '*' in the glob pattern become '.' and '.*' in the RE, which
-                    # IMHO is wrong -- '?' and '*' aren't supposed to match slash in Unix,
-                    # and by extension they shouldn't match such "special characters" under
-                    # any OS.  So change all non-escaped dots in the RE to match any
-                    # character except the special characters.
-                    # XXX currently the "special characters" are just slash -- i.e. this is
-                    # Unix-only.
-                    pat = re.sub(r'(^|[^\\])\.', r'\1[^/]', pat)
-                    
-                cmd += ' %s="%s"' % (patterns[0], pat)
+    # FIX 8 August 2006
+    # added root drive detection: os.path.splitdrive(path_element)[1]=='/'
+    # new 22 July 2006
+    # now check if the path contains any dirs  or drives
+    # if not (only files selected to scan) then do not apply the include/exclude patterns
+    has_dirs = False
+    for path_element in path.split('" "'):
+        path_element = path_element.strip(' "')
+        if os.path.isdir(path_element) or os.path.splitdrive(path_element)[1]=='/':
+            has_dirs = True
+            break
+    if has_dirs:
+        # add include and exclude patterns    
+        for patterns in (['--include', config.Get('ClamAV', 'IncludePatterns')],
+                        ['--exclude', config.Get('ClamAV', 'ExcludePatterns')]):
+            patterns[1] = patterns[1].replace('\\', '/')            
+            for pat in patterns[1].split(Config.REGEX_SEPARATOR):
+                if len(pat):            
+                    # proper regular expressions are started with ':'
+                    if pat.startswith('<') and pat.endswith('>'):
+                        pat = pat[1:len(pat)-1].replace('//', '/')
+                    else:
+                        # not a regular expression
+                        # translate glob style to regex
+                        pat = fnmatch.translate(pat)
+                        
+                        # '?' and '*' in the glob pattern become '.' and '.*' in the RE, which
+                        # IMHO is wrong -- '?' and '*' aren't supposed to match slash in Unix,
+                        # and by extension they shouldn't match such "special characters" under
+                        # any OS.  So change all non-escaped dots in the RE to match any
+                        # character except the special characters.
+                        # XXX currently the "special characters" are just slash -- i.e. this is
+                        # Unix-only.
+                        pat = re.sub(r'(^|[^\\])\.', r'\1[^/]', pat)
+                        
+                    cmd += ' %s="%s"' % (patterns[0], pat)
    
     cmd = '"%s" %s' % (config.Get('ClamAV', 'ClamScan'), cmd)
     return cmd
-
         
-def AppendLogFile(logfile, appendfile, maxsize):    
+        
+def AppendLogFile(logfile, appendfile, maxsize):
     try:
         # create logs folder before appending     
         if logfile:
@@ -626,9 +641,13 @@ def ReformatLog(data, rtf):
     data = ReplaceClamAVWarnings(data.replace('\r\n', '\n'))
     # retrieve the pure report strings
     rex = re.compile('(.*)(-- summary --.*)(Infected files: \d*?\n)(.*)', re.M|re.S)
-    #rex = re.compile('(.*)(----------- SCAN SUMMARY -----------.*)(Infected files: \d*?\n)(.*)', re.M|re.S)    
-
     r = rex.search(data)
+    # we have 2 different formats depending on what's happened in clamscan
+    # so cater for both
+    if r is None:
+        rex = re.compile('(.*)(----------- SCAN SUMMARY -----------.*)(Infected files: \d*?\n)(.*)', re.M|re.S)    
+        r = rex.search(data)
+
     if r is not None:     	          
         found = ''
         other = ''

@@ -88,8 +88,6 @@ class wxDialogLogView(wxDialog):
 
     def __init__(self, parent, text, scroll_down = False):        
         self._init_ctrls(parent)
-        
-        # set window icons
         icons = wxIconBundle()
         icons.AddIconFromFile('img/FrameIcon.ico', wxBITMAP_TYPE_ICO)
         self.SetIcons(icons)
@@ -98,7 +96,7 @@ class wxDialogLogView(wxDialog):
         # to overcome boa sizers bug
         self.textCtrl.SetSize((-1, 0))
         self._init_sizers()
-                
+        text = text.decode('utf-8')
         self.textCtrl.AppendText(text)          
         self._scroll_down = scroll_down        
                         

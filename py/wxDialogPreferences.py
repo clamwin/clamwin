@@ -646,12 +646,12 @@ class wxPreferencesDlg(wxDialog):
 
         self.staticBoxInfected = wxStaticBox(id=wxID_WXPREFERENCESDLGSTATICBOXINFECTED,
               label=_('Infected Files'), name='staticBoxInfected',
-              parent=self._panelOptions, pos=wxPoint(6, 84), size=wxSize(376,
+              parent=self._panelOptions, pos=wxPoint(6, 100), size=wxSize(376,
               106), style=0)
 
         self.radioButtonReport = wxRadioButton(id=wxID_WXPREFERENCESDLGRADIOBUTTONREPORT,
               label=_('&Report Only'), name='radioButtonReport',
-              parent=self._panelOptions, pos=wxPoint(15, 102), size=wxSize(354,
+              parent=self._panelOptions, pos=wxPoint(15, 115), size=wxSize(354,
               18), style=0)
         self.radioButtonReport.SetValue(False)
         EVT_RADIOBUTTON(self.radioButtonReport,
@@ -659,7 +659,7 @@ class wxPreferencesDlg(wxDialog):
 
         self.radioButtonRemoveInfected = wxRadioButton(id=wxID_WXPREFERENCESDLGRADIOBUTTONREMOVEINFECTED,
               label=_('&Remove (Use Carefully)'), name='radioButtonRemoveInfected',
-              parent=self._panelOptions, pos=wxPoint(15, 120), size=wxSize(354,
+              parent=self._panelOptions, pos=wxPoint(15, 133), size=wxSize(354,
               18), style=0)
         self.radioButtonRemoveInfected.SetValue(False)
         EVT_RADIOBUTTON(self.radioButtonRemoveInfected,
@@ -668,7 +668,7 @@ class wxPreferencesDlg(wxDialog):
 
         self.radioButtonQuarantine = wxRadioButton(id=wxID_WXPREFERENCESDLGRADIOBUTTONQUARANTINE,
               label=_('&Move To Quarantine Folder:'), name='radioButtonQuarantine',
-              parent=self._panelOptions, pos=wxPoint(15, 139), size=wxSize(354,
+              parent=self._panelOptions, pos=wxPoint(15, 152), size=wxSize(354,
               18), style=0)
         self.radioButtonQuarantine.SetValue(False)
         EVT_RADIOBUTTON(self.radioButtonQuarantine,
@@ -676,12 +676,12 @@ class wxPreferencesDlg(wxDialog):
 
         self.textCtrlQuarantine = wxTextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLQUARANTINE,
               name='textCtrlQuarantine', parent=self._panelOptions,
-              pos=wxPoint(31, 159), size=wxSize(319, 20), style=0, value='')
+              pos=wxPoint(31, 175), size=wxSize(319, 20), style=0, value='')
         self.textCtrlQuarantine.SetToolTipString(_('Specify location for a quarantine folder'))
 
         self.buttonBrowseQuarantine = wxButton(id=wxID_WXPREFERENCESDLGBUTTONBROWSEQUARANTINE,
               label='...', name='buttonBrowseQuarantine',
-              parent=self._panelOptions, pos=wxPoint(351, 185), size=wxSize(20,
+              parent=self._panelOptions, pos=wxPoint(351, 175), size=wxSize(20,
               20), style=0)
         self.buttonBrowseQuarantine.SetToolTipString(_('Click to browse for a quarantine folder'))
         EVT_BUTTON(self.buttonBrowseQuarantine,
@@ -838,6 +838,21 @@ class wxPreferencesDlg(wxDialog):
               parent=self._panelFilters, pos=wxPoint(6, 69), size=wxSize(182,
               151))
 
+        self.buttonUpFiltersExclude = self.editableListBoxFiltersExclude.GetUpButton()
+        self.buttonUpFiltersExclude.SetToolTipString(_('Move up'))
+
+        self.buttonDownFiltersExclude = self.editableListBoxFiltersExclude.GetDownButton()
+        self.buttonDownFiltersExclude.SetToolTipString(_('Move down'))
+
+        self.buttonNewFiltersExclude = self.editableListBoxFiltersExclude.GetNewButton()
+        self.buttonNewFiltersExclude.SetToolTipString(_('New item'))
+
+        self.buttonDelFiltersExclude = self.editableListBoxFiltersExclude.GetDelButton()
+        self.buttonDelFiltersExclude.SetToolTipString(_('Delete item'))
+
+        self.buttonEditFiltersExclude = self.editableListBoxFiltersExclude.GetEditButton()
+        self.buttonEditFiltersExclude.SetToolTipString(_('Edit item'))
+
         self.staticTextFiltersInclude = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTFILTERSINCLUDE,
               label=_('&Scan Only Matching Filenames:'),
               name='staticTextFiltersInclude', parent=self._panelFilters,
@@ -847,6 +862,21 @@ class wxPreferencesDlg(wxDialog):
               label=_('Patterns'), name='editableListBoxFiltersInclude',
               parent=self._panelFilters, pos=wxPoint(200, 69), size=wxSize(184,
               151))
+
+        self.buttonUpFiltersInclude = self.editableListBoxFiltersInclude.GetUpButton()
+        self.buttonUpFiltersInclude.SetToolTipString(_('Move up'))
+
+        self.buttonDownFiltersInclude = self.editableListBoxFiltersInclude.GetDownButton()
+        self.buttonDownFiltersInclude.SetToolTipString(_('Move down'))
+
+        self.buttonNewFiltersInclude = self.editableListBoxFiltersInclude.GetNewButton()
+        self.buttonNewFiltersInclude.SetToolTipString(_('New item'))
+
+        self.buttonDelFiltersInclude = self.editableListBoxFiltersInclude.GetDelButton()
+        self.buttonDelFiltersInclude.SetToolTipString(_('Delete item'))
+
+        self.buttonEditFiltersInclude = self.editableListBoxFiltersInclude.GetEditButton()
+        self.buttonEditFiltersInclude.SetToolTipString(_('Edit item'))
 
         self.buttonTaskDeactivate = wxButton(id=wxID_WXPREFERENCESDLGBUTTONTASKDEACTIVATE,
               label=_('&Deactivate'), name='buttonTaskDeactivate',
@@ -877,7 +907,7 @@ class wxPreferencesDlg(wxDialog):
         self.staticTextNoPersonal = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTNOPERSONAL,
               label=_('(No personal information is transmitted during this check)'),
               name='staticTextNoPersonal', parent=self._panelInternetUpdate,
-              pos=wxPoint(27, 193), size=wxSize(265, 13), style=0)
+              pos=wxPoint(27, 193), size=wxSize(350, 13), style=0)
 
         self.staticTextMB2 = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTMB2,
               label=_('MegaBytes'), name='staticTextMB2',
@@ -1258,7 +1288,7 @@ class wxPreferencesDlg(wxDialog):
 
     def OnButtonAddScheduledScan(self, event):
         if self.listViewScheduledTasks.GetItemCount() > 20:
-            MsgBox.ErrorBox(self, _('Maximum amount of schdeuled items (20) has been reached.'))
+            MsgBox.ErrorBox(self, _('Maximum amount of scheduled items (20) has been reached.'))
             return
 ##        sc = wxDialogScheduledScan.ScheduledScanInfo()    
         sc = wxDialogScheduledScan.ScheduledScanInfo()    
@@ -1506,7 +1536,7 @@ class MyValidator(MyBaseValidator):
             elif self._value == 'Priority':
                 value = self._getEnglishPriority(ctrl.GetStringSelection())
             else:
-            value = ctrl.GetStringSelection()         
+                value = ctrl.GetStringSelection()         
         elif isinstance(ctrl, (wxCheckBox, wxRadioButton, wxIntCtrl, wxSpinCtrl)):
             value = str(ctrl.GetValue())            
         elif isinstance(ctrl, wxTimeCtrl):

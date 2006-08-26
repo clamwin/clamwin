@@ -28,6 +28,7 @@ import Utils
 import version
 import binascii
 import sys
+from I18N import getClamString as _
 if sys.platform.startswith("win"):
     import win32api
     
@@ -60,8 +61,8 @@ class Settings:
         [0, {'Enable': '0',
              'SMTPHost': '', 'SMTPPort': '25', 'SMTPUser':'',
              'SMTPPassword': '', 
-             'From': 'clamwin@yourdomain', 'To': 'admin@yourdomain', 
-             'Subject': 'ClamWin Virus Alert'}], 
+             'From': _('clamwin@yourdomain'), 'To': _('admin@yourdomain'), 
+             'Subject': _('ClamWin Virus Alert')}], 
         'UI':
         [0, {'TrayNotify': '1', 'ReportInfected': '1', 'Standalone': '0', 'Version': ''}],                
         'Schedule':

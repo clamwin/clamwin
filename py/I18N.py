@@ -22,7 +22,9 @@
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import gettext, locale, os, sys, traceback
+import _winreg as wreg
 
+localePath = "..\\locale"
 
 def getCallingModule():
     stackList = traceback.extract_stack()
@@ -39,22 +41,82 @@ def getCallingModule():
     
     raise "Could not find name of calling module"
 
+
+""" Get a translated version of the specified English
+    string, based on the current locale.
+"""
 def getClamString(englishString):
-    
+    global localePath
     os.environ['LANGUAGE'] = locale.getdefaultlocale()[0]
     modName = getCallingModule().replace(".pyo", "")
     modName = modName.replace(".py", "")
-    gettext.bindtextdomain(modName, "apptext")
+    #print "modName = [%s]" % modName
+    gettext.bindtextdomain(modName, localePath)
+    gettext.textdomain(modName)
+    #return gettext.gettext(englishString)
+    return gettext.gettext(englishString).decode("utf-8")
+
+
+""" Get the path to the ClamWin bin directory,
+    using the Path value in the registr
+"""
+def getClamBinPath():
+    regHandle = wreg.ConnectRegistry(None, wreg.HKEY_LOCAL_MACHINE)
+    keyHandle = wreg.OpenKey(regHandle, "SOFTWARE\\ClamWin")
+    (clamBinPath, _) = wreg.QueryValueEx(keyHandle, "Path")
+    wreg.CloseKey(keyHandle)
+    wreg.CloseKey(regHandle)
+    return clamBinPath
+
+
+""" Set the path to the translated strings, based
+    on the Path value in the registry
+"""
+def setLocalePath():
+    global localePath
+    regHandle = wreg.ConnectRegistry(None, wreg.HKEY_LOCAL_MACHINE)
+    keyHandle = wreg.OpenKey(regHandle, "SOFTWARE\\ClamWin")
+    (clamBinPath, _) = wreg.QueryValueEx(keyHandle, "Path")
+    wreg.CloseKey(keyHandle)
+    wreg.CloseKey(regHandle)
+    localePath = clamBinPath[:clamBinPath.rfind("\\")] + "\\locale"    
+
+
+""" Get the full path including file name, to the
+    HTML help file, based on the current locale.
+"""
+def getHelpFilePath():
+    clamBinPath = getClamBinPath()
+    localeCode = locale.getdefaultlocale()[0]
+    countryCode = localeCode[:localeCode.find('_')]
+    helpPath = clamBinPath + "\\manual_" + countryCode + ".chm"
+    if not os.path.exists(helpPath):
+        helpPath = clamBinPath + "\\manual_" + countryCode + ".pdf"
+        
+    return helpPath
+
+
+""" Same as getClamString, except first find the absolute
+    path to the locale directory. Used by the outlook
+    add-in which is run from another directory.
+"""
+def findAndGetClamString(englishString):
+
+    regHandle = wreg.ConnectRegistry(None, wreg.HKEY_LOCAL_MACHINE)
+    keyHandle = wreg.OpenKey(regHandle, "SOFTWARE\\ClamWin")
+    (clamBinPath, _) = wreg.QueryValueEx(keyHandle, "Path")
+    wreg.CloseKey(keyHandle)
+    wreg.CloseKey(regHandle)
+    localePath = clamBinPath[:clamBinPath.rfind("\\")] + "\\locale"
+    #print "localePath = [%s]" % localePath
+    os.environ['LANGUAGE'] = locale.getdefaultlocale()[0]
+    modName = getCallingModule().replace(".pyo", "")
+    modName = modName.replace(".py", "")
+    #print "modName = [%s]" % modName
+    gettext.bindtextdomain(modName, localePath)
     gettext.textdomain(modName)
     return gettext.gettext(englishString).decode("utf-8")
-    
-def testIt():
-    
-    callingModule = getCallingModule()
-    print callingModule 
 
-
-#testIt()
 
 
 

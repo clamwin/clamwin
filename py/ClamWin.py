@@ -98,8 +98,9 @@ def main(config=None, mode='main', autoClose=False, path='', config_file=None):
         b = config.Read()
         
     app = BoaApp(0, config, mode=mode, autoClose=autoClose, path=path)   
-    app.MainLoop()    
+    app.MainLoop()
     return app.exit_code
+    #return 0
 
 
 
@@ -123,7 +124,7 @@ if __name__ == '__main__':
             path += '"' + arg[len('--path='):] + '" '
         if arg.find('--config_file=') == 0:
             config_file = arg[len('--config_file='):]                                
-
+    
     print "command line path: %s" % path.strip()            
     exit_code = main(mode=mode, autoClose=close, path=path.strip(), config_file=config_file)
     sys.exit(exit_code)

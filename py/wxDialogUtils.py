@@ -29,13 +29,13 @@ import wxDialogLogViewer
 from wxPython.wx import wxBitmap, wxTextCtrl
 from wxPython.lib.dialogs import wxScrolledMessageDialog
 import MsgBox, EmailAlert, Utils, version
-
+from I18N import getClamString as _
 
 def wxUpdateVirDB(parent, config, autoClose = False):        
     exit_code = -1
     freshclam_conf = Utils.SaveFreshClamConf(config)
     if not len(freshclam_conf):
-        MsgBox.ErrorBox(parent, _('Unable to create freshclam configutration file. Please check there is enough space on the disk'))
+        MsgBox.ErrorBox(parent, _('Unable to create freshclam configuration file. Please check there is enough space on the disk'))
         return
     updatelog = tempfile.mktemp()       
     dbdir = config.Get('ClamAV', 'Database')
@@ -61,7 +61,8 @@ def wxUpdateVirDB(parent, config, autoClose = False):
     else:
         tray_notify_params = None
 
-    dlg = wxDialogStatus.create(parent, cmd, None, 'n', 'update', tray_notify_params)
+    # kleankoder: the following line changed argument 3 to accept updatelog instead of None
+    dlg = wxDialogStatus.create(parent, cmd, updatelog, 'n', 'update', tray_notify_params)
     dlg.SetTitle(_('ClamWin Free Antivirus: Downloading Update...'))
     dlg.SetAutoClose(autoClose)
     try:
@@ -112,8 +113,8 @@ def wxScan(parent, config, path, autoClose = False):
             #add to logfile
             logfile = config.Get('ClamAV', 'LogFile')
             if logfile != '':
-                file(scanlog, 'wt').write(_('\n-----------------------------\n')
-                    _('Scan Started %s\nERROR: Virus Definitions Database Not Found! Please download it now.\n')
+                file(scanlog, 'wt').write(_('\n-----------------------------\n') +
+                    _('Scan Started %s\nERROR: Virus Definitions Database Not Found! Please download it now.\n') +
                     _('-----------------------------') % time.asctime())
                 maxsize = int(config.Get('ClamAV', 'MaxLogSize'))*1048576        
                 Utils.AppendLogFile(logfile, scanlog, maxsize)        
@@ -137,7 +138,7 @@ def wxScan(parent, config, path, autoClose = False):
         exit_code = dlg.GetExitCode()                
         maxsize = int(config.Get('ClamAV', 'MaxLogSize'))*1048576        
         logfile = config.Get('ClamAV', 'LogFile')
-        Utils.AppendLogFile(logfile, scanlog, maxsize)        
+        Utils.AppendLogFile(logfile, scanlog, maxsize)
         # send email alert
         if config.Get('EmailAlerts', 'Enable') == '1':            
             try:     
