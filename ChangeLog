@@ -1,3 +1,21 @@
+Version 0.88.4 - 8 August 2006
+ - Upgraded clamav to 0.88.4
+ - Fixed bug when filters where not applied when scanning a whole disk only
+ - Added Explorer context menu for 64-bit Windows
+ 
+ 
+Version 0.88.3.1 - 22 July 2006
+ - fixed crash with password proteced RAR archives
+ - added --keep-mbox parameter to leave Thunderbird mailbox files intact when 
+   moving or removing infected files
+ - set user-agent in freshclam to ClamWin as requested by ClamAV team
+ - Filename filters are no longer applied if only files (no directories) are being scanned.
+   This is done to allow scanning an individual file regadless configured filters
+
+
+Version 0.88.3 - 9 July 2006
+ - Upgraded ClamAV to 0.88.3
+ 
 Version 0.88.2.3 - 6 May 2006
  - Fixed an issue with not removing temporary files after scanning archives 
 Version 0.88.2.2 - 6 May 2006
