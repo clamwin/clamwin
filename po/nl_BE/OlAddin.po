@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.2.3\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-05-21 13:44+0100\n"
-"Last-Translator: Peter Budts <budtse@users.sourceforge.net>\n"
+"PO-Revision-Date: 2006-08-26 15:28+0100\n"
+"Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: ClamWin Free Antivirus <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -20,29 +20,38 @@ msgstr "U schijnt een win32all versie eerder dan 151 te gebruiken, dewelke al re
 msgid "I'm afraid it is time to upgrade"
 msgstr "Volgens mij is het tijd voor een upgrade"
 
-#: OlAddin.py:198
+#: OlAddin.py:199
 msgid "An error occurred in ClamWin Free Antivirus About Box.\n"
 msgstr "Fout in het ClamWin Free Antivirus Info Venster.\n"
 
-#: OlAddin.py:198
-#: OlAddin.py:405
-#: OlAddin.py:477
+#: OlAddin.py:199
+#: OlAddin.py:419
+#: OlAddin.py:492
 msgid "ClamWin Free Antivirus"
 msgstr "ClamWin Free Antivirus"
 
-#: OlAddin.py:212
+#: OlAddin.py:213
 msgid "WARNING - Trying to use image '%s', but it doesn't exist"
 msgstr "WAARSCHUWING - Afbeelding '%s' wordt gebruikt, maar bestaat niet"
 
-#: OlAddin.py:271
+#: OlAddin.py:248
+msgid "Virus Deleted by ClamWin.txt"
+msgstr "Virus verwijderd door ClamWin.txt"
+
+#: OlAddin.py:275
+#: OlAddin.py:1031
+msgid "Registration complete."
+msgstr "Registratie voltooid."
+
+#: OlAddin.py:277
 msgid "An Error occurred whilst starting clamscan: %s"
 msgstr "Fout bij het starten van ClamScan: %s"
 
-#: OlAddin.py:287
+#: OlAddin.py:294
 msgid "An Error occurred reading clamscan report: %s"
 msgstr "Fout bij het lezen van het ClamScan rapport: %s"
 
-#: OlAddin.py:288
+#: OlAddin.py:296
 msgid ""
 "An Error occurred whilst scanning:\n"
 "%s"
@@ -50,15 +59,15 @@ msgstr ""
 "Fout bij het scannen:\n"
 " %s"
 
-#: OlAddin.py:298
+#: OlAddin.py:306
 msgid "An Error occurred whilst converting clamscan report: %s"
 msgstr "Fout bij het converteren van het ClamScan rapport; %s"
 
-#: OlAddin.py:334
+#: OlAddin.py:344
 msgid "Virus Definitions Database Not Found! Please download it now."
 msgstr "Kan de Virus Definitie Database niet vinden! Gelieve deze nu te downloaden."
 
-#: OlAddin.py:404
+#: OlAddin.py:418
 msgid ""
 "ClamWin Free Antivirus could not scan file%s\n"
 ".Error: %s"
@@ -66,47 +75,47 @@ msgstr ""
 "ClamWin Free Antivirus kan het bestand %s niet scannen.\n"
 " Fout: %s"
 
-#: OlAddin.py:455
+#: OlAddin.py:470
 msgid "ClamWin Free Antivirus has detected a virus in the message attachments!"
 msgstr "ClamWin Free Antivirus heeft een virus gevonden in de email bijlagen!"
 
-#: OlAddin.py:456
+#: OlAddin.py:471
 msgid "Virus Detected!"
 msgstr "Virus Gevonden!"
 
-#: OlAddin.py:459
+#: OlAddin.py:474
 msgid "Virus has been detected in an email attachment! The attachment was replaced with the report file."
 msgstr "Er is een virus gevonden in een email bijlage! De bijlage is vervangen door een rapport bestand."
 
-#: OlAddin.py:461
+#: OlAddin.py:476
 msgid "An error occurred whilst scanning email message."
 msgstr "Fout bij het scannen van een email boodschap."
 
-#: OlAddin.py:493
+#: OlAddin.py:508
 msgid "Could not remove file: %s. Error: %s"
 msgstr "Kan bestand %s niet verwijderen. Fout: %s"
 
-#: OlAddin.py:565
+#: OlAddin.py:580
 msgid "&About ClamWin Free Antivirus"
 msgstr "&Over ClamWin Free Antivirus"
 
-#: OlAddin.py:566
+#: OlAddin.py:581
 msgid "Shows the ClamWin About Box"
 msgstr "Toont het ClamWin Info Venster"
 
-#: OlAddin.py:818
+#: OlAddin.py:836
 msgid "ClamWin Free Antivirus could not replace an attachment. Error: %s"
 msgstr "ClamWin Free Antivirus kan een bijlage niet vervangen. Fout: %s"
 
-#: OlAddin.py:819
+#: OlAddin.py:837
 msgid "ClamWin Free Antivirus!"
 msgstr "ClamWin Free Antivirus!"
 
-#: OlAddin.py:886
+#: OlAddin.py:905
 msgid "Error connecting to Outlook!"
 msgstr "Fout bij het verbinden met Outlook!"
 
-#: OlAddin.py:888
+#: OlAddin.py:907
 msgid ""
 "There was an error initializing the ClamWin addin\r\n"
 "\r\n"
@@ -116,27 +125,23 @@ msgstr ""
 "\r\n"
 "Gelieve Outlook opnieuw te starten en nogmaals te proberen."
 
-#: OlAddin.py:899
-msgid "An error occurred whilst displaying the spashscreen %s. Error: %s."
-msgstr "Fout bij het tonen van he splashscreen %s. Fout: %s"
+#: OlAddin.py:918
+msgid "An error occurred whilst displaying the splashscreen %s. Error: %s."
+msgstr "Fout bij het tonen van het splashscreen %s. Fout: %s"
 
-#: OlAddin.py:936
+#: OlAddin.py:955
 msgid "Addin terminating: %d COM client and %d COM servers exist."
 msgstr "Addin wordt gestopt: %d COM client en %d COM server bestaan."
 
-#: OlAddin.py:988
+#: OlAddin.py:1007
 msgid "Registering (in HKEY_LOCAL_MACHINE)..."
 msgstr "Bezig met de registratie (in HKEY_LOCAL_MACHINE)..."
 
-#: OlAddin.py:991
+#: OlAddin.py:1010
 msgid "Registering (in HKEY_CURRENT_USER)..."
 msgstr "Bezig met de registratie (in HKEY_CURRENT_USER)..."
 
-#: OlAddin.py:996
+#: OlAddin.py:1015
 msgid "Registration Complete"
 msgstr "Registratie Voltooid"
-
-#: OlAddin.py:1012
-msgid "Registration complete."
-msgstr "Registratie voltooid."
 
