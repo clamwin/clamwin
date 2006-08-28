@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-07-25 11:43+0100\n"
-"Last-Translator: Peter Budts <budtse@users.sourceforge.net>\n"
+"PO-Revision-Date: 2006-08-28 18:30+0100\n"
+"Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -126,7 +126,7 @@ msgstr "Options d'analyse"
 
 #: wxDialogPreferences.py:315
 msgid "&Enable Automatic Virus Database Updates"
-msgstr "&Activer les Mises à jourautomatiques de la base de définitions de virus"
+msgstr "&Activer les Mises à jour automatiques de la base de définitions de virus"
 
 #: wxDialogPreferences.py:318
 msgid "Enable automatic virus database downloads "
@@ -223,13 +223,14 @@ msgid "&Scan In Archives"
 msgstr "&Scanner à l'intérieur des dossiers compressés"
 
 #: wxDialogPreferences.py:435
+#, fuzzy
 msgid "Do Not Scan Archives Larger Than"
 msgstr "Ne pas scanner des dossiers compressés plus gros que"
 
 #: wxDialogPreferences.py:445
 #: wxDialogPreferences.py:913
 msgid "MegaBytes"
-msgstr "MegaBytes"
+msgstr "MegaByte(s)"
 
 #: wxDialogPreferences.py:450
 #: wxDialogPreferences.py:464
@@ -370,7 +371,7 @@ msgstr "Quand la fréquence de mise à jour est hebdomadaire, sélectionnez le j
 
 #: wxDialogPreferences.py:638
 msgid "&Update Virus Database On Logon"
-msgstr "&Mettre à jour la base de définitions devirus à la connexion"
+msgstr "&Mettre à jour la base de définitions de virus à la connexion"
 
 #: wxDialogPreferences.py:641
 msgid "Select if you wish to update the virus databases just after you logged on"
@@ -386,7 +387,7 @@ msgstr "&Signaler uniquement"
 
 #: wxDialogPreferences.py:661
 msgid "&Remove (Use Carefully)"
-msgstr "&Supprimer (a utiliser avec précaution)"
+msgstr "&Supprimer (à utiliser avec précaution)"
 
 #: wxDialogPreferences.py:670
 msgid "&Move To Quarantine Folder:"
@@ -481,17 +482,15 @@ msgid "Specify Filename Patterns to include and/or exclude in scanning"
 msgstr "Indiquez les extensions de noms de fichiers à inclure et/ou exclure lors de l'analyse anti-virus"
 
 #: wxDialogPreferences.py:827
-#, fuzzy
 msgid "(To specify a regular expression include your pattern within <...>)"
 msgstr "(Pour spécifier une expression régulière, incluez votre extension à l'intérieur de <...>)"
 
 #: wxDialogPreferences.py:832
 msgid "&Exclude Matching Filenames:"
-msgstr "&Exclure tous les noms de fichiers correspondant"
+msgstr "&Exclure les noms de fichiers correspondant"
 
 #: wxDialogPreferences.py:837
 #: wxDialogPreferences.py:862
-#, fuzzy
 msgid "Patterns"
 msgstr "Extensions"
 
@@ -521,6 +520,7 @@ msgid "Edit item"
 msgstr "Modifier l'item"
 
 #: wxDialogPreferences.py:857
+#, fuzzy
 msgid "&Scan Only Matching Filenames:"
 msgstr "&Scanner uniquement les noms de fichiers correspondant"
 
@@ -553,7 +553,7 @@ msgstr "&Priorité du Scanner"
 #: wxDialogPreferences.py:1477
 #: wxDialogPreferences.py:1485
 msgid "Normal"
-msgstr "Normal"
+msgstr "Normale"
 
 #: wxDialogPreferences.py:922
 #: wxDialogPreferences.py:1475
@@ -567,7 +567,7 @@ msgstr "Vous permet de déterminer la priorité du processus du scanner anti-vir
 
 #: wxDialogPreferences.py:931
 msgid "Display &File Scanned % Progress Indicator"
-msgstr "Afficher un indicateur en % de l'avancement du nombre de &fichiers scannés"
+msgstr "Afficher l'avancement en % du nombre de &fichiers scannés"
 
 #: wxDialogPreferences.py:1015
 msgid "An error occurred whilst saving configuration file %s. Please check that you have write permission to the configuration file."
