@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.2.3\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-09-03 19:02+0100\n"
+"PO-Revision-Date: 2006-09-10 12:56+0100\n"
 "Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: ClamWin Free Antivirus <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -93,7 +93,7 @@ msgid "Proxy Server domain name or IP address"
 msgstr "Proxy Server Domeinnaam of IP Adres"
 
 #: wxDialogPreferences.py:270
-#: wxDialogPreferences.py:727
+#: wxDialogPreferences.py:728
 msgid "P&ort:"
 msgstr "P&oort:"
 
@@ -102,7 +102,7 @@ msgid "Proxy Server port number (0-65535)"
 msgstr "Proxy Server poort number (0-65535)"
 
 #: wxDialogPreferences.py:283
-#: wxDialogPreferences.py:740
+#: wxDialogPreferences.py:741
 msgid "&User Name:"
 msgstr "&Gebruikersnaam:"
 
@@ -111,7 +111,7 @@ msgid "Proxy Server Account Name (optional)"
 msgstr "Proxy Server Gebruikersnaam (optioneel)"
 
 #: wxDialogPreferences.py:293
-#: wxDialogPreferences.py:751
+#: wxDialogPreferences.py:752
 msgid "&Password:"
 msgstr "&Passwoord:"
 
@@ -131,486 +131,492 @@ msgstr "Scan Opties"
 msgid "&Enable Automatic Virus Database Updates"
 msgstr "&Automatische Virus Database Updates inschakelen"
 
-#: wxDialogPreferences.py:318
+#: wxDialogPreferences.py:319
 msgid "Enable automatic virus database downloads "
 msgstr "Automatische Virus Database Updates inschakelen"
 
-#: wxDialogPreferences.py:324
+#: wxDialogPreferences.py:325
 msgid "Download &Site :"
 msgstr "Download &Site:"
 
-#: wxDialogPreferences.py:331
+#: wxDialogPreferences.py:332
 msgid "Specify Database Mirror Site here. Usually this is database.clamav.net"
 msgstr "Geef hier de Database Mirror Site in. Gewoonlijk is dat database.clamav.net"
 
-#: wxDialogPreferences.py:334
+#: wxDialogPreferences.py:335
 msgid "&Update Frequency:"
 msgstr "&Update Frekwentie:"
 
-#: wxDialogPreferences.py:339
-#: wxDialogPreferences.py:346
-#: wxDialogPreferences.py:1453
+#: wxDialogPreferences.py:340
+#: wxDialogPreferences.py:347
+#: wxDialogPreferences.py:1454
 msgid "Daily"
 msgstr "Dagelijks"
 
-#: wxDialogPreferences.py:339
-#: wxDialogPreferences.py:1453
+#: wxDialogPreferences.py:340
+#: wxDialogPreferences.py:1454
 msgid "Hourly"
 msgstr "Om het uur"
 
-#: wxDialogPreferences.py:340
-#: wxDialogPreferences.py:1077
-#: wxDialogPreferences.py:1453
+#: wxDialogPreferences.py:341
+#: wxDialogPreferences.py:1078
+#: wxDialogPreferences.py:1454
 msgid "Weekly"
 msgstr "Wekelijks"
 
-#: wxDialogPreferences.py:340
-#: wxDialogPreferences.py:1453
+#: wxDialogPreferences.py:341
+#: wxDialogPreferences.py:1454
 msgid "Workdays"
 msgstr "Op werkdagen"
 
-#: wxDialogPreferences.py:345
+#: wxDialogPreferences.py:346
 msgid "How often virus database is downloaded"
 msgstr "Hoe vaak een virus database wordt opgehaald"
 
-#: wxDialogPreferences.py:352
+#: wxDialogPreferences.py:353
 msgid "&ClamScan Location:"
 msgstr "&ClamScan locatie:"
 
-#: wxDialogPreferences.py:360
+#: wxDialogPreferences.py:361
 msgid "Specify location of clamscan"
 msgstr "Geef de locatie van ClamScan.exe"
 
-#: wxDialogPreferences.py:365
+#: wxDialogPreferences.py:366
 msgid "Click to browse for clamscan"
 msgstr "Klik om te zoeken naar ClamScan.exe"
 
-#: wxDialogPreferences.py:371
+#: wxDialogPreferences.py:372
 msgid "&FreshClam Location:"
 msgstr "&FreshClam Locatie:"
 
-#: wxDialogPreferences.py:379
+#: wxDialogPreferences.py:380
 msgid "Specify location of freshclam"
 msgstr "Geef de locatie van FreshClam.exe"
 
-#: wxDialogPreferences.py:385
+#: wxDialogPreferences.py:386
 msgid "Click to browse for freshclam"
 msgstr "Klik om te zoeken naar FreshClam.exe"
 
-#: wxDialogPreferences.py:391
+#: wxDialogPreferences.py:392
 msgid "&Virus Database Folder:"
 msgstr "&Virus Database Map:"
 
-#: wxDialogPreferences.py:399
+#: wxDialogPreferences.py:400
 msgid "Specify location of virus database files"
 msgstr "Geef de locatie van de virus database map"
 
-#: wxDialogPreferences.py:404
+#: wxDialogPreferences.py:405
 msgid "Click to browse for a virus database folder"
 msgstr "Klik om te zoeken naar de virus database map"
 
-#: wxDialogPreferences.py:409
+#: wxDialogPreferences.py:410
 msgid "&Scan In Subdirectories"
 msgstr "&Scan in submappen"
 
-#: wxDialogPreferences.py:412
+#: wxDialogPreferences.py:413
 msgid "Select if you wish to scan in subdirectories recursively"
 msgstr "Vink aan wanneer u recursief in submappen wil scannen"
 
-#: wxDialogPreferences.py:415
+#: wxDialogPreferences.py:416
 msgid "&Time:"
 msgstr "&Tijd:"
 
-#: wxDialogPreferences.py:426
+#: wxDialogPreferences.py:427
 msgid "&Scan In Archives"
 msgstr "&Scan gecomprimeerde bestanden (archieven)"
 
-#: wxDialogPreferences.py:435
+#: wxDialogPreferences.py:436
 msgid "Do Not Scan Archives Larger Than"
 msgstr "Scan geen archieven groter dan"
 
-#: wxDialogPreferences.py:445
-#: wxDialogPreferences.py:913
+#: wxDialogPreferences.py:446
+#: wxDialogPreferences.py:914
 msgid "MegaBytes"
 msgstr "MegaBytes"
 
-#: wxDialogPreferences.py:450
-#: wxDialogPreferences.py:464
+#: wxDialogPreferences.py:451
+#: wxDialogPreferences.py:465
 msgid "Do Not Extract More Than "
 msgstr "Pak niet meer dan"
 
-#: wxDialogPreferences.py:460
+#: wxDialogPreferences.py:461
 msgid "Files"
 msgstr "bestanden uit "
 
-#: wxDialogPreferences.py:474
+#: wxDialogPreferences.py:475
 msgid "Sub-Archives"
 msgstr "subarchieven uit"
 
-#: wxDialogPreferences.py:479
+#: wxDialogPreferences.py:480
 msgid "&Treat Files As Mailboxes"
 msgstr "&Behandel bestanden als Mailboxen"
 
-#: wxDialogPreferences.py:482
+#: wxDialogPreferences.py:483
 msgid "Select if you wish to scan mailboxes"
 msgstr "Vink dit aan als u mailboxen wil scannen"
 
-#: wxDialogPreferences.py:486
+#: wxDialogPreferences.py:487
 msgid "&Extract Attachments and Macros from MS Office Documents"
 msgstr "&Controleer bijlagen en macros van MS Office Documenten"
 
-#: wxDialogPreferences.py:489
-#: wxDialogPreferences.py:496
+#: wxDialogPreferences.py:490
+#: wxDialogPreferences.py:497
 msgid "Select if you wish to scan OLE attachments and macros in MS Office Documents"
 msgstr "Vink dit aan wanneer u OLE bijlagen en macros in MS Office documenten will scannen"
 
-#: wxDialogPreferences.py:493
+#: wxDialogPreferences.py:494
 msgid "&Detect Broken Executables"
 msgstr "&Detecteer corrupte uitvoerbare bestanden"
 
-#: wxDialogPreferences.py:500
+#: wxDialogPreferences.py:501
 msgid "&Additional Clamscan Command Line Parameters:"
 msgstr "&Extra ClamScan opdrachtregel parameters:"
 
-#: wxDialogPreferences.py:509
+#: wxDialogPreferences.py:510
 msgid "Limit Log File Size To:"
 msgstr "Beperk grootte van Logbestand tot:"
 
-#: wxDialogPreferences.py:517
+#: wxDialogPreferences.py:518
 msgid "Select maximum size for the logfile"
 msgstr "Geef een maximum grootte in voor het logbestand"
 
-#: wxDialogPreferences.py:521
+#: wxDialogPreferences.py:522
 msgid "&Scan Report File:"
 msgstr "&Scan rapport bestand"
 
-#: wxDialogPreferences.py:529
+#: wxDialogPreferences.py:530
 msgid "Specify location for a scan reports log file"
 msgstr "Geef de locatie voor het scan rapport log bestand"
 
-#: wxDialogPreferences.py:535
-#: wxDialogPreferences.py:555
+#: wxDialogPreferences.py:536
+#: wxDialogPreferences.py:556
 msgid "Click to browse for a log file"
 msgstr "Klik om te zoeken naar een log bestand"
 
-#: wxDialogPreferences.py:541
+#: wxDialogPreferences.py:542
 msgid "&Virus Database Update Report File:"
 msgstr "&Virus Database Update Rapport bestand:"
 
-#: wxDialogPreferences.py:549
+#: wxDialogPreferences.py:550
 msgid "Specify location for a database updates log file"
 msgstr "Geef de locatie in voor een database update logbestand"
 
-#: wxDialogPreferences.py:564
+#: wxDialogPreferences.py:565
 msgid "When the download should be started"
 msgstr "Wanneer de download moet gestart worden"
 
-#: wxDialogPreferences.py:567
+#: wxDialogPreferences.py:568
 msgid "&Day Of The Week:"
 msgstr "&Dag van de week:"
 
-#: wxDialogPreferences.py:581
+#: wxDialogPreferences.py:582
 msgid "List of Scheduled Scans"
 msgstr "Lijst van geplande scans"
 
-#: wxDialogPreferences.py:597
+#: wxDialogPreferences.py:598
 msgid "Scheduled Scans:"
 msgstr "Geplande Scans:"
 
-#: wxDialogPreferences.py:603
+#: wxDialogPreferences.py:604
 msgid "&Add"
 msgstr "&Toevoegen"
 
-#: wxDialogPreferences.py:609
+#: wxDialogPreferences.py:610
 msgid "&Remove"
 msgstr "&Verwijderen"
 
-#: wxDialogPreferences.py:616
+#: wxDialogPreferences.py:617
 msgid "&Edit"
 msgstr "&Aanpassen"
 
-#: wxDialogPreferences.py:622
+#: wxDialogPreferences.py:623
 msgid "&Display Infected Files Only"
 msgstr "&Enkel besmette bestanden tonen"
 
-#: wxDialogPreferences.py:626
-#: wxDialogPreferences.py:935
+#: wxDialogPreferences.py:627
+#: wxDialogPreferences.py:936
 msgid "Select if you wish to display infected files only in the scan progress window"
 msgstr "Vink aan als u enkel besmette bestanden wil zin in het vooruitgangsvenster"
 
-#: wxDialogPreferences.py:628
+#: wxDialogPreferences.py:629
 msgid "Monday"
 msgstr "Maandag"
 
-#: wxDialogPreferences.py:628
-#: wxDialogPreferences.py:635
+#: wxDialogPreferences.py:629
+#: wxDialogPreferences.py:636
 msgid "Tuesday"
 msgstr "Dinsdag"
 
-#: wxDialogPreferences.py:629
+#: wxDialogPreferences.py:630
 msgid "Friday"
 msgstr "Vrijdag"
 
-#: wxDialogPreferences.py:629
+#: wxDialogPreferences.py:630
 msgid "Saturday"
 msgstr "Zaterdag"
 
-#: wxDialogPreferences.py:629
+#: wxDialogPreferences.py:630
 msgid "Sunday"
 msgstr "Zondag"
 
-#: wxDialogPreferences.py:629
+#: wxDialogPreferences.py:630
 msgid "Thursday"
 msgstr "Donderdag"
 
-#: wxDialogPreferences.py:629
+#: wxDialogPreferences.py:630
 msgid "Wednesday"
 msgstr "Woensdag"
 
-#: wxDialogPreferences.py:634
+#: wxDialogPreferences.py:635
 msgid "When update frequency is weekly select day of the week for an update"
 msgstr "Als de update frekwentie wekelijks is, selecteer dan een dag van de week voor de update"
 
-#: wxDialogPreferences.py:638
+#: wxDialogPreferences.py:639
 msgid "&Update Virus Database On Logon"
 msgstr "&Update Virus Database bij aanmelding"
 
-#: wxDialogPreferences.py:641
+#: wxDialogPreferences.py:642
 msgid "Select if you wish to update the virus databases just after you logged on"
 msgstr "Vink aan als u de virus database wil updaten telkens nadat u aanlogt"
 
-#: wxDialogPreferences.py:648
+#: wxDialogPreferences.py:649
 msgid "Infected Files"
 msgstr "Besmette Bestand"
 
-#: wxDialogPreferences.py:653
+#: wxDialogPreferences.py:654
 msgid "&Report Only"
 msgstr "Enkel &Rapporteren"
 
-#: wxDialogPreferences.py:661
+#: wxDialogPreferences.py:662
 msgid "&Remove (Use Carefully)"
 msgstr "&Verwijderen (Voorzichtig Gebruiken)"
 
-#: wxDialogPreferences.py:670
+#: wxDialogPreferences.py:671
 msgid "&Move To Quarantine Folder:"
 msgstr "Verplaats naar &Quarantaine map"
 
-#: wxDialogPreferences.py:680
+#: wxDialogPreferences.py:681
 msgid "Specify location for a quarantine folder"
 msgstr "Geef een locatie voor de quarantaine map"
 
-#: wxDialogPreferences.py:686
+#: wxDialogPreferences.py:687
 msgid "Click to browse for a quarantine folder"
 msgstr "Klik om te zoeken naar een quarantaine map"
 
-#: wxDialogPreferences.py:700
+#: wxDialogPreferences.py:701
 msgid "&Send Email Alert On Virus Detection"
 msgstr "&Zend Email waarschuwing bij virus detectie"
 
-#: wxDialogPreferences.py:704
+#: wxDialogPreferences.py:705
 msgid "Select if you wish to receive email alerts when ClamWin detects a virus"
 msgstr "Vink aan als u email waarschuwingen wil ontvangen als ClamWin een virus detecteert"
 
-#: wxDialogPreferences.py:710
+#: wxDialogPreferences.py:711
 msgid "SMTP Connection Details"
 msgstr "SMTP Verbinding Details"
 
-#: wxDialogPreferences.py:716
+#: wxDialogPreferences.py:717
 msgid "&Mail Server:"
 msgstr "&Mail Server:"
 
-#: wxDialogPreferences.py:724
+#: wxDialogPreferences.py:725
 msgid "SMTP Server domain name or IP address"
 msgstr "SMTP Server domain naam of IP adres"
 
-#: wxDialogPreferences.py:737
+#: wxDialogPreferences.py:738
 msgid "Mail Server port number (0-65535)"
 msgstr "Mail Server poort nummer (0-65535)"
 
-#: wxDialogPreferences.py:748
+#: wxDialogPreferences.py:749
 msgid "Mail Server Account Name (optional)"
 msgstr "Mail Server Gebruikersnaam (optioneel)"
 
-#: wxDialogPreferences.py:760
+#: wxDialogPreferences.py:761
 msgid "Mail Server account password (optional)"
 msgstr "Mail Server Gebruikerspasswoord (optioneel)"
 
-#: wxDialogPreferences.py:763
+#: wxDialogPreferences.py:764
 msgid "Email Message Details"
 msgstr "Email Waarschuwing Details"
 
-#: wxDialogPreferences.py:769
+#: wxDialogPreferences.py:770
 msgid "&From:"
 msgstr "&Van:"
 
-#: wxDialogPreferences.py:777
+#: wxDialogPreferences.py:778
 msgid "Specify an email address from which the notification will be sent."
 msgstr "Geef een email adres vanaf waar de waarschuwing verzonden moet worden."
 
-#: wxDialogPreferences.py:780
+#: wxDialogPreferences.py:781
 msgid "&To:"
 msgstr "&Naar:"
 
-#: wxDialogPreferences.py:788
+#: wxDialogPreferences.py:789
 msgid "Specify an email address where the email alert will be delivered.  Separate multiple addresses with commas."
 msgstr "Geef een email adres waarheen de email waarschuwing wordt gestuurd. Meerdere adressen scheiden met kommas"
 
-#: wxDialogPreferences.py:791
+#: wxDialogPreferences.py:792
 msgid "Su&bject:"
 msgstr "&Onderwerp:"
 
-#: wxDialogPreferences.py:799
+#: wxDialogPreferences.py:800
 msgid "Specify Recipient's email address where the email alert will be delivered"
 msgstr "Geef het email adres van de ontvanger aan wie de waarschuwing wordt verstuurt"
 
-#: wxDialogPreferences.py:802
+#: wxDialogPreferences.py:803
 msgid "Send &Test Email"
 msgstr "Stuur &Test Email"
 
-#: wxDialogPreferences.py:805
+#: wxDialogPreferences.py:806
 msgid "Click to send a test email message"
 msgstr "Klik om een test email te verzenden"
 
-#: wxDialogPreferences.py:811
+#: wxDialogPreferences.py:812
 msgid "&Display Pop-up Notification Messages In Taskbar "
 msgstr "&Toon een Pop-Up waarschuwing in de taakbalk"
 
-#: wxDialogPreferences.py:815
+#: wxDialogPreferences.py:816
 msgid "Select if you wish to receive Tray notification pop-up messages"
 msgstr "Vink aan als u wil waarschuwingen via Pop-up vensters wil zien"
 
-#: wxDialogPreferences.py:822
+#: wxDialogPreferences.py:823
 msgid "Specify Filename Patterns to include and/or exclude in scanning"
 msgstr "Geef Bestandsnaam Patronen die al dan niet gescand moeten worden"
 
-#: wxDialogPreferences.py:827
+#: wxDialogPreferences.py:828
 msgid "(To specify a regular expression include your pattern within <...>)"
 msgstr "(Om reguliere expressies te gebruiken het patroon tussen <...> plaatsen)"
 
-#: wxDialogPreferences.py:832
+#: wxDialogPreferences.py:833
 msgid "&Exclude Matching Filenames:"
 msgstr "Passende Bestandsnamen &Uitsluiten"
 
-#: wxDialogPreferences.py:837
-#: wxDialogPreferences.py:862
+#: wxDialogPreferences.py:838
+#: wxDialogPreferences.py:863
 msgid "Patterns"
 msgstr "Patronen"
 
-#: wxDialogPreferences.py:842
-#: wxDialogPreferences.py:867
+#: wxDialogPreferences.py:843
+#: wxDialogPreferences.py:868
 msgid "Move up"
 msgstr "Hogerop plaatsen"
 
-#: wxDialogPreferences.py:845
-#: wxDialogPreferences.py:870
+#: wxDialogPreferences.py:846
+#: wxDialogPreferences.py:871
 msgid "Move down"
 msgstr "Lager plaatsen"
 
-#: wxDialogPreferences.py:848
-#: wxDialogPreferences.py:873
+#: wxDialogPreferences.py:849
+#: wxDialogPreferences.py:874
 msgid "New item"
 msgstr "Nieuw item"
 
-#: wxDialogPreferences.py:851
-#: wxDialogPreferences.py:876
+#: wxDialogPreferences.py:852
+#: wxDialogPreferences.py:877
 msgid "Delete item"
 msgstr "Item verwijderen"
 
-#: wxDialogPreferences.py:854
-#: wxDialogPreferences.py:879
+#: wxDialogPreferences.py:855
+#: wxDialogPreferences.py:880
 msgid "Edit item"
 msgstr "Item aanpassen"
 
-#: wxDialogPreferences.py:857
+#: wxDialogPreferences.py:858
 msgid "&Scan Only Matching Filenames:"
 msgstr "Enkel passende namen &Scannen"
 
-#: wxDialogPreferences.py:882
+#: wxDialogPreferences.py:883
 msgid "&Deactivate"
 msgstr "&Deactiveren"
 
-#: wxDialogPreferences.py:890
+#: wxDialogPreferences.py:891
 msgid "A&ctivate"
 msgstr "A&ctiveren"
 
-#: wxDialogPreferences.py:898
+#: wxDialogPreferences.py:899
 msgid "&Notify About New ClamWin Releases"
 msgstr "&Waarschuwen bij nieuwe ClamWin Releases"
 
-#: wxDialogPreferences.py:901
+#: wxDialogPreferences.py:902
 msgid "Select if you wish to get a notification message when ClamWin Free Antivirus program has been updated"
 msgstr "Vink dit aan als u wil gewaarschuwd worden wanneer een nieuwe versie van ClamWin Free Antivirus beschikbaar is "
 
-#: wxDialogPreferences.py:908
+#: wxDialogPreferences.py:909
 msgid "(No personal information is transmitted during this check)"
 msgstr "(Bij deze controle wordt geen persoonlijke informatie doorgezonden)"
 
-#: wxDialogPreferences.py:918
+#: wxDialogPreferences.py:919
 msgid "Scanner &Priority:"
 msgstr "Scanner &Prioriteit"
 
-#: wxDialogPreferences.py:922
-#: wxDialogPreferences.py:927
-#: wxDialogPreferences.py:1477
-#: wxDialogPreferences.py:1485
+#: wxDialogPreferences.py:923
+#: wxDialogPreferences.py:928
+#: wxDialogPreferences.py:1478
+#: wxDialogPreferences.py:1486
 msgid "Normal"
 msgstr "Normaal"
 
-#: wxDialogPreferences.py:922
-#: wxDialogPreferences.py:1475
-#: wxDialogPreferences.py:1483
+#: wxDialogPreferences.py:923
+#: wxDialogPreferences.py:1476
+#: wxDialogPreferences.py:1484
 msgid "Low"
 msgstr "Laag"
 
-#: wxDialogPreferences.py:926
+#: wxDialogPreferences.py:927
 msgid "Specify the process priority for the virus scanner."
 msgstr "Geef de proces prioriteit voor de virus scanner"
 
-#: wxDialogPreferences.py:931
+#: wxDialogPreferences.py:932
 msgid "Display &File Scanned % Progress Indicator"
 msgstr "Toon de vooruitgang Bestand Gescand %"
 
-#: wxDialogPreferences.py:1015
+#: wxDialogPreferences.py:1016
 msgid "An error occurred whilst saving configuration file %s. Please check that you have write permission to the configuration file."
 msgstr "Fout bij het bewaren van het configuratiebestand %s.  Controleer aub uw schrijfpermissie voor het configuratiebestand."
 
-#: wxDialogPreferences.py:1033
+#: wxDialogPreferences.py:1034
 msgid "Event Failed"
 msgstr "Gebeurtenis mislukt"
 
-#: wxDialogPreferences.py:1205
-#: wxDialogPreferences.py:1221
+#: wxDialogPreferences.py:1206
+#: wxDialogPreferences.py:1222
 msgid "Executable files (*.exe)|*.exe|All files (*.*)|*.*"
 msgstr "Uitvoerbare bestanden (*.exe)|*.exe|Alle bestanden (*.*)|*.*"
-
-#: wxDialogPreferences.py:1208
-#: wxDialogPreferences.py:1224
-#: wxDialogPreferences.py:1250
-#: wxDialogPreferences.py:1266
-msgid "All files (*)|*"
-msgstr "Alle bestanden (*)|*"
 
 #: wxDialogPreferences.py:1209
 #: wxDialogPreferences.py:1225
 #: wxDialogPreferences.py:1251
 #: wxDialogPreferences.py:1267
+msgid "All files (*)|*"
+msgstr "Alle bestanden (*)|*"
+
+#: wxDialogPreferences.py:1210
+#: wxDialogPreferences.py:1226
+#: wxDialogPreferences.py:1252
+#: wxDialogPreferences.py:1268
 msgid "Choose a file"
 msgstr "Kies een bestand"
 
-#: wxDialogPreferences.py:1235
+#: wxDialogPreferences.py:1236
+#: wxDialogPreferences.py:1357
 msgid "Select a directory"
 msgstr "Kies een map"
 
-#: wxDialogPreferences.py:1247
-#: wxDialogPreferences.py:1263
+#: wxDialogPreferences.py:1248
+#: wxDialogPreferences.py:1264
 msgid "Text Files (*.txt)|*.txt|All files (*.*)|*.*"
 msgstr "Tekst bestanden (*.txt)|*.txt|Alle bestanden (*.*)|*.*"
 
-#: wxDialogPreferences.py:1291
+#: wxDialogPreferences.py:1292
 msgid "Maximum amount of scheduled items (20) has been reached."
 msgstr "Het maximum aantal geplande scans (20) is bereikt."
 
-#: wxDialogPreferences.py:1379
+# What's the context of this string ???
+#: wxDialogPreferences.py:1375
+msgid " (Testing)"
+msgstr "(Wordt getest)"
+
+#: wxDialogPreferences.py:1380
 msgid ""
 "This is a test message sent during configuration of ClamWin Free Antivirus on the following computer: %s.\n"
 "Please do not be alarmed.\n"
@@ -618,30 +624,30 @@ msgstr ""
 "Dit is een test boodschap verzonden tijdens de configuratie van ClamWin Free Antivirus op de volgende computer: %s.\n"
 "Wees niet ongerust.\n"
 
-#: wxDialogPreferences.py:1384
+#: wxDialogPreferences.py:1385
 msgid "Test Email has been sent successfully."
 msgstr "Test email is met succes verzonden"
 
-#: wxDialogPreferences.py:1386
+#: wxDialogPreferences.py:1387
 msgid "Could not send the email. Please ensure you are connected to the internet. Error: %s"
 msgstr "Kan geen email verzenden. Gelieve uw internet verbinding na te kijken. Fout: %s"
 
-#: wxDialogPreferences.py:1501
-#: wxDialogPreferences.py:1564
-#: wxDialogPreferences.py:1582
+#: wxDialogPreferences.py:1502
+#: wxDialogPreferences.py:1565
+#: wxDialogPreferences.py:1583
 msgid "ClamWin Free Antivirus"
 msgstr "ClamWin Free Antivirus"
 
-#: wxDialogPreferences.py:1501
-#: wxDialogPreferences.py:1582
+#: wxDialogPreferences.py:1502
+#: wxDialogPreferences.py:1583
 msgid "Value cannot be empty"
 msgstr "Veld mag niet leeg zijn"
 
-#: wxDialogPreferences.py:1565
+#: wxDialogPreferences.py:1566
 msgid "The folder you selected does not exist. Would you like to create %s now?"
 msgstr "De geselecteerde map bestaat niet. Wil u %s nu aanmaken ?"
 
-#: wxDialogPreferences.py:1571
+#: wxDialogPreferences.py:1572
 msgid "Unable to create folder %s. Error: %s"
 msgstr "Kan map %s niet aanmaken. Fout: %s"
 
