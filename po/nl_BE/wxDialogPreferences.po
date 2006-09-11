@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.2.3\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-09-10 12:56+0100\n"
+"PO-Revision-Date: 2006-09-11 19:18+0100\n"
 "Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: ClamWin Free Antivirus <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -232,7 +232,7 @@ msgstr "Scan geen archieven groter dan"
 #: wxDialogPreferences.py:446
 #: wxDialogPreferences.py:914
 msgid "MegaBytes"
-msgstr "MegaBytes"
+msgstr "&MegaBytes"
 
 #: wxDialogPreferences.py:451
 #: wxDialogPreferences.py:465
@@ -241,11 +241,11 @@ msgstr "Pak niet meer dan"
 
 #: wxDialogPreferences.py:461
 msgid "Files"
-msgstr "bestanden uit "
+msgstr "&bestanden uit "
 
 #: wxDialogPreferences.py:475
 msgid "Sub-Archives"
-msgstr "subarchieven uit"
+msgstr "sub&archieven uit"
 
 #: wxDialogPreferences.py:480
 msgid "&Treat Files As Mailboxes"
@@ -274,7 +274,7 @@ msgstr "&Extra ClamScan opdrachtregel parameters:"
 
 #: wxDialogPreferences.py:510
 msgid "Limit Log File Size To:"
-msgstr "Beperk grootte van Logbestand tot:"
+msgstr "Beperk grootte van &Logbestand tot:"
 
 #: wxDialogPreferences.py:518
 msgid "Select maximum size for the logfile"
@@ -457,7 +457,7 @@ msgstr "Geef een email adres waarheen de email waarschuwing wordt gestuurd. Meer
 
 #: wxDialogPreferences.py:792
 msgid "Su&bject:"
-msgstr "&Onderwerp:"
+msgstr "Onder&werp:"
 
 #: wxDialogPreferences.py:800
 msgid "Specify Recipient's email address where the email alert will be delivered"
@@ -568,7 +568,7 @@ msgstr "Geef de proces prioriteit voor de virus scanner"
 
 #: wxDialogPreferences.py:932
 msgid "Display &File Scanned % Progress Indicator"
-msgstr "Toon de vooruitgang Bestand Gescand %"
+msgstr "Toon de vooruitgang &Bestand Gescand %"
 
 #: wxDialogPreferences.py:1016
 msgid "An error occurred whilst saving configuration file %s. Please check that you have write permission to the configuration file."
@@ -611,10 +611,9 @@ msgstr "Tekst bestanden (*.txt)|*.txt|Alle bestanden (*.*)|*.*"
 msgid "Maximum amount of scheduled items (20) has been reached."
 msgstr "Het maximum aantal geplande scans (20) is bereikt."
 
-# What's the context of this string ???
 #: wxDialogPreferences.py:1375
 msgid " (Testing)"
-msgstr "(Wordt getest)"
+msgstr " (Test bericht)"
 
 #: wxDialogPreferences.py:1380
 msgid ""
@@ -622,7 +621,7 @@ msgid ""
 "Please do not be alarmed.\n"
 msgstr ""
 "Dit is een test boodschap verzonden tijdens de configuratie van ClamWin Free Antivirus op de volgende computer: %s.\n"
-"Wees niet ongerust.\n"
+"Er is geen enkele reden tot paniek.\n"
 
 #: wxDialogPreferences.py:1385
 msgid "Test Email has been sent successfully."
