@@ -1,0 +1,184 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ClamWin\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2006-04-17 06:38+0900\n"
+"Last-Translator: hhan <hhan4@hotmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Korean\n"
+"X-Poedit-Country: KOREA, REPUBLIC OF\n"
+
+#: ClamTray.py:117
+msgid "Unable to stop scheduled process, terminating"
+msgstr "예약된 작업을 종료 할수 없음.. 중지"
+
+#: ClamTray.py:131
+msgid "An error occured whilst terminating scheduler thread. Error: %s"
+msgstr "스케줄러 스래드 종료 중 에러 발생. 에러: %s"
+
+#: ClamTray.py:201
+msgid "ClamWin Free Antivirus"
+msgstr "ClamWin Free 백신"
+
+#: ClamTray.py:226
+msgid "&Configure Scheduler"
+msgstr "예약 설(&정)"
+
+#: ClamTray.py:246
+msgid "&Run Scheduled Scan"
+msgstr "예약된 검사 (&시)작"
+
+#: ClamTray.py:250
+msgid "&Stop All Running Tasks Now"
+msgstr "현재 진행 중인 모든 작업 (&중)지"
+
+#: ClamTray.py:260
+msgid "&Virus Scan Report"
+msgstr "치료 결과 (&리)포트"
+
+#: ClamTray.py:267
+msgid "&Virus Database Update Report"
+msgstr "바이러스 데이터베이스 업데이트 리(&포)트"
+
+#: ClamTray.py:271
+msgid "&Open ClamWin"
+msgstr "ClamWin (&열)기"
+
+#: ClamTray.py:272
+msgid "&Download Virus Database Update"
+msgstr "바이러스 데이터베이스 (&다)운로드"
+
+#: ClamTray.py:273
+msgid "&Configure ClamWin"
+msgstr "ClamWin (&설)정"
+
+#: ClamTray.py:274
+msgid "&Scheduler"
+msgstr "(&예)약"
+
+#: ClamTray.py:275
+msgid "Display &Reports"
+msgstr "리포드 (&보)기"
+
+#: ClamTray.py:277
+msgid "Check &Latest Version"
+msgstr "최신 버전 (&확)인"
+
+#: ClamTray.py:278
+msgid "&Visit ClamWin Website"
+msgstr "ClamWin 웹사이트 (&방)문"
+
+#: ClamTray.py:280
+msgid "&Exit"
+msgstr "(&끝)내기"
+
+#: ClamTray.py:327
+msgid "Could not launch ClamWin Scanner. Error: %s"
+msgstr "ClamWin 검사를 시작 할 수 없음. 에러: %s"
+
+#: ClamTray.py:340
+msgid "Could not display balloon tooltip. Error: %s"
+msgstr "툴팁 풍선을 표시 할 수 없음. 에러: %s"
+
+#: ClamTray.py:351
+msgid ""
+"An error occured while displaying log file %s.\n"
+"Error: %s"
+msgstr ""
+"로그 파일 %s를 출력 하던 중, 에러 발생.\n"
+" 에러: %s"
+
+#: ClamTray.py:362
+msgid "An error occured while starting ClamWin scanner.\n"
+msgstr "ClamWin 검사 시작 도중 에러 발생.\n"
+
+#: ClamTray.py:370
+msgid "An error occured while starting ClamWin Update.\n"
+msgstr "ClamWin 업데이트 시작 도중 에러 발생.\n"
+
+#: ClamTray.py:376
+msgid "Unable to cerate freshclam configuration file. Please check there is enough space on the disk"
+msgstr "FreshClam 설정 파일을 생성 할수 없음. disk space가 충분한지 확인해 주십시오."
+
+#: ClamTray.py:392
+msgid "Virus database has been updated."
+msgstr "바이러스 데이터베이스 업데이트 완료"
+
+#: ClamTray.py:394
+msgid "An error occured during Scheduled Virus Database Update. Please review the update report."
+msgstr "예약된 바이러스 데이터베이스 업데이트 중 에러 발생. 업데이트 리포트 참조"
+
+#: ClamTray.py:407
+msgid ""
+"Unable to spawn scheduled process.\n"
+"Command line: %s\n"
+"Error: %s"
+msgstr ""
+"예약된 작업을 시작 할 수 없음.\n"
+"코맨드 라인(명령줄): %s\n"
+"에러: %s"
+
+#: ClamTray.py:422
+msgid "Error performing Scheduled Update."
+msgstr "예약된 업데이트 실행 중 에러 발생."
+
+#: ClamTray.py:430
+msgid "Please point your browser at: %s"
+msgstr "브라우저에서 %s를 확인 하십시오."
+
+#: ClamTray.py:444
+msgid "An error occured while starting ClamWin Preferences.\n"
+msgstr "ClamWin 환경 설정 시작 중 에러 발생.\n"
+
+#: ClamTray.py:461
+msgid "Could not start process. No Command Line specified"
+msgstr "작업을 시작 할 수 없음. 코맨드 라인(명령줄)이 명시되어 있지 않음"
+
+#: ClamTray.py:468
+msgid ""
+"Could not start process.\n"
+"%s\n"
+"File does not exist."
+msgstr ""
+"작업을 시작 할 수 없음.\n"
+"%s\n"
+"파일이 없음."
+
+#: ClamTray.py:476
+#: ClamTray.py:478
+msgid ""
+"Could not start process:\n"
+"%s\n"
+"Error: %s"
+msgstr ""
+"작업을 시작 할 수 없음:\n"
+"%s\n"
+"에러: %s"
+
+#: ClamTray.py:487
+msgid "Virus has been detected during scheduled scan! Please review the scan report."
+msgstr "예약 검사 중 바이러스 발견. 치료 결과 리포트 참조."
+
+#: ClamTray.py:489
+msgid "An error occured during scheduled scan. Please review the scan report."
+msgstr "예약 검사 중 에러 발생. 치료 결과 리포트 참조."
+
+#: ClamTray.py:516
+msgid "Running Scheduled Task:\n"
+msgstr "예약된 작업 실행 중:\n"
+
+#: ClamTray.py:518
+msgid "An error occured whilst running Running Scheduled Task "
+msgstr "예약된 작업 실행 중 에러 발생"
+
+#: ClamTray.py:541
+msgid "Could not send email alert. Error: %s"
+msgstr "email 알림을 보낼수 없음. 에러: %s"
+
+#: ClamTray.py:549
+msgid "could not remove file: %s. Error: %s"
+msgstr "%s 파일을 삭제 할 수 없음. 에러: %s"
+

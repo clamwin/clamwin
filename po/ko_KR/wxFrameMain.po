@@ -1,0 +1,184 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ClamWin\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2006-08-31 03:48+0900\n"
+"Last-Translator: hhan <hhan4@hotmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Korean\n"
+"X-Poedit-Country: KOREA, REPUBLIC OF\n"
+
+#: wxFrameMain.py:89
+msgid "Displays the configuration window"
+msgstr "설정 창을 보여줍니다."
+
+#: wxFrameMain.py:90
+msgid "&Preferences"
+msgstr "(&환)경 설정"
+
+#: wxFrameMain.py:92
+msgid "Downloads latest virus database from the Internet"
+msgstr "최신 바이러스 데이터베이스를 인터넷을 통해 다운받습니다."
+
+#: wxFrameMain.py:94
+msgid "Download &Virus Database Update"
+msgstr "(&바)이러스 데이터베이스 업데이트 다운받기"
+
+#: wxFrameMain.py:95
+msgid "Displays ClamWin Log Files"
+msgstr "ClamWin 로그 파일을 보여줍니다."
+
+#: wxFrameMain.py:96
+msgid "&Display Reports"
+msgstr "(&리)포드 보기"
+
+#: wxFrameMain.py:105
+msgid "&File"
+msgstr "(&파)일"
+
+#: wxFrameMain.py:106
+msgid "&Tools"
+msgstr "(&도구)"
+
+#: wxFrameMain.py:107
+#: wxFrameMain.py:113
+msgid "&Help"
+msgstr "(&도움말)"
+
+#: wxFrameMain.py:112
+msgid "Displays ClamWin Manual"
+msgstr "ClamWin 메뉴얼을 보여줍니다."
+
+#: wxFrameMain.py:114
+msgid "Checks for the Latest Vesrion"
+msgstr "최신 버전을 찾습니다."
+
+#: wxFrameMain.py:115
+msgid "&Check Latest Version"
+msgstr "(&최)신 버전 확인"
+
+#: wxFrameMain.py:116
+msgid "Opens ClamWin Website"
+msgstr "ClamWin 웹사이트를 엽니다"
+
+#: wxFrameMain.py:117
+msgid "ClamWin &Website"
+msgstr "ClamWin (&웹)사이트"
+
+#: wxFrameMain.py:119
+msgid "Opens Frequently Asked Questions Page in the Web Browser"
+msgstr "자주 문의 되는 질문을 웹브라우저에서 엽니다."
+
+#: wxFrameMain.py:120
+msgid "&FAQ"
+msgstr "&FAQ"
+
+#: wxFrameMain.py:122
+msgid "Displays the  About Box"
+msgstr "ClamWin 정보 박스를 보여줍니다."
+
+#: wxFrameMain.py:123
+msgid "&About"
+msgstr "ClamWin (&정)보"
+
+#: wxFrameMain.py:133
+msgid "Displays Virus Database Update Log FIle"
+msgstr "바이러스 데이터베이스 업데이트 로그 파일을 보여줍니다."
+
+#: wxFrameMain.py:135
+msgid "&Virus Database Update Report"
+msgstr "(&바)이러스 데이터베이스 업데이트 리포트"
+
+#: wxFrameMain.py:136
+msgid "Displays Virus Scan Log File"
+msgstr "바이러스 검사 로그 파일을 보여줍니다."
+
+#: wxFrameMain.py:137
+msgid "&Scan Report"
+msgstr "검사 (&결)과"
+
+#: wxFrameMain.py:145
+msgid "Scans Files or Folders for Computer Viruses"
+msgstr "파일이나 폴더를 바이러스 감염 되었는지 검사 합니다."
+
+#: wxFrameMain.py:146
+#: wxFrameMain.py:256
+msgid "&Scan"
+msgstr "(&검)사"
+
+#: wxFrameMain.py:148
+msgid "Exits the application"
+msgstr "프로그램을 종료 합니다."
+
+#: wxFrameMain.py:149
+msgid "E&xit"
+msgstr "(&끝)내기"
+
+#: wxFrameMain.py:158
+msgid "Preferences"
+msgstr "환경 설정"
+
+#: wxFrameMain.py:159
+#: wxFrameMain.py:160
+msgid "Displays Preferences Window"
+msgstr "환경 창을 보여줍니다."
+
+#: wxFrameMain.py:165
+msgid "Updates virus databases over the Internet"
+msgstr "바이러스 데이터베이스를 인터넷을 통해 업데이트합니다."
+
+#: wxFrameMain.py:166
+msgid "Starts Internet Update"
+msgstr "인터넷 업데이트를 시작합니다."
+
+#: wxFrameMain.py:171
+msgid "Scans Selected File or Folder for Computer Viruses"
+msgstr "선택된 파일이나 폴더를 바이러스 감염 되었는지 검사 합니다."
+
+#: wxFrameMain.py:172
+msgid "Scans For Viruses"
+msgstr "바이러스 검사를 합니다."
+
+#: wxFrameMain.py:220
+msgid "ClamWin Free Antivirus"
+msgstr "ClamWin Free 백신"
+
+#: wxFrameMain.py:224
+msgid "ClamWin Virus Scanner"
+msgstr "ClamWin 바이러스 검색기"
+
+#: wxFrameMain.py:238
+msgid "Status Bar"
+msgstr "상태 줄"
+
+#: wxFrameMain.py:246
+msgid ""
+"Select a folder or a file to scan\n"
+"(Hold Shift key to select multiple files or folders)"
+msgstr ""
+"검사할 폴더나 파일을 선택하십시오, \n"
+"(여러 파일이나 폴더를 선택하려면, Shift 키를 누르십시오)"
+
+#: wxFrameMain.py:264
+msgid "&Close"
+msgstr "(&닫)기"
+
+#: wxFrameMain.py:336
+msgid "ClamWin is not configured. Would you like to configure it now?"
+msgstr "ClamWin이 설정 되어 있지 않습니다. 지금 설정 하시겠습니까?"
+
+#: wxFrameMain.py:343
+msgid "An Error occured while updating UI selection. %s"
+msgstr "UI Selection를 업데이트 하던 중, 에러가 발생 %s"
+
+#: wxFrameMain.py:371
+msgid "Could not open help file - %s not found."
+msgstr "도움말을 열 수 없음 - %s 을 찾을 수 없음"
+
+#: wxFrameMain.py:378
+msgid "Could not open help file. Please ensure that you have Adobe Acrobat Reader installed."
+msgstr "도움말을 열 수 없음. Adobe Acrobat Reader가 설치되어 있는지 확인해 주십시오."
+
