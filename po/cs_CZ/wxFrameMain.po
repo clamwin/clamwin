@@ -1,0 +1,211 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ClamWin-cz\n"
+"POT-Creation-Date: Fri Jul 28 15:23:43 2006\n"
+"PO-Revision-Date: 2006-09-12 11:29+0100\n"
+"Last-Translator: Petr Jelínek <peca.cz@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+"X-Poedit-Language: Czech\n"
+
+#: wxFrameMain.py:90
+msgid "Displays the configuration window"
+msgstr "Zobrazí konfigurační okno"
+
+#: wxFrameMain.py:91
+msgid "&Preferences"
+msgstr "&Nastavení"
+
+#: wxFrameMain.py:93
+msgid "Downloads latest virus database from the Internet"
+msgstr "Stáhnout poslední databázi virů z internetu"
+
+#: wxFrameMain.py:95
+msgid "Download &Virus Database Update"
+msgstr "Stáhnout aktualizaci databáze &virů"
+
+#: wxFrameMain.py:96
+msgid "Displays ClamWin Log Files"
+msgstr "Zobrazí ClamWin log soubory"
+
+#: wxFrameMain.py:97
+msgid "&Display Reports"
+msgstr "&Zobrazí reporty"
+
+#: wxFrameMain.py:106
+msgid "&File"
+msgstr "&Soubor"
+
+#: wxFrameMain.py:107
+msgid "&Tools"
+msgstr "&Nástroje"
+
+#: wxFrameMain.py:108
+#: wxFrameMain.py:114
+msgid "&Help"
+msgstr "&Nápověda"
+
+#: wxFrameMain.py:113
+msgid "Displays ClamWin Free Antivirus Manual"
+msgstr "Zobrazí manuál ClamWin Free Antiviru"
+
+#: wxFrameMain.py:115
+msgid "Checks for the Latest Version"
+msgstr "ověří poslední verzi"
+
+#: wxFrameMain.py:116
+msgid "&Check Latest Version"
+msgstr "&Ověřit poslední verzi"
+
+#: wxFrameMain.py:117
+msgid "Opens ClamWin Free Antivirus Website"
+msgstr "Otevře domovské stránky Clamwin Free Antiviru"
+
+#: wxFrameMain.py:118
+msgid "ClamWin &Website"
+msgstr "Domovské stránky ClamWin"
+
+#: wxFrameMain.py:120
+msgid "Opens Frequently Asked Questions Page in the Web Browser"
+msgstr "Otevře časté dotazy ve webovém prohlížeči"
+
+#: wxFrameMain.py:121
+msgid "&FAQ"
+msgstr "&FAQ"
+
+#: wxFrameMain.py:123
+msgid "Displays the  About Box"
+msgstr "Zobrazí informace o programu"
+
+#: wxFrameMain.py:124
+msgid "&About"
+msgstr "&O programu"
+
+#: wxFrameMain.py:134
+msgid "Displays Virus Database Update Log FIle"
+msgstr "Zobrazí log soubor aktualizací databáze virů"
+
+#: wxFrameMain.py:136
+msgid "&Virus Database Update Report"
+msgstr "Report aktualizace databáze &virů"
+
+#: wxFrameMain.py:137
+msgid "Displays Virus Scan Log File"
+msgstr "Zobrazí log soubory skenování virů"
+
+#: wxFrameMain.py:138
+msgid "&Scan Report"
+msgstr "&Report skenování"
+
+#: wxFrameMain.py:146
+msgid "Scans Files or Folders for Computer Viruses"
+msgstr "Skenuje soubory a adresáře na počítačové viry"
+
+#: wxFrameMain.py:147
+#: wxFrameMain.py:257
+msgid "&Scan"
+msgstr "&Skenovat"
+
+#: wxFrameMain.py:149
+msgid "Exits the application"
+msgstr "Ukončí aplikaci"
+
+#: wxFrameMain.py:150
+msgid "E&xit"
+msgstr "U&končit"
+
+#: wxFrameMain.py:159
+msgid "Preferences"
+msgstr "Nastavení"
+
+#: wxFrameMain.py:160
+#: wxFrameMain.py:161
+msgid "Displays Preferences Window"
+msgstr "Zobrazí okno Nastavení"
+
+#: wxFrameMain.py:165
+msgid "Update"
+msgstr "Aktualizace"
+
+#: wxFrameMain.py:166
+msgid "Updates virus databases over the Internet"
+msgstr "Aktualizuje databázi virů přes internet"
+
+#: wxFrameMain.py:167
+msgid "Starts Internet Update"
+msgstr "Spustí aktualizaci přes internet"
+
+#: wxFrameMain.py:171
+msgid "Scan"
+msgstr "Skenování"
+
+#: wxFrameMain.py:172
+msgid "Scans Selected File or Folder for Computer Viruses"
+msgstr "Skenuje vybrané soubory nebo adresáře na počítačové viry"
+
+#: wxFrameMain.py:173
+msgid "Scans For Viruses"
+msgstr "Skenuje viry"
+
+#: wxFrameMain.py:221
+#: wxFrameMain.py:225
+#: wxFrameMain.py:337
+#: wxFrameMain.py:343
+msgid "ClamWin Free Antivirus"
+msgstr "ClamWin Free Antivirus"
+
+#: wxFrameMain.py:239
+msgid "Status Bar"
+msgstr "Stavový řádek"
+
+#: wxFrameMain.py:247
+msgid ""
+"Select a folder or a file to scan\n"
+"(Hold Shift key to select multiple files or folders)"
+msgstr ""
+"Vyberte adresář nebo soubor pro skenování\n"
+"(Držte Shift pro výběr více souborů nebo adresářů)"
+
+#: wxFrameMain.py:265
+msgid "&Close"
+msgstr "&Zavřít"
+
+#: wxFrameMain.py:337
+msgid "ClamWin Free Antivirus is not configured. Would you like to configure it now?"
+msgstr "ClamWin Free Antivirus není nakonfigurován. Chcete ho nakonfigurovat nyní?"
+
+#: wxFrameMain.py:343
+msgid "You have not yet downloaded Virus Definitions Database. Would you like to download it now?"
+msgstr "Ještě jste nestahovali databázi definicí virů. Chcete ji stáhnout nyní?"
+
+#: wxFrameMain.py:354
+msgid "An Error occurred while updating UI selection. %s"
+msgstr "Nastala chyba při aktualizaci UI sekce. %s"
+
+#: wxFrameMain.py:387
+msgid "Could not open help file - %s not found."
+msgstr "Nelze otevřít soubor nápovědy - %s nenalezen."
+
+#: wxFrameMain.py:394
+msgid "Could not open help file. Please ensure that you have Adobe Acrobat Reader installed."
+msgstr "Nelze otevřít soubor nápovědy. Ověřte, že máte nainstalovaný Adobe Acrobat Reader."
+
+#: wxFrameMain.py:397
+msgid "http://www.clamwin.com/content/category/3/7/27/"
+msgstr "http://www.clamwin.com/content/category/3/7/27/"
+
+#: wxFrameMain.py:401
+msgid "http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version="
+msgstr "http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version="
+
+#: wxFrameMain.py:405
+msgid "http://www.clamwin.com"
+msgstr "http://www.clamwin.com"
+

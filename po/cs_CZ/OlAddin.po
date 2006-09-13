@@ -1,0 +1,150 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ClamWin-cz\n"
+"POT-Creation-Date: Tue Jul 04 09:53:22 2006\n"
+"PO-Revision-Date: 2006-09-12 10:26+0100\n"
+"Last-Translator: Petr Jelínek <peca.cz@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+"X-Poedit-Language: Czech\n"
+
+#: OlAddin.py:174
+msgid "You appear to be running a win32all version pre 151, which is pretty old"
+msgstr "Vypadá to, že Vaše verze win32all je nižší než 151, což je opravdu zastaralé"
+
+#: OlAddin.py:175
+msgid "I'm afraid it is time to upgrade"
+msgstr "Obávám se, že je čas pro aktualizaci"
+
+#: OlAddin.py:199
+msgid "An error occurred in ClamWin Free Antivirus About Box.\n"
+msgstr "Nastala chyba v ClamWin Free Antivirus okně O programu.\n"
+
+#: OlAddin.py:199
+#: OlAddin.py:419
+#: OlAddin.py:492
+msgid "ClamWin Free Antivirus"
+msgstr "ClamWin Free Antivirus"
+
+#: OlAddin.py:213
+msgid "WARNING - Trying to use image '%s', but it doesn't exist"
+msgstr "VAROVÁNÍ - Zkouším použít obrázek  '%s', ten ale neexistuje"
+
+#: OlAddin.py:248
+msgid "Virus Deleted by ClamWin.txt"
+msgstr "Vir smazán a nahrazen souborem ClamWin.txt"
+
+#: OlAddin.py:275
+#: OlAddin.py:1031
+msgid "Registration complete."
+msgstr "Registrace kompletní."
+
+#: OlAddin.py:277
+msgid "An Error occurred whilst starting clamscan: %s"
+msgstr "Nastala chyba při startu clamscan: %s"
+
+#: OlAddin.py:294
+msgid "An Error occurred reading clamscan report: %s"
+msgstr "Nastala chyba při načítání clamscan reportů: %s"
+
+#: OlAddin.py:296
+msgid ""
+"An Error occurred whilst scanning:\n"
+"%s"
+msgstr ""
+"Nastala chyba při skenování:\n"
+"%s"
+
+#: OlAddin.py:306
+msgid "An Error occurred whilst converting clamscan report: %s"
+msgstr "Nastala chyba při konverzi clamscan reportů: %s"
+
+#: OlAddin.py:344
+msgid "Virus Definitions Database Not Found! Please download it now."
+msgstr "Databáze virů nenalezena! Stáhněte ji prosím nyní."
+
+#: OlAddin.py:418
+msgid ""
+"ClamWin Free Antivirus could not scan file%s\n"
+".Error: %s"
+msgstr ""
+"ClamWin Free Antivirus nemůže oskenovat soubor %s\n"
+"Chyba: %s"
+
+#: OlAddin.py:470
+msgid "ClamWin Free Antivirus has detected a virus in the message attachments!"
+msgstr "ClamWin Free Antivirus nalezl vir v příloze zprávy!"
+
+#: OlAddin.py:471
+msgid "Virus Detected!"
+msgstr "Nalezen vir!"
+
+#: OlAddin.py:474
+msgid "Virus has been detected in an email attachment! The attachment was replaced with the report file."
+msgstr "Byl nalezen vir v příloze emailu! Příloha byla nahrazena souborem reportu."
+
+#: OlAddin.py:476
+msgid "An error occurred whilst scanning email message."
+msgstr "Nastala chyba při skenování emailové zprávy."
+
+#: OlAddin.py:508
+msgid "Could not remove file: %s. Error: %s"
+msgstr "Nelze odstranit soubor: %s. Chyba: %s"
+
+#: OlAddin.py:580
+msgid "&About ClamWin Free Antivirus"
+msgstr "&O ClamWin Free Antiviru"
+
+#: OlAddin.py:581
+msgid "Shows the ClamWin About Box"
+msgstr "Zobrazí okno O ClamWin"
+
+#: OlAddin.py:836
+msgid "ClamWin Free Antivirus could not replace an attachment. Error: %s"
+msgstr "ClamWin Free Antivir nemůže nahradit přílohu Chyba: %s"
+
+#: OlAddin.py:837
+msgid "ClamWin Free Antivirus!"
+msgstr "ClamWin Free Antivir!"
+
+#: OlAddin.py:905
+msgid "Error connecting to Outlook!"
+msgstr "Chyba připojení k Outlooku!"
+
+#: OlAddin.py:907
+msgid ""
+"There was an error initializing the ClamWin addin\r\n"
+"\r\n"
+"Please re-start Outlook and try again."
+msgstr ""
+"Chyba inicializace zásuvného modulu\r\n"
+"\r\n"
+"Restartujte prosím Outlook a zkuste to znovu."
+
+#: OlAddin.py:918
+msgid "An error occurred whilst displaying the splashscreen %s. Error: %s."
+msgstr "Nastala chyba při zobrazení úvodního obrázku %s. Chyba: %s."
+
+#: OlAddin.py:955
+msgid "Addin terminating: %d COM client and %d COM servers exist."
+msgstr "Zásuvný modul ukončen: %d COM klient a %d COM server existují."
+
+#: OlAddin.py:1007
+msgid "Registering (in HKEY_LOCAL_MACHINE)..."
+msgstr "Registruji (v HKEY_LOCAL_MACHINE)..."
+
+#: OlAddin.py:1010
+msgid "Registering (in HKEY_CURRENT_USER)..."
+msgstr "Registruji (v HKEY_CURRENT_USER)..."
+
+#: OlAddin.py:1015
+msgid "Registration Complete"
+msgstr "Registrace kompletní"
+

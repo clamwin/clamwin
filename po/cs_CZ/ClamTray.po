@@ -1,0 +1,206 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ClamWin-cz\n"
+"POT-Creation-Date: Mon Jul 31 09:48:29 2006\n"
+"PO-Revision-Date: 2006-09-12 08:41+0100\n"
+"Last-Translator: Petr Jelínek <peca.cz@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+"X-Poedit-Language: Czech\n"
+
+#: ClamTray.py:117
+msgid "Unable to stop scheduled process, terminating"
+msgstr "Nelze zastavit naplánovaný proces, ukončuji"
+
+#: ClamTray.py:117
+#: ClamTray.py:339
+#: ClamTray.py:363
+#: ClamTray.py:373
+#: ClamTray.py:381
+#: ClamTray.py:441
+#: ClamTray.py:455
+msgid "ClamWin Free Antivirus"
+msgstr "ClamWin Free Antivirus"
+
+#: ClamTray.py:131
+msgid "An error occurred whilst terminating scheduler thread. Error: %s"
+msgstr "Nastala chyba během ukončování naplánovaného vlákna. Chyba: %s"
+
+#: ClamTray.py:237
+msgid "&Configure Scheduler"
+msgstr "&Nastavit plánovač"
+
+#: ClamTray.py:257
+msgid "&Run Scheduled Scan"
+msgstr "&Spustit naplánované skenování"
+
+#: ClamTray.py:261
+msgid "&Stop All Running Tasks Now"
+msgstr "&Zastavit všechny běžící úlohy"
+
+#: ClamTray.py:271
+msgid "&Virus Scan Report"
+msgstr "&Report skenování virů"
+
+#: ClamTray.py:278
+msgid "&Virus Database Update Report"
+msgstr "&Report aktualizace databáze virů"
+
+#: ClamTray.py:282
+msgid "&Open ClamWin"
+msgstr "&Otevřít ClamWin"
+
+#: ClamTray.py:283
+msgid "&Download Virus Database Update"
+msgstr "&Stáhnout aktualizaci databáze virů"
+
+#: ClamTray.py:284
+msgid "&Configure ClamWin"
+msgstr "&Nastavit ClamWin"
+
+#: ClamTray.py:285
+msgid "&Scheduler"
+msgstr "&Plánovač"
+
+#: ClamTray.py:286
+msgid "Display &Reports"
+msgstr "&Zobrazit reporty"
+
+#: ClamTray.py:288
+msgid "Check &Latest Version"
+msgstr "Ověřit &poslední verzi"
+
+#: ClamTray.py:289
+msgid "&Visit ClamWin Website"
+msgstr "&Navštívit webové stránky ClamWin"
+
+#: ClamTray.py:291
+msgid "&Exit"
+msgstr "&Ukončit"
+
+#: ClamTray.py:313
+msgid "http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version="
+msgstr "http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version="
+
+#: ClamTray.py:315
+msgid "http://www.clamwin.com"
+msgstr "http://www.clamwin.com"
+
+#: ClamTray.py:338
+msgid "Could not launch ClamWin Scanner. Error: %s"
+msgstr "Nelze spustit ClamWin skener. Chyba: %s"
+
+#: ClamTray.py:351
+msgid "Could not display balloon tooltip. Error: %s"
+msgstr "Nelze zobrazit kontextová nápověda. Chyba: %s"
+
+#: ClamTray.py:362
+msgid ""
+"An error occurred while displaying log file %s.\n"
+"Error: %s"
+msgstr ""
+"Nastala chyba při zobrazování log souboru %s.\n"
+"Chyba: %s"
+
+#: ClamTray.py:373
+msgid "An error occurred while starting ClamWin Free Antivirus scanner.\n"
+msgstr "Nastala chyba při startu ClamWin Free Antivirus skeneru.\n"
+
+#: ClamTray.py:381
+msgid "An error occurred while starting ClamWin Free Antivirus Update.\n"
+msgstr "Nastala chyba při startu ClamWin Free Antivirus aktualizace.\n"
+
+#: ClamTray.py:387
+msgid "Error"
+msgstr "Chyba"
+
+#: ClamTray.py:387
+msgid "Unable to create freshclam configuration file. Please check there is enough space on the disk"
+msgstr "Nelze vytvořit freshclam konfigurační soubor. Zkontrolujte prosím, zda je dostatek volného místa na disku"
+
+#: ClamTray.py:403
+msgid "Virus database has been updated."
+msgstr "Databáze virů byla aktualizována."
+
+#: ClamTray.py:405
+msgid "An error occurred during Scheduled Virus Database Update. Please review the update report."
+msgstr "Nastala chyba během naplánované aktualizace databáze virů. Prověřte prosím aktualizační report."
+
+#: ClamTray.py:418
+msgid ""
+"Unable to spawn scheduled process.\n"
+"Command line: %s\n"
+"Error: %s"
+msgstr ""
+"Nelze vytvořit naplánovaný proces.\n"
+"Příkazová řádka: ˇ%s\n"
+"Chyba: ˇ%s"
+
+#: ClamTray.py:433
+msgid "Error performing Scheduled Update."
+msgstr "Nelze provést naplánovanou aktualizaci."
+
+#: ClamTray.py:441
+msgid "Please point your browser at: %s"
+msgstr "Nasměrujte svůj prohlížeč na: %s"
+
+#: ClamTray.py:455
+msgid "An error occurred while starting ClamWin Free Antivirus Preferences.\n"
+msgstr "Nastala chyba při spouštění nastavení ClamWin Free Antiviru .\n"
+
+#: ClamTray.py:470
+msgid "Could not start process. No Command Line specified"
+msgstr "Nelze spustit proces. Není zadána příkazová řádka"
+
+#: ClamTray.py:477
+msgid ""
+"Could not start process.\n"
+"%s\n"
+"File does not exist."
+msgstr ""
+"Nelze spustit proces.\n"
+"%s\n"
+"Soubor neexistuje."
+
+#: ClamTray.py:485
+#: ClamTray.py:487
+msgid ""
+"Could not start process:\n"
+"%s\n"
+"Error: %s"
+msgstr ""
+"Nelze spustit proces.\n"
+"%s\n"
+"Chyba: %s"
+
+#: ClamTray.py:496
+msgid "Virus has been detected during scheduled scan! Please review the scan report."
+msgstr "Nalezen virus během plánovaného skenování! Prověřte prosím report."
+
+#: ClamTray.py:498
+msgid "An error occurred during scheduled scan. Please review the scan report."
+msgstr "Nastala chyba během plánovaného skenování. Prověřte prosím report."
+
+#: ClamTray.py:530
+msgid "Running Scheduled Task:\n"
+msgstr "Prováděné naplánované úlohy:\n"
+
+#: ClamTray.py:532
+msgid "An error occurred whilst running Running Scheduled Task "
+msgstr "Nastala chyba při běhu Prováděné naplánované úlohy"
+
+#: ClamTray.py:555
+msgid "Could not send email alert. Error: %s"
+msgstr "Nelze zaslat varovný email. Chyba: %s"
+
+#: ClamTray.py:563
+msgid "Could not remove file: %s. Error: %s"
+msgstr "Nelze odstranit soubor: %s. Chyba: %s"
+
