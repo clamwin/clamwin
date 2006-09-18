@@ -1,0 +1,94 @@
+﻿# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: Sat Jan 14 11:12:44 2006\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: ENCODING\n"
+"Generated-By: pygettext.py 1.5\n"
+
+
+#: wxDialogAbout.py:57 wxDialogAbout.py:61
+msgid "关于ClamWin"
+msgstr ""
+
+#: wxDialogAbout.py:72
+msgid "版本 "
+msgstr ""
+
+#: wxDialogAbout.py:79
+msgid "从此处下载ClamAV"
+msgstr ""
+
+#: wxDialogAbout.py:84
+msgid "提供对 %i 种病毒的保护"
+msgstr ""
+
+#: wxDialogAbout.py:93 wxDialogAbout.py:115
+msgid "ClamWin自由抗病毒主页"
+msgstr ""
+
+#: wxDialogAbout.py:100
+msgid "给ClamWin捐赠"
+msgstr ""
+
+#: wxDialogAbout.py:105
+msgid "网站:"
+msgstr ""
+
+#: wxDialogAbout.py:119
+msgid "作者: alch <alch@users.sourceforge.net>"
+msgstr ""
+
+#: wxDialogAbout.py:125
+msgid "版权所有 (c) 2004 - 2005"
+msgstr ""
+
+#: wxDialogAbout.py:130
+msgid "本程序是自由软件"
+msgstr ""
+
+#: wxDialogAbout.py:142
+msgid "ClamAV主页"
+msgstr ""
+
+#: wxDialogAbout.py:150
+msgid "Finndesign主页"
+msgstr ""
+
+#: wxDialogAbout.py:158
+msgid "Python主页"
+msgstr ""
+
+#: wxDialogAbout.py:162
+msgid "确定"
+msgstr ""
+
+#: wxDialogAbout.py:168
+msgid "病毒库版本: (main: %i; daily: %i)"
+msgstr ""
+
+#: wxDialogAbout.py:174
+msgid "更新时间: %s"
+msgstr ""
+
+#: wxDialogAbout.py:214
+msgid "不能定位ClamScan可执行程序"
+msgstr ""
+
+#: wxDialogAbout.py:227
+msgid "不能返回ClamAV信息"
+msgstr ""
+
+#: wxDialogAbout.py:252
+msgid "不能返回病毒库信息"
+msgstr ""
+
+

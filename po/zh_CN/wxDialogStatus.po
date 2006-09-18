@@ -1,0 +1,114 @@
+﻿# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: Tue Dec 27 21:53:41 2005\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: ENCODING\n"
+"Generated-By: pygettext.py 1.5\n"
+
+
+#: wxDialogStatus.py:123
+msgid "ClamWin状态"
+msgstr ""
+
+#: wxDialogStatus.py:142
+msgid "停止[&S]"
+msgstr ""
+
+#: wxDialogStatus.py:150
+msgid "保存报告[&A]"
+msgstr ""
+
+#: wxDialogStatus.py:246
+msgid "不能停止运行的线程,正在终止"
+msgstr ""
+
+#: wxDialogStatus.py:263
+msgid "报告文件(*.txt)|*.txt|所有文件(*.*)|*.*"
+msgstr ""
+
+#: wxDialogStatus.py:265
+msgid "所有文件(*)|*"
+msgstr ""
+
+#: wxDialogStatus.py:266
+msgid "选择文件"
+msgstr ""
+
+#: wxDialogStatus.py:273
+msgid "不能保存报告到文件"
+msgstr ""
+
+#: wxDialogStatus.py:274
+msgid ".请检查您的输入"
+msgstr ""
+
+#: wxDialogStatus.py:275
+msgid "允许此文件夹并且磁盘有足够的空间。"
+msgstr ""
+
+#: wxDialogStatus.py:303
+msgid "关闭[&C]"
+msgstr ""
+
+#: wxDialogStatus.py:311
+msgid "不能读取记录文件%s。错误: %s"
+msgstr ""
+
+#: wxDialogStatus.py:323
+msgid ""
+"\n"
+"-------------------\n"
+"已完成\n"
+"-------------------\n"
+msgstr ""
+""
+""
+""
+""
+
+#: wxDialogStatus.py:325
+msgid ""
+"\n"
+"-------------------\n"
+"命令被中断...\n"
+"-------------------\n"
+msgstr ""
+""
+""
+""
+""
+
+#: wxDialogStatus.py:403
+msgid "不能开始进程。未指定命令行"
+msgstr ""
+
+#: wxDialogStatus.py:410
+msgid ""
+"不能开始进程。\n"
+"%s\n"
+"文件不存在。"
+msgstr ""
+""
+""
+""
+
+#: wxDialogStatus.py:418 wxDialogStatus.py:420
+msgid ""
+"不能开始进程:\n"
+"%s\n"
+"错误: %s"
+msgstr ""
+""
+""
+""
+
+
