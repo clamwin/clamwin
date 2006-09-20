@@ -9,17 +9,17 @@
 #
 # Created:     2004/19/03
 # Copyright:   Copyright alch (c) 2004
-# Licence:     
+# Licence:
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
 #   the Free Software Foundation; either version 2 of the License, or
 #   (at your option) any later version.
-# 
+#
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-# 
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; if not, write to the Free Software
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -36,16 +36,16 @@ import wxDialogUtils, Utils, version
 def create(parent, config):
     return wxAboutDlg(parent, config)
 
-[wxID_WXABOUTDLG, wxID_WXABOUTDLGBUTTONOK, 
- wxID_WXABOUTDLGGENSTATICTEXTCLAMWINHOME2, wxID_WXABOUTDLGSTATICBITMAPCLAM, 
- wxID_WXABOUTDLGSTATICBITMAPCLAMAV, wxID_WXABOUTDLGSTATICBITMAPCLAMWIN, 
- wxID_WXABOUTDLGSTATICBITMAPFDLOGO, wxID_WXABOUTDLGSTATICBITMAPPYTHON, 
- wxID_WXABOUTDLGSTATICBITMAPSUPPORT, wxID_WXABOUTDLGSTATICLINE1, 
- wxID_WXABOUTDLGSTATICTEXTAUTHOR1, wxID_WXABOUTDLGSTATICTEXTCLAMVER, 
- wxID_WXABOUTDLGSTATICTEXTCLAMWINHOME, wxID_WXABOUTDLGSTATICTEXTCOPYRIGHT, 
- wxID_WXABOUTDLGSTATICTEXTDBUPDATED1, wxID_WXABOUTDLGSTATICTEXTDBUPDATED2, 
- wxID_WXABOUTDLGSTATICTEXTDBUPDATED3, wxID_WXABOUTDLGSTATICTEXTFREESW, 
- wxID_WXABOUTDLGSTATICTEXTWINCLAMVER, 
+[wxID_WXABOUTDLG, wxID_WXABOUTDLGBUTTONOK,
+ wxID_WXABOUTDLGGENSTATICTEXTCLAMWINHOME2, wxID_WXABOUTDLGSTATICBITMAPCLAM,
+ wxID_WXABOUTDLGSTATICBITMAPCLAMAV, wxID_WXABOUTDLGSTATICBITMAPCLAMWIN,
+ wxID_WXABOUTDLGSTATICBITMAPFDLOGO, wxID_WXABOUTDLGSTATICBITMAPPYTHON,
+ wxID_WXABOUTDLGSTATICBITMAPSUPPORT, wxID_WXABOUTDLGSTATICLINE1,
+ wxID_WXABOUTDLGSTATICTEXTAUTHOR1, wxID_WXABOUTDLGSTATICTEXTCLAMVER,
+ wxID_WXABOUTDLGSTATICTEXTCLAMWINHOME, wxID_WXABOUTDLGSTATICTEXTCOPYRIGHT,
+ wxID_WXABOUTDLGSTATICTEXTDBUPDATED1, wxID_WXABOUTDLGSTATICTEXTDBUPDATED2,
+ wxID_WXABOUTDLGSTATICTEXTDBUPDATED3, wxID_WXABOUTDLGSTATICTEXTFREESW,
+ wxID_WXABOUTDLGSTATICTEXTWINCLAMVER,
 ] = map(lambda _init_ctrls: wxNewId(), range(19))
 
 
@@ -194,7 +194,7 @@ class wxAboutDlg(wxDialog):
 
     def OnClamAVHomePage(self, event):
         wxDialogUtils.wxGoToInternetUrl('http://www.clamav.net')
-        
+
     def OnClamWinHomePage(self, event):
         wxDialogUtils.wxGoToInternetUrl('http://www.clamwin.com')
 
@@ -203,53 +203,53 @@ class wxAboutDlg(wxDialog):
 
     def OnDonateClamWin(self, event):
         wxDialogUtils.wxGoToInternetUrl('http://sourceforge.net/donate/index.php?group_id=105508')
-        
+
     def OnFDHomePage(self, event):
         wxDialogUtils.wxGoToInternetUrl('http://www.finndesign.fi')
-        
+
     def _SetClamVersion(self):
-        if self.config is None: 
+        if self.config is None:
             return
         if not os.path.exists(self.config.Get('ClamAV', 'ClamScan')):
             ver  = 'Could not locate ClamScan executable'
-        else:    
+        else:
             cmd = '"' + self.config.Get('ClamAV', 'ClamScan')  + '" --stdout --version'
             proc = None
             try:
                 proc = Process.ProcessOpen(cmd)
                 proc.wait()
-                ver = proc.stdout.readline()            
+                ver = proc.stdout.readline()
                 # remove date from the clamav version
                 # for some reason it is 01/01/1970 for cygwin builds
                 pos = ver.rfind('/')
                 ver = ver[:pos]
             except:
-                ver = 'Unable to retrieve ClamAV version'        
+                ver = 'Unable to retrieve ClamAV version'
             if proc is not None:
-                proc.close()        
+                proc.close()
         self.staticTextClamVer.SetLabel(ver)
-        
+
     def _SetDBInfo(self):
         try:
             dbpath =  self.config.Get('ClamAV', 'Database')
             mainver, mainnumv = Utils.GetDBInfo(os.path.join(dbpath, 'main.cvd'))[:2]
-            if mainver is None:                
+            if mainver is None:
                 raise Exception()
             dailyver, dailynumv, updated = Utils.GetDBInfo(os.path.join(dbpath, 'daily.cvd'))
-            if dailyver is None:                          
+            if dailyver is None:
                 raise Exception()
             else:
                 # set user's locale
                 loc = locale.setlocale(locale.LC_TIME, '')
                 try:
-                    updatedstr = time.strftime('%H:%M %d %b %Y', time.localtime(updated))                                                    
+                    updatedstr = time.strftime('%H:%M %d %b %Y', time.localtime(updated))
                 finally:
                     # restore the locale back to what it was
                     locale.setlocale(locale.LC_TIME, loc)
-        except:            
-            dailyver, dailynumv = (0, 0)      
-            mainver, mainnumv = (0, 0)      
-            updatedstr = 'Unable to retrieve database verison'        
+        except:
+            dailyver, dailynumv = (0, 0)
+            mainver, mainnumv = (0, 0)
+            updatedstr = 'Unable to retrieve database verison'
         self.staticTextDBUpdated1.SetLabel(self.staticTextDBUpdated1.GetLabel() % \
             (mainnumv + dailynumv))
         self.staticTextDBUpdated2.SetLabel(self.staticTextDBUpdated2.GetLabel() % \
@@ -259,6 +259,6 @@ class wxAboutDlg(wxDialog):
 
 
 
-    
-            
-        
+
+
+

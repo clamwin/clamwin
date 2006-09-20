@@ -9,17 +9,17 @@
 #
 # Created:     2004/19/03
 # Copyright:   Copyright alch (c) 2004
-# Licence:     
+# Licence:
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
 #   the Free Software Foundation; either version 2 of the License, or
 #   (at your option) any later version.
-# 
+#
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-# 
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; if not, write to the Free Software
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -31,30 +31,30 @@ import MsgBox, Utils, wxDialogUtils, version
 def create(parent, config):
     return wxMainFrame(parent, config)
 
-[wxID_WXMAINFRAME, wxID_WXMAINFRAMEBUTTONCLOSE, wxID_WXMAINFRAMEBUTTONSCAN, 
- wxID_WXMAINFRAMEDIRCTRLSCAN, wxID_WXMAINFRAMEPANELFRAME, 
- wxID_WXMAINFRAMESTATIC1, wxID_WXMAINFRAMESTATUSBAR, wxID_WXMAINFRAMETOOLBAR, 
+[wxID_WXMAINFRAME, wxID_WXMAINFRAMEBUTTONCLOSE, wxID_WXMAINFRAMEBUTTONSCAN,
+ wxID_WXMAINFRAMEDIRCTRLSCAN, wxID_WXMAINFRAMEPANELFRAME,
+ wxID_WXMAINFRAMESTATIC1, wxID_WXMAINFRAMESTATUSBAR, wxID_WXMAINFRAMETOOLBAR,
 ] = map(lambda _init_ctrls: wxNewId(), range(8))
 
 
-[wxID_WXMAINFRAMETOOLBARTOOLS_INETUPDATE, wxID_WXMAINFRAMETOOLBARTOOLS_PREFS, 
- wxID_WXMAINFRAMETOOLBARTOOLS_SCAN, 
+[wxID_WXMAINFRAMETOOLBARTOOLS_INETUPDATE, wxID_WXMAINFRAMETOOLBARTOOLS_PREFS,
+ wxID_WXMAINFRAMETOOLBARTOOLS_SCAN,
 ] = map(lambda _init_coll_toolBar_Tools: wxNewId(), range(3))
 
-[wxID_WXMAINFRAMEREPORTSDATABASE, wxID_WXMAINFRAMEREPORTSSCAN, 
+[wxID_WXMAINFRAMEREPORTSDATABASE, wxID_WXMAINFRAMEREPORTSSCAN,
 ] = map(lambda _init_coll_Reports_Items: wxNewId(), range(2))
 
-[wxID_WXMAINFRAMETOOLSDBUPDATE, wxID_WXMAINFRAMETOOLSPREFERENCES, 
- wxID_WXMAINFRAMETOOLSREPORTS, 
+[wxID_WXMAINFRAMETOOLSDBUPDATE, wxID_WXMAINFRAMETOOLSPREFERENCES,
+ wxID_WXMAINFRAMETOOLSREPORTS,
 ] = map(lambda _init_coll_Tools_Items: wxNewId(), range(3))
 
-[wxID_WXMAINFRAMEHELPABOUT, wxID_WXMAINFRAMEHELPFAQ, wxID_WXMAINFRAMEHELPUPDATE, wxID_WXMAINFRAMEHELPWEBSITE, wxID_WXMAINFRAMEHELPHELP, 
+[wxID_WXMAINFRAMEHELPABOUT, wxID_WXMAINFRAMEHELPFAQ, wxID_WXMAINFRAMEHELPUPDATE, wxID_WXMAINFRAMEHELPWEBSITE, wxID_WXMAINFRAMEHELPHELP,
 ] = map(lambda _init_coll_Help_Items: wxNewId(), range(5))
 
-[wxID_WXMAINFRAMEFILEITEMS0, wxID_WXMAINFRAMEFILESCAN, 
+[wxID_WXMAINFRAMEFILEITEMS0, wxID_WXMAINFRAMEFILESCAN,
 ] = map(lambda _init_coll_File_Items: wxNewId(), range(2))
 
-class wxMainFrame(wxFrame):    
+class wxMainFrame(wxFrame):
     def _init_coll_flexGridSizerPanel_Items(self, parent):
         # generated method, don't edit
 
@@ -141,14 +141,14 @@ class wxMainFrame(wxFrame):
 
     def _init_coll_File_Items(self, parent):
         # generated method, don't edit
-        
+
         parent.Append(helpString='Scans Files or Folders for Computer Viruses',
               id=wxID_WXMAINFRAMEFILESCAN, item='&Scan', kind=wxITEM_NORMAL)
         parent.AppendSeparator()
         parent.Append(helpString='Exits the application',
               id=wxID_WXMAINFRAMEFILEITEMS0, item='E&xit', kind=wxITEM_NORMAL)
         EVT_MENU(self, wxID_WXMAINFRAMEFILESCAN, self.OnScanButton)
-        EVT_MENU(self, wxID_WXMAINFRAMEFILEITEMS0, self.OnFileExit)        
+        EVT_MENU(self, wxID_WXMAINFRAMEFILEITEMS0, self.OnFileExit)
 
     def _init_coll_toolBar_Tools(self, parent):
         # generated method, don't edit
@@ -246,7 +246,7 @@ class wxMainFrame(wxFrame):
               label='Select a folder or a file to scan\n(Hold Shift key to select multiple files or folders)', name='static1',
               parent=self.panelFrame, pos=wxPoint(5, 8), size=wxSize(435, 32),
               style=0)
-        
+
         self.dirCtrlScan = wxGenericDirCtrlEx(defaultFilter=0, dir='.', filter='',
               id=wxID_WXMAINFRAMEDIRCTRLSCAN, name='dirCtrlScan',
              parent=self.panelFrame, pos=wxPoint(10, 27), size=wxSize(540,
@@ -274,26 +274,26 @@ class wxMainFrame(wxFrame):
         self._config = None
         self._config = config
 
-        self._init_ctrls(parent)                     
-        
+        self._init_ctrls(parent)
+
         # select second in the directory tree (usually c:)
         try:
             # navigate to the second item
-            treeCtrl = self.dirCtrlScan.GetTreeCtrl()            
+            treeCtrl = self.dirCtrlScan.GetTreeCtrl()
             cookie = 0
-            itemid, cookie = treeCtrl.GetFirstChild(treeCtrl.GetRootItem(), cookie)            
+            itemid, cookie = treeCtrl.GetFirstChild(treeCtrl.GetRootItem(), cookie)
             itemid, cookie = treeCtrl.GetNextChild(treeCtrl.GetRootItem(), cookie)
             # select it
-            treeCtrl.SetFocus()                         
-            treeCtrl.UnselectAll()                        
-            treeCtrl.SelectItem(itemid)                                    
-        except:                        
+            treeCtrl.SetFocus()
+            treeCtrl.UnselectAll()
+            treeCtrl.SelectItem(itemid)
+        except:
             pass
-        
+
         # we need to set controls heights to 0 and reinit sizers
         # to overcome boa sizers bug
         self.dirCtrlScan.SetSize((-1, 0))
-        self.panelFrame.SetSize((-1, 0))        
+        self.panelFrame.SetSize((-1, 0))
         self._init_sizers()
         self.flexGridSizerPanel.AddSizer(self.gridSizerButtons, flag = wxGROW)
 
@@ -301,24 +301,24 @@ class wxMainFrame(wxFrame):
         icons = wxIconBundle()
         icons.AddIconFromFile('img/FrameIcon.ico', wxBITMAP_TYPE_ICO)
         self.SetIcons(icons)
-        
+
         if not sys.platform.startswith('win'):
             self.Help.Remove(wxID_WXMAINFRAMEHELPHELP)
 
         self._UpdateState()
-                
+
 
     def OnFileExit(self, event):
         self.Close()
 
     def OnToolsPreferences(self, event):
-        wxDialogUtils.wxConfigure(self, self._config)        
+        wxDialogUtils.wxConfigure(self, self._config)
         self._UpdateState()
 
     def OnHelpAbout(self, event):
-        wxDialogUtils.wxAbout(self, self._config)    
+        wxDialogUtils.wxAbout(self, self._config)
 
-    def _IsConfigured(self):        
+    def _IsConfigured(self):
         if self._config.Get('ClamAV', 'ClamScan') == '' or \
             self._config.Get('ClamAV', 'FreshClam') == '' or \
             self._config.Get('ClamAV', 'Database') == '' :
@@ -331,58 +331,58 @@ class wxMainFrame(wxFrame):
         try:
             # disable Run Command button if the configuration is invalid
             # or no item is selected in the tree
-            configured = self._IsConfigured()       
+            configured = self._IsConfigured()
             if not configured:
                 if wxID_YES == MsgBox.MessageBox(None, 'ClamWin Free Antivirus', 'ClamWin Free Antivirus is not configured. Would you like to configure it now?', wxYES_NO | wxICON_QUESTION):
                     wxDialogUtils.wxConfigure(None, self._config)
                     configured = self._IsConfigured()
 
-            hasdb = Utils.CheckDatabase(self._config)      
+            hasdb = Utils.CheckDatabase(self._config)
             if configured and not hasdb:
                 if wxID_YES == MsgBox.MessageBox(None, 'ClamWin Free Antivirus', 'You have not yet downloaded Virus Definitions Database. Would you like to download it now?', wxYES_NO | wxICON_QUESTION):
                     wxDialogUtils.wxUpdateVirDB(self, self._config)
                     hasdb = Utils.CheckDatabase(self._config)
 
             self.buttonScan.Enable(configured and hasdb)
-            self.toolBar.EnableTool(wxID_WXMAINFRAMETOOLBARTOOLS_INETUPDATE, configured)    
-            self.toolBar.EnableTool(wxID_WXMAINFRAMETOOLBARTOOLS_SCAN, configured and hasdb)    
-            
-            
-            
+            self.toolBar.EnableTool(wxID_WXMAINFRAMETOOLBARTOOLS_INETUPDATE, configured)
+            self.toolBar.EnableTool(wxID_WXMAINFRAMETOOLBARTOOLS_SCAN, configured and hasdb)
+
+
+
         except Exception, e:
             print 'An Error occured while updating UI selection. %s' % str(e)
 
     def OnScanButton(self, event):
         scanPath = ''
         for path in self.dirCtrlScan.GetMultiplePath():
-            #if sys.platform.startswith("win"):                           
-            #    path = path.replace('\\', '/')                                    
-            scanPath += "\"%s\" " % path                             
-        wxDialogUtils.wxScan(self, self._config, scanPath)        
+            #if sys.platform.startswith("win"):
+            #    path = path.replace('\\', '/')
+            scanPath += "\"%s\" " % path
+        wxDialogUtils.wxScan(self, self._config, scanPath)
 
     def OnToolsUpdate(self, event):
         wxDialogUtils.wxUpdateVirDB(self, self._config)
         self._UpdateState()
 
     def OnButtonClose(self, event):
-        self.Close()        
+        self.Close()
 
-    def OnViewUpdateLog(self, event):                
+    def OnViewUpdateLog(self, event):
         wxDialogUtils.wxShowLog(self, self._config.Get('Updates', 'DBUpdateLogFile'))
 
     def OnViewScanLog(self, event):
         wxDialogUtils.wxShowLog(self, self._config.Get('ClamAV', 'LogFile'))
-                                
-    def OnHelpHelp(self, event):        
-        if sys.platform.startswith('win'):            
+
+    def OnHelpHelp(self, event):
+        if sys.platform.startswith('win'):
             import win32api, win32con
             curDir = Utils.GetCurrentDir(True)
             helpfile = os.path.join(curDir, 'manual.chm')
             if not os.path.isfile(helpfile):
                 MsgBox.ErrorBox(self, 'Could not open help file - %s not found.' % helpfile)
-            else:    
-                try:                
-                    win32api.ShellExecute(self.GetHandle(), 'open', 
+            else:
+                try:
+                    win32api.ShellExecute(self.GetHandle(), 'open',
                         helpfile,
                         None, curDir, win32con.SW_SHOWNORMAL)
                 except Exception, e:
@@ -390,27 +390,27 @@ class wxMainFrame(wxFrame):
 
     def OnHelpFAQ(self, event):
         wxDialogUtils.wxGoToInternetUrl('http://sourceforge.net/docman/display_doc.php?docid=22588&group_id=105508')
-        
-        
+
+
     def OnHelpUpdate(self, event):
         wxDialogUtils.wxGoToInternetUrl('http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version='+version.clamwin_version)
-        
-                
+
+
     def OnHelpWebsite(self, event):
         wxDialogUtils.wxGoToInternetUrl('http://www.clamwin.com')
-                
-class wxGenericDirCtrlEx(wxGenericDirCtrl):    
+
+class wxGenericDirCtrlEx(wxGenericDirCtrl):
     def __init__(self,*_args,**_kwargs):
         try:
             if _kwargs['multiselect'] == True:
                 multiselect = True
                 del _kwargs['multiselect']
             else:
-                multiselect = False        
+                multiselect = False
         except KeyError:
             multiselect = True
-            
-        try:    
+
+        try:
             if _kwargs['showhidden'] == True:
                 showhidden = True
                 del _kwargs['showhidden']
@@ -418,13 +418,13 @@ class wxGenericDirCtrlEx(wxGenericDirCtrl):
                 showhidden = False
         except KeyError:
             showhidden = True
-            
-        wxGenericDirCtrl.__init__(self, *_args, **_kwargs)        
+
+        wxGenericDirCtrl.__init__(self, *_args, **_kwargs)
         self.ShowHidden(showhidden)
-        if multiselect:  
-            tree = self.GetTreeCtrl()                      
+        if multiselect:
+            tree = self.GetTreeCtrl()
             tree.SetWindowStyleFlag(tree.GetWindowStyleFlag() | wxTR_MULTIPLE)
-        
+
     def GetMultiplePath(self):
         multiPath = []
         tree = self.GetTreeCtrl()
@@ -434,14 +434,14 @@ class wxGenericDirCtrlEx(wxGenericDirCtrl):
             path = ''
             itemtext = tree.GetItemText(item)
             while True:
-                try:                                              
-                    if not sys.platform.startswith("win"):                           
+                try:
+                    if not sys.platform.startswith("win"):
                         # unix - terminate when path=='/'
                         if itemtext == '/':
-                            path = itemtext + path                            
+                            path = itemtext + path
                             break
                         else:
-                            path = itemtext + '/' + path                            
+                            path = itemtext + '/' + path
                     else:
                         # windows, root drive is enclosed in ()
                         if itemtext.startswith('(') and itemtext.endswith(':)'):
@@ -449,16 +449,16 @@ class wxGenericDirCtrlEx(wxGenericDirCtrl):
                             itemtext = itemtext.strip('()')
                             path = itemtext + '\\' + path
                             break
-                        else:                            
-                            path = itemtext + '\\' + path                                                
+                        else:
+                            path = itemtext + '\\' + path
                     item = tree.GetItemParent(item)
-                    itemtext = tree.GetItemText(item)                                        
+                    itemtext = tree.GetItemText(item)
                 except:
-                    break               
+                    break
             if len(path) > 1:
-                path = path.rstrip('\\/')                             
+                path = path.rstrip('\\/')
             multiPath.append(path)
         return multiPath
-        
-    
-        
+
+
+

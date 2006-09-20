@@ -2,17 +2,17 @@
 # Name:        SplashScreen.py
 # Product:     ClamWin Free Antivirus
 #
-# Licence:     
+# Licence:
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
 #   the Free Software Foundation; either version 2 of the License, or
 #   (at your option) any later version.
-# 
+#
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-# 
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; if not, write to the Free Software
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -43,10 +43,10 @@ class Splash:
         self.bmWidth, self.bmHeight = struct.unpack(hdrfm, f.read(struct.calcsize(hdrfm)))
         f.close()
 
-        self.hSplash = win32gui.LoadImage(self.hinst, bitmapPath, win32con.IMAGE_BITMAP, 
+        self.hSplash = win32gui.LoadImage(self.hinst, bitmapPath, win32con.IMAGE_BITMAP,
                                           0, 0, win32con.LR_LOADFROMFILE | win32con.LR_DEFAULTSIZE)
-        
-            
+
+
     def _RegisterWndClass(self):
         className = "PythonSplash"
         global g_registeredClass
@@ -100,18 +100,18 @@ class Splash:
         bmCtrl = win32gui.GetDlgItem(self.hwnd, IDC_BITMAP)
         win32gui.SendMessage(bmCtrl, win32con.STM_SETIMAGE, win32con.IMAGE_BITMAP, self.hSplash)
 
-        win32gui.SetWindowPos(self.hwnd, win32con.HWND_TOPMOST, 
-                              centre_x-(self.bmWidth/2), centre_y-(self.bmHeight/2), 
+        win32gui.SetWindowPos(self.hwnd, win32con.HWND_TOPMOST,
+                              centre_x-(self.bmWidth/2), centre_y-(self.bmHeight/2),
                               self.bmWidth, self.bmHeight, win32con.SWP_HIDEWINDOW)
         try:
-        	    win32gui.SetForegroundWindow(self.hwnd)
+            win32gui.SetForegroundWindow(self.hwnd)
         except:
-        	    pass
-        
-        
+            pass
+
+
     def Show(self):
         win32gui.ShowWindow(self.hwnd, win32con.SW_SHOW)
-      
+
     def Timer(self, timeOut):
         import time
         time.sleep(timeOut)
@@ -121,24 +121,24 @@ class Splash:
         #thread needed because win32gui does not expose SetTimer API
         import thread
         thread.start_new_thread(self.Timer, (timeOut, ))
-    
+
     def EndDialog(self):
         win32gui.EndDialog(self.hwnd, 0)
-        
+
     def OnClose(self, hwnd, msg, wparam, lparam):
         self.EndDialog()
 
 def ShowSplashScreen(filename, timeout):
     s = Splash(filename)
-    s.CreateWindow()    
+    s.CreateWindow()
     s.Show()
-    Wait = ThreadFuture.Future(s.EndDialogAfter, timeout)            
+    Wait = ThreadFuture.Future(s.EndDialogAfter, timeout)
     Wait()
-    
+
     s.EndDialogAfter(3)
 if __name__=='__main__':
     #s = Splash("img\\Splash.bmp")
     #s.DoModal()
-    
+
     ShowSplashScreen("img\\Splash.bmp", 5)
     win32gui.PumpMessages()
