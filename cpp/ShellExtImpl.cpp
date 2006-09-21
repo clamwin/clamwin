@@ -6,17 +6,17 @@
 //
 // Created:     2004/19/03
 // Copyright:   Copyright alch (c) 2004
-// Licence:     
+// Licence:
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License as published by
 //   the Free Software Foundation; either version 2 of the License, or
 //   (at your option) any later version.
-// 
+//
 //   This program is distributed in the hope that it will be useful,
 //   but WITHOUT ANY WARRANTY; without even the implied warranty of
 //   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //   GNU General Public License for more details.
-// 
+//
 //   You should have received a copy of the GNU General Public License
 //   along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -34,16 +34,16 @@
 extern HINSTANCE	g_hmodThisDll;	// Handle to this DLL itself.
 
 
-int _tcsreplace(LPTSTR sz, TCHAR chr,  TCHAR repl_chr) 
+int _tcsreplace(LPTSTR sz, TCHAR chr,  TCHAR repl_chr)
 {
-    int count = 0;              
+    int count = 0;
 
-    for (; *sz!=_T('\0'); sz++)             
-        if (*sz == chr) {        
-            *sz = repl_chr;      
-            count++;            
+    for (; *sz!=_T('\0'); sz++)
+        if (*sz == chr) {
+            *sz = repl_chr;
+            count++;
         }
-    return count;               
+    return count;
 }
 
 //
@@ -61,8 +61,8 @@ int _tcsreplace(LPTSTR sz, TCHAR chr,  TCHAR repl_chr)
 //
 //    NOERROR in all cases.
 //
-//  COMMENTS:   Note that at the time this function is called, we don't know 
-//              (or care) what type of shell extension is being initialized.  
+//  COMMENTS:   Note that at the time this function is called, we don't know
+//              (or care) what type of shell extension is being initialized.
 //              It could be a context menu or a property sheet.
 //
 
@@ -76,31 +76,31 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 	TCHAR szPath[MAX_PATH];
 	INT numFiles;
 	size_t len;
-	
-	
+
+
 	// Initialize can be called more than once
 	if (m_pDataObj)
 		m_pDataObj->Release();
-	
+
 	// duplicate the object pointer and registry handle
 	if (pDataObj)
 	{
 		m_pDataObj = pDataObj;
 		pDataObj->AddRef();
 	}
-	
+
 	// use the given IDataObject to get a list of filenames (CF_HDROP)
 	hres = pDataObj->GetData(&fmte, &medium);
-	
+
 	if(FAILED(hres))
 		return E_FAIL;
-	
+
 	// find out how many files the user selected
 	// not more than 250 though, otherwise explorer crashes
 	numFiles = DragQueryFile((HDROP)medium.hGlobal, (UINT)-1, NULL, 0);
 	if(numFiles > 250)
 		return E_FAIL;
-		
+
 	// free old path (just in case)
 	if(m_szPath)
 	{
@@ -118,16 +118,16 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 		// check the long path validity for a unicode build
 #if defined UNICODE || defined _UNICODE
 		{
-			CHAR atemp[MAX_PATH];			
+			CHAR atemp[MAX_PATH];
 			BOOL invalid;
-			if(!WideCharToMultiByte(CP_OEMCP, WC_NO_BEST_FIT_CHARS, szPath, -1, 
+			if(!WideCharToMultiByte(CP_OEMCP, WC_NO_BEST_FIT_CHARS, szPath, -1,
       		  atemp, sizeof(atemp), NULL, &invalid) || invalid)
     		{
     			WCHAR wtemp[MAX_PATH];
-    			// unicode name is not directly tranleatable to ascii, use the shortname instead        		 
+    			// unicode name is not directly tranleatable to ascii, use the shortname instead
        		if(GetShortPathNameW(szPath, wtemp, sizeof(wtemp)) > 0)
    	  			wcscpy(szPath, wtemp);
-    		}    		
+    		}
 		}
 #endif
 		// convert \ to / so cygwin doesn't go crazy (particularly over UNC names)
@@ -139,9 +139,9 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
         _tcsncat(m_szPath, _T(" --path=\""), cbPath);
         _tcsncat(m_szPath, szPath, cbPath);
         _tcsncat(m_szPath, _T("\""), cbPath);
-	}	
+	}
 	::ReleaseStgMedium(&medium);
-	
+
 	return NOERROR;
 }
 
@@ -167,16 +167,16 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 // The menu text
 STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,UINT indexMenu,UINT idCmdFirst,UINT idCmdLast,UINT uFlags)
 {
-	
+
 	UINT			idCmd = idCmdFirst;
 	HRESULT		hr = E_INVALIDARG;
-	
+
 	// Seperator
 	::InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL);
 	::InsertMenu(hMenu, indexMenu++, MF_STRING|MF_BYPOSITION, idCmd++, _T("Scan with ClamWin Free Antivirus"));
 	// Seperator
 	::InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL);
-	
+
 	return ResultFromShort(idCmd-idCmdFirst);	//Must return number of menu
 	//items we added.
 }
@@ -188,8 +188,8 @@ BOOL CShellExt::Scan(HWND hwnd)
     {
         MessageBox(hwnd, _T("Error: Unable to retrieve Path."), _T("ClamWin Free Antivirus"), MB_OK | MB_ICONERROR);
         return FALSE;
-    }            
-    
+    }
+
     DWORD dwType, cbData;
     size_t szCmdSize = MAX_PATH*3 + _tcslen(m_szPath);
     PTCHAR szCmd = new TCHAR[szCmdSize];
@@ -200,14 +200,14 @@ BOOL CShellExt::Scan(HWND hwnd)
     // Try registry first
     HKEY hKey;
     // try in hkey_current_user
-    if (ERROR_SUCCESS == RegOpenKeyEx(HKEY_CURRENT_USER, _T("Software\\ClamWin"), 0, KEY_READ, &hKey)) 
+    if (ERROR_SUCCESS == RegOpenKeyEx(HKEY_CURRENT_USER, _T("Software\\ClamWin"), 0, KEY_READ, &hKey))
     {
         cbData = sizeof(szClamWinPath);
         RegQueryValueEx(hKey, _T("Path"), NULL, &dwType, (PBYTE)szClamWinPath, &cbData);
         CloseHandle(hKey);
     }
     // try in hkey_local_machine if failed
-    if (!_tcslen(szClamWinPath) && 
+    if (!_tcslen(szClamWinPath) &&
     		(ERROR_SUCCESS == RegOpenKeyEx(HKEY_LOCAL_MACHINE, _T("Software\\ClamWin"), 0, KEY_READ, &hKey)))
 
     {
@@ -218,13 +218,13 @@ BOOL CShellExt::Scan(HWND hwnd)
 
     if(!_tcslen(szClamWinPath))
     {
-        // could not retrieve from registry    
+        // could not retrieve from registry
         // try in the same folder as the shell extension
         TCHAR szModule[MAX_PATH];
         if(GetModuleFileName(NULL, szModule, sizeof(szModule)))
         {
-            // get folder name    
-            _tsplitpath(szModule, NULL, szClamWinPath, NULL, NULL);            
+            // get folder name
+            _tsplitpath(szModule, NULL, szClamWinPath, NULL, NULL);
         }
     }
     len = _tcslen(szClamWinPath);
@@ -240,28 +240,28 @@ BOOL CShellExt::Scan(HWND hwnd)
     // remove trailing slash
     if(szPathExpanded[len-1] == _T('\\'))
         szPathExpanded[len-1] = _T('\0');
-    _sntprintf(szCmd, szCmdSize, _T("\"%s\\%s\" --mode=scanner %s"), 
+    _sntprintf(szCmd, szCmdSize, _T("\"%s\\%s\" --mode=scanner %s"),
                 szPathExpanded, _T("ClamWin.exe"), m_szPath);
-                                       
+
     // read  optional params from registry
-    if (ERROR_SUCCESS == RegOpenKeyEx(HKEY_CURRENT_USER, 
-                _T("Classes\\CLSID\\{65713842-C410-4f44-8383-BFE01A398C90}\\InProcServer32"), 0, KEY_READ, &hKey) || 
-        ERROR_SUCCESS == RegOpenKeyEx(HKEY_LOCAL_MACHINE, 
+    if (ERROR_SUCCESS == RegOpenKeyEx(HKEY_CURRENT_USER,
+                _T("Classes\\CLSID\\{65713842-C410-4f44-8383-BFE01A398C90}\\InProcServer32"), 0, KEY_READ, &hKey) ||
+        ERROR_SUCCESS == RegOpenKeyEx(HKEY_LOCAL_MACHINE,
                 _T("Classes\\CLSID\\{65713842-C410-4f44-8383-BFE01A398C90}\\InProcServer32"), 0, KEY_READ, &hKey))
     {
         cbData = sizeof(szParams);
         RegQueryValueEx(hKey, _T("params"), NULL, &dwType, (PBYTE)szParams, &cbData);
-        CloseHandle(hKey);      
+        CloseHandle(hKey);
         // append params if exist
-        if (szParams[0] != _T('\0')) 
+        if (szParams[0] != _T('\0'))
         {
             // Expand Env
             ExpandEnvironmentStrings(szParams, szParamsExpanded, sizeof(szParamsExpanded));
             _tcsncat(szCmd, _T(" "), sizeof(szCmd));
             _tcsncat(szCmd, szParamsExpanded, sizeof(szCmd));
         }
-    }        
-                
+    }
+
     STARTUPINFO si;
     PROCESS_INFORMATION pi;
 
@@ -270,32 +270,32 @@ BOOL CShellExt::Scan(HWND hwnd)
 
     ZeroMemory( &pi, sizeof(pi) );
 
-    // Start the child process. 
-    if( !CreateProcess( NULL, // No module name (use command line). 
-        szCmd,            // Command line. 
-        NULL,             // Process handle not inheritable. 
-        NULL,             // Thread handle not inheritable. 
-        FALSE,            // Set handle inheritance to FALSE. 
-        0,                // No creation flags. 
-        NULL,             // Use parent's environment block. 
-        NULL,             // Use parent's starting directory. 
+    // Start the child process.
+    if( !CreateProcess( NULL, // No module name (use command line).
+        szCmd,            // Command line.
+        NULL,             // Process handle not inheritable.
+        NULL,             // Thread handle not inheritable.
+        FALSE,            // Set handle inheritance to FALSE.
+        0,                // No creation flags.
+        NULL,             // Use parent's environment block.
+        NULL,             // Use parent's starting directory.
         &si,              // Pointer to STARTUPINFO structure.
         &pi )             // Pointer to PROCESS_INFORMATION structure.
-    )    
+    )
     {
         TCHAR szMsg[MAX_PATH*2];
         _sntprintf(szMsg, sizeof(szMsg), _T("Error: Unable to execute command %s."), szCmd);
-        MessageBox(hwnd, szMsg, _T("ClamWin Free Antivirus"), MB_OK | MB_ICONERROR);        
+        MessageBox(hwnd, szMsg, _T("ClamWin Free Antivirus"), MB_OK | MB_ICONERROR);
         delete [] szCmd;
         return FALSE;
     }
     delete [] szCmd;
 
-    // Close process and thread handles. 
+    // Close process and thread handles.
     CloseHandle( pi.hProcess );
     CloseHandle( pi.hThread );
-    
-    return TRUE;        
+
+    return TRUE;
 }
 //
 //  FUNCTION: CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO)
@@ -314,18 +314,18 @@ BOOL CShellExt::Scan(HWND hwnd)
 STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 {
 	HRESULT			hr = E_INVALIDARG;
-	
+
 	//If HIWORD(lpcmi->lpVerb) then we have been called programmatically
 	//and lpVerb is a command that should be invoked.  Otherwise, the shell
 	//has called us, and LOWORD(lpcmi->lpVerb) is the menu ID the user has
 	//selected.  Actually, it's (menu ID - idCmdFirst) from QueryContextMenu().
 	if (!HIWORD(lpcmi->lpVerb))
 	{
-		UINT idCmd = LOWORD(lpcmi->lpVerb);		
+		UINT idCmd = LOWORD(lpcmi->lpVerb);
 		switch (idCmd)
 		{
 		case 0:
-		    Scan(lpcmi->hwnd);		    
+		    Scan(lpcmi->hwnd);
 			break;
 		}
 		hr = NOERROR;
@@ -354,12 +354,12 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 //
 STDMETHODIMP CShellExt::GetCommandString(UINT_PTR idCmd, UINT uType, UINT *pwReserved, LPSTR pszName, UINT cchMax)
 {
-	
+
 	switch (idCmd)
 	{
-	case 0:	
+	case 0:
 		if (GCS_HELPTEXTW == uType)
-			wcsncpy((LPWSTR)pszName, L"ClamWin Free Antivirus", cchMax);	
+			wcsncpy((LPWSTR)pszName, L"ClamWin Free Antivirus", cchMax);
 		else if (GCS_HELPTEXTA == uType)
 			strncpy(pszName, "ClamWin Free Antivirus", cchMax);
 		break;

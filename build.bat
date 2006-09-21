@@ -11,20 +11,20 @@ set PYTHONDIR=C:\python23
 rem build ExplorerShell
 cd cpp
 call build.bat
-if not "%ERRORLEVEL%"=="0" goto ERROR  
+if not "%ERRORLEVEL%"=="0" goto ERROR
 cd ..\
 rem build BalloonTip.pyd
 cd py\BalloonTip
 call build.bat
-if not "%ERRORLEVEL%"=="0" goto ERROR  
+if not "%ERRORLEVEL%"=="0" goto ERROR
 cd ..\..\
 rem build py2exe binaries
 cd setup\py2exe
-call %PYTHONDIR%\python setup_all.py 
-if not "%ERRORLEVEL%"=="0" goto ERROR  
+call %PYTHONDIR%\python setup_all.py
+if not "%ERRORLEVEL%"=="0" goto ERROR
 rem build setup
 call "%ISTOOLDIR%\ISTool.exe" -compile "%THISDIR%\Setup\Setup.iss"
-if not "%ERRORLEVEL%"=="0" goto ERROR  
+if not "%ERRORLEVEL%"=="0" goto ERROR
 
 goto END
 

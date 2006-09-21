@@ -103,7 +103,7 @@
 	<license rdf:resource="www.gnu.org/copyleft/gpl.html" />
 
 	<bug-database rdf:resource="http://sourceforge.net/tracker/?group_id=105508&atid=641462" />
-	
+
 	<repository>
 		<CVSRepository>
 			<location rdf:resource="http://sourceforge.net/cvs/?group_id=105508" />
