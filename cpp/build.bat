@@ -27,7 +27,7 @@ link.exe /OUT:".\Release/ExpShell.dll" /INCREMENTAL:NO /NOLOGO /DLL /DEF:".\Expl
 if not "%ERRORLEVEL%"=="0" goto END
 
 :: 64 bit unicode
-call "%VCINSTALLDIR%\vcvarsall.bat" amd64
+call "%VCINSTALLDIR%\vcvarsall.bat" x86_amd64
 
 echo Building 64bit Release Unicode
 mkdir Release_x64

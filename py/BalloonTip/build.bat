@@ -8,11 +8,11 @@ set LIB=%LIB%;%PYTHONDIR%\libs
 echo Building 32bit Release Ansi
 mkdir Release
 cl %DEFINES% /O1 /FD /EHsc /MT /Fo".\Release/" /Fd".\Release/" /Yc"stdafx.h" /Fp".\Release/BalloonTip.pch" /Fo".\Release/" /Fd".\Release/" /W3 /c /TP /Yc"stdafx.h" /Fp".\Release/BalloonTip.pch" .\StdAfx.cpp
-if not "%ERRORLEVEL%"=="0" goto END  
+if not "%ERRORLEVEL%"=="0" goto END
 cl %DEFINES% /O1 /FD /EHsc /MT /Fo".\Release/" /Fd".\Release/" /Yu"stdafx.h" /Fp".\Release/BalloonTip.pch" /Fo".\Release/" /Fd".\Release/" /W3 /c /TP /Yc"stdafx.h" /Fp".\Release/BalloonTip.pch" .\BalloonTip.cpp .\BalloonHelp.cpp
-if not "%ERRORLEVEL%"=="0" goto END  
+if not "%ERRORLEVEL%"=="0" goto END
 link.exe  /OUT:"../BalloonTip.pyd" /INCREMENTAL:NO /NOLOGO /DLL /PDB:".\Release/BalloonTip.pdb" /IMPLIB:".\Release/BalloonTip.lib" /MACHINE:X86 %LIBS% .\Release\BalloonHelp.obj .\Release\BalloonTip.obj .\Release\StdAfx.obj
-if not "%ERRORLEVEL%"=="0" goto END  
+if not "%ERRORLEVEL%"=="0" goto END
 
 
 :END

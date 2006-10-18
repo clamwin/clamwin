@@ -131,10 +131,10 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 		}
 #endif
 		// convert \ to / so cygwin doesn't go crazy (particularly over UNC names)
-		_tcsreplace(szPath, _T('\\'), _T('/'));
+//		_tcsreplace(szPath, _T('\\'), _T('/'));
 		len = _tcslen(szPath);
 		// remove last slash from the scanning path
-        if(szPath[len-1] == _T('/'))
+        if(szPath[len-1] == _T('\\'))
             szPath[len-1] = _T('\0');
         _tcsncat(m_szPath, _T(" --path=\""), cbPath);
         _tcsncat(m_szPath, szPath, cbPath);

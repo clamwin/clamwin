@@ -30,8 +30,8 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 //
 
 1 VERSIONINFO
- FILEVERSION 0,88,3,1
- PRODUCTVERSION 0,88,3,1
+ FILEVERSION 1,0,0,2
+ PRODUCTVERSION 1,0,0,2
  FILEFLAGSMASK 0x0L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -47,14 +47,14 @@ BEGIN
         BLOCK "040904E4"
         BEGIN
             VALUE "CompanyName", "alch\0"
-            VALUE "FileVersion", "0.88.3.1\0"
+            VALUE "FileVersion", "1.0.0.2\0"
             VALUE "FileDescription", "ClamWin Antivirus\0"
             VALUE "InternalName", "ExplorerShell\0"
             VALUE "LegalCopyright", "Copyright alch (c) 2004-2006\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "ExplorerShell\0"
             VALUE "ProductName", "ClamWin Antivirus\0"
-            VALUE "ProductVersion", "0.88.3.1\0"
+            VALUE "ProductVersion", "1.0.0.2\0"
         END
     END
 END

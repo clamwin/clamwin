@@ -120,7 +120,7 @@ if __name__ == '__main__':
         if arg.find('--mode=') == 0:
             mode = arg[len('--mode='):]
         if arg.find('--path=') == 0:
-            path += '"' + arg[len('--path='):] + '" '
+            path += '"' + arg[len('--path='):].replace('/', '\\') + '" '
         if arg.find('--config_file=') == 0:
             config_file = arg[len('--config_file='):]
 

@@ -33,8 +33,8 @@ def create(parent, config):
 
 [wxID_WXMAINFRAME, wxID_WXMAINFRAMEBUTTONCLOSE, wxID_WXMAINFRAMEBUTTONSCAN,
  wxID_WXMAINFRAMEDIRCTRLSCAN, wxID_WXMAINFRAMEPANELFRAME,
- wxID_WXMAINFRAMESTATIC1, wxID_WXMAINFRAMESTATUSBAR, wxID_WXMAINFRAMETOOLBAR,
-] = map(lambda _init_ctrls: wxNewId(), range(8))
+ wxID_WXMAINFRAMESTATIC1, wxID_WXMAINFRAMESTATUSBAR, wxID_WXMAINFRAMETOOLBAR, wxID_WXMAINFRAMETOOLBARTOOLS_SCANMEM
+] = map(lambda _init_ctrls: wxNewId(), range(9))
 
 
 [wxID_WXMAINFRAMETOOLBARTOOLS_INETUPDATE, wxID_WXMAINFRAMETOOLBARTOOLS_PREFS,
@@ -51,8 +51,8 @@ def create(parent, config):
 [wxID_WXMAINFRAMEHELPABOUT, wxID_WXMAINFRAMEHELPFAQ, wxID_WXMAINFRAMEHELPUPDATE, wxID_WXMAINFRAMEHELPWEBSITE, wxID_WXMAINFRAMEHELPHELP,
 ] = map(lambda _init_coll_Help_Items: wxNewId(), range(5))
 
-[wxID_WXMAINFRAMEFILEITEMS0, wxID_WXMAINFRAMEFILESCAN,
-] = map(lambda _init_coll_File_Items: wxNewId(), range(2))
+[wxID_WXMAINFRAMEFILEITEMS0, wxID_WXMAINFRAMEFILESCAN, wxID_WXMAINFRAMEFILESCANMEM
+] = map(lambda _init_coll_File_Items: wxNewId(), range(3))
 
 class wxMainFrame(wxFrame):
     def _init_coll_flexGridSizerPanel_Items(self, parent):
@@ -142,12 +142,16 @@ class wxMainFrame(wxFrame):
     def _init_coll_File_Items(self, parent):
         # generated method, don't edit
 
-        parent.Append(helpString='Scans Files or Folders for Computer Viruses',
-              id=wxID_WXMAINFRAMEFILESCAN, item='&Scan', kind=wxITEM_NORMAL)
+        parent.Append(helpString='Scans Selected Files or Folders for Computer Viruses',
+              id=wxID_WXMAINFRAMEFILESCAN, item='&Scan Files', kind=wxITEM_NORMAL)
+        parent.Append(helpString='Scans Programs in Computer Memory for Viruses',
+              id=wxID_WXMAINFRAMEFILESCANMEM, item='Scan &Memory', kind=wxITEM_NORMAL)
+
         parent.AppendSeparator()
         parent.Append(helpString='Exits the application',
               id=wxID_WXMAINFRAMEFILEITEMS0, item='E&xit', kind=wxITEM_NORMAL)
         EVT_MENU(self, wxID_WXMAINFRAMEFILESCAN, self.OnScanButton)
+        EVT_MENU(self, wxID_WXMAINFRAMEFILESCANMEM, self.OnScanMemButton)
         EVT_MENU(self, wxID_WXMAINFRAMEFILEITEMS0, self.OnFileExit)
 
     def _init_coll_toolBar_Tools(self, parent):
@@ -165,16 +169,22 @@ class wxMainFrame(wxFrame):
               longHelp='Updates virus databases over the Internet',
               shortHelp='Starts Internet Update')
         parent.AddSeparator()
+        parent.DoAddTool(bitmap=wxBitmap('img/ScanMem.png', wxBITMAP_TYPE_PNG),
+              bmpDisabled=wxNullBitmap, id=wxID_WXMAINFRAMETOOLBARTOOLS_SCANMEM,
+              kind=wxITEM_NORMAL, label='Scan Computer Memory',
+              longHelp='Scans Programs Loaded in Computer Memory for Computer Viruses',
+              shortHelp='Scans Computer Memory for Viruses')
         parent.DoAddTool(bitmap=wxBitmap('img/Scan.png', wxBITMAP_TYPE_PNG),
               bmpDisabled=wxNullBitmap, id=wxID_WXMAINFRAMETOOLBARTOOLS_SCAN,
-              kind=wxITEM_NORMAL, label='Scan',
-              longHelp='Scans Selected File or Folder for Computer Viruses',
-              shortHelp='Scans For Viruses')
+              kind=wxITEM_NORMAL, label='Scan Selected Files',
+              longHelp='Scans Selected Files or Folders for Computer Viruses',
+              shortHelp='Scans Selected Files For Viruses')
         EVT_TOOL(self, wxID_WXMAINFRAMETOOLBARTOOLS_INETUPDATE,
               self.OnToolsUpdate)
         EVT_TOOL(self, wxID_WXMAINFRAMETOOLBARTOOLS_PREFS,
               self.OnToolsPreferences)
         EVT_TOOL(self, wxID_WXMAINFRAMETOOLBARTOOLS_SCAN, self.OnScanButton)
+        EVT_TOOL(self, wxID_WXMAINFRAMETOOLBARTOOLS_SCANMEM, self.OnScanMemButton)
 
         parent.Realize()
 
@@ -346,6 +356,7 @@ class wxMainFrame(wxFrame):
             self.buttonScan.Enable(configured and hasdb)
             self.toolBar.EnableTool(wxID_WXMAINFRAMETOOLBARTOOLS_INETUPDATE, configured)
             self.toolBar.EnableTool(wxID_WXMAINFRAMETOOLBARTOOLS_SCAN, configured and hasdb)
+            self.toolBar.EnableTool(wxID_WXMAINFRAMETOOLBARTOOLS_SCANMEM, configured and hasdb)
 
 
 
@@ -355,10 +366,11 @@ class wxMainFrame(wxFrame):
     def OnScanButton(self, event):
         scanPath = ''
         for path in self.dirCtrlScan.GetMultiplePath():
-            #if sys.platform.startswith("win"):
-            #    path = path.replace('\\', '/')
             scanPath += "\"%s\" " % path
         wxDialogUtils.wxScan(self, self._config, scanPath)
+
+    def OnScanMemButton(self, event):
+        wxDialogUtils.wxScan(self, self._config, None)
 
     def OnToolsUpdate(self, event):
         wxDialogUtils.wxUpdateVirDB(self, self._config)

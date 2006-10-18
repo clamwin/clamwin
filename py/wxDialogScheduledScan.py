@@ -34,8 +34,8 @@ import shelve
 # scheduled scan information holder
 # it is used for persistent storage
 class ScheduledScanInfo(list):
-    def __init__(self, frequency='Daily', time='18:30:00', weekDay=3, path='', description='', active=True):
-        list.__init__(self, [frequency, time, weekDay, path, description, active])
+    def __init__(self, frequency='Daily', time='18:30:00', weekDay=3, path='', description='', active=True, scanmem=True):
+        list.__init__(self, [frequency, time, weekDay, path, description, active, scanmem])
 
     def __getFrequency(self): return self[0]
     def __setFrequency(self, value): self[0] = value
@@ -61,6 +61,10 @@ class ScheduledScanInfo(list):
     def __setActive(self, value): self[5] = value
     Active = property(__getActive, __setActive)
 
+    def __getScanMemory(self): return self[6]
+    def __setScanMemory(self, value): self[6] = value
+    ScanMemory = property(__getScanMemory, __setScanMemory)
+
 
 def LoadPersistentScheduledScans(filename):
     try:
@@ -77,13 +81,20 @@ def LoadPersistentScheduledScans(filename):
             scheduledScans = _shelve['ScheduledScans']
         except KeyError:
             scheduledScans = []
-        if version < 2:
+        if version < 3:
             for i in range(len(scheduledScans)):
+                if version < 2:
+                    active = True
+                    description = 'Scan ' + scheduledScans[i][3]
+                else:
+                    active = scheduledScans[i][5]
+                    description = scheduledScans[i][4]
                 scheduledScans[i] = ScheduledScanInfo(scheduledScans[i][0],
-                                    scheduledScans[i][1], scheduledScans[i][2],
-                                    scheduledScans[i][3],
-                                    'Scan ' + scheduledScans[i][3], True)
-            _shelve['version'] = 2
+                                         scheduledScans[i][1], scheduledScans[i][2],
+                                         scheduledScans[i][3],
+                                         description, active, True)
+
+            _shelve['version'] = 3
             _shelve['ScheduledScans'] = scheduledScans
     except Exception, e:
         scheduledScans = []
@@ -95,7 +106,7 @@ def SavePersistentScheduledScans(filename, scheduledScans):
     try:
         _shelve = shelve.open(filename)
         _shelve['ScheduledScans'] = scheduledScans
-        _shelve['version'] = 2
+        _shelve['version'] = 3
     except Exception, e:
         print 'Could not save scheduled scans to persistent storage. Error: %s' % str(e)
 
@@ -105,6 +116,7 @@ def create(parent, scanInfo):
 [wxID_WXDIALOGSCHEDULEDSCAN, wxID_WXDIALOGSCHEDULEDSCANBUTTONBROWSEFOLDER,
  wxID_WXDIALOGSCHEDULEDSCANBUTTONCANCEL, wxID_WXDIALOGSCHEDULEDSCANBUTTONOK,
  wxID_WXDIALOGSCHEDULEDSCANCHECKBOXENABLED,
+ wxID_WXDIALOGSCHEDULEDSCANCHECKBOXSCANMEMORY,
  wxID_WXDIALOGSCHEDULEDSCANCHOICEDAY,
  wxID_WXDIALOGSCHEDULEDSCANCHOICEFREQUENCY,
  wxID_WXDIALOGSCHEDULEDSCANSPINBUTTONTIME,
@@ -117,16 +129,16 @@ def create(parent, scanInfo):
  wxID_WXDIALOGSCHEDULEDSCANSTATICTEXTTIME,
  wxID_WXDIALOGSCHEDULEDSCANTEXTCTRLDESCRIPTION,
  wxID_WXDIALOGSCHEDULEDSCANTEXTCTRLFOLDER,
-] = map(lambda _init_ctrls: wxNewId(), range(17))
+] = map(lambda _init_ctrls: wxNewId(), range(18))
 
 class wxDialogScheduledScan(wxDialog):
     def _init_ctrls(self, prnt):
         # generated method, don't edit
         wxDialog.__init__(self, id=wxID_WXDIALOGSCHEDULEDSCAN,
-              name='wxDialogScheduledScan', parent=prnt, pos=wxPoint(427, 201),
-              size=wxSize(311, 301), style=wxDEFAULT_DIALOG_STYLE,
+              name='wxDialogScheduledScan', parent=prnt, pos=wxPoint(1065, 481),
+              size=wxSize(311, 318), style=wxDEFAULT_DIALOG_STYLE,
               title='Scheduled Scan')
-        self.SetClientSize(wxSize(303, 274))
+        self.SetClientSize(wxSize(303, 291))
         self.SetToolTipString('')
         self.Center(wxBOTH)
         EVT_CHAR_HOOK(self, self.OnCharHook)
@@ -181,17 +193,17 @@ class wxDialogScheduledScan(wxDialog):
 
         self.staticTextFolder = wxStaticText(id=wxID_WXDIALOGSCHEDULEDSCANSTATICTEXTFOLDER,
               label='&Scan Folder:', name='staticTextFolder', parent=self,
-              pos=wxPoint(11, 121), size=wxSize(78, 15), style=0)
+              pos=wxPoint(12, 165), size=wxSize(78, 15), style=0)
         self.staticTextFolder.SetToolTipString('')
 
         self.textCtrlFolder = wxTextCtrl(id=wxID_WXDIALOGSCHEDULEDSCANTEXTCTRLFOLDER,
-              name='textCtrlFolder', parent=self, pos=wxPoint(11, 139),
+              name='textCtrlFolder', parent=self, pos=wxPoint(12, 183),
               size=wxSize(260, 20), style=0, value='')
         self.textCtrlFolder.SetToolTipString('Specify a folder to be scanned')
 
         self.buttonBrowseFolder = wxButton(id=wxID_WXDIALOGSCHEDULEDSCANBUTTONBROWSEFOLDER,
               label='...', name='buttonBrowseFolder', parent=self,
-              pos=wxPoint(273, 139), size=wxSize(20, 20), style=0)
+              pos=wxPoint(274, 183), size=wxSize(20, 20), style=0)
         self.buttonBrowseFolder.SetToolTipString('Click to browse for a folder')
         EVT_BUTTON(self.buttonBrowseFolder,
               wxID_WXDIALOGSCHEDULEDSCANBUTTONBROWSEFOLDER,
@@ -199,33 +211,40 @@ class wxDialogScheduledScan(wxDialog):
 
         self.staticTextDescription = wxStaticText(id=wxID_WXDIALOGSCHEDULEDSCANSTATICTEXTDESCRIPTION,
               label='D&escription:', name='staticTextDescription', parent=self,
-              pos=wxPoint(11, 164), size=wxSize(68, 16), style=0)
+              pos=wxPoint(12, 208), size=wxSize(68, 16), style=0)
         self.staticTextDescription.SetToolTipString('')
 
         self.textCtrlDescription = wxTextCtrl(id=wxID_WXDIALOGSCHEDULEDSCANTEXTCTRLDESCRIPTION,
-              name='textCtrlDescription', parent=self, pos=wxPoint(11, 182),
+              name='textCtrlDescription', parent=self, pos=wxPoint(12, 226),
               size=wxSize(282, 20), style=0, value='')
         self.textCtrlDescription.SetToolTipString('Specify a friendly description for the scheduled scan')
 
         self.checkBoxEnabled = wxCheckBox(id=wxID_WXDIALOGSCHEDULEDSCANCHECKBOXENABLED,
               label='&Activate This Schedule', name='checkBoxEnabled',
-              parent=self, pos=wxPoint(11, 213), size=wxSize(278, 15), style=0)
+              parent=self, pos=wxPoint(11, 121), size=wxSize(278, 15), style=0)
         self.checkBoxEnabled.SetValue(False)
         self.checkBoxEnabled.SetToolTipString('Select if you wish to enable this schedule')
 
         self.buttonOK = wxButton(id=wxID_WXDIALOGSCHEDULEDSCANBUTTONOK,
-              label='OK', name='buttonOK', parent=self, pos=wxPoint(73, 242),
+              label='OK', name='buttonOK', parent=self, pos=wxPoint(76, 258),
               size=wxSize(75, 23), style=0)
         self.buttonOK.SetDefault()
         self.buttonOK.SetToolTipString('Closes the dialog and applies the settings')
         EVT_BUTTON(self.buttonOK, wxID_WXDIALOGSCHEDULEDSCANBUTTONOK, self.OnOK)
 
         self.buttonCancel = wxButton(id=wxID_WXDIALOGSCHEDULEDSCANBUTTONCANCEL,
-              label='Cancel', name='buttonCancel', parent=self, pos=wxPoint(160,
-              242), size=wxSize(75, 23), style=0)
+              label='Cancel', name='buttonCancel', parent=self, pos=wxPoint(163,
+              258), size=wxSize(75, 23), style=0)
         self.buttonCancel.SetToolTipString('Closes the dialog and discards the changes')
         EVT_BUTTON(self.buttonCancel, wxID_WXDIALOGSCHEDULEDSCANBUTTONCANCEL,
               self.OnCancel)
+
+        self.checkBoxScanMemory = wxCheckBox(id=wxID_WXDIALOGSCHEDULEDSCANCHECKBOXSCANMEMORY,
+              label='Scan &Programs Loaded in Computer Memory',
+              name='checkBoxScanMemory', parent=self, pos=wxPoint(11, 141),
+              size=wxSize(277, 18), style=0)
+        self.checkBoxScanMemory.SetValue(False)
+        self.checkBoxScanMemory.SetToolTipString('Select if you wish to include programs computer memory during every scan')
 
     def __init__(self, parent, scanInfo):
         self._scanInfo = None
@@ -246,6 +265,7 @@ class wxDialogScheduledScan(wxDialog):
         self.textCtrlDescription.SetValidator(MyValidator(self._scanInfo, 'Description', False))
         self.textCtrlFolder.SetValidator(MyValidator(self._scanInfo, 'Path', False))
         self.checkBoxEnabled.SetValidator(MyValidator(self._scanInfo, 'Active'))
+        self.checkBoxScanMemory.SetValidator(MyValidator(self._scanInfo, 'ScanMemory'))
         self.TransferDataToWindow()
 
         self.choiceDay.Enable(self.choiceFrequency.GetStringSelection() == 'Weekly')

@@ -1,17 +1,17 @@
 /*-----------------------------------------------------------------------------
 # Name:        CWnd.h
 # Product:     ClamWin Antivirus
-# Licence:     
+# Licence:
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
 #   the Free Software Foundation; either version 2 of the License, or
 #   (at your option) any later version.
-# 
+#
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-# 
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; if not, write to the Free Software
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -29,7 +29,7 @@ class CWnd
 public:
 	// many different ways to register
 	virtual BOOL RegisterWindow();
-	virtual BOOL RegisterWindow(UINT style, HICON hIcon, HCURSOR hCursor, HBRUSH hbrBackground, 
+	virtual BOOL RegisterWindow(UINT style, HICON hIcon, HCURSOR hCursor, HBRUSH hbrBackground,
 		LPCTSTR lpszMenuName, LPCTSTR lpszClassName, HICON hIconSm);
 	virtual BOOL RegisterWindow(CONST WNDCLASSEX* wcx);
 
@@ -37,19 +37,19 @@ public:
 	static LRESULT CALLBACK stWinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 	// just so you can change the window caption...
-	void SetWindowTitle(LPCTSTR lpszTitle) 
+	void SetWindowTitle(LPCTSTR lpszTitle)
 	{
-		m_sWindowTitle = lpszTitle;		
+		m_sWindowTitle = lpszTitle;
 	};
 
 	// 3 ways to create
 	virtual BOOL Create();
 	virtual BOOL Create(DWORD dwStyles, RECT* rect);
 	virtual BOOL CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName,
-								LPCTSTR lpszWindowName, DWORD dwStyle, 
-								RECT& rect, HWND hwndParent, 
+								LPCTSTR lpszWindowName, DWORD dwStyle,
+								RECT& rect, HWND hwndParent,
 								HMENU nIDorHMenu, LPVOID lpParam = NULL );
-	
+
 	void SetIcon(HICON hIcon) { m_hIcon = hIcon; };
 
 	//void MsgLoop();
@@ -63,18 +63,18 @@ protected:
 	CStdString m_sWindowTitle;
 	HICON m_hIcon;
 
-	//contructor 
-	CWnd(HINSTANCE hInst, CONST WNDCLASSEX* wcx = NULL) 
+	//contructor
+	CWnd(HINSTANCE hInst, CONST WNDCLASSEX* wcx = NULL)
 		:m_hWnd(NULL),
 		m_hInstance(NULL),
 		m_hIcon(NULL),
 		m_bWindowClosed(FALSE)
-	{ 
-		m_hInstance = hInst; 
+	{
+		m_hInstance = hInst;
 		if (wcx != NULL) RegisterWindow(wcx);
 	};
 
-	~CWnd() 
+	~CWnd()
 	{
 		if(m_hIcon != NULL)
 			CloseHandle(m_hIcon);
@@ -92,55 +92,55 @@ protected:
 
 inline BOOL CWnd::RegisterWindow()
 {
-    WNDCLASSEX wcx; 
- 
-    // Fill in the window class structure with default parameters 
- 
-    wcx.cbSize = sizeof(WNDCLASSEX);							// size of structure 
-    wcx.style = CS_HREDRAW | CS_VREDRAW;						// redraw if size changes 
-    wcx.lpfnWndProc = CWnd::stWinMsgHandler;				// points to window procedure 
-    wcx.cbClsExtra = 0;											// no extra class memory 
-    wcx.cbWndExtra = 0;											// no extra window memory 
-    wcx.hInstance = m_hInstance;									// handle to instance 
-    wcx.hIcon = m_hIcon;				// predefined app. icon 
-    wcx.hCursor = LoadCursor(NULL, IDC_ARROW);					// predefined arrow 
-    wcx.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);	// white background brush 
-    wcx.lpszMenuName = NULL;									// name of menu resource 
-    wcx.lpszClassName = "BaseWindow";							// name of window class 
-    wcx.hIconSm = LoadIcon(NULL, IDI_APPLICATION);				// small class icon 
- 
-    // Register the window class. 
-    return RegisterWindow(&wcx); 
+    WNDCLASSEX wcx;
+
+    // Fill in the window class structure with default parameters
+
+    wcx.cbSize = sizeof(WNDCLASSEX);							// size of structure
+    wcx.style = CS_HREDRAW | CS_VREDRAW;						// redraw if size changes
+    wcx.lpfnWndProc = CWnd::stWinMsgHandler;				// points to window procedure
+    wcx.cbClsExtra = 0;											// no extra class memory
+    wcx.cbWndExtra = 0;											// no extra window memory
+    wcx.hInstance = m_hInstance;									// handle to instance
+    wcx.hIcon = m_hIcon;				// predefined app. icon
+    wcx.hCursor = LoadCursor(NULL, IDC_ARROW);					// predefined arrow
+    wcx.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);	// white background brush
+    wcx.lpszMenuName = NULL;									// name of menu resource
+    wcx.lpszClassName = "BaseWindow";							// name of window class
+    wcx.hIconSm = LoadIcon(NULL, IDI_APPLICATION);				// small class icon
+
+    // Register the window class.
+    return RegisterWindow(&wcx);
 
 }
 
-inline BOOL CWnd::RegisterWindow(UINT style, HICON hIcon, HCURSOR hCursor, HBRUSH hbrBackground, 
+inline BOOL CWnd::RegisterWindow(UINT style, HICON hIcon, HCURSOR hCursor, HBRUSH hbrBackground,
 									LPCTSTR lpszMenuName, LPCTSTR lpszClassName, HICON hIconSm)
 {
-    WNDCLASSEX wcx; 
- 
-    // Fill in the window class structure with default parameters 
- 
-    wcx.cbSize = sizeof(WNDCLASSEX);				// size of structure 
-    wcx.style = style;								// redraw if size changes 
-    wcx.lpfnWndProc = CWnd::stWinMsgHandler;	// points to window procedure 
-    wcx.cbClsExtra = 0;								// no extra class memory 
-    wcx.cbWndExtra = 0;								// no extra window memory 
-    wcx.hInstance = m_hInstance;						// handle to instance 
-    wcx.hIcon = hIcon;								// predefined app. icon 
-    wcx.hCursor = hCursor;							// predefined arrow 
-    wcx.hbrBackground = hbrBackground;				// white background brush 
-    wcx.lpszMenuName = lpszMenuName;				// name of menu resource 
-    wcx.lpszClassName = lpszClassName;				// name of window class 
-    wcx.hIconSm = hIconSm;							// small class icon 
- 
-    // Register the window class. 
-    return RegisterWindow(&wcx); 
+    WNDCLASSEX wcx;
+
+    // Fill in the window class structure with default parameters
+
+    wcx.cbSize = sizeof(WNDCLASSEX);				// size of structure
+    wcx.style = style;								// redraw if size changes
+    wcx.lpfnWndProc = CWnd::stWinMsgHandler;	// points to window procedure
+    wcx.cbClsExtra = 0;								// no extra class memory
+    wcx.cbWndExtra = 0;								// no extra window memory
+    wcx.hInstance = m_hInstance;						// handle to instance
+    wcx.hIcon = hIcon;								// predefined app. icon
+    wcx.hCursor = hCursor;							// predefined arrow
+    wcx.hbrBackground = hbrBackground;				// white background brush
+    wcx.lpszMenuName = lpszMenuName;				// name of menu resource
+    wcx.lpszClassName = lpszClassName;				// name of window class
+    wcx.hIconSm = hIconSm;							// small class icon
+
+    // Register the window class.
+    return RegisterWindow(&wcx);
 }
 
 inline BOOL CWnd::RegisterWindow(CONST WNDCLASSEX* wcx)
 {
-	// Register the window class. 
+	// Register the window class.
 	m_sClassName = wcx->lpszClassName;
 
 	if (RegisterClassEx(wcx) == 0)
@@ -171,7 +171,7 @@ inline LRESULT CALLBACK CWnd::stWinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wPara
 }
 
 inline BOOL CWnd::Create()
-{ 
+{
 	// Create the window
 	RECT rect;
 
@@ -184,12 +184,12 @@ inline BOOL CWnd::Create()
 }
 
 inline BOOL CWnd::Create(DWORD dwStyles, RECT* rect)
-{ 
+{
 	// Create the window
-	
+
 	// send the this pointer as the window creation parameter
-	m_hWnd = CreateWindow(m_sClassName, m_sWindowTitle, dwStyles, rect->left, rect->top, 
-		rect->right - rect->left, rect->bottom - rect->top, NULL, NULL, m_hInstance, 
+	m_hWnd = CreateWindow(m_sClassName, m_sWindowTitle, dwStyles, rect->left, rect->top,
+		rect->right - rect->left, rect->bottom - rect->top, NULL, NULL, m_hInstance,
 		(void *)this);
 
 	return (m_hWnd != NULL);
@@ -198,11 +198,11 @@ inline BOOL CWnd::Create(DWORD dwStyles, RECT* rect)
 inline BOOL CWnd::CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName,
 									LPCTSTR lpszWindowName, DWORD dwStyle, RECT& rect,
 									HWND hwndParent, HMENU nIDorHMenu, LPVOID lpParam)
-{	
+{
 	if(HIWORD(lpszClassName))
 		m_sClassName = lpszClassName;
 	m_sWindowTitle = lpszWindowName;
-	m_hWnd = ::CreateWindowEx(dwExStyle, lpszClassName, lpszWindowName, dwStyle, rect.left, rect.top, 
+	m_hWnd = ::CreateWindowEx(dwExStyle, lpszClassName, lpszWindowName, dwStyle, rect.left, rect.top,
 		rect.right - rect.left, rect.bottom - rect.top, hwndParent, nIDorHMenu, m_hInstance, (void *)this);
 	return !!m_hWnd;
 }

@@ -235,22 +235,16 @@ def ScanFile(path, config, attname):
     # for clamav
     try:
         if os.getenv('TMPDIR') is None:
-            os.putenv('TMPDIR', tempfile.gettempdir().replace('\\', '/'))
-                       #re.sub('([A-Za-z]):[/\\\\]', r'/cygdrive/\1/',
-                       #tempfile.gettempdir()).replace('\\', '/'))
-        #Utils.SetCygwinTemp()
+            os.putenv('TMPDIR', tempfile.gettempdir())
     except Exception, e:
         print str(e)
 
 
     logfile = os.path.split(path)[0]+'\\Virus Deleted by ClamWin.txt'
-    cmd = '--tempdir "%s"' % tempfile.gettempdir().replace('\\', '/').rstrip('/')
+    cmd = '--tempdir "%s"' % tempfile.gettempdir().rstrip('\\')
 
-    path = path.replace('\\', '/')
     cmd = '--max-ratio=0 --stdout --database="%s" --log="%s" "%s"' % \
             (config.Get('ClamAV', 'Database'), logfile, path)
-
-    cmd = cmd.replace('\\', '/')
     cmd = '"%s" %s' % (config.Get('ClamAV', 'ClamScan'), cmd)
 
     scanstatus = ''
@@ -281,7 +275,6 @@ def ScanFile(path, config, attname):
         # error, raise an exception
         try:
             error = file(logfile, 'rt').read()
-            #error = re.sub('/cygdrive/([A-Za-z])/', r'\1:/', error).replace('/', '\\')
             safe_remove(logfile)
         except Exception, e:
             raise ScanError('An Error occured reading clamscan report: %s' % str(e))

@@ -303,38 +303,41 @@ def GetExcludeSysLockedFiles():
              'system.alt')
     ret = ''
     for regFile in regFiles:
-        ret += ' --exclude="%s"' % os.path.join(configDir, regFile).replace('\\', '/')
+        ret += ' --exclude="%s"' % os.path.join(configDir, regFile).replace('\\', '\\\\')
+    # add --exlude=win386.swp to fix the bug 939877
+    # see http://sourceforge.net/tracker/index.php?func=detail&aid=939877&group_id=105508&atid=641462
+    if win32api.GetVersionEx()[3] == win32con.VER_PLATFORM_WIN32_WINDOWS:
+        ret += ' --exclude=win386.swp --exclude=pagefile.sys'
+
     return ret
 
 
 def GetScanCmd(config, path, scanlog, noprint = False):
-    # 2006-03-18 alch moving to native win32 clamav binaries
-    # remove all /cygdrive/ referneces and slash conversions
+    # append \ to a DRIVE letter for regex matcher
+    # i.e C: will become C:\
 
-    # append / to a DRIVE letter as our regexep relacer needs that
-    # i.e C: will become C:/
 
-    path = re.sub('([A-Za-z]):("|$)', r'\1:/\2', path)
-    print "Scanning: %s" % path
+    # if path is None then we are scanning computer memory
+    if path != None:
+        path = re.sub('([A-Za-z]):("|$)', r'\1:\\\\\2', path)
+        print "Scanning: %s" % path
+    else:
+        print "Scanning computer memory"
 
-    cmd = '--tempdir "%s"' % tempfile.gettempdir().replace('\\', '/').rstrip('/')
+
+    # shared params between memory and file scanning
+    cmd = '--tempdir "%s"' % tempfile.gettempdir().rstrip('\\')
+
+    # 22 July 2006
+    # added --keep-mbox to leave thunderbird files intact when removing or quarantining
+    cmd += ' --keep-mbox --stdout --database="%s" --log="%s"' % \
+            (config.Get('ClamAV', 'Database'), scanlog)
+
     if config.Get('ClamAV', 'Debug') == '1':
         cmd += ' --debug'
     #this disables oversized zip checking
     cmd += ' --max-ratio=0'
-    if config.Get('ClamAV', 'ScanRecursive') == '1':
-        cmd += ' --recursive'
-    if config.Get('ClamAV', 'RemoveInfected') == '1':
-        cmd += ' --remove'
-    elif config.Get('ClamAV', 'MoveInfected') == '1':
-        quarantinedir = config.Get('ClamAV', 'QuarantineDir')
-        # create quarantine folder before scanning
-        if quarantinedir and not os.path.exists(quarantinedir):
-            try:
-                os.makedirs(quarantinedir)
-            except:
-                pass
-        cmd += ' --move="%s"' % quarantinedir
+
     if config.Get('ClamAV', 'EnableMbox') != '1':
         cmd += ' --no-mail'
     if config.Get('ClamAV', 'ScanOle2') != '1':
@@ -356,65 +359,72 @@ def GetScanCmd(config, path, scanlog, noprint = False):
     if not noprint and config.Get('ClamAV', 'ShowProgress') == '1':
         cmd += ' --show-progress'
 
-    # 22 July 2006
-    # added --keep-mbox to leave thunderbird files intact when removing or quarantining
+     # file scan only params
+    if path != None:
+        if config.Get('ClamAV', 'ScanRecursive') == '1':
+            cmd += ' --recursive'
+        if config.Get('ClamAV', 'RemoveInfected') == '1':
+            cmd += ' --remove'
+        elif config.Get('ClamAV', 'MoveInfected') == '1':
+            quarantinedir = config.Get('ClamAV', 'QuarantineDir')
+            # create quarantine folder before scanning
+            if quarantinedir and not os.path.exists(quarantinedir):
+                try:
+                    os.makedirs(quarantinedir)
+                except:
+                    pass
+            cmd += ' --move="%s"' % quarantinedir
 
-    cmd += ' --keep-mbox --stdout --database="%s" --log="%s" %s' % \
-            (config.Get('ClamAV', 'Database'),
-            scanlog, path)
 
-    if sys.platform.startswith('win'):
-        # replace windows path with cygwin-like one
-        cmd = cmd.replace('\\', '/')
+        # add annoying registry files to exclude as they're locked by OS
+        cmd += GetExcludeSysLockedFiles()
 
-    # add --exlude=win386.swp to fix the bug 939877
-    # see http://sourceforge.net/tracker/index.php?func=detail&aid=939877&group_id=105508&atid=641462
-    if sys.platform.startswith('win'):
-        # Win 98/ME
-        if win32api.GetVersionEx()[3] == win32con.VER_PLATFORM_WIN32_WINDOWS:
-            cmd += ' --exclude=win386.swp --exclude=pagefile.sys'
+        # FIX 8 August 2006
+        # added root drive detection: os.path.splitdrive(path_element)[1]=='\\'
+        # new 22 July 2006
+        # now check if the path contains any dirs  or drives
+        # if not (only files selected to scan) then do not apply the include/exclude patterns
+        has_dirs = False
+        for path_element in path.split('" "'):
+            path_element = path_element.strip(' "')
+            if os.path.isdir(path_element) or os.path.splitdrive(path_element)[1]=='\\':
+                has_dirs = True
+                break
+        if has_dirs:
+            # add include and exclude patterns
+            for patterns in (['--include', config.Get('ClamAV', 'IncludePatterns')],
+                            ['--exclude', config.Get('ClamAV', 'ExcludePatterns')]):
+                for pat in patterns[1].split(Config.REGEX_SEPARATOR):
+                    if len(pat):
+                        # proper regular expressions are started with ':'
+                        if pat.startswith('<') and pat.endswith('>'):
+                            pat = pat[1:len(pat)-1]
+                        else:
+                            # not a regular expression
+                            # translate glob style to regex
+                            pat = fnmatch.translate(pat)
 
-    # add annoying registry files to exclude as they're locked by OS
-    cmd += GetExcludeSysLockedFiles()
 
-    # FIX 8 August 2006
-    # added root drive detection: os.path.splitdrive(path_element)[1]=='/'
-    # new 22 July 2006
-    # now check if the path contains any dirs  or drives
-    # if not (only files selected to scan) then do not apply the include/exclude patterns
-    has_dirs = False
-    for path_element in path.split('" "'):
-        path_element = path_element.strip(' "')
-        if os.path.isdir(path_element) or os.path.splitdrive(path_element)[1]=='/':
-            has_dirs = True
-            break
-    if has_dirs:
-        # add include and exclude patterns
-        for patterns in (['--include', config.Get('ClamAV', 'IncludePatterns')],
-                        ['--exclude', config.Get('ClamAV', 'ExcludePatterns')]):
-            patterns[1] = patterns[1].replace('\\', '/')
-            for pat in patterns[1].split(Config.REGEX_SEPARATOR):
-                if len(pat):
-                    # proper regular expressions are started with ':'
-                    if pat.startswith('<') and pat.endswith('>'):
-                        pat = pat[1:len(pat)-1].replace('//', '/')
-                    else:
-                        # not a regular expression
-                        # translate glob style to regex
-                        pat = fnmatch.translate(pat)
+                            # '?' and '*' in the glob pattern become '.' and '.*' in the RE, which
+                            # IMHO is wrong -- '?' and '*' aren't supposed to match slash in Unix,
+                            # and by extension they shouldn't match such "special characters" under
+                            # any OS.  So change all non-escaped dots in the RE to match any
+                            # character except the special characters.
+                            # XXX currently the "special characters" are just slash -- i.e. this is
+                            # Unix-only.
 
-                        # '?' and '*' in the glob pattern become '.' and '.*' in the RE, which
-                        # IMHO is wrong -- '?' and '*' aren't supposed to match slash in Unix,
-                        # and by extension they shouldn't match such "special characters" under
-                        # any OS.  So change all non-escaped dots in the RE to match any
-                        # character except the special characters.
-                        # XXX currently the "special characters" are just slash -- i.e. this is
-                        # Unix-only.
-                        pat = re.sub(r'(^|[^\\])\.', r'\1[^/]', pat)
+                            pat = re.sub(r'(^|[^\\])\.', r'\1[^\\]', pat)
 
-                    cmd += ' %s="%s"' % (patterns[0], pat)
+                        cmd += ' %s="%s"' % (patterns[0], pat)
 
-    cmd = '"%s" %s' % (config.Get('ClamAV', 'ClamScan'), cmd)
+
+        # append \\ when we have a DRIVE letter path only otherwise CRT gets messd up argv in clamav
+        # i.e C:\ will become C:\\
+        path = re.sub('([A-Za-z]):("\\|$)', r'\1:\\\2', path)
+    else:
+        path = "--memory"
+
+    cmd = '"%s" %s %s' % (config.Get('ClamAV', 'ClamScan'), cmd, path)
     return cmd
 
 
@@ -560,38 +570,6 @@ def SpawnPyOrExe(filename, *params):
         os.spawnl(os.P_NOWAIT, filename + '.exe', *params)
 
 
-def SetDbFilesPermissions(dbdir):
-    if sys.platform.startswith('win'):
-        # cygwin creates database files writable for a user
-        # who downloaded the database only
-        # this is a problem in the multiuser environment
-        # we need to reset file permissions to match
-        # those of the parent folder
-
-        # don't do anything on Windows 9x or Me
-        isWin9x = win32api.GetVersionEx()[3] == win32con.VER_PLATFORM_WIN32_WINDOWS
-        if isWin9x:
-            return
-
-        # inherit securiy from parent
-        try:
-            sdParent = win32security.GetFileSecurity(dbdir, win32security.DACL_SECURITY_INFORMATION);
-            fname = os.path.join(dbdir, 'main.cvd')
-            win32security.SetFileSecurity(fname,
-                win32security.DACL_SECURITY_INFORMATION,
-                sdParent)
-        except Exception, e:
-            print 'An error occured whilst setting database permissions on %s. Error: %s' % (fname, str(e))
-
-        try:
-            fname = os.path.join(dbdir, 'daily.cvd')
-            win32security.SetFileSecurity(fname,
-                win32security.DACL_SECURITY_INFORMATION,
-                sdParent)
-        except Exception, e:
-            print 'An error occured whilst setting database permissions on %s. Error: %s' % (fname, str(e))
-    else:
-         pass
 
 def SafeExpandEnvironmentStrings(s):
     if sys.platform.startswith('win'):
@@ -601,41 +579,7 @@ def SafeExpandEnvironmentStrings(s):
             print "An Error occured in ExpandEnvironmentStrings: %s" % str(e)
     return s
 
-def IsCygwinInstalled():
-    if sys.platform.startswith('win'):
-        # look for  / (root) mount point for cygwin and return yes if found
-        try:
-            win32api.RegOpenKeyEx(win32con.HKEY_LOCAL_MACHINE,
-                     r'SOFTWARE\Cygnus Solutions\Cygwin\mounts v2\/', 0,
-                     win32con.KEY_READ);
-            return True
-        except:
-            return False
-    else:
-        return False
 
-def SetCygwinTemp():
-    # if we have full cygwin install let's not worry
-    # about setting /tmp mount point
-    if IsCygwinInstalled():
-        return
-
-    # get user's temp folder
-    temp = win32api.GetTempPath().rstrip('\\');
-    # set necessary cygwin registries
-    try:
-        # set magic flags and /cygdrive prefix
-        key = win32api.RegCreateKey(win32con.HKEY_CURRENT_USER,
-                 r'SOFTWARE\Cygnus Solutions\Cygwin\mounts v2');
-        win32api.RegSetValueEx(key, 'cygdrive prefix', 0, win32con.REG_SZ, '/cygdrive')
-        win32api.RegSetValueEx(key, 'cygdrive flags', 0, win32con.REG_DWORD, 34)
-        # add tmp mount point
-        key = win32api.RegCreateKey(win32con.HKEY_CURRENT_USER,
-                 r'SOFTWARE\Cygnus Solutions\Cygwin\mounts v2\/tmp');
-        win32api.RegSetValueEx(key, 'native', 0, win32con.REG_SZ, temp)
-        win32api.RegSetValueEx(key, 'flags', 0, win32con.REG_DWORD, 10)
-    except Exception, e:
-        raise Exception("An Error occured whilst configuring Temporary Folder. Error:  %s" % str(e))
 
 def ReformatLog(data, rtf):
     data = ReplaceClamAVWarnings(data.replace('\r\n', '\n'))
@@ -686,7 +630,7 @@ def ReformatLog(data, rtf):
 def ReplaceClamAVWarnings(data):
     # reformat database update warnings to our FAQ
     data = data.replace('Please check if ClamAV tools are linked against proper version of libclamav\n', '')
-    data = data.replace(r'http:\\www.clamav.net\faq.html', 'http://www.clamwin.com/content/view/10/27/')
+    data = data.replace(r'http://www.clamav.net/faq.html', 'http://www.clamwin.com/content/view/10/27/')
 
     # remove XXX: Excluded lines
     data = re.sub('.*\: Excluded\n', '', data)

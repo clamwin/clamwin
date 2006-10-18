@@ -1,3 +1,12 @@
+Version 0.88.5 - 17 October 2006
+- Updated clamav to 0.88.5 (fixes possible security vulnerabilities)
+- Implemented "Memory Scanning" functionality as a standalone option or during a scheduled scan
+- Implemented RAR3 archive support from clamav-devel code
+- Implemented 7zip LZMA archive support and added
+- 7zip option for an external unpacker
+- Improved OLE, MSI and CAB archives scanning
+
+
 Version 0.88.4 - 8 August 2006
  - Upgraded clamav to 0.88.4
  - Fixed bug when filters where not applied when scanning a whole disk only
@@ -204,3 +213,4 @@ Version 0.2:
  - Setup on Windows does not require admin privileges any more
  - Added more settings for clamscan
  - Minor bug fixes
+

@@ -27,7 +27,7 @@
 
 import SetUnicode
 import RedirectStd
-import sys, os, time, tempfile, locale, re
+import sys, os, time, tempfile, locale, re, random
 import win32api, win32gui, win32con, win32event
 import win32process, win32event
 import Scheduler
@@ -172,7 +172,7 @@ class MainWindow:
                 scheduler = Scheduler.Scheduler(scan.Frequency,
                             scan.Time,
                             int(scan.WeekDay),
-                            self.ScanPath, (self, scan.Path, scan.Description))
+                            self.ScanPath, (self, scan.Path, scan.Description, scan.ScanMemory))
                 scheduler.start()
                 self._schedulers.append(scheduler)
 
@@ -180,7 +180,7 @@ class MainWindow:
         if self._config.Get('Updates', 'CheckVersion') == '1':
             curDir = Utils.GetCurrentDir(True)
             scheduler = Scheduler.Scheduler('Daily', # check once aday
-                            time.strftime('%H:%M:%S', time.localtime(time.time() + 300)), # 5 minutes after start
+                            time.strftime('%H:%M:%S', time.localtime(time.time() + random.randint(300, 3600))), # 5 minutes to 1 hour after start
                             1, # unused
                             Utils.SpawnPyOrExe, (os.path.join(curDir, 'ClamWin'), ' --mode=checkversion'),
                             ('ClamWin_CheckVer_Info', 'ClamWin_CheckVer_Time'))
@@ -396,7 +396,6 @@ class MainWindow:
                 updatelog = tempfile.mktemp()
                 cmd = '--stdout --datadir="' + dbdir + '"' + \
                         ' --config-file="%s" --log="%s"' % (freshclam_conf, updatelog)
-                cmd = cmd.replace('\\', '/')
                 cmd = '"%s" %s' % (self._config.Get('ClamAV', 'FreshClam'), cmd)
                 try:
                     if self._config.Get('UI', 'TrayNotify') == '1':
@@ -460,7 +459,7 @@ class MainWindow:
         # for clamav
         try:
             if os.getenv('TMPDIR') is None:
-                os.putenv('TMPDIR', tempfile.gettempdir().replace('\\', '/'))
+                os.putenv('TMPDIR', tempfile.gettempdir())
             #Utils.SetCygwinTemp()
         except Exception, e:
             print str(e)
@@ -487,10 +486,13 @@ class MainWindow:
                 raise Process.ProcessError('Could not start process:\n%s\nError: %s' % (cmd, str(e)))
         return proc
 
-    def ScanPath(self, path, description):
+    def ScanPath(self, path, description, scanMemory):
         scanlog = tempfile.mktemp()
         path = '"%s"' % path.rstrip('\\').strip('"')
         cmd = Utils.GetScanCmd(self._config, path, scanlog, True)
+        if scanMemory:
+            cmd += " --memory"
+            print cmd
         try:
             if self._config.Get('UI', 'TrayNotify') == '1':
                 balloon = (('Virus has been detected during scheduled scan! Please review the scan report.', 1,
@@ -539,7 +541,6 @@ class MainWindow:
     NotifyConfig = staticmethod(NotifyConfig)
 
     def DBUpdateProcessFinished(self, process, dbpath, log, appendlog, email_alert, balloon_info):
-        #Utils.SetDbFilesPermissions(dbpath)
         self.ProcessFinished(self, process, log, appendlog, email_alert, balloon_info)
     DBUpdateProcessFinished = staticmethod(DBUpdateProcessFinished)
 
@@ -554,14 +555,6 @@ class MainWindow:
             except Exception, e:
                 print 'Could not send email alert. Error: %s' % str(e)
 
-        maxsize = int(self._config.Get('ClamAV', 'MaxLogSize'))*1048576
-        Utils.AppendLogFile(log, appendlog, maxsize)
-
-        try:
-            os.remove(appendlog)
-        except Exception, e:
-            print 'could not remove file: %s. Error: %s' % (appendlog, str(e))
-
         if not process.isKilled() and balloon_info is not None:
             # show balloon
             self.ShowBalloon(process.wait(), balloon_info)
@@ -572,6 +565,16 @@ class MainWindow:
         except ValueError:
             # ignore "not in list" errors
             pass
+
+        time.sleep(1)
+        maxsize = int(self._config.Get('ClamAV', 'MaxLogSize'))*1048576
+        Utils.AppendLogFile(log, appendlog, maxsize)
+
+        try:
+            os.remove(appendlog)
+        except Exception, e:
+            print 'could not remove file: %s. Error: %s' % (appendlog, str(e))
+
     ProcessFinished = staticmethod(ProcessFinished)
 
     # send message to the main window thread to display balloon notification

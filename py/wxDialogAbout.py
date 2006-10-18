@@ -39,23 +39,24 @@ def create(parent, config):
 [wxID_WXABOUTDLG, wxID_WXABOUTDLGBUTTONOK,
  wxID_WXABOUTDLGGENSTATICTEXTCLAMWINHOME2, wxID_WXABOUTDLGSTATICBITMAPCLAM,
  wxID_WXABOUTDLGSTATICBITMAPCLAMAV, wxID_WXABOUTDLGSTATICBITMAPCLAMWIN,
- wxID_WXABOUTDLGSTATICBITMAPFDLOGO, wxID_WXABOUTDLGSTATICBITMAPPYTHON,
+ wxID_WXABOUTDLGSTATICBITMAPFDLOGO, wxID_WXABOUTDLGSTATICBITMAPNETFARM,
  wxID_WXABOUTDLGSTATICBITMAPSUPPORT, wxID_WXABOUTDLGSTATICLINE1,
- wxID_WXABOUTDLGSTATICTEXTAUTHOR1, wxID_WXABOUTDLGSTATICTEXTCLAMVER,
- wxID_WXABOUTDLGSTATICTEXTCLAMWINHOME, wxID_WXABOUTDLGSTATICTEXTCOPYRIGHT,
- wxID_WXABOUTDLGSTATICTEXTDBUPDATED1, wxID_WXABOUTDLGSTATICTEXTDBUPDATED2,
- wxID_WXABOUTDLGSTATICTEXTDBUPDATED3, wxID_WXABOUTDLGSTATICTEXTFREESW,
- wxID_WXABOUTDLGSTATICTEXTWINCLAMVER,
-] = map(lambda _init_ctrls: wxNewId(), range(19))
+ wxID_WXABOUTDLGSTATICTEXTAUTHOR1, wxID_WXABOUTDLGSTATICTEXTAUTHOR2,
+ wxID_WXABOUTDLGSTATICTEXTCLAMVER, wxID_WXABOUTDLGSTATICTEXTCLAMWINHOME,
+ wxID_WXABOUTDLGSTATICTEXTCOPYRIGHT, wxID_WXABOUTDLGSTATICTEXTDBUPDATED1,
+ wxID_WXABOUTDLGSTATICTEXTDBUPDATED2, wxID_WXABOUTDLGSTATICTEXTDBUPDATED3,
+ wxID_WXABOUTDLGSTATICTEXTFREESW, wxID_WXABOUTDLGSTATICTEXTWINCLAMVER,
+] = map(lambda _init_ctrls: wxNewId(), range(20))
 
 
 class wxAboutDlg(wxDialog):
     def _init_ctrls(self, prnt):
         # generated method, don't edit
         wxDialog.__init__(self, id=wxID_WXABOUTDLG, name='wxAboutDlg',
-              parent=prnt, pos=wxPoint(340, 258), size=wxSize(471, 346),
-              style=wxDEFAULT_DIALOG_STYLE, title='About ClamWin Free Antivirus')
-        self.SetClientSize(wxSize(463, 319))
+              parent=prnt, pos=wxPoint(985, 463), size=wxSize(471, 363),
+              style=wxDEFAULT_DIALOG_STYLE,
+              title='About ClamWin Free Antivirus')
+        self.SetClientSize(wxSize(463, 336))
         self.SetBackgroundColour(wxColour(255, 255, 255))
         self.SetAutoLayout(false)
         self.SetToolTipString('About ClamWin Free Antivirus')
@@ -69,7 +70,7 @@ class wxAboutDlg(wxDialog):
         self.staticBitmapClamWin.SetToolTipString('')
 
         self.staticTextWinClamVer = wxStaticText(id=wxID_WXABOUTDLGSTATICTEXTWINCLAMVER,
-              label='Version '  + version.clamwin_version, name='staticTextWinClamVer', parent=self,
+              label='Version ' + version.clamwin_version, name='staticTextWinClamVer', parent=self,
               pos=wxPoint(13, 48), size=wxSize(52, 16), style=0)
         self.staticTextWinClamVer.SetFont(wxFont(10, wxSWISS, wxNORMAL, wxBOLD,
               False))
@@ -95,7 +96,7 @@ class wxAboutDlg(wxDialog):
 
         self.staticBitmapSupport = wxStaticBitmap(bitmap=wxBitmap('img/Support.png',
               wxBITMAP_TYPE_PNG), id=wxID_WXABOUTDLGSTATICBITMAPSUPPORT,
-              name='staticBitmapSupport', parent=self, pos=wxPoint(352, 190),
+              name='staticBitmapSupport', parent=self, pos=wxPoint(365, 185),
               size=wxSize(88, 32), style=0)
         self.staticBitmapSupport.SetToolTipString('Donate to ClamWin')
         self.staticBitmapSupport.SetCursor(wxStockCursor(wxCURSOR_HAND))
@@ -116,51 +117,36 @@ class wxAboutDlg(wxDialog):
         EVT_LEFT_DOWN(self.genStaticTextClamWinHome2, self.OnClamWinHomePage)
 
         self.staticTextAuthor1 = wxStaticText(id=wxID_WXABOUTDLGSTATICTEXTAUTHOR1,
-              label='Author: alch <alch@users.sourceforge.net>',
+              label='Authors: alch <alch@users.sourceforge.net>',
               name='staticTextAuthor1', parent=self, pos=wxPoint(13, 173),
-              size=wxSize(235, 16), style=0)
+              size=wxSize(210, 13), style=0)
         self.staticTextAuthor1.SetToolTipString('')
 
         self.staticTextCopyright = wxStaticText(id=wxID_WXABOUTDLGSTATICTEXTCOPYRIGHT,
-              label='Copyright (c) 2004 - 2006', name='staticTextCopyright',
-              parent=self, pos=wxPoint(13, 189), size=wxSize(155, 17), style=0)
+              label='Copyright ClamWin Pty Ltd (c) 2004 - 2006',
+              name='staticTextCopyright', parent=self, pos=wxPoint(13, 208),
+              size=wxSize(200, 13), style=0)
         self.staticTextCopyright.SetToolTipString('')
 
         self.staticTextFreeSW = wxStaticText(id=wxID_WXABOUTDLGSTATICTEXTFREESW,
               label='This program is free software', name='staticTextFreeSW',
-              parent=self, pos=wxPoint(13, 206), size=wxSize(171, 17), style=0)
+              parent=self, pos=wxPoint(13, 224), size=wxSize(135, 13), style=0)
         self.staticTextFreeSW.SetToolTipString('')
 
         self.staticLine1 = wxStaticLine(id=wxID_WXABOUTDLGSTATICLINE1,
-              name='staticLine1', parent=self, pos=wxPoint(-2, 228),
+              name='staticLine1', parent=self, pos=wxPoint(-2, 246),
               size=wxSize(480, 2), style=0)
-
-        self.staticBitmapClamAV = wxStaticBitmap(bitmap=wxBitmap('img/ClamAV.png',
-              wxBITMAP_TYPE_PNG), id=wxID_WXABOUTDLGSTATICBITMAPCLAMAV,
-              name='staticBitmapClamAV', parent=self, pos=wxPoint(13, 238),
-              size=wxSize(125, 37), style=0)
-        self.staticBitmapClamAV.SetToolTipString('ClamAV Homepage')
-        self.staticBitmapClamAV.SetCursor(wxStockCursor(wxCURSOR_HAND))
-        EVT_LEFT_DOWN(self.staticBitmapClamAV, self.OnClamAVHomePage)
 
         self.staticBitmapFDLogo = wxStaticBitmap(bitmap=wxBitmap('img/FD-logo.png',
               wxBITMAP_TYPE_PNG), id=wxID_WXABOUTDLGSTATICBITMAPFDLOGO,
-              name='staticBitmapFDLogo', parent=self, pos=wxPoint(169, 241),
+              name='staticBitmapFDLogo', parent=self, pos=wxPoint(314, 257),
               size=wxSize(143, 33), style=0)
         self.staticBitmapFDLogo.SetToolTipString('Finndesign Homepage')
         self.staticBitmapFDLogo.SetCursor(wxStockCursor(wxCURSOR_HAND))
         EVT_LEFT_DOWN(self.staticBitmapFDLogo, self.OnFDHomePage)
 
-        self.staticBitmapPython = wxStaticBitmap(bitmap=wxBitmap('img/PythonPowered.gif',
-              wxBITMAP_TYPE_GIF), id=wxID_WXABOUTDLGSTATICBITMAPPYTHON,
-              name='staticBitmapPython', parent=self, pos=wxPoint(341, 235),
-              size=wxSize(110, 44), style=0)
-        self.staticBitmapPython.SetToolTipString('Python Homepage')
-        self.staticBitmapPython.SetCursor(wxStockCursor(wxCURSOR_HAND))
-        EVT_LEFT_DOWN(self.staticBitmapPython, self.OnPythonHomepage)
-
         self.buttonOK = wxButton(id=wxID_WXABOUTDLGBUTTONOK, label='OK',
-              name='buttonOK', parent=self, pos=wxPoint(192, 285),
+              name='buttonOK', parent=self, pos=wxPoint(192, 302),
               size=wxSize(71, 23), style=0)
         EVT_BUTTON(self.buttonOK, wxID_WXABOUTDLGBUTTONOK, self.OnOK)
 
@@ -174,6 +160,28 @@ class wxAboutDlg(wxDialog):
               label='Updated: %s', name='staticTextDBUpdated3', parent=self,
               pos=wxPoint(13, 144), size=wxSize(291, 16), style=0)
         self.staticTextDBUpdated3.SetToolTipString('')
+
+        self.staticTextAuthor2 = wxStaticText(id=wxID_WXABOUTDLGSTATICTEXTAUTHOR2,
+              label='Gianluigi Tiesi <sherpya@users.sourceforge.net>',
+              name='staticTextAuthor2', parent=self, pos=wxPoint(13, 189),
+              size=wxSize(230, 13), style=0)
+        self.staticTextAuthor2.SetToolTipString('')
+
+        self.staticBitmapNetfarm = wxStaticBitmap(bitmap=wxBitmap('img/netfarm.png',
+              wxBITMAP_TYPE_PNG), id=wxID_WXABOUTDLGSTATICBITMAPNETFARM,
+              name='staticBitmapNetfarm', parent=self, pos=wxPoint(143, 257),
+              size=wxSize(160, 33), style=0)
+        self.staticBitmapNetfarm.SetToolTipString('Netfarm Homepage')
+        self.staticBitmapNetfarm.SetCursor(wxStockCursor(wxCURSOR_HAND))
+        EVT_LEFT_DOWN(self.staticBitmapNetfarm, self.OnNetfarmHomepage)
+
+        self.staticBitmapClamAV = wxStaticBitmap(bitmap=wxBitmap('img/ClamAV.png',
+              wxBITMAP_TYPE_PNG), id=wxID_WXABOUTDLGSTATICBITMAPCLAMAV,
+              name='staticBitmapClamAV', parent=self, pos=wxPoint(7, 256),
+              size=wxSize(125, 34), style=0)
+        self.staticBitmapClamAV.SetToolTipString('ClamAV Homepage')
+        self.staticBitmapClamAV.SetCursor(wxStockCursor(wxCURSOR_HAND))
+        EVT_LEFT_DOWN(self.staticBitmapClamAV, self.OnClamAVHomePage)
 
     def __init__(self, parent,  config=None):
         self._init_ctrls(parent)
@@ -198,8 +206,8 @@ class wxAboutDlg(wxDialog):
     def OnClamWinHomePage(self, event):
         wxDialogUtils.wxGoToInternetUrl('http://www.clamwin.com')
 
-    def OnPythonHomepage(self, event):
-        wxDialogUtils.wxGoToInternetUrl('http://www.python.org')
+    def OnNetfarmHomepage(self, event):
+        wxDialogUtils.wxGoToInternetUrl('http://oss.netfarm.it/clamav/')
 
     def OnDonateClamWin(self, event):
         wxDialogUtils.wxGoToInternetUrl('http://sourceforge.net/donate/index.php?group_id=105508')
@@ -257,8 +265,6 @@ class wxAboutDlg(wxDialog):
         self.staticTextDBUpdated3.SetLabel(self.staticTextDBUpdated3.GetLabel() % \
             updatedstr)
 
-
-
-
-
+    def OnClamAVHomePage(self, event):
+        event.Skip()
 

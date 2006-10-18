@@ -45,9 +45,8 @@ def wxUpdateVirDB(parent, config, autoClose = False):
             os.makedirs(dbdir)
         except:
             pass
-    cmd = '--stdout --datadir="' + dbdir.replace('\\', '/') + '"' + \
+    cmd = '--stdout --datadir="' + dbdir + '"' + \
           ' --config-file="%s" --log="%s"' % (freshclam_conf, updatelog)
-    cmd = cmd.replace('\\', '/')
     if config.Get('ClamAV', 'Debug') == '1':
         cmd += ' --debug'
     cmd = '"%s" %s' % (config.Get('ClamAV', 'FreshClam'), cmd)
@@ -67,7 +66,6 @@ def wxUpdateVirDB(parent, config, autoClose = False):
     try:
         dlg.ShowModal()
         exit_code = dlg.GetExitCode()
-        #Utils.SetDbFilesPermissions(config.Get('ClamAV', 'Database'))
         maxsize = int(config.Get('ClamAV', 'MaxLogSize'))*1048576
         logfile = config.Get('Updates', 'DBUpdateLogFile')
         Utils.AppendLogFile(logfile, updatelog, maxsize)

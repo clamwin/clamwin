@@ -66,9 +66,6 @@ class StatusUpdateBuffer(Process.IOBuffer):
             # so we need to call update method for every new line
             lines = s.replace('\r', '\n').splitlines(True)
             for line in lines:
-                if sys.platform.startswith('win'):
-                    # replace cygwin-like pathes with windows-like
-                    line = line.replace('/', '\\')
                 self.update(self._caller, line)
             # do not call original implementation
             # Process.IOBuffer._doWrite(self, s)
@@ -346,8 +343,6 @@ class wxDialogStatus(wxDialog):
                 print 'OnThreadFinished: Could not read from log file %s. Error: %s' % (self._logfile, str(e))
                 data = self.textCtrlStatus.GetLabel()
 
-        # replace cygwin-like pathes with windows-like
-        data = data.replace('/', '\\').replace('I\\O', 'I/O')
         data = Utils.ReformatLog(data, win32api.GetVersionEx()[0] >= 5)
 
         if len(data.splitlines()) > 1:
@@ -426,10 +421,7 @@ class wxDialogStatus(wxDialog):
         # initialise environment var TMPDIR
         try:
             if os.getenv('TMPDIR') is None:
-                os.putenv('TMPDIR', tempfile.gettempdir().replace('\\', '/'))
-                #           re.sub('([A-Za-z]):[/\\\\]', r'/cygdrive/\1/',
-                #           tempfile.gettempdir()).replace('\\', '/'))
-            #Utils.SetCygwinTemp()
+                os.putenv('TMPDIR', tempfile.gettempdir())
         except Exception, e:
             print str(e)
 

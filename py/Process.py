@@ -286,6 +286,7 @@ def _joinArgv(argv):
             cmdstr += _escapeArg(arg)
         cmdstr += ' '
     if cmdstr.endswith(' '): cmdstr = cmdstr[:-1]  # strip trailing space
+    print cmdstr
     return cmdstr
 
 
@@ -516,17 +517,15 @@ def _fixupCommand(cmd, env=None):
         # Fixup the command string to spawn.  (Lifted from
         # posixmodule.c::_PyPopenCreateProcess() with some modifications)
 
-        # alch 01-04-2004
-        # should it be cmd.exe on nt+?
         comspec = os.environ.get("COMSPEC", None)
         win32Version = win32api.GetVersion()
-        if comspec is None:
-            raise ProcessError("Cannot locate a COMSPEC environment "\
-                               "variable to use as the shell")
         # Explicitly check if we are using COMMAND.COM.  If we
         # are then use the w9xpopen hack.
-        elif (win32Version & 0x80000000L == 0) and\
+        if (win32Version & 0x80000000L == 0) and\
              (win32Version &        0x5L >= 5):
+                if comspec is None or comspec=="":
+                    comspec = os.path.join(win32api.GetSystemDirectory(), "cmd.exe")
+
                 if os.path.basename(comspec).lower() != "cmd.exe":
                     # 2000/XP and not using command.com.
                     if '"' in cmd or "'" in cmd:
@@ -535,6 +534,9 @@ def _fixupCommand(cmd, env=None):
                         cmd = comspec + ' /c ' + cmd
         elif (win32Version & 0x80000000L == 0) and\
              (win32Version &        0x5L  < 5):
+             if comspec is None or comspec=="":
+                 comspec = os.path.join(win32api.GetSystemDirectory(), "cmd.exe")
+
              if os.path.basename(comspec).lower() != "cmd.exe":
                  pass
         # alch - Removed 01.04.2003 - doesn't work

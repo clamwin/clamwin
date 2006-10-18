@@ -2,17 +2,17 @@
 # Name:        BalloonHelp.cpp
 # Product:     ClamWin Antivirus
 #
-# Licence:     
+# Licence:
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
 #   the Free Software Foundation; either version 2 of the License, or
 #   (at your option) any later version.
-# 
+#
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-# 
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; if not, write to the Free Software
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -33,7 +33,7 @@
 // you want :~) )
 //  I'm providing this code in the hope that it is useful to someone, as i have
 // gotten much use out of other peoples code over the years.
-//  If you see value in it, make some improvements, etc., i would appreciate it 
+//  If you see value in it, make some improvements, etc., i would appreciate it
 // if you sent me some feedback.
 //
 // ******************************************************************************
@@ -156,8 +156,8 @@ extern HINSTANCE g_hInstance;
 //                |  be called, with strURL passed in.
 //    unTimeout   |  If not 0, balloon will automatically close after unTimeout milliseconds.
 //
-void CBalloonHelp::LaunchBalloon(const CStdString& strTitle, const CStdString& strContent, 
-               POINT& ptAnchor, 
+void CBalloonHelp::LaunchBalloon(const CStdString& strTitle, const CStdString& strContent,
+               POINT& ptAnchor,
                LPCTSTR szIcon /*= IDI_EXCLAMATION*/,
                unsigned int unOptions /*= unSHOW_CLOSE_BUTTON*/,
                HWND hParentWnd /*= NULL*/,
@@ -173,8 +173,8 @@ void CBalloonHelp::LaunchBalloon(const CStdString& strTitle, const CStdString& s
       HICON hIcon = (HICON)::LoadImage(NULL, szIcon, IMAGE_ICON, sizeIcon.cx, sizeIcon.cy, LR_SHARED);
       if (NULL != hIcon)
          pbh->SetIconScaled(hIcon, sizeIcon.cx, sizeIcon.cy);
-   }	
-   pbh->Create(strTitle, strContent, ptAnchor, unOptions|unDELETE_THIS_ON_CLOSE, 
+   }
+   pbh->Create(strTitle, strContent, ptAnchor, unOptions|unDELETE_THIS_ON_CLOSE,
                hParentWnd, strURL, unTimeout, NULL);
 }
 
@@ -189,12 +189,12 @@ CBalloonHelp::CBalloonHelp()
    m_unOptions(0),
    m_unTimeout(0),
    m_unTimerClose(0),
-   m_strURL(""),   
+   m_strURL(""),
 	m_hilIcon(NULL),
    m_hwndAnchor(NULL),
-	m_hrgnComplete(NULL),   
+	m_hrgnComplete(NULL),
    m_strContent(""),
-   m_nMouseMoveTolerance(3),     // later retrieved from system   
+   m_nMouseMoveTolerance(3),     // later retrieved from system
    m_uCloseState(0),
    m_hTitleFont(NULL),
    m_hContentFont(NULL),
@@ -271,7 +271,7 @@ void CBalloonHelp::SetIcon(HICON hIcon)
 {
    if ( NULL != m_hilIcon )
 		::ImageList_Destroy(m_hilIcon);
-	
+
    ICONINFO iconinfo;
    if ( NULL != hIcon && ::GetIconInfo(hIcon, &iconinfo) )
    {
@@ -325,7 +325,7 @@ void CBalloonHelp::SetIconScaled(HICON hIcon, int cx, int cy)
          ::StretchBlt(dcTmp2, 0,0,cx,cy,dcTmp1, 0,0,bm.bmWidth,bm.bmHeight,SRCCOPY);
          ::SelectObject(dcTmp1, pbmpOld1);
          ::SelectObject(dcTmp2, pbmpOld2);
-         SetIcon(bmpIconScaled, m_crBackground);			
+         SetIcon(bmpIconScaled, m_crBackground);
          ::ReleaseDC(m_hWnd, dcTmp1);
          ::ReleaseDC(m_hWnd, dcTmp2);
 			::DeleteObject(dcTmp1);
@@ -342,7 +342,7 @@ void CBalloonHelp::SetIconScaled(HICON hIcon, int cx, int cy)
 void CBalloonHelp::SetIcon(HBITMAP hBitmap, COLORREF crMask)
 {
    if ( NULL != m_hilIcon )
-		::ImageList_Destroy(m_hilIcon);	
+		::ImageList_Destroy(m_hilIcon);
 
    if ( NULL != hBitmap )
    {
@@ -516,7 +516,7 @@ void CBalloonHelp::SetMouseMoveTolerance(int nTolerance)
 // Returns:
 //    TRUE if successful, else FALSE
 //
-BOOL CBalloonHelp::Create(const CStdString& strTitle, const CStdString& strContent, 
+BOOL CBalloonHelp::Create(const CStdString& strTitle, const CStdString& strContent,
                POINT& ptAnchor, unsigned int unOptions,
                HWND hParentWnd /*=NULL*/,
                const CStdString strURL /*= ""*/,
@@ -531,8 +531,8 @@ BOOL CBalloonHelp::Create(const CStdString& strTitle, const CStdString& strConte
 
    if ( NULL != hIcon )
       SetIcon(hIcon);
-   
-   
+
+
    // if no fonts set, use defaults
    if ( NULL == m_hContentFont )
    {
@@ -543,7 +543,7 @@ BOOL CBalloonHelp::Create(const CStdString& strTitle, const CStdString& strConte
 
    // title font defaults to bold version of content font
    if ( NULL == m_hTitleFont )
-   {      
+   {
       LOGFONT LogFont;
       m_hTitleFont = (HFONT)::GetObject(m_hContentFont, sizeof(LOGFONT), &LogFont);
       LogFont.lfWeight = FW_BOLD;
@@ -622,7 +622,7 @@ POINT CBalloonHelp::GetAnchorPoint()
 void CBalloonHelp::GetAnchorScreenBounds(RECT& rect)
 {
    if ( ::IsRectEmpty(&rect) )
-   {     
+   {
       // get the nearest monitor to the anchor
       HMONITOR hMonitor = MonitorFromPoint(GetAnchorPoint(), MONITOR_DEFAULTTONEAREST);
 
@@ -644,7 +644,7 @@ CBalloonHelp::BALLOON_QUADRANT CBalloonHelp::GetBalloonQuadrant()
    RECT rectDesktop;
    GetAnchorScreenBounds(rectDesktop);
    POINT ptAnchor = GetAnchorPoint();
-   
+
    if ( ptAnchor.y < rectDesktop.top + (rectDesktop.bottom - rectDesktop.top)/2 )
    {
       if ( ptAnchor.x < rectDesktop.left + (rectDesktop.right - rectDesktop.left)/2 )
@@ -714,11 +714,11 @@ void CBalloonHelp::DrawNonClientArea(HDC hDC)
       ::FrameRgn(hDC, m_hrgnComplete, brushHL, 2, 2);
       ::OffsetRgn(m_hrgnComplete, 1,1);
 		::DeleteObject(brushHL);
-   }	
+   }
    // outline
    FrameRgn(hDC, m_hrgnComplete, brushFg, 1, 1);
 	::DeleteObject(brushFg);
-}	
+}
 
 // Draw the client area
 void CBalloonHelp::DrawClientArea(HDC hDC)
@@ -730,7 +730,7 @@ void CBalloonHelp::DrawClientArea(HDC hDC)
 // Calculate the dimensions and draw the balloon header
 SIZE CBalloonHelp::DrawHeader(HDC hDC, bool bDraw)
 {
-   SIZE sizeHdr = {0,0};	
+   SIZE sizeHdr = {0,0};
    RECT rectClient;
    ::GetClientRect(m_hWnd, &rectClient);   // use this for positioning when drawing
                                  // else if content is wider than title, centering wouldn't work
@@ -775,7 +775,7 @@ SIZE CBalloonHelp::DrawHeader(HDC hDC, bool bDraw)
       HFONT hOldFont = (HFONT) SelectObject(hDC, m_hTitleFont);
 
       // if something is already in the header (icon or close button) leave space
-      if ( sizeHdr.cx > 0 ) 
+      if ( sizeHdr.cx > 0 )
          sizeHdr.cx += nTIP_MARGIN;
       RECT rectTitle = {0,0,0,0};
       ::DrawText(hDC, strTitle, strTitle.GetLength(), &rectTitle, DT_CALCRECT | DT_NOPREFIX | DT_EXPANDTABS | DT_SINGLELINE);
@@ -799,7 +799,7 @@ SIZE CBalloonHelp::DrawHeader(HDC hDC, bool bDraw)
 
 // Calculate the dimensions and draw the balloon contents
 SIZE CBalloonHelp::DrawContent(HDC hDC, int nTop, bool bDraw)
-{		
+{
 	RECT rectContent;
    GetAnchorScreenBounds(rectContent);
    ::OffsetRect(&rectContent, -rectContent.left, -rectContent.top);
@@ -814,7 +814,7 @@ SIZE CBalloonHelp::DrawContent(HDC hDC, int nTop, bool bDraw)
       ::DrawText(hDC, m_strContent, m_strContent.GetLength(), &rectContent, DT_CALCRECT | DT_LEFT | DT_NOPREFIX | DT_EXPANDTABS | DT_WORDBREAK);
    else
       ::SetRectEmpty(&rectContent);   // don't want to leave half the screen for empty strings ;)
-   
+
    // draw
    if (bDraw)
    {
@@ -825,7 +825,7 @@ SIZE CBalloonHelp::DrawContent(HDC hDC, int nTop, bool bDraw)
 
    // cleanup
    ::SelectObject(hDC, hOldFont);
-	SIZE ret = {rectContent.right - rectContent.left, rectContent.bottom - rectContent.top}; 
+	SIZE ret = {rectContent.right - rectContent.left, rectContent.bottom - rectContent.top};
    return ret;
 }
 
@@ -940,7 +940,7 @@ void CBalloonHelp::PositionWindow()
       nAdjustY = rectScreen.bottom - (ptOffs.y + sizeWnd.cy - nTIP_TAIL);
 
    // reposition tail
-   // uncomment two commented lines below to move entire tail 
+   // uncomment two commented lines below to move entire tail
    // instead of just anchor point
 
    //ptTail[0].x -= nAdjustX;
@@ -956,7 +956,7 @@ void CBalloonHelp::PositionWindow()
    HRGN region = ::CreatePolygonRgn(&ptTail[0], 3, ALTERNATE);
    HRGN regionRound = ::CreateRoundRectRgn(ptTopLeft.x,ptTopLeft.y,ptBottomRight.x,ptBottomRight.y,nTIP_MARGIN*3,nTIP_MARGIN*3);
    HRGN regionComplete = ::CreateRectRgn(0,0,1,1);
-      
+
    ::CombineRgn(regionComplete, region, regionRound, RGN_OR);
 
    if ( NULL == m_hrgnComplete)
@@ -987,23 +987,23 @@ ATOM CBalloonHelp::GetClassAtom(BOOL bShadowed)
 {
    if ( 0 == s_ClassAtom )
    {
-      WNDCLASSEX wcx; 
+      WNDCLASSEX wcx;
 
-      // Fill in the window class structure with parameters 
-      // that describe the main window. 
+      // Fill in the window class structure with parameters
+      // that describe the main window.
 
-      wcx.cbSize = sizeof(wcx);                 // size of structure 
+      wcx.cbSize = sizeof(wcx);                 // size of structure
       wcx.style = CS_DBLCLKS|CS_SAVEBITS
          |CS_DROPSHADOW;                        // notify of double clicks, save screen under, show dropshadow
-      wcx.lpfnWndProc = CWnd::stWinMsgHandler;             // points to window procedure 
-      wcx.cbClsExtra = 0;                       // no extra class memory 
-      wcx.cbWndExtra = 0;                       // no extra window memory 
-      wcx.hInstance = g_hInstance;   // handle to instance 
-      wcx.hIcon = NULL;                         // no app. icon 
-      wcx.hCursor = LoadCursor(NULL,IDC_ARROW); // predefined arrow 
-      wcx.hbrBackground = ::GetSysColorBrush(COLOR_WINDOW);                 // no background brush 
-      wcx.lpszMenuName =  NULL;                 // no menu resource 
-      wcx.lpszClassName = "BalloonHelpClassDS"; // name of window class 
+      wcx.lpfnWndProc = CWnd::stWinMsgHandler;             // points to window procedure
+      wcx.cbClsExtra = 0;                       // no extra class memory
+      wcx.cbWndExtra = 0;                       // no extra window memory
+      wcx.hInstance = g_hInstance;   // handle to instance
+      wcx.hIcon = NULL;                         // no app. icon
+      wcx.hCursor = LoadCursor(NULL,IDC_ARROW); // predefined arrow
+      wcx.hbrBackground = ::GetSysColorBrush(COLOR_WINDOW);                 // no background brush
+      wcx.lpszMenuName =  NULL;                 // no menu resource
+      wcx.lpszClassName = "BalloonHelpClassDS"; // name of window class
       wcx.hIconSm = NULL;                       // no small class icon
 
       // Register the window class (this may not work if dropshadows are not supported)
@@ -1039,7 +1039,7 @@ void CBalloonHelp::HideBalloon(void)
       return;
    }
    ::ShowWindow(m_hWnd, SW_HIDE);
-   if ( GetCapture() == m_hWnd ) 
+   if ( GetCapture() == m_hWnd )
       ReleaseCapture();
    ::DestroyWindow(m_hWnd);
 }
@@ -1140,7 +1140,7 @@ LRESULT CALLBACK CBalloonHelp::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam
 #define MSGHANDLER_PROLOG_BOOL\
 	CBalloonHelp *thisPtr = (CBalloonHelp*)GetObjectFromWindow(hwnd);\
 	if(!thisPtr) \
-		return FALSE; 
+		return FALSE;
 
 #define MSGHANDLER_PROLOG\
 	CBalloonHelp *thisPtr = (CBalloonHelp*)GetObjectFromWindow(hwnd);\
@@ -1148,11 +1148,11 @@ LRESULT CALLBACK CBalloonHelp::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam
 		return; \
 
 
-#define MSGHANDLER_EPILOG 
+#define MSGHANDLER_EPILOG
 
 void CBalloonHelp::OnShowWindow(HWND hwnd, BOOL fShow, UINT status)
 {
-	MSGHANDLER_PROLOG	
+	MSGHANDLER_PROLOG
    if ( NULL != thisPtr->m_fnAnimateWindow )
    {
       if ( fShow && !(thisPtr->m_unOptions&unDISABLE_FADEIN) )
@@ -1160,13 +1160,13 @@ void CBalloonHelp::OnShowWindow(HWND hwnd, BOOL fShow, UINT status)
       else if ( !fShow && !(thisPtr->m_unOptions&unDISABLE_FADEOUT) )
          thisPtr->m_fnAnimateWindow(thisPtr->m_hWnd, 200, AW_HIDE | AW_BLEND );
    }
-	MSGHANDLER_EPILOG 
+	MSGHANDLER_EPILOG
 }
 
 // Erase client area of balloon
 BOOL CBalloonHelp::OnEraseBkgnd(HWND hwnd, HDC hdc)
 {
-	MSGHANDLER_PROLOG_BOOL	
+	MSGHANDLER_PROLOG_BOOL
    RECT rect;
    GetClientRect(hwnd, &rect);
 	HBRUSH hBrush = ::CreateSolidBrush(thisPtr->m_crBackground);
@@ -1177,20 +1177,20 @@ BOOL CBalloonHelp::OnEraseBkgnd(HWND hwnd, HDC hdc)
 }
 
 // draw balloon client area (title & contents)
-void CBalloonHelp::OnPaint(HWND hwnd) 
+void CBalloonHelp::OnPaint(HWND hwnd)
 {
-	MSGHANDLER_PROLOG	
+	MSGHANDLER_PROLOG
 	PAINTSTRUCT ps;
-	HDC dc = ::BeginPaint(hwnd, &ps);   
+	HDC dc = ::BeginPaint(hwnd, &ps);
    thisPtr->DrawClientArea(dc);
 	::EndPaint(hwnd, &ps);
 	MSGHANDLER_EPILOG
 }
 
 // draw balloon shape & border
-void CBalloonHelp::OnNCPaint(HWND hwnd, HRGN hrgn) 
+void CBalloonHelp::OnNCPaint(HWND hwnd, HRGN hrgn)
 {
-	MSGHANDLER_PROLOG	
+	MSGHANDLER_PROLOG
 	HDC dc = ::GetWindowDC(hwnd);
    thisPtr->DrawNonClientArea(dc);
 	::ReleaseDC(hwnd, dc);
@@ -1200,8 +1200,8 @@ void CBalloonHelp::OnNCPaint(HWND hwnd, HRGN hrgn)
 // draw the window into the specified device context
 LRESULT CBalloonHelp::OnPrint(HWND hwnd, WPARAM wParam, LPARAM lParam)
 {
-	MSGHANDLER_PROLOG_BOOL	
-   if ( lParam & PRF_NONCLIENT  ) 
+	MSGHANDLER_PROLOG_BOOL
+   if ( lParam & PRF_NONCLIENT  )
       thisPtr->DrawNonClientArea((HDC)wParam);
 	MSGHANDLER_EPILOG
 	return ::DefWindowProc(hwnd, WM_PRINT, wParam, lParam);
@@ -1209,11 +1209,11 @@ LRESULT CBalloonHelp::OnPrint(HWND hwnd, WPARAM wParam, LPARAM lParam)
 
 // draw the client area into the specified device context
 LRESULT CBalloonHelp::OnPrintClient(HWND hwnd, WPARAM wParam, LPARAM lParam)
-{  
-	MSGHANDLER_PROLOG_BOOL	
-   if ( lParam & PRF_ERASEBKGND ) 
+{
+	MSGHANDLER_PROLOG_BOOL
+   if ( lParam & PRF_ERASEBKGND )
       ::SendMessage(hwnd, WM_ERASEBKGND, wParam, lParam );
-   if ( lParam & PRF_CLIENT ) 
+   if ( lParam & PRF_CLIENT )
       thisPtr->DrawClientArea((HDC)wParam);
 	MSGHANDLER_EPILOG
    return 0;
@@ -1243,7 +1243,7 @@ void CBalloonHelp::OnLButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UIN
 
 // Close button handler,
 // URL handler
-void CBalloonHelp::OnLButtonUp(HWND hwnd, int x, int y, UINT keyFlags) 
+void CBalloonHelp::OnLButtonUp(HWND hwnd, int x, int y, UINT keyFlags)
 {
 	MSGHANDLER_PROLOG
    if ( (thisPtr->m_unOptions & unSHOW_CLOSE_BUTTON) && (thisPtr->m_uCloseState & DFCS_PUSHED))
@@ -1380,7 +1380,7 @@ void CBalloonHelp::OnDestroy(HWND hwnd)
    // remove hooks
    thisPtr->RemoveMouseHook();
    thisPtr->RemoveKeyboardHook();
-   thisPtr->RemoveCallWndRetHook();   
+   thisPtr->RemoveCallWndRetHook();
 	MSGHANDLER_EPILOG
 }
 
@@ -1394,7 +1394,7 @@ void CBalloonHelp::OnClose(HWND hwnd)
 
 // Called after window has been destroyed.  Destroys the object if option is set.
 void CBalloonHelp::OnNCDestroy(HWND hwnd)
-{   
+{
 	MSGHANDLER_PROLOG
    // free object if requested
    // be careful with this one :D
@@ -1407,7 +1407,7 @@ void CBalloonHelp::OnNCDestroy(HWND hwnd)
 LRESULT CBalloonHelp::KeyboardHookProc( int code, WPARAM wParam, LPARAM lParam)
 {
    // Skip if the key was released or if it's a repeat
-   // Bit 31:  Specifies the transition state. The value is 0 if the key  
+   // Bit 31:  Specifies the transition state. The value is 0 if the key
    //       is being pressed and 1 if it is being released (see MSDN).
    if ( code>=0 && !(lParam&0x80000000) && NULL != m_hWnd )
    {

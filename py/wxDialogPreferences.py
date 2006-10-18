@@ -180,7 +180,7 @@ class wxPreferencesDlg(wxDialog):
     def _init_ctrls(self, prnt):
         # generated method, don't edit
         wxDialog.__init__(self, id=wxID_WXPREFERENCESDLG, name='', parent=prnt,
-              pos=wxPoint(366, 256), size=wxSize(419, 351),
+              pos=wxPoint(1011, 469), size=wxSize(419, 351),
               style=wxDEFAULT_DIALOG_STYLE, title='ClamWin Preferences')
         self._init_utils()
         self.SetClientSize(wxSize(411, 324))
@@ -296,7 +296,7 @@ class wxPreferencesDlg(wxDialog):
         self.staticBoxScanOptions = wxStaticBox(id=wxID_WXPREFERENCESDLGSTATICBOXSCANOPTIONS,
               label='Scanning Options', name='staticBoxScanOptions',
               parent=self._panelOptions, pos=wxPoint(6, 11), size=wxSize(376,
-              86), style=0)
+              87), style=0)
 
         self.checkBoxEnableAutoUpdate = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXENABLEAUTOUPDATE,
               label='&Enable Automatic Virus Database Updates',
@@ -393,10 +393,11 @@ class wxPreferencesDlg(wxDialog):
               self.OnButtonBrowseVirDB)
 
         self.checkBoxScanRecursive = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXSCANRECURSIVE,
-              label='&Scan In Subdirectories', name='checkBoxScanRecursive',
-              parent=self._panelOptions, pos=wxPoint(15, 49), size=wxSize(354,
+              label='&Scan in Subdirectories', name='checkBoxScanRecursive',
+              parent=self._panelOptions, pos=wxPoint(15, 50), size=wxSize(354,
               18), style=0)
         self.checkBoxScanRecursive.SetToolTipString('Select if you wish to scan in subdirectories recursively')
+        self.checkBoxScanRecursive.SetValue(False)
 
         self.staticTextUpdateTime = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTUPDATETIME,
               label='&Time:', name='staticTextUpdateTime',
@@ -633,12 +634,12 @@ class wxPreferencesDlg(wxDialog):
 
         self.staticBoxInfected = wxStaticBox(id=wxID_WXPREFERENCESDLGSTATICBOXINFECTED,
               label='Infected Files', name='staticBoxInfected',
-              parent=self._panelOptions, pos=wxPoint(6, 110), size=wxSize(376,
+              parent=self._panelOptions, pos=wxPoint(6, 108), size=wxSize(376,
               106), style=0)
 
         self.radioButtonReport = wxRadioButton(id=wxID_WXPREFERENCESDLGRADIOBUTTONREPORT,
               label='&Report Only', name='radioButtonReport',
-              parent=self._panelOptions, pos=wxPoint(15, 128), size=wxSize(354,
+              parent=self._panelOptions, pos=wxPoint(15, 126), size=wxSize(354,
               18), style=0)
         self.radioButtonReport.SetValue(False)
         EVT_RADIOBUTTON(self.radioButtonReport,
@@ -646,7 +647,7 @@ class wxPreferencesDlg(wxDialog):
 
         self.radioButtonRemoveInfected = wxRadioButton(id=wxID_WXPREFERENCESDLGRADIOBUTTONREMOVEINFECTED,
               label='R&emove (Use Carefully)', name='radioButtonRemoveInfected',
-              parent=self._panelOptions, pos=wxPoint(15, 146), size=wxSize(354,
+              parent=self._panelOptions, pos=wxPoint(15, 144), size=wxSize(354,
               18), style=0)
         self.radioButtonRemoveInfected.SetValue(False)
         EVT_RADIOBUTTON(self.radioButtonRemoveInfected,
@@ -655,7 +656,7 @@ class wxPreferencesDlg(wxDialog):
 
         self.radioButtonQuarantine = wxRadioButton(id=wxID_WXPREFERENCESDLGRADIOBUTTONQUARANTINE,
               label='&Move To Quarantine Folder:', name='radioButtonQuarantine',
-              parent=self._panelOptions, pos=wxPoint(15, 165), size=wxSize(354,
+              parent=self._panelOptions, pos=wxPoint(15, 163), size=wxSize(354,
               18), style=0)
         self.radioButtonQuarantine.SetValue(False)
         EVT_RADIOBUTTON(self.radioButtonQuarantine,
@@ -663,12 +664,12 @@ class wxPreferencesDlg(wxDialog):
 
         self.textCtrlQuarantine = wxTextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLQUARANTINE,
               name='textCtrlQuarantine', parent=self._panelOptions,
-              pos=wxPoint(31, 185), size=wxSize(319, 20), style=0, value='')
+              pos=wxPoint(31, 183), size=wxSize(319, 20), style=0, value='')
         self.textCtrlQuarantine.SetToolTipString('Specify location for a quarantine folder')
 
         self.buttonBrowseQuarantine = wxButton(id=wxID_WXPREFERENCESDLGBUTTONBROWSEQUARANTINE,
               label='...', name='buttonBrowseQuarantine',
-              parent=self._panelOptions, pos=wxPoint(351, 185), size=wxSize(20,
+              parent=self._panelOptions, pos=wxPoint(351, 183), size=wxSize(20,
               20), style=0)
         self.buttonBrowseQuarantine.SetToolTipString('Click to browse for a quarantine folder')
         EVT_BUTTON(self.buttonBrowseQuarantine,
@@ -884,7 +885,7 @@ class wxPreferencesDlg(wxDialog):
         self.checkBoxShowProgress = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXSHOWPROGRESS,
               label='Display &File Scanned % Progress Indicator',
               name='checkBoxShowProgress', parent=self._panelOptions,
-              pos=wxPoint(15, 70), size=wxSize(354, 18), style=0)
+              pos=wxPoint(15, 73), size=wxSize(354, 17), style=0)
         self.checkBoxShowProgress.SetValue(False)
         self.checkBoxShowProgress.SetToolTipString('Select if you wish to display infected files only in the scan progress window')
 
