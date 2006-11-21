@@ -25,8 +25,11 @@ WizardImageFile=Setupfiles\WizModernImage.bmp
 WizardSmallImageFile=Setupfiles\WizModernSmallImage.bmp
 [Languages]
 Name: en; MessagesFile: compiler:Languages\English.isl
+Name: ru; MessagesFile: compiler:Languages\Russian.isl
 Name: nl; MessagesFile: compiler:Languages\Dutch.isl
 Name: fr; MessagesFile: compiler:Languages\French.isl
+Name: de; MessagesFile: compiler:Languages\German.isl
+Name: cs; MessagesFile: compiler:Languages\Czech.isl
 [Files]
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 ;Source: cygwin\cygwin1.dll; DestDir: {app}\bin; Components: Cygwin; Flags: restartreplace uninsrestartdelete replacesameversion
@@ -89,6 +92,7 @@ Source: ..\locale\nl_BE\LC_MESSAGES\wxDialogScheduledScan.mo; DestDir: {app}\loc
 Source: ..\locale\nl_BE\LC_MESSAGES\wxDialogStatus.mo; DestDir: {app}\locale\nl_BE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\nl_BE\LC_MESSAGES\wxDialogUtils.mo; DestDir: {app}\locale\nl_BE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\nl_BE\LC_MESSAGES\wxFrameMain.mo; DestDir: {app}\locale\nl_BE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\nl_BE\LC_MESSAGES\Config.mo; DestDir: {app}\locale\nl_BE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\fr_FR\LC_MESSAGES\ClamTray.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\fr_FR\LC_MESSAGES\EmailAlert.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\fr_FR\LC_MESSAGES\OlAddin.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
@@ -101,6 +105,44 @@ Source: ..\locale\fr_FR\LC_MESSAGES\wxDialogScheduledScan.mo; DestDir: {app}\loc
 Source: ..\locale\fr_FR\LC_MESSAGES\wxDialogStatus.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\fr_FR\LC_MESSAGES\wxDialogUtils.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\fr_FR\LC_MESSAGES\wxFrameMain.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\de_DE\LC_MESSAGES\ClamTray.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\de_DE\LC_MESSAGES\EmailAlert.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\de_DE\LC_MESSAGES\OlAddin.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\de_DE\LC_MESSAGES\ShellExtImpl.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\de_DE\LC_MESSAGES\wxDialogAbout.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\de_DE\LC_MESSAGES\wxDialogCheckUpdate.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\de_DE\LC_MESSAGES\wxDialogLogViewer.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\de_DE\LC_MESSAGES\wxDialogPreferences.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\de_DE\LC_MESSAGES\wxDialogScheduledScan.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\de_DE\LC_MESSAGES\wxDialogStatus.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\de_DE\LC_MESSAGES\wxDialogUtils.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\de_DE\LC_MESSAGES\wxFrameMain.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\cs_CZ\LC_MESSAGES\ClamTray.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\cs_CZ\LC_MESSAGES\EmailAlert.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\cs_CZ\LC_MESSAGES\OlAddin.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\cs_CZ\LC_MESSAGES\ShellExtImpl.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\cs_CZ\LC_MESSAGES\wxDialogAbout.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\cs_CZ\LC_MESSAGES\wxDialogCheckUpdate.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\cs_CZ\LC_MESSAGES\wxDialogLogViewer.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\cs_CZ\LC_MESSAGES\wxDialogPreferences.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\cs_CZ\LC_MESSAGES\wxDialogScheduledScan.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\cs_CZ\LC_MESSAGES\wxDialogStatus.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\cs_CZ\LC_MESSAGES\wxDialogUtils.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\cs_CZ\LC_MESSAGES\wxFrameMain.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\cs_CZ\LC_MESSAGES\Config.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\ru_RU\LC_MESSAGES\ClamTray.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\ru_RU\LC_MESSAGES\EmailAlert.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\ru_RU\LC_MESSAGES\OlAddin.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\ru_RU\LC_MESSAGES\ShellExtImpl.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\ru_RU\LC_MESSAGES\wxDialogAbout.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\ru_RU\LC_MESSAGES\wxDialogCheckUpdate.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\ru_RU\LC_MESSAGES\wxDialogLogViewer.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\ru_RU\LC_MESSAGES\wxDialogPreferences.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\ru_RU\LC_MESSAGES\wxDialogScheduledScan.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\ru_RU\LC_MESSAGES\wxDialogStatus.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\ru_RU\LC_MESSAGES\wxDialogUtils.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\ru_RU\LC_MESSAGES\wxFrameMain.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+
 
 
 ; on xp and greater VC80 CRT needs to be installed in Microsoft.VC80.CRT
@@ -120,10 +162,10 @@ Source: ..\cpp\Release\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShe
 Source: ..\cpp\libintl-1.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: IsWin9x
 Source: ..\cpp\Release_Unicode\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: UsingWinNT
 Source: ..\cpp\libintl-1.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: UsingWinNT
-Source: ..\cpp\iconv.dll; DestDir: {win}; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: UsingWinNT
+Source: ..\cpp\iconv.dll; DestDir: {win}; Components: ExplorerShell; Flags: restartreplace sharedfile; Check: UsingWinNT
 Source: ..\cpp\Release_x64\ExpShell64.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete 64bit; Check: IsWin64
 Source: ..\cpp\libintl-1.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: IsWin64
-Source: ..\cpp\iconv.dll; DestDir: {win}; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: IsWin64
+Source: ..\cpp\iconv.dll; DestDir: {win}; Components: ExplorerShell; Flags: restartreplace sharedfile; Check: IsWin64
 
 Source: py2exe\dist\bin\WClose.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: py2exe\dist\lib\w9xpopen.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
@@ -439,6 +481,90 @@ fr.IntegrationOutlook1=Intйgration avec Microsoft Outlook
 fr.ClamWinFreeAntivirus1=Antivirus Libre et Gratuit ClamWin
 fr.ClamWinFreeAntivirus2=Antivirus ClamWin
 
+ru.LanguageName=Russian
+ru.InitializeWizard1=Выберите вариант инсталляции
+ru.InitializeWizard1=Выберите вариант инсталляции
+ru.InitializeWizard2=Для кого будет установлено это приложение?
+ru.InitializeWizard3=Пожалуйста укажите, желаете ли вы, чтобы эта программа была доступна всем пользователям или только вам.
+ru.InitializeWizard4=&Любой пользователь на этом компьютере (все пользователи)
+ru.InitializeWizard5=Только для &меня (
+ru.NoOutlookRunning1=Вы должны закрыть Outlook перед установкой ClamWin.
+ru.NoOutlookRunning2=Пожалуйста, закройте все окна с Outlook (Используйте "Файл->Exit and Log off"
+ru.NoOutlookRunning3=если доступно) и щелкните Retry, или щелкните Cancel для выхода из инсталляции.
+ru.NoOutlookRunning4=Если это сообщение сохраняется после того, как вы закрыли все окна Outlook, вам может
+ru.NoOutlookRunning5=понадобится выйти из Windows и попробовать заново.
+ru.NoOutlookRunning6=Агент доставки сообщений в Outlook еще работает.
+ru.NoOutlookRunning7=Если вы только что закрыли окно Outlook, подождите несколько секунд и нажмите Retry.
+ru.NoOutlookRunning8=Если это сообщение сохраняется, вам может потребоваться выйти из и попробовать заново.
+ru.CloseClamWin1=Программа установки обнаружила, что предудущая версия программного обеспечения была установлена.
+ru.CloseClamWin2=Хотите ли вы закрыть программу сейчас? (Рекомендуется)
+ru.InitializeSetup1=Прогрмма установки обнаружила, что данная версия программного обеспечения уже установлена.
+ru.InitializeSetup2=Программа установки будет завершена.
+ru.DeInitializeSetup1=Пожалуйста, перезапустите свой компьютер для завершения установки антивируса ClamWin Antivirus.
+ru.RemoveSetup1=Программа установки обнаружила предыдущую версию программы на этом компьютере. Нажмите Да для деинсталляции её сейчас.
+ru.DownloadDB1=Загрузить Файлы Вирусной Базы. (Не отмечайте если вы соединены через прокси-сервер)
+ru.DownloadDB2=Загрузка файлов вирусной базы.
+ru.DownloadDB3=Загрузка
+ru.CreateDesktop1=Создать иконку на рабочем столе
+ru.CreateDesktop2=Дополнительные иконки:
+ru.TypicalInstallation1=Типичная установка
+ru.CustomInstallation1=Ручной выбор
+ru.FullInstallation1=Полная установка
+ru.ClamWinSourceCode1=Исходные коды ClamWin
+ru.ClamAVSourceCode1=Исходные коды ClamAV
+ru.InternationalHelpFiles1=Переведенные файлы помощи
+ru.RussianHelpFiles1=Русский файл помощи
+ru.FrenchHelpFiles1=Французский файл помощи
+ru.DutchHelpFiles1=Датский файл помощи
+ru.DownloadSourceCode1=Загрузить исходные коды
+ru.ClamAVFiles1=Файлы ClamAV
+ru.ClamWinFiles1=Файлы ClamWin
+ru.IntegrationExplorer1=Интеграция с Windows Explorer
+ru.IntegrationOutlook1=Интеграция с Microsoft Outlook
+ru.ClamWinFreeAntivirus1=ClamWin Free Антивирус
+ru.ClamWinFreeAntivirus2=ClamWin Антивирус
+
+cs.LanguageName=Czech
+cs.InitializeWizard1=Vyberte typ instalace
+cs.InitializeWizard2=Pro koho mб bэt ten to program nainstalovбn?
+cs.InitializeWizard3=Prosнm, vyberte zda mб bэt tento program dostupnэ vљem uћivatelum nebo pouze Vбm.
+cs.InitializeWizard4=&Kdokoliv, kdo pouћнvб tento pocнtac (vљichni uћivatelй)
+cs.InitializeWizard5=Pouze pro &me (
+cs.NoOutlookRunning1=Musнte ukoncit Outlook pred instalacн ClamWinu.
+cs.NoOutlookRunning2=Zavrete, prosнm, vљechna okna Outlooku (Pres "Soubor->Ukoncit a Odhlбsit"
+cs.NoOutlookRunning3=pokud je to dostupnй) a kliknete na Opakovat nebo na Storno pro ukoncenн instalace.
+cs.NoOutlookRunning4=Zustane-li tato zprбva po zavrenн vљech oken Outlooku, budete se
+cs.NoOutlookRunning5=muset odhlбsit z Windows a zkusit to znovu.
+cs.NoOutlookRunning6=Agent dorucovбnн zprбv Outlooku stбle beћн.
+cs.NoOutlookRunning7=Pokud jste prбve zavreli Outlook, pockejte pбr vterit a kliknete na Opakovat.
+cs.NoOutlookRunning8=Zustane-li tato zprбva, budete se muset odhlбsit z Windows a zkusit to znovu.
+cs.CloseClamWin1=Instalбtor nalezl nainstalovanou predchozн verzi programu.
+cs.CloseClamWin2=Chcete program ukoncit nynн? (Doporuceno)
+cs.InitializeSetup1=Instalбtor nalezi nainstalovanou novejљн verzi proogramu.
+cs.InitializeSetup2=Instalбtor se nynн ukoncн.
+cs.DeInitializeSetup1=Prosнm, zrestartujte svuj pocнtac pro dokoncenн instalace ClamWin Antiviru.
+cs.RemoveSetup1=Instalбtor nalezl na tomto pocнtaci nainstalovanou predchozн verzi programu. Kliknete na Ano pro odinstalaci.
+cs.DownloadDB1=Stбhnout soubory databбze viru. (Nevybнrejte, pokud jste pripojeni pres proxy server)
+cs.DownloadDB2=Stahuji soubory databбzн viru.
+cs.DownloadDB3=Stбhnout
+cs.CreateDesktop1=Vytvorit ikonu na &ploљe
+cs.CreateDesktop2=Dalљн ikony:
+cs.TypicalInstallation1=Typickб instalace
+cs.CustomInstallation1=Vlastnн instalace
+cs.FullInstallation1=Plnб instalace
+cs.ClamWinSourceCode1=Zdrojovй kуdy ClamWin
+cs.ClamAVSourceCode1=Zdrojovй kуdy ClamAV
+cs.InternationalHelpFiles1=Mezinбrodnн soubory nбpovedy
+cs.RussianHelpFiles1=Soubory nбpovedy v ruљtine
+cs.FrenchHelpFiles1=Soubory nбpovedy ve francouzљtine
+cs.DutchHelpFiles1=Soubory nбpovedy v holandљtine
+cs.DownloadSourceCode1=Stбhnout zdrojovй kуdy
+cs.ClamAVFiles1=ClamAV soubory
+cs.ClamWinFiles1=ClamWin soubory
+cs.IntegrationExplorer1=Integrace do Pruzkumnнka Windows
+cs.IntegrationOutlook1=Integrace s Microsoft Outlookem
+cs.ClamWinFreeAntivirus1=ClamWin Free Antivirus
+cs.ClamWinFreeAntivirus2=ClamWin Antivirus
 
 [Code]
 var
