@@ -179,6 +179,8 @@ class wxPreferencesDlg(wxDialog):
 
     def _init_ctrls(self, prnt):
         # generated method, don't edit
+
+        INTERNETUPDATE_INPUTXPOS = 150
 ##        wxDialog.__init__(self, id=wxID_WXPREFERENCESDLG, name='', parent=prnt,
 ##              pos=wxPoint(523, 290), size=wxSize(419, 351),
 ##              style=wxDEFAULT_DIALOG_STYLE, title=_('ClamWin Preferences'))
@@ -314,33 +316,46 @@ class wxPreferencesDlg(wxDialog):
         self.checkBoxEnableAutoUpdate = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXENABLEAUTOUPDATE,
               label=_('&Enable Automatic Virus Database Updates'),
               name='checkBoxEnableAutoUpdate', parent=self._panelInternetUpdate,
-              pos=wxPoint(6, 11), size=wxSize(322, 20), style=0)
+#              pos=wxPoint(6, 11), size=wxSize(322, 20), style=0)
+              pos=wxPoint(6, 11), size=wxSize(422, 20), style=0)
         self.checkBoxEnableAutoUpdate.SetToolTipString(_('Enable automatic virus database downloads '))
         EVT_CHECKBOX(self.checkBoxEnableAutoUpdate,
               wxID_WXPREFERENCESDLGCHECKBOXENABLEAUTOUPDATE,
               self.OnCheckBoxEnableAutoUpdate)
 
-        self.staticText1 = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXT1,
-              label=_('Download &Site :'), name='staticText1',
-              parent=self._panelInternetUpdate, pos=wxPoint(24, 43),
-              size=wxSize(81, 13), style=0)
+        downloadSiteLabel = _('Download &Site :')
+        if len(downloadSiteLabel) > 30:
+            # Spread to two lines
+            self.staticText1 = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXT1,
+                  label=downloadSiteLabel, name='staticText1',
+                  parent=self._panelInternetUpdate, pos=wxPoint(24, 34),
+                  size=wxSize(81, 26), style=0)
+            
+        else:
+            self.staticText1 = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXT1,
+                  label=downloadSiteLabel, name='staticText1',
+                  parent=self._panelInternetUpdate, pos=wxPoint(24, 43),
+                  size=wxSize(81, 13), style=0)
 
         self.textCtrlDBMirror = wxTextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLDBMIRROR,
               name='textCtrlDBMirror', parent=self._panelInternetUpdate,
-              pos=wxPoint(126, 37), size=wxSize(243, 21), style=0, value='')
+#              pos=wxPoint(126, 37), size=wxSize(243, 21), style=0, value='')
+              pos=wxPoint(INTERNETUPDATE_INPUTXPOS, 37), size=wxSize(180, 21), style=0, value='')
         self.textCtrlDBMirror.SetToolTipString(_('Specify Database Mirror Site here. Usually this is database.clamav.net'))
 
         self.staticTextUpdateFrequency = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTUPDATEFREQUENCY,
               label=_('&Update Frequency:'), name='staticTextUpdateFrequency',
               parent=self._panelInternetUpdate, pos=wxPoint(23, 70),
-              size=wxSize(98, 18), style=0)
+#              size=wxSize(98, 18), style=0)
+              size=wxSize(128, 18), style=0)
         self.staticTextUpdateFrequency.SetToolTipString('')
 
         self.choiceUpdateFrequency = wxChoice(choices=[_('Hourly'), _('Daily'),
               _('Workdays'), _('Weekly')],
               id=wxID_WXPREFERENCESDLGCHOICEUPDATEFREQUENCY,
               name='choiceUpdateFrequency', parent=self._panelInternetUpdate,
-              pos=wxPoint(126, 67), size=wxSize(110, 21), style=0)
+#              pos=wxPoint(126, 67), size=wxSize(110, 21), style=0)
+              pos=wxPoint(INTERNETUPDATE_INPUTXPOS, 67), size=wxSize(140, 21), style=0)
         self.choiceUpdateFrequency.SetColumns(2)
         self.choiceUpdateFrequency.SetToolTipString(_('How often virus database is downloaded'))
         self.choiceUpdateFrequency.SetStringSelection(_('Daily'))
@@ -413,12 +428,30 @@ class wxPreferencesDlg(wxDialog):
 
         self.staticTextUpdateTime = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTUPDATETIME,
               label=_('&Time:'), name='staticTextUpdateTime',
-              parent=self._panelInternetUpdate, pos=wxPoint(240, 70),
+#              parent=self._panelInternetUpdate, pos=wxPoint(240, 70),
+#              size=wxSize(33, 18), style=0)
+              parent=self._panelInternetUpdate, pos=wxPoint(23, 97),
               size=wxSize(33, 18), style=0)
+
+        self.staticTextUpdateDay = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTUPDATEDAY,
+              label=_('&Day Of The Week:'), name='staticTextUpdateDay',
+#              parent=self._panelInternetUpdate, pos=wxPoint(23, 104),
+              parent=self._panelInternetUpdate, pos=wxPoint(23, 124),
+              size=wxSize(96, 18), style=0)
+#              size=wxSize(96, 18), style=0)
+        self.staticTextUpdateDay.SetToolTipString('')
+
+        self.staticLineUpdateTimeCtrl = wxStaticLine(id=wxID_WXPREFERENCESDLGSTATICLINEUPDATETIMECTRL,
+              name='staticLineUpdateTimeCtrl', parent=self._panelInternetUpdate,
+#              pos=wxPoint(277, 66), size=wxSize(74, 22), style=0)
+              pos=wxPoint(INTERNETUPDATE_INPUTXPOS, 94), size=wxSize(74, 22), style=0)
+        self.staticLineUpdateTimeCtrl.Show(False)
+        self.staticLineUpdateTimeCtrl.SetToolTipString(_('When the download should be started'))
 
         self.spinButtonUpdateTime = wxSpinButton(id=wxID_WXPREFERENCESDLGSPINBUTTONUPDATETIME,
               name='spinButtonUpdateTime', parent=self._panelInternetUpdate,
-              pos=wxPoint(353, 65), size=wxSize(16, 23),
+#              pos=wxPoint(353, 65), size=wxSize(16, 23),
+              pos=wxPoint(INTERNETUPDATE_INPUTXPOS + 76, 94), size=wxSize(16, 23),
               style=wxSP_ARROW_KEYS | wxSP_VERTICAL)
         self.spinButtonUpdateTime.SetToolTipString('')
 
@@ -557,18 +590,6 @@ class wxPreferencesDlg(wxDialog):
               wxID_WXPREFERENCESDLGBUTTONBROWSEUPDATELOG,
               self.OnButtonBrowseUpdateLog)
 
-        self.staticLineUpdateTimeCtrl = wxStaticLine(id=wxID_WXPREFERENCESDLGSTATICLINEUPDATETIMECTRL,
-              name='staticLineUpdateTimeCtrl', parent=self._panelInternetUpdate,
-              pos=wxPoint(277, 66), size=wxSize(74, 22), style=0)
-        self.staticLineUpdateTimeCtrl.Show(False)
-        self.staticLineUpdateTimeCtrl.SetToolTipString(_('When the download should be started'))
-
-        self.staticTextUpdateDay = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTUPDATEDAY,
-              label=_('&Day Of The Week:'), name='staticTextUpdateDay',
-              parent=self._panelInternetUpdate, pos=wxPoint(23, 104),
-              size=wxSize(96, 18), style=0)
-        self.staticTextUpdateDay.SetToolTipString('')
-
         self._panelScheduler = wxPanel(id=wxID_WXPREFERENCESDLG_PANELSCHEDULER,
               name='_panelScheduler', parent=self.notebook, pos=wxPoint(0, 0),
               size=wxSize(390, 234), style=wxTAB_TRAVERSAL)
@@ -628,7 +649,7 @@ class wxPreferencesDlg(wxDialog):
         self.choiceUpdateDay = wxChoice(choices=[_('Monday'), _('Tuesday'),
               _('Wednesday'), _('Thursday'), _('Friday'), _('Saturday'), _('Sunday')],
               id=wxID_WXPREFERENCESDLGCHOICEUPDATEDAY, name='choiceUpdateDay',
-              parent=self._panelInternetUpdate, pos=wxPoint(126, 101),
+              parent=self._panelInternetUpdate, pos=wxPoint(INTERNETUPDATE_INPUTXPOS, 121),
               size=wxSize(110, 21), style=0)
         self.choiceUpdateDay.SetColumns(2)
         self.choiceUpdateDay.SetToolTipString(_('When update frequency is weekly select day of the week for an update'))
@@ -637,7 +658,8 @@ class wxPreferencesDlg(wxDialog):
         self.checkBoxUpdateLogon = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXUPDATELOGON,
               label=_('&Update Virus Database On Logon'),
               name='checkBoxUpdateLogon', parent=self._panelInternetUpdate,
-              pos=wxPoint(6, 138), size=wxSize(322, 20), style=0)
+#              pos=wxPoint(6, 138), size=wxSize(322, 20), style=0)
+              pos=wxPoint(6, 158), size=wxSize(322, 20), style=0)
         self.checkBoxUpdateLogon.SetToolTipString(_('Select if you wish to update the virus databases just after you logged on'))
         self.checkBoxUpdateLogon.SetValue(False)
         EVT_CHECKBOX(self.checkBoxUpdateLogon,
@@ -709,24 +731,29 @@ class wxPreferencesDlg(wxDialog):
         self.staticBoxSMTPConnection = wxStaticBox(id=wxID_WXPREFERENCESDLGSTATICBOXSMTPCONNECTION,
               label=_('SMTP Connection Details'), name='staticBoxSMTPConnection',
               parent=self._panelEmailAlerts, pos=wxPoint(16, 27),
-              size=wxSize(368, 71), style=0)
+#              size=wxSize(368, 71), style=0)
+              size=wxSize(368, 101), style=0)
         self.staticBoxSMTPConnection.SetToolTipString('')
+
+        SMTPCONNECTION_STRETCH = 80
 
         self.staticTextSMTPHost = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTSMTPHOST,
               label=_('&Mail Server:'), name='staticTextSMTPHost',
               parent=self._panelEmailAlerts, pos=wxPoint(24, 49),
-              size=wxSize(71, 16), style=0)
+              size=wxSize(71 + SMTPCONNECTION_STRETCH, 16), style=0)
         self.staticTextSMTPHost.SetToolTipString('')
+
+        SMTPCONNECTION_XPOS = 124
 
         self.textCtrlSMTPHost = wxTextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLSMTPHOST,
               name='textCtrlSMTPHost', parent=self._panelEmailAlerts,
-              pos=wxPoint(104, 46), size=wxSize(192, 21), style=0, value='')
+              pos=wxPoint(SMTPCONNECTION_XPOS, 46), size=wxSize(296-SMTPCONNECTION_XPOS, 21), style=0, value='')
         self.textCtrlSMTPHost.SetToolTipString(_('SMTP Server domain name or IP address'))
 
         self.staticTextSMTPPort = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTSMTPPORT,
               label=_('P&ort:'), name='staticTextSMTPPort',
               parent=self._panelEmailAlerts, pos=wxPoint(300, 49),
-              size=wxSize(31, 16), style=0)
+              size=wxSize(31 + SMTPCONNECTION_STRETCH, 16), style=0)
 
         self.intCtrlSMTPPort = wxIntCtrl(allow_long=False, allow_none=False,
               default_color=wxBLACK, id=wxID_WXPREFERENCESDLGINTCTRLSMTPPORT,
@@ -739,68 +766,72 @@ class wxPreferencesDlg(wxDialog):
         self.staticTextSMTPUserName = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTSMTPUSERNAME,
               label=_('&User Name:'), name='staticTextSMTPUserName',
               parent=self._panelEmailAlerts, pos=wxPoint(24, 72),
-              size=wxSize(79, 16), style=0)
+              size=wxSize(79 + SMTPCONNECTION_STRETCH, 16), style=0)
         self.staticTextSMTPUserName.SetToolTipString('')
 
         self.textCtrlSMTPUser = wxTextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLSMTPUSER,
               name='textCtrlSMTPUser', parent=self._panelEmailAlerts,
-              pos=wxPoint(104, 69), size=wxSize(101, 21), style=0, value='')
+              pos=wxPoint(SMTPCONNECTION_XPOS, 69), size=wxSize(101, 21), style=0, value='')
         self.textCtrlSMTPUser.SetToolTipString(_('Mail Server Account Name (optional)'))
 
         self.staticTextSMTPPassword = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTSMTPPASSWORD,
               label=_('&Password:'), name='staticTextSMTPPassword',
-              parent=self._panelEmailAlerts, pos=wxPoint(209, 72),
-              size=wxSize(66, 16), style=0)
+#              parent=self._panelEmailAlerts, pos=wxPoint(209, 72),
+              parent=self._panelEmailAlerts, pos=wxPoint(24, 95),
+              size=wxSize(66 + SMTPCONNECTION_STRETCH, 16), style=0)
         self.staticTextSMTPPassword.SetToolTipString('')
 
         self.textCtrlSMTPPassword = wxTextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLSMTPPASSWORD,
               name='textCtrlSMTPPassword', parent=self._panelEmailAlerts,
-              pos=wxPoint(276, 69), size=wxSize(101, 21), style=wxTE_PASSWORD,
+#              pos=wxPoint(276, 69), size=wxSize(101, 21), style=wxTE_PASSWORD,
+              pos=wxPoint(SMTPCONNECTION_XPOS, 92), size=wxSize(101, 21), style=wxTE_PASSWORD,
               value='')
         self.textCtrlSMTPPassword.SetToolTipString(_('Mail Server account password (optional)'))
 
+        EMAILALERTS_MAINYPOS = 142
+
         self.staticBoxEmailDetails = wxStaticBox(id=wxID_WXPREFERENCESDLGSTATICBOXEMAILDETAILS,
               label=_('Email Message Details'), name='staticBoxEmailDetails',
-              parent=self._panelEmailAlerts, pos=wxPoint(16, 102),
+              parent=self._panelEmailAlerts, pos=wxPoint(16, EMAILALERTS_MAINYPOS),
               size=wxSize(368, 95), style=0)
         self.staticBoxEmailDetails.SetToolTipString('')
 
         self.staticTextSMTPFrom = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTSMTPFROM,
               label=_('&From:'), name='staticTextSMTPFrom',
-              parent=self._panelEmailAlerts, pos=wxPoint(24, 124),
+              parent=self._panelEmailAlerts, pos=wxPoint(24, EMAILALERTS_MAINYPOS + 22),
               size=wxSize(63, 16), style=0)
         self.staticTextSMTPFrom.SetToolTipString('')
 
         self.textCtrlSMTPFrom = wxTextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLSMTPFROM,
               name='textCtrlSMTPFrom', parent=self._panelEmailAlerts,
-              pos=wxPoint(104, 118), size=wxSize(273, 21), style=0, value='')
+              pos=wxPoint(104, EMAILALERTS_MAINYPOS + 16), size=wxSize(273, 21), style=0, value='')
         self.textCtrlSMTPFrom.SetToolTipString(_('Specify an email address from which the notification will be sent.'))
 
         self.staticTextSMTPTo = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTSMTPTO,
               label=_('&To:'), name='staticTextSMTPTo',
-              parent=self._panelEmailAlerts, pos=wxPoint(24, 148),
+              parent=self._panelEmailAlerts, pos=wxPoint(24, EMAILALERTS_MAINYPOS + 46),
               size=wxSize(63, 16), style=0)
         self.staticTextSMTPTo.SetToolTipString('')
 
         self.textCtrlSMTPTo = wxTextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLSMTPTO,
               name='textCtrlSMTPTo', parent=self._panelEmailAlerts,
-              pos=wxPoint(104, 143), size=wxSize(273, 21), style=0, value='')
+              pos=wxPoint(104, EMAILALERTS_MAINYPOS + 41), size=wxSize(273, 21), style=0, value='')
         self.textCtrlSMTPTo.SetToolTipString(_('Specify an email address where the email alert will be delivered.  Separate multiple addresses with commas.'))
 
         self.staticTextSMTPSubject = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTSMTPSUBJECT,
               label=_('Su&bject:'), name='staticTextSMTPSubject',
-              parent=self._panelEmailAlerts, pos=wxPoint(24, 171),
+              parent=self._panelEmailAlerts, pos=wxPoint(24, EMAILALERTS_MAINYPOS + 69),
               size=wxSize(63, 16), style=0)
         self.staticTextSMTPSubject.SetToolTipString('')
 
         self.textCtrlSMTPSubject = wxTextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLSMTPSUBJECT,
               name='textCtrlSMTPSubject', parent=self._panelEmailAlerts,
-              pos=wxPoint(104, 167), size=wxSize(273, 21), style=0, value='')
+              pos=wxPoint(104, EMAILALERTS_MAINYPOS + 65), size=wxSize(273, 21), style=0, value='')
         self.textCtrlSMTPSubject.SetToolTipString(_("Specify Recipient's email address where the email alert will be delivered"))
 
         self.buttonSendTestEmail = wxButton(id=wxID_WXPREFERENCESDLGBUTTONSENDTESTEMAIL,
               label=_('Send &Test Email'), name='buttonSendTestEmail',
-              parent=self._panelEmailAlerts, pos=wxPoint(120, 205),
+              parent=self._panelEmailAlerts, pos=wxPoint(120, EMAILALERTS_MAINYPOS + 103),
               size=wxSize(149, 23), style=0)
         self.buttonSendTestEmail.SetToolTipString(_('Click to send a test email message'))
         EVT_BUTTON(self.buttonSendTestEmail,
@@ -821,21 +852,34 @@ class wxPreferencesDlg(wxDialog):
         self.staticTextFiltreDesc1 = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTFILTREDESC1,
               label=_('Specify Filename Patterns to include and/or exclude in scanning'),
               name='staticTextFiltreDesc1', parent=self._panelFilters,
-              pos=wxPoint(6, 11), size=wxSize(383, 16), style=0)
+#              pos=wxPoint(6, 11), size=wxSize(383, 16), style=0)
+              pos=wxPoint(6, 11), size=wxSize(383, 32), style=0)
 
         self.staticText2 = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXT2,
               label=_('(To specify a regular expression include your pattern within <...>)'),
-              name='staticText2', parent=self._panelFilters, pos=wxPoint(6, 28),
-              size=wxSize(382, 16), style=0)
+#              name='staticText2', parent=self._panelFilters, pos=wxPoint(6, 28),
+              name='staticText2', parent=self._panelFilters, pos=wxPoint(6, 40),
+#              size=wxSize(382, 16), style=0)
+              size=wxSize(382, 32), style=0)
+
+#        self.staticTextFiltersExclude = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTFILTERSEXCLUDE,
+#              label=_('&Exclude Matching Filenames:'),
+#              name='staticTextFiltersExclude', parent=self._panelFilters,
+#              pos=wxPoint(6, 50), size=wxSize(184, 16), style=0)
 
         self.staticTextFiltersExclude = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTFILTERSEXCLUDE,
               label=_('&Exclude Matching Filenames:'),
               name='staticTextFiltersExclude', parent=self._panelFilters,
-              pos=wxPoint(6, 50), size=wxSize(184, 16), style=0)
+              pos=wxPoint(6, 68), size=wxSize(184, 32), style=0)
+
+#        self.editableListBoxFiltersExclude = wxEditableListBox(id=wxID_WXPREFERENCESDLGEDITABLELISTBOXFILTERSEXCLUDE,
+#              label=_('Patterns'), name='editableListBoxFiltersExclude',
+#              parent=self._panelFilters, pos=wxPoint(6, 69), size=wxSize(182,
+#              151))
 
         self.editableListBoxFiltersExclude = wxEditableListBox(id=wxID_WXPREFERENCESDLGEDITABLELISTBOXFILTERSEXCLUDE,
               label=_('Patterns'), name='editableListBoxFiltersExclude',
-              parent=self._panelFilters, pos=wxPoint(6, 69), size=wxSize(182,
+              parent=self._panelFilters, pos=wxPoint(6, 99), size=wxSize(182,
               151))
 
         self.buttonUpFiltersExclude = self.editableListBoxFiltersExclude.GetUpButton()
@@ -856,11 +900,16 @@ class wxPreferencesDlg(wxDialog):
         self.staticTextFiltersInclude = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTFILTERSINCLUDE,
               label=_('&Scan Only Matching Filenames:'),
               name='staticTextFiltersInclude', parent=self._panelFilters,
-              pos=wxPoint(202, 51), size=wxSize(187, 16), style=0)
+#              pos=wxPoint(202, 51), size=wxSize(187, 16), style=0)
+              pos=wxPoint(202, 68), size=wxSize(187, 32), style=0)
 
+#        self.editableListBoxFiltersInclude = wxEditableListBox(id=wxID_WXPREFERENCESDLGEDITABLELISTBOXFILTERSINCLUDE,
+#              label=_('Patterns'), name='editableListBoxFiltersInclude',
+#              parent=self._panelFilters, pos=wxPoint(200, 69), size=wxSize(184,
+#              151))
         self.editableListBoxFiltersInclude = wxEditableListBox(id=wxID_WXPREFERENCESDLGEDITABLELISTBOXFILTERSINCLUDE,
               label=_('Patterns'), name='editableListBoxFiltersInclude',
-              parent=self._panelFilters, pos=wxPoint(200, 69), size=wxSize(184,
+              parent=self._panelFilters, pos=wxPoint(200, 99), size=wxSize(184,
               151))
 
         self.buttonUpFiltersInclude = self.editableListBoxFiltersInclude.GetUpButton()
@@ -897,7 +946,8 @@ class wxPreferencesDlg(wxDialog):
         self.checkBoxCheckVersion = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXCHECKVERSION,
               label=_('&Notify About New ClamWin Releases'),
               name='checkBoxCheckVersion', parent=self._panelInternetUpdate,
-              pos=wxPoint(6, 172), size=wxSize(322, 20), style=0)
+#              pos=wxPoint(6, 172), size=wxSize(322, 20), style=0)
+              pos=wxPoint(6, 192), size=wxSize(322, 20), style=0)
         self.checkBoxCheckVersion.SetToolTipString(_('Select if you wish to get a notification message when ClamWin Free Antivirus program has been updated'))
         self.checkBoxCheckVersion.SetValue(False)
         EVT_CHECKBOX(self.checkBoxCheckVersion,
@@ -907,7 +957,8 @@ class wxPreferencesDlg(wxDialog):
         self.staticTextNoPersonal = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTNOPERSONAL,
               label=_('(No personal information is transmitted during this check)'),
               name='staticTextNoPersonal', parent=self._panelInternetUpdate,
-              pos=wxPoint(27, 193), size=wxSize(350, 13), style=0)
+#              pos=wxPoint(27, 193), size=wxSize(350, 13), style=0)
+              pos=wxPoint(27, 213), size=wxSize(350, 13), style=0)
 
         self.staticTextMB2 = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTMB2,
               label=_('MegaBytes'), name='staticTextMB2',
@@ -1232,7 +1283,7 @@ class wxPreferencesDlg(wxDialog):
             dlg.Destroy()
             
     def OnButtonBrowseVirDB(self, event):
-        dlg = wxDirDialog(self)
+        dlg = wxDirDialog(self, _('Select a directory'))
         try:
             if dlg.ShowModal() == wxID_OK:
                 dir = dlg.GetPath()                            
@@ -1353,7 +1404,7 @@ class wxPreferencesDlg(wxDialog):
         self._EnableOptionsControls(False)
         
     def OnButtonBrowseQuarantine(self, event):
-        dlg = wxDirDialog(self)
+        dlg = wxDirDialog(self, _('Select a directory'))
         try:
             if dlg.ShowModal() == wxID_OK:
                 dir = dlg.GetPath()                            
@@ -1371,7 +1422,7 @@ class wxPreferencesDlg(wxDialog):
         try:
             msg = EmailAlert.VirusAlertMsg(self.textCtrlSMTPFrom.GetValue(), 
                             self.textCtrlSMTPTo.GetValue(),
-                            self.textCtrlSMTPSubject.GetValue() + ' (Testing)',
+                            self.textCtrlSMTPSubject.GetValue() + _(' (Testing)'),
                             self.textCtrlSMTPHost.GetValue(),
                             self.intCtrlSMTPPort.GetValue(),
                             self.textCtrlSMTPUser.GetValue(),
