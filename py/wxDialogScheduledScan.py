@@ -152,28 +152,30 @@ def create(parent, scanInfo):
 class wxDialogScheduledScan(wxDialog):
     def _init_ctrls(self, prnt):
         # generated method, don't edit
+
+        STRETCH_LEN = 30
         wxDialog.__init__(self, id=wxID_WXDIALOGSCHEDULEDSCAN,
               name='wxDialogScheduledScan', parent=prnt, pos=wxPoint(427, 201),
-              size=wxSize(311, 301), style=wxDEFAULT_DIALOG_STYLE,
+              size=wxSize(311 + STRETCH_LEN*2, 301), style=wxDEFAULT_DIALOG_STYLE,
               title=_('Scheduled Scan'))
-        self.SetClientSize(wxSize(303, 274))
+        self.SetClientSize(wxSize(303 + STRETCH_LEN*2, 274))
         self.SetToolTipString('')
         self.Center(wxBOTH)
         EVT_CHAR_HOOK(self, self.OnCharHook)
 
         self.staticBox1 = wxStaticBox(id=wxID_WXDIALOGSCHEDULEDSCANSTATICBOX1,
               label=_('Schedule'), name='staticBox1', parent=self, pos=wxPoint(11,
-              8), size=wxSize(282, 104), style=0)
+              8), size=wxSize(282 + STRETCH_LEN*2, 104), style=0)
 
         self.staticTextFrequency = wxStaticText(id=wxID_WXDIALOGSCHEDULEDSCANSTATICTEXTFREQUENCY,
               label=_('Scanning &Frequency:'), name='staticTextFrequency',
-              parent=self, pos=wxPoint(25, 30), size=wxSize(131, 13), style=0)
+              parent=self, pos=wxPoint(25, 30), size=wxSize(131 + STRETCH_LEN, 13), style=0)
         self.staticTextFrequency.SetToolTipString('')
 
         self.choiceFrequency = wxChoice(choices=[_('Hourly'), _('Daily'), _('Workdays'),
                 _('Weekly')], id=wxID_WXDIALOGSCHEDULEDSCANCHOICEFREQUENCY,
-              name='choiceFrequency', parent=self, pos=wxPoint(171, 27),
-              size=wxSize(107, 21), style=0)
+              name='choiceFrequency', parent=self, pos=wxPoint(171 + STRETCH_LEN, 27),
+              size=wxSize(107 + STRETCH_LEN, 21), style=0)
         self.choiceFrequency.SetColumns(2)
         self.choiceFrequency.SetToolTipString(_('How often the schedule is executed'))
         self.choiceFrequency.SetStringSelection(_('Daily'))
@@ -183,28 +185,28 @@ class wxDialogScheduledScan(wxDialog):
 
         self.staticTextTime = wxStaticText(id=wxID_WXDIALOGSCHEDULEDSCANSTATICTEXTTIME,
               label=_('&Time:'), name='staticTextTime', parent=self,
-              pos=wxPoint(25, 56), size=wxSize(121, 18), style=0)
+              pos=wxPoint(25, 56), size=wxSize(121 + STRETCH_LEN, 18), style=0)
 
         self.staticLineTimeCtrl = wxStaticLine(id=wxID_WXDIALOGSCHEDULEDSCANSTATICLINETIMECTRL,
-              name='staticLineTimeCtrl', parent=self, pos=wxPoint(171, 54),
-              size=wxSize(90, 22), style=0)
+              name='staticLineTimeCtrl', parent=self, pos=wxPoint(171 + STRETCH_LEN, 54),
+              size=wxSize(90 + STRETCH_LEN, 22), style=0)
         self.staticLineTimeCtrl.Show(False)
         self.staticLineTimeCtrl.SetToolTipString(_('When the schedule should be started'))
 
         self.spinButtonTime = wxSpinButton(id=wxID_WXDIALOGSCHEDULEDSCANSPINBUTTONTIME,
-              name='spinButtonTime', parent=self, pos=wxPoint(261, 53),
+              name='spinButtonTime', parent=self, pos=wxPoint(261 + STRETCH_LEN*2, 53),
               size=wxSize(16, 22), style=wxSP_ARROW_KEYS | wxSP_VERTICAL)
         self.spinButtonTime.SetToolTipString('')
 
         self.staticTextDay = wxStaticText(id=wxID_WXDIALOGSCHEDULEDSCANSTATICTEXTDAY,
               label=_('&Day Of The Week:'), name='staticTextDay', parent=self,
-              pos=wxPoint(25, 85), size=wxSize(123, 18), style=0)
+              pos=wxPoint(25, 85), size=wxSize(123 + STRETCH_LEN, 18), style=0)
         self.staticTextDay.SetToolTipString('')
 
         self.choiceDay = wxChoice(choices=[_('Monday'), _('Tuesday'), _('Wednesday'),
               _('Thursday'), _('Friday'), _('Saturday'), _('Sunday')],
               id=wxID_WXDIALOGSCHEDULEDSCANCHOICEDAY, name='choiceDay',
-              parent=self, pos=wxPoint(171, 82), size=wxSize(107, 21), style=0)
+              parent=self, pos=wxPoint(171 + STRETCH_LEN, 82), size=wxSize(107 + STRETCH_LEN, 21), style=0)
         self.choiceDay.SetColumns(2)
         self.choiceDay.SetToolTipString(_('When schedule frequency is weekly select day of the week'))
         self.choiceDay.SetStringSelection(_('Tuesday'))
@@ -216,12 +218,12 @@ class wxDialogScheduledScan(wxDialog):
 
         self.textCtrlFolder = wxTextCtrl(id=wxID_WXDIALOGSCHEDULEDSCANTEXTCTRLFOLDER,
               name='textCtrlFolder', parent=self, pos=wxPoint(11, 139),
-              size=wxSize(260, 20), style=0, value='')
+              size=wxSize(260 + STRETCH_LEN*2, 20), style=0, value='')
         self.textCtrlFolder.SetToolTipString(_('Specify a folder to be scanned'))
 
         self.buttonBrowseFolder = wxButton(id=wxID_WXDIALOGSCHEDULEDSCANBUTTONBROWSEFOLDER,
               label='...', name='buttonBrowseFolder', parent=self,
-              pos=wxPoint(273, 139), size=wxSize(20, 20), style=0)
+              pos=wxPoint(273 + STRETCH_LEN*2, 139), size=wxSize(20, 20), style=0)
         self.buttonBrowseFolder.SetToolTipString(_('Click to browse for a folder'))
         EVT_BUTTON(self.buttonBrowseFolder,
               wxID_WXDIALOGSCHEDULEDSCANBUTTONBROWSEFOLDER,
@@ -234,7 +236,7 @@ class wxDialogScheduledScan(wxDialog):
 
         self.textCtrlDescription = wxTextCtrl(id=wxID_WXDIALOGSCHEDULEDSCANTEXTCTRLDESCRIPTION,
               name='textCtrlDescription', parent=self, pos=wxPoint(11, 182),
-              size=wxSize(282, 20), style=0, value='')
+              size=wxSize(282 + STRETCH_LEN*2, 20), style=0, value='')
         self.textCtrlDescription.SetToolTipString(_('Specify a friendly description for the scheduled scan'))
 
         self.checkBoxEnabled = wxCheckBox(id=wxID_WXDIALOGSCHEDULEDSCANCHECKBOXENABLED,
@@ -244,14 +246,14 @@ class wxDialogScheduledScan(wxDialog):
         self.checkBoxEnabled.SetToolTipString(_('Select if you wish to enable this schedule'))
 
         self.buttonOK = wxButton(id=wxID_WXDIALOGSCHEDULEDSCANBUTTONOK,
-              label=_('OK'), name='buttonOK', parent=self, pos=wxPoint(73, 242),
+              label=_('OK'), name='buttonOK', parent=self, pos=wxPoint(73 + STRETCH_LEN, 242),
               size=wxSize(75, 23), style=0)
         self.buttonOK.SetDefault()
         self.buttonOK.SetToolTipString(_('Closes the dialog and applies the settings'))
         EVT_BUTTON(self.buttonOK, wxID_WXDIALOGSCHEDULEDSCANBUTTONOK, self.OnOK)
 
         self.buttonCancel = wxButton(id=wxID_WXDIALOGSCHEDULEDSCANBUTTONCANCEL,
-              label=_('Cancel'), name='buttonCancel', parent=self, pos=wxPoint(160,
+              label=_('Cancel'), name='buttonCancel', parent=self, pos=wxPoint(160 + STRETCH_LEN,
               242), size=wxSize(75, 23), style=0)
         self.buttonCancel.SetToolTipString(_('Closes the dialog and discards the changes'))
         EVT_BUTTON(self.buttonCancel, wxID_WXDIALOGSCHEDULEDSCANBUTTONCANCEL,
@@ -304,7 +306,7 @@ class wxDialogScheduledScan(wxDialog):
             event.Skip()  
 
     def OnButtonBrowseFolder(self, event):
-        dlg = wxDirDialog(self)
+        dlg = wxDirDialog(self, _('Select a directory'))
         try:
             if dlg.ShowModal() == wxID_OK:
                 dir = dlg.GetPath()                            

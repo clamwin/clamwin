@@ -31,7 +31,7 @@ from email.MIMEText import MIMEText
 from email.MIMEMultipart import MIMEMultipart
 import email
 import Utils, ThreadFuture
-
+from I18N import getClamString as _
 class EmailMsg(MIMEMultipart):
     def __init__(self, From, To, Subject, Body, Reports=()):
         MIMEMultipart.__init__(self)

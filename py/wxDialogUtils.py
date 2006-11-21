@@ -222,6 +222,13 @@ def wxCheckUpdate(parent, config):
         
     try:
         ver, url, changelog = Utils.GetOnlineVersion(config)
+        englishUrl = 'http://www.clamwin.com/content/view/18/46/'
+        localUrl = _('http://www.clamwin.com/content/view/18/46/')
+        if url == englishUrl:
+            # AB: check that the url is still current, if this changes
+            # we will need to come up with a better plan
+            url = localUrl
+            
         if ver <= version.clamwin_version:
             return
     except Exception, e:

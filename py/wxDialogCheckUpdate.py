@@ -30,7 +30,7 @@ from wxPython.wx import *
 from wxPython.html import *
 import os
 import wxDialogUtils
-
+from I18N import getClamString as _
 
 def create(parent, config, version, url, changelog):
     return wxDialogUpdateChecker(parent, config, version, url, changelog)
@@ -109,7 +109,7 @@ class wxDialogUpdateChecker(wxDialog):
         EVT_BUTTON(self.buttonClose, wxID_WXDIALOGUPDATECHECKERBUTTONCLOSE,
               self.OnButtonClose)
 
-    def __init__(self, parent, config, version, url, changelog):        
+    def __init__(self, parent, config, version, url, changelog):
         self._init_ctrls(parent)
         self.html = wxHtmlWindow(parent = self, id = -1, pos = self.staticLineHtml.GetPosition(), 
                     size = self.staticLineHtml.GetSize(), style = wxSTATIC_BORDER)
@@ -126,8 +126,7 @@ class wxDialogUpdateChecker(wxDialog):
         except Exception, e:
             print e
             self.Center(wxBOTH)
-        
-        
+
         # set window icons
         icons = wxIconBundle()
         icons.AddIconFromFile('img/FrameIcon.ico', wxBITMAP_TYPE_ICO)

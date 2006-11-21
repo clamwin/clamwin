@@ -113,6 +113,8 @@ class ThreadUpdateStatusEvent(wxPyCommandEvent):
 def translateClamAVLines(lines):
     # Translate a list of lines of ClamAV output based on 0.88.2 output
     dClamAVStrings = {
+            'File not found':           # only seems to occur on WINE
+                _('File not found'),
             'FOUND':
                 _('FOUND'),
             'ClamAV update process started at':
@@ -184,7 +186,11 @@ def translateClamAVLines(lines):
             'http:\\\\www.clamav.net\\faq.html':
                 _('http:\\\\www.clamav.net\\faq.html'),
             'http://www.clamwin.com/content/view/10/27/':
-                _('http://www.clamwin.com/content/view/10/27/')
+                _('http://www.clamwin.com/content/view/10/27/'),
+            'Not moved':
+                _('Not moved'),
+            'File excluded':
+                _('File excluded'),
             
         }
 
@@ -261,7 +267,10 @@ def translateClamAVLines(lines):
         
         for sToReplace in dClamAVStrings.keys():
             sToEncode = dClamAVStrings[sToReplace].encode('utf-8')
-            line = line.replace(sToReplace, sToEncode)
+            try:
+                line = line.replace(sToReplace, sToEncode)
+            except:
+                pass    # TODO: Exceptions occur with czech for some reason
         for sToReplace in dClamAVAfterStrings.keys():
             sToEncode = dClamAVAfterStrings[sToReplace].encode('utf-8')
             line = line.replace(sToReplace, sToEncode)
@@ -339,8 +348,7 @@ class wxDialogStatus(wxDialog):
         self._alreadyCalled = False
         
         self._init_ctrls(parent)
-        
-        
+      
         # bind thread notification events
         EVT_THREADFINISHED(self, self.OnThreadFinished)        
         EVT_THREADUPDATESTATUS(self, self.OnThreadUpdateStatus)                
@@ -578,16 +586,20 @@ class wxDialogStatus(wxDialog):
             #print_over = re.search('\[( {0,2}\d{1,3}\%)?[|/\-\\\*]?\]', 
             #    ctrl.GetRange(self._previousStart, lastPos)) is not None
             print_over = ctrl.GetRange(self._previousStart, lastPos).endswith(']\n')
-            if print_over:                
+            if print_over:
                 # prevent form blinking text by disabling richedit selection here
                 win32api.SendMessage(ctrl.GetHandle(),Utils.EM_HIDESELECTION, 1, 0)
                 # replace the text 
                 ctrl.Replace(self._previousStart, ctrl.GetLastPosition(), text.decode('utf-8'))
+                #ctrl.Replace(self._previousStart, ctrl.GetLastPosition(), text)
                 
                 win32api.PostMessage(self.textCtrlStatus.GetHandle(), win32con.EM_SCROLLCARET, 0, 0)
                 lastPos =	self._previousStart
-            else:                    
-                ctrl.AppendText(text)                    
+            else:
+                if type(text) is type('str'):
+                    ctrl.AppendText(text.decode('utf-8'))
+                else:
+                    ctrl.AppendText(text)
             # highlight FOUND entries in red                
             if text.endswith(' FOUND\n'):
                 ctrl.SetStyle(lastPos, ctrl.GetLastPosition() - 1, 
@@ -596,12 +608,11 @@ class wxDialogStatus(wxDialog):
         else:
             ctrl.Clear()
             ctrl.SetDefaultStyle(wxTextAttr(wxNullColour))
-            ctrl.SetValue(text.decode('utf-8'))            
-        
+            ctrl.SetValue(text.decode('utf-8'))
+
         # this is thread unsafe however it doesn't matter as only one thread writes 
         # to the status window
         self._previousStart = lastPos
-
             
         
     def GetExitCode(self):
