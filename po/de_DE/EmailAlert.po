@@ -1,0 +1,36 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ClamWin Free Antivirus\n"
+"POT-Creation-Date: Sun Apr 30 15:44:45 2006\n"
+"PO-Revision-Date: 2006-08-18 09:45+0100\n"
+"Last-Translator: Roland Kuebert <roland.kuebert@gmail.com>\n"
+"Language-Team: ClamWin in German <roland.kuebert@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+
+#: EmailAlert.py:82
+msgid "Email alert to %s has been sent successfully."
+msgstr "E-Mail-Benachrichtigung an %s wurde erfolgreich gesendet."
+
+#: EmailAlert.py:86
+msgid "Could not send an email. Error: %s"
+msgstr "E-Mail konnte nicht gesendet werden. Fehler: %s"
+
+#: EmailAlert.py:95
+msgid ""
+"ClamWin detected a virus on the following computer: %s\n"
+"\n"
+"Please review the attached log files for more details.\n"
+msgstr ""
+"ClamWin hat auf dem folgenden Computer einen Virus entdeckt: %s\n"
+"\n"
+"Bitte überprüfen Sie den angehängten Bericht für Details.\n"
+

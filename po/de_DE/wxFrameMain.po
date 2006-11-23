@@ -1,0 +1,210 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ClamWin Free Antivirus\n"
+"POT-Creation-Date: Mon May 29 08:17:15 2006\n"
+"PO-Revision-Date: 2006-08-22 07:10+0100\n"
+"Last-Translator: Roland Kuebert <roland.kuebert@gmail.com>\n"
+"Language-Team: Clamwin in German <roland.kuebert@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+
+#: wxFrameMain.py:90
+msgid "Displays the configuration window"
+msgstr "Zeigt das Konfigurationsfenster an"
+
+#: wxFrameMain.py:91
+msgid "&Preferences"
+msgstr "Einstellungen"
+
+#: wxFrameMain.py:93
+msgid "Downloads latest virus database from the Internet"
+msgstr "Lädt die aktuelle Virus-Datenbank aus dem Internet"
+
+#: wxFrameMain.py:95
+msgid "Download &Virus Database Update"
+msgstr "Virus-Datenbank-Update herunterladen"
+
+#: wxFrameMain.py:96
+msgid "Displays ClamWin Log Files"
+msgstr "Zeigt die ClamWin-Berichte"
+
+#: wxFrameMain.py:97
+msgid "&Display Reports"
+msgstr "Berichze anzeigen"
+
+#: wxFrameMain.py:106
+msgid "&File"
+msgstr "Datei"
+
+#: wxFrameMain.py:107
+#, fuzzy
+msgid "&Tools"
+msgstr "Werkzeuge"
+
+#: wxFrameMain.py:108
+#: wxFrameMain.py:114
+msgid "&Help"
+msgstr "Hilfe"
+
+#: wxFrameMain.py:113
+msgid "Displays ClamWin Free Antivirus Manual"
+msgstr "Zeigt das ClamWin Free Antivirus-Handbuch an"
+
+#: wxFrameMain.py:115
+msgid "Checks for the Latest Version"
+msgstr "Überprüft ob Sie die aktuelle Version besitzen"
+
+#: wxFrameMain.py:116
+msgid "&Check Latest Version"
+msgstr "Version überprüfen"
+
+#: wxFrameMain.py:117
+msgid "Opens ClamWin Free Antivirus Website"
+msgstr "Öffnet die ClamWin-Homepage"
+
+#: wxFrameMain.py:118
+msgid "ClamWin &Website"
+msgstr "ClamWin-Homepage"
+
+#: wxFrameMain.py:120
+msgid "Opens Frequently Asked Questions Page in the Web Browser"
+msgstr "Öffnet die FAQ-Seite im Browser"
+
+#: wxFrameMain.py:121
+msgid "&FAQ"
+msgstr "&FAQ"
+
+#: wxFrameMain.py:123
+msgid "Displays the  About Box"
+msgstr "Zeigt ein Fenster mit Informationen"
+
+#: wxFrameMain.py:124
+msgid "&About"
+msgstr "Übert"
+
+#: wxFrameMain.py:134
+msgid "Displays Virus Database Update Log FIle"
+msgstr "Zeigt die Berichtsdatei für das Virus-Datenbank-Update"
+
+#: wxFrameMain.py:136
+msgid "&Virus Database Update Report"
+msgstr "Virus-Datenbank-Update-Bericht"
+
+#: wxFrameMain.py:137
+msgid "Displays Virus Scan Log File"
+msgstr "Zeigt einen Bericht an"
+
+#: wxFrameMain.py:138
+msgid "&Scan Report"
+msgstr "Bericht"
+
+#: wxFrameMain.py:146
+msgid "Scans Files or Folders for Computer Viruses"
+msgstr "Überprüft Dateien und Ordner auf Viren"
+
+#: wxFrameMain.py:147
+#: wxFrameMain.py:257
+msgid "&Scan"
+msgstr "&Scannen"
+
+#: wxFrameMain.py:149
+msgid "Exits the application"
+msgstr "Beendet das Programm"
+
+#: wxFrameMain.py:150
+msgid "E&xit"
+msgstr "Beenden"
+
+#: wxFrameMain.py:159
+msgid "Preferences"
+msgstr "Einstellungen"
+
+#: wxFrameMain.py:160
+#: wxFrameMain.py:161
+msgid "Displays Preferences Window"
+msgstr "Zeigt ein Fenster mit Einstellungen an"
+
+#: wxFrameMain.py:165
+msgid "Update"
+msgstr "Update"
+
+#: wxFrameMain.py:166
+msgid "Updates virus databases over the Internet"
+msgstr "Führt ein Update der Virus-Datenbank über das Internet durch"
+
+#: wxFrameMain.py:167
+msgid "Starts Internet Update"
+msgstr "Beginnt das Internet-Update"
+
+#: wxFrameMain.py:171
+msgid "Scan"
+msgstr "Scan"
+
+#: wxFrameMain.py:172
+msgid "Scans Selected File or Folder for Computer Viruses"
+msgstr "Überprüft die ausgewählte Daite oder den Ordner auf Viren"
+
+#: wxFrameMain.py:173
+msgid "Scans For Viruses"
+msgstr "Sucht nach Viren"
+
+#: wxFrameMain.py:221
+#: wxFrameMain.py:225
+#: wxFrameMain.py:337
+#: wxFrameMain.py:343
+msgid "ClamWin Free Antivirus"
+msgstr "ClamWin Free Antivirus"
+
+#: wxFrameMain.py:239
+msgid "Status Bar"
+msgstr "Status-Anzeige"
+
+#: wxFrameMain.py:247
+msgid ""
+"Select a folder or a file to scan\n"
+"(Hold Shift key to select multiple files or folders)"
+msgstr ""
+"Wählen Sie einen Ordner oder eine Datei, die gescannt werden soll\n"
+"(Shift gedrückt halten, um mehrere Ordner oder Dateien auszuwählen)"
+
+#: wxFrameMain.py:265
+msgid "&Close"
+msgstr "Schließen"
+
+#: wxFrameMain.py:337
+msgid "ClamWin Free Antivirus is not configured. Would you like to configure it now?"
+msgstr "ClamWin Free Antivirus ist nicht konfiguriert. Möchten Sie es jetzt konfigurieren?"
+
+#: wxFrameMain.py:343
+msgid "You have not yet downloaded Virus Definitions Database. Would you like to download it now?"
+msgstr "Sie haben noch keine Virus-Datenbank heruntergeladen. Möchten Sie jetzt eine herunterladen?"
+
+#: wxFrameMain.py:354
+#, fuzzy
+msgid "An Error occurred while updating UI selection. %s"
+msgstr "Eine Fehler ist während der Aktualisierung der grafischen Benutzeroberfläche aufgetreten. %s"
+
+#: wxFrameMain.py:383
+msgid "Could not open help file - %s not found."
+msgstr "Konnte die Hilfe-Datei nicht öffnen - %s nicht gefunden."
+
+#: wxFrameMain.py:390
+msgid "Could not open help file. Please ensure that you have Adobe Acrobat Reader installed."
+msgstr "Konnte die Hilfe-Datei nicht öffnen. Bitte stellen Sie sicher dass Sie den Adobe Acrobat Reader installiert haben."
+
+#: wxFrameMain.py:393
+msgid "http://www.clamwin.com/content/category/3/7/27/"
+msgstr "http://www.clamwin.com/content/category/3/7/27/"
+
+#: wxFrameMain.py:401
+msgid "http://www.clamwin.com"
+msgstr "http://de.clamwin.com"
+

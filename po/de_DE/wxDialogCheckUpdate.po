@@ -1,0 +1,46 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ClamWin Free Antivirus\n"
+"POT-Creation-Date: Sun Apr 30 15:46:07 2006\n"
+"PO-Revision-Date: 2006-08-22 07:05+0100\n"
+"Last-Translator: Roland Kuebert <roland.kuebert@gmail.com>\n"
+"Language-Team: Clamwin in German <roland.kuebert@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+
+#: wxDialogCheckUpdate.py:54
+msgid "ClamWin Update"
+msgstr "ClamWin-Update"
+
+#: wxDialogCheckUpdate.py:60
+msgid "An update of ClamWin Free Antivirus has been released. Please click on Download button and download the latest version %s"
+msgstr "Eine Update von ClamWin wurde veröffentlicht. Klicken Sie bitte auf den Download-Knopf und laden Sie die letzte Version, %s, herunter."
+
+#: wxDialogCheckUpdate.py:69
+msgid "After you download the latest version setup file simply run it and install over the existing version."
+msgstr "Nachdem Sie die letzte Version heruntergeladen haben führen Sie einfach die Datei aus und installieren Sie sie über die bereits existierende Version."
+
+#: wxDialogCheckUpdate.py:76
+msgid "List Of Changes in Version %s:"
+msgstr "Änderungen in Version %s:"
+
+#: wxDialogCheckUpdate.py:88
+msgid "&Do Not Check for Updates in Future"
+msgstr "Nicht mehr auf Updates überprüfen"
+
+#: wxDialogCheckUpdate.py:98
+msgid "&Download"
+msgstr "&Download"
+
+#: wxDialogCheckUpdate.py:105
+msgid "Close"
+msgstr "Schließen"
+

@@ -1,0 +1,102 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ClamWin Free Antivirus\n"
+"POT-Creation-Date: Sun Apr 30 15:45:42 2006\n"
+"PO-Revision-Date: 2006-08-18 17:35+0100\n"
+"Last-Translator: Roland Kuebert <roland.kuebert@gmail.com>\n"
+"Language-Team: Clamwin in German <roland.kuebert@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+
+#: wxDialogAbout.py:57
+#: wxDialogAbout.py:61
+msgid "About ClamWin Free Antivirus"
+msgstr "Über ClamWin Free Antivirus"
+
+#: wxDialogAbout.py:72
+msgid "Version "
+msgstr "Version"
+
+#: wxDialogAbout.py:79
+#, fuzzy
+msgid "ClamAV Version gets here"
+msgstr "ClamAV Version"
+
+#: wxDialogAbout.py:84
+msgid "Protecting from %i Viruses"
+msgstr "Schützt vor %i Viren"
+
+#: wxDialogAbout.py:93
+#: wxDialogAbout.py:115
+msgid "ClamWin Free Antivirus Homepage"
+msgstr "ClamWin Free Antivirus Homepage"
+
+#: wxDialogAbout.py:100
+msgid "Donate to ClamWin"
+msgstr "An ClamWin spenden"
+
+#: wxDialogAbout.py:105
+msgid "Website:"
+msgstr "Webseite:"
+
+#: wxDialogAbout.py:110
+#: wxDialogAbout.py:199
+msgid "http://www.clamwin.com"
+msgstr "http://de.clamwin.com"
+
+#: wxDialogAbout.py:119
+msgid "Author: alch <alch@users.sourceforge.net>"
+msgstr "Autor: alch <alch@users.sourceforge.net>"
+
+#: wxDialogAbout.py:125
+msgid "Copyright (c) 2004 - 2006"
+msgstr "Copyright (c) 2004 - 2006"
+
+#: wxDialogAbout.py:130
+msgid "This program is free software"
+msgstr "Dieses Programm ist freie Software"
+
+#: wxDialogAbout.py:142
+msgid "ClamAV Homepage"
+msgstr "Homepage von ClamAV"
+
+#: wxDialogAbout.py:150
+msgid "Finndesign Homepage"
+msgstr "Homepage von Finndesign"
+
+#: wxDialogAbout.py:158
+msgid "Python Homepage"
+msgstr "Homepage von Python"
+
+#: wxDialogAbout.py:162
+msgid "OK"
+msgstr "Ok"
+
+#: wxDialogAbout.py:168
+msgid "Virus DB Version: (main: %i; daily: %i)"
+msgstr "Version der Virusdatenbank: (main: %i, daily: %i)"
+
+#: wxDialogAbout.py:174
+msgid "Updated: %s"
+msgstr "Upgedatet: %s"
+
+#: wxDialogAbout.py:214
+msgid "Could not locate ClamScan executable"
+msgstr "Konnte ausführbare Datei ClamScan nicht finden"
+
+#: wxDialogAbout.py:227
+msgid "Unable to retrieve ClamAV version"
+msgstr "Konnte die ClamAV-Version nicht ermitteln"
+
+#: wxDialogAbout.py:252
+msgid "Unable to retrieve database verison"
+msgstr "Konnte die Version der Datenbank nicht ermitteln"
+
