@@ -1,0 +1,2045 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ClamWin Free Antivirus\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2006-11-24 19:02+0100\n"
+"Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
+"Language-Team: Chinese <team@clamwin.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: chinese\n"
+"X-Poedit-Country: China\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: wxFrameMain.py:90
+#, fuzzy
+msgid "Displays the configuration window"
+msgstr "显示设置窗口"
+
+#: wxFrameMain.py:91
+#, fuzzy
+msgid "&Preferences"
+msgstr "参数选择(&P)"
+
+#: wxFrameMain.py:93
+#, fuzzy
+msgid "Downloads latest virus database from the Internet"
+msgstr "从因特网上下载最新的病毒库"
+
+#: wxFrameMain.py:95
+#, fuzzy
+msgid "Download &Virus Database Update"
+msgstr "下载最新病毒库(&V)"
+
+#: wxFrameMain.py:96
+#, fuzzy
+msgid "Displays ClamWin Log Files"
+msgstr "显示ClamWin日志文件"
+
+#: wxFrameMain.py:97
+#, fuzzy
+msgid "&Display Reports"
+msgstr "显示报告(&D)"
+
+#: wxFrameMain.py:106
+#, fuzzy
+msgid "&File"
+msgstr "文件(&F)"
+
+#: wxFrameMain.py:107
+#, fuzzy
+msgid "&Tools"
+msgstr "工具(&T)"
+
+#: wxFrameMain.py:108
+#: wxFrameMain.py:114
+#, fuzzy
+msgid "&Help"
+msgstr "帮助(&H)"
+
+#: wxFrameMain.py:113
+msgid "Displays ClamWin Free Antivirus Manual"
+msgstr ""
+
+#: wxFrameMain.py:116
+#, fuzzy
+msgid "&Check Latest Version"
+msgstr "检查最新版本(&C)"
+
+#: wxFrameMain.py:118
+#, fuzzy
+msgid "ClamWin &Website"
+msgstr "ClamWin网站(&W)"
+
+#: wxFrameMain.py:120
+#, fuzzy
+msgid "Opens Frequently Asked Questions Page in the Web Browser"
+msgstr "在浏览器里打开常见问题页面"
+
+#: wxFrameMain.py:121
+#, fuzzy
+msgid "&FAQ"
+msgstr "常见问题(&F)"
+
+#: wxFrameMain.py:123
+#, fuzzy
+msgid "Displays the  About Box"
+msgstr "显示关于窗口"
+
+#: wxFrameMain.py:124
+#, fuzzy
+msgid "&About"
+msgstr "关于(&A)"
+
+#: wxFrameMain.py:134
+#, fuzzy
+msgid "Displays Virus Database Update Log FIle"
+msgstr "显示病毒库更新日志"
+
+#: wxFrameMain.py:136
+#: ClamTray.py:278
+#, fuzzy
+msgid "&Virus Database Update Report"
+msgstr "病毒库更新报告(&V)"
+
+#: wxFrameMain.py:137
+#, fuzzy
+msgid "Displays Virus Scan Log File"
+msgstr "显示查毒报告"
+
+#: wxFrameMain.py:138
+#, fuzzy
+msgid "&Scan Report"
+msgstr "查毒报告(&S)"
+
+#: wxFrameMain.py:146
+#, fuzzy
+msgid "Scans Files or Folders for Computer Viruses"
+msgstr "对计算机中的文件或文件夹进行查毒"
+
+#: wxFrameMain.py:147
+#: wxFrameMain.py:257
+#, fuzzy
+msgid "&Scan"
+msgstr "查毒(&S)"
+
+#: wxFrameMain.py:149
+#, fuzzy
+msgid "Exits the application"
+msgstr "退出程序"
+
+#: wxFrameMain.py:150
+#, fuzzy
+msgid "E&xit"
+msgstr "退出(&X)"
+
+#: wxFrameMain.py:159
+#, fuzzy
+msgid "Preferences"
+msgstr "参数选择"
+
+#: wxFrameMain.py:160
+#: wxFrameMain.py:161
+#, fuzzy
+msgid "Displays Preferences Window"
+msgstr "显示参数选择窗口"
+
+#: wxFrameMain.py:165
+#, fuzzy
+msgid "Update"
+msgstr "更新频率(&U):"
+
+#: wxFrameMain.py:166
+#, fuzzy
+msgid "Updates virus databases over the Internet"
+msgstr "在线更新病毒库"
+
+#: wxFrameMain.py:167
+#, fuzzy
+msgid "Starts Internet Update"
+msgstr "在线更新"
+
+#: wxFrameMain.py:171
+#, fuzzy
+msgid "Scan"
+msgstr "查毒(&S)"
+
+#: wxFrameMain.py:172
+#, fuzzy
+msgid "Scans Selected File or Folder for Computer Viruses"
+msgstr "选择文件或文件夹进行查毒"
+
+#: wxFrameMain.py:173
+#, fuzzy
+msgid "Scans For Viruses"
+msgstr "查毒"
+
+#: wxFrameMain.py:221
+#: wxFrameMain.py:225
+#: wxFrameMain.py:337
+#: wxFrameMain.py:343
+#: ClamTray.py:117
+#: ClamTray.py:339
+#: ClamTray.py:363
+#: ClamTray.py:373
+#: ClamTray.py:381
+#: ClamTray.py:441
+#: ClamTray.py:455
+#: OlAddin.py:199
+#: OlAddin.py:419
+#: OlAddin.py:492
+#: wxDialogPreferences.py:1501
+#: wxDialogPreferences.py:1564
+#: wxDialogPreferences.py:1582
+#: wxDialogStatus.py:466
+#, fuzzy
+msgid "ClamWin Free Antivirus"
+msgstr "ClamWin免费杀毒软件"
+
+#: wxFrameMain.py:239
+#, fuzzy
+msgid "Status Bar"
+msgstr "状态栏"
+
+#: wxFrameMain.py:247
+#, fuzzy
+msgid ""
+"Select a folder or a file to scan\n"
+"(Hold Shift key to select multiple files or folders)"
+msgstr ""
+"选择要被检查文件或文件夹\n"
+"(按住Shift键以选择多个文件或文件夹)"
+
+#: wxFrameMain.py:115
+#, fuzzy
+msgid "Checks for the Latest Version"
+msgstr "检查最新版本"
+
+#: wxFrameMain.py:354
+#, fuzzy
+msgid "An Error occurred while updating UI selection. %s"
+msgstr "当更新界面选择时有错误发生. %s"
+
+#: wxFrameMain.py:387
+#, fuzzy
+msgid "Could not open help file - %s not found."
+msgstr "无法打开帮助文件 - %s 没有找到."
+
+#: wxFrameMain.py:394
+#, fuzzy
+msgid "Could not open help file. Please ensure that you have Adobe Acrobat Reader installed."
+msgstr "无法打开帮助文件. 请确定安装了Adobe Acrobat Reader程序."
+
+#: wxDialogStatus.py:117
+#, fuzzy
+msgid "File not found"
+msgstr "无法移除文件: %s. 错误: %s"
+
+#: wxDialogStatus.py:119
+msgid "FOUND"
+msgstr ""
+
+#: wxDialogStatus.py:133
+#: wxDialogLogViewer.py:105
+msgid "ERROR: No servers could be reached. Giving up"
+msgstr ""
+
+#: wxDialogStatus.py:137
+#: wxDialogLogViewer.py:109
+#, fuzzy
+msgid "Giving up on"
+msgstr "登录的时候进行病毒库更新(&U)"
+
+#: wxDialogStatus.py:141
+#: wxDialogLogViewer.py:113
+#, fuzzy
+msgid "Scan started:"
+msgstr "查毒报告(&S)"
+
+#: wxDialogStatus.py:143
+#: wxDialogLogViewer.py:115
+msgid "-- summary --"
+msgstr ""
+
+#: wxDialogStatus.py:151
+#: wxDialogLogViewer.py:123
+#, fuzzy
+msgid "Scanned files:"
+msgstr "所有文件 (*)|*"
+
+#: wxDialogStatus.py:157
+#: wxDialogLogViewer.py:129
+#, fuzzy
+msgid "Time:"
+msgstr "时间(&T)"
+
+#: wxDialogStatus.py:159
+msgid "WARNING: Your ClamAV installation is OUTDATED!"
+msgstr ""
+
+#: wxDialogStatus.py:161
+#, fuzzy
+msgid "WARNING: Local version:"
+msgstr "检查最新版本(&C)"
+
+#: wxDialogStatus.py:163
+#, fuzzy
+msgid "Recommended version:"
+msgstr "检查最新版本(&C)"
+
+#: wxDialogStatus.py:165
+msgid "DON'T PANIC! Read"
+msgstr ""
+
+#: wxDialogStatus.py:167
+msgid "is up to date"
+msgstr ""
+
+#: wxDialogStatus.py:169
+msgid "sigs:"
+msgstr ""
+
+#: wxDialogStatus.py:171
+msgid "f-level:"
+msgstr ""
+
+#: wxDialogStatus.py:173
+msgid "builder:"
+msgstr ""
+
+#: wxDialogStatus.py:175
+#, fuzzy
+msgid "Database updated"
+msgstr "病毒库文件夹(&V):"
+
+#: wxDialogStatus.py:177
+msgid "signatures"
+msgstr ""
+
+#: wxDialogStatus.py:179
+#, fuzzy
+msgid "from"
+msgstr "从:"
+
+#: wxDialogStatus.py:181
+msgid "Control+C pressed, aborting..."
+msgstr ""
+
+#: wxDialogStatus.py:183
+msgid "Downloading"
+msgstr ""
+
+#: wxDialogStatus.py:185
+#, fuzzy
+msgid "Connection with"
+msgstr "SMTP连接详细信息"
+
+#: wxDialogStatus.py:187
+msgid "http:\\\\www.clamav.net\\faq.html"
+msgstr ""
+
+#: wxDialogStatus.py:189
+msgid "http://www.clamwin.com/content/view/10/27/"
+msgstr ""
+
+#: wxDialogStatus.py:191
+msgid "Not moved"
+msgstr ""
+
+#: wxDialogStatus.py:193
+#, fuzzy
+msgid "File excluded"
+msgstr "选择一个文件"
+
+#: wxDialogStatus.py:199
+msgid "Mon "
+msgstr ""
+
+#: wxDialogStatus.py:201
+msgid "Tue "
+msgstr ""
+
+#: wxDialogStatus.py:203
+msgid "Wed "
+msgstr ""
+
+#: wxDialogStatus.py:205
+msgid "Thu "
+msgstr ""
+
+#: wxDialogStatus.py:207
+msgid "Fri "
+msgstr ""
+
+#: wxDialogStatus.py:209
+msgid "Sat "
+msgstr ""
+
+#: wxDialogStatus.py:211
+msgid "Sun "
+msgstr ""
+
+#: wxDialogStatus.py:213
+msgid "Jan "
+msgstr ""
+
+#: wxDialogStatus.py:215
+msgid "Feb "
+msgstr ""
+
+#: wxDialogStatus.py:217
+msgid "Mar "
+msgstr ""
+
+#: wxDialogStatus.py:219
+msgid "Apr "
+msgstr ""
+
+#: wxDialogStatus.py:221
+msgid "May "
+msgstr ""
+
+#: wxDialogStatus.py:223
+msgid "Jun "
+msgstr ""
+
+#: wxDialogStatus.py:225
+msgid "Jul "
+msgstr ""
+
+#: wxDialogStatus.py:227
+msgid "Aug "
+msgstr ""
+
+#: wxDialogStatus.py:229
+msgid "Sep "
+msgstr ""
+
+#: wxDialogStatus.py:231
+msgid "Oct "
+msgstr ""
+
+#: wxDialogStatus.py:233
+msgid "Nov "
+msgstr ""
+
+#: wxDialogStatus.py:235
+msgid "Dec "
+msgstr ""
+
+#: wxDialogStatus.py:242
+#, fuzzy
+msgid "version:"
+msgstr "版本"
+
+#: wxDialogStatus.py:244
+#, fuzzy
+msgid "updated"
+msgstr "升级: %s"
+
+#: wxDialogStatus.py:246
+#, fuzzy
+msgid "failed"
+msgstr "事件失败"
+
+#: wxDialogStatus.py:294
+#, fuzzy
+msgid "ClamWin Free Antivirus Status"
+msgstr "ClamWin免费杀毒软件主页"
+
+#: wxDialogStatus.py:319
+#, fuzzy
+msgid "&Stop"
+msgstr "停止(&S)"
+
+#: wxDialogStatus.py:327
+#, fuzzy
+msgid "S&ave Report"
+msgstr "保存报告(&A)"
+
+#: wxDialogStatus.py:435
+#, fuzzy
+msgid "Unable to stop runner thread, terminating"
+msgstr "无法停止运行线程, 操作终止"
+
+#: wxDialogStatus.py:453
+#, fuzzy
+msgid "Report files (*.txt)|*.txt|All files (*.*)|*.*"
+msgstr "报告文件 (*.txt)|*.txt|所有文件 (*.*)|*.*"
+
+#: wxDialogStatus.py:455
+#: wxDialogPreferences.py:1250
+#: wxDialogPreferences.py:1266
+#, fuzzy
+msgid "All files (*)|*"
+msgstr "所有文件 (*)|*"
+
+#: wxDialogStatus.py:463
+#, fuzzy
+msgid "Could not save report to the file "
+msgstr "无法保存报告到文件 "
+
+#: wxDialogStatus.py:464
+#, fuzzy
+msgid ". Please check that you have write "
+msgstr ". 请确定你有写入 "
+
+#: wxDialogStatus.py:465
+#, fuzzy
+msgid "permissions to the folder and there is enough space on the disk."
+msgstr "权限并且磁盘有足够空间"
+
+#: wxDialogStatus.py:533
+#, fuzzy
+msgid "Could not read from log file %s. Error: %s"
+msgstr "无法读取日志文件 %s. 错误: %s"
+
+#: wxDialogStatus.py:544
+#, fuzzy
+msgid ""
+"\n"
+"--------------------------------------\n"
+"Completed\n"
+"--------------------------------------\n"
+msgstr ""
+"\n"
+"-------------------\n"
+"完成\n"
+"-------------------\n"
+
+#: wxDialogStatus.py:546
+msgid ""
+"\n"
+"--------------------------------------\n"
+"Cancelled\n"
+"--------------------------------------\n"
+msgstr ""
+
+#: wxDialogStatus.py:629
+#: ClamTray.py:470
+#, fuzzy
+msgid "Could not start process. No Command Line specified"
+msgstr "无法开始进程. 没有指定命令行"
+
+#: wxDialogStatus.py:636
+#: ClamTray.py:477
+#, fuzzy
+msgid ""
+"Could not start process.\n"
+"%s\n"
+"File does not exist."
+msgstr ""
+"无法开始进程.\n"
+"%s\n"
+"文件不存在."
+
+#: wxDialogStatus.py:646
+#: wxDialogStatus.py:648
+#: ClamTray.py:485
+#: ClamTray.py:487
+#, fuzzy
+msgid ""
+"Could not start process:\n"
+"%s\n"
+"Error: %s"
+msgstr ""
+"无法开始进程:\n"
+"%s\n"
+"错误: %s"
+
+#: wxDialogScheduledScan.py:160
+#, fuzzy
+msgid "Scheduled Scan"
+msgstr "定时查毒"
+
+#: wxDialogScheduledScan.py:167
+#, fuzzy
+msgid "Schedule"
+msgstr "定时查毒"
+
+#: wxDialogScheduledScan.py:171
+#, fuzzy
+msgid "Scanning &Frequency:"
+msgstr "查毒频率(&F)"
+
+#: wxDialogScheduledScan.py:180
+#, fuzzy
+msgid "How often the schedule is executed"
+msgstr "指定定时查毒的频率"
+
+#: wxDialogScheduledScan.py:187
+#: wxDialogPreferences.py:415
+#, fuzzy
+msgid "&Time:"
+msgstr "时间(&T)"
+
+#: wxDialogScheduledScan.py:194
+#, fuzzy
+msgid "When the schedule should be started"
+msgstr "指定定时查毒开始的具体时间"
+
+#: wxDialogScheduledScan.py:202
+#: wxDialogPreferences.py:567
+#, fuzzy
+msgid "&Day Of The Week:"
+msgstr "一周期间(&D)"
+
+#: wxDialogScheduledScan.py:211
+#, fuzzy
+msgid "When schedule frequency is weekly select day of the week"
+msgstr "当定时查毒频率为每周时指定具体的某一天"
+
+#: wxDialogScheduledScan.py:215
+#, fuzzy
+msgid "&Scan Folder:"
+msgstr "查毒范围(&S)"
+
+#: wxDialogScheduledScan.py:222
+#, fuzzy
+msgid "Specify a folder to be scanned"
+msgstr "指定需要被检查的文件夹"
+
+#: wxDialogScheduledScan.py:227
+#, fuzzy
+msgid "Click to browse for a folder"
+msgstr "点击浏览一个文件夹"
+
+#: wxDialogScheduledScan.py:233
+#, fuzzy
+msgid "D&escription:"
+msgstr "描述(&E)"
+
+#: wxDialogScheduledScan.py:240
+#, fuzzy
+msgid "Specify a friendly description for the scheduled scan"
+msgstr "描述关于此计划任务的信息"
+
+#: wxDialogScheduledScan.py:243
+#, fuzzy
+msgid "&Activate This Schedule"
+msgstr "激活此定时杀毒计划(&A)"
+
+#: wxDialogScheduledScan.py:246
+#, fuzzy
+msgid "Select if you wish to enable this schedule"
+msgstr "选择此处将激活当前定时杀毒计划"
+
+#: wxDialogScheduledScan.py:252
+#, fuzzy
+msgid "Closes the dialog and applies the settings"
+msgstr "关闭对话框并应用新设置"
+
+#: wxDialogScheduledScan.py:256
+#: wxDialogPreferences.py:253
+#, fuzzy
+msgid "Cancel"
+msgstr "取消"
+
+#: wxDialogScheduledScan.py:258
+#, fuzzy
+msgid "Closes the dialog and discards the changes"
+msgstr "关闭对话框并取消修改"
+
+#: wxDialogScheduledScan.py:309
+#: wxDialogPreferences.py:1235
+msgid "Select a directory"
+msgstr ""
+
+#: wxDialogScheduledScan.py:341
+#, fuzzy
+msgid "Specified path is invalid. Please verify your selection."
+msgstr "指定的路径无效.请核对你的选择."
+
+#: wxDialogPreferences.py:145
+#, fuzzy
+msgid "General"
+msgstr "常规"
+
+#: wxDialogPreferences.py:147
+#, fuzzy
+msgid "Filters"
+msgstr "过滤"
+
+#: wxDialogPreferences.py:149
+#, fuzzy
+msgid "Internet Updates"
+msgstr "在线更新"
+
+#: wxDialogPreferences.py:151
+#, fuzzy
+msgid "Proxy"
+msgstr "代理"
+
+#: wxDialogPreferences.py:153
+#, fuzzy
+msgid "Scheduled Scans"
+msgstr "定时杀毒"
+
+#: wxDialogPreferences.py:155
+#, fuzzy
+msgid "Email Alerts"
+msgstr "邮件提醒"
+
+#: wxDialogPreferences.py:157
+#, fuzzy
+msgid "Archives"
+msgstr "压缩"
+
+#: wxDialogPreferences.py:159
+#, fuzzy
+msgid "File Locations"
+msgstr "文件定位"
+
+#: wxDialogPreferences.py:161
+#, fuzzy
+msgid "Reports"
+msgstr "报告"
+
+#: wxDialogPreferences.py:163
+#, fuzzy
+msgid "Advanced"
+msgstr "高级"
+
+#: wxDialogPreferences.py:169
+#, fuzzy
+msgid "Description"
+msgstr "描述"
+
+#: wxDialogPreferences.py:170
+#, fuzzy
+msgid "Path"
+msgstr "路径"
+
+#: wxDialogPreferences.py:173
+#, fuzzy
+msgid "Frequency"
+msgstr "频率"
+
+#: wxDialogPreferences.py:187
+#, fuzzy
+msgid "ClamWin Preferences"
+msgstr "ClamWin参数选择"
+
+#: wxDialogPreferences.py:245
+#, fuzzy
+msgid "Closes the window and saves the changes"
+msgstr "关闭窗口并保存更改"
+
+#: wxDialogPreferences.py:255
+#, fuzzy
+msgid "Closes the window without saving the changes"
+msgstr "关闭窗口而不保存更改"
+
+#: wxDialogPreferences.py:260
+#, fuzzy
+msgid "Proxy &Server:"
+msgstr "代理服务器(&S):"
+
+#: wxDialogPreferences.py:267
+#, fuzzy
+msgid "Proxy Server domain name or IP address"
+msgstr "代理服务器域名或IP地址"
+
+#: wxDialogPreferences.py:270
+#: wxDialogPreferences.py:727
+#, fuzzy
+msgid "P&ort:"
+msgstr "端口(&O):"
+
+#: wxDialogPreferences.py:280
+#, fuzzy
+msgid "Proxy Server port number (0-65535)"
+msgstr "代理服务器端口 (0-65535)"
+
+#: wxDialogPreferences.py:283
+#: wxDialogPreferences.py:740
+#, fuzzy
+msgid "&User Name:"
+msgstr "用户名(&U):"
+
+#: wxDialogPreferences.py:290
+#, fuzzy
+msgid "Proxy Server Account Name (optional)"
+msgstr "代理服务器登陆帐户 (可选)"
+
+#: wxDialogPreferences.py:293
+#: wxDialogPreferences.py:751
+#, fuzzy
+msgid "&Password:"
+msgstr "密码(&P):"
+
+#: wxDialogPreferences.py:301
+#, fuzzy
+msgid "Proxy Server account password (optional)"
+msgstr "代理服务器登陆帐户密码 (可选)"
+
+#: wxDialogPreferences.py:304
+#, fuzzy
+msgid "Leave these fields blank if you do not connect via Proxy Server"
+msgstr "如果您不使用代理请保持以下区域为空"
+
+#: wxDialogPreferences.py:310
+#, fuzzy
+msgid "Scanning Options"
+msgstr "查毒选项"
+
+#: wxDialogPreferences.py:315
+#, fuzzy
+msgid "&Enable Automatic Virus Database Updates"
+msgstr "启用病毒库自动更新功能(&E)"
+
+#: wxDialogPreferences.py:318
+#, fuzzy
+msgid "Enable automatic virus database downloads "
+msgstr "启用病毒库自动下载更新病毒库的功能 "
+
+#: wxDialogPreferences.py:324
+#, fuzzy
+msgid "Download &Site :"
+msgstr "下载网址(&S) :"
+
+#: wxDialogPreferences.py:331
+#, fuzzy
+msgid "Specify Database Mirror Site here. Usually this is database.clamav.net"
+msgstr "在这里指定数据库镜像站点. 通常是 database.clamav.net"
+
+#: wxDialogPreferences.py:334
+#, fuzzy
+msgid "&Update Frequency:"
+msgstr "更新频率(&U):"
+
+#: wxDialogPreferences.py:339
+#: wxDialogPreferences.py:346
+#: wxDialogPreferences.py:1453
+#: wxDialogScheduledScan.py:37
+#: wxDialogScheduledScan.py:66
+#: wxDialogScheduledScan.py:175
+#: wxDialogScheduledScan.py:181
+#, fuzzy
+msgid "Daily"
+msgstr "每日"
+
+#: wxDialogPreferences.py:339
+#: wxDialogPreferences.py:1453
+#: wxDialogScheduledScan.py:66
+#: wxDialogScheduledScan.py:175
+#, fuzzy
+msgid "Hourly"
+msgstr "每小时"
+
+#: wxDialogPreferences.py:340
+#: wxDialogPreferences.py:1077
+#: wxDialogPreferences.py:1453
+#: wxDialogScheduledScan.py:66
+#: wxDialogScheduledScan.py:176
+#: wxDialogScheduledScan.py:283
+#: wxDialogScheduledScan.py:292
+#, fuzzy
+msgid "Weekly"
+msgstr "每周"
+
+#: wxDialogPreferences.py:340
+#: wxDialogPreferences.py:1453
+#: wxDialogScheduledScan.py:66
+#: wxDialogScheduledScan.py:175
+#, fuzzy
+msgid "Workdays"
+msgstr "工作日"
+
+#: wxDialogPreferences.py:345
+#, fuzzy
+msgid "How often virus database is downloaded"
+msgstr "指定病毒库下载的频率"
+
+#: wxDialogPreferences.py:352
+#, fuzzy
+msgid "&ClamScan Location:"
+msgstr "ClamScan文件定位(&C):"
+
+#: wxDialogPreferences.py:360
+#, fuzzy
+msgid "Specify location of clamscan"
+msgstr "指定clamscan的位置"
+
+#: wxDialogPreferences.py:365
+#, fuzzy
+msgid "Click to browse for clamscan"
+msgstr "点击浏览clamscan的文件位置"
+
+#: wxDialogPreferences.py:371
+#, fuzzy
+msgid "&FreshClam Location:"
+msgstr "FreshClam文件定位(&F):"
+
+#: wxDialogPreferences.py:379
+#, fuzzy
+msgid "Specify location of freshclam"
+msgstr "指定freshclam文件的位置"
+
+#: wxDialogPreferences.py:385
+#, fuzzy
+msgid "Click to browse for freshclam"
+msgstr "点击浏览定位freshclam文件"
+
+#: wxDialogPreferences.py:391
+#, fuzzy
+msgid "&Virus Database Folder:"
+msgstr "病毒库文件夹(&V):"
+
+#: wxDialogPreferences.py:399
+#, fuzzy
+msgid "Specify location of virus database files"
+msgstr "指定病毒库文件的位置"
+
+#: wxDialogPreferences.py:404
+#, fuzzy
+msgid "Click to browse for a virus database folder"
+msgstr "点击浏览定位病毒库文件"
+
+#: wxDialogPreferences.py:409
+#, fuzzy
+msgid "&Scan In Subdirectories"
+msgstr "检查子目录(&S)"
+
+#: wxDialogPreferences.py:412
+#, fuzzy
+msgid "Select if you wish to scan in subdirectories recursively"
+msgstr "选择此处可以检查所有子目录"
+
+#: wxDialogPreferences.py:426
+#, fuzzy
+msgid "&Scan In Archives"
+msgstr "检查压缩文件内容(&S)"
+
+#: wxDialogPreferences.py:435
+#, fuzzy
+msgid "Do Not Scan Archives Larger Than"
+msgstr "不检查压缩档大小超过"
+
+#: wxDialogPreferences.py:445
+#: wxDialogPreferences.py:913
+#, fuzzy
+msgid "MegaBytes"
+msgstr "兆(M)"
+
+#: wxDialogPreferences.py:450
+#: wxDialogPreferences.py:464
+#, fuzzy
+msgid "Do Not Extract More Than "
+msgstr "不检查压缩档包含 "
+
+#: wxDialogPreferences.py:460
+#, fuzzy
+msgid "Files"
+msgstr "个文件以上"
+
+#: wxDialogPreferences.py:474
+#, fuzzy
+msgid "Sub-Archives"
+msgstr "个子压缩档"
+
+#: wxDialogPreferences.py:479
+#, fuzzy
+msgid "&Treat Files As Mailboxes"
+msgstr "把文件以邮箱对待(&T)"
+
+#: wxDialogPreferences.py:482
+#, fuzzy
+msgid "Select if you wish to scan mailboxes"
+msgstr "选中开启邮箱检查功能"
+
+#: wxDialogPreferences.py:486
+#, fuzzy
+msgid "&Extract Attachments and Macros from MS Office Documents"
+msgstr "检查OFFICE文档中包含的宏和附件"
+
+#: wxDialogPreferences.py:489
+#: wxDialogPreferences.py:496
+#, fuzzy
+msgid "Select if you wish to scan OLE attachments and macros in MS Office Documents"
+msgstr "选择将检查OFFICE文档的OLE附件和宏"
+
+#: wxDialogPreferences.py:493
+msgid "&Detect Broken Executables"
+msgstr ""
+
+#: wxDialogPreferences.py:500
+msgid "&Additional Clamscan Command Line Parameters:"
+msgstr ""
+
+#: wxDialogPreferences.py:509
+#, fuzzy
+msgid "Limit Log File Size To:"
+msgstr "限制日志文件的大小为:"
+
+#: wxDialogPreferences.py:517
+#, fuzzy
+msgid "Select maximum size for the logfile"
+msgstr "指定日志文件的体积上限"
+
+#: wxDialogPreferences.py:521
+#, fuzzy
+msgid "&Scan Report File:"
+msgstr "查毒报告文件(&S):"
+
+#: wxDialogPreferences.py:529
+#, fuzzy
+msgid "Specify location for a scan reports log file"
+msgstr "指定日志文件的保存地点"
+
+#: wxDialogPreferences.py:535
+#: wxDialogPreferences.py:555
+#, fuzzy
+msgid "Click to browse for a log file"
+msgstr "点击浏览一个日志文件"
+
+#: wxDialogPreferences.py:541
+#, fuzzy
+msgid "&Virus Database Update Report File:"
+msgstr "病毒库更新报告(&V):"
+
+#: wxDialogPreferences.py:549
+#, fuzzy
+msgid "Specify location for a database updates log file"
+msgstr "指定数据库更新日志的存放地点"
+
+#: wxDialogPreferences.py:564
+#, fuzzy
+msgid "When the download should be started"
+msgstr "指定下载的时间"
+
+#: wxDialogPreferences.py:581
+#, fuzzy
+msgid "List of Scheduled Scans"
+msgstr "列出定时杀毒项目"
+
+#: wxDialogPreferences.py:597
+#, fuzzy
+msgid "Scheduled Scans:"
+msgstr "定时查毒:"
+
+#: wxDialogPreferences.py:603
+#, fuzzy
+msgid "&Add"
+msgstr "添加(&A)"
+
+#: wxDialogPreferences.py:609
+#, fuzzy
+msgid "&Remove"
+msgstr "移除(&R)"
+
+#: wxDialogPreferences.py:616
+#, fuzzy
+msgid "&Edit"
+msgstr "编辑(&E)"
+
+#: wxDialogPreferences.py:622
+#, fuzzy
+msgid "&Display Infected Files Only"
+msgstr "仅显示被感染的文件(&D)"
+
+#: wxDialogPreferences.py:626
+#: wxDialogPreferences.py:935
+#, fuzzy
+msgid "Select if you wish to display infected files only in the scan progress window"
+msgstr "选择此处杀毒时将只显示感染病毒的文件"
+
+#: wxDialogScheduledScan.py:206
+#: wxDialogPreferences.py:628
+#, fuzzy
+msgid "Monday"
+msgstr "星期一"
+
+#: wxDialogPreferences.py:628
+#: wxDialogPreferences.py:635
+#: wxDialogScheduledScan.py:206
+#: wxDialogScheduledScan.py:212
+#, fuzzy
+msgid "Tuesday"
+msgstr "星期二"
+
+#: wxDialogScheduledScan.py:206
+#: wxDialogPreferences.py:629
+#, fuzzy
+msgid "Wednesday"
+msgstr "星期三"
+
+#: wxDialogScheduledScan.py:207
+#: wxDialogPreferences.py:629
+#, fuzzy
+msgid "Thursday"
+msgstr "星期四"
+
+#: wxDialogScheduledScan.py:207
+#: wxDialogPreferences.py:629
+#, fuzzy
+msgid "Friday"
+msgstr "星期五"
+
+#: wxDialogScheduledScan.py:207
+#: wxDialogPreferences.py:629
+#, fuzzy
+msgid "Saturday"
+msgstr "星期六"
+
+#: wxDialogScheduledScan.py:207
+#: wxDialogPreferences.py:629
+#, fuzzy
+msgid "Sunday"
+msgstr "星期日"
+
+#: wxDialogPreferences.py:634
+#, fuzzy
+msgid "When update frequency is weekly select day of the week for an update"
+msgstr "当病毒库被设置为每周自动更新时，指定具体时间"
+
+#: wxDialogPreferences.py:638
+#, fuzzy
+msgid "&Update Virus Database On Logon"
+msgstr "登录的时候进行病毒库更新(&U)"
+
+#: wxDialogPreferences.py:641
+#, fuzzy
+msgid "Select if you wish to update the virus databases just after you logged on"
+msgstr "选择此处病毒库将在你每次登录操作系统时被更新"
+
+#: wxDialogPreferences.py:648
+#, fuzzy
+msgid "Infected Files"
+msgstr "感染文件"
+
+#: wxDialogPreferences.py:653
+#, fuzzy
+msgid "&Report Only"
+msgstr "仅显示报告"
+
+#: wxDialogPreferences.py:661
+#, fuzzy
+msgid "&Remove (Use Carefully)"
+msgstr "移出(&R)(小心使用)"
+
+#: wxDialogPreferences.py:670
+#, fuzzy
+msgid "&Move To Quarantine Folder:"
+msgstr "移至隔离文件夹(&M)"
+
+#: wxDialogPreferences.py:680
+#, fuzzy
+msgid "Specify location for a quarantine folder"
+msgstr "指定隔离文件夹的路径"
+
+#: wxDialogPreferences.py:686
+#, fuzzy
+msgid "Click to browse for a quarantine folder"
+msgstr "点击浏览选择隔离文件夹"
+
+#: wxDialogPreferences.py:700
+#, fuzzy
+msgid "&Send Email Alert On Virus Detection"
+msgstr "发现病毒时发送邮件提醒(&S)"
+
+#: wxDialogPreferences.py:704
+#, fuzzy
+msgid "Select if you wish to receive email alerts when ClamWin detects a virus"
+msgstr "选择此处发现病毒时将收到电子邮件的提醒"
+
+#: wxDialogPreferences.py:710
+#, fuzzy
+msgid "SMTP Connection Details"
+msgstr "SMTP连接详细信息"
+
+#: wxDialogPreferences.py:716
+#, fuzzy
+msgid "&Mail Server:"
+msgstr "邮件服务器(&M):"
+
+#: wxDialogPreferences.py:724
+#, fuzzy
+msgid "SMTP Server domain name or IP address"
+msgstr "SMTP服务器地址"
+
+#: wxDialogPreferences.py:737
+#, fuzzy
+msgid "Mail Server port number (0-65535)"
+msgstr "邮件服务器端口(0-65535)"
+
+#: wxDialogPreferences.py:748
+#, fuzzy
+msgid "Mail Server Account Name (optional)"
+msgstr "邮件服务器登陆帐户(可选)"
+
+#: wxDialogPreferences.py:760
+#, fuzzy
+msgid "Mail Server account password (optional)"
+msgstr "邮件服务器登录密码(可选)"
+
+#: wxDialogPreferences.py:763
+#, fuzzy
+msgid "Email Message Details"
+msgstr "邮件信息:"
+
+#: wxDialogPreferences.py:769
+#, fuzzy
+msgid "&From:"
+msgstr "从:"
+
+#: wxDialogPreferences.py:777
+#, fuzzy
+msgid "Specify an email address from which the notification will be sent."
+msgstr "指定收到提醒的邮件地址"
+
+#: wxDialogPreferences.py:780
+#, fuzzy
+msgid "&To:"
+msgstr "到:"
+
+#: wxDialogPreferences.py:788
+#, fuzzy
+msgid "Specify an email address where the email alert will be delivered.  Separate multiple addresses with commas."
+msgstr "指定发现病毒时邮件将被发往的邮箱. 多个邮箱可以用逗号分开."
+
+#: wxDialogPreferences.py:791
+#, fuzzy
+msgid "Su&bject:"
+msgstr "主题(&B)"
+
+#: wxDialogPreferences.py:799
+#, fuzzy
+msgid "Specify Recipient's email address where the email alert will be delivered"
+msgstr "指定提醒邮件的收件人地址"
+
+#: wxDialogPreferences.py:802
+#, fuzzy
+msgid "Send &Test Email"
+msgstr "发送测试邮件(&T):"
+
+#: wxDialogPreferences.py:805
+#, fuzzy
+msgid "Click to send a test email message"
+msgstr "发送测试邮件"
+
+#: wxDialogPreferences.py:811
+#, fuzzy
+msgid "&Display Pop-up Notification Messages In Taskbar "
+msgstr "显示系统托盘的弹出提示窗口(&D) "
+
+#: wxDialogPreferences.py:815
+#, fuzzy
+msgid "Select if you wish to receive Tray notification pop-up messages"
+msgstr "选择此处系统托盘图标将会在必要时弹出提示窗口"
+
+#: wxDialogPreferences.py:822
+#, fuzzy
+msgid "Specify Filename Patterns to include and/or exclude in scanning"
+msgstr "指定查毒过程中要包括或者排除的文件类型"
+
+#: wxDialogPreferences.py:827
+#, fuzzy
+msgid "(To specify a regular expression include your pattern within <...>)"
+msgstr "(使用正则表达式时可以用尖括号括起 <...>)"
+
+#: wxDialogPreferences.py:832
+#, fuzzy
+msgid "&Exclude Matching Filenames:"
+msgstr "不进行检查的文件类型(&E)"
+
+#: wxDialogPreferences.py:837
+#: wxDialogPreferences.py:862
+#, fuzzy
+msgid "Patterns"
+msgstr "文件类型"
+
+#: wxDialogPreferences.py:842
+#: wxDialogPreferences.py:867
+#, fuzzy
+msgid "Move up"
+msgstr "移至隔离文件夹(&M)"
+
+#: wxDialogPreferences.py:845
+#: wxDialogPreferences.py:870
+#, fuzzy
+msgid "Move down"
+msgstr "移至隔离文件夹(&M)"
+
+#: wxDialogPreferences.py:848
+#: wxDialogPreferences.py:873
+msgid "New item"
+msgstr ""
+
+#: wxDialogPreferences.py:851
+#: wxDialogPreferences.py:876
+msgid "Delete item"
+msgstr ""
+
+#: wxDialogPreferences.py:854
+#: wxDialogPreferences.py:879
+msgid "Edit item"
+msgstr ""
+
+#: wxDialogPreferences.py:857
+#, fuzzy
+msgid "&Scan Only Matching Filenames:"
+msgstr "需要检查的文件类型(&S)"
+
+#: wxDialogPreferences.py:882
+#, fuzzy
+msgid "&Deactivate"
+msgstr "不激活(&D)"
+
+#: wxDialogPreferences.py:890
+#, fuzzy
+msgid "A&ctivate"
+msgstr "激活(&C)"
+
+#: wxDialogPreferences.py:898
+msgid "&Notify About New ClamWin Releases"
+msgstr ""
+
+#: wxDialogPreferences.py:901
+msgid "Select if you wish to get a notification message when ClamWin Free Antivirus program has been updated"
+msgstr ""
+
+#: wxDialogPreferences.py:908
+msgid "(No personal information is transmitted during this check)"
+msgstr ""
+
+#: wxDialogPreferences.py:918
+#, fuzzy
+msgid "Scanner &Priority:"
+msgstr "查毒进程优先级(&P)"
+
+#: wxDialogPreferences.py:922
+#: wxDialogPreferences.py:927
+#: wxDialogPreferences.py:1477
+#: wxDialogPreferences.py:1485
+#, fuzzy
+msgid "Normal"
+msgstr "通常"
+
+#: wxDialogPreferences.py:922
+#: wxDialogPreferences.py:1475
+#: wxDialogPreferences.py:1483
+#, fuzzy
+msgid "Low"
+msgstr "低"
+
+#: wxDialogPreferences.py:926
+#, fuzzy
+msgid "Specify the process priority for the virus scanner."
+msgstr "指定查毒进程的优先级"
+
+#: wxDialogPreferences.py:931
+msgid "Display &File Scanned % Progress Indicator"
+msgstr ""
+
+#: wxDialogPreferences.py:1015
+#, fuzzy
+msgid "An error occurred whilst saving configuration file %s. Please check that you have write permission to the configuration file."
+msgstr "当保存设置文件%s时发成错误. 请确保你有设置文件的写入权限."
+
+#: wxDialogPreferences.py:1033
+#, fuzzy
+msgid "Event Failed"
+msgstr "事件失败"
+
+#: wxDialogPreferences.py:1205
+#: wxDialogPreferences.py:1221
+#, fuzzy
+msgid "Executable files (*.exe)|*.exe|All files (*.*)|*.*"
+msgstr "可执行文件(*.exe)|*.exe|全部文件(*.*)|*.*"
+
+#: wxDialogPreferences.py:1209
+#: wxDialogPreferences.py:1225
+#: wxDialogPreferences.py:1251
+#: wxDialogPreferences.py:1267
+#: wxDialogStatus.py:456
+#, fuzzy
+msgid "Choose a file"
+msgstr "选择一个文件"
+
+#: wxDialogPreferences.py:1247
+#: wxDialogPreferences.py:1263
+#, fuzzy
+msgid "Text Files (*.txt)|*.txt|All files (*.*)|*.*"
+msgstr "文本文件(*.txt)|*.txt|全部文件(*.*)|*.*"
+
+#: wxDialogPreferences.py:1291
+#, fuzzy
+msgid "Maximum amount of scheduled items (20) has been reached."
+msgstr "已经到达计划项目的上限 (20)."
+
+#: wxDialogPreferences.py:1379
+#, fuzzy
+msgid ""
+"This is a test message sent during configuration of ClamWin Free Antivirus on the following computer: %s.\n"
+"Please do not be alarmed.\n"
+msgstr ""
+"这是一份在设置 ClamWin 免费杀毒软件时所发送的测试信息, 来自以下计算机: %s.\n"
+"请不要惊慌.\n"
+
+#: wxDialogPreferences.py:1384
+#, fuzzy
+msgid "Test Email has been sent successfully."
+msgstr "测试邮件已被成功发送"
+
+#: wxDialogPreferences.py:1386
+#, fuzzy
+msgid "Could not send the email. Please ensure you are connected to the internet. Error: %s"
+msgstr "无法发送邮件. 请确保网络状况正常. 错误:%s"
+
+#: wxDialogPreferences.py:1501
+#: wxDialogPreferences.py:1582
+#: wxDialogScheduledScan.py:338
+#, fuzzy
+msgid "Value cannot be empty"
+msgstr "值不能为空"
+
+#: wxDialogPreferences.py:1565
+#, fuzzy
+msgid "The folder you selected does not exist. Would you like to create %s now?"
+msgstr "你指定的文件夹不存在,是否创建%s?"
+
+#: wxDialogPreferences.py:1571
+#, fuzzy
+msgid "Unable to create folder %s. Error: %s"
+msgstr "无法创建文件夹%s. 错误: %s"
+
+#: wxDialogLogViewer.py:68
+#, fuzzy
+msgid "ClamWin Log Viewer"
+msgstr "ClamWin日志查看器"
+
+#: wxDialogLogViewer.py:93
+#: wxDialogStatus.py:121
+msgid "ClamAV update process started at"
+msgstr ""
+
+#: wxDialogLogViewer.py:95
+#: wxDialogStatus.py:123
+#, fuzzy
+msgid "ERROR: DNS Resolver:"
+msgstr "执行定时更新时发生错误"
+
+#: wxDialogStatus.py:125
+#: wxDialogLogViewer.py:97
+msgid "WARNING: Invalid DNS reply. Falling back to HTTP mode."
+msgstr ""
+
+#: wxDialogStatus.py:127
+#: wxDialogLogViewer.py:99
+msgid "ERROR: Can't get information about database.clamav.net:"
+msgstr ""
+
+#: wxDialogLogViewer.py:101
+#: wxDialogStatus.py:129
+msgid "Can't query"
+msgstr ""
+
+#: wxDialogLogViewer.py:103
+#: wxDialogStatus.py:131
+msgid "No IP address"
+msgstr ""
+
+#: wxDialogLogViewer.py:107
+#: wxDialogStatus.py:135
+msgid "Trying again in 5 secs..."
+msgstr ""
+
+#: wxDialogLogViewer.py:111
+#: wxDialogStatus.py:139
+msgid "ERROR: Update failed. Your network may be down or none of the mirrors listed in freshclam.conf is working."
+msgstr ""
+
+#: wxDialogLogViewer.py:117
+#: wxDialogStatus.py:145
+#, fuzzy
+msgid "Known viruses:"
+msgstr "查毒"
+
+#: wxDialogLogViewer.py:119
+#: wxDialogStatus.py:147
+#, fuzzy
+msgid "Engine version:"
+msgstr "检查最新版本(&C)"
+
+#: wxDialogLogViewer.py:121
+#: wxDialogStatus.py:149
+msgid "Scanned directories:"
+msgstr ""
+
+#: wxDialogLogViewer.py:125
+#: wxDialogStatus.py:153
+#, fuzzy
+msgid "Infected files:"
+msgstr "感染文件"
+
+#: wxDialogLogViewer.py:127
+#: wxDialogStatus.py:155
+msgid "Data scanned:"
+msgstr ""
+
+#: wxDialogLogViewer.py:80
+#: wxDialogPreferences.py:242
+#: wxDialogAbout.py:162
+#: wxDialogScheduledScan.py:249
+#, fuzzy
+msgid "OK"
+msgstr "确定"
+
+#: wxDialogAbout.py:168
+#, fuzzy
+msgid "Virus DB Version: (main: %i; daily: %i)"
+msgstr "病毒库版本: (主程序: %i; 每日更新: %i)"
+
+#: wxDialogAbout.py:174
+#, fuzzy
+msgid "Updated: %s"
+msgstr "升级: %s"
+
+#: wxDialogAbout.py:214
+#, fuzzy
+msgid "Could not locate ClamScan executable"
+msgstr "无法定位ClamScan执行程序"
+
+#: wxDialogAbout.py:227
+#, fuzzy
+msgid "Unable to retrieve ClamAV version"
+msgstr "无法获取ClamAV版本"
+
+#: wxDialogAbout.py:252
+#, fuzzy
+msgid "Unable to retrieve database version"
+msgstr "无法获取ClamAV版本"
+
+#: wxDialogCheckUpdate.py:105
+#: wxFrameMain.py:265
+#: wxDialogStatus.py:500
+#, fuzzy
+msgid "&Close"
+msgstr "关闭(&C)"
+
+#: wxFrameMain.py:337
+msgid "ClamWin Free Antivirus is not configured. Would you like to configure it now?"
+msgstr ""
+
+#: wxFrameMain.py:343
+msgid "You have not yet downloaded Virus Definitions Database. Would you like to download it now?"
+msgstr ""
+
+#: wxFrameMain.py:397
+msgid "http://www.clamwin.com/content/category/3/7/27/"
+msgstr ""
+
+#: wxFrameMain.py:405
+#: wxDialogAbout.py:110
+#: wxDialogAbout.py:199
+#: ClamTray.py:315
+msgid "http://www.clamwin.com"
+msgstr ""
+
+#: wxDialogUtils.py:58
+#, fuzzy
+msgid "An error occurred during Virus Database Update. Please review the update report."
+msgstr "更新病毒库时发生错误. 请查阅更新报告以获得更多信息."
+
+#: wxDialogUtils.py:65
+msgid "ClamWin Free Antivirus: Downloading Update..."
+msgstr ""
+
+#: wxDialogUtils.py:78
+#, fuzzy
+msgid "Unable to remove file %s. Error: %s"
+msgstr "无法移除文件: %s. 错误: %s"
+
+#: wxDialogUtils.py:83
+#, fuzzy
+msgid "Couldn't remove file %s. Error: %s"
+msgstr "无法移除文件: %s. 错误: %s"
+
+#: wxDialogUtils.py:115
+msgid ""
+"\n"
+"-----------------------------\n"
+msgstr ""
+
+#: wxDialogUtils.py:116
+msgid ""
+"Scan Started %s\n"
+"ERROR: Virus Definitions Database Not Found! Please download it now.\n"
+msgstr ""
+
+#: wxDialogUtils.py:117
+msgid "-----------------------------"
+msgstr ""
+
+#: wxDialogUtils.py:126
+#, fuzzy
+msgid "Virus has been detected during scan! Please review the scan report."
+msgstr "执行定时杀毒时发现病毒! 请查阅杀毒报告以获取更多信息."
+
+#: wxDialogUtils.py:128
+#, fuzzy
+msgid "An error occurred during virus scan. Please review the scan report."
+msgstr "执行定时杀毒时发生错误. 请查阅杀毒报告以获取更多信息."
+
+#: wxDialogUtils.py:133
+#, fuzzy
+msgid "ClamWin Free Antivirus: Scanning..."
+msgstr "ClamWin免费杀毒软件主页"
+
+#: wxDialogUtils.py:150
+#: ClamTray.py:555
+#, fuzzy
+msgid "Could not send email alert. Error: %s"
+msgstr "无法发送Email提醒. 错误: %s"
+
+#: wxDialogUtils.py:157
+#, fuzzy
+msgid "Could not delete logfile : %s. Error: %s"
+msgstr "无法移除文件: %s. 错误: %s"
+
+#: wxDialogUtils.py:179
+msgid "Log files are not properly configured. Please review ClamWin configuration"
+msgstr ""
+
+#: wxDialogUtils.py:192
+#, fuzzy
+msgid "Unable to read from the log file. Error: %s"
+msgstr "无法读取日志文件 %s. 错误: %s"
+
+#: wxDialogUtils.py:229
+msgid ""
+"Unable to get online version. Most likely it's a temporary connectivity error and you don't have to do anything.\n"
+"If you see this error often then allow clamwin.exe in your firewall and check proxy settings.\n"
+"(%s)"
+msgstr ""
+
+#: ShellExtImpl.cpp:
+#: 292
+msgid "Scan with ClamWin Free Antivirus"
+msgstr ""
+
+#: wxDialogCheckUpdate.py:98
+#, fuzzy
+msgid "&Download"
+msgstr "下载网址(&S) :"
+
+#: EmailAlert.py:82
+msgid "Email alert to %s has been sent successfully."
+msgstr ""
+
+#: Config.py:63
+msgid "admin@yourdomain"
+msgstr ""
+
+#: Config.py:63
+#, fuzzy
+msgid "clamwin@yourdomain"
+msgstr "ClamWin网站(&W)"
+
+#: Config.py:64
+#, fuzzy
+msgid "ClamWin Virus Alert"
+msgstr "ClamWin杀毒引擎"
+
+#: EmailAlert.py:86
+#, fuzzy
+msgid "Could not send an email. Error: %s"
+msgstr "无法发送Email提醒. 错误: %s"
+
+#: EmailAlert.py:95
+msgid ""
+"ClamWin detected a virus on the following computer: %s\n"
+"\n"
+"Please review the attached log files for more details.\n"
+msgstr ""
+
+#: wxDialogCheckUpdate.py:88
+msgid "&Do Not Check for Updates in Future"
+msgstr ""
+
+#: wxDialogCheckUpdate.py:76
+msgid "List Of Changes in Version %s:"
+msgstr ""
+
+#: wxDialogScheduledScan.py:119
+#, fuzzy
+msgid "Could not open persistent storage for scheduled scans. Error: %s"
+msgstr "无法使用持久性存储进行定时查毒. 错误: %s"
+
+#: wxDialogScheduledScan.py:130
+#, fuzzy
+msgid "Could not save scheduled scans to persistent storage. Error: %s"
+msgstr "无法保存定时杀毒计划到持久性存储. 错误: %s"
+
+#: wxDialogCheckUpdate.py:54
+#, fuzzy
+msgid "ClamWin Update"
+msgstr "更新频率(&U):"
+
+#: wxDialogCheckUpdate.py:60
+msgid "An update of ClamWin Free Antivirus has been released. Please click on Download button and download the latest version %s"
+msgstr ""
+
+#: wxDialogCheckUpdate.py:69
+msgid "After you download the latest version setup file simply run it and install over the existing version."
+msgstr ""
+
+#: wxDialogAbout.py:57
+#: wxDialogAbout.py:61
+#, fuzzy
+msgid "About ClamWin Free Antivirus"
+msgstr "ClamWin免费杀毒软件主页"
+
+#: wxDialogAbout.py:72
+#, fuzzy
+msgid "Version "
+msgstr "版本 "
+
+#: wxDialogAbout.py:79
+#, fuzzy
+msgid "ClamAV Version gets here"
+msgstr "获取ClamAV版本信息"
+
+#: wxDialogAbout.py:84
+#, fuzzy
+msgid "Protecting from %i Viruses"
+msgstr "识别%i种病毒"
+
+#: wxDialogAbout.py:93
+#: wxDialogAbout.py:115
+#, fuzzy
+msgid "ClamWin Free Antivirus Homepage"
+msgstr "ClamWin免费杀毒软件主页"
+
+#: wxDialogAbout.py:100
+#, fuzzy
+msgid "Donate to ClamWin"
+msgstr "捐助ClamWin"
+
+#: wxDialogAbout.py:105
+#, fuzzy
+msgid "Website:"
+msgstr "网站:"
+
+#: wxDialogAbout.py:119
+#, fuzzy
+msgid "Author: alch <alch@users.sourceforge.net>"
+msgstr "作者: alch <alch@users.sourceforge.net>"
+
+#: wxDialogAbout.py:125
+#, fuzzy
+msgid "Copyright (c) 2004 - 2006"
+msgstr "版权Copyright (c) 2004 - 2005"
+
+#: wxDialogAbout.py:130
+#, fuzzy
+msgid "This program is free software"
+msgstr "本程序是免费软件"
+
+#: wxDialogAbout.py:142
+#, fuzzy
+msgid "ClamAV Homepage"
+msgstr "ClamAV主页"
+
+#: wxDialogAbout.py:150
+#, fuzzy
+msgid "Finndesign Homepage"
+msgstr "Finndesign主页"
+
+#: wxDialogAbout.py:158
+#, fuzzy
+msgid "Python Homepage"
+msgstr "Python主页"
+
+#: OlAddin.py:174
+msgid "You appear to be running a win32all version pre 151, which is pretty old"
+msgstr ""
+
+#: OlAddin.py:175
+msgid "I'm afraid it is time to upgrade"
+msgstr ""
+
+#: OlAddin.py:199
+msgid "An error occurred in ClamWin Free Antivirus About Box.\n"
+msgstr ""
+
+#: OlAddin.py:213
+msgid "WARNING - Trying to use image '%s', but it doesn't exist"
+msgstr ""
+
+#: OlAddin.py:248
+msgid "Virus Deleted by ClamWin.txt"
+msgstr ""
+
+#: OlAddin.py:275
+#: OlAddin.py:1031
+msgid "Registration complete."
+msgstr ""
+
+#: OlAddin.py:277
+msgid "An Error occurred whilst starting clamscan: %s"
+msgstr ""
+
+#: OlAddin.py:294
+msgid "An Error occurred reading clamscan report: %s"
+msgstr ""
+
+#: OlAddin.py:296
+#, fuzzy
+msgid ""
+"An Error occurred whilst scanning:\n"
+"%s"
+msgstr "终止定时杀毒进程时发生错误. 错误: %s"
+
+#: OlAddin.py:306
+msgid "An Error occurred whilst converting clamscan report: %s"
+msgstr ""
+
+#: OlAddin.py:344
+#: wxDialogUtils.py:107
+msgid "Virus Definitions Database Not Found! Please download it now."
+msgstr ""
+
+#: OlAddin.py:418
+msgid ""
+"ClamWin Free Antivirus could not scan file%s\n"
+".Error: %s"
+msgstr ""
+
+#: OlAddin.py:470
+msgid "ClamWin Free Antivirus has detected a virus in the message attachments!"
+msgstr ""
+
+#: OlAddin.py:471
+#, fuzzy
+msgid "Virus Detected!"
+msgstr "ClamWin杀毒引擎"
+
+#: OlAddin.py:474
+msgid "Virus has been detected in an email attachment! The attachment was replaced with the report file."
+msgstr ""
+
+#: OlAddin.py:476
+msgid "An error occurred whilst scanning email message."
+msgstr ""
+
+#: OlAddin.py:508
+#: ClamTray.py:563
+#, fuzzy
+msgid "Could not remove file: %s. Error: %s"
+msgstr "无法移除文件: %s. 错误: %s"
+
+#: OlAddin.py:580
+#, fuzzy
+msgid "&About ClamWin Free Antivirus"
+msgstr "ClamWin免费杀毒软件主页"
+
+#: OlAddin.py:581
+msgid "Shows the ClamWin About Box"
+msgstr ""
+
+#: OlAddin.py:836
+msgid "ClamWin Free Antivirus could not replace an attachment. Error: %s"
+msgstr ""
+
+#: OlAddin.py:837
+#, fuzzy
+msgid "ClamWin Free Antivirus!"
+msgstr "ClamWin免费杀毒软件"
+
+#: OlAddin.py:905
+#, fuzzy
+msgid "Error connecting to Outlook!"
+msgstr "无法创建文件夹%s. 错误: %s"
+
+#: OlAddin.py:918
+msgid "An error occurred whilst displaying the splashscreen %s. Error: %s."
+msgstr ""
+
+#: OlAddin.py:955
+msgid "Addin terminating: %d COM client and %d COM servers exist."
+msgstr ""
+
+#: OlAddin.py:1007
+msgid "Registering (in HKEY_LOCAL_MACHINE)..."
+msgstr ""
+
+#: OlAddin.py:1010
+msgid "Registering (in HKEY_CURRENT_USER)..."
+msgstr ""
+
+#: OlAddin.py:1015
+msgid "Registration Complete"
+msgstr ""
+
+#: ClamTray.py:117
+#, fuzzy
+msgid "Unable to stop scheduled process, terminating"
+msgstr "无法停止定时杀毒进程, 终止程序"
+
+#: ClamTray.py:131
+#, fuzzy
+msgid "An error occurred whilst terminating scheduler thread. Error: %s"
+msgstr "终止定时杀毒进程时发生错误. 错误: %s"
+
+#: ClamTray.py:237
+#, fuzzy
+msgid "&Configure Scheduler"
+msgstr "设置定时杀毒(&C)"
+
+#: ClamTray.py:257
+#, fuzzy
+msgid "&Run Scheduled Scan"
+msgstr "运行定时杀毒(&R)"
+
+#: ClamTray.py:261
+#, fuzzy
+msgid "&Stop All Running Tasks Now"
+msgstr "终止所有运行的任务(&S)"
+
+#: ClamTray.py:271
+#, fuzzy
+msgid "&Virus Scan Report"
+msgstr "查毒报告(&V)"
+
+#: ClamTray.py:282
+#, fuzzy
+msgid "&Open ClamWin"
+msgstr "打开ClamWin(&O)"
+
+#: ClamTray.py:283
+#, fuzzy
+msgid "&Download Virus Database Update"
+msgstr "下载最新的病毒库(&D)"
+
+#: ClamTray.py:284
+#, fuzzy
+msgid "&Configure ClamWin"
+msgstr "设置ClamWin(&C)"
+
+#: ClamTray.py:285
+#, fuzzy
+msgid "&Scheduler"
+msgstr "定时杀毒(&S)"
+
+#: ClamTray.py:286
+#, fuzzy
+msgid "Display &Reports"
+msgstr "显示报告(&R)"
+
+#: ClamTray.py:288
+#, fuzzy
+msgid "Check &Latest Version"
+msgstr "检查最新版本(&L)"
+
+#: ClamTray.py:289
+#, fuzzy
+msgid "&Visit ClamWin Website"
+msgstr "访问ClamWin网站(&V)"
+
+#: ClamTray.py:291
+#, fuzzy
+msgid "&Exit"
+msgstr "退出(&E)"
+
+#: ClamTray.py:313
+#: wxFrameMain.py:401
+msgid "http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version="
+msgstr ""
+
+#: ClamTray.py:338
+#, fuzzy
+msgid "Could not launch ClamWin Scanner. Error: %s"
+msgstr "无法启动ClamWin杀毒引擎. Error: %s"
+
+#: ClamTray.py:351
+#, fuzzy
+msgid "Could not display balloon tooltip. Error: %s"
+msgstr "无法显示系统托盘提示框. 错误: %s"
+
+#: ClamTray.py:362
+#, fuzzy
+msgid ""
+"An error occurred while displaying log file %s.\n"
+"Error: %s"
+msgstr ""
+"显示日志文件时发生错误 %s.\n"
+"错误: %s"
+
+#: ClamTray.py:373
+msgid "An error occurred while starting ClamWin Free Antivirus scanner.\n"
+msgstr ""
+
+#: ClamTray.py:381
+msgid "An error occurred while starting ClamWin Free Antivirus Update.\n"
+msgstr ""
+
+#: ClamTray.py:387
+msgid "Error"
+msgstr ""
+
+#: ClamTray.py:387
+#: wxDialogUtils.py:38
+#, fuzzy
+msgid "Unable to create freshclam configuration file. Please check there is enough space on the disk"
+msgstr "无法创建新的设置文件. 请确保磁盘有足够的空间"
+
+#: ClamTray.py:403
+#: wxDialogUtils.py:56
+#, fuzzy
+msgid "Virus database has been updated."
+msgstr "病毒库更新成功."
+
+#: ClamTray.py:405
+#, fuzzy
+msgid "An error occurred during Scheduled Virus Database Update. Please review the update report."
+msgstr "更新病毒库时发生错误. 请查阅更新报告以获得更多信息."
+
+#: ClamTray.py:418
+#, fuzzy
+msgid ""
+"Unable to spawn scheduled process.\n"
+"Command line: %s\n"
+"Error: %s"
+msgstr ""
+"无法生成计划任务进程.\n"
+"命令行: %s\n"
+"错误: %s"
+
+#: ClamTray.py:433
+#, fuzzy
+msgid "Error performing Scheduled Update."
+msgstr "执行定时更新时发生错误"
+
+#: ClamTray.py:441
+#: wxDialogUtils.py:206
+#, fuzzy
+msgid "Please point your browser at: %s"
+msgstr "请将你的浏览器定位于: %s"
+
+#: ClamTray.py:455
+msgid "An error occurred while starting ClamWin Free Antivirus Preferences.\n"
+msgstr ""
+
+#: ClamTray.py:496
+#, fuzzy
+msgid "Virus has been detected during scheduled scan! Please review the scan report."
+msgstr "执行定时杀毒时发现病毒! 请查阅杀毒报告以获取更多信息."
+
+#: ClamTray.py:498
+#, fuzzy
+msgid "An error occurred during scheduled scan. Please review the scan report."
+msgstr "执行定时杀毒时发生错误. 请查阅杀毒报告以获取更多信息."
+
+#: ClamTray.py:530
+#, fuzzy
+msgid "Running Scheduled Task:\n"
+msgstr "执行计划任务:\n"
+
+#: ClamTray.py:532
+#, fuzzy
+msgid "An error occurred whilst running Running Scheduled Task "
+msgstr "执行计划任务时发生错误 "
+

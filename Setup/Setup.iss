@@ -20,7 +20,7 @@ OutputDir=Output
 Compression=lzma/ultra
 InternalCompressLevel=max
 
-SolidCompression=true
+SolidCompression=false
 WizardImageFile=Setupfiles\WizModernImage.bmp
 WizardSmallImageFile=Setupfiles\WizModernSmallImage.bmp
 [Languages]
@@ -28,7 +28,7 @@ Name: en; MessagesFile: compiler:Languages\English.isl
 Name: ru; MessagesFile: compiler:Languages\Russian.isl
 Name: nl; MessagesFile: compiler:Languages\Dutch.isl
 Name: fr; MessagesFile: compiler:Languages\French.isl
-Name: de; MessagesFile: compiler:Languages\German.isl
+;Name: de; MessagesFile: compiler:Languages\German.isl
 Name: cs; MessagesFile: compiler:Languages\Czech.isl
 [Files]
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
@@ -67,82 +67,21 @@ Source: ..\..\clamav-release\contrib\msvc\Release\clamscan.exe; DestDir: {app}\b
 Source: ..\..\clamav-release\contrib\msvc\Release\freshclam.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\..\clamav-release\contrib\msvc\Release\sigtool.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\..\clamav-release\contrib\msvc\Release\libclamav.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
-;Source: ..\locale\en_AU\LC_MESSAGES\ClamTray.mo; DestDir: {app}\locale\en_AU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-;Source: ..\locale\en_AU\LC_MESSAGES\EmailAlert.mo; DestDir: {app}\locale\en_AU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-;Source: ..\locale\en_AU\LC_MESSAGES\OlAddin.mo; DestDir: {app}\locale\en_AU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-;Source: ..\locale\en_AU\LC_MESSAGES\ShellExtImpl.mo; DestDir: {app}\locale\en_AU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-;Source: ..\locale\en_AU\LC_MESSAGES\wxDialogAbout.mo; DestDir: {app}\locale\en_AU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-;Source: ..\locale\en_AU\LC_MESSAGES\wxDialogCheckUpdate.mo; DestDir: {app}\locale\en_AU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-;Source: ..\locale\en_AU\LC_MESSAGES\wxDialogLogViewer.mo; DestDir: {app}\locale\en_AU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-;Source: ..\locale\en_AU\LC_MESSAGES\wxDialogPreferences.mo; DestDir: {app}\locale\en_AU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-;Source: ..\locale\en_AU\LC_MESSAGES\wxDialogScheduledScan.mo; DestDir: {app}\locale\en_AU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-;Source: ..\locale\en_AU\LC_MESSAGES\wxDialogStatus.mo; DestDir: {app}\locale\en_AU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-;Source: ..\locale\en_AU\LC_MESSAGES\wxDialogUtils.mo; DestDir: {app}\locale\en_AU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-;Source: ..\locale\en_AU\LC_MESSAGES\wxFrameMain.mo; DestDir: {app}\locale\en_AU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-;Source: ..\locale\en_AU\LC_MESSAGES\Config.mo; DestDir: {app}\locale\en_AU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\nl_BE\LC_MESSAGES\ClamTray.mo; DestDir: {app}\locale\nl_BE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\nl_BE\LC_MESSAGES\EmailAlert.mo; DestDir: {app}\locale\nl_BE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\nl_BE\LC_MESSAGES\OlAddin.mo; DestDir: {app}\locale\nl_BE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\nl_BE\LC_MESSAGES\ShellExtImpl.mo; DestDir: {app}\locale\nl_BE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\nl_BE\LC_MESSAGES\wxDialogAbout.mo; DestDir: {app}\locale\nl_BE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\nl_BE\LC_MESSAGES\wxDialogCheckUpdate.mo; DestDir: {app}\locale\nl_BE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\nl_BE\LC_MESSAGES\wxDialogLogViewer.mo; DestDir: {app}\locale\nl_BE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\nl_BE\LC_MESSAGES\wxDialogPreferences.mo; DestDir: {app}\locale\nl_BE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\nl_BE\LC_MESSAGES\wxDialogScheduledScan.mo; DestDir: {app}\locale\nl_BE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\nl_BE\LC_MESSAGES\wxDialogStatus.mo; DestDir: {app}\locale\nl_BE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\nl_BE\LC_MESSAGES\wxDialogUtils.mo; DestDir: {app}\locale\nl_BE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\nl_BE\LC_MESSAGES\wxFrameMain.mo; DestDir: {app}\locale\nl_BE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\nl_BE\LC_MESSAGES\Config.mo; DestDir: {app}\locale\nl_BE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\fr_FR\LC_MESSAGES\ClamTray.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\fr_FR\LC_MESSAGES\EmailAlert.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\fr_FR\LC_MESSAGES\OlAddin.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\fr_FR\LC_MESSAGES\ShellExtImpl.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\fr_FR\LC_MESSAGES\wxDialogAbout.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\fr_FR\LC_MESSAGES\wxDialogCheckUpdate.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\fr_FR\LC_MESSAGES\wxDialogLogViewer.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\fr_FR\LC_MESSAGES\wxDialogPreferences.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\fr_FR\LC_MESSAGES\wxDialogScheduledScan.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\fr_FR\LC_MESSAGES\wxDialogStatus.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\fr_FR\LC_MESSAGES\wxDialogUtils.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\fr_FR\LC_MESSAGES\wxFrameMain.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\de_DE\LC_MESSAGES\ClamTray.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\de_DE\LC_MESSAGES\EmailAlert.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\de_DE\LC_MESSAGES\OlAddin.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\de_DE\LC_MESSAGES\ShellExtImpl.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\de_DE\LC_MESSAGES\wxDialogAbout.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\de_DE\LC_MESSAGES\wxDialogCheckUpdate.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\de_DE\LC_MESSAGES\wxDialogLogViewer.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\de_DE\LC_MESSAGES\wxDialogPreferences.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\de_DE\LC_MESSAGES\wxDialogScheduledScan.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\de_DE\LC_MESSAGES\wxDialogStatus.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\de_DE\LC_MESSAGES\wxDialogUtils.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\de_DE\LC_MESSAGES\wxFrameMain.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\cs_CZ\LC_MESSAGES\ClamTray.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\cs_CZ\LC_MESSAGES\EmailAlert.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\cs_CZ\LC_MESSAGES\OlAddin.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\cs_CZ\LC_MESSAGES\ShellExtImpl.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\cs_CZ\LC_MESSAGES\wxDialogAbout.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\cs_CZ\LC_MESSAGES\wxDialogCheckUpdate.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\cs_CZ\LC_MESSAGES\wxDialogLogViewer.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\cs_CZ\LC_MESSAGES\wxDialogPreferences.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\cs_CZ\LC_MESSAGES\wxDialogScheduledScan.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\cs_CZ\LC_MESSAGES\wxDialogStatus.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\cs_CZ\LC_MESSAGES\wxDialogUtils.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\cs_CZ\LC_MESSAGES\wxFrameMain.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\cs_CZ\LC_MESSAGES\Config.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\ru_RU\LC_MESSAGES\ClamTray.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\ru_RU\LC_MESSAGES\EmailAlert.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\ru_RU\LC_MESSAGES\OlAddin.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\ru_RU\LC_MESSAGES\ShellExtImpl.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\ru_RU\LC_MESSAGES\wxDialogAbout.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\ru_RU\LC_MESSAGES\wxDialogCheckUpdate.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\ru_RU\LC_MESSAGES\wxDialogLogViewer.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\ru_RU\LC_MESSAGES\wxDialogPreferences.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\ru_RU\LC_MESSAGES\wxDialogScheduledScan.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\ru_RU\LC_MESSAGES\wxDialogStatus.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\ru_RU\LC_MESSAGES\wxDialogUtils.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\ru_RU\LC_MESSAGES\wxFrameMain.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 
+; Copy the Gettext locale files
+
+;Source: ..\locale\ca_ES.mo; DestDir: {app}\locale\ca_ES\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\cs_CZ.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\de_DE.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+;Source: ..\locale\es_ES.mo; DestDir: {app}\locale\es_ES\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\fr_FR.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+;Source: ..\locale\it_IT.mo; DestDir: {app}\locale\it_IT\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+;Source: ..\locale\ko_KR.mo; DestDir: {app}\locale\ko_KR\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\nl_BE.mo; DestDir: {app}\locale\nl_BE\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+;Source: ..\locale\pt_PT.mo; DestDir: {app}\locale\pt_PT\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+;Source: ..\locale\sv_SE.mo; DestDir: {app}\locale\sv_SE\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+;Source: ..\locale\tr_TR.mo; DestDir: {app}\locale\tr_TR\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+;Source: ..\locale\zh_CN.mo; DestDir: {app}\locale\zh_CN\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 
 
 ; on xp and greater VC80 CRT needs to be installed in Microsoft.VC80.CRT
@@ -157,18 +96,20 @@ Source: Microsoft.VC80.CRT\msvcp80.dll; DestDir: {app}\bin; Components: ClamAV; 
 
 
 ;Source: ..\clamav-stable\sigtool\sigtool.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
-; Copy Unicode build in NT and ANSI in 9x
-Source: ..\cpp\Release\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: IsWin9x
-Source: ..\cpp\libintl-1.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: IsWin9x
-Source: ..\cpp\Release_Unicode\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: UsingWinNT
-Source: ..\cpp\libintl-1.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: UsingWinNT
-Source: ..\cpp\iconv.dll; DestDir: {win}; Components: ExplorerShell; Flags: restartreplace sharedfile; Check: UsingWinNT
-Source: ..\cpp\Release_x64\ExpShell64.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete 64bit; Check: IsWin64
-Source: ..\cpp\libintl-1.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: IsWin64
-Source: ..\cpp\iconv.dll; DestDir: {win}; Components: ExplorerShell; Flags: restartreplace sharedfile; Check: IsWin64
+; TODO : Copy Unicode build in NT and ANSI in 9x
+Source: ..\cpp\Release\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete
+Source: ..\cpp\libintl-1.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete
+;Source: ..\cpp\Release\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: IsWin9x
+;Source: ..\cpp\libintl-1.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: IsWin9x
+;Source: ..\cpp\Release_Unicode\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: UsingWinNT
+;Source: ..\cpp\libintl-1.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: UsingWinNT
+;Source: ..\cpp\iconv.dll; DestDir: {win}; Components: ExplorerShell; Flags: restartreplace sharedfile; Check: UsingWinNT
+;Source: ..\cpp\Release_x64\ExpShell64.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete 64bit; Check: IsWin64
+;Source: ..\cpp\libintl-1.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: IsWin64
+;Source: ..\cpp\iconv.dll; DestDir: {win}; Components: ExplorerShell; Flags: restartreplace sharedfile; Check: IsWin64
 
 Source: py2exe\dist\bin\WClose.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\w9xpopen.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: py2exe\dist\bin\w9xpopen.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: py2exe\dist\bin\OlAddin.exe; DestDir: {app}\bin; Components: OutlookAddin; Flags: restartreplace uninsrestartdelete replacesameversion
 ;Source: {%TEMP|{localappdata}}\clamwin-src.zip; DestDir: {app}\src; Components: Sources; Flags: external ignoreversion
 ;Source: {%TEMP|{localappdata}}\clamav-src.tar.gz; DestDir: {app}\src; Components: Sources; Flags: external ignoreversion
@@ -191,7 +132,7 @@ Source: py2exe\dist\lib\mapi.pyd; DestDir: {app}\lib; Components: ClamWin; Flags
 Source: py2exe\dist\lib\pythoncom23.dll; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 Source: py2exe\dist\lib\pywintypes23.dll; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 Source: py2exe\dist\lib\unicodedata.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
-Source: py2exe\dist\lib\w9xpopen.exe; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\bin\w9xpopen.exe; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 Source: py2exe\dist\lib\win32api.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 Source: py2exe\dist\lib\win32clipboard.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 Source: py2exe\dist\lib\win32event.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete

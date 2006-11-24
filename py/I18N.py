@@ -51,8 +51,10 @@ def getClamString(englishString):
     modName = getCallingModule().replace(".pyo", "")
     modName = modName.replace(".py", "")
     #print "modName = [%s]" % modName
-    gettext.bindtextdomain(modName, localePath)
-    gettext.textdomain(modName)
+#    gettext.bindtextdomain(modName, localePath)
+#    gettext.textdomain(modName)
+    gettext.bindtextdomain("clamwin", localePath)
+    gettext.textdomain("clamwin")
     #return gettext.gettext(englishString)
     return gettext.gettext(englishString).decode("utf-8")
 
@@ -113,8 +115,10 @@ def findAndGetClamString(englishString):
     modName = getCallingModule().replace(".pyo", "")
     modName = modName.replace(".py", "")
     #print "modName = [%s]" % modName
-    gettext.bindtextdomain(modName, localePath)
-    gettext.textdomain(modName)
+#    gettext.bindtextdomain(modName, localePath)
+#    gettext.textdomain(modName)
+    gettext.bindtextdomain("clamwin", localePath)
+    gettext.textdomain("clamwin")
     return gettext.gettext(englishString).decode("utf-8")
 
 

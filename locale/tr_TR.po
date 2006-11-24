@@ -1,0 +1,1967 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ClamWin Free Antivirus 0.88.4\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2006-11-24 19:02+0100\n"
+"Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
+"Language-Team: Turkish <team@clamwin.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Turkish\n"
+"X-Poedit-Country: TURKEY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: wxFrameMain.py:90
+msgid "Displays the configuration window"
+msgstr "Ayarlar penceresini gösterir"
+
+#: wxFrameMain.py:91
+msgid "&Preferences"
+msgstr "&Tercihler"
+
+#: wxFrameMain.py:93
+msgid "Downloads latest virus database from the Internet"
+msgstr "En son virus veritabanini Internetten indirir."
+
+#: wxFrameMain.py:95
+msgid "Download &Virus Database Update"
+msgstr "&Virus Veritabanı Güncellemesini İndir"
+
+#: wxFrameMain.py:96
+#, fuzzy
+msgid "Displays ClamWin Log Files"
+msgstr "ClamWin Günlük Dosyalarini Goruntuler"
+
+#: wxFrameMain.py:97
+#, fuzzy
+msgid "&Display Reports"
+msgstr "Raporlari &Goruntule"
+
+#: wxFrameMain.py:106
+msgid "&File"
+msgstr "&Dosya"
+
+#: wxFrameMain.py:107
+msgid "&Tools"
+msgstr "&Araçlar"
+
+#: wxFrameMain.py:108
+#: wxFrameMain.py:114
+msgid "&Help"
+msgstr "&Yardım"
+
+#: wxFrameMain.py:113
+msgid "Displays ClamWin Free Antivirus Manual"
+msgstr "Clamwin Bedava Antivirüs Elkitabını Gösterir"
+
+#: wxFrameMain.py:116
+msgid "&Check Latest Version"
+msgstr "En Son Sürümü &Kontrol Et"
+
+#: wxFrameMain.py:118
+msgid "ClamWin &Website"
+msgstr "ClamWin &Ağsitesi"
+
+#: wxFrameMain.py:120
+msgid "Opens Frequently Asked Questions Page in the Web Browser"
+msgstr "Sik Sorulan Sorular Sayfasini Ağ Sayfa Tarayıcısında Açar"
+
+#: wxFrameMain.py:121
+#, fuzzy
+msgid "&FAQ"
+msgstr "&SSS"
+
+#: wxFrameMain.py:123
+msgid "Displays the  About Box"
+msgstr "Hakkında Kutucuğunu Gösterir"
+
+#: wxFrameMain.py:124
+msgid "&About"
+msgstr "&Hakkında"
+
+#: wxFrameMain.py:134
+msgid "Displays Virus Database Update Log FIle"
+msgstr "Virus Veritabani Güncelleme Günlük Dosyasını Gösterir"
+
+#: wxFrameMain.py:136
+#: ClamTray.py:278
+msgid "&Virus Database Update Report"
+msgstr "&Virus Veritabanı Güncelleme Raporu"
+
+#: wxFrameMain.py:137
+msgid "Displays Virus Scan Log File"
+msgstr "Virus Taraması Gunluk Dosyasını Goruntuler"
+
+#: wxFrameMain.py:138
+msgid "&Scan Report"
+msgstr "&Tarama Raporu"
+
+#: wxFrameMain.py:146
+msgid "Scans Files or Folders for Computer Viruses"
+msgstr "Dosya veya Dizinleri Bilgisayar Virüslerine Karsi Tarar"
+
+#: wxFrameMain.py:147
+#: wxFrameMain.py:257
+msgid "&Scan"
+msgstr "&Tara"
+
+#: wxFrameMain.py:149
+msgid "Exits the application"
+msgstr "Uygulamadan çıkar"
+
+#: wxFrameMain.py:150
+msgid "E&xit"
+msgstr "Çı&kış"
+
+#: wxFrameMain.py:159
+msgid "Preferences"
+msgstr "Tercihler"
+
+#: wxFrameMain.py:160
+#: wxFrameMain.py:161
+msgid "Displays Preferences Window"
+msgstr "Ozellikler Penceresini Gösterir"
+
+#: wxFrameMain.py:165
+msgid "Update"
+msgstr "Güncelle"
+
+#: wxFrameMain.py:166
+msgid "Updates virus databases over the Internet"
+msgstr "Virus veritabanlarini Internet üzerinden günceller"
+
+#: wxFrameMain.py:167
+msgid "Starts Internet Update"
+msgstr "Internet Guncellemesini Başlatır"
+
+#: wxFrameMain.py:171
+msgid "Scan"
+msgstr "Tara"
+
+#: wxFrameMain.py:172
+msgid "Scans Selected File or Folder for Computer Viruses"
+msgstr "Seçili Dosya veya Dizinleri Bilgisayar Virüslerine Karsı Tara"
+
+#: wxFrameMain.py:173
+msgid "Scans For Viruses"
+msgstr "Virüsleri Tarar"
+
+#: wxFrameMain.py:221
+#: wxFrameMain.py:225
+#: wxFrameMain.py:337
+#: wxFrameMain.py:343
+#: ClamTray.py:117
+#: ClamTray.py:339
+#: ClamTray.py:363
+#: ClamTray.py:373
+#: ClamTray.py:381
+#: ClamTray.py:441
+#: ClamTray.py:455
+#: OlAddin.py:199
+#: OlAddin.py:419
+#: OlAddin.py:492
+#: wxDialogPreferences.py:1501
+#: wxDialogPreferences.py:1564
+#: wxDialogPreferences.py:1582
+#: wxDialogStatus.py:466
+msgid "ClamWin Free Antivirus"
+msgstr "ClamWin Bedava Antivirus"
+
+#: wxFrameMain.py:239
+msgid "Status Bar"
+msgstr "Durum Cubugu"
+
+#: wxFrameMain.py:247
+msgid ""
+"Select a folder or a file to scan\n"
+"(Hold Shift key to select multiple files or folders)"
+msgstr ""
+"Tarama icin bir dosya veya dizin secin\n"
+"(Birden çok dosya veya dizin secmek icin Shift tuşunu basılı tutunuz)"
+
+#: wxFrameMain.py:115
+#, fuzzy
+msgid "Checks for the Latest Version"
+msgstr "En Son Surumu Kontrol Eder"
+
+#: wxFrameMain.py:354
+#, fuzzy
+msgid "An Error occurred while updating UI selection. %s"
+msgstr "Kullanici Arayuzu secimi guncellenirken hata olustu. %s"
+
+#: wxFrameMain.py:387
+#, fuzzy
+msgid "Could not open help file - %s not found."
+msgstr "Yardim dosyasini acamadi - %s bulunamadi."
+
+#: wxFrameMain.py:394
+#, fuzzy
+msgid "Could not open help file. Please ensure that you have Adobe Acrobat Reader installed."
+msgstr "Yardim dosyasi acilamadi. Lutfen Adobe Acrobat Reader programinin yuklu oldugundan emin olun."
+
+#: wxDialogStatus.py:117
+msgid "File not found"
+msgstr "Dosya bulunamadı"
+
+#: wxDialogStatus.py:119
+msgid "FOUND"
+msgstr ""
+
+#: wxDialogStatus.py:133
+#: wxDialogLogViewer.py:105
+msgid "ERROR: No servers could be reached. Giving up"
+msgstr ""
+
+#: wxDialogStatus.py:137
+#: wxDialogLogViewer.py:109
+msgid "Giving up on"
+msgstr "Bağlandığında dur"
+
+#: wxDialogStatus.py:141
+#: wxDialogLogViewer.py:113
+#, fuzzy
+msgid "Scan started:"
+msgstr "&Tarama Raporu"
+
+#: wxDialogStatus.py:143
+#: wxDialogLogViewer.py:115
+msgid "-- summary --"
+msgstr ""
+
+#: wxDialogStatus.py:151
+#: wxDialogLogViewer.py:123
+#, fuzzy
+msgid "Scanned files:"
+msgstr "Enfekte dosyalar"
+
+#: wxDialogStatus.py:157
+#: wxDialogLogViewer.py:129
+#, fuzzy
+msgid "Time:"
+msgstr "&Zaman:"
+
+#: wxDialogStatus.py:159
+msgid "WARNING: Your ClamAV installation is OUTDATED!"
+msgstr ""
+
+#: wxDialogStatus.py:161
+msgid "WARNING: Local version:"
+msgstr "UYARI: Yerel sürüm:"
+
+#: wxDialogStatus.py:163
+msgid "Recommended version:"
+msgstr "Tavsiye edilen sürüm:"
+
+#: wxDialogStatus.py:165
+msgid "DON'T PANIC! Read"
+msgstr ""
+
+#: wxDialogStatus.py:167
+msgid "is up to date"
+msgstr ""
+
+#: wxDialogStatus.py:169
+msgid "sigs:"
+msgstr ""
+
+#: wxDialogStatus.py:171
+msgid "f-level:"
+msgstr ""
+
+#: wxDialogStatus.py:173
+msgid "builder:"
+msgstr ""
+
+#: wxDialogStatus.py:175
+msgid "Database updated"
+msgstr "Veritabani Güncellendi"
+
+#: wxDialogStatus.py:177
+msgid "signatures"
+msgstr ""
+
+#: wxDialogStatus.py:179
+msgid "from"
+msgstr "başlangıç"
+
+#: wxDialogStatus.py:181
+msgid "Control+C pressed, aborting..."
+msgstr ""
+
+#: wxDialogStatus.py:183
+msgid "Downloading"
+msgstr ""
+
+#: wxDialogStatus.py:185
+msgid "Connection with"
+msgstr "ile bağlantı"
+
+#: wxDialogStatus.py:187
+msgid "http:\\\\www.clamav.net\\faq.html"
+msgstr ""
+
+#: wxDialogStatus.py:189
+msgid "http://www.clamwin.com/content/view/10/27/"
+msgstr ""
+
+#: wxDialogStatus.py:191
+msgid "Not moved"
+msgstr ""
+
+#: wxDialogStatus.py:193
+msgid "File excluded"
+msgstr "Dosya hariç"
+
+#: wxDialogStatus.py:199
+msgid "Mon "
+msgstr ""
+
+#: wxDialogStatus.py:201
+msgid "Tue "
+msgstr ""
+
+#: wxDialogStatus.py:203
+msgid "Wed "
+msgstr ""
+
+#: wxDialogStatus.py:205
+msgid "Thu "
+msgstr ""
+
+#: wxDialogStatus.py:207
+msgid "Fri "
+msgstr ""
+
+#: wxDialogStatus.py:209
+msgid "Sat "
+msgstr ""
+
+#: wxDialogStatus.py:211
+msgid "Sun "
+msgstr ""
+
+#: wxDialogStatus.py:213
+msgid "Jan "
+msgstr ""
+
+#: wxDialogStatus.py:215
+msgid "Feb "
+msgstr ""
+
+#: wxDialogStatus.py:217
+msgid "Mar "
+msgstr ""
+
+#: wxDialogStatus.py:219
+msgid "Apr "
+msgstr ""
+
+#: wxDialogStatus.py:221
+msgid "May "
+msgstr ""
+
+#: wxDialogStatus.py:223
+msgid "Jun "
+msgstr ""
+
+#: wxDialogStatus.py:225
+msgid "Jul "
+msgstr ""
+
+#: wxDialogStatus.py:227
+msgid "Aug "
+msgstr ""
+
+#: wxDialogStatus.py:229
+msgid "Sep "
+msgstr ""
+
+#: wxDialogStatus.py:231
+msgid "Oct "
+msgstr ""
+
+#: wxDialogStatus.py:233
+msgid "Nov "
+msgstr ""
+
+#: wxDialogStatus.py:235
+msgid "Dec "
+msgstr ""
+
+#: wxDialogStatus.py:242
+msgid "version:"
+msgstr "sürüm:"
+
+#: wxDialogStatus.py:244
+msgid "updated"
+msgstr ""
+
+#: wxDialogStatus.py:246
+msgid "failed"
+msgstr "başarısız oldu"
+
+#: wxDialogStatus.py:294
+msgid "ClamWin Free Antivirus Status"
+msgstr ""
+
+#: wxDialogStatus.py:319
+msgid "&Stop"
+msgstr "&Dur"
+
+#: wxDialogStatus.py:327
+msgid "S&ave Report"
+msgstr "Raporu K&aydet"
+
+#: wxDialogStatus.py:435
+msgid "Unable to stop runner thread, terminating"
+msgstr "Çalıştıran işlem durdurulamadı, sonlandırılıyor"
+
+#: wxDialogStatus.py:453
+#, fuzzy
+msgid "Report files (*.txt)|*.txt|All files (*.*)|*.*"
+msgstr "Rapor dosyalari (*.txt)|*.txt|Tum dosyalar (*.*)|*.*"
+
+#: wxDialogStatus.py:455
+#: wxDialogPreferences.py:1250
+#: wxDialogPreferences.py:1266
+#, fuzzy
+msgid "All files (*)|*"
+msgstr "Tum dosyalar (*)|*"
+
+#: wxDialogStatus.py:463
+#, fuzzy
+msgid "Could not save report to the file "
+msgstr "Rapor dosyaya kaydedilemedi "
+
+#: wxDialogStatus.py:464
+#, fuzzy
+msgid ". Please check that you have write "
+msgstr ".Lutfen klasore yazma "
+
+#: wxDialogStatus.py:465
+#, fuzzy
+msgid "permissions to the folder and there is enough space on the disk."
+msgstr "izninizin oldugunu ve diskte yeterli alan oldugunu kontrol ediniz."
+
+#: wxDialogStatus.py:533
+#, fuzzy
+msgid "Could not read from log file %s. Error: %s"
+msgstr "Gunluk dosyasi %s dan okunamadi. Hata: %s"
+
+#: wxDialogStatus.py:544
+#, fuzzy
+msgid ""
+"\n"
+"--------------------------------------\n"
+"Completed\n"
+"--------------------------------------\n"
+msgstr ""
+"\n"
+"-------------------\n"
+"Tamamlandi\n"
+"-------------------\n"
+
+#: wxDialogStatus.py:546
+msgid ""
+"\n"
+"--------------------------------------\n"
+"Cancelled\n"
+"--------------------------------------\n"
+msgstr ""
+
+#: wxDialogStatus.py:629
+#: ClamTray.py:470
+#, fuzzy
+msgid "Could not start process. No Command Line specified"
+msgstr "Islem baslatilamadi. Komut satiri belirtilmedi"
+
+#: wxDialogStatus.py:636
+#: ClamTray.py:477
+#, fuzzy
+msgid ""
+"Could not start process.\n"
+"%s\n"
+"File does not exist."
+msgstr ""
+"Islem baslatilamadi.\n"
+"%s\n"
+"Dosya bulunamadi."
+
+#: wxDialogStatus.py:646
+#: wxDialogStatus.py:648
+#: ClamTray.py:485
+#: ClamTray.py:487
+#, fuzzy
+msgid ""
+"Could not start process:\n"
+"%s\n"
+"Error: %s"
+msgstr ""
+"Islem baslatilamadi:\n"
+"%s\n"
+"Hata: %s"
+
+#: wxDialogScheduledScan.py:160
+msgid "Scheduled Scan"
+msgstr "Zamanlanmis Tarama"
+
+#: wxDialogScheduledScan.py:167
+msgid "Schedule"
+msgstr ""
+
+#: wxDialogScheduledScan.py:171
+msgid "Scanning &Frequency:"
+msgstr "Tarama &Sıklığı:"
+
+#: wxDialogScheduledScan.py:180
+msgid "How often the schedule is executed"
+msgstr "Program hangi sıklıkta çalıştırılsın"
+
+#: wxDialogScheduledScan.py:187
+#: wxDialogPreferences.py:415
+msgid "&Time:"
+msgstr "&Zaman:"
+
+#: wxDialogScheduledScan.py:194
+msgid "When the schedule should be started"
+msgstr "Programın başlatılması gereken zaman"
+
+#: wxDialogScheduledScan.py:202
+#: wxDialogPreferences.py:567
+msgid "&Day Of The Week:"
+msgstr "&Haftanin Günü"
+
+#: wxDialogScheduledScan.py:211
+#, fuzzy
+msgid "When schedule frequency is weekly select day of the week"
+msgstr "Guncelleme sikligi haftaliga ayarliysa bir guncelleme icin haftanin gununu secin"
+
+#: wxDialogScheduledScan.py:215
+#, fuzzy
+msgid "&Scan Folder:"
+msgstr "&Tarama Raporu"
+
+#: wxDialogScheduledScan.py:222
+msgid "Specify a folder to be scanned"
+msgstr ""
+
+#: wxDialogScheduledScan.py:227
+#, fuzzy
+msgid "Click to browse for a folder"
+msgstr "Bir karantina klasoru incelemek icin tiklayin"
+
+#: wxDialogScheduledScan.py:233
+msgid "D&escription:"
+msgstr ""
+
+#: wxDialogScheduledScan.py:240
+msgid "Specify a friendly description for the scheduled scan"
+msgstr ""
+
+#: wxDialogScheduledScan.py:243
+msgid "&Activate This Schedule"
+msgstr ""
+
+#: wxDialogScheduledScan.py:246
+msgid "Select if you wish to enable this schedule"
+msgstr ""
+
+#: wxDialogScheduledScan.py:252
+msgid "Closes the dialog and applies the settings"
+msgstr ""
+
+#: wxDialogScheduledScan.py:256
+#: wxDialogPreferences.py:253
+#, fuzzy
+msgid "Cancel"
+msgstr "Iptal"
+
+#: wxDialogScheduledScan.py:258
+#, fuzzy
+msgid "Closes the dialog and discards the changes"
+msgstr "Pencereyi kapatir ve degisiklikleri kaydeder"
+
+#: wxDialogScheduledScan.py:309
+#: wxDialogPreferences.py:1235
+msgid "Select a directory"
+msgstr ""
+
+#: wxDialogScheduledScan.py:341
+msgid "Specified path is invalid. Please verify your selection."
+msgstr ""
+
+#: wxDialogPreferences.py:145
+#, fuzzy
+msgid "General"
+msgstr "Genel"
+
+#: wxDialogPreferences.py:147
+#, fuzzy
+msgid "Filters"
+msgstr "Suzgecler"
+
+#: wxDialogPreferences.py:149
+#, fuzzy
+msgid "Internet Updates"
+msgstr "Internet Guncellemeleri"
+
+#: wxDialogPreferences.py:151
+#, fuzzy
+msgid "Proxy"
+msgstr "Proxy"
+
+#: wxDialogPreferences.py:153
+#, fuzzy
+msgid "Scheduled Scans"
+msgstr "Zamanlanmis Taramalar"
+
+#: wxDialogPreferences.py:155
+#, fuzzy
+msgid "Email Alerts"
+msgstr "Eposta Uyarilari"
+
+#: wxDialogPreferences.py:157
+#, fuzzy
+msgid "Archives"
+msgstr "Arsivler"
+
+#: wxDialogPreferences.py:159
+#, fuzzy
+msgid "File Locations"
+msgstr "Dosya Konumlari"
+
+#: wxDialogPreferences.py:161
+#, fuzzy
+msgid "Reports"
+msgstr "Raporlar"
+
+#: wxDialogPreferences.py:163
+#, fuzzy
+msgid "Advanced"
+msgstr "Gelismis"
+
+#: wxDialogPreferences.py:169
+#, fuzzy
+msgid "Description"
+msgstr "Tanim"
+
+#: wxDialogPreferences.py:170
+#, fuzzy
+msgid "Path"
+msgstr "Konum"
+
+#: wxDialogPreferences.py:173
+#, fuzzy
+msgid "Frequency"
+msgstr "Frekans"
+
+#: wxDialogPreferences.py:187
+#, fuzzy
+msgid "ClamWin Preferences"
+msgstr "ClamWin Ozellikleri"
+
+#: wxDialogPreferences.py:245
+#, fuzzy
+msgid "Closes the window and saves the changes"
+msgstr "Pencereyi kapatir ve degisiklikleri kaydeder"
+
+#: wxDialogPreferences.py:255
+#, fuzzy
+msgid "Closes the window without saving the changes"
+msgstr "Degisiklikleri kaydetmeden pencereyi kapatir"
+
+#: wxDialogPreferences.py:260
+#, fuzzy
+msgid "Proxy &Server:"
+msgstr "Proxy &Sunucu:"
+
+#: wxDialogPreferences.py:267
+#, fuzzy
+msgid "Proxy Server domain name or IP address"
+msgstr "Proxy Sunucusu domain adi veya IP adresi"
+
+#: wxDialogPreferences.py:270
+#: wxDialogPreferences.py:727
+#, fuzzy
+msgid "P&ort:"
+msgstr "P&ort"
+
+#: wxDialogPreferences.py:280
+#, fuzzy
+msgid "Proxy Server port number (0-65535)"
+msgstr "Proxy Sunucusu port numarasi (0-65535)"
+
+#: wxDialogPreferences.py:283
+#: wxDialogPreferences.py:740
+#, fuzzy
+msgid "&User Name:"
+msgstr "&Kullanici Adi:"
+
+#: wxDialogPreferences.py:290
+#, fuzzy
+msgid "Proxy Server Account Name (optional)"
+msgstr "Proxy Sunucusu Hesap Adi (istege bagli)"
+
+#: wxDialogPreferences.py:293
+#: wxDialogPreferences.py:751
+#, fuzzy
+msgid "&Password:"
+msgstr "&Sifre:"
+
+#: wxDialogPreferences.py:301
+#, fuzzy
+msgid "Proxy Server account password (optional)"
+msgstr "Proxy Sunucusu hesap sifresi (istege bagli)"
+
+#: wxDialogPreferences.py:304
+#, fuzzy
+msgid "Leave these fields blank if you do not connect via Proxy Server"
+msgstr "Proxy Sunucusu araciligiyla baglanmiyorsaniz bos birakin"
+
+#: wxDialogPreferences.py:310
+#, fuzzy
+msgid "Scanning Options"
+msgstr "Tarama Secenekleri"
+
+#: wxDialogPreferences.py:315
+#, fuzzy
+msgid "&Enable Automatic Virus Database Updates"
+msgstr "&Otomatik Virus Veritabani Guncellemelerini Etkinlestir"
+
+#: wxDialogPreferences.py:318
+#, fuzzy
+msgid "Enable automatic virus database downloads "
+msgstr "Otomatik virus veritabani indirmelerini etkinlestir "
+
+#: wxDialogPreferences.py:324
+#, fuzzy
+msgid "Download &Site :"
+msgstr "&Siteden Indir :"
+
+#: wxDialogPreferences.py:331
+#, fuzzy
+msgid "Specify Database Mirror Site here. Usually this is database.clamav.net"
+msgstr "Veritabani Ayna Sitesi Belirtin. Genellikle bu database.clamav.net olur"
+
+#: wxDialogPreferences.py:334
+#, fuzzy
+msgid "&Update Frequency:"
+msgstr "&Guncelleme Frekansi:"
+
+#: wxDialogPreferences.py:339
+#: wxDialogPreferences.py:346
+#: wxDialogPreferences.py:1453
+#: wxDialogScheduledScan.py:37
+#: wxDialogScheduledScan.py:66
+#: wxDialogScheduledScan.py:175
+#: wxDialogScheduledScan.py:181
+#, fuzzy
+msgid "Daily"
+msgstr "Gunluk"
+
+#: wxDialogPreferences.py:339
+#: wxDialogPreferences.py:1453
+#: wxDialogScheduledScan.py:66
+#: wxDialogScheduledScan.py:175
+#, fuzzy
+msgid "Hourly"
+msgstr "Her saat"
+
+#: wxDialogPreferences.py:340
+#: wxDialogPreferences.py:1077
+#: wxDialogPreferences.py:1453
+#: wxDialogScheduledScan.py:66
+#: wxDialogScheduledScan.py:176
+#: wxDialogScheduledScan.py:283
+#: wxDialogScheduledScan.py:292
+#, fuzzy
+msgid "Weekly"
+msgstr "Haftalik"
+
+#: wxDialogPreferences.py:340
+#: wxDialogPreferences.py:1453
+#: wxDialogScheduledScan.py:66
+#: wxDialogScheduledScan.py:175
+#, fuzzy
+msgid "Workdays"
+msgstr "Isgunleri"
+
+#: wxDialogPreferences.py:345
+#, fuzzy
+msgid "How often virus database is downloaded"
+msgstr "Virus veritabani ne siklikla indirilsin"
+
+#: wxDialogPreferences.py:352
+#, fuzzy
+msgid "&ClamScan Location:"
+msgstr "&ClamScan Konumu:"
+
+#: wxDialogPreferences.py:360
+#, fuzzy
+msgid "Specify location of clamscan"
+msgstr "Clamscan konumunu belirtin"
+
+#: wxDialogPreferences.py:365
+#, fuzzy
+msgid "Click to browse for clamscan"
+msgstr "Clamscan aramak icin tiklayin"
+
+#: wxDialogPreferences.py:371
+#, fuzzy
+msgid "&FreshClam Location:"
+msgstr "&FreshClam Konumu:"
+
+#: wxDialogPreferences.py:379
+#, fuzzy
+msgid "Specify location of freshclam"
+msgstr "Freshclam konumu belirtin"
+
+#: wxDialogPreferences.py:385
+#, fuzzy
+msgid "Click to browse for freshclam"
+msgstr "Freshclam aramak icin tiklayin"
+
+#: wxDialogPreferences.py:391
+#, fuzzy
+msgid "&Virus Database Folder:"
+msgstr "&Virus Veritabani Klasoru:"
+
+#: wxDialogPreferences.py:399
+#, fuzzy
+msgid "Specify location of virus database files"
+msgstr "Virus veritabani dosyasi konumunu belirtin"
+
+#: wxDialogPreferences.py:404
+#, fuzzy
+msgid "Click to browse for a virus database folder"
+msgstr "Bir virus veritabani klasorunu incelemek icin tiklayin"
+
+#: wxDialogPreferences.py:409
+#, fuzzy
+msgid "&Scan In Subdirectories"
+msgstr "Altklasorlerde &Tara"
+
+#: wxDialogPreferences.py:412
+#, fuzzy
+msgid "Select if you wish to scan in subdirectories recursively"
+msgstr "Altklasorlerde tekrarli taramak icin secin"
+
+#: wxDialogPreferences.py:426
+#, fuzzy
+msgid "&Scan In Archives"
+msgstr "Arsivlerde &Tara"
+
+#: wxDialogPreferences.py:435
+#, fuzzy
+msgid "Do Not Scan Archives Larger Than"
+msgstr "Sundan Buyuk Arsivleri Tarama"
+
+#: wxDialogPreferences.py:445
+#: wxDialogPreferences.py:913
+#, fuzzy
+msgid "MegaBytes"
+msgstr "MegaBytes"
+
+#: wxDialogPreferences.py:450
+#: wxDialogPreferences.py:464
+#, fuzzy
+msgid "Do Not Extract More Than "
+msgstr "Bundan Fazlasini Cikarma "
+
+#: wxDialogPreferences.py:460
+#, fuzzy
+msgid "Files"
+msgstr "Dosyalar"
+
+#: wxDialogPreferences.py:474
+#, fuzzy
+msgid "Sub-Archives"
+msgstr "Alt-Arsivler"
+
+#: wxDialogPreferences.py:479
+#, fuzzy
+msgid "&Treat Files As Mailboxes"
+msgstr "&Dosyalara Postakutulari Gibi Davran"
+
+#: wxDialogPreferences.py:482
+#, fuzzy
+msgid "Select if you wish to scan mailboxes"
+msgstr "Eger posta kutularini taramak istiyorsaniz secin"
+
+#: wxDialogPreferences.py:486
+#, fuzzy
+msgid "&Extract Attachments and Macros from MS Office Documents"
+msgstr "&MS Office Belgelerinden Eklenti ve Makrolari Cikar"
+
+#: wxDialogPreferences.py:489
+#: wxDialogPreferences.py:496
+#, fuzzy
+msgid "Select if you wish to scan OLE attachments and macros in MS Office Documents"
+msgstr "MS Office Belgelerindeki OLE eklentileri ve makrolari taramak icin secin"
+
+#: wxDialogPreferences.py:493
+msgid "&Detect Broken Executables"
+msgstr ""
+
+#: wxDialogPreferences.py:500
+msgid "&Additional Clamscan Command Line Parameters:"
+msgstr ""
+
+#: wxDialogPreferences.py:509
+#, fuzzy
+msgid "Limit Log File Size To:"
+msgstr "Gunluk Dosyasi Boyutu Limiti:"
+
+#: wxDialogPreferences.py:517
+#, fuzzy
+msgid "Select maximum size for the logfile"
+msgstr "Gunluk dosyasi icin azami boyutu secin"
+
+#: wxDialogPreferences.py:521
+#, fuzzy
+msgid "&Scan Report File:"
+msgstr "&Tarama Raporu Dosyasi:"
+
+#: wxDialogPreferences.py:529
+#, fuzzy
+msgid "Specify location for a scan reports log file"
+msgstr "Tarama raporlari gunluk dosyasi icin konum belirtin"
+
+#: wxDialogPreferences.py:535
+#: wxDialogPreferences.py:555
+#, fuzzy
+msgid "Click to browse for a log file"
+msgstr "Bir gunluk dosyasini gezmek icin tiklayin"
+
+#: wxDialogPreferences.py:541
+#, fuzzy
+msgid "&Virus Database Update Report File:"
+msgstr "&Virus Veritabani Guncelleme Raporu Dosyasi:"
+
+#: wxDialogPreferences.py:549
+#, fuzzy
+msgid "Specify location for a database updates log file"
+msgstr "Veritabani guncellemeleri gunluk dosyalari icin konum belirtin"
+
+#: wxDialogPreferences.py:564
+#, fuzzy
+msgid "When the download should be started"
+msgstr "Indirme ne zaman baslamali"
+
+#: wxDialogPreferences.py:581
+#, fuzzy
+msgid "List of Scheduled Scans"
+msgstr "Zamanlanmis Gorevlerin Listesi"
+
+#: wxDialogPreferences.py:597
+#, fuzzy
+msgid "Scheduled Scans:"
+msgstr "Zamanlanmis Taramalar:"
+
+#: wxDialogPreferences.py:603
+#, fuzzy
+msgid "&Add"
+msgstr "&Ekle"
+
+#: wxDialogPreferences.py:609
+#, fuzzy
+msgid "&Remove"
+msgstr "&Kaldir"
+
+#: wxDialogPreferences.py:616
+#, fuzzy
+msgid "&Edit"
+msgstr "&Duzenle"
+
+#: wxDialogPreferences.py:622
+#, fuzzy
+msgid "&Display Infected Files Only"
+msgstr "&Sadece Enfekte Dosyalari Goruntule"
+
+#: wxDialogPreferences.py:626
+#: wxDialogPreferences.py:935
+#, fuzzy
+msgid "Select if you wish to display infected files only in the scan progress window"
+msgstr "Tarama penceresinde sadece enfekte dosyalari goruntulemek icin secin"
+
+#: wxDialogScheduledScan.py:206
+#: wxDialogPreferences.py:628
+#, fuzzy
+msgid "Monday"
+msgstr "Pazartesi"
+
+#: wxDialogPreferences.py:628
+#: wxDialogPreferences.py:635
+#: wxDialogScheduledScan.py:206
+#: wxDialogScheduledScan.py:212
+#, fuzzy
+msgid "Tuesday"
+msgstr "Sali"
+
+#: wxDialogScheduledScan.py:206
+#: wxDialogPreferences.py:629
+#, fuzzy
+msgid "Wednesday"
+msgstr "Carsamba"
+
+#: wxDialogScheduledScan.py:207
+#: wxDialogPreferences.py:629
+#, fuzzy
+msgid "Thursday"
+msgstr "Persembe"
+
+#: wxDialogScheduledScan.py:207
+#: wxDialogPreferences.py:629
+#, fuzzy
+msgid "Friday"
+msgstr "Cuma"
+
+#: wxDialogScheduledScan.py:207
+#: wxDialogPreferences.py:629
+#, fuzzy
+msgid "Saturday"
+msgstr "Cumartesi"
+
+#: wxDialogScheduledScan.py:207
+#: wxDialogPreferences.py:629
+#, fuzzy
+msgid "Sunday"
+msgstr "Pazar"
+
+#: wxDialogPreferences.py:634
+#, fuzzy
+msgid "When update frequency is weekly select day of the week for an update"
+msgstr "Guncelleme sikligi haftaliga ayarliysa bir guncelleme icin haftanin gununu secin"
+
+#: wxDialogPreferences.py:638
+#, fuzzy
+msgid "&Update Virus Database On Logon"
+msgstr "&Baglanildiginda Virus Veritabanini Guncelle"
+
+#: wxDialogPreferences.py:641
+#, fuzzy
+msgid "Select if you wish to update the virus databases just after you logged on"
+msgstr "Baglanildiginda virus veritabanini guncellemek icin secin"
+
+#: wxDialogPreferences.py:648
+#, fuzzy
+msgid "Infected Files"
+msgstr "Enfekte dosyalar"
+
+#: wxDialogPreferences.py:653
+#, fuzzy
+msgid "&Report Only"
+msgstr "&Sadece Rapor Et"
+
+#: wxDialogPreferences.py:661
+#, fuzzy
+msgid "&Remove (Use Carefully)"
+msgstr "&Kaldir (Dikkatli Kullanin)"
+
+#: wxDialogPreferences.py:670
+#, fuzzy
+msgid "&Move To Quarantine Folder:"
+msgstr "&Karantinaya Tasi"
+
+#: wxDialogPreferences.py:680
+#, fuzzy
+msgid "Specify location for a quarantine folder"
+msgstr "Bir karantina klasoru icin konum belirtin"
+
+#: wxDialogPreferences.py:686
+#, fuzzy
+msgid "Click to browse for a quarantine folder"
+msgstr "Bir karantina klasoru incelemek icin tiklayin"
+
+#: wxDialogPreferences.py:700
+#, fuzzy
+msgid "&Send Email Alert On Virus Detection"
+msgstr "&Virus Tespitinde Eposta Uyarisi Gonder"
+
+#: wxDialogPreferences.py:704
+#, fuzzy
+msgid "Select if you wish to receive email alerts when ClamWin detects a virus"
+msgstr "ClamWin virus tespit ettiginde eposta uyarilari almak icin secin"
+
+#: wxDialogPreferences.py:710
+#, fuzzy
+msgid "SMTP Connection Details"
+msgstr "SMTP Baglanti Ayrintilari"
+
+#: wxDialogPreferences.py:716
+#, fuzzy
+msgid "&Mail Server:"
+msgstr "&Mail Sunucusu:"
+
+#: wxDialogPreferences.py:724
+#, fuzzy
+msgid "SMTP Server domain name or IP address"
+msgstr "SMTP Sunucusu domain adi veya IP adresi"
+
+#: wxDialogPreferences.py:737
+#, fuzzy
+msgid "Mail Server port number (0-65535)"
+msgstr "Mail Sunucu port numarasi (0-65535)"
+
+#: wxDialogPreferences.py:748
+#, fuzzy
+msgid "Mail Server Account Name (optional)"
+msgstr "Mail Sunucu Hesap Adi (istege bagli)"
+
+#: wxDialogPreferences.py:760
+#, fuzzy
+msgid "Mail Server account password (optional)"
+msgstr "Mail Sunucu hesap sifresi (istege bagli)"
+
+#: wxDialogPreferences.py:763
+#, fuzzy
+msgid "Email Message Details"
+msgstr "Eposta Iletisi Ayrintilari"
+
+#: wxDialogPreferences.py:769
+#, fuzzy
+msgid "&From:"
+msgstr "&Kimden:"
+
+#: wxDialogPreferences.py:777
+#, fuzzy
+msgid "Specify an email address from which the notification will be sent."
+msgstr "Uyariyi gonderen eposta adresini belirtin."
+
+#: wxDialogPreferences.py:780
+#, fuzzy
+msgid "&To:"
+msgstr "&Kime:"
+
+#: wxDialogPreferences.py:788
+#, fuzzy
+msgid "Specify an email address where the email alert will be delivered.  Separate multiple addresses with commas."
+msgstr "Eposta uyarisinin gonderilecegi eposta adresini belirtin. Coklu adresleri virgullerle ayirin."
+
+#: wxDialogPreferences.py:791
+#, fuzzy
+msgid "Su&bject:"
+msgstr "&Konu"
+
+#: wxDialogPreferences.py:799
+#, fuzzy
+msgid "Specify Recipient's email address where the email alert will be delivered"
+msgstr "Eposta uyarisini gondereceginiz alicinin eposta adresini belirtin"
+
+#: wxDialogPreferences.py:802
+#, fuzzy
+msgid "Send &Test Email"
+msgstr "&Test Epostasi Gonder"
+
+#: wxDialogPreferences.py:805
+#, fuzzy
+msgid "Click to send a test email message"
+msgstr "Deneme eposta iletisi gondermek icin tiklayin"
+
+#: wxDialogPreferences.py:811
+#, fuzzy
+msgid "&Display Pop-up Notification Messages In Taskbar "
+msgstr "&Pop-up Uyari Mesajlarini Gorev Cubugunda Goster "
+
+#: wxDialogPreferences.py:815
+#, fuzzy
+msgid "Select if you wish to receive Tray notification pop-up messages"
+msgstr "Gorev Cubugu Pop-up uyarilarini almak istiyorsaniz secin"
+
+#: wxDialogPreferences.py:822
+#, fuzzy
+msgid "Specify Filename Patterns to include and/or exclude in scanning"
+msgstr "Taramada kullanilacak ve/veya haric tutulacak Dosya Adi Yontemlerini belirtin"
+
+#: wxDialogPreferences.py:827
+#, fuzzy
+msgid "(To specify a regular expression include your pattern within <...>)"
+msgstr "(<...> icinde yonteminizi iceren bir duzenli ifade belirtmek icin)"
+
+#: wxDialogPreferences.py:832
+#, fuzzy
+msgid "&Exclude Matching Filenames:"
+msgstr "Uyan Dosya Isimlerini Haric Tut"
+
+#: wxDialogPreferences.py:837
+#: wxDialogPreferences.py:862
+#, fuzzy
+msgid "Patterns"
+msgstr "Yontemler"
+
+#: wxDialogPreferences.py:842
+#: wxDialogPreferences.py:867
+#, fuzzy
+msgid "Move up"
+msgstr "&Karantinaya Tasi"
+
+#: wxDialogPreferences.py:845
+#: wxDialogPreferences.py:870
+#, fuzzy
+msgid "Move down"
+msgstr "&Karantinaya Tasi"
+
+#: wxDialogPreferences.py:848
+#: wxDialogPreferences.py:873
+msgid "New item"
+msgstr ""
+
+#: wxDialogPreferences.py:851
+#: wxDialogPreferences.py:876
+msgid "Delete item"
+msgstr ""
+
+#: wxDialogPreferences.py:854
+#: wxDialogPreferences.py:879
+msgid "Edit item"
+msgstr ""
+
+#: wxDialogPreferences.py:857
+#, fuzzy
+msgid "&Scan Only Matching Filenames:"
+msgstr "&Sadece Uyan Dosya Isimlerini Tara"
+
+#: wxDialogPreferences.py:882
+#, fuzzy
+msgid "&Deactivate"
+msgstr "&Pasiflestir"
+
+#: wxDialogPreferences.py:890
+#, fuzzy
+msgid "A&ctivate"
+msgstr "E&tkinlestir"
+
+#: wxDialogPreferences.py:898
+msgid "&Notify About New ClamWin Releases"
+msgstr ""
+
+#: wxDialogPreferences.py:901
+msgid "Select if you wish to get a notification message when ClamWin Free Antivirus program has been updated"
+msgstr ""
+
+#: wxDialogPreferences.py:908
+msgid "(No personal information is transmitted during this check)"
+msgstr ""
+
+#: wxDialogPreferences.py:918
+#, fuzzy
+msgid "Scanner &Priority:"
+msgstr "Tarayici &Onceligi"
+
+#: wxDialogPreferences.py:922
+#: wxDialogPreferences.py:927
+#: wxDialogPreferences.py:1477
+#: wxDialogPreferences.py:1485
+#, fuzzy
+msgid "Normal"
+msgstr "Normal"
+
+#: wxDialogPreferences.py:922
+#: wxDialogPreferences.py:1475
+#: wxDialogPreferences.py:1483
+#, fuzzy
+msgid "Low"
+msgstr "Dusuk"
+
+#: wxDialogPreferences.py:926
+#, fuzzy
+msgid "Specify the process priority for the virus scanner."
+msgstr "Virus tarayici icin islem onceligini belirtin."
+
+#: wxDialogPreferences.py:931
+msgid "Display &File Scanned % Progress Indicator"
+msgstr ""
+
+#: wxDialogPreferences.py:1015
+#, fuzzy
+msgid "An error occurred whilst saving configuration file %s. Please check that you have write permission to the configuration file."
+msgstr "Konfigurasyon dosyasi %s i kaydederken hata olustu. Lutfen yazma izinlerinizih kontrol edin."
+
+#: wxDialogPreferences.py:1033
+#, fuzzy
+msgid "Event Failed"
+msgstr "Olay Basarisiz"
+
+#: wxDialogPreferences.py:1205
+#: wxDialogPreferences.py:1221
+#, fuzzy
+msgid "Executable files (*.exe)|*.exe|All files (*.*)|*.*"
+msgstr "Calistirilabilir dosyalar (*.exe)|*.exe|Tum dosyalar (*.*)|*.*"
+
+#: wxDialogPreferences.py:1209
+#: wxDialogPreferences.py:1225
+#: wxDialogPreferences.py:1251
+#: wxDialogPreferences.py:1267
+#: wxDialogStatus.py:456
+#, fuzzy
+msgid "Choose a file"
+msgstr "Bir dosya secin"
+
+#: wxDialogPreferences.py:1247
+#: wxDialogPreferences.py:1263
+#, fuzzy
+msgid "Text Files (*.txt)|*.txt|All files (*.*)|*.*"
+msgstr "Metin dosyalari (*.txt)|*.txt|Tum dosyalar (*.*)|*.*"
+
+#: wxDialogPreferences.py:1291
+#, fuzzy
+msgid "Maximum amount of scheduled items (20) has been reached."
+msgstr "Azami zamanlanmis cesidi miktarina (20) ulasildi."
+
+#: wxDialogPreferences.py:1379
+#, fuzzy
+msgid ""
+"This is a test message sent during configuration of ClamWin Free Antivirus on the following computer: %s.\n"
+"Please do not be alarmed.\n"
+msgstr ""
+"Bu ClamWin Free Antivirus konfigurasyonu boyunca gonderilmis bir deneme mesajidirSu bilgisayar icin: %s.\n"
+"Lufen telaslanmayin.\n"
+
+#: wxDialogPreferences.py:1384
+#, fuzzy
+msgid "Test Email has been sent successfully."
+msgstr "Deneme Epostasi basariyla gonderildi."
+
+#: wxDialogPreferences.py:1386
+#, fuzzy
+msgid "Could not send the email. Please ensure you are connected to the internet. Error: %s"
+msgstr "Eposta gonderilemedi. Lutfen internet baglantinizi kontrol edin. Hata: %s"
+
+#: wxDialogPreferences.py:1501
+#: wxDialogPreferences.py:1582
+#: wxDialogScheduledScan.py:338
+#, fuzzy
+msgid "Value cannot be empty"
+msgstr "Deger bos olamaz"
+
+#: wxDialogPreferences.py:1565
+#, fuzzy
+msgid "The folder you selected does not exist. Would you like to create %s now?"
+msgstr "Sectiginiz klasor bulunamadi. %s klasorunu simdi olusturmak ister misiniz?"
+
+#: wxDialogPreferences.py:1571
+#, fuzzy
+msgid "Unable to create folder %s. Error: %s"
+msgstr "Klasor %s olusturulamadi. Hata: %s"
+
+#: wxDialogLogViewer.py:68
+#, fuzzy
+msgid "ClamWin Log Viewer"
+msgstr "ClamWin Gunluk Goruntuleyici"
+
+#: wxDialogLogViewer.py:93
+#: wxDialogStatus.py:121
+msgid "ClamAV update process started at"
+msgstr ""
+
+#: wxDialogLogViewer.py:95
+#: wxDialogStatus.py:123
+#, fuzzy
+msgid "ERROR: DNS Resolver:"
+msgstr "Zamanlanmis Guncellemeyi Calistirmada Hata."
+
+#: wxDialogStatus.py:125
+#: wxDialogLogViewer.py:97
+msgid "WARNING: Invalid DNS reply. Falling back to HTTP mode."
+msgstr ""
+
+#: wxDialogStatus.py:127
+#: wxDialogLogViewer.py:99
+msgid "ERROR: Can't get information about database.clamav.net:"
+msgstr ""
+
+#: wxDialogLogViewer.py:101
+#: wxDialogStatus.py:129
+msgid "Can't query"
+msgstr ""
+
+#: wxDialogLogViewer.py:103
+#: wxDialogStatus.py:131
+msgid "No IP address"
+msgstr ""
+
+#: wxDialogLogViewer.py:107
+#: wxDialogStatus.py:135
+msgid "Trying again in 5 secs..."
+msgstr ""
+
+#: wxDialogLogViewer.py:111
+#: wxDialogStatus.py:139
+msgid "ERROR: Update failed. Your network may be down or none of the mirrors listed in freshclam.conf is working."
+msgstr ""
+
+#: wxDialogLogViewer.py:117
+#: wxDialogStatus.py:145
+#, fuzzy
+msgid "Known viruses:"
+msgstr "Virusleri Tarar"
+
+#: wxDialogLogViewer.py:119
+#: wxDialogStatus.py:147
+#, fuzzy
+msgid "Engine version:"
+msgstr "&En Son Surumu Kontrol Et"
+
+#: wxDialogLogViewer.py:121
+#: wxDialogStatus.py:149
+msgid "Scanned directories:"
+msgstr ""
+
+#: wxDialogLogViewer.py:125
+#: wxDialogStatus.py:153
+#, fuzzy
+msgid "Infected files:"
+msgstr "Enfekte dosyalar"
+
+#: wxDialogLogViewer.py:127
+#: wxDialogStatus.py:155
+msgid "Data scanned:"
+msgstr ""
+
+#: wxDialogLogViewer.py:80
+#: wxDialogPreferences.py:242
+#: wxDialogAbout.py:162
+#: wxDialogScheduledScan.py:249
+#, fuzzy
+msgid "OK"
+msgstr "Tamam"
+
+#: wxDialogAbout.py:168
+msgid "Virus DB Version: (main: %i; daily: %i)"
+msgstr ""
+
+#: wxDialogAbout.py:174
+msgid "Updated: %s"
+msgstr ""
+
+#: wxDialogAbout.py:214
+msgid "Could not locate ClamScan executable"
+msgstr ""
+
+#: wxDialogAbout.py:227
+msgid "Unable to retrieve ClamAV version"
+msgstr ""
+
+#: wxDialogAbout.py:252
+msgid "Unable to retrieve database version"
+msgstr ""
+
+#: wxDialogCheckUpdate.py:105
+#: wxFrameMain.py:265
+#: wxDialogStatus.py:500
+#, fuzzy
+msgid "&Close"
+msgstr "&Kapat"
+
+#: wxFrameMain.py:337
+msgid "ClamWin Free Antivirus is not configured. Would you like to configure it now?"
+msgstr ""
+
+#: wxFrameMain.py:343
+msgid "You have not yet downloaded Virus Definitions Database. Would you like to download it now?"
+msgstr ""
+
+#: wxFrameMain.py:397
+msgid "http://www.clamwin.com/content/category/3/7/27/"
+msgstr ""
+
+#: wxFrameMain.py:405
+#: wxDialogAbout.py:110
+#: wxDialogAbout.py:199
+#: ClamTray.py:315
+msgid "http://www.clamwin.com"
+msgstr ""
+
+#: wxDialogUtils.py:58
+#, fuzzy
+msgid "An error occurred during Virus Database Update. Please review the update report."
+msgstr "Zamanlanmis Virus Veritabani Guncellemesinde hata olustu. Lutfen guncelleme raporunu gozden gecirin."
+
+#: wxDialogUtils.py:65
+msgid "ClamWin Free Antivirus: Downloading Update..."
+msgstr ""
+
+#: wxDialogUtils.py:78
+#, fuzzy
+msgid "Unable to remove file %s. Error: %s"
+msgstr "dosya : %s kaldirilamadi. Hata: %s"
+
+#: wxDialogUtils.py:83
+#, fuzzy
+msgid "Couldn't remove file %s. Error: %s"
+msgstr "dosya : %s kaldirilamadi. Hata: %s"
+
+#: wxDialogUtils.py:115
+msgid ""
+"\n"
+"-----------------------------\n"
+msgstr ""
+
+#: wxDialogUtils.py:116
+msgid ""
+"Scan Started %s\n"
+"ERROR: Virus Definitions Database Not Found! Please download it now.\n"
+msgstr ""
+
+#: wxDialogUtils.py:117
+msgid "-----------------------------"
+msgstr ""
+
+#: wxDialogUtils.py:126
+#, fuzzy
+msgid "Virus has been detected during scan! Please review the scan report."
+msgstr "Zamanlanmis tarama esnasinda virus tespit edildi! Lutfen tarama raporunu gozden gecirin."
+
+#: wxDialogUtils.py:128
+#, fuzzy
+msgid "An error occurred during virus scan. Please review the scan report."
+msgstr "Zamanlanmis tarama esnasinda hata olustu. Lutfen tarama raporunu gozden gecirin."
+
+#: wxDialogUtils.py:133
+msgid "ClamWin Free Antivirus: Scanning..."
+msgstr ""
+
+#: wxDialogUtils.py:150
+#: ClamTray.py:555
+#, fuzzy
+msgid "Could not send email alert. Error: %s"
+msgstr "Eposta uyarisi gonderilemedi. Hata: %s"
+
+#: wxDialogUtils.py:157
+#, fuzzy
+msgid "Could not delete logfile : %s. Error: %s"
+msgstr "dosya : %s kaldirilamadi. Hata: %s"
+
+#: wxDialogUtils.py:179
+msgid "Log files are not properly configured. Please review ClamWin configuration"
+msgstr ""
+
+#: wxDialogUtils.py:192
+#, fuzzy
+msgid "Unable to read from the log file. Error: %s"
+msgstr "Gunluk dosyasi %s dan okunamadi. Hata: %s"
+
+#: wxDialogUtils.py:229
+msgid ""
+"Unable to get online version. Most likely it's a temporary connectivity error and you don't have to do anything.\n"
+"If you see this error often then allow clamwin.exe in your firewall and check proxy settings.\n"
+"(%s)"
+msgstr ""
+
+#: ShellExtImpl.cpp:
+#: 292
+msgid "Scan with ClamWin Free Antivirus"
+msgstr ""
+
+#: wxDialogCheckUpdate.py:98
+#, fuzzy
+msgid "&Download"
+msgstr "&Siteden Indir :"
+
+#: EmailAlert.py:82
+msgid "Email alert to %s has been sent successfully."
+msgstr ""
+
+#: Config.py:63
+msgid "admin@yourdomain"
+msgstr ""
+
+#: Config.py:63
+#, fuzzy
+msgid "clamwin@yourdomain"
+msgstr "ClamWin &Ac"
+
+#: Config.py:64
+#, fuzzy
+msgid "ClamWin Virus Alert"
+msgstr "ClamWin Virus Tarayici"
+
+#: EmailAlert.py:86
+#, fuzzy
+msgid "Could not send an email. Error: %s"
+msgstr "Eposta uyarisi gonderilemedi. Hata: %s"
+
+#: EmailAlert.py:95
+msgid ""
+"ClamWin detected a virus on the following computer: %s\n"
+"\n"
+"Please review the attached log files for more details.\n"
+msgstr ""
+
+#: wxDialogCheckUpdate.py:88
+msgid "&Do Not Check for Updates in Future"
+msgstr ""
+
+#: wxDialogCheckUpdate.py:76
+msgid "List Of Changes in Version %s:"
+msgstr ""
+
+#: wxDialogScheduledScan.py:119
+msgid "Could not open persistent storage for scheduled scans. Error: %s"
+msgstr ""
+
+#: wxDialogScheduledScan.py:130
+msgid "Could not save scheduled scans to persistent storage. Error: %s"
+msgstr ""
+
+#: wxDialogCheckUpdate.py:54
+#, fuzzy
+msgid "ClamWin Update"
+msgstr "&Guncelleme Frekansi:"
+
+#: wxDialogCheckUpdate.py:60
+msgid "An update of ClamWin Free Antivirus has been released. Please click on Download button and download the latest version %s"
+msgstr ""
+
+#: wxDialogCheckUpdate.py:69
+msgid "After you download the latest version setup file simply run it and install over the existing version."
+msgstr ""
+
+#: wxDialogAbout.py:57
+#: wxDialogAbout.py:61
+msgid "About ClamWin Free Antivirus"
+msgstr ""
+
+#: wxDialogAbout.py:72
+#, fuzzy
+msgid "Version "
+msgstr "&En Son Surumu Kontrol Et "
+
+#: wxDialogAbout.py:79
+msgid "ClamAV Version gets here"
+msgstr ""
+
+#: wxDialogAbout.py:84
+#, fuzzy
+msgid "Protecting from %i Viruses"
+msgstr "Virusleri Tarar"
+
+#: wxDialogAbout.py:93
+#: wxDialogAbout.py:115
+msgid "ClamWin Free Antivirus Homepage"
+msgstr ""
+
+#: wxDialogAbout.py:100
+#, fuzzy
+msgid "Donate to ClamWin"
+msgstr "ClamWin Bedava Antivirus"
+
+#: wxDialogAbout.py:105
+#, fuzzy
+msgid "Website:"
+msgstr "ClamWin &Websitesi"
+
+#: wxDialogAbout.py:119
+msgid "Author: alch <alch@users.sourceforge.net>"
+msgstr ""
+
+#: wxDialogAbout.py:125
+msgid "Copyright (c) 2004 - 2006"
+msgstr ""
+
+#: wxDialogAbout.py:130
+msgid "This program is free software"
+msgstr ""
+
+#: wxDialogAbout.py:142
+msgid "ClamAV Homepage"
+msgstr ""
+
+#: wxDialogAbout.py:150
+msgid "Finndesign Homepage"
+msgstr ""
+
+#: wxDialogAbout.py:158
+msgid "Python Homepage"
+msgstr ""
+
+#: OlAddin.py:174
+msgid "You appear to be running a win32all version pre 151, which is pretty old"
+msgstr ""
+
+#: OlAddin.py:175
+msgid "I'm afraid it is time to upgrade"
+msgstr ""
+
+#: OlAddin.py:199
+msgid "An error occurred in ClamWin Free Antivirus About Box.\n"
+msgstr ""
+
+#: OlAddin.py:213
+msgid "WARNING - Trying to use image '%s', but it doesn't exist"
+msgstr ""
+
+#: OlAddin.py:248
+msgid "Virus Deleted by ClamWin.txt"
+msgstr ""
+
+#: OlAddin.py:275
+#: OlAddin.py:1031
+msgid "Registration complete."
+msgstr ""
+
+#: OlAddin.py:277
+msgid "An Error occurred whilst starting clamscan: %s"
+msgstr ""
+
+#: OlAddin.py:294
+msgid "An Error occurred reading clamscan report: %s"
+msgstr ""
+
+#: OlAddin.py:296
+#, fuzzy
+msgid ""
+"An Error occurred whilst scanning:\n"
+"%s"
+msgstr "Zamanlayici islemi sonlandirirken hata olustu. Hata: %s"
+
+#: OlAddin.py:306
+msgid "An Error occurred whilst converting clamscan report: %s"
+msgstr ""
+
+#: OlAddin.py:344
+#: wxDialogUtils.py:107
+msgid "Virus Definitions Database Not Found! Please download it now."
+msgstr ""
+
+#: OlAddin.py:418
+msgid ""
+"ClamWin Free Antivirus could not scan file%s\n"
+".Error: %s"
+msgstr ""
+
+#: OlAddin.py:470
+msgid "ClamWin Free Antivirus has detected a virus in the message attachments!"
+msgstr ""
+
+#: OlAddin.py:471
+#, fuzzy
+msgid "Virus Detected!"
+msgstr "&Virus Tarama Raporu"
+
+#: OlAddin.py:474
+msgid "Virus has been detected in an email attachment! The attachment was replaced with the report file."
+msgstr ""
+
+#: OlAddin.py:476
+msgid "An error occurred whilst scanning email message."
+msgstr ""
+
+#: OlAddin.py:508
+#: ClamTray.py:563
+#, fuzzy
+msgid "Could not remove file: %s. Error: %s"
+msgstr "dosya : %s kaldirilamadi. Hata: %s"
+
+#: OlAddin.py:580
+msgid "&About ClamWin Free Antivirus"
+msgstr ""
+
+#: OlAddin.py:581
+msgid "Shows the ClamWin About Box"
+msgstr ""
+
+#: OlAddin.py:836
+msgid "ClamWin Free Antivirus could not replace an attachment. Error: %s"
+msgstr ""
+
+#: OlAddin.py:837
+#, fuzzy
+msgid "ClamWin Free Antivirus!"
+msgstr "ClamWin Bedava Antivirus"
+
+#: OlAddin.py:905
+#, fuzzy
+msgid "Error connecting to Outlook!"
+msgstr "Klasor %s olusturulamadi. Hata: %s"
+
+#: OlAddin.py:918
+msgid "An error occurred whilst displaying the splashscreen %s. Error: %s."
+msgstr ""
+
+#: OlAddin.py:955
+msgid "Addin terminating: %d COM client and %d COM servers exist."
+msgstr ""
+
+#: OlAddin.py:1007
+msgid "Registering (in HKEY_LOCAL_MACHINE)..."
+msgstr ""
+
+#: OlAddin.py:1010
+msgid "Registering (in HKEY_CURRENT_USER)..."
+msgstr ""
+
+#: OlAddin.py:1015
+msgid "Registration Complete"
+msgstr ""
+
+#: ClamTray.py:117
+#, fuzzy
+msgid "Unable to stop scheduled process, terminating"
+msgstr "Zamanlanmis islem durdurulamadi, sonlandiriliyor"
+
+#: ClamTray.py:131
+#, fuzzy
+msgid "An error occurred whilst terminating scheduler thread. Error: %s"
+msgstr "Zamanlayici islemi sonlandirirken hata olustu. Hata: %s"
+
+#: ClamTray.py:237
+#, fuzzy
+msgid "&Configure Scheduler"
+msgstr "Zamanlayiciyi &Ayarla"
+
+#: ClamTray.py:257
+#, fuzzy
+msgid "&Run Scheduled Scan"
+msgstr "Zamanlanmis Tarama &Calistir"
+
+#: ClamTray.py:261
+#, fuzzy
+msgid "&Stop All Running Tasks Now"
+msgstr "Tum Calisan Gorevleri Simdi &Durdur"
+
+#: ClamTray.py:271
+#, fuzzy
+msgid "&Virus Scan Report"
+msgstr "&Virus Tarama Raporu"
+
+#: ClamTray.py:282
+#, fuzzy
+msgid "&Open ClamWin"
+msgstr "ClamWin &Ac"
+
+#: ClamTray.py:283
+#, fuzzy
+msgid "&Download Virus Database Update"
+msgstr "Virus Veritabani Guncellemesi &Indir"
+
+#: ClamTray.py:284
+#, fuzzy
+msgid "&Configure ClamWin"
+msgstr "ClamWin'i &Ayarla"
+
+#: ClamTray.py:285
+#, fuzzy
+msgid "&Scheduler"
+msgstr "Zamanlayici"
+
+#: ClamTray.py:286
+#, fuzzy
+msgid "Display &Reports"
+msgstr "&Raporlari Goruntule"
+
+#: ClamTray.py:288
+#, fuzzy
+msgid "Check &Latest Version"
+msgstr "&En Son Surumu Kontrol Et"
+
+#: ClamTray.py:289
+#, fuzzy
+msgid "&Visit ClamWin Website"
+msgstr "ClamWin Websitesini &Ziyaret Et"
+
+#: ClamTray.py:291
+#, fuzzy
+msgid "&Exit"
+msgstr "&Cikis"
+
+#: ClamTray.py:313
+#: wxFrameMain.py:401
+msgid "http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version="
+msgstr ""
+
+#: ClamTray.py:338
+#, fuzzy
+msgid "Could not launch ClamWin Scanner. Error: %s"
+msgstr "ClamWin Tarayici baslatilamadi. Hata: %s"
+
+#: ClamTray.py:351
+#, fuzzy
+msgid "Could not display balloon tooltip. Error: %s"
+msgstr "Balon ipucu goruntulunemiyor. Hata: %s"
+
+#: ClamTray.py:362
+#, fuzzy
+msgid ""
+"An error occurred while displaying log file %s.\n"
+"Error: %s"
+msgstr ""
+"Gunluk dosyasi %s gosterilirken hata olustu.\n"
+"Hata: %s"
+
+#: ClamTray.py:373
+msgid "An error occurred while starting ClamWin Free Antivirus scanner.\n"
+msgstr ""
+
+#: ClamTray.py:381
+msgid "An error occurred while starting ClamWin Free Antivirus Update.\n"
+msgstr ""
+
+#: ClamTray.py:387
+msgid "Error"
+msgstr ""
+
+#: ClamTray.py:387
+#: wxDialogUtils.py:38
+#, fuzzy
+msgid "Unable to create freshclam configuration file. Please check there is enough space on the disk"
+msgstr "Freshclam Konfigurasyon Dosyasi olusturulamadi. Lutfen yeterli disk alaninizin oldugunu kontrol edin"
+
+#: ClamTray.py:403
+#: wxDialogUtils.py:56
+#, fuzzy
+msgid "Virus database has been updated."
+msgstr "Virus veritabani guncellendi."
+
+#: ClamTray.py:405
+#, fuzzy
+msgid "An error occurred during Scheduled Virus Database Update. Please review the update report."
+msgstr "Zamanlanmis Virus Veritabani Guncellemesinde hata olustu. Lutfen guncelleme raporunu gozden gecirin."
+
+#: ClamTray.py:418
+#, fuzzy
+msgid ""
+"Unable to spawn scheduled process.\n"
+"Command line: %s\n"
+"Error: %s"
+msgstr ""
+"Zamanlanmis islem olusturulamadi.\n"
+"Komut satiri: %s\n"
+"Hata: %s"
+
+#: ClamTray.py:433
+#, fuzzy
+msgid "Error performing Scheduled Update."
+msgstr "Zamanlanmis Guncellemeyi Calistirmada Hata."
+
+#: ClamTray.py:441
+#: wxDialogUtils.py:206
+#, fuzzy
+msgid "Please point your browser at: %s"
+msgstr "Tarayicinizi suraya yonlendirin: %s"
+
+#: ClamTray.py:455
+msgid "An error occurred while starting ClamWin Free Antivirus Preferences.\n"
+msgstr ""
+
+#: ClamTray.py:496
+#, fuzzy
+msgid "Virus has been detected during scheduled scan! Please review the scan report."
+msgstr "Zamanlanmis tarama esnasinda virus tespit edildi! Lutfen tarama raporunu gozden gecirin."
+
+#: ClamTray.py:498
+#, fuzzy
+msgid "An error occurred during scheduled scan. Please review the scan report."
+msgstr "Zamanlanmis tarama esnasinda hata olustu. Lutfen tarama raporunu gozden gecirin."
+
+#: ClamTray.py:530
+#, fuzzy
+msgid "Running Scheduled Task:\n"
+msgstr "Calisan Zamanlanmis Gorev:\n"
+
+#: ClamTray.py:532
+#, fuzzy
+msgid "An error occurred whilst running Running Scheduled Task "
+msgstr "Calisan Zamanlanmis Gorev calistirilirken hata olustu "
+

@@ -1,0 +1,1772 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ClamWin-cz\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2006-11-24 20:51+0100\n"
+"Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+"X-Poedit-Language: Czech\n"
+
+#: wxFrameMain.py:90
+msgid "Displays the configuration window"
+msgstr "Zobrazí konfigurační okno"
+
+#: wxFrameMain.py:91
+msgid "&Preferences"
+msgstr "&Nastavení"
+
+#: wxFrameMain.py:93
+msgid "Downloads latest virus database from the Internet"
+msgstr "Stáhnout poslední databázi virů z internetu"
+
+#: wxFrameMain.py:95
+msgid "Download &Virus Database Update"
+msgstr "Stáhnout aktualizaci databáze &virů"
+
+#: wxFrameMain.py:96
+msgid "Displays ClamWin Log Files"
+msgstr "Zobrazí ClamWin log soubory"
+
+#: wxFrameMain.py:97
+msgid "&Display Reports"
+msgstr "&Zobrazí reporty"
+
+#: wxFrameMain.py:106
+msgid "&File"
+msgstr "&Soubor"
+
+#: wxFrameMain.py:107
+msgid "&Tools"
+msgstr "&Nástroje"
+
+#: wxFrameMain.py:108
+#: wxFrameMain.py:114
+msgid "&Help"
+msgstr "&Nápověda"
+
+#: wxFrameMain.py:113
+msgid "Displays ClamWin Free Antivirus Manual"
+msgstr "Zobrazí manuál ClamWin Free Antiviru"
+
+#: wxFrameMain.py:116
+msgid "&Check Latest Version"
+msgstr "&Ověřit poslední verzi"
+
+#: wxFrameMain.py:118
+msgid "ClamWin &Website"
+msgstr "Domovské stránky ClamWin"
+
+#: wxFrameMain.py:120
+msgid "Opens Frequently Asked Questions Page in the Web Browser"
+msgstr "Otevře časté dotazy ve webovém prohlížeči"
+
+#: wxFrameMain.py:121
+msgid "&FAQ"
+msgstr "&FAQ"
+
+#: wxFrameMain.py:123
+msgid "Displays the  About Box"
+msgstr "Zobrazí informace o programu"
+
+#: wxFrameMain.py:124
+msgid "&About"
+msgstr "&O programu"
+
+#: wxFrameMain.py:134
+msgid "Displays Virus Database Update Log FIle"
+msgstr "Zobrazí log soubor aktualizací databáze virů"
+
+#: wxFrameMain.py:136
+#: ClamTray.py:278
+msgid "&Virus Database Update Report"
+msgstr "Report aktualizace databáze &virů"
+
+#: wxFrameMain.py:137
+msgid "Displays Virus Scan Log File"
+msgstr "Zobrazí log soubory skenování virů"
+
+#: wxFrameMain.py:138
+msgid "&Scan Report"
+msgstr "&Report skenování"
+
+#: wxFrameMain.py:146
+msgid "Scans Files or Folders for Computer Viruses"
+msgstr "Skenuje soubory a adresáře na počítačové viry"
+
+#: wxFrameMain.py:147
+#: wxFrameMain.py:257
+msgid "&Scan"
+msgstr "&Skenovat"
+
+#: wxFrameMain.py:149
+msgid "Exits the application"
+msgstr "Ukončí aplikaci"
+
+#: wxFrameMain.py:150
+msgid "E&xit"
+msgstr "U&končit"
+
+#: wxFrameMain.py:159
+msgid "Preferences"
+msgstr "Nastavení"
+
+#: wxFrameMain.py:160
+#: wxFrameMain.py:161
+msgid "Displays Preferences Window"
+msgstr "Zobrazí okno Nastavení"
+
+#: wxFrameMain.py:165
+msgid "Update"
+msgstr "Aktualizace"
+
+#: wxFrameMain.py:166
+msgid "Updates virus databases over the Internet"
+msgstr "Aktualizuje databázi virů přes internet"
+
+#: wxFrameMain.py:167
+msgid "Starts Internet Update"
+msgstr "Spustí aktualizaci přes internet"
+
+#: wxFrameMain.py:171
+msgid "Scan"
+msgstr "Skenování"
+
+#: wxFrameMain.py:172
+msgid "Scans Selected File or Folder for Computer Viruses"
+msgstr "Skenuje vybrané soubory nebo adresáře na počítačové viry"
+
+#: wxFrameMain.py:173
+msgid "Scans For Viruses"
+msgstr "Skenuje viry"
+
+#: wxFrameMain.py:221
+#: wxFrameMain.py:225
+#: wxFrameMain.py:337
+#: wxFrameMain.py:343
+#: ClamTray.py:117
+#: ClamTray.py:339
+#: ClamTray.py:363
+#: ClamTray.py:373
+#: ClamTray.py:381
+#: ClamTray.py:441
+#: ClamTray.py:455
+#: OlAddin.py:199
+#: OlAddin.py:419
+#: OlAddin.py:492
+#: wxDialogPreferences.py:1501
+#: wxDialogPreferences.py:1564
+#: wxDialogPreferences.py:1582
+#: wxDialogStatus.py:466
+msgid "ClamWin Free Antivirus"
+msgstr "ClamWin Free Antivirus"
+
+#: wxFrameMain.py:239
+msgid "Status Bar"
+msgstr "Stavový řádek"
+
+#: wxFrameMain.py:247
+msgid ""
+"Select a folder or a file to scan\n"
+"(Hold Shift key to select multiple files or folders)"
+msgstr ""
+"Vyberte adresář nebo soubor pro skenování\n"
+"(Držte Shift pro výběr více souborů nebo adresářů)"
+
+#: wxFrameMain.py:115
+msgid "Checks for the Latest Version"
+msgstr "ověří poslední verzi"
+
+#: wxFrameMain.py:354
+msgid "An Error occurred while updating UI selection. %s"
+msgstr "Nastala chyba při aktualizaci UI sekce. %s"
+
+#: wxFrameMain.py:387
+msgid "Could not open help file - %s not found."
+msgstr "Nelze otevřít soubor nápovědy - %s nenalezen."
+
+#: wxFrameMain.py:394
+msgid "Could not open help file. Please ensure that you have Adobe Acrobat Reader installed."
+msgstr "Nelze otevřít soubor nápovědy. Ověřte, že máte nainstalovaný Adobe Acrobat Reader."
+
+#: wxDialogStatus.py:117
+msgid "File not found"
+msgstr "Soubor nenalezen"
+
+#: wxDialogStatus.py:119
+msgid "FOUND"
+msgstr "NÁLEZ"
+
+#: wxDialogStatus.py:133
+#: wxDialogLogViewer.py:105
+msgid "ERROR: No servers could be reached. Giving up"
+msgstr "CHYBA: Žádný server nemohl být dosažen. Vzdávám to"
+
+#: wxDialogStatus.py:137
+#: wxDialogLogViewer.py:109
+msgid "Giving up on"
+msgstr "Vzdávám to"
+
+#: wxDialogStatus.py:141
+#: wxDialogLogViewer.py:113
+msgid "Scan started:"
+msgstr "Skenování spuštěno:"
+
+#: wxDialogStatus.py:143
+#: wxDialogLogViewer.py:115
+msgid "-- summary --"
+msgstr "-- souhrn --"
+
+#: wxDialogStatus.py:151
+#: wxDialogLogViewer.py:123
+msgid "Scanned files:"
+msgstr "Skenované soubory:"
+
+#: wxDialogStatus.py:157
+#: wxDialogLogViewer.py:129
+msgid "Time:"
+msgstr "Čas:"
+
+#: wxDialogStatus.py:159
+msgid "WARNING: Your ClamAV installation is OUTDATED!"
+msgstr "VAROVÁNÍ: Vaše instalace ClamAV je ZASTARALÁ!"
+
+#: wxDialogStatus.py:161
+msgid "WARNING: Local version:"
+msgstr "VAROVÁNÍ: Místní verze:"
+
+#: wxDialogStatus.py:163
+msgid "Recommended version:"
+msgstr "Doporučená verze:"
+
+#: wxDialogStatus.py:165
+msgid "DON'T PANIC! Read"
+msgstr "NEPANIKAŘTE! Čtěte"
+
+#: wxDialogStatus.py:167
+msgid "is up to date"
+msgstr "je aktuální"
+
+#: wxDialogStatus.py:169
+msgid "sigs:"
+msgstr "podpisy:"
+
+#: wxDialogStatus.py:171
+msgid "f-level:"
+msgstr "f-level:"
+
+#: wxDialogStatus.py:173
+msgid "builder:"
+msgstr "builder:"
+
+#: wxDialogStatus.py:175
+msgid "Database updated"
+msgstr "Report aktualizace databáze &virů"
+
+#: wxDialogStatus.py:177
+msgid "signatures"
+msgstr "podpisy"
+
+#: wxDialogStatus.py:179
+msgid "from"
+msgstr "od"
+
+#: wxDialogStatus.py:181
+msgid "Control+C pressed, aborting..."
+msgstr "Control+C stisknut, přerušuji..."
+
+#: wxDialogStatus.py:183
+msgid "Downloading"
+msgstr "Stahuji"
+
+#: wxDialogStatus.py:185
+msgid "Connection with"
+msgstr "Spojeno s"
+
+#: wxDialogStatus.py:187
+msgid "http:\\\\www.clamav.net\\faq.html"
+msgstr "http://www.clamwin.com"
+
+#: wxDialogStatus.py:189
+msgid "http://www.clamwin.com/content/view/10/27/"
+msgstr "http://www.clamwin.com/content/category/3/7/27/"
+
+#: wxDialogStatus.py:191
+msgid "Not moved"
+msgstr "Nepřesunuto"
+
+#: wxDialogStatus.py:193
+msgid "File excluded"
+msgstr "Soubor vyřazen"
+
+#: wxDialogStatus.py:199
+msgid "Mon "
+msgstr "Po "
+
+#: wxDialogStatus.py:201
+msgid "Tue "
+msgstr "Út "
+
+#: wxDialogStatus.py:203
+msgid "Wed "
+msgstr "St "
+
+#: wxDialogStatus.py:205
+msgid "Thu "
+msgstr "Čt "
+
+#: wxDialogStatus.py:207
+msgid "Fri "
+msgstr "Pá "
+
+#: wxDialogStatus.py:209
+msgid "Sat "
+msgstr "So "
+
+#: wxDialogStatus.py:211
+msgid "Sun "
+msgstr "Ne "
+
+#: wxDialogStatus.py:213
+msgid "Jan "
+msgstr "Led "
+
+#: wxDialogStatus.py:215
+msgid "Feb "
+msgstr "Úno "
+
+#: wxDialogStatus.py:217
+msgid "Mar "
+msgstr "Bře "
+
+#: wxDialogStatus.py:219
+msgid "Apr "
+msgstr "Dub "
+
+#: wxDialogStatus.py:221
+msgid "May "
+msgstr "Kvě "
+
+#: wxDialogStatus.py:223
+msgid "Jun "
+msgstr "Čen "
+
+#: wxDialogStatus.py:225
+msgid "Jul "
+msgstr "Čec "
+
+#: wxDialogStatus.py:227
+msgid "Aug "
+msgstr "Srp "
+
+#: wxDialogStatus.py:229
+msgid "Sep "
+msgstr "Zář "
+
+#: wxDialogStatus.py:231
+msgid "Oct "
+msgstr "Říj "
+
+#: wxDialogStatus.py:233
+msgid "Nov "
+msgstr "Lis "
+
+#: wxDialogStatus.py:235
+msgid "Dec "
+msgstr "Pro "
+
+#: wxDialogStatus.py:242
+msgid "version:"
+msgstr "verze:"
+
+#: wxDialogStatus.py:244
+msgid "updated"
+msgstr "Aktualizace"
+
+#: wxDialogStatus.py:246
+msgid "failed"
+msgstr "selhalo"
+
+#: wxDialogStatus.py:294
+msgid "ClamWin Free Antivirus Status"
+msgstr "ClamWin Free Antivirus"
+
+#: wxDialogStatus.py:319
+msgid "&Stop"
+msgstr "&Zastavit"
+
+#: wxDialogStatus.py:327
+msgid "S&ave Report"
+msgstr "&Report skenování"
+
+#: wxDialogStatus.py:435
+msgid "Unable to stop runner thread, terminating"
+msgstr "Nelze zastavit běžící vlákno, ukončuji"
+
+#: wxDialogStatus.py:453
+msgid "Report files (*.txt)|*.txt|All files (*.*)|*.*"
+msgstr "Soubory reportů (*.txt)|*.txt|All files (*.*)|*.*"
+
+#: wxDialogStatus.py:455
+#: wxDialogPreferences.py:1250
+#: wxDialogPreferences.py:1266
+msgid "All files (*)|*"
+msgstr "Všechny soubory (*)|*"
+
+#: wxDialogStatus.py:463
+msgid "Could not save report to the file "
+msgstr "Nelze uložit reporty do souboru"
+
+#: wxDialogStatus.py:464
+msgid ". Please check that you have write "
+msgstr ". Zkontrolujte prosím, zda máte právo"
+
+#: wxDialogStatus.py:465
+msgid "permissions to the folder and there is enough space on the disk."
+msgstr "Nelze vytvořit freshclam konfigurační soubor. Zkontrolujte prosím, zda je dostatek místa na disku"
+
+#: wxDialogStatus.py:533
+msgid "Could not read from log file %s. Error: %s"
+msgstr "Nešlo odstranit soubor %s. Chyba: %s"
+
+#: wxDialogStatus.py:544
+msgid ""
+"\n"
+"--------------------------------------\n"
+"Completed\n"
+"--------------------------------------\n"
+msgstr ""
+"\n"
+"--------------------------------------\n"
+"Hotovo\n"
+"--------------------------------------\n"
+
+#: wxDialogStatus.py:546
+msgid ""
+"\n"
+"--------------------------------------\n"
+"Cancelled\n"
+"--------------------------------------\n"
+msgstr ""
+"\n"
+"--------------------------------------\n"
+"Přerušeno\n"
+"--------------------------------------\n"
+
+#: wxDialogStatus.py:629
+#: ClamTray.py:470
+msgid "Could not start process. No Command Line specified"
+msgstr "Nelze spustit proces. Nezadána příkazová řádka"
+
+#: wxDialogStatus.py:636
+#: ClamTray.py:477
+msgid ""
+"Could not start process.\n"
+"%s\n"
+"File does not exist."
+msgstr ""
+"Nelze spustit proces.\n"
+"%s\n"
+"Soubor neexistuje."
+
+#: wxDialogStatus.py:646
+#: wxDialogStatus.py:648
+#: ClamTray.py:485
+#: ClamTray.py:487
+msgid ""
+"Could not start process:\n"
+"%s\n"
+"Error: %s"
+msgstr "Nelze smazat log soubor: %s. Chyba: %s"
+
+#: wxDialogScheduledScan.py:160
+msgid "Scheduled Scan"
+msgstr "Naplánované skenování"
+
+#: wxDialogScheduledScan.py:167
+msgid "Schedule"
+msgstr "Plánovač"
+
+#: wxDialogScheduledScan.py:171
+msgid "Scanning &Frequency:"
+msgstr "&Frekvence skenování:"
+
+#: wxDialogScheduledScan.py:180
+msgid "How often the schedule is executed"
+msgstr "Jak často je plánovač spuštěn"
+
+#: wxDialogScheduledScan.py:187
+#: wxDialogPreferences.py:415
+msgid "&Time:"
+msgstr "Čas:"
+
+#: wxDialogScheduledScan.py:194
+msgid "When the schedule should be started"
+msgstr "Kdy má být plánovač spuštěn"
+
+#: wxDialogScheduledScan.py:202
+#: wxDialogPreferences.py:567
+msgid "&Day Of The Week:"
+msgstr "&Den v týdnu:"
+
+#: wxDialogScheduledScan.py:211
+msgid "When schedule frequency is weekly select day of the week"
+msgstr "Pokud je frekvence plánovače týdenní, zvolte den v týdnu"
+
+#: wxDialogScheduledScan.py:215
+msgid "&Scan Folder:"
+msgstr "&Report skenování"
+
+#: wxDialogScheduledScan.py:222
+msgid "Specify a folder to be scanned"
+msgstr "Zadejte adresář pro skenování"
+
+#: wxDialogScheduledScan.py:227
+msgid "Click to browse for a folder"
+msgstr "Klikem procházejte k adresáři"
+
+#: wxDialogScheduledScan.py:233
+msgid "D&escription:"
+msgstr "&Popis:"
+
+#: wxDialogScheduledScan.py:240
+msgid "Specify a friendly description for the scheduled scan"
+msgstr "Zadejte vhodný popis pro naplánované skenování"
+
+#: wxDialogScheduledScan.py:243
+msgid "&Activate This Schedule"
+msgstr "&Aktivovat tento plán"
+
+#: wxDialogScheduledScan.py:246
+msgid "Select if you wish to enable this schedule"
+msgstr "Vyberte pokud chcete povolit tento plán"
+
+#: wxDialogScheduledScan.py:252
+msgid "Closes the dialog and applies the settings"
+msgstr "Zavře dialog a aplikuje nastavení"
+
+#: wxDialogScheduledScan.py:256
+#: wxDialogPreferences.py:253
+msgid "Cancel"
+msgstr "Storno"
+
+#: wxDialogScheduledScan.py:258
+msgid "Closes the dialog and discards the changes"
+msgstr "Zavře dialog a zruší změny"
+
+#: wxDialogScheduledScan.py:309
+#: wxDialogPreferences.py:1235
+msgid "Select a directory"
+msgstr "Skenované adresáře:"
+
+#: wxDialogScheduledScan.py:341
+msgid "Specified path is invalid. Please verify your selection."
+msgstr "Zadaná cesta není platná. Ověřte svůj výběr."
+
+#: wxDialogPreferences.py:145
+msgid "General"
+msgstr "Obecné"
+
+#: wxDialogPreferences.py:147
+msgid "Filters"
+msgstr "&Soubor"
+
+#: wxDialogPreferences.py:149
+msgid "Internet Updates"
+msgstr "Spustí aktualizaci přes internet"
+
+#: wxDialogPreferences.py:151
+msgid "Proxy"
+msgstr "Proxy"
+
+#: wxDialogPreferences.py:153
+msgid "Scheduled Scans"
+msgstr "Naplánované skenování"
+
+#: wxDialogPreferences.py:155
+msgid "Email Alerts"
+msgstr "Varování emailem"
+
+#: wxDialogPreferences.py:157
+msgid "Archives"
+msgstr "Archívy"
+
+#: wxDialogPreferences.py:159
+msgid "File Locations"
+msgstr "Soubor nenalezen"
+
+#: wxDialogPreferences.py:161
+msgid "Reports"
+msgstr "&Report skenování"
+
+#: wxDialogPreferences.py:163
+msgid "Advanced"
+msgstr "Rozšířené"
+
+#: wxDialogPreferences.py:169
+msgid "Description"
+msgstr "&Popis:"
+
+#: wxDialogPreferences.py:170
+msgid "Path"
+msgstr "Cesta"
+
+#: wxDialogPreferences.py:173
+msgid "Frequency"
+msgstr "&Frekvence skenování:"
+
+#: wxDialogPreferences.py:187
+msgid "ClamWin Preferences"
+msgstr "Nastavení"
+
+#: wxDialogPreferences.py:245
+msgid "Closes the window and saves the changes"
+msgstr "Zavře dialog a zruší změny"
+
+#: wxDialogPreferences.py:255
+msgid "Closes the window without saving the changes"
+msgstr "Zavře dialog a zruší změny"
+
+#: wxDialogPreferences.py:260
+msgid "Proxy &Server:"
+msgstr "Proxy &Server:"
+
+#: wxDialogPreferences.py:267
+msgid "Proxy Server domain name or IP address"
+msgstr "Doménové jméno nebo IP adresa proxy serveru"
+
+#: wxDialogPreferences.py:270
+#: wxDialogPreferences.py:727
+msgid "P&ort:"
+msgstr "P&ort:"
+
+#: wxDialogPreferences.py:280
+msgid "Proxy Server port number (0-65535)"
+msgstr "Číslo portu proxy serveru  (0-65535)"
+
+#: wxDialogPreferences.py:283
+#: wxDialogPreferences.py:740
+msgid "&User Name:"
+msgstr "&Jméno:"
+
+#: wxDialogPreferences.py:290
+msgid "Proxy Server Account Name (optional)"
+msgstr "Jméno účtu na proxy serveru (volitelné)"
+
+#: wxDialogPreferences.py:293
+#: wxDialogPreferences.py:751
+msgid "&Password:"
+msgstr "&Heslo:"
+
+#: wxDialogPreferences.py:301
+msgid "Proxy Server account password (optional)"
+msgstr "Heslo účtu na proxy serveru (volitelné)"
+
+#: wxDialogPreferences.py:304
+msgid "Leave these fields blank if you do not connect via Proxy Server"
+msgstr "Ponechte tato pole prázdná pokud se nepřipojujete přes proxy server"
+
+#: wxDialogPreferences.py:310
+msgid "Scanning Options"
+msgstr "Volby skenování"
+
+#: wxDialogPreferences.py:315
+msgid "&Enable Automatic Virus Database Updates"
+msgstr "Stáhnout aktualizaci databáze &virů"
+
+#: wxDialogPreferences.py:318
+msgid "Enable automatic virus database downloads "
+msgstr "Povolit automatické stahování databáze virů"
+
+#: wxDialogPreferences.py:324
+msgid "Download &Site :"
+msgstr "Stahuji"
+
+#: wxDialogPreferences.py:331
+msgid "Specify Database Mirror Site here. Usually this is database.clamav.net"
+msgstr "Zde specifikujte zrcadlo databáze. Obvykle je to database.clamav.net"
+
+#: wxDialogPreferences.py:334
+msgid "&Update Frequency:"
+msgstr "&Frekvence skenování:"
+
+#: wxDialogPreferences.py:339
+#: wxDialogPreferences.py:346
+#: wxDialogPreferences.py:1453
+#: wxDialogScheduledScan.py:37
+#: wxDialogScheduledScan.py:66
+#: wxDialogScheduledScan.py:175
+#: wxDialogScheduledScan.py:181
+msgid "Daily"
+msgstr "Denně"
+
+#: wxDialogPreferences.py:339
+#: wxDialogPreferences.py:1453
+#: wxDialogScheduledScan.py:66
+#: wxDialogScheduledScan.py:175
+msgid "Hourly"
+msgstr "Každou hodinu"
+
+#: wxDialogPreferences.py:340
+#: wxDialogPreferences.py:1077
+#: wxDialogPreferences.py:1453
+#: wxDialogScheduledScan.py:66
+#: wxDialogScheduledScan.py:176
+#: wxDialogScheduledScan.py:283
+#: wxDialogScheduledScan.py:292
+msgid "Weekly"
+msgstr "Týdně"
+
+#: wxDialogPreferences.py:340
+#: wxDialogPreferences.py:1453
+#: wxDialogScheduledScan.py:66
+#: wxDialogScheduledScan.py:175
+msgid "Workdays"
+msgstr "V pracovní dny"
+
+#: wxDialogPreferences.py:345
+msgid "How often virus database is downloaded"
+msgstr "Jak často je stahována databáze virů"
+
+#: wxDialogPreferences.py:352
+msgid "&ClamScan Location:"
+msgstr "&Umístění ClamScanu:"
+
+#: wxDialogPreferences.py:360
+msgid "Specify location of clamscan"
+msgstr "Zadejte umístění clamscanu"
+
+#: wxDialogPreferences.py:365
+msgid "Click to browse for clamscan"
+msgstr "Klikem procházejte k adresáři"
+
+#: wxDialogPreferences.py:371
+msgid "&FreshClam Location:"
+msgstr "&FreshClam umístění:"
+
+#: wxDialogPreferences.py:379
+msgid "Specify location of freshclam"
+msgstr "Zadejte umístění freshclamu"
+
+#: wxDialogPreferences.py:385
+msgid "Click to browse for freshclam"
+msgstr "Klikem procházejte k adresáři"
+
+#: wxDialogPreferences.py:391
+msgid "&Virus Database Folder:"
+msgstr "Report aktualizace databáze &virů"
+
+#: wxDialogPreferences.py:399
+msgid "Specify location of virus database files"
+msgstr "Zadejte umístění souborů databáze virů"
+
+#: wxDialogPreferences.py:404
+msgid "Click to browse for a virus database folder"
+msgstr "Klikem procházejte k adresáři"
+
+#: wxDialogPreferences.py:409
+msgid "&Scan In Subdirectories"
+msgstr "Skenované adresáře:"
+
+#: wxDialogPreferences.py:412
+msgid "Select if you wish to scan in subdirectories recursively"
+msgstr "Vyberte pokud chcete povolit tento plán"
+
+#: wxDialogPreferences.py:426
+msgid "&Scan In Archives"
+msgstr "&Skenovat v archívech"
+
+#: wxDialogPreferences.py:435
+msgid "Do Not Scan Archives Larger Than"
+msgstr "Neskenovat archívy větší jak"
+
+#: wxDialogPreferences.py:445
+#: wxDialogPreferences.py:913
+msgid "MegaBytes"
+msgstr "MegaBajty"
+
+#: wxDialogPreferences.py:450
+#: wxDialogPreferences.py:464
+msgid "Do Not Extract More Than "
+msgstr "Nerozbalovat více jak"
+
+#: wxDialogPreferences.py:460
+msgid "Files"
+msgstr "&Soubor"
+
+#: wxDialogPreferences.py:474
+msgid "Sub-Archives"
+msgstr "Pod-archívy"
+
+#: wxDialogPreferences.py:479
+msgid "&Treat Files As Mailboxes"
+msgstr "&Léčit soubory jako mailboxy"
+
+#: wxDialogPreferences.py:482
+msgid "Select if you wish to scan mailboxes"
+msgstr "Vyberte pokud chcete povolit tento plán"
+
+#: wxDialogPreferences.py:486
+msgid "&Extract Attachments and Macros from MS Office Documents"
+msgstr "&Rozbalit přílohy a makra z MS Office dokumentů"
+
+#: wxDialogPreferences.py:489
+#: wxDialogPreferences.py:496
+msgid "Select if you wish to scan OLE attachments and macros in MS Office Documents"
+msgstr "Vyberte pokud si přejete skenovat OLE přílohy a makra z MS Office dokumentů"
+
+#: wxDialogPreferences.py:493
+msgid "&Detect Broken Executables"
+msgstr "&Detekovat poškozené spustitelné soubory"
+
+#: wxDialogPreferences.py:500
+msgid "&Additional Clamscan Command Line Parameters:"
+msgstr "&Přídavné Clamscan paramety příkazové řádky:"
+
+#: wxDialogPreferences.py:509
+msgid "Limit Log File Size To:"
+msgstr "Omezit velikost souboru logu na:"
+
+#: wxDialogPreferences.py:517
+msgid "Select maximum size for the logfile"
+msgstr "Vybrat maximální velikost souboru logu"
+
+#: wxDialogPreferences.py:521
+msgid "&Scan Report File:"
+msgstr "&Report skenování"
+
+#: wxDialogPreferences.py:529
+msgid "Specify location for a scan reports log file"
+msgstr "Zadejte umístění pro soubor reportů"
+
+#: wxDialogPreferences.py:535
+#: wxDialogPreferences.py:555
+msgid "Click to browse for a log file"
+msgstr "Klikem procházejte k adresáři"
+
+#: wxDialogPreferences.py:541
+msgid "&Virus Database Update Report File:"
+msgstr "Report aktualizace databáze &virů"
+
+#: wxDialogPreferences.py:549
+msgid "Specify location for a database updates log file"
+msgstr "Zadejte umístění log souborů aktualizace databáze"
+
+#: wxDialogPreferences.py:564
+msgid "When the download should be started"
+msgstr "Kdy má být plánovač spuštěn"
+
+#: wxDialogPreferences.py:581
+msgid "List of Scheduled Scans"
+msgstr "Naplánované skenování"
+
+#: wxDialogPreferences.py:597
+msgid "Scheduled Scans:"
+msgstr "Naplánované skenování"
+
+#: wxDialogPreferences.py:603
+msgid "&Add"
+msgstr "&Vložit"
+
+#: wxDialogPreferences.py:609
+msgid "&Remove"
+msgstr "&Odstranit"
+
+#: wxDialogPreferences.py:616
+msgid "&Edit"
+msgstr "&Upravit"
+
+#: wxDialogPreferences.py:622
+msgid "&Display Infected Files Only"
+msgstr "Infikované soubory:"
+
+#: wxDialogPreferences.py:626
+#: wxDialogPreferences.py:935
+msgid "Select if you wish to display infected files only in the scan progress window"
+msgstr "Vyberte pokud si přejete zobrazit pouze infikované soubory v okně průběhu"
+
+#: wxDialogScheduledScan.py:206
+#: wxDialogPreferences.py:628
+msgid "Monday"
+msgstr "Pondělí"
+
+#: wxDialogPreferences.py:628
+#: wxDialogPreferences.py:635
+#: wxDialogScheduledScan.py:206
+#: wxDialogScheduledScan.py:212
+msgid "Tuesday"
+msgstr "Úterý"
+
+#: wxDialogScheduledScan.py:206
+#: wxDialogPreferences.py:629
+msgid "Wednesday"
+msgstr "Středa"
+
+#: wxDialogScheduledScan.py:207
+#: wxDialogPreferences.py:629
+msgid "Thursday"
+msgstr "Čtvrtek"
+
+#: wxDialogScheduledScan.py:207
+#: wxDialogPreferences.py:629
+msgid "Friday"
+msgstr "Pátek"
+
+#: wxDialogScheduledScan.py:207
+#: wxDialogPreferences.py:629
+msgid "Saturday"
+msgstr "Sobota"
+
+#: wxDialogScheduledScan.py:207
+#: wxDialogPreferences.py:629
+msgid "Sunday"
+msgstr "Neděle"
+
+#: wxDialogPreferences.py:634
+msgid "When update frequency is weekly select day of the week for an update"
+msgstr "Pokud je frekvence plánovače týdenní, zvolte den v týdnu"
+
+#: wxDialogPreferences.py:638
+msgid "&Update Virus Database On Logon"
+msgstr "Zobrazí log soubor aktualizací databáze virů"
+
+#: wxDialogPreferences.py:641
+msgid "Select if you wish to update the virus databases just after you logged on"
+msgstr "Vyberte pokud chcete povolit tento plán"
+
+#: wxDialogPreferences.py:648
+msgid "Infected Files"
+msgstr "Infikované soubory:"
+
+#: wxDialogPreferences.py:653
+msgid "&Report Only"
+msgstr "&Pouze reporty"
+
+#: wxDialogPreferences.py:661
+msgid "&Remove (Use Carefully)"
+msgstr "&Odstranit (používat opatrně)"
+
+#: wxDialogPreferences.py:670
+msgid "&Move To Quarantine Folder:"
+msgstr "&Přesunout do adresáře karantény:"
+
+#: wxDialogPreferences.py:680
+msgid "Specify location for a quarantine folder"
+msgstr "Zadejte umístění adresáře karantény"
+
+#: wxDialogPreferences.py:686
+msgid "Click to browse for a quarantine folder"
+msgstr "Klikem procházejte k adresáři"
+
+#: wxDialogPreferences.py:700
+msgid "&Send Email Alert On Virus Detection"
+msgstr "&Zaslat výstražný email při detekci viru"
+
+#: wxDialogPreferences.py:704
+msgid "Select if you wish to receive email alerts when ClamWin detects a virus"
+msgstr "Vyberte pokud chcete přijímat varovné emaily při nálezu viru ClamWinem"
+
+#: wxDialogPreferences.py:710
+msgid "SMTP Connection Details"
+msgstr "Spojeno s"
+
+#: wxDialogPreferences.py:716
+msgid "&Mail Server:"
+msgstr "&Mail server:"
+
+#: wxDialogPreferences.py:724
+msgid "SMTP Server domain name or IP address"
+msgstr "Doménové jméno nebo IP adresa SMTP serveru"
+
+#: wxDialogPreferences.py:737
+msgid "Mail Server port number (0-65535)"
+msgstr "Číslo portu mail serveru (0-65535)"
+
+#: wxDialogPreferences.py:748
+msgid "Mail Server Account Name (optional)"
+msgstr "Jméno účtu na mail serveru (volitelné)"
+
+#: wxDialogPreferences.py:760
+msgid "Mail Server account password (optional)"
+msgstr "Heslo účtu na mail serveru (volitelné)"
+
+#: wxDialogPreferences.py:763
+msgid "Email Message Details"
+msgstr "Detaily emailové zprávy"
+
+#: wxDialogPreferences.py:769
+msgid "&From:"
+msgstr "&Od:"
+
+#: wxDialogPreferences.py:777
+msgid "Specify an email address from which the notification will be sent."
+msgstr "Zadejte emailové adresy, ze které bude zasláno varování."
+
+#: wxDialogPreferences.py:780
+msgid "&To:"
+msgstr "&Komu:"
+
+#: wxDialogPreferences.py:788
+msgid "Specify an email address where the email alert will be delivered.  Separate multiple addresses with commas."
+msgstr "Zadejte emailovou adresu příjemce. Oddělte více adres čárkami."
+
+#: wxDialogPreferences.py:791
+msgid "Su&bject:"
+msgstr "&Předmět:"
+
+#: wxDialogPreferences.py:799
+msgid "Specify Recipient's email address where the email alert will be delivered"
+msgstr "Zadejte emailovou adresu příjemce, kterému bude zasláno varování"
+
+#: wxDialogPreferences.py:802
+msgid "Send &Test Email"
+msgstr "Odeslat &zkušební email"
+
+#: wxDialogPreferences.py:805
+msgid "Click to send a test email message"
+msgstr "Klikněte pro odeslání zkušební emailové zprávy"
+
+#: wxDialogPreferences.py:811
+msgid "&Display Pop-up Notification Messages In Taskbar "
+msgstr "&Zobrazit vyskakovací varovnou zprávu ve správci úloh"
+
+#: wxDialogPreferences.py:815
+msgid "Select if you wish to receive Tray notification pop-up messages"
+msgstr "Vyberte pokud chcete přijímat vyskakovací varovné zprávy z pruhu úloh"
+
+#: wxDialogPreferences.py:822
+msgid "Specify Filename Patterns to include and/or exclude in scanning"
+msgstr "Zadejte vzorky jmen souborů pro začlenění nebo vyjmutí ze skenování"
+
+#: wxDialogPreferences.py:827
+msgid "(To specify a regular expression include your pattern within <...>)"
+msgstr "(Pro specifikaci regulárního výrazu vložte vzorek do <...>)"
+
+#: wxDialogPreferences.py:832
+msgid "&Exclude Matching Filenames:"
+msgstr "&Vyjmout shodující se soubory:"
+
+#: wxDialogPreferences.py:837
+#: wxDialogPreferences.py:862
+msgid "Patterns"
+msgstr "Vzorky"
+
+#: wxDialogPreferences.py:842
+#: wxDialogPreferences.py:867
+msgid "Move up"
+msgstr "Posunout výše"
+
+#: wxDialogPreferences.py:845
+#: wxDialogPreferences.py:870
+msgid "Move down"
+msgstr "Posunout dolů"
+
+#: wxDialogPreferences.py:848
+#: wxDialogPreferences.py:873
+msgid "New item"
+msgstr "Nová položka"
+
+#: wxDialogPreferences.py:851
+#: wxDialogPreferences.py:876
+msgid "Delete item"
+msgstr "Smazat položku"
+
+#: wxDialogPreferences.py:854
+#: wxDialogPreferences.py:879
+msgid "Edit item"
+msgstr "Upravit položku"
+
+#: wxDialogPreferences.py:857
+msgid "&Scan Only Matching Filenames:"
+msgstr "&Skenovat pouze shodující se soubory:"
+
+#: wxDialogPreferences.py:882
+msgid "&Deactivate"
+msgstr "&Deaktivovat"
+
+#: wxDialogPreferences.py:890
+msgid "A&ctivate"
+msgstr "A&ktivovat"
+
+#: wxDialogPreferences.py:898
+msgid "&Notify About New ClamWin Releases"
+msgstr "&Upozornit na nová vydání ClamWinu"
+
+#: wxDialogPreferences.py:901
+msgid "Select if you wish to get a notification message when ClamWin Free Antivirus program has been updated"
+msgstr "Vyberte pokud si přejede dostávat zprávy o nových aktualizacích ClamWin Free Antiviru"
+
+#: wxDialogPreferences.py:908
+msgid "(No personal information is transmitted during this check)"
+msgstr "(Žádné osobní informace nejsou přenášeny během této kontroly)"
+
+#: wxDialogPreferences.py:918
+msgid "Scanner &Priority:"
+msgstr "Skenované adresáře:"
+
+#: wxDialogPreferences.py:922
+#: wxDialogPreferences.py:927
+#: wxDialogPreferences.py:1477
+#: wxDialogPreferences.py:1485
+msgid "Normal"
+msgstr "Normální"
+
+#: wxDialogPreferences.py:922
+#: wxDialogPreferences.py:1475
+#: wxDialogPreferences.py:1483
+msgid "Low"
+msgstr "Nízká"
+
+#: wxDialogPreferences.py:926
+msgid "Specify the process priority for the virus scanner."
+msgstr "Zadejte prioritu procesu pro virový skener."
+
+#: wxDialogPreferences.py:931
+msgid "Display &File Scanned % Progress Indicator"
+msgstr "Zobrazit průběh skenování &souborů"
+
+#: wxDialogPreferences.py:1015
+msgid "An error occurred whilst saving configuration file %s. Please check that you have write permission to the configuration file."
+msgstr "Nastala chyba při ukládání konfiguračního souboru %s. Prosím zkontrolujte zda máte práva zápisu do tohoto souboru."
+
+#: wxDialogPreferences.py:1033
+msgid "Event Failed"
+msgstr "Událost selhala"
+
+#: wxDialogPreferences.py:1205
+#: wxDialogPreferences.py:1221
+msgid "Executable files (*.exe)|*.exe|All files (*.*)|*.*"
+msgstr "Soubory reportů (*.txt)|*.txt|All files (*.*)|*.*"
+
+#: wxDialogPreferences.py:1209
+#: wxDialogPreferences.py:1225
+#: wxDialogPreferences.py:1251
+#: wxDialogPreferences.py:1267
+#: wxDialogStatus.py:456
+msgid "Choose a file"
+msgstr "Vyberte soubor"
+
+#: wxDialogPreferences.py:1247
+#: wxDialogPreferences.py:1263
+msgid "Text Files (*.txt)|*.txt|All files (*.*)|*.*"
+msgstr "Soubory reportů (*.txt)|*.txt|All files (*.*)|*.*"
+
+#: wxDialogPreferences.py:1291
+msgid "Maximum amount of scheduled items (20) has been reached."
+msgstr "Maximální počet naplánovaných položek (20) dosažen."
+
+#: wxDialogPreferences.py:1379
+msgid ""
+"This is a test message sent during configuration of ClamWin Free Antivirus on the following computer: %s.\n"
+"Please do not be alarmed.\n"
+msgstr ""
+"Toto je testovací zpráva zaslaná během konfigurace ClamWin Free Antiviru na následujícím počítači: %s.\n"
+"Nejedná se o poplach.\n"
+
+#: wxDialogPreferences.py:1384
+msgid "Test Email has been sent successfully."
+msgstr "Testovací email zaslán úspěšně."
+
+#: wxDialogPreferences.py:1386
+msgid "Could not send the email. Please ensure you are connected to the internet. Error: %s"
+msgstr "Nelze otevřít soubor nápovědy. Ověřte, že máte nainstalovaný Adobe Acrobat Reader."
+
+#: wxDialogPreferences.py:1501
+#: wxDialogPreferences.py:1582
+#: wxDialogScheduledScan.py:338
+msgid "Value cannot be empty"
+msgstr "Hodnota nesmí být prázdná"
+
+#: wxDialogPreferences.py:1565
+msgid "The folder you selected does not exist. Would you like to create %s now?"
+msgstr "Vámi vybraný adresář neexistuje. Chcete adresář %s založit nyní?"
+
+#: wxDialogPreferences.py:1571
+msgid "Unable to create folder %s. Error: %s"
+msgstr "Nelze odstranit soubor %s. Chyba: %s"
+
+#: wxDialogLogViewer.py:68
+msgid "ClamWin Log Viewer"
+msgstr "Zobrazí ClamWin log soubory"
+
+#: wxDialogLogViewer.py:93
+#: wxDialogStatus.py:121
+msgid "ClamAV update process started at"
+msgstr "ClamAV aktualizace spuštěna v"
+
+#: wxDialogLogViewer.py:95
+#: wxDialogStatus.py:123
+msgid "ERROR: DNS Resolver:"
+msgstr "CHYBA: DNS Resolver:"
+
+#: wxDialogStatus.py:125
+#: wxDialogLogViewer.py:97
+msgid "WARNING: Invalid DNS reply. Falling back to HTTP mode."
+msgstr "VAROVÁNÍ: Neplatná DNS odpověď. Vracím se k HTTP módu."
+
+#: wxDialogStatus.py:127
+#: wxDialogLogViewer.py:99
+msgid "ERROR: Can't get information about database.clamav.net:"
+msgstr "CHYBA: Nelze získat informace o database.clamav.net:"
+
+#: wxDialogLogViewer.py:101
+#: wxDialogStatus.py:129
+msgid "Can't query"
+msgstr "Nelze se dotazovat"
+
+#: wxDialogLogViewer.py:103
+#: wxDialogStatus.py:131
+msgid "No IP address"
+msgstr "Bez IP adresy"
+
+#: wxDialogLogViewer.py:107
+#: wxDialogStatus.py:135
+msgid "Trying again in 5 secs..."
+msgstr "Zkouším znova za 5 vteřin..."
+
+#: wxDialogLogViewer.py:111
+#: wxDialogStatus.py:139
+msgid "ERROR: Update failed. Your network may be down or none of the mirrors listed in freshclam.conf is working."
+msgstr "CHYBA: Aktualizace selhala. Vaše připojení může být odpojené nebo nepracuje žádné zrcadlo uvedené ve freshclam.conf."
+
+#: wxDialogLogViewer.py:117
+#: wxDialogStatus.py:145
+msgid "Known viruses:"
+msgstr "Známé viry:"
+
+#: wxDialogLogViewer.py:119
+#: wxDialogStatus.py:147
+msgid "Engine version:"
+msgstr "Verze enginu:"
+
+#: wxDialogLogViewer.py:121
+#: wxDialogStatus.py:149
+msgid "Scanned directories:"
+msgstr "Skenované adresáře:"
+
+#: wxDialogLogViewer.py:125
+#: wxDialogStatus.py:153
+msgid "Infected files:"
+msgstr "Infikované soubory:"
+
+#: wxDialogLogViewer.py:127
+#: wxDialogStatus.py:155
+msgid "Data scanned:"
+msgstr "Skenovaná data:"
+
+#: wxDialogLogViewer.py:80
+#: wxDialogPreferences.py:242
+#: wxDialogAbout.py:162
+#: wxDialogScheduledScan.py:249
+msgid "OK"
+msgstr "OK"
+
+#: wxDialogAbout.py:168
+msgid "Virus DB Version: (main: %i; daily: %i)"
+msgstr "Verze DB virů: (hlavní: %i; denní: %i)"
+
+#: wxDialogAbout.py:174
+msgid "Updated: %s"
+msgstr "Aktualizace"
+
+#: wxDialogAbout.py:214
+msgid "Could not locate ClamScan executable"
+msgstr "Nemohu najít ClamScan spouštěcí soubor"
+
+#: wxDialogAbout.py:227
+msgid "Unable to retrieve ClamAV version"
+msgstr "Nelze získat verzi ClamAV"
+
+#: wxDialogAbout.py:252
+msgid "Unable to retrieve database version"
+msgstr "Nelze získat verzi databáze"
+
+#: wxDialogCheckUpdate.py:105
+#: wxFrameMain.py:265
+#: wxDialogStatus.py:500
+msgid "&Close"
+msgstr "&Zavřít"
+
+#: wxFrameMain.py:337
+msgid "ClamWin Free Antivirus is not configured. Would you like to configure it now?"
+msgstr "ClamWin Free Antivirus není nakonfigurován. Chcete ho nakonfigurovat nyní?"
+
+#: wxFrameMain.py:343
+msgid "You have not yet downloaded Virus Definitions Database. Would you like to download it now?"
+msgstr "Ještě jste nestahovali databázi definicí virů. Chcete ji stáhnout nyní?"
+
+#: wxFrameMain.py:397
+msgid "http://www.clamwin.com/content/category/3/7/27/"
+msgstr "http://www.clamwin.com/content/category/3/7/27/"
+
+#: wxFrameMain.py:405
+#: wxDialogAbout.py:110
+#: wxDialogAbout.py:199
+#: ClamTray.py:315
+msgid "http://www.clamwin.com"
+msgstr "http://www.clamwin.com"
+
+#: wxDialogUtils.py:58
+msgid "An error occurred during Virus Database Update. Please review the update report."
+msgstr "Nastala chyba během aktualizace databáze virů. Ověřte prosím aktualizační report."
+
+#: wxDialogUtils.py:65
+msgid "ClamWin Free Antivirus: Downloading Update..."
+msgstr "ClamWin Free Antivirus"
+
+#: wxDialogUtils.py:78
+msgid "Unable to remove file %s. Error: %s"
+msgstr "Nelze odstranit soubor %s. Chyba: %s"
+
+#: wxDialogUtils.py:83
+msgid "Couldn't remove file %s. Error: %s"
+msgstr "Nešlo odstranit soubor %s. Chyba: %s"
+
+#: wxDialogUtils.py:115
+msgid ""
+"\n"
+"-----------------------------\n"
+msgstr ""
+"\n"
+"-----------------------------\n"
+
+#: wxDialogUtils.py:116
+msgid ""
+"Scan Started %s\n"
+"ERROR: Virus Definitions Database Not Found! Please download it now.\n"
+msgstr "Ještě jste nestahovali databázi definicí virů. Chcete ji stáhnout nyní?\n"
+
+#: wxDialogUtils.py:117
+msgid "-----------------------------"
+msgstr "-----------------------------"
+
+#: wxDialogUtils.py:126
+msgid "Virus has been detected during scan! Please review the scan report."
+msgstr "Během skenovaní nalezen vir! Ověřte prosím report skenování."
+
+#: wxDialogUtils.py:128
+msgid "An error occurred during virus scan. Please review the scan report."
+msgstr "Nastala chyba během skenování virů. Ověřte prosím report skenování."
+
+#: wxDialogUtils.py:133
+msgid "ClamWin Free Antivirus: Scanning..."
+msgstr "ClamWin Free Antivirus"
+
+#: wxDialogUtils.py:150
+#: ClamTray.py:555
+msgid "Could not send email alert. Error: %s"
+msgstr "Nelze zaslat varovný email. Chyba: %s"
+
+#: wxDialogUtils.py:157
+msgid "Could not delete logfile : %s. Error: %s"
+msgstr "Nelze smazat log soubor: %s. Chyba: %s"
+
+#: wxDialogUtils.py:179
+msgid "Log files are not properly configured. Please review ClamWin configuration"
+msgstr "Log soubory nejsou správně nastaveny. Zkontrolujte prosím nastavení ClamWinu"
+
+#: wxDialogUtils.py:192
+msgid "Unable to read from the log file. Error: %s"
+msgstr "Nelze číst z log souboru. Chyba: %s"
+
+#: wxDialogUtils.py:229
+msgid ""
+"Unable to get online version. Most likely it's a temporary connectivity error and you don't have to do anything.\n"
+"If you see this error often then allow clamwin.exe in your firewall and check proxy settings.\n"
+"(%s)"
+msgstr ""
+"Nelze získat online verzi. Pravděpodobně se jedná o dočasný problém spojení a není třeba nic dělat.\n"
+"Pokud vidíte tuto chybu často, povolte clamwin.exe ve vašem firewallu a zkontrolujte nastavení proxy.\n"
+"(%s)"
+
+#: 292
+msgid "Scan with ClamWin Free Antivirus"
+msgstr "ClamWin Free Antivirus"
+
+#: wxDialogCheckUpdate.py:98
+msgid "&Download"
+msgstr "Stahuji"
+
+#: EmailAlert.py:82
+msgid "Email alert to %s has been sent successfully."
+msgstr "Testovací email zaslán úspěšně."
+
+#: Config.py:63
+msgid "admin@yourdomain"
+msgstr "admin@yourdomain"
+
+#: Config.py:63
+msgid "clamwin@yourdomain"
+msgstr "&Otevřít ClamWin"
+
+#: Config.py:64
+msgid "ClamWin Virus Alert"
+msgstr "Prohlížeč logů ClamWin"
+
+#: EmailAlert.py:86
+msgid "Could not send an email. Error: %s"
+msgstr "Nelze zaslat varovný email. Chyba: %s"
+
+#: EmailAlert.py:95
+msgid ""
+"ClamWin detected a virus on the following computer: %s\n"
+"\n"
+"Please review the attached log files for more details.\n"
+msgstr ""
+"ClamWin nalezl vir na následujícím počítači: %s\n"
+"\n"
+"Prověřte prosím přiložený log soubor pro více detailů.\n"
+
+#: wxDialogCheckUpdate.py:88
+msgid "&Do Not Check for Updates in Future"
+msgstr "&V budoucnu nehlídat aktualizace"
+
+#: wxDialogCheckUpdate.py:76
+msgid "List Of Changes in Version %s:"
+msgstr "Přehled změn ve verzi %s:"
+
+#: wxDialogScheduledScan.py:119
+msgid "Could not open persistent storage for scheduled scans. Error: %s"
+msgstr "Nelze smazat log soubor: %s. Chyba: %s"
+
+#: wxDialogScheduledScan.py:130
+msgid "Could not save scheduled scans to persistent storage. Error: %s"
+msgstr "Nelze zaslat varovný email. Chyba: %s"
+
+#: wxDialogCheckUpdate.py:54
+msgid "ClamWin Update"
+msgstr "Domovské stránky ClamWin"
+
+#: wxDialogCheckUpdate.py:60
+msgid "An update of ClamWin Free Antivirus has been released. Please click on Download button and download the latest version %s"
+msgstr "Byla vydána aktualizace ClamWin Free Antiviru. Klikněte prosím na tlačítko Stáhnout a stáhněte si poslední verzi %s"
+
+#: wxDialogCheckUpdate.py:69
+msgid "After you download the latest version setup file simply run it and install over the existing version."
+msgstr "Po stažení poslední verze jednoduše spusťte instalaci přes stávající verzi."
+
+#: wxDialogAbout.py:57
+#: wxDialogAbout.py:61
+msgid "About ClamWin Free Antivirus"
+msgstr "ClamWin Free Antivirus"
+
+#: wxDialogAbout.py:72
+msgid "Version "
+msgstr "verze:"
+
+#: wxDialogAbout.py:79
+msgid "ClamAV Version gets here"
+msgstr "ClamAV verze"
+
+#: wxDialogAbout.py:84
+msgid "Protecting from %i Viruses"
+msgstr "Chrání od %i virů"
+
+#: wxDialogAbout.py:93
+#: wxDialogAbout.py:115
+msgid "ClamWin Free Antivirus Homepage"
+msgstr "ClamWin Free Antivirus"
+
+#: wxDialogAbout.py:100
+msgid "Donate to ClamWin"
+msgstr "Přispět ClamWinu"
+
+#: wxDialogAbout.py:105
+msgid "Website:"
+msgstr "Web:"
+
+#: wxDialogAbout.py:119
+msgid "Author: alch <alch@users.sourceforge.net>"
+msgstr "Autor: alch <alch@users.sourceforge.net>"
+
+#: wxDialogAbout.py:125
+msgid "Copyright (c) 2004 - 2006"
+msgstr "Copyright (c) 2004 - 2006"
+
+#: wxDialogAbout.py:130
+msgid "This program is free software"
+msgstr "Toto je svobodný software"
+
+#: wxDialogAbout.py:142
+msgid "ClamAV Homepage"
+msgstr "Domovská stránka ClamAV"
+
+#: wxDialogAbout.py:150
+msgid "Finndesign Homepage"
+msgstr "Domovská stránka Finndesign"
+
+#: wxDialogAbout.py:158
+msgid "Python Homepage"
+msgstr "Domovská stránka Python"
+
+#: OlAddin.py:174
+msgid "You appear to be running a win32all version pre 151, which is pretty old"
+msgstr "Vypadá to, že Vaše verze win32all je nižší než 151, což je opravdu zastaralé"
+
+#: OlAddin.py:175
+msgid "I'm afraid it is time to upgrade"
+msgstr "Obávám se, že je čas pro aktualizaci"
+
+#: OlAddin.py:199
+msgid "An error occurred in ClamWin Free Antivirus About Box.\n"
+msgstr "Otevře domovské stránky Clamwin Free Antiviru\n"
+
+#: OlAddin.py:213
+msgid "WARNING - Trying to use image '%s', but it doesn't exist"
+msgstr "VAROVÁNÍ - Zkouším použít obrázek  '%s', ten ale neexistuje"
+
+#: OlAddin.py:248
+msgid "Virus Deleted by ClamWin.txt"
+msgstr "Vir smazán a nahrazen souborem ClamWin.txt"
+
+#: OlAddin.py:275
+#: OlAddin.py:1031
+msgid "Registration complete."
+msgstr "Registrace kompletní."
+
+#: OlAddin.py:277
+msgid "An Error occurred whilst starting clamscan: %s"
+msgstr "Nastala chyba při aktualizaci UI sekce. %s"
+
+#: OlAddin.py:294
+msgid "An Error occurred reading clamscan report: %s"
+msgstr "Nastala chyba při aktualizaci UI sekce. %s"
+
+#: OlAddin.py:296
+msgid ""
+"An Error occurred whilst scanning:\n"
+"%s"
+msgstr "Nastala chyba při aktualizaci UI sekce. %s"
+
+#: OlAddin.py:306
+msgid "An Error occurred whilst converting clamscan report: %s"
+msgstr "Nastala chyba při aktualizaci UI sekce. %s"
+
+#: OlAddin.py:344
+#: wxDialogUtils.py:107
+msgid "Virus Definitions Database Not Found! Please download it now."
+msgstr "Ještě jste nestahovali databázi definicí virů. Chcete ji stáhnout nyní?"
+
+#: OlAddin.py:418
+msgid ""
+"ClamWin Free Antivirus could not scan file%s\n"
+".Error: %s"
+msgstr "ClamWin Free Antivirus: Skenuji..."
+
+#: OlAddin.py:470
+msgid "ClamWin Free Antivirus has detected a virus in the message attachments!"
+msgstr "ClamWin Free Antivirus nalezl vir v příloze zprávy!"
+
+#: OlAddin.py:471
+msgid "Virus Detected!"
+msgstr "Nalezen vir!"
+
+#: OlAddin.py:474
+msgid "Virus has been detected in an email attachment! The attachment was replaced with the report file."
+msgstr "Během skenovaní nalezen vir! Ověřte prosím report skenování."
+
+#: OlAddin.py:476
+msgid "An error occurred whilst scanning email message."
+msgstr "Nastala chyba při aktualizaci UI sekce. %s"
+
+#: OlAddin.py:508
+#: ClamTray.py:563
+msgid "Could not remove file: %s. Error: %s"
+msgstr "Nelze otevřít soubor nápovědy - %s nenalezen."
+
+#: OlAddin.py:580
+msgid "&About ClamWin Free Antivirus"
+msgstr "ClamWin Free Antivirus"
+
+#: OlAddin.py:581
+msgid "Shows the ClamWin About Box"
+msgstr "Zobrazí informace o programu"
+
+#: OlAddin.py:836
+msgid "ClamWin Free Antivirus could not replace an attachment. Error: %s"
+msgstr "ClamWin Free Antivir nemůže nahradit přílohu Chyba: %s"
+
+#: OlAddin.py:837
+msgid "ClamWin Free Antivirus!"
+msgstr "ClamWin Free Antivirus"
+
+#: OlAddin.py:905
+msgid "Error connecting to Outlook!"
+msgstr "Chyba připojení k Outlooku!"
+
+#: OlAddin.py:918
+msgid "An error occurred whilst displaying the splashscreen %s. Error: %s."
+msgstr "Nastala chyba při aktualizaci UI sekce. %s"
+
+#: OlAddin.py:955
+msgid "Addin terminating: %d COM client and %d COM servers exist."
+msgstr "Zásuvný modul ukončen: %d COM klient a %d COM server existují."
+
+#: OlAddin.py:1007
+msgid "Registering (in HKEY_LOCAL_MACHINE)..."
+msgstr "Registruji (v HKEY_LOCAL_MACHINE)..."
+
+#: OlAddin.py:1010
+msgid "Registering (in HKEY_CURRENT_USER)..."
+msgstr "Registruji (v HKEY_CURRENT_USER)..."
+
+#: OlAddin.py:1015
+msgid "Registration Complete"
+msgstr "Registrace kompletní"
+
+#: ClamTray.py:117
+msgid "Unable to stop scheduled process, terminating"
+msgstr "Nelze zastavit běžící vlákno, ukončuji"
+
+#: ClamTray.py:131
+msgid "An error occurred whilst terminating scheduler thread. Error: %s"
+msgstr "Nastala chyba při aktualizaci UI sekce. %s"
+
+#: ClamTray.py:237
+msgid "&Configure Scheduler"
+msgstr "&Nastavit plánovač"
+
+#: ClamTray.py:257
+msgid "&Run Scheduled Scan"
+msgstr "Naplánované skenování"
+
+#: ClamTray.py:261
+msgid "&Stop All Running Tasks Now"
+msgstr "&Zastavit všechny běžící úlohy"
+
+#: ClamTray.py:271
+msgid "&Virus Scan Report"
+msgstr "&Report skenování"
+
+#: ClamTray.py:282
+msgid "&Open ClamWin"
+msgstr "&Otevřít ClamWin"
+
+#: ClamTray.py:283
+msgid "&Download Virus Database Update"
+msgstr "Stáhnout aktualizaci databáze &virů"
+
+#: ClamTray.py:284
+msgid "&Configure ClamWin"
+msgstr "Přispět ClamWinu"
+
+#: ClamTray.py:285
+msgid "&Scheduler"
+msgstr "Plánovač"
+
+#: ClamTray.py:286
+msgid "Display &Reports"
+msgstr "&Zobrazí reporty"
+
+#: ClamTray.py:288
+msgid "Check &Latest Version"
+msgstr "&Ověřit poslední verzi"
+
+#: ClamTray.py:289
+msgid "&Visit ClamWin Website"
+msgstr "Domovské stránky ClamWin"
+
+#: ClamTray.py:291
+msgid "&Exit"
+msgstr "U&končit"
+
+#: ClamTray.py:313
+#: wxFrameMain.py:401
+msgid "http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version="
+msgstr "http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version="
+
+#: ClamTray.py:338
+msgid "Could not launch ClamWin Scanner. Error: %s"
+msgstr "Nelze zaslat varovný email. Chyba: %s"
+
+#: ClamTray.py:351
+msgid "Could not display balloon tooltip. Error: %s"
+msgstr "Nelze zaslat varovný email. Chyba: %s"
+
+#: ClamTray.py:362
+msgid ""
+"An error occurred while displaying log file %s.\n"
+"Error: %s"
+msgstr "Nastala chyba při aktualizaci UI sekce. %s"
+
+#: ClamTray.py:373
+msgid "An error occurred while starting ClamWin Free Antivirus scanner.\n"
+msgstr "Nastala chyba při aktualizaci UI sekce. %s\n"
+
+#: ClamTray.py:381
+msgid "An error occurred while starting ClamWin Free Antivirus Update.\n"
+msgstr "Nastala chyba při aktualizaci UI sekce. %s\n"
+
+#: ClamTray.py:387
+msgid "Error"
+msgstr "Chyba"
+
+#: ClamTray.py:387
+#: wxDialogUtils.py:38
+msgid "Unable to create freshclam configuration file. Please check there is enough space on the disk"
+msgstr "Nelze vytvořit freshclam konfigurační soubor. Zkontrolujte prosím, zda je dostatek místa na disku"
+
+#: ClamTray.py:403
+#: wxDialogUtils.py:56
+msgid "Virus database has been updated."
+msgstr "Report aktualizace databáze &virů"
+
+#: ClamTray.py:405
+msgid "An error occurred during Scheduled Virus Database Update. Please review the update report."
+msgstr "Nastala chyba během aktualizace databáze virů. Ověřte prosím aktualizační report."
+
+#: ClamTray.py:418
+msgid ""
+"Unable to spawn scheduled process.\n"
+"Command line: %s\n"
+"Error: %s"
+msgstr ""
+"Nelze vytvořit naplánovaný proces.\n"
+"Příkazová řádka: ˇ%s\n"
+"Chyba: ˇ%s"
+
+#: ClamTray.py:433
+msgid "Error performing Scheduled Update."
+msgstr "Nelze provést naplánovanou aktualizaci."
+
+#: ClamTray.py:441
+#: wxDialogUtils.py:206
+msgid "Please point your browser at: %s"
+msgstr "Naveďte svůj prohlížeč na: %s"
+
+#: ClamTray.py:455
+msgid "An error occurred while starting ClamWin Free Antivirus Preferences.\n"
+msgstr "Nastala chyba při aktualizaci UI sekce. %s\n"
+
+#: ClamTray.py:496
+msgid "Virus has been detected during scheduled scan! Please review the scan report."
+msgstr "Během skenovaní nalezen vir! Ověřte prosím report skenování."
+
+#: ClamTray.py:498
+msgid "An error occurred during scheduled scan. Please review the scan report."
+msgstr "Nastala chyba během skenování virů. Ověřte prosím report skenování."
+
+#: ClamTray.py:530
+msgid "Running Scheduled Task:\n"
+msgstr "Naplánovaná skenování:\n"
+
+#: ClamTray.py:532
+msgid "An error occurred whilst running Running Scheduled Task "
+msgstr "Nastala chyba při aktualizaci UI sekce. %s"
+
+msgid ""
+"There was an error initializing the ClamWin addin\r\n"
+"\r\n"
+"Please re-start Outlook and try again."
+msgstr ""
+"Chyba inicializace zásuvného modulu\r\n"
+"\r\n"
+"Restartujte prosím Outlook a zkuste to znovu."
+
