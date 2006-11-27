@@ -2,17 +2,17 @@
 # Name:        BalloonHelp.h
 # Product:     ClamWin Antivirus
 #
-# Licence:     
+# Licence:
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
 #   the Free Software Foundation; either version 2 of the License, or
 #   (at your option) any later version.
-# 
+#
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-# 
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; if not, write to the Free Software
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -32,7 +32,7 @@
 // you want :~) )
 //  I'm providing this code in the hope that it is useful to someone, as i have
 // gotten much use out of other peoples code over the years.
-//  If you see value in it, make some improvements, etc., i would appreciate it 
+//  If you see value in it, make some improvements, etc., i would appreciate it
 // if you sent me some feedback.
 //
 // ******************************************************************************
@@ -42,7 +42,7 @@
 // I fixed an ugly bug where deallocated memory was accessed when using the
 // strURL parameter to open a file or location when the balloon was clicked.
 // I also fixed a minor but very visible bug in the demo.
-// Added a couple of new options: 
+// Added a couple of new options:
 //    unDELAY_CLOSE works in tandem with a timeout value to delay the action
 // caused by the other unCLOSE_* options.  This allows you to keep a balloon
 // active indefinately, until the user gets back from coffee break, etc., and
@@ -56,7 +56,7 @@
 //
 //    I suppose i should have kept a progress log for this.
 // But i didn't, so you'll just have to assume it was mostly right to begin with.
-// And i'll further confuse this by versioning it R2, even though it's the 
+// And i'll further confuse this by versioning it R2, even though it's the
 // fourth release (?) (i haven't been keeping track, heheh).
 // I will, however, thank several people who have shown me better ways to do
 // things, and thus improved the class greatly.
@@ -106,7 +106,7 @@ private:
 	DWORD	m_relproc;		// relative jmp
 
 protected:
-	
+
 	typedef LRESULT (T::*TMFP)(int, unsigned int, long int);
 	void InitThunk(TMFP method, const T* pThis)
 	{
@@ -119,18 +119,18 @@ protected:
 
 		::FlushInstructionCache(GetCurrentProcess(), this, sizeof(*this));
 	}
-	FARPROC GetThunk() const 
+	FARPROC GetThunk() const
    {
 #ifdef _MSC_VER
 		_ASSERTE(m_mov == 0xB9);
 #endif
-		return (FARPROC)this; 
+		return (FARPROC)this;
    }
 };
 #pragma pack(pop) // _ThunkImpl
 
 
-// we need these three dummy classes so we can 
+// we need these three dummy classes so we can
 // derive more than once from _ThunkImpl
 template <class T>
 class BHMouseHookThunk: public _ThunkImpl<T> {};
@@ -180,11 +180,11 @@ public:
                HICON hIcon = NULL);             // icon to display
 
    // Show a help balloon on screen.
-   static void LaunchBalloon(const CStdString& strTitle, const CStdString& strContent, 
-               POINT& ptAnchor, 
+   static void LaunchBalloon(const CStdString& strTitle, const CStdString& strContent,
+               POINT& ptAnchor,
                LPCTSTR szIcon = IDI_EXCLAMATION,
                unsigned int unOptions = unSHOW_CLOSE_BUTTON|CBalloonHelp::unSHOW_INNER_SHADOW|CBalloonHelp::unSHOW_TOPMOST,
-               HWND hParentWnd = NULL, 
+               HWND hParentWnd = NULL,
                const CStdString strURL = "",
                unsigned int unTimeout = 10000);
 
@@ -217,7 +217,7 @@ public:
    // Sets the forground (text and border) color of the balloon
    void SetForegroundColor(COLORREF crForeground);
    // Sets the background color of the balloon
-   void SetBackgroundColor(COLORREF crBackground);   
+   void SetBackgroundColor(COLORREF crBackground);
 protected:
 	// message handler
 	LRESULT CALLBACK WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -264,7 +264,7 @@ protected:
    static ATOM GetClassAtom(BOOL bShadowed);
 
 	// message handlers
-   
+
    LRESULT OnPrint(HWND hwnd, WPARAM wParam, LPARAM lParam);
    LRESULT OnPrintClient(HWND hwnd, WPARAM wParam, LPARAM lParam);
 	static void OnClose(HWND hwnd);
@@ -281,7 +281,7 @@ protected:
 	static void OnShowWindow(HWND hwnd, BOOL fShow, UINT status);
 	static void OnTimer(HWND hwnd, UINT id);
 
-	
+
 private:
    // Keyboard hook
    void SetKeyboardHook();
@@ -320,10 +320,10 @@ private:
 
    HFONT          m_hTitleFont;     // font to use for title
    HFONT          m_hContentFont;   // font to use for content
-   
-   COLORREF       m_crBackground;   // Background color for balloon   
+
+   COLORREF       m_crBackground;   // Background color for balloon
    COLORREF       m_crForeground;   // Foreground color for balloon
-   
+
    RECT           m_screenRect;     // bounds of screen anchor is on
    HRGN           m_hrgnComplete;    // Clipping / Drawing region
    POINT          m_ptMouseOrig;    // original mouse position; for hiding on mouse move

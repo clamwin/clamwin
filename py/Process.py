@@ -22,12 +22,12 @@
 # Thanks to Trent Mick: http://starship.python.net/crew/tmick/
 
 # Changed by alch:
-# 15 03 2004 - Added priority parameter 
+# 15 03 2004 - Added priority parameter
 #              to ProcessProxy.__init__()
 #            - Added int() to WaitForSingleObject calls
 #              to overvcome
 #              DeprecationWarning: integer argument expected, got float
-#            - Changed (hacked...) win9x bit in _fixupCommand, as it was 
+#            - Changed (hacked...) win9x bit in _fixupCommand, as it was
 #              not working properly. This need a proper analysis and fix
 
 
@@ -183,7 +183,7 @@ else:
 class ProcessError(Exception):
     def __init__(self, msg, errno=-1):
         Exception.__init__(self, msg)
-        self.errno = errno    
+        self.errno = errno
 
 #---- internal logging facility
 
@@ -242,7 +242,7 @@ class Logger:
 #   - 'logfix' to track wait/kill proxying in _ThreadFixer
 __DEBUG = False
 if not __DEBUG:   # normal/production usage
-    log = Logger("process", Logger.WARN)    
+    log = Logger("process", Logger.WARN)
 else:   # development/debugging usage
     log = Logger("process", Logger.DEBUG, sys.stdout)
 if not __DEBUG:   # normal/production usage
@@ -253,7 +253,7 @@ if not __DEBUG:   # normal/production usage
     logfix = Logger("process.waitfix", Logger.WARN)
 else:   # development/debugging usage
     logfix = Logger("process.waitfix", Logger.DEBUG, sys.stdout)
-    
+
 #---- globals
 
 _version_ = (0, 5, 0)
@@ -286,6 +286,7 @@ def _joinArgv(argv):
             cmdstr += _escapeArg(arg)
         cmdstr += ' '
     if cmdstr.endswith(' '): cmdstr = cmdstr[:-1]  # strip trailing space
+    print cmdstr
     return cmdstr
 
 
@@ -314,7 +315,7 @@ def _whichFirstArg(cmd, env=None):
     launch) is a full path to an existing file.
 
     Raise a ProcessError if no such executable could be found.
-    """    
+    """
     # Parse out the first arg.
     if cmd.startswith('"'):
         # The .replace() is to ensure it does not mistakenly find the
@@ -398,7 +399,7 @@ _SaferCreateProcess(appName=%r,
                 = win32process.CreateProcess(appName, cmd, processSA,
                                              threadSA, inheritHandles,
                                              creationFlags, env, cwd, si)
-        except TypeError, ex:            
+        except TypeError, ex:
             if ex.args == ('All dictionary items must be strings, or all must be unicode',):
                 # Try again with an all unicode environment.
                 #XXX Would be nice if didn't have to depend on the error
@@ -515,31 +516,32 @@ def _fixupCommand(cmd, env=None):
     if sys.platform.startswith("win"):
         # Fixup the command string to spawn.  (Lifted from
         # posixmodule.c::_PyPopenCreateProcess() with some modifications)
-        
-        # alch 01-04-2004
-        # should it be cmd.exe on nt+?
+
         comspec = os.environ.get("COMSPEC", None)
         win32Version = win32api.GetVersion()
-        if comspec is None:
-            raise ProcessError("Cannot locate a COMSPEC environment "\
-                               "variable to use as the shell")
         # Explicitly check if we are using COMMAND.COM.  If we
         # are then use the w9xpopen hack.
-        elif (win32Version & 0x80000000L == 0) and\
-             (win32Version &        0x5L >= 5):             
+        if (win32Version & 0x80000000L == 0) and\
+             (win32Version &        0x5L >= 5):
+                if comspec is None or comspec=="":
+                    comspec = os.path.join(win32api.GetSystemDirectory(), "cmd.exe")
+
                 if os.path.basename(comspec).lower() != "cmd.exe":
                     # 2000/XP and not using command.com.
                     if '"' in cmd or "'" in cmd:
                         cmd = comspec + ' /c "%s"' % cmd
                     else:
-                        cmd = comspec + ' /c ' + cmd        
+                        cmd = comspec + ' /c ' + cmd
         elif (win32Version & 0x80000000L == 0) and\
              (win32Version &        0x5L  < 5):
+             if comspec is None or comspec=="":
+                 comspec = os.path.join(win32api.GetSystemDirectory(), "cmd.exe")
+
              if os.path.basename(comspec).lower() != "cmd.exe":
                  pass
         # alch - Removed 01.04.2003 - doesn't work
-        # my commands are always well-formed                
-##            # NT and not using command.com.            
+        # my commands are always well-formed
+##            # NT and not using command.com.
 ##            try:
 ##                cmd = _whichFirstArg(cmd, env)
 ##            except ProcessError:
@@ -553,8 +555,8 @@ def _fixupCommand(cmd, env=None):
             modulehandle = 0
             # added by alch for binary builds
             if hasattr(sys, "frozen"):
-                if sys.frozen == "dll":            
-                    modulehandle = sys.frozendllhandle                                                        
+                if sys.frozen == "dll":
+                    modulehandle = sys.frozendllhandle
             w9xpopen = os.path.join(
                 os.path.dirname(win32api.GetModuleFileName(modulehandle)),
                 'w9xpopen.exe')
@@ -571,7 +573,7 @@ def _fixupCommand(cmd, env=None):
             ## This would be option (1):
             #cmd = '%s "%s /c %s"'\
             #      % (w9xpopen, comspec, cmd.replace('"', '\\"'))
-            
+
             # Changed alch 15-03-2004
             # Why do we need to replace " with \"? w9xpopen seems to not like that
             # and _whichfirstarg doesn't quite work
@@ -584,8 +586,8 @@ def _fixupCommand(cmd, env=None):
 ##                    "to launch for '%s'. On Win9x you must manually prefix "\
 ##                    "shell commands and batch files with 'command.com /c' "\
 ##                    "to have the shell run them." % cmd)
-##            
-##            cmd = '%s "%s"' % (w9xpopen, cmd.replace('"', '\\"'))            
+##
+##            cmd = '%s "%s"' % (w9xpopen, cmd.replace('"', '\\"'))
     return cmd
 
 class _FileWrapper:
@@ -894,7 +896,7 @@ class Process:
 
     def isKilled(self):
         return self._killed
-    
+
     def _runChildOnUnix(self):
         #XXX Errors running the child do *not* get communicated back.
 
@@ -903,10 +905,10 @@ class Process:
         if isinstance(self._cmd, types.StringTypes):
             # This is easier than trying to reproduce shell interpretation to
             # separate the arguments.
-            cmd = ['/bin/sh', '-c', self._cmd]            
+            cmd = ['/bin/sh', '-c', self._cmd]
         else:
-            cmd = self._cmd                    
-                           
+            cmd = self._cmd
+
         # Close all file descriptors (except std*) inherited from the parent.
         MAXFD = 256 # Max number of file descriptors (os.getdtablesize()???)
         for i in range(3, MAXFD):
@@ -1054,7 +1056,7 @@ class Process:
                                        self.WAIT_TIMEOUT)
         return retval
 
-    def kill(self, exitCode=0, gracePeriod=1.0, sig=None):        
+    def kill(self, exitCode=0, gracePeriod=1.0, sig=None):
         """Kill process.
 
         "exitCode" [deprecated, not supported] (Windows only) is the
@@ -1110,7 +1112,7 @@ class Process:
             except OSError, ex:
                 if ex.errno != 3:
                     # Ignore:   OSError: [Errno 3] No such process
-                    raise        
+                    raise
 
     def _close_(self, hwnd, dummy):
         """Callback used by .kill() on Windows.
@@ -1160,7 +1162,7 @@ class ProcessOpen(Process):
         if self._mode not in ('t', 'b'):
             raise ProcessError("'mode' must be 't' or 'b'.")
         self._closed = 0
-        
+
         self._killed = False
         if sys.platform.startswith("win"):
             self._startOnWindows()
@@ -1266,7 +1268,7 @@ class ProcessOpen(Process):
         # (Set the bInheritHandle flag so pipe handles are inherited.)
         # alch 15-3-4 added win9x check, where we have no SECURITY_ATTRIBUTES
         isWin9x = win32api.GetVersionEx()[3] == VER_PLATFORM_WIN32_WINDOWS
-        if not isWin9x:        
+        if not isWin9x:
             saAttr = pywintypes.SECURITY_ATTRIBUTES()
             saAttr.bInheritHandle = 1
         else:
@@ -1340,7 +1342,7 @@ class ProcessOpen(Process):
             si.hStdError = hChildStderrWr
             si.dwFlags |= win32process.STARTF_USESTDHANDLES
 
-              
+
             cmd = _fixupCommand(cmd, self._env)
 
             creationFlags = win32process.CREATE_NEW_PROCESS_GROUP
@@ -1489,7 +1491,7 @@ class ProcessOpen(Process):
                 if ex.errno != 3:
                     # Ignore:   OSError: [Errno 3] No such process
                     raise
-        _unregisterProcess(self)        
+        _unregisterProcess(self)
 
     def _close_(self, hwnd, dummy):
         """Callback used by .kill() on Windows.
@@ -1528,12 +1530,12 @@ class ProcessProxy(Process):
         "mode" (Windows only) specifies whether the pipes used to communicate
             with the child are openned in text, 't', or binary, 'b', mode.
             This is ignored on platforms other than Windows. Default is 't'.
-        "priority" (Windows only) specifies new process's priority class, 
-            which is used to determine the scheduling priorities of the 
+        "priority" (Windows only) specifies new process's priority class,
+            which is used to determine the scheduling priorities of the
             process's threads. This is ignored on platforms other than Windows
             (because alch does not know how to transleate these values
-            for nice on Unix). 
-            Possible values are: 'n' - normal, 'i' - idle, 'h' - high and 
+            for nice on Unix).
+            Possible values are: 'n' - normal, 'i' - idle, 'h' - high and
             'r' - realtime. Default is 'n'.
         "cwd" optionally specifies the directory in which the child process
             should be started. Default is None, a.k.a. inherits the cwd from
@@ -1584,12 +1586,12 @@ class ProcessProxy(Process):
         _registerProcess(self)
 
     def __del__(self):
-        #XXX Should probably not rely upon this.        
+        #XXX Should probably not rely upon this.
         logres.info("[%s] ProcessProxy.__del__()", id(self))
         self.close()
         del self.__log # drop reference
 
-    def close(self):        
+    def close(self):
         if not self._closed:
             self.__log.info("[%s] ProcessProxy.close()" % id(self))
 
@@ -1627,7 +1629,7 @@ class ProcessProxy(Process):
 
             self._closed = 1
             self.__log.info("[%s] ProcessProxy.closed = 1" % id(self))
-            
+
 
     def _forkAndExecChildOnUnix(self, fdChildStdinRd, fdChildStdoutWr,
                                 fdChildStderrWr):
@@ -1636,7 +1638,7 @@ class ProcessProxy(Process):
         Sets self._pid as a side effect.
         """
         pid = os.fork()
-        if pid == 0: # child            
+        if pid == 0: # child
             os.dup2(fdChildStdinRd, 0)
             os.dup2(fdChildStdoutWr, 1)
             os.dup2(fdChildStderrWr, 2)
@@ -1704,12 +1706,12 @@ class ProcessProxy(Process):
         # (Set the bInheritHandle flag so pipe handles are inherited.)
         # alch 15-3-4 added win9x check, where we have no SECURITY_ATTRIBUTES
         isWin9x = win32api.GetVersionEx()[3] == VER_PLATFORM_WIN32_WINDOWS
-        if not isWin9x:        
+        if not isWin9x:
             saAttr = pywintypes.SECURITY_ATTRIBUTES()
             saAttr.bInheritHandle = 1
         else:
             saAttr = None
-        
+
         #XXX Should maybe try with os.pipe. Dunno what that does for
         #    inheritability though.
         hChildStdinRd, hChildStdinWr = win32pipe.CreatePipe(saAttr, 0)
@@ -1804,7 +1806,7 @@ class ProcessProxy(Process):
                         si)             # STARTUPINFO pointer
             except win32api.error, ex:
                 raise ProcessError(msg=ex.args[2], errno=ex.args[0])
-            win32api.CloseHandle(hThread)            
+            win32api.CloseHandle(hThread)
 
         finally:
             # Close child ends of pipes on the parent's side (the
@@ -1946,9 +1948,9 @@ class ProcessProxy(Process):
             except OSError, ex:
                 if ex.errno != 3:
                     # Ignore:   OSError: [Errno 3] No such process
-                    raise        
+                    raise
         _unregisterProcess(self)
-        
+
 
     def _close_(self, hwnd, dummy):
         """Callback used by .kill() on Windows.
@@ -2107,7 +2109,7 @@ class IOBuffer:
 
         log.info("[%s] IOBuffer.readline(): wait for data" % self._name)
         while 1:
-            if self._closed: break           
+            if self._closed: break
             if self._haveLine(): break
             if n is not None and self._haveNumBytes(n): break
             self._stateChange.acquire()
@@ -2431,7 +2433,7 @@ if False and sys.platform.startswith("linux"):
     _ThreadBrokenProcessProxy = ProcessProxy
     class ProcessProxy(_ThreadFixer, _ThreadBrokenProcessProxy):
         _pclass = _ThreadBrokenProcessProxy
-        
+
 if __name__=='__main__':
     proc = ProcessOpen('"c:\\winnt\\explorer1.exe" "c:\\"')
     ret = proc.wait()

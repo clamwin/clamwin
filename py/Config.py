@@ -1,4 +1,3 @@
-
 #-----------------------------------------------------------------------------
 # Name:        Config.py
 # Product:     ClamWin Free Antivirus
@@ -7,17 +6,17 @@
 #
 # Created:     2004/19/03
 # Copyright:   Copyright alch (c) 2004
-# Licence:     
+# Licence:
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
 #   the Free Software Foundation; either version 2 of the License, or
 #   (at your option) any later version.
-# 
+#
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-# 
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; if not, write to the Free Software
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -31,53 +30,53 @@ import sys
 from I18N import getClamString as _
 if sys.platform.startswith("win"):
     import win32api
-    
+
 REGEX_SEPARATOR="|CLAMWIN_SEP|"
 
-class Settings:    
-    def __init__(self, filename):        
-        self._filename = filename	
+class Settings:
+    def __init__(self, filename):
+        self._filename = filename
         self._settings = {
         'ClamAV':
         [0, {'ClamScan': '', 'FreshClam': '', 'Database': '',
-             'RemoveInfected': '0', 'ScanRecursive': '1', 
-             'InfectedOnly': '0', 'ShowProgress': '1', 
+             'RemoveInfected': '0', 'ScanRecursive': '1',
+             'InfectedOnly': '0', 'ShowProgress': '1',
              'Priority': 'Low', 'EnableMbox': '0', 'ScanOle2': '1',
              'ScanArchives': '1', 'MaxSize': '10', 'MaxFiles': '500',
              'MaxRecursion': '5', 'LogFile': '', 'MaxLogSize': '1',
              'MoveInfected': '0', 'QuarantineDir': '',  'Debug': '0',
              'DetectBroken': '0', 'ClamScanParams':'',
-             'IncludePatterns': '', 
+             'IncludePatterns': '',
              'ExcludePatterns': REGEX_SEPARATOR.join(('*.dbx','*.tbb','*.pst', '*.dat', '*.log', '*.evt', '*.nsf', '*.ntf', '*.chm')),}],
         'Proxy':
         [0, {'Host': '', 'Port': '3128', 'User':'',
-             'Password': ''}],              
+             'Password': ''}],
         'Updates':
-        [0, {'Enable': '1', 'Frequency': 'Daily', 'Time': '10:00:00', 
-            'WeekDay': '2', 'DBMirror': 'database.clamav.net', 
+        [0, {'Enable': '1', 'Frequency': 'Daily', 'Time': '10:00:00',
+            'WeekDay': '2', 'DBMirror': 'database.clamav.net',
             'DBUpdateLogFile': '', 'UpdateOnLogon': '0',
-            'CheckVersion': '1', 'CheckVersionURL': 'http://clamwin.sourceforge.net/clamwin.ver'}],  
+            'CheckVersion': '1', 'CheckVersionURL': 'http://clamwin.sourceforge.net/clamwin.ver'}],
         'EmailAlerts':
         [0, {'Enable': '0',
              'SMTPHost': '', 'SMTPPort': '25', 'SMTPUser':'',
-             'SMTPPassword': '', 
+             'SMTPPassword': '',
              'From': _('clamwin@yourdomain'), 'To': _('admin@yourdomain'), 
              'Subject': _('ClamWin Virus Alert')}], 
         'UI':
-        [0, {'TrayNotify': '1', 'ReportInfected': '1', 'Standalone': '0', 'Version': ''}],                
+        [0, {'TrayNotify': '1', 'ReportInfected': '1', 'Standalone': '0', 'Version': ''}],
         'Schedule':
-        [0, {'Path': '', }],                            
-        }        
+        [0, {'Path': '', }],
+        }
 
-    def Read(self):                
+    def Read(self):
         try:
             conf = ConfigParser.ConfigParser()
             conf.read(self._filename)
         except ConfigParser.Error:
-            return False        
+            return False
         for sect in self._settings:
             for name in self._settings[sect][1]:
-                try:                    
+                try:
                     val = conf.get(section = sect, option = name)
                     if self._settings[sect][0]: # is binary?
                         val = binascii.a2b_hex(val)
@@ -87,40 +86,40 @@ class Settings:
         # for older version set display infected only to 1
         if self._settings['UI'][1]['Version'] == '':
             self._settings['ClamAV'][1]['InfectedOnly'] = '1'
-            
+
         # turn detect broken executables option off for versions lower then 0.88.2.2
         # due to high rate of falsepositives
         if self._settings['UI'][1]['Version'] < '0.88.2.2':
             self._settings['ClamAV'][1]['DetectBroken'] = '0'
-        
-                   
+
+
         self._settings['UI'][1]['Version'] = version.clamwin_version
         return True
 
-    def Write(self):        
+    def Write(self):
         try:
             conf = ConfigParser.ConfigParser()
             for sect in self._settings:
                 if not conf.has_section(sect):
                     conf.add_section(sect)
-                    for name in self._settings[sect][1]:	                        
+                    for name in self._settings[sect][1]:
                         val = self._settings[sect][1][name]
                         if self._settings[sect][0]: # is binary?
                             val = binascii.b2a_hex(val)
                         conf.set(sect, option = name, value = val)
-            conf.write(file(self._filename, 'w'))           
+            conf.write(file(self._filename, 'w'))
         except (ConfigParser.Error, IOError):
             return False
         return True
 
-    
+
     def Get(self, sect, name):
         value = self._settings[sect][1][name]
         if(value is None):
             return ""
-        return Utils.SafeExpandEnvironmentStrings(value)   
-        
-    
+        return Utils.SafeExpandEnvironmentStrings(value)
+
+
     def Set(self, sect, name, val):
         if val is None:
             val = ''
@@ -129,6 +128,6 @@ class Settings:
             raise AttributeError('Internal Error. No such attribute: '+ sect + ': ' + name)
         else:
             self._settings[sect][1][name] = val
-            
+
     def GetFilename(self):
         return self._filename

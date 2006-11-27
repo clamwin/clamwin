@@ -8,17 +8,17 @@
 #
 # Created:     2004/22/04
 # Copyright:   Copyright alch (c) 2004
-# Licence:     
+# Licence:
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
 #   the Free Software Foundation; either version 2 of the License, or
 #   (at your option) any later version.
-# 
+#
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-# 
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; if not, write to the Free Software
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -32,8 +32,8 @@ from I18N import getClamString as _
 def create(parent, text, scroll_down = False):
     return wxDialogLogView(parent, text, scroll_down)
 
-[wxID_WXDIALOGLOGVIEW, wxID_WXDIALOGLOGVIEWBUTTONOK, 
- wxID_WXDIALOGLOGVIEWTEXTCTRL, 
+[wxID_WXDIALOGLOGVIEW, wxID_WXDIALOGLOGVIEWBUTTONOK,
+ wxID_WXDIALOGLOGVIEWTEXTCTRL,
 ] = map(lambda _init_ctrls: wxNewId(), range(3))
 
 class wxDialogLogView(wxDialog):
@@ -86,20 +86,22 @@ class wxDialogLogView(wxDialog):
 
         self._init_sizers()
 
-    def __init__(self, parent, text, scroll_down = False):        
+    def __init__(self, parent, text, scroll_down = False):
         self._init_ctrls(parent)
+
+        # set window icons
         icons = wxIconBundle()
         icons.AddIconFromFile('img/FrameIcon.ico', wxBITMAP_TYPE_ICO)
         self.SetIcons(icons)
-        
+
         # we need to set controls heights to 0 and reinit sizers
         # to overcome boa sizers bug
         self.textCtrl.SetSize((-1, 0))
         self._init_sizers()
         text = text.decode('utf-8')
-        self.textCtrl.AppendText(text)          
-        self._scroll_down = scroll_down        
-                        
+        self.textCtrl.AppendText(text)
+        self._scroll_down = scroll_down
+
     def OnOK(self, event):
         self.EndModal(wxID_OK)
 
@@ -107,25 +109,25 @@ class wxDialogLogView(wxDialog):
         if event.GetKeyCode() == WXK_ESCAPE:
             self.EndModal(wxID_CANCEL)
         else:
-            event.Skip()  
+            event.Skip()
 
     def OnInitDialog(self, event):
-        if self._scroll_down:                  
+        if self._scroll_down:
             # to scroll richedit down correctly we need to use EM_SCROLLCARET,
             # wxWidgets SetInsertionPoint and ShowPosition fail on win9x
             if sys.platform.startswith('win'):
-                import win32api, win32con                                                
+                import win32api, win32con
                 win32api.PostMessage(self.textCtrl.GetHandle(), win32con.EM_SCROLLCARET, 0, 0)
             else:
-                self.textCtrl.SetInsertionPointEnd()                        
-                self.textCtrl.ShowPosition(self.textCtrl.GetLastPosition())                
+                self.textCtrl.SetInsertionPointEnd()
+                self.textCtrl.ShowPosition(self.textCtrl.GetLastPosition())
         else:
-            self.textCtrl.SetInsertionPoint(0)                        
+            self.textCtrl.SetInsertionPoint(0)
             self.textCtrl.ShowPosition(0)
         event.Skip()
-    
-        
-        
+
+
+
 if __name__ == '__main__':
     app = wxPySimpleApp()
     msg = """Test Message Line
@@ -145,13 +147,13 @@ if __name__ == '__main__':
     Test Message Line\nTest Message Line
     Test Message Line\nTest Message Line
     """
-    
+
     dlg = create(None, msg, True)
     try:
-        dlg.ShowModal()                    
+        dlg.ShowModal()
     finally:
         dlg.Destroy()
-            
+
     app.MainLoop()
 
- 
+

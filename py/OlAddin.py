@@ -6,17 +6,17 @@
 #
 # Created:     2004/31/03
 # Copyright:   Copyright alch (c) 2004
-# Licence:     
+# Licence:
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
 #   the Free Software Foundation; either version 2 of the License, or
 #   (at your option) any later version.
-# 
+#
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-# 
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; if not, write to the Free Software
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -28,18 +28,18 @@
 # Thanks to Sean True and Mark Hammond
 
 # Copyright (C) 2002-2003 Python Software Foundation; All Rights Reserved
-# 
+#
 # The Python Software Foundation (PSF) holds copyright on all material
 # in this project.  You may use it under the terms of the PSF license:
-# 
+#
 # PSF LICENSE AGREEMENT FOR THE SPAMBAYES PROJECT
 # -----------------------------------------------
-# 
+#
 # 1. This LICENSE AGREEMENT is between the Python Software Foundation
 # ("PSF"), and the Individual or Organization ("Licensee") accessing and
 # otherwise using the spambayes software ("Software") in source or binary
 # form and its associated documentation.
-# 
+#
 # 2. Subject to the terms and conditions of this License Agreement, PSF
 # hereby grants Licensee a nonexclusive, royalty-free, world-wide
 # license to reproduce, analyze, test, perform and/or display publicly,
@@ -48,34 +48,34 @@
 # License Agreement and PSF's notice of copyright, i.e., "Copyright (c)
 # 2002-2003 Python Software Foundation; All Rights Reserved" are retained
 # the Software alone or in any derivative version prepared by Licensee.
-# 
+#
 # 3. In the event Licensee prepares a derivative work that is based on
 # or incorporates the Software or any part thereof, and wants to make
 # the derivative work available to others as provided herein, then
 # Licensee hereby agrees to include in any such work a brief summary of
 # the changes made to the Software.
-# 
+#
 # 4. PSF is making the Software available to Licensee on an "AS IS"
 # basis.  PSF MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR
 # IMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, PSF MAKES NO AND
 # DISCLAIMS ANY REPRESENTATION OR WARRANTY OF MERCHANTABILITY OR FITNESS
 # FOR ANY PARTICULAR PURPOSE OR THAT THE USE OF THE SOFTWARE WILL NOT
 # INFRINGE ANY THIRD PARTY RIGHTS.
-# 
+#
 # 5. PSF SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF THE
 # SOFTWARE FOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS AS
 # A RESULT OF MODIFYING, DISTRIBUTING, OR OTHERWISE USING THE SOFTWARE,
 # OR ANY DERIVATIVE THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.
-# 
+#
 # 6. This License Agreement will automatically terminate upon a material
 # breach of its terms and conditions.
-# 
+#
 # 7. Nothing in this License Agreement shall be deemed to create any
 # relationship of agency, partnership, or joint venture between PSF and
 # Licensee.  This License Agreement does not grant permission to use PSF
 # trademarks or trade name in a trademark sense to endorse or promote
 # products or services of Licensee, or any third party.
-# 
+#
 # 8. By copying, installing or otherwise using the Software, Licensee
 # agrees to be bound by the terms and conditions of this License
 # Agreement.
@@ -135,12 +135,12 @@ import RedirectStd
 
 _DEBUG=False
 
-def dbg_print(*args):    
+def dbg_print(*args):
     if not _DEBUG:
         return
     else:
         print args
-    
+
 # As MarkH assumed, and later found to back him up in:
 # http://www.slipstick.com/dev/comaddins.htm:
 # On building add-ins for multiple Outlook versions, Randy Byrne writes in
@@ -194,10 +194,10 @@ class ButtonEvent:
 
 # no ui yet, no commands
 def HelpAbout():
-    try:                           
+    try:
         curDir = Utils.GetCurrentDir(True)
-        Utils.SpawnPyOrExe(os.path.join(curDir, 'ClamWin'), ' --mode=about')        
-    except Exception, e:            
+        Utils.SpawnPyOrExe(os.path.join(curDir, 'ClamWin'), ' --mode=about')
+    except Exception, e:
         win32gui.MessageBox(GetWindow(), _('An error occurred in ClamWin Free Antivirus About Box.\n') + str(e), _('ClamWin Free Antivirus'), win32con.MB_OK | win32con.MB_ICONERROR)
 
 # Helpers to work with images on buttons/toolbars.
@@ -207,7 +207,7 @@ def SetButtonImage(button, fname):
     # Also note that the clipboard takes ownership of the handle -
     # thus, we can not simply perform this load once and reuse the image.
     # Hacks for the binary - we can get the bitmaps from resources.
-    
+
     if not os.path.isabs(fname):
         # images relative to the application path
         fname = os.path.join(Utils.GetCurrentDir(False),"images", fname)
@@ -220,47 +220,41 @@ def SetButtonImage(button, fname):
     win32clipboard.CloseClipboard()
     button.Style = constants.msoButtonIconAndCaption
     button.PasteFace()
-    
+
 def GetWindow():
     hwnd = 0
     try:
         hwnd = win32gui.GetActiveWindow()
     except:
-        hwnd = win32gui.GetForegroundWindow()   
-    return hwnd        
-    
+        hwnd = win32gui.GetForegroundWindow()
+    return hwnd
+
 class ScanError(Exception):
     def __init__(self, msg):
-        Exception.__init__(self, msg)        
+        Exception.__init__(self, msg)
 
-def ScanFile(path, config, attname):        
+def ScanFile(path, config, attname):
     # initialise environment var TMPDIR
-    # for clamav    
+    # for clamav
     try:
         if os.getenv('TMPDIR') is None:
-            os.putenv('TMPDIR', tempfile.gettempdir().replace('\\', '/'))
-                       #re.sub('([A-Za-z]):[/\\\\]', r'/cygdrive/\1/', 
-                       #tempfile.gettempdir()).replace('\\', '/'))
-        #Utils.SetCygwinTemp()
+            os.putenv('TMPDIR', tempfile.gettempdir())
     except Exception, e:
-        print str(e)                    
-            
-        
+        print str(e)
+
+
     logfile = os.path.split(path)[0]+"\\"+_('Virus Deleted by ClamWin.txt')
     print "Debug line to delete - using log file [%s]" % logfile
-    cmd = '--tempdir "%s"' % tempfile.gettempdir().replace('\\', '/').rstrip('/')
+    cmd = '--tempdir "%s"' % tempfile.gettempdir().rstrip('\\')
 
-    path = path.replace('\\', '/')
     cmd = '--max-ratio=0 --stdout --database="%s" --log="%s" "%s"' % \
             (config.Get('ClamAV', 'Database'), logfile, path)
-         
-    cmd = cmd.replace('\\', '/')
     cmd = '"%s" %s' % (config.Get('ClamAV', 'ClamScan'), cmd)
-                
-    scanstatus = ''        
+
+    scanstatus = ''
     retcode = 1
     proc = None
-    try:        
+    try:
         print "Debug line to delete - Running command [%s]" % cmd
         proc = Process.ProcessOpen(cmd)
         retcode = proc.wait()
@@ -285,9 +279,9 @@ def ScanFile(path, config, attname):
         
         dbg_print('scanning completed with %i' % retcode)  
         # returns 100 if a damaged rar archive was found
-        if retcode >= 100 and retcode <= 106: 
-            dbg_print('damaged archive - ignoring')  
-            retcode = 0            
+        if retcode >= 100 and retcode <= 106:
+            dbg_print('damaged archive - ignoring')
+            retcode = 0
     except Exception, e:
         if proc is not None:
             proc.close()
@@ -295,7 +289,7 @@ def ScanFile(path, config, attname):
         print _("Registration complete.")
         print "Debug line to delete - currently in [%s]" % os.getcwd()
         raise ScanError(_('An Error occurred whilst starting clamscan: %s') % str(e))
-        
+
     if proc is not None:
         proc.close()
     if retcode == 0:
@@ -307,54 +301,51 @@ def ScanFile(path, config, attname):
         # error, raise an exception
         try:
             error = file(logfile, 'rt').read()
-            print "Debug line to delete - successfully read [%s]" % error
-            #error = re.sub('/cygdrive/([A-Za-z])/', r'\1:/', error).replace('/', '\\')
             safe_remove(logfile)
         except Exception, e:
             raise ScanError(_('An Error occurred reading clamscan report: %s') % str(e))
-        print "Debug line to delete - sleeping look for log"
+        raise ScanError('An Error occured whilst scanning:\n%s' % error)
         raise ScanError(_('An Error occurred whilst scanning:\n%s') % error)
-
-    # replace \n's with \r\n's   
+    # replace \n's with \r\n's
     # so it can be shown in notepad
     # also replace temp filename with real attachment name
     try:
-        text = file(logfile, 'rt').read().replace('\n', '\r\n').replace(path, attname)        
+        text = file(logfile, 'rt').read().replace('\n', '\r\n').replace(path, attname)
         file(logfile, 'wt').write(text)
     except Exception, e:
         safe_remove(logfile)
         raise ScanError(_('An Error occurred whilst converting clamscan report: %s') % str(e))    
     return (virusFound, logfile)
-            
-# returns 0 if everything is okay, or number fo infected files                     
-def ScanMailItem(item, sending, added_attachments = None):     
+
+# returns 0 if everything is okay, or number fo infected files
+def ScanMailItem(item, sending, added_attachments = None):
     print "Debug line to delete - In scan mail item!"
     if not item.Attachments.Count:
         return 0
 
-    import win32gui, win32con   
-    
+    import win32gui, win32con
+
     config_file = os.path.join(Utils.GetProfileDir(True),'ClamWin.conf')
     if not os.path.isfile(config_file):
-        config_file = 'ClamWin.conf'                    
-    config = Config.Settings(config_file)    
+        config_file = 'ClamWin.conf'
+    config = Config.Settings(config_file)
     config.Read()
-    
+
     # get the virus database version from daily.cvd
     # we will need it when deciding if the message should be rescanned;
-    
+
     # after message is scanned the current daily.cvd version is saved;
     # then when message is next accessed we compare the saved version
-    # with the current version and if they're different then 
+    # with the current version and if they're different then
     # we rescan the message
-    
-    # disabled as it is of little use and causes outlook 
+
+    # disabled as it is of little use and causes outlook
     # to switch to RTF winmail.dat format
     # when replying or forwarding a scanned message
-        
+
     # virdb_ver = Utils.GetDBInfo(os.path.join(config.Get('ClamAV', 'Database'), 'daily.cvd'))[0]
     # dbg_print('Daily.cvd Version: %s' % str(virdb_ver))
-    
+
     # check that there are database files and display an error ballon if not
     print "Debug line to delete - Check database files!"
     hasdb = Utils.CheckDatabase(config)      
@@ -367,29 +358,28 @@ def ScanMailItem(item, sending, added_attachments = None):
             Utils.ShowBalloon(-1, tray_notify_params)
             return 0
 
-    
-    print "Debug line to delete - Looks like it has database!"
-    dir = ''; path = ''; statusfile = ''        
+
+    dir = ''; path = ''; statusfile = ''
     infected = []; attachments = []
     try:
-        attachments = item.Attachments            
-        
+        attachments = item.Attachments
+
         # see if the message has already been scanned
-        # disabled as it is of little use and causes outlook 
-		  # to switch to RTF winmail.dat format
+        # disabled as it is of little use and causes outlook
+        # to switch to RTF winmail.dat format
         # when replying or forwarding a scanned message
 
-        #userProps = item.UserProperties    
+        #userProps = item.UserProperties
         #prop = userProps.Find('Scanned By ClamWin')
-        #if prop is not None:            
+        #if prop is not None:
         #    if prop.Value == virdb_ver:
         #        dbg_print('ScanMailItem: Already Scanned')
         #        return 0
-            
-        waitCursor = WaitCursor()              
+
+        waitCursor = WaitCursor()
         for num in range(1, attachments.Count+1):
             att = attachments.Item(num)
-            
+
             # create a temporary folder to save the attachment to
             dir = tempfile.mktemp()
             os.mkdir(dir)
@@ -402,7 +392,7 @@ def ScanMailItem(item, sending, added_attachments = None):
                 print "Debug line to delete - Save as file exception"
                 # ignore "Object not found" save errors
                 # most likely the file won't be saved by outlook anyway
-                hr, desc, exc, argErr = e                
+                hr, desc, exc, argErr = e
                 if exc[5] in (-2147221233, -2147024894, -2147467259): #0x8004010F, 0x80070002, 0x80040005
                     dbg_print('error saving attachment to %s. Error: %s' % (path, str(exc)))
                     print "Debug line to delete - Calling safe remove"
@@ -410,27 +400,27 @@ def ScanMailItem(item, sending, added_attachments = None):
                     continue
                 else:
                     raise e
-        
+
             try:
                 attName = att.DisplayName.encode('ascii', 'replace')
             except:
                 attName = 'Attached File'
-                
+
             code, statusfile = ScanFile(path, config, attName)
-                            
+
             # remove saved and scanned attachment  file
-            safe_remove(path)                              
-            if code == 0:            
+            safe_remove(path)
+            if code == 0:
                 # no viruses found
                 # remove the scan status file
                 # along with temp dir
-                safe_remove(statusfile, True)        
-            else:                            
+                safe_remove(statusfile, True)
+            else:
                 # virus detected
-                if sending:     
-                    # for messages being sent display message box once and exit               
-                    try:                    
-                        msg = file(statusfile, 'rt').read()                                                
+                if sending:
+                    # for messages being sent display message box once and exit
+                    try:
+                        msg = file(statusfile, 'rt').read()
                         # remove the scan status file
                         # along with temp dir
                         safe_remove(statusfile, True)
@@ -443,29 +433,29 @@ def ScanMailItem(item, sending, added_attachments = None):
                     # remove str(att.DisplayName) - was causing unicode woes
                     infected.append((att, statusfile))
 
-        # remove infected attachments            
+        # remove infected attachments
         for info in infected:
             dbg_print('ScanMailItem: removing attachment - ', info[0].DisplayName)
-            info[0].Delete()                            
-            
+            info[0].Delete()
+
         # add status files instead of the infected attachments
         # can't have it in the for loop above because in some cases
         # (like when a message is opened form the .msg file
         # outlook saves the message when you add the attachment
-        # and screwes the indices            
+        # and screwes the indices
         for info in infected:
             dbg_print('ScanMailItem: adding attachment - ', info[1])
-            attachments.Add(Source=info[1], Type=constants.olByValue)                                
+            attachments.Add(Source=info[1], Type=constants.olByValue)
             # remove the scan status file
             # along with temp dir
-            safe_remove(info[1], True)                   
+            safe_remove(info[1], True)
 
         # add persistent property to the message
         # so we don't have to scan it in future
-        # we save the daily.cvd version        
+        # we save the daily.cvd version
         # so message gets rescanned if database is updated
-        
-        # disabled as it is of little use and causes outlook 
+
+        # disabled as it is of little use and causes outlook
         # to switch to RTF winmail.dat format
         # when replying or forwarding a scanned message
         #if virdb_ver is not None:
@@ -473,23 +463,22 @@ def ScanMailItem(item, sending, added_attachments = None):
         #    prop.Value = virdb_ver
         #    dbg_print('ScanMailItem: Saving MailItem')
         #    try:
-	     #      item.Save()           
+        #      item.Save()
         #    except pythoncom.com_error, e:
         #       # read only message store (hotmail, etc)
         #        # ignore save errors
         #        hr, desc, exc, argErr = e
         #        if hr != -2147352567:
         #            raise e
-        
-        if len(infected) > 0:                        
-            # for Outlook 2000 we need to display a message box in order to 
+
+        if len(infected) > 0:
+            # for Outlook 2000 we need to display a message box in order to
             # warn a user becuase it will not change the attachments info in
             # the event handlers
-            print "Debug line to delete - item.Application.Version [%s]" % item.Application.Version
-            if int(item.Application.Version.split('.', 1)[0]) < 10:                
+            if int(item.Application.Version.split('.', 1)[0]) < 10:
                 msg = _('ClamWin Free Antivirus has detected a virus in the message attachments!')
                 win32gui.MessageBox(GetWindow(), msg, _('Virus Detected!'), win32con.MB_ICONERROR | win32con.MB_OK)                            
-            elif config.Get('UI', 'TrayNotify') == '1':       
+            elif config.Get('UI', 'TrayNotify') == '1':
                 # show balloon in outlook 2002 +
                 tray_notify_params = ((_('Virus has been detected in an email attachment! The attachment was replaced with the report file.'), 1, 
                                 win32gui.NIIF_ERROR, 30000),
@@ -499,62 +488,62 @@ def ScanMailItem(item, sending, added_attachments = None):
 
             return len(infected)
         else:
-            return 0                         
+            return 0
     except Exception, e:
         # cleanup any created files and folders
         safe_remove(path)
-        safe_remove(statusfile)                
+        safe_remove(statusfile)
         for info in infected:
-            safe_remove(info[1], True) 
-        safe_remove(dir)   
-        
+            safe_remove(info[1], True)
+        safe_remove(dir)
+
         # display error
         win32gui.MessageBox(GetWindow(), str(e), _('ClamWin Free Antivirus'), win32con.MB_OK | win32con.MB_ICONERROR)        
-        return True        
+        return True
 
     return len(infected)
 
 def safe_remove(path, removeLastDir = False):
     try:
         if os.path.isfile(path):
-            os.remove(path)  
+            os.remove(path)
         else:
-            os.rmdir(path)  
+            os.rmdir(path)
         if removeLastDir:
-            dir = os.path.split(path)[0]              
+            dir = os.path.split(path)[0]
             if os.path.exists(dir):
-                os.rmdir(dir)              
+                os.rmdir(dir)
     except Exception, e:
         print _('Could not remove file: %s. Error: %s') % (path, str(e))
 
-class WaitCursor:    
+class WaitCursor:
     def __init__(self):
-        self._hCursor = win32gui.SetCursor(win32gui.LoadCursor(0, win32con.IDC_WAIT))    
+        self._hCursor = win32gui.SetCursor(win32gui.LoadCursor(0, win32con.IDC_WAIT))
     def __del__(self):
-        win32gui.SetCursor(self._hCursor)    
+        win32gui.SetCursor(self._hCursor)
 
-# Base Class for Explorer, Inspector and MailItem Outlook Objects           
+# Base Class for Explorer, Inspector and MailItem Outlook Objects
 class ObjectWithEvents:
-    def Init(self, collection):    
+    def Init(self, collection):
         self.collection = collection
-        
-    def OnClose(self):      
+
+    def OnClose(self):
         if hasattr(self.collection.host, 'DisconnectEventHandler'):
-            self.collection.host.DisconnectEventHandler(self.collection)   
+            self.collection.host.DisconnectEventHandler(self.collection)
         self.collection._DoDeadObject(self)
-        self.collection = None        
-        self.close()         
+        self.collection = None
+        self.close()
         # disconnect events.
 
-# EventSink Base Class for Explorers, Inspectors and MailItems Outlook Object Collections            
+# EventSink Base Class for Explorers, Inspectors and MailItems Outlook Object Collections
 class ObjectsEvent:
     def Init(self, classWithEvents, host):
-        self.objects = []        
-        self.classWithEvents = classWithEvents        
+        self.objects = []
+        self.classWithEvents = classWithEvents
         # host object that created EventSink
         self.host = host
 
-    def Close(self):        
+    def Close(self):
         while self.objects:
             self._DoDeadObject(self.objects[0])
         self.objects = None
@@ -566,34 +555,34 @@ class ObjectsEvent:
         self.objects.append(obj)
         return obj
 
-    def _DoDeadObject(self, obj):        
+    def _DoDeadObject(self, obj):
         self.objects.remove(obj)
-        obj = None        
-            
-        
-        
+        obj = None
+
+
+
 # A class that manages an "Outlook Explorer" - that is, a top-level window
 # All UI elements are managed here, and there is one instance per explorer.
 class ExplorerWithEvents(ObjectWithEvents):
     def Init(self, explorers_collection):
         dbg_print('ExplorerWithEvents:Init')
-        self.have_setup_ui = False        
-        self.event_handlers = []                
+        self.have_setup_ui = False
+        self.event_handlers = []
         ObjectWithEvents.Init(self, explorers_collection)
 
-    def SetupUI(self):               
+    def SetupUI(self):
         # find Help->About Outlook menu
         aboutOutlook = self.CommandBars.FindControl(
                             Type = constants.msoControlButton,
                             Id = 927)
-        
+
         if aboutOutlook is None:
             return
-                
+
         popup = aboutOutlook.Parent
         if popup is None:
             return
-        # Add Help->About Clamwin menu item 
+        # Add Help->About Clamwin menu item
         child = self._AddControl(popup,
                        constants.msoControlButton,
                        ButtonEvent, (HelpAbout, ),
@@ -603,7 +592,7 @@ class ExplorerWithEvents(ObjectWithEvents):
                        Visible=True,
                        Tag = "ClamWin.About")
         self.have_setup_ui = True
-                           
+
     def _AddControl(self,
                     parent, # who the control is added to
                     control_type, # type of control to add.
@@ -623,7 +612,7 @@ class ExplorerWithEvents(ObjectWithEvents):
             # Now add the item itself to the parent.
             try:
                 item = parent.Controls.Add(Type=control_type, Temporary=True)
-            except pythoncom.com_error, e:               
+            except pythoncom.com_error, e:
                 print "FAILED to add the toolbar item '%s' - %s" % (tag,e)
                 return
             if image_fname:
@@ -649,7 +638,7 @@ class ExplorerWithEvents(ObjectWithEvents):
         return item
 
     # The Outlook event handlers
-    def OnActivate(self): 
+    def OnActivate(self):
         dbg_print('ExplorerWithEvents:OnActivate')
         # See comments for OnNewExplorer below.
         # *sigh* - OnActivate seems too early too for Outlook 2000,
@@ -659,30 +648,30 @@ class ExplorerWithEvents(ObjectWithEvents):
         # OnViewSwitch however seems useful, so we ignore this.
         pass
 
-    def OnSelectionChange(self):         
+    def OnSelectionChange(self):
         print "Debug line to delete"
         dbg_print('ExplorerWithEvents:OnSelectionChange')
         # See comments for OnNewExplorer below.
         if not self.have_setup_ui:
             self.SetupUI()
         if self.IsPaneVisible(constants.olPreview) and \
-            self.Selection.Count == 1:            
+            self.Selection.Count == 1:
             item = self.Selection.Item(1)
-            if item.Class == constants.olMail and item.Sent:                                                  
-                ScanMailItem(item, False)                       
-        
-    def OnClose(self):                                
+            if item.Class == constants.olMail and item.Sent:
+                ScanMailItem(item, False)
+
+    def OnClose(self):
         dbg_print('ExplorerWithEvents:OnClose')
-        for event_handler in self.event_handlers:        
+        for event_handler in self.event_handlers:
             event_handler.Close()
-        self.event_handler = []        
+        self.event_handler = []
         ObjectWithEvents.OnClose(self)
 
     def OnBeforeFolderSwitch(self, new_folder, cancel):
         dbg_print('ExplorerWithEvents:OnBeforeFolderSwitch')
         pass
 
-    def OnFolderSwitch(self):        
+    def OnFolderSwitch(self):
         # Yet another work-around for our event timing woes.  This may
         # be the first event ever seen for this explorer if, eg,
         # "Outlook Today" is the initial Outlook view.
@@ -694,31 +683,31 @@ class ExplorerWithEvents(ObjectWithEvents):
         dbg_print('ExplorerWithEvents:OnBeforeViewSwitch')
         pass
 
-    def OnViewSwitch(self):        
+    def OnViewSwitch(self):
         dbg_print('ExplorerWithEvents:OnViewSwitch')
         if not self.have_setup_ui:
             self.SetupUI()
-            
-    
+
+
 
 # Events from our "Explorers" collection (not an Explorer instance)
 class ExplorersEvent(ObjectsEvent):
     def Init(self, olAddin):
         dbg_print('ExplorersEvent:Init')
         self.button_event_map = {}
-        ObjectsEvent.Init(self, ExplorerWithEvents, olAddin)    
+        ObjectsEvent.Init(self, ExplorerWithEvents, olAddin)
 
     def _DoDeadObject(self, obj):
         dbg_print('ExplorersEvent:_DoDeadObject')
         ObjectsEvent._DoDeadObject(self, obj)
-        if len(self.objects)==0:            
+        if len(self.objects)==0:
             # No more explorers - disconnect all events.
             # (not doing this causes shutdown problems)
             for tag, button in self.button_event_map.items():
                 closer = getattr(button, "Close", None)
                 if closer is not None:
                     closer()
-            self.button_event_map = {}            
+            self.button_event_map = {}
 
     def OnNewExplorer(self, explorer):
         # NOTE - Outlook has a bug, as confirmed by many on Usenet, in
@@ -729,62 +718,62 @@ class ExplorersEvent(ObjectsEvent):
         # OnActivate will cause a crash when selecting "Open in New Window",
         # so we tried OnSelectionChanges, which works OK until there is a
         # view with no items (eg, Outlook Today) - so at the end of the
-        # day, we can never assume we have been initialized!        
+        # day, we can never assume we have been initialized!
         dbg_print('ExplorersEvent:OnNewExplorer')
         self._DoNewObject(explorer)
 
 # A class that manages an "Outlook Inspector" - that is, a message or contact window
 class InspectorWithEvents(ObjectWithEvents):
-    def Init(self, inspectors_collection):               
+    def Init(self, inspectors_collection):
         dbg_print('InspectorWithEvents:Init')
-        self.event_handlers = []        
-        item = self.CurrentItem        
-        if item.Class == constants.olMail:                                            
+        self.event_handlers = []
+        item = self.CurrentItem
+        if item.Class == constants.olMail:
             # Create EventHandler for MailItem
             mailitem_events = WithEvents(item, MailItemsEvent)
-            mailitem_events.Init(self)        
-            mailitem_events._DoNewObject(item)            
-            self.event_handlers.append(mailitem_events)            
+            mailitem_events.Init(self)
+            mailitem_events._DoNewObject(item)
+            self.event_handlers.append(mailitem_events)
         ObjectWithEvents.Init(self, inspectors_collection)
-    
+
     # The Outlook event handlers
     def OnActivate(self):
         dbg_print('InspectorWithEvents:OnActivate')
-        pass                                                     
-        
-    def OnClose(self):     
+        pass
+
+    def OnClose(self):
         dbg_print('InspectorWithEvents:OnClose')
-        for handler in self.event_handlers:        
+        for handler in self.event_handlers:
             handler.Close()
         self.event_handlers = []
         ObjectWithEvents.OnClose(self)
-        
+
     def DisconnectEventHandler(self, obj):
         dbg_print('InspectorWithEvents:DisconnectEventHandler')
         obj.close()
-        self.event_handlers.remove(obj)      
-        
+        self.event_handlers.remove(obj)
+
 # Events from our "Inspectors" collection
 class InspectorsEvent(ObjectsEvent):
-    def Init(self, host):          
+    def Init(self, host):
         dbg_print('InspectorsEvent:Init')
-        ObjectsEvent.Init(self, InspectorWithEvents, host)  
-        
-    def OnNewInspector(self, inspector):   
-        dbg_print('InspectorsEvent:OnNewInspector')
-        self._DoNewObject(inspector)  
-        
+        ObjectsEvent.Init(self, InspectorWithEvents, host)
 
-# A class that manages an "Outlook MailItem" - that is, a message 
+    def OnNewInspector(self, inspector):
+        dbg_print('InspectorsEvent:OnNewInspector')
+        self._DoNewObject(inspector)
+
+
+# A class that manages an "Outlook MailItem" - that is, a message
 class MailItemWithEvents(ObjectWithEvents):
-    def Init(self, items_collection):      
+    def Init(self, items_collection):
         dbg_print('MailItemWithEvents:Init')
         ObjectWithEvents.Init(self, items_collection)
         self._scanned = False
         self._close_inspector = False
         self._num_infected = 0
-        
-    def OnClose(self, cancel):      
+
+    def OnClose(self, cancel):
         dbg_print('MailItemWithEvents:OnClose')
         host = self.collection.host
         ObjectWithEvents.OnClose(self)
@@ -792,37 +781,37 @@ class MailItemWithEvents(ObjectWithEvents):
             # need to disconnect Inspectors Collection ebent handler because
             # Outlook 2000 doesn't fire Inspector:Close event
             # for sent messages and remains hanging around after exit
-            dbg_print('MailItemWithEvents:OnClose host.OnClose()')                    
+            dbg_print('MailItemWithEvents:OnClose host.OnClose()')
             host.OnClose()
-        
-        
 
-    def OnRead(self):  
+
+
+    def OnRead(self):
         print "Debug line to remove"
         dbg_print('MailItemWithEvents:OnRead')
         # OnOpen event is not always fired
         # only when a user double-clicks the message
         # so we scan here and reinitialize attachmets
-        if self.Sent and not self._scanned:             
+        if self.Sent and not self._scanned:
             dbg_print('MailItemWithEvents:OnRead scanning')
             self._scanned = True
-            self._num_infected = ScanMailItem(self, False)  
-            
-        
-    def OnOpen(self, cancel):  
+            self._num_infected = ScanMailItem(self, False)
+
+
+    def OnOpen(self, cancel):
         print "Debug line to delete"
         dbg_print('MailItemWithEvents:OnOpen')
-        if not self._scanned and self.Sent :      
+        if not self._scanned and self.Sent :
             # in case OnRead has not been called
             dbg_print('MailItemWithEvents:OnOpen scanning')
             self._scanned = True
-            self._num_infected = ScanMailItem(self, False)  
+            self._num_infected = ScanMailItem(self, False)
         elif  self._num_infected:
-            # a bit of trickery here - remove and reinsert attachments 
+            # a bit of trickery here - remove and reinsert attachments
             # so that bloody outlook shows our changes
             dbg_print('MailItemWithEvents:OnOpen Scanned Earlier')
             try:
-                saved_attachments = []            
+                saved_attachments = []
                 for i in range(self.Attachments.Count - self._num_infected + 1, self.Attachments.Count + 1):
                     att = self.Attachments.Item(i)
                     # save attachment to a temp file
@@ -832,33 +821,33 @@ class MailItemWithEvents(ObjectWithEvents):
                     filename = os.path.join(dir, name)
                     att.SaveAsFile(filename)
                     saved_attachments.append((att, filename))
-            
+
                 for saved in saved_attachments:
                     saved[0].Delete()
-                
+
                 for saved in saved_attachments:
                     self.Attachments.Add(Source=saved[1], Type=constants.olByValue)
                 for saved in saved_attachments:
-                    safe_remove(saved[1], True)                
-                saved_attachments = []    
-                
+                    safe_remove(saved[1], True)
+                saved_attachments = []
+
                 try:
-                   self.Save()           
+                   self.Save()
                 except pythoncom.com_error, e:
                     # read only message store (hotmail, etc
                     # ignore save errors
                     hr, desc, exc, argErr = e
                     if hr != -2147352567:
-                        raise e                    
+                        raise e
             except Exception, e:
                 for saved in saved_attachments:
                     safe_remove(saved[1], True)
                 msg = _('ClamWin Free Antivirus could not replace an attachment. Error: %s') % str(e)
                 win32gui.MessageBox(GetWindow(), msg, _('ClamWin Free Antivirus!'), win32con.MB_ICONERROR | win32con.MB_OK)                                                                                      
-    
+
     def OnWrite(self, cancel):
         dbg_print('MailItemWithEvents:OnWrite')
-        # disabled as it is of little use and causes outlook 
+        # disabled as it is of little use and causes outlook
         # to switch to RTF winmail.dat format
         # when replying or forwarding a scanned message
 
@@ -866,8 +855,8 @@ class MailItemWithEvents(ObjectWithEvents):
         #    prop = self.UserProperties.Find('Scanned By ClamWin')
         #    if prop is not None:
         #        prop.Delete()
-                                
-    def OnSend(self, cancel):        
+
+    def OnSend(self, cancel):
         print "Debug line to remove"
         dbg_print('MailItemWithEvents:OnSend')
         virus_found = (ScanMailItem(self, True) > 0)
@@ -876,18 +865,18 @@ class MailItemWithEvents(ObjectWithEvents):
         # in OnClose
         self._close_inspector = True
         return not cancel
-        
+
 
 # Events from our "MailItems" collection
 class MailItemsEvent(ObjectsEvent):
-    def Init(self, host):  
+    def Init(self, host):
         dbg_print('MailItemsEvent:Init')
-        ObjectsEvent.Init(self, MailItemWithEvents, host)  
-        
-    def OnItemAdd(self, mailitem):               
+        ObjectsEvent.Init(self, MailItemWithEvents, host)
+
+    def OnItemAdd(self, mailitem):
         dbg_print('MailItemsEvent:OnItemAdd')
-        self._DoNewObject(mailitem)  
-                    
+        self._DoNewObject(mailitem)
+
 # The outlook Plugin COM object itself.
 class OutlookAddin(ObjectsEvent):
     _com_interfaces_ = ['_IDTExtensibility2']
@@ -897,24 +886,24 @@ class OutlookAddin(ObjectsEvent):
     _reg_progid_ = "ClamWin.OutlookAddin"
     _reg_policy_spec_ = "win32com.server.policy.EventHandlerPolicy"
 
-    def __init__(self):        
-        self.application = None       
+    def __init__(self):
+        self.application = None
         # check the debug flag iun the registry
         global _DEBUG
         try:
-            subkey = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, 'Software\\ClamWin')            
-            _DEBUG = int(_winreg.QueryValueEx(subkey, "Debug")[0])==1            
+            subkey = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, 'Software\\ClamWin')
+            _DEBUG = int(_winreg.QueryValueEx(subkey, "Debug")[0])==1
         except:
-            _DEBUG = False                
+            _DEBUG = False
 
-    def OnConnection(self, application, connectMode, addin, custom):            
+    def OnConnection(self, application, connectMode, addin, custom):
         dbg_print('OutlookAddin:OnConnection')
         # Handle failures during initialization so that we are not
         # automatically disabled by Outlook.
         locale.setlocale(locale.LC_NUMERIC, "C") # see locale comments above
         try:
             self.application = application
-            self.event_handlers = [] # create at OnStartupComplete            
+            self.event_handlers = [] # create at OnStartupComplete
 
             if connectMode == constants.ext_cm_AfterStartup:
                 # We are being enabled after startup, which means we don't get
@@ -931,10 +920,10 @@ class OutlookAddin(ObjectsEvent):
         dbg_print('OutlookAddin:OnStartupComplete')
         Utils.CreateProfile()
         # display SplashScreen
-        try:            
+        try:
             splash = os.path.join(Utils.GetCurrentDir(False), "img\\Splash.bmp")
             SplashScreen.ShowSplashScreen(splash, 5)
-        except Exception, e:           
+        except Exception, e:
             print _("An error occurred whilst displaying the splashscreen %s. Error: %s.") % (splash, str(e))
         # Setup all our filters and hooks.  We used to do this in OnConnection,
         # but a number of 'strange' bugs were reported which I suspect would
@@ -944,18 +933,18 @@ class OutlookAddin(ObjectsEvent):
         explorers = self.application.Explorers
         # and Explorers events so we know when new explorers spring into life.
         explorers_events = WithEvents(explorers, ExplorersEvent)
-        explorers_events.Init(self)        
+        explorers_events.Init(self)
         # And hook our UI elements to all existing explorers
         for i in range(explorers.Count):
             explorer = explorers.Item(i+1)
             explorer = explorers_events._DoNewObject(explorer)
             explorer.OnFolderSwitch()
         self.event_handlers.append(explorers_events)
-        
+
         inspectors = self.application.Inspectors
         # and Inspectors events so we know when new inspectors spring into life.
         inspectors_events = WithEvents(inspectors, InspectorsEvent)
-        inspectors_events.Init(self)        
+        inspectors_events.Init(self)
         # And elements to all existing inspectors
         for i in range(inspectors.Count):
             inspector = inspectors.Item(i+1)
@@ -963,13 +952,13 @@ class OutlookAddin(ObjectsEvent):
         self.event_handlers.append(inspectors_events)
         # release application object otherwise Outlook2003 won't
         # shutdown if we are running in out-of-process EXE
-        self.application = None    
-        
+        self.application = None
+
     def OnDisconnection(self, mode, custom):
         dbg_print('ClamWin - Disconnecting from Outlook')
-        for handler in self.event_handlers:        
+        for handler in self.event_handlers:
             handler.Close()
-        self.event_handlers = []        
+        self.event_handlers = []
         self.application = None
 
         print _("Addin terminating: %d COM client and %d COM servers exist.") \
@@ -981,7 +970,7 @@ class OutlookAddin(ObjectsEvent):
             print "%d Python references exist" % (total_refs,)
         except AttributeError:
             pass
-        
+
     def OnAddInsUpdate(self, custom):
         pass
 
@@ -1022,10 +1011,10 @@ def DllInstall(bInstall, cmdline):
         # Unregister the old installation, if one exists.
         DllUnregisterServer()
         rootkey = None
-        if cmdline.lower().find('hkey_local_machine')>=0:                    
+        if cmdline.lower().find('hkey_local_machine')>=0:
             rootkey = _winreg.HKEY_LOCAL_MACHINE
             print _("Registering (in HKEY_LOCAL_MACHINE)...")
-        elif cmdline.lower().find('hkey_current_user')>=0:                    
+        elif cmdline.lower().find('hkey_current_user')>=0:
             rootkey = _winreg.HKEY_CURRENT_USER
             print _("Registering (in HKEY_CURRENT_USER)...")
         if rootkey is not None:
@@ -1036,7 +1025,7 @@ def DllInstall(bInstall, cmdline):
 
 def DllRegisterServer():
     klass = OutlookAddin
-    
+
     # *sigh* - we used to *also* register in HKLM, but as above, this makes
     # things work like we are *only* installed in HKLM.  Thus, we explicitly
     # remove the HKLM registration here (but it can be re-added - see the
@@ -1072,7 +1061,7 @@ if __name__ == '__main__':
        '--unregister' in sys.argv[1:] or \
        not hasattr(sys, "frozen"):
         import win32com.server.register
-        win32com.server.register.UseCommandLine(OutlookAddin)    
+        win32com.server.register.UseCommandLine(OutlookAddin)
         if "--unregister" in sys.argv[1:]:
             DllUnregisterServer()
         else:
@@ -1092,10 +1081,10 @@ if __name__ == '__main__':
             localserver.main()
 
 
-##        #Some MAPI code, just in case we need it 
+##        #Some MAPI code, just in case we need it
 ##        try:
 ##            iMsg = self.MAPIOBJECT.QueryInterface(mapi.IID_IMessage)
-##            for num in range (0, self.Attachments.Count):                        
+##            for num in range (0, self.Attachments.Count):
 ##                print "Deleting Attachment - ", num
 ##                iMsg.DeleteAttach(num, 0, None, 0)
 ##                deleted = True
@@ -1106,12 +1095,12 @@ if __name__ == '__main__':
 ##            print "MailItem OnRead Exception: ", str(e)
 
 ##for i in range(attachments.Count - num_infected+1, attachments.Count+1):
-##    try:            
-##        iMsg = item.MAPIOBJECT.QueryInterface(mapi.IID_IMessage)                                
-##        print 'getting att', i               
+##    try:
+##        iMsg = item.MAPIOBJECT.QueryInterface(mapi.IID_IMessage)
+##        print 'getting att', i
 ##        att = attachments.Item(i)
 ##        print 'got att'
-##        iAtt = att.MAPIOBJECT.QueryInterface(mapi.IID_IMAPIProp)                                
+##        iAtt = att.MAPIOBJECT.QueryInterface(mapi.IID_IMAPIProp)
 ##        print 'got iAtt'
 ##        iAtt.SetProps([(mapitags.PR_ATTACH_FILENAME, att.DisplayName),])
 ##        print 'set PR_ATTACH_FILENAME'

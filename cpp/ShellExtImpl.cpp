@@ -286,27 +286,27 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 		// check the long path validity for a unicode build
 #if defined UNICODE || defined _UNICODE
 		{
-			CHAR atemp[MAX_PATH];			
+			CHAR atemp[MAX_PATH];
 			BOOL invalid;
-			if(!WideCharToMultiByte(CP_OEMCP, WC_NO_BEST_FIT_CHARS, szPath, -1, 
+			if(!WideCharToMultiByte(CP_OEMCP, WC_NO_BEST_FIT_CHARS, szPath, -1,
       		  atemp, sizeof(atemp), NULL, &invalid) || invalid)
     		{
     			WCHAR wtemp[MAX_PATH];
-    			// unicode name is not directly tranleatable to ascii, use the shortname instead        		 
+    			// unicode name is not directly tranleatable to ascii, use the shortname instead
        		if(GetShortPathNameW(szPath, wtemp, sizeof(wtemp)) > 0)
    	  			wcscpy(szPath, wtemp);
-    		}    		
+    		}
 		}
 #endif
 		// convert \ to / so cygwin doesn't go crazy (particularly over UNC names)
-		_tcsreplace(szPath, _T('\\'), _T('/'));
+//		_tcsreplace(szPath, _T('\\'), _T('/'));
 		len = _tcslen(szPath);
 		// remove last slash from the scanning path
-        if(szPath[len-1] == _T('/'))
+        if(szPath[len-1] == _T('\\'))
             szPath[len-1] = _T('\0');
         _tcsncat(m_szPath, " --path=\"", cbPath);
         _tcsncat(m_szPath, szPath, cbPath);
-        _tcsncat(m_szPath, "\"", cbPath);
+        _tcsncat(m_szPath, _T("\""), cbPath);
 	}
 	::ReleaseStgMedium(&medium);
 
@@ -456,7 +456,7 @@ BOOL CShellExt::Scan(HWND hwnd)
     {
         TCHAR szMsg[MAX_PATH*2];
         _sntprintf(szMsg, sizeof(szMsg), _T("Error: Unable to execute command %s."), szCmd);
-        MessageBox(hwnd, szMsg, _T("ClamWin Free Antivirus"), MB_OK | MB_ICONERROR);        
+        MessageBox(hwnd, szMsg, _T("ClamWin Free Antivirus"), MB_OK | MB_ICONERROR);
         delete [] szCmd;
         return FALSE;
     }
@@ -530,7 +530,7 @@ STDMETHODIMP CShellExt::GetCommandString(UINT_PTR idCmd, UINT uType, UINT *pwRes
 	{
 	case 0:
 		if (GCS_HELPTEXTW == uType)
-			wcsncpy((LPWSTR)pszName, L"ClamWin Free Antivirus", cchMax);	
+			wcsncpy((LPWSTR)pszName, L"ClamWin Free Antivirus", cchMax);
 		else if (GCS_HELPTEXTA == uType)
 			strncpy(pszName, "ClamWin Free Antivirus", cchMax);
 		break;

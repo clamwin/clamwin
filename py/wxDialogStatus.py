@@ -9,17 +9,17 @@
 #
 # Created:     2004/19/03
 # Copyright:   Copyright alch (c) 2004
-# Licence:     
+# Licence:
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
 #   the Free Software Foundation; either version 2 of the License, or
 #   (at your option) any later version.
-# 
+#
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-# 
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; if not, write to the Free Software
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -43,9 +43,9 @@ import shutil
 import locale
 
 _WAIT_TIMEOUT = 5
-if sys.platform.startswith("win"):    
+if sys.platform.startswith("win"):
     import win32event, win32api, winerror, win32con, win32gui
-    _KILL_SIGNAL = None    
+    _KILL_SIGNAL = None
     _WAIT_NOWAIT = 0
     _NEWLINE_LEN=2
 else:
@@ -55,59 +55,56 @@ else:
     _NEWLINE_LEN=1
 
 
-                    
-class StatusUpdateBuffer(Process.IOBuffer):            
+
+class StatusUpdateBuffer(Process.IOBuffer):
     def __init__(self,  caller, update, notify):
         Process.IOBuffer.__init__(self)
         self._caller = caller
         self.update = update
-        self.notify = notify        
-        
+        self.notify = notify
+
     def _doWrite(self, s):
         if self.update is not None:
             # sometimes there is more than one line in the buffer
-            # so we need to call update method for every new line                                
-            lines = s.replace('\r', '\n').splitlines(True)        
-            for line in lines:              
-                if sys.platform.startswith('win'):        
-                    # replace cygwin-like pathes with windows-like
-                    line = line.replace('/', '\\')                
-                self.update(self._caller, line)                                         
+            # so we need to call update method for every new line
+            lines = s.replace('\r', '\n').splitlines(True)
+            for line in lines:
+                self.update(self._caller, line)
             # do not call original implementation
             # Process.IOBuffer._doWrite(self, s)
-        
+
     def _doClose(self):
         if self.notify is not None:
             self.notify(self._caller)
         Process.IOBuffer._doClose(self)
 
-# custom command events sent from worker thread when it finishes    
+# custom command events sent from worker thread when it finishes
 # and when status message needs updating
 # the handler updates buttons and status text
-THREADFINISHED = wxNewEventType() 
-def EVT_THREADFINISHED( window, function ):     
-    window.Connect( -1, -1, THREADFINISHED, function ) 
- 
-class ThreadFinishedEvent(wxPyCommandEvent): 
-    eventType = THREADFINISHED 
-    def __init__(self, windowID): 
-        wxPyCommandEvent.__init__(self, self.eventType, windowID) 
- 
-    def Clone( self ): 
+THREADFINISHED = wxNewEventType()
+def EVT_THREADFINISHED( window, function ):
+    window.Connect( -1, -1, THREADFINISHED, function )
+
+class ThreadFinishedEvent(wxPyCommandEvent):
+    eventType = THREADFINISHED
+    def __init__(self, windowID):
+        wxPyCommandEvent.__init__(self, self.eventType, windowID)
+
+    def Clone( self ):
         self.__class__( self.GetId() )
- 
-THREADUPDATESTATUS = wxNewEventType() 
-def EVT_THREADUPDATESTATUS( window, function ):     
-    window.Connect( -1, -1, THREADUPDATESTATUS, function ) 
-           
-class ThreadUpdateStatusEvent(wxPyCommandEvent): 
-    eventType = THREADUPDATESTATUS 
-    def __init__(self, windowID, text, append): 
+
+THREADUPDATESTATUS = wxNewEventType()
+def EVT_THREADUPDATESTATUS( window, function ):
+    window.Connect( -1, -1, THREADUPDATESTATUS, function )
+
+class ThreadUpdateStatusEvent(wxPyCommandEvent):
+    eventType = THREADUPDATESTATUS
+    def __init__(self, windowID, text, append):
         self.text = text
         self.append = append
-        wxPyCommandEvent.__init__(self, self.eventType, windowID) 
- 
-    def Clone( self ): 
+        wxPyCommandEvent.__init__(self, self.eventType, windowID)
+
+    def Clone( self ):
         self.__class__( self.GetId() )
 
 def translateClamAVLines(lines):
@@ -282,11 +279,11 @@ def translateClamAVLines(lines):
     return translatedLines
 
 def create(parent, cmd, logfile, priority, bitmap_mask, notify_params=None):
-    return wxDialogStatus(parent, cmd, logfile, priority, bitmap_mask, notify_params)                 
+    return wxDialogStatus(parent, cmd, logfile, priority, bitmap_mask, notify_params)
 
-[wxID_WXDIALOGSTATUS, wxID_WXDIALOGSTATUSBUTTONSAVE, 
- wxID_WXDIALOGSTATUSBUTTONSTOP, wxID_WXDIALOGSTATUSSTATICBITMAP1, 
- wxID_WXDIALOGSTATUSTEXTCTRLSTATUS, 
+[wxID_WXDIALOGSTATUS, wxID_WXDIALOGSTATUSBUTTONSAVE,
+ wxID_WXDIALOGSTATUSBUTTONSTOP, wxID_WXDIALOGSTATUSSTATICBITMAP1,
+ wxID_WXDIALOGSTATUSTEXTCTRLSTATUS,
 ] = map(lambda _init_ctrls: wxNewId(), range(5))
 
 class wxDialogStatus(wxDialog):
@@ -305,14 +302,14 @@ class wxDialogStatus(wxDialog):
         winstyle = wxTAB_TRAVERSAL | wxTE_RICH | wxTE_MULTILINE | wxTE_READONLY
         # enable wxTE_AUTO_URL on XP only
         # 98 produces some weird scrolling behaviour
-        if win32api.GetVersionEx()[0] >= 5 and not self._scan: 
+        if win32api.GetVersionEx()[0] >= 5 and not self._scan:
             winstyle = winstyle | wxTE_AUTO_URL
-            
+
         self.textCtrlStatus = wxTextCtrl(id=wxID_WXDIALOGSTATUSTEXTCTRLSTATUS,
               name='textCtrlStatus', parent=self, pos=wxPoint(89, 11),
               size=wxSize(455, 300),
               style=winstyle, value='')
-              
+
         self.staticBitmap1 = wxStaticBitmap(bitmap=wxNullBitmap,
               id=wxID_WXDIALOGSTATUSSTATICBITMAP1, name='staticBitmap1',
               parent=self, pos=wxPoint(16, 9), size=wxSize(56, 300),
@@ -336,124 +333,125 @@ class wxDialogStatus(wxDialog):
     def __init__(self, parent, cmd, logfile, priority='n', bitmapMask="", notify_params=None):
         self._autoClose = False
         self._closeRetCode = None
-        self._cancelled = False        
+        self._cancelled = False
         self._logfile = logfile
         self._returnCode = -1
-        self.terminating = False       
+        self.terminating = False
         self._out = None
-        self._proc = None         
+        self._proc = None
         self._notify_params = notify_params
         self._scan = (bitmapMask != 'update')
         self._previousStart = 0
         self._alreadyCalled = False
-        
-        self._init_ctrls(parent)
-      
-        # bind thread notification events
-        EVT_THREADFINISHED(self, self.OnThreadFinished)        
-        EVT_THREADUPDATESTATUS(self, self.OnThreadUpdateStatus)                
 
-        # add url click handler        
+        self._init_ctrls(parent)
+
+
+        # bind thread notification events
+        EVT_THREADFINISHED(self, self.OnThreadFinished)
+        EVT_THREADUPDATESTATUS(self, self.OnThreadUpdateStatus)
+
+        # add url click handler
         EVT_TEXT_URL(self, wxID_WXDIALOGSTATUSTEXTCTRLSTATUS, self.OnClickURL)
-        
+
         # initilaise our throbber (an awkward way to display animated images)
         images = [throbImages.catalog[i].getBitmap()
                   for i in throbImages.index
-                  if i.find(bitmapMask) != -1]                        
+                  if i.find(bitmapMask) != -1]
         self.throbber = Throbber(self, -1, images, frameDelay=0.1,
                   pos=self.staticBitmap1.GetPosition(), size=self.staticBitmap1.GetSize(),
                   style=self.staticBitmap1.GetWindowStyleFlag(), useParentBackground = True, name='staticThrobber')
-    
-        
+
+
         # set window icons
         icons = wxIconBundle()
         icons.AddIconFromFile('img/FrameIcon.ico', wxBITMAP_TYPE_ICO)
-        self.SetIcons(icons)        
+        self.SetIcons(icons)
 
         # change colour of read-only controls (gray)
-        self.textCtrlStatus.SetBackgroundColour(wxSystemSettings_GetColour(wxSYS_COLOUR_BTNFACE))        
-        
+        self.textCtrlStatus.SetBackgroundColour(wxSystemSettings_GetColour(wxSYS_COLOUR_BTNFACE))
+
         # spawn and monitor our process
-        # clamav stopped writing start time of the scan to the log file        
+        # clamav stopped writing start time of the scan to the log file
         #try:
         #    file(logfile, 'wt').write('Scan Started %s\n' % time.ctime(time.time()))
         #except:
-        #    pass    
+        #    pass
         try:
-            self._SpawnProcess(cmd, priority)            
+            self._SpawnProcess(cmd, priority)
         except Process.ProcessError, e:
-            event = ThreadUpdateStatusEvent(self.GetId(), str(e), False)                         
-            self.GetEventHandler().AddPendingEvent(event)                 
-            #event = ThreadFinishedEvent(self.GetId()) 
-            #self.GetEventHandler().AddPendingEvent(event)                             
-        
+            event = ThreadUpdateStatusEvent(self.GetId(), str(e), False)
+            self.GetEventHandler().AddPendingEvent(event)
+            #event = ThreadFinishedEvent(self.GetId())
+            #self.GetEventHandler().AddPendingEvent(event)
+
     def SetAutoClose(self, autoClose, closeRetCode=None):
         self._autoClose = autoClose
         self._closeRetCode = closeRetCode
 
-    
-    def OnWxDialogStatusClose(self, event):          
-         self.terminating = True         
-         self._StopProcess()                     
+
+    def OnWxDialogStatusClose(self, event):
+         self.terminating = True
+         self._StopProcess()
          event.Skip()
-    
+
     def _IsProcessRunning(self, wait=False):
         if self._proc is None:
             return False
-        
+
         if wait:
             timeout = _WAIT_TIMEOUT
         else:
             timeout = _WAIT_NOWAIT
-        try:        
-            self._proc.wait(timeout)                  
+        try:
+            self._proc.wait(timeout)
         except Exception, e:
             if isinstance(e, Process.ProcessError):
-                if e.errno == Process.ProcessProxy.WAIT_TIMEOUT:        
-                    return True     
+                if e.errno == Process.ProcessProxy.WAIT_TIMEOUT:
+                    return True
                 else:
                     return False
         return False
 
-    def _StopProcess(self):  
+    def _StopProcess(self):
         # check if process is still running
-        if self._IsProcessRunning():       
+        if self._IsProcessRunning():
             # still running - kill
             # terminate process and use KILL_SIGNAL to terminate gracefully
-            # do not wait too long for the process to finish                
+            # do not wait too long for the process to finish
             self._proc.kill(sig=_KILL_SIGNAL)
-            
+
             #wait to finish
-            if self._IsProcessRunning(True):       
+            if self._IsProcessRunning(True):
                 # still running, huh
                 # kill unconditionally
                 try:
                     self._proc.kill()
                 except Process.ProcessError:
-                    pass                               
-                
+                    pass
+
                 # last resort if failed to kill the process
-                if self._IsProcessRunning():       
+                if self._IsProcessRunning():
                     MsgBox.ErrorBox(self, _('Unable to stop runner thread, terminating'))
-                    os._exit(0)      
-                    
+                    os._exit(0)
+
             self._proc.close()
             self._out.close()
-            self._err.close()                                             
-                
-    def OnButtonStop(self, event):      
-        if self._IsProcessRunning():           
-            self._cancelled = True 
-            self._StopProcess()            
+            self._err.close()
+
+    def OnButtonStop(self, event):
+        if self._IsProcessRunning():
+            self._cancelled = True
+            self._StopProcess()
         else:
-            self.Close()                    
+            self.Close()
 
     def OnButtonSave(self, event):
         filename = "clamav_report_" + time.strftime("%d%m%y_%H%M%S")
         if sys.platform.startswith("win"):
             filename +=  ".txt"
             mask = _("Report files (*.txt)|*.txt|All files (*.*)|*.*")
-        else:            
+        else:
             mask = _("All files (*)|*")
         dlg = wxFileDialog(self, _("Choose a file"), ".", filename, mask, wxSAVE)
         try:
@@ -472,35 +470,35 @@ class wxDialogStatus(wxDialog):
                         dlg.Destroy()
         finally:
             dlg.Destroy()
-            
-            
-    def ThreadFinished(owner):    
-        if owner.terminating:            
+
+
+    def ThreadFinished(owner):
+        if owner.terminating:
             return
-        event = ThreadFinishedEvent(owner.GetId()) 
-        owner.GetEventHandler().AddPendingEvent(event)                 
+        event = ThreadFinishedEvent(owner.GetId())
+        owner.GetEventHandler().AddPendingEvent(event)
     ThreadFinished = staticmethod(ThreadFinished)
-    
+
     def ThreadUpdateStatus(owner, text, append=True):
         text = translateClamAVLines([text])[0]
         if owner.terminating:
             text = ''
             return
-        event = ThreadUpdateStatusEvent(owner.GetId(), text, append)             
-        owner.GetEventHandler().AddPendingEvent(event)                    
+        event = ThreadUpdateStatusEvent(owner.GetId(), text, append)
+        owner.GetEventHandler().AddPendingEvent(event)
     ThreadUpdateStatus = staticmethod(ThreadUpdateStatus)
-    
+
     def OnThreadFinished(self, event):
         if self._alreadyCalled:
             return
 
         self._alreadyCalled = True
-        
+
         self.buttonSave.Enable(True)
         self.throbber.Rest()
         self.buttonStop.SetFocus()
         self.buttonStop.SetLabel(_('&Close'))
-        
+
         data = ''
         if self._logfile is not None:
             # new 22/07/07 added sleep becuase clamscan does not immediately release the handle
@@ -534,15 +532,13 @@ class wxDialogStatus(wxDialog):
             except Exception, e:
                 print 'OnThreadFinished: ' + _('Could not read from log file %s. Error: %s') % (self._logfile, str(e))
                 data = self.textCtrlStatus.GetLabel()
-                
-        # replace cygwin-like pathes with windows-like
-        data = data.replace('/', '\\').replace('I\\O', 'I/O')  
+
         data = Utils.ReformatLog(data, win32api.GetVersionEx()[0] >= 5)
-        
+
         if len(data.splitlines()) > 1:
             self.ThreadUpdateStatus(self, data, False)
-        
-        if not self._cancelled:    
+
+        if not self._cancelled:
            self.ThreadUpdateStatus(self, _("\n--------------------------------------\nCompleted\n--------------------------------------\n"))                  
         else:
            self.ThreadUpdateStatus(self, _("\n--------------------------------------\nCancelled\n--------------------------------------\n"))        
@@ -559,42 +555,40 @@ class wxDialogStatus(wxDialog):
             self._returnCode = self._proc.wait(_WAIT_TIMEOUT)            
         except:            
             self._returnCode = -1
-                        
-        if (self._notify_params is not None) and (not self._cancelled):                                
+
+        if (self._notify_params is not None) and (not self._cancelled):
             Utils.ShowBalloon(self._returnCode, self._notify_params)
-                                
+
         # close the window automatically if requested
         if self._autoClose and \
-           (self._closeRetCode is None or self._closeRetCode == self._returnCode):             
+           (self._closeRetCode is None or self._closeRetCode == self._returnCode):
             time.sleep(0)
             e = wxCommandEvent(wxEVT_COMMAND_BUTTON_CLICKED, self.buttonStop.GetId())
             self.buttonStop.AddPendingEvent(e)
 
-                    
-    def OnThreadUpdateStatus(self, event): 
-        ctrl = self.textCtrlStatus               
-        lastPos =	ctrl.GetLastPosition()
+    def OnThreadUpdateStatus(self, event):
+        ctrl = self.textCtrlStatus
+        lastPos = ctrl.GetLastPosition()
         text = event.text
         if not self._scan:
             text = Utils.ReplaceClamAVWarnings(text)
-        if event.append == True:            
+        if event.append == True:
             # Check if we reached 30000 characters
-            # and need to purge topmost line            
+            # and need to purge topmost line
             if lastPos + len(text) + _NEWLINE_LEN >= 30000:
-                ctrl.Clear()            
+                ctrl.Clear()
             # detect progress message in the new text
-            #print_over = re.search('\[( {0,2}\d{1,3}\%)?[|/\-\\\*]?\]', 
+            #print_over = re.search('\[( {0,2}\d{1,3}\%)?[|/\-\\\*]?\]',
             #    ctrl.GetRange(self._previousStart, lastPos)) is not None
             print_over = ctrl.GetRange(self._previousStart, lastPos).endswith(']\n')
             if print_over:
                 # prevent form blinking text by disabling richedit selection here
                 win32api.SendMessage(ctrl.GetHandle(),Utils.EM_HIDESELECTION, 1, 0)
-                # replace the text 
+                # replace the text
                 ctrl.Replace(self._previousStart, ctrl.GetLastPosition(), text.decode('utf-8'))
-                #ctrl.Replace(self._previousStart, ctrl.GetLastPosition(), text)
-                
+
                 win32api.PostMessage(self.textCtrlStatus.GetHandle(), win32con.EM_SCROLLCARET, 0, 0)
-                lastPos =	self._previousStart
+                lastPos = self._previousStart
             else:
                 if type(text) is type('str'):
                     ctrl.AppendText(text.decode('utf-8'))
@@ -602,52 +596,49 @@ class wxDialogStatus(wxDialog):
                     ctrl.AppendText(text)
             # highlight FOUND entries in red                
             if text.endswith(' FOUND\n'):
-                ctrl.SetStyle(lastPos, ctrl.GetLastPosition() - 1, 
-                    wxTextAttr(colText = wxColour(128,0,0), 
+                ctrl.SetStyle(lastPos, ctrl.GetLastPosition() - 1,
+                    wxTextAttr(colText = wxColour(128,0,0),
                         font = wxFont(0, wxDEFAULT, wxNORMAL, wxBOLD, False)))
         else:
             ctrl.Clear()
             ctrl.SetDefaultStyle(wxTextAttr(wxNullColour))
             ctrl.SetValue(text.decode('utf-8'))
 
-        # this is thread unsafe however it doesn't matter as only one thread writes 
+        # this is thread unsafe however it doesn't matter as only one thread writes
         # to the status window
         self._previousStart = lastPos
-            
-        
+
+
     def GetExitCode(self):
-        return self._returnCode 
-   
+        return self._returnCode
+
     def _SpawnProcess(self, cmd, priority):
         # initialise environment var TMPDIR
         try:
             if os.getenv('TMPDIR') is None:
-                os.putenv('TMPDIR', tempfile.gettempdir().replace('\\', '/'))
-                #           re.sub('([A-Za-z]):[/\\\\]', r'/cygdrive/\1/', 
-                #           tempfile.gettempdir()).replace('\\', '/'))
-            #Utils.SetCygwinTemp()
+                os.putenv('TMPDIR', tempfile.gettempdir())
         except Exception, e:
-            print str(e)            
-            
-        # check that we got the command line        
-        if cmd is None:   
+            print str(e)
+
+        # check that we got the command line
+        if cmd is None:
             raise Process.ProcessError(_('Could not start process. No Command Line specified'))                                                     
-        
-        # start our process    
-        try:                
+
+        # start our process
+        try:
             # check if the file exists first
             executable = cmd.split('" ' ,1)[0].lstrip('"')
             if not os.path.exists(executable):
                 raise Process.ProcessError(_('Could not start process.\n%s\nFile does not exist.') % executable)                
-            # create our stdout/stderr implementation that updates status window                            
+            # create our stdout/stderr implementation that updates status window
             self._alreadyCalled = False
             self._out = StatusUpdateBuffer(self, self.ThreadUpdateStatus, self.ThreadFinished)
             self._err = StatusUpdateBuffer(self, self.ThreadUpdateStatus, None)
-            self._proc = Process.ProcessProxy(cmd, stdout=self._out, stderr=self._err, priority=priority)                                                                
+            self._proc = Process.ProcessProxy(cmd, stdout=self._out, stderr=self._err, priority=priority)
             self._proc.wait(_WAIT_NOWAIT)
-        except Exception, e:             
+        except Exception, e:
             if isinstance(e, Process.ProcessError):
-                if e.errno != Process.ProcessProxy.WAIT_TIMEOUT:                                       
+                if e.errno != Process.ProcessProxy.WAIT_TIMEOUT:
                     raise Process.ProcessError(_('Could not start process:\n%s\nError: %s') % (cmd, str(e)))                     
             else:
                 raise Process.ProcessError(_('Could not start process:\n%s\nError: %s') % (cmd, str(e)))
@@ -656,11 +647,11 @@ class wxDialogStatus(wxDialog):
         # start animation
         # we need to have our window drawn before that
         # to display transparent animation properly
-        # therefore start it in OnInitDialog   
+        # therefore start it in OnInitDialog
         self.throbber.Start()
         win32gui.SetForegroundWindow(self.GetHandle())
         event.Skip()
-        
+
     def OnClickURL(self, event):
         if event.GetMouseEvent().LeftIsDown():
             url = self.textCtrlStatus.GetRange(event.GetURLStart(), event.GetURLEnd())

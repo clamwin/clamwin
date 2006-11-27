@@ -26,8 +26,8 @@ command_lines = [
     "-a -u -c bmp/scanprogress11.png throbImages.py",
     "-a -u -c bmp/scanprogress12.png throbImages.py",
 
-    "-a -u -c bmp/update00.png throbImages.py",        
-    "-a -u -c bmp/update01.png throbImages.py",    
+    "-a -u -c bmp/update00.png throbImages.py",
+    "-a -u -c bmp/update01.png throbImages.py",
     "-a -u -c bmp/update02.png throbImages.py",
     "-a -u -c bmp/update03.png throbImages.py",
     "-a -u -c bmp/update04.png throbImages.py",
@@ -45,7 +45,7 @@ command_lines = [
     "-a -u -c bmp/update16.png throbImages.py",
     "-a -u -c bmp/update17.png throbImages.py",
     "-a -u -c bmp/update18.png throbImages.py",
-    "-a -u -c bmp/update19.png throbImages.py",    
+    "-a -u -c bmp/update19.png throbImages.py",
 
     ]
 

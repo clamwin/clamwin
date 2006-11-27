@@ -6,17 +6,17 @@
 #
 # Created:     2004/19/03
 # Copyright:   Copyright alch (c) 2004
-# Licence:     
+# Licence:
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
 #   the Free Software Foundation; either version 2 of the License, or
 #   (at your option) any later version.
-# 
+#
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-# 
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; if not, write to the Free Software
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -61,7 +61,7 @@ py2exe_options = dict(
     typelibs = [
         ('{00062FFF-0000-0000-C000-000000000046}', 0, 9, 0),
         ('{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}', 0, 2, 1),
-        ('{AC0714F2-3D04-11D1-AE7D-00A0C90F26F4}', 0, 1, 0),        
+        ('{AC0714F2-3D04-11D1-AE7D-00A0C90F26F4}', 0, 1, 0),
     ]
 )
 
@@ -123,7 +123,7 @@ if len(sys.argv)==1 or \
    (len(sys.argv)==2 and sys.argv[1] in ['-q', '-n']):
     sys.argv.append("py2exe")
 
-setup(name="ClamWin Antivirus",      
+setup(name="ClamWin Antivirus",
       version=version.clamwin_version,
       description="ClamWin Antivirus",
       com_server=[outlook_addin],

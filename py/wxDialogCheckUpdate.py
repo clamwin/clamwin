@@ -8,17 +8,17 @@
 #
 # Created:     2004/22/04
 # Copyright:   Copyright alch (c) 2004
-# Licence:     
+# Licence:
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
 #   the Free Software Foundation; either version 2 of the License, or
 #   (at your option) any later version.
-# 
+#
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-# 
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; if not, write to the Free Software
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -35,13 +35,13 @@ from I18N import getClamString as _
 def create(parent, config, version, url, changelog):
     return wxDialogUpdateChecker(parent, config, version, url, changelog)
 
-[wxID_WXDIALOGUPDATECHECKER, wxID_WXDIALOGUPDATECHECKERBUTTONCLOSE, 
- wxID_WXDIALOGUPDATECHECKERBUTTONDOWNLOAD, 
- wxID_WXDIALOGUPDATECHECKERCHECKBOXDONTCHECK, 
- wxID_WXDIALOGUPDATECHECKERSTATICLINEHTML, 
- wxID_WXDIALOGUPDATECHECKERSTATICTEXTANNOUNCE, 
- wxID_WXDIALOGUPDATECHECKERSTATICTEXTCHANGELOG, 
- wxID_WXDIALOGUPDATECHECKERSTATICTEXTINSTRUCTIONS, 
+[wxID_WXDIALOGUPDATECHECKER, wxID_WXDIALOGUPDATECHECKERBUTTONCLOSE,
+ wxID_WXDIALOGUPDATECHECKERBUTTONDOWNLOAD,
+ wxID_WXDIALOGUPDATECHECKERCHECKBOXDONTCHECK,
+ wxID_WXDIALOGUPDATECHECKERSTATICLINEHTML,
+ wxID_WXDIALOGUPDATECHECKERSTATICTEXTANNOUNCE,
+ wxID_WXDIALOGUPDATECHECKERSTATICTEXTCHANGELOG,
+ wxID_WXDIALOGUPDATECHECKERSTATICTEXTINSTRUCTIONS,
 ] = map(lambda _init_ctrls: wxNewId(), range(8))
 
 class wxDialogUpdateChecker(wxDialog):
@@ -111,15 +111,15 @@ class wxDialogUpdateChecker(wxDialog):
 
     def __init__(self, parent, config, version, url, changelog):
         self._init_ctrls(parent)
-        self.html = wxHtmlWindow(parent = self, id = -1, pos = self.staticLineHtml.GetPosition(), 
+        self.html = wxHtmlWindow(parent = self, id = -1, pos = self.staticLineHtml.GetPosition(),
                     size = self.staticLineHtml.GetSize(), style = wxSTATIC_BORDER)
-        
-        
+
+
         #move window above tray
         try:
             import win32gui, win32api, win32con
             hwnd = win32gui.FindWindow("Shell_TrayWnd", "")
-            hwnd = win32gui.FindWindowEx(hwnd, 0, "TrayNotifyWnd", "")	    
+            hwnd = win32gui.FindWindowEx(hwnd, 0, "TrayNotifyWnd", "")
             rect = win32gui.GetWindowRect(hwnd)
             size = self.GetSize()
             self.Move((win32api.GetSystemMetrics(win32con.SM_CXSCREEN) - size.GetWidth(), rect[1] - size.GetHeight() - 5))
@@ -127,28 +127,29 @@ class wxDialogUpdateChecker(wxDialog):
             print e
             self.Center(wxBOTH)
 
+
         # set window icons
         icons = wxIconBundle()
         icons.AddIconFromFile('img/FrameIcon.ico', wxBITMAP_TYPE_ICO)
         self.SetIcons(icons)
-                
+
         self._url = url
         self._config = config
-        self.html.AppendToPage(changelog)        
+        self.html.AppendToPage(changelog)
         self.staticTextAnnounce.SetLabel(self.staticTextAnnounce.GetLabel() % version)
         self.staticTextChangelog.SetLabel(self.staticTextChangelog.GetLabel() % version)
-        
+
         self.checkBoxDontCheck.SetValue(not int(self._config.Get('Updates', 'CheckVersion')))
-                        
+
 
     def OnCharHook(self, event):
         if event.GetKeyCode() == WXK_ESCAPE:
             self.EndModal(wxID_OK)
         else:
-            event.Skip()  
+            event.Skip()
 
     def OnInitDialog(self, event):
-        #self.textCtrl.SetInsertionPoint(0)                        
+        #self.textCtrl.SetInsertionPoint(0)
         #self.textCtrl.ShowPosition(0)
         event.Skip()
 
@@ -167,28 +168,28 @@ class wxDialogUpdateChecker(wxDialog):
 
     def OnCheckBoxDontCheckCheckbox(self, event):
         event.Skip()
-    
-        
-        
+
+
+
 if __name__ == '__main__':
     import Utils, Config
     currentDir = Utils.GetCurrentDir(True)
-    os.chdir(currentDir)        
+    os.chdir(currentDir)
     Utils.CreateProfile()
-    config_file = os.path.join(Utils.GetProfileDir(True),'ClamWin.conf')                          
-    config = Config.Settings(config_file)    
+    config_file = os.path.join(Utils.GetProfileDir(True),'ClamWin.conf')
+    config = Config.Settings(config_file)
     b = config.Read()
     version, url, changelog = Utils.GetOnlineVersion(config)
-        
+
     app = wxPySimpleApp()
-   
+
     dlg = create(None, config, version, url, changelog)
     try:
-        dlg.ShowModal()                    
+        dlg.ShowModal()
     finally:
         dlg.Destroy()
 
-    config.Write()            
+    config.Write()
     app.MainLoop()
 
- 
+

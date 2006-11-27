@@ -16,7 +16,7 @@ if sys.platform == 'win32':
 
     if hasattr(sys, 'setdefaultencoding'):
         try:
-            sys.setdefaultencoding(enc)    
+            sys.setdefaultencoding(enc)
         except LookupError:
-            sys.setdefaultencoding('ascii')    
+            sys.setdefaultencoding('ascii')
         del sys.setdefaultencoding

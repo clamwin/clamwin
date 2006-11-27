@@ -9,17 +9,17 @@
 #
 # Created:     2004/19/03
 # Copyright:   Copyright alch (c) 2004
-# Licence:     
+# Licence:
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
 #   the Free Software Foundation; either version 2 of the License, or
 #   (at your option) any later version.
-# 
+#
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
-# 
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; if not, write to the Free Software
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -34,101 +34,101 @@ import wxDialogScheduledScan
 from I18N import getClamString as _
 def create(parent, config=None, switchToSchedule=False):
     return wxPreferencesDlg(parent, config, switchToSchedule)
-        
-[wxID_WXPREFERENCESDLG, wxID_WXPREFERENCESDLGBUTTONBROWSECLAMSCAN, 
- wxID_WXPREFERENCESDLGBUTTONBROWSEFRESHCLAM, 
- wxID_WXPREFERENCESDLGBUTTONBROWSEQUARANTINE, 
- wxID_WXPREFERENCESDLGBUTTONBROWSESCANLOG, 
- wxID_WXPREFERENCESDLGBUTTONBROWSEUPDATELOG, 
- wxID_WXPREFERENCESDLGBUTTONCANCEL, wxID_WXPREFERENCESDLGBUTTONOK, 
- wxID_WXPREFERENCESDLGBUTTONSENDTESTEMAIL, 
- wxID_WXPREFERENCESDLGBUTTONTASKACTIVATE, wxID_WXPREFERENCESDLGBUTTONTASKADD, 
- wxID_WXPREFERENCESDLGBUTTONTASKDEACTIVATE, 
- wxID_WXPREFERENCESDLGBUTTONTASKEDIT, wxID_WXPREFERENCESDLGBUTTONTASKREMOVE, 
- wxID_WXPREFERENCESDLGBUTTONVIRDB, wxID_WXPREFERENCESDLGCHECKBOXCHECKVERSION, 
- wxID_WXPREFERENCESDLGCHECKBOXDETECTBROKEN, 
- wxID_WXPREFERENCESDLGCHECKBOXENABLEAUTOUPDATE, 
- wxID_WXPREFERENCESDLGCHECKBOXENABLEMBOX, 
- wxID_WXPREFERENCESDLGCHECKBOXENABLEOLE2, 
- wxID_WXPREFERENCESDLGCHECKBOXINFECTEDONLY, 
- wxID_WXPREFERENCESDLGCHECKBOXSCANARCHIVES, 
- wxID_WXPREFERENCESDLGCHECKBOXSCANRECURSIVE, 
- wxID_WXPREFERENCESDLGCHECKBOXSHOWPROGRESS, 
- wxID_WXPREFERENCESDLGCHECKBOXSMTPENABLE, 
- wxID_WXPREFERENCESDLGCHECKBOXTRAYNOTIFY, 
- wxID_WXPREFERENCESDLGCHECKBOXUPDATELOGON, 
- wxID_WXPREFERENCESDLGCHOICEPRIORITY, wxID_WXPREFERENCESDLGCHOICEUPDATEDAY, 
- wxID_WXPREFERENCESDLGCHOICEUPDATEFREQUENCY, 
- wxID_WXPREFERENCESDLGEDITABLELISTBOXFILTERSEXCLUDE, 
- wxID_WXPREFERENCESDLGEDITABLELISTBOXFILTERSINCLUDE, 
- wxID_WXPREFERENCESDLGINTCTRLPROXYPORT, wxID_WXPREFERENCESDLGINTCTRLSMTPPORT, 
- wxID_WXPREFERENCESDLGLISTVIEWSCHEDULEDTASKS, wxID_WXPREFERENCESDLGNOTEBOOK, 
- wxID_WXPREFERENCESDLGRADIOBUTTONQUARANTINE, 
- wxID_WXPREFERENCESDLGRADIOBUTTONREMOVEINFECTED, 
- wxID_WXPREFERENCESDLGRADIOBUTTONREPORT, 
- wxID_WXPREFERENCESDLGSPINBUTTONUPDATETIME, 
- wxID_WXPREFERENCESDLGSPINCTRLARCHIVEFILES, 
- wxID_WXPREFERENCESDLGSPINCTRLARCHIVESIZE, 
- wxID_WXPREFERENCESDLGSPINCTRLMAXLOGSIZE, 
- wxID_WXPREFERENCESDLGSPINCTRLRECURSION, 
- wxID_WXPREFERENCESDLGSTATICBOXEMAILDETAILS, 
- wxID_WXPREFERENCESDLGSTATICBOXINFECTED, 
- wxID_WXPREFERENCESDLGSTATICBOXSCANOPTIONS, 
- wxID_WXPREFERENCESDLGSTATICBOXSMTPCONNECTION, 
- wxID_WXPREFERENCESDLGSTATICLINEUPDATETIMECTRL, 
- wxID_WXPREFERENCESDLGSTATICTEXT1, wxID_WXPREFERENCESDLGSTATICTEXT2, 
- wxID_WXPREFERENCESDLGSTATICTEXTADDITIONALPARAMS, 
- wxID_WXPREFERENCESDLGSTATICTEXTCLAMSCAN, 
- wxID_WXPREFERENCESDLGSTATICTEXTDBUPDATELOGFILE, 
- wxID_WXPREFERENCESDLGSTATICTEXTEXPLAIN, wxID_WXPREFERENCESDLGSTATICTEXTFILES, 
- wxID_WXPREFERENCESDLGSTATICTEXTFILTERSEXCLUDE, 
- wxID_WXPREFERENCESDLGSTATICTEXTFILTERSINCLUDE, 
- wxID_WXPREFERENCESDLGSTATICTEXTFILTREDESC1, 
- wxID_WXPREFERENCESDLGSTATICTEXTFRESHCLAM, 
- wxID_WXPREFERENCESDLGSTATICTEXTLIMITFILES, 
- wxID_WXPREFERENCESDLGSTATICTEXTLOGFILE, 
- wxID_WXPREFERENCESDLGSTATICTEXTMAXLOGSIZE, 
- wxID_WXPREFERENCESDLGSTATICTEXTMAXSIZE, wxID_WXPREFERENCESDLGSTATICTEXTMB1, 
- wxID_WXPREFERENCESDLGSTATICTEXTMB2, 
- wxID_WXPREFERENCESDLGSTATICTEXTNOPERSONAL, 
- wxID_WXPREFERENCESDLGSTATICTEXTPRIORITY, 
- wxID_WXPREFERENCESDLGSTATICTEXTPROXYHOST, 
- wxID_WXPREFERENCESDLGSTATICTEXTPROXYPASSWORD, 
- wxID_WXPREFERENCESDLGSTATICTEXTPROXYPORT, 
- wxID_WXPREFERENCESDLGSTATICTEXTPROXYUSER, 
- wxID_WXPREFERENCESDLGSTATICTEXTRECURSION, 
- wxID_WXPREFERENCESDLGSTATICTEXTSCHEDULEDTASKS, 
- wxID_WXPREFERENCESDLGSTATICTEXTSMTPFROM, 
- wxID_WXPREFERENCESDLGSTATICTEXTSMTPHOST, 
- wxID_WXPREFERENCESDLGSTATICTEXTSMTPPASSWORD, 
- wxID_WXPREFERENCESDLGSTATICTEXTSMTPPORT, 
- wxID_WXPREFERENCESDLGSTATICTEXTSMTPSUBJECT, 
- wxID_WXPREFERENCESDLGSTATICTEXTSMTPTO, 
- wxID_WXPREFERENCESDLGSTATICTEXTSMTPUSERNAME, 
- wxID_WXPREFERENCESDLGSTATICTEXTSUBARCHIVES, 
- wxID_WXPREFERENCESDLGSTATICTEXTUPDATEDAY, 
- wxID_WXPREFERENCESDLGSTATICTEXTUPDATEFREQUENCY, 
- wxID_WXPREFERENCESDLGSTATICTEXTUPDATETIME, 
- wxID_WXPREFERENCESDLGSTATICTEXTVIRDB, 
- wxID_WXPREFERENCESDLGTEXTCTRLADDITIONALPARAMS, 
- wxID_WXPREFERENCESDLGTEXTCTRLCLAMSCAN, wxID_WXPREFERENCESDLGTEXTCTRLDBMIRROR, 
- wxID_WXPREFERENCESDLGTEXTCTRLFRESHCLAM, 
- wxID_WXPREFERENCESDLGTEXTCTRLPROXYHOST, 
- wxID_WXPREFERENCESDLGTEXTCTRLPROXYPASSWORD, 
- wxID_WXPREFERENCESDLGTEXTCTRLPROXYUSER, 
- wxID_WXPREFERENCESDLGTEXTCTRLQUARANTINE, 
- wxID_WXPREFERENCESDLGTEXTCTRLSCANLOGFILE, 
- wxID_WXPREFERENCESDLGTEXTCTRLSMTPFROM, wxID_WXPREFERENCESDLGTEXTCTRLSMTPHOST, 
- wxID_WXPREFERENCESDLGTEXTCTRLSMTPPASSWORD, 
- wxID_WXPREFERENCESDLGTEXTCTRLSMTPSUBJECT, 
- wxID_WXPREFERENCESDLGTEXTCTRLSMTPTO, wxID_WXPREFERENCESDLGTEXTCTRLSMTPUSER, 
- wxID_WXPREFERENCESDLGTEXTCTRLUPDATELOGFILE, 
- wxID_WXPREFERENCESDLGTEXTCTRLVIRDB, wxID_WXPREFERENCESDLG_PANELADVANCED, 
- wxID_WXPREFERENCESDLG_PANELARCHIVES, wxID_WXPREFERENCESDLG_PANELEMAILALERTS, 
- wxID_WXPREFERENCESDLG_PANELFILES, wxID_WXPREFERENCESDLG_PANELFILTERS, 
- wxID_WXPREFERENCESDLG_PANELINTERNETUPDATE, 
- wxID_WXPREFERENCESDLG_PANELOPTIONS, wxID_WXPREFERENCESDLG_PANELPROXY, 
- wxID_WXPREFERENCESDLG_PANELREPORTS, wxID_WXPREFERENCESDLG_PANELSCHEDULER, 
+
+[wxID_WXPREFERENCESDLG, wxID_WXPREFERENCESDLGBUTTONBROWSECLAMSCAN,
+ wxID_WXPREFERENCESDLGBUTTONBROWSEFRESHCLAM,
+ wxID_WXPREFERENCESDLGBUTTONBROWSEQUARANTINE,
+ wxID_WXPREFERENCESDLGBUTTONBROWSESCANLOG,
+ wxID_WXPREFERENCESDLGBUTTONBROWSEUPDATELOG,
+ wxID_WXPREFERENCESDLGBUTTONCANCEL, wxID_WXPREFERENCESDLGBUTTONOK,
+ wxID_WXPREFERENCESDLGBUTTONSENDTESTEMAIL,
+ wxID_WXPREFERENCESDLGBUTTONTASKACTIVATE, wxID_WXPREFERENCESDLGBUTTONTASKADD,
+ wxID_WXPREFERENCESDLGBUTTONTASKDEACTIVATE,
+ wxID_WXPREFERENCESDLGBUTTONTASKEDIT, wxID_WXPREFERENCESDLGBUTTONTASKREMOVE,
+ wxID_WXPREFERENCESDLGBUTTONVIRDB, wxID_WXPREFERENCESDLGCHECKBOXCHECKVERSION,
+ wxID_WXPREFERENCESDLGCHECKBOXDETECTBROKEN,
+ wxID_WXPREFERENCESDLGCHECKBOXENABLEAUTOUPDATE,
+ wxID_WXPREFERENCESDLGCHECKBOXENABLEMBOX,
+ wxID_WXPREFERENCESDLGCHECKBOXENABLEOLE2,
+ wxID_WXPREFERENCESDLGCHECKBOXINFECTEDONLY,
+ wxID_WXPREFERENCESDLGCHECKBOXSCANARCHIVES,
+ wxID_WXPREFERENCESDLGCHECKBOXSCANRECURSIVE,
+ wxID_WXPREFERENCESDLGCHECKBOXSHOWPROGRESS,
+ wxID_WXPREFERENCESDLGCHECKBOXSMTPENABLE,
+ wxID_WXPREFERENCESDLGCHECKBOXTRAYNOTIFY,
+ wxID_WXPREFERENCESDLGCHECKBOXUPDATELOGON,
+ wxID_WXPREFERENCESDLGCHOICEPRIORITY, wxID_WXPREFERENCESDLGCHOICEUPDATEDAY,
+ wxID_WXPREFERENCESDLGCHOICEUPDATEFREQUENCY,
+ wxID_WXPREFERENCESDLGEDITABLELISTBOXFILTERSEXCLUDE,
+ wxID_WXPREFERENCESDLGEDITABLELISTBOXFILTERSINCLUDE,
+ wxID_WXPREFERENCESDLGINTCTRLPROXYPORT, wxID_WXPREFERENCESDLGINTCTRLSMTPPORT,
+ wxID_WXPREFERENCESDLGLISTVIEWSCHEDULEDTASKS, wxID_WXPREFERENCESDLGNOTEBOOK,
+ wxID_WXPREFERENCESDLGRADIOBUTTONQUARANTINE,
+ wxID_WXPREFERENCESDLGRADIOBUTTONREMOVEINFECTED,
+ wxID_WXPREFERENCESDLGRADIOBUTTONREPORT,
+ wxID_WXPREFERENCESDLGSPINBUTTONUPDATETIME,
+ wxID_WXPREFERENCESDLGSPINCTRLARCHIVEFILES,
+ wxID_WXPREFERENCESDLGSPINCTRLARCHIVESIZE,
+ wxID_WXPREFERENCESDLGSPINCTRLMAXLOGSIZE,
+ wxID_WXPREFERENCESDLGSPINCTRLRECURSION,
+ wxID_WXPREFERENCESDLGSTATICBOXEMAILDETAILS,
+ wxID_WXPREFERENCESDLGSTATICBOXINFECTED,
+ wxID_WXPREFERENCESDLGSTATICBOXSCANOPTIONS,
+ wxID_WXPREFERENCESDLGSTATICBOXSMTPCONNECTION,
+ wxID_WXPREFERENCESDLGSTATICLINEUPDATETIMECTRL,
+ wxID_WXPREFERENCESDLGSTATICTEXT1, wxID_WXPREFERENCESDLGSTATICTEXT2,
+ wxID_WXPREFERENCESDLGSTATICTEXTADDITIONALPARAMS,
+ wxID_WXPREFERENCESDLGSTATICTEXTCLAMSCAN,
+ wxID_WXPREFERENCESDLGSTATICTEXTDBUPDATELOGFILE,
+ wxID_WXPREFERENCESDLGSTATICTEXTEXPLAIN, wxID_WXPREFERENCESDLGSTATICTEXTFILES,
+ wxID_WXPREFERENCESDLGSTATICTEXTFILTERSEXCLUDE,
+ wxID_WXPREFERENCESDLGSTATICTEXTFILTERSINCLUDE,
+ wxID_WXPREFERENCESDLGSTATICTEXTFILTREDESC1,
+ wxID_WXPREFERENCESDLGSTATICTEXTFRESHCLAM,
+ wxID_WXPREFERENCESDLGSTATICTEXTLIMITFILES,
+ wxID_WXPREFERENCESDLGSTATICTEXTLOGFILE,
+ wxID_WXPREFERENCESDLGSTATICTEXTMAXLOGSIZE,
+ wxID_WXPREFERENCESDLGSTATICTEXTMAXSIZE, wxID_WXPREFERENCESDLGSTATICTEXTMB1,
+ wxID_WXPREFERENCESDLGSTATICTEXTMB2,
+ wxID_WXPREFERENCESDLGSTATICTEXTNOPERSONAL,
+ wxID_WXPREFERENCESDLGSTATICTEXTPRIORITY,
+ wxID_WXPREFERENCESDLGSTATICTEXTPROXYHOST,
+ wxID_WXPREFERENCESDLGSTATICTEXTPROXYPASSWORD,
+ wxID_WXPREFERENCESDLGSTATICTEXTPROXYPORT,
+ wxID_WXPREFERENCESDLGSTATICTEXTPROXYUSER,
+ wxID_WXPREFERENCESDLGSTATICTEXTRECURSION,
+ wxID_WXPREFERENCESDLGSTATICTEXTSCHEDULEDTASKS,
+ wxID_WXPREFERENCESDLGSTATICTEXTSMTPFROM,
+ wxID_WXPREFERENCESDLGSTATICTEXTSMTPHOST,
+ wxID_WXPREFERENCESDLGSTATICTEXTSMTPPASSWORD,
+ wxID_WXPREFERENCESDLGSTATICTEXTSMTPPORT,
+ wxID_WXPREFERENCESDLGSTATICTEXTSMTPSUBJECT,
+ wxID_WXPREFERENCESDLGSTATICTEXTSMTPTO,
+ wxID_WXPREFERENCESDLGSTATICTEXTSMTPUSERNAME,
+ wxID_WXPREFERENCESDLGSTATICTEXTSUBARCHIVES,
+ wxID_WXPREFERENCESDLGSTATICTEXTUPDATEDAY,
+ wxID_WXPREFERENCESDLGSTATICTEXTUPDATEFREQUENCY,
+ wxID_WXPREFERENCESDLGSTATICTEXTUPDATETIME,
+ wxID_WXPREFERENCESDLGSTATICTEXTVIRDB,
+ wxID_WXPREFERENCESDLGTEXTCTRLADDITIONALPARAMS,
+ wxID_WXPREFERENCESDLGTEXTCTRLCLAMSCAN, wxID_WXPREFERENCESDLGTEXTCTRLDBMIRROR,
+ wxID_WXPREFERENCESDLGTEXTCTRLFRESHCLAM,
+ wxID_WXPREFERENCESDLGTEXTCTRLPROXYHOST,
+ wxID_WXPREFERENCESDLGTEXTCTRLPROXYPASSWORD,
+ wxID_WXPREFERENCESDLGTEXTCTRLPROXYUSER,
+ wxID_WXPREFERENCESDLGTEXTCTRLQUARANTINE,
+ wxID_WXPREFERENCESDLGTEXTCTRLSCANLOGFILE,
+ wxID_WXPREFERENCESDLGTEXTCTRLSMTPFROM, wxID_WXPREFERENCESDLGTEXTCTRLSMTPHOST,
+ wxID_WXPREFERENCESDLGTEXTCTRLSMTPPASSWORD,
+ wxID_WXPREFERENCESDLGTEXTCTRLSMTPSUBJECT,
+ wxID_WXPREFERENCESDLGTEXTCTRLSMTPTO, wxID_WXPREFERENCESDLGTEXTCTRLSMTPUSER,
+ wxID_WXPREFERENCESDLGTEXTCTRLUPDATELOGFILE,
+ wxID_WXPREFERENCESDLGTEXTCTRLVIRDB, wxID_WXPREFERENCESDLG_PANELADVANCED,
+ wxID_WXPREFERENCESDLG_PANELARCHIVES, wxID_WXPREFERENCESDLG_PANELEMAILALERTS,
+ wxID_WXPREFERENCESDLG_PANELFILES, wxID_WXPREFERENCESDLG_PANELFILTERS,
+ wxID_WXPREFERENCESDLG_PANELINTERNETUPDATE,
+ wxID_WXPREFERENCESDLG_PANELOPTIONS, wxID_WXPREFERENCESDLG_PANELPROXY,
+ wxID_WXPREFERENCESDLG_PANELREPORTS, wxID_WXPREFERENCESDLG_PANELSCHEDULER,
 ] = map(lambda _init_ctrls: wxNewId(), range(113))
 
 class wxPreferencesDlg(wxDialog):
@@ -311,7 +311,7 @@ class wxPreferencesDlg(wxDialog):
         self.staticBoxScanOptions = wxStaticBox(id=wxID_WXPREFERENCESDLGSTATICBOXSCANOPTIONS,
               label=_('Scanning Options'), name='staticBoxScanOptions',
               parent=self._panelOptions, pos=wxPoint(6, 11), size=wxSize(376,
-              86), style=0)
+              87), style=0)
 
         self.checkBoxEnableAutoUpdate = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXENABLEAUTOUPDATE,
               label=_('&Enable Automatic Virus Database Updates'),
@@ -425,6 +425,7 @@ class wxPreferencesDlg(wxDialog):
               parent=self._panelOptions, pos=wxPoint(15, 29), size=wxSize(354,
               18), style=0)
         self.checkBoxScanRecursive.SetToolTipString(_('Select if you wish to scan in subdirectories recursively'))
+        self.checkBoxScanRecursive.SetValue(False)
 
         self.staticTextUpdateTime = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTUPDATETIME,
               label=_('&Time:'), name='staticTextUpdateTime',
@@ -989,129 +990,129 @@ class wxPreferencesDlg(wxDialog):
 
     def __init__(self, parent, config, switchToSchedule):
         self._config = None
-        self._config = config        
-        if sys.platform.startswith("win"):            
+        self._config = config
+        if sys.platform.startswith("win"):
             self._scheduledScans = wxDialogScheduledScan.LoadPersistentScheduledScans(
                 os.path.join(Utils.GetScheduleShelvePath(self._config), 'ScheduledScans'))
-        self._init_ctrls(parent) 
-        
+        self._init_ctrls(parent)
+
         # set window icons
         icons = wxIconBundle()
         icons.AddIconFromFile('img/FrameIcon.ico', wxBITMAP_TYPE_ICO)
-        self.SetIcons(icons)        
-        
+        self.SetIcons(icons)
+
         # wxWidgets notebook bug workaround
         # http://sourceforge.net/tracker/index.php?func=detail&aid=645323&group_id=9863&atid=109863
-        s = self.notebook.GetSize(); 
+        s = self.notebook.GetSize();
         self.notebook.SetSize(wxSize(s.GetWidth() - 1, s.GetHeight()));
-        self.notebook.SetSize(s); 
-                        
-        
-        init_pages = [self._OptionsPageInit, self._FiltersPageInit, self._ScheduledScanPageInit, 
+        self.notebook.SetSize(s);
+
+
+        init_pages = [self._OptionsPageInit, self._FiltersPageInit, self._ScheduledScanPageInit,
                         self._InternetUpdatePageInit, self._EmailAlertsPageInit,
-                        self._ProxyPageInit, 
-                        self._FilesPageInit, self._ArchivesPageInit, 
-                        self._ReportsPageInit, 
+                        self._ProxyPageInit,
+                        self._FilesPageInit, self._ArchivesPageInit,
+                        self._ReportsPageInit,
                         self._AdvancedPageInit]
         # added check for self._config.Get('UI', 'Standalone')
         # to enable running the scanner only with no scheduler
         # needed in clamwin plugin to BartPE <http://oss.netfarm.it/winpe/>
-        if self._config.Get('UI', 'Standalone') == '1':        
+        if self._config.Get('UI', 'Standalone') == '1':
             # remove internet updates page on unix
             init_pages.remove(self._ScheduledScanPageInit)
-            init_pages.remove(self._InternetUpdatePageInit)            
+            init_pages.remove(self._InternetUpdatePageInit)
             self.notebook.RemovePage(4)
             self.notebook.RemovePage(2)
-            
-            
+
+
         for init_page in init_pages:
             init_page()
-            
+
         for i in range(0, self.notebook.GetPageCount()):
-            self.notebook.GetPage(i).TransferDataToWindow()        
-            
+            self.notebook.GetPage(i).TransferDataToWindow()
+
         self.UpdateScheduledTasksButtons()
-        
+
         if switchToSchedule:
             self.notebook.SetSelection(4)
-        
-        
+
+
     def OnCancel(self, event):
         self.EndModal(wxID_CANCEL)
 
-    def OnOK(self, event):  
+    def OnOK(self, event):
         if self._Apply():
             self.EndModal(wxID_OK)
 
 
-    def _Apply(self):                       
+    def _Apply(self):
             pages = range(0, self.notebook.GetPageCount())
             # rearrange pages in order to validate the current one first
-    	    for page in pages:    	        
-    	        if self.notebook.GetSelection() == page:
-    	            tmp = pages[0]
+            for page in pages:
+                if self.notebook.GetSelection() == page:
+                    tmp = pages[0]
                     pages[0] = pages[page]
                     pages[page] = tmp
-                    
+
             # validate and apply each page
             for page in pages:
-    	        if not self.notebook.GetPage(page).Validate():
-    	            # activate the invalid page
-    	            self.notebook.SetSelection(page)
-    	            return False
-    	        self.notebook.GetPage(page).TransferDataFromWindow()    	       	       	        
-                
-    	    # save config to properties file    
+                if not self.notebook.GetPage(page).Validate():
+                    # activate the invalid page
+                    self.notebook.SetSelection(page)
+                    return False
+                self.notebook.GetPage(page).TransferDataFromWindow()
+
+            # save config to properties file
             if not self._config.Write():
                 MsgBox.ErrorBox(self, _('An error occurred whilst saving configuration file %s. Please check that you have write permission to the configuration file.') % self._config.GetFilename())
                 return False
-                            
-            # raise the event so other programs can reload config                
+
+            # raise the event so other programs can reload config
             if sys.platform.startswith("win"):
                 wxDialogScheduledScan.SavePersistentScheduledScans(
                     os.path.join(Utils.GetScheduleShelvePath(self._config), 'ScheduledScans'),
-                    self._scheduledScans)               
-            
-                import win32event, win32api                
+                    self._scheduledScans)
+
+                import win32event, win32api
                 hEvent = None
                 try:
                     hEvent = win32event.CreateEvent(None, True, False, Utils.CONFIG_EVENT);
                     win32event.PulseEvent(hEvent)
-                    win32api.CloseHandle(hEvent)                    
+                    win32api.CloseHandle(hEvent)
                 except win32api.error, e:
                     if hEvent is not None:
                         win32api.CloseHandle(hEvent)
                     print _("Event Failed"), str(e)
             return True
-        
-                            
-        
+
+
+
     def _EnableOptionsControls(self, init):
         if init:
             self._config.Get('ClamAV', 'RemoveInfected') == '1'
             enable = self._config.Get('ClamAV', 'MoveInfected') == '1' and \
                         len(self._config.Get('ClamAV', 'QuarantineDir'))
-        else:            
+        else:
             enable = self.radioButtonQuarantine.GetValue()
-                
+
         self.textCtrlQuarantine.Enable(enable)
         self.buttonBrowseQuarantine.Enable(enable)
-                                    
 
-    def _OptionsPageInit(self):        
-        self.choicePriority.SetValidator(MyValidator(config=self._config, section='ClamAV', value='Priority'))        
+
+    def _OptionsPageInit(self):
+        self.choicePriority.SetValidator(MyValidator(config=self._config, section='ClamAV', value='Priority'))
         self.checkBoxInfectedOnly.SetValidator(MyValidator(config=self._config, section='ClamAV', value='InfectedOnly'))
         self.checkBoxShowProgress.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ShowProgress'))
-        self.checkBoxScanRecursive.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ScanRecursive'))                
+        self.checkBoxScanRecursive.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ScanRecursive'))
         self.radioButtonReport.SetValidator(MyValidator(config=self._config, section='UI', value='ReportInfected'))
         self.radioButtonRemoveInfected.SetValidator(MyValidator(config=self._config, section='ClamAV', value='RemoveInfected'))
-        self.radioButtonQuarantine.SetValidator(MyValidator(config=self._config, section='ClamAV', value='MoveInfected'))        
+        self.radioButtonQuarantine.SetValidator(MyValidator(config=self._config, section='ClamAV', value='MoveInfected'))
         self.textCtrlQuarantine.SetValidator(MyValidator(config=self._config, section='ClamAV', value='QuarantineDir', canEmpty = False))
         self._EnableOptionsControls(True)
-        
-    def _FiltersPageInit(self):                
+
+    def _FiltersPageInit(self):
         self.editableListBoxFiltersInclude.SetValidator(MyPatternValidator(config=self._config, section='ClamAV', value='IncludePatterns'))
-        self.editableListBoxFiltersExclude.SetValidator(MyPatternValidator(config=self._config, section='ClamAV', value='ExcludePatterns'))        
+        self.editableListBoxFiltersExclude.SetValidator(MyPatternValidator(config=self._config, section='ClamAV', value='ExcludePatterns'))
         if sys.platform.startswith('win'):
             EVT_CHAR(self.editableListBoxFiltersInclude.GetListCtrl(),
                   self.OnEditableListBoxChar)
@@ -1121,135 +1122,135 @@ class wxPreferencesDlg(wxDialog):
     def _EnableInternetUpdateControls(self, init):
         if sys.platform.startswith("win"):
             if init:
-                enable = self._config.Get('Updates', 'Enable') == '1'                        
+                enable = self._config.Get('Updates', 'Enable') == '1'
                 enableDay = enable and self._config.Get('Updates', 'Frequency') == 'Weekly'
-            else:                
-                enable = self.checkBoxEnableAutoUpdate.IsChecked()            
+            else:
+                enable = self.checkBoxEnableAutoUpdate.IsChecked()
                 enableDay = enable and self.choiceUpdateFrequency.GetStringSelection() == _('Weekly')
             self.textCtrlDBMirror.Enable(enable)
             self.choiceUpdateDay.Enable(enableDay)
             self.choiceUpdateFrequency.Enable(enable)
             self.timeUpdate.Enable(enable)
             self.spinButtonUpdateTime.Enable(enable)
-            
+
     def _InternetUpdatePageInit(self):
         locale.setlocale(locale.LC_ALL, 'C')
         self.timeUpdate = wxTimeCtrl(parent=self._panelInternetUpdate,
-         pos=self.staticLineUpdateTimeCtrl.GetPosition(), 
+         pos=self.staticLineUpdateTimeCtrl.GetPosition(),
          size=self.staticLineUpdateTimeCtrl.GetSize(),  fmt24hr=Utils.IsTime24(),
          spinButton=self.spinButtonUpdateTime,
          useFixedWidthFont=False, display_seconds=True)
         self.timeUpdate.SetToolTipString(self.staticLineUpdateTimeCtrl.GetToolTip().GetTip())
-        #self.timeUpdate.BindSpinButton(self.spinButtonUpdateTime)            
-        self.textCtrlDBMirror.SetValidator(MyValidator(config=self._config, section='Updates', value='DBMirror', canEmpty=False))        
+        #self.timeUpdate.BindSpinButton(self.spinButtonUpdateTime)
+        self.textCtrlDBMirror.SetValidator(MyValidator(config=self._config, section='Updates', value='DBMirror', canEmpty=False))
         self.checkBoxEnableAutoUpdate.SetValidator(MyValidator(config=self._config, section='Updates', value='Enable'))
         self.checkBoxCheckVersion.SetValidator(MyValidator(config=self._config, section='Updates', value='CheckVersion'))
-        self.choiceUpdateFrequency.SetValidator(MyValidator(config=self._config, section='Updates', value='Frequency'))        
+        self.choiceUpdateFrequency.SetValidator(MyValidator(config=self._config, section='Updates', value='Frequency'))
         self.timeUpdate.SetValidator(MyValidator(config=self._config, section='Updates', value='Time'))
         if sys.platform.startswith('win'):
             self.checkBoxUpdateLogon.SetValidator(MyValidator(config=self._config, section='Updates', value='UpdateOnLogon'))
         else:
-            self.checkBoxUpdateLogon.Hide()        
-        self.choiceUpdateDay.SetValidator(MyWeekDayValidator(config=self._config, section='Updates', value='WeekDay'))        
+            self.checkBoxUpdateLogon.Hide()
+        self.choiceUpdateDay.SetValidator(MyWeekDayValidator(config=self._config, section='Updates', value='WeekDay'))
         self._EnableInternetUpdateControls(True)
-    
-    def _ProxyPageInit(self):              
-        self.textCtrlProxyHost.SetValidator(MyValidator(config=self._config, section='Proxy', value='Host'))        
-        self.intCtrlProxyPort.SetValidator(MyValidator(config=self._config, section='Proxy', value='Port'))        
-        self.textCtrlProxyUser.SetValidator(MyValidator(config=self._config, section='Proxy', value='User'))        
-        self.textCtrlProxyPassword.SetValidator(MyValidator(config=self._config, section='Proxy', value='Password'))             
-    
-    def _ScheduledScanPageInit(self):  
+
+    def _ProxyPageInit(self):
+        self.textCtrlProxyHost.SetValidator(MyValidator(config=self._config, section='Proxy', value='Host'))
+        self.intCtrlProxyPort.SetValidator(MyValidator(config=self._config, section='Proxy', value='Port'))
+        self.textCtrlProxyUser.SetValidator(MyValidator(config=self._config, section='Proxy', value='User'))
+        self.textCtrlProxyPassword.SetValidator(MyValidator(config=self._config, section='Proxy', value='Password'))
+
+    def _ScheduledScanPageInit(self):
         # adjust column witdh in the listview
         col_count = self.listViewScheduledTasks.GetColumnCount()
-        col_size = self.listViewScheduledTasks.GetSize()[0]/col_count-1        
-        self.listViewScheduledTasks.SetColumnWidth(0, col_size + 30)              
-        self.listViewScheduledTasks.SetColumnWidth(1, col_size + 5)    
-        self.listViewScheduledTasks.SetColumnWidth(2, col_size - 35)          
+        col_size = self.listViewScheduledTasks.GetSize()[0]/col_count-1
+        self.listViewScheduledTasks.SetColumnWidth(0, col_size + 30)
+        self.listViewScheduledTasks.SetColumnWidth(1, col_size + 5)
+        self.listViewScheduledTasks.SetColumnWidth(2, col_size - 35)
         for sc in self._scheduledScans:
-           self._ListAddScheduledScan(sc)       
-           
-    def _EnableEmailAlertsControls(self, init):        
+           self._ListAddScheduledScan(sc)
+
+    def _EnableEmailAlertsControls(self, init):
         if init:
-            enable = self._config.Get('EmailAlerts', 'Enable') == '1'                        
+            enable = self._config.Get('EmailAlerts', 'Enable') == '1'
         else:
             enable = self.checkBoxSMTPEnable.IsChecked()
         self.textCtrlSMTPHost.Enable(enable)
         self.intCtrlSMTPPort.Enable(enable)
-        self.textCtrlSMTPUser.Enable(enable)    
-        self.textCtrlSMTPPassword.Enable(enable)    
-        self.textCtrlSMTPFrom.Enable(enable)    
-        self.textCtrlSMTPTo.Enable(enable)    
-        self.textCtrlSMTPSubject.Enable(enable)  
-        self.buttonSendTestEmail.Enable(enable)          
-        
-    def _EmailAlertsPageInit(self):   
-        self.checkBoxSMTPEnable.SetValidator(MyValidator(config=self._config, section='EmailAlerts', value='Enable'))        
-        self.textCtrlSMTPHost.SetValidator(MyValidator(config=self._config, section='EmailAlerts', value='SMTPHost', canEmpty=False))        
-        self.intCtrlSMTPPort.SetValidator(MyValidator(config=self._config, section='EmailAlerts', value='SMTPPort', canEmpty=False))        
-        self.textCtrlSMTPUser.SetValidator(MyValidator(config=self._config, section='EmailAlerts', value='SMTPUser'))        
-        self.textCtrlSMTPPassword.SetValidator(MyValidator(config=self._config, section='EmailAlerts', value='SMTPPassword'))                            
-        self.textCtrlSMTPFrom.SetValidator(MyValidator(config=self._config, section='EmailAlerts', value='From'))                            
-        self.textCtrlSMTPTo.SetValidator(MyValidator(config=self._config, section='EmailAlerts', value='To', canEmpty=False))                            
-        self.textCtrlSMTPSubject.SetValidator(MyValidator(config=self._config, section='EmailAlerts', value='Subject'))                                    
-        self._EnableEmailAlertsControls(True)        
+        self.textCtrlSMTPUser.Enable(enable)
+        self.textCtrlSMTPPassword.Enable(enable)
+        self.textCtrlSMTPFrom.Enable(enable)
+        self.textCtrlSMTPTo.Enable(enable)
+        self.textCtrlSMTPSubject.Enable(enable)
+        self.buttonSendTestEmail.Enable(enable)
+
+    def _EmailAlertsPageInit(self):
+        self.checkBoxSMTPEnable.SetValidator(MyValidator(config=self._config, section='EmailAlerts', value='Enable'))
+        self.textCtrlSMTPHost.SetValidator(MyValidator(config=self._config, section='EmailAlerts', value='SMTPHost', canEmpty=False))
+        self.intCtrlSMTPPort.SetValidator(MyValidator(config=self._config, section='EmailAlerts', value='SMTPPort', canEmpty=False))
+        self.textCtrlSMTPUser.SetValidator(MyValidator(config=self._config, section='EmailAlerts', value='SMTPUser'))
+        self.textCtrlSMTPPassword.SetValidator(MyValidator(config=self._config, section='EmailAlerts', value='SMTPPassword'))
+        self.textCtrlSMTPFrom.SetValidator(MyValidator(config=self._config, section='EmailAlerts', value='From'))
+        self.textCtrlSMTPTo.SetValidator(MyValidator(config=self._config, section='EmailAlerts', value='To', canEmpty=False))
+        self.textCtrlSMTPSubject.SetValidator(MyValidator(config=self._config, section='EmailAlerts', value='Subject'))
+        self._EnableEmailAlertsControls(True)
 
     def _FilesPageInit(self):
-        self.textCtrlClamScan.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ClamScan', canEmpty=False))  
-        self.textCtrlFreshClam.SetValidator(MyValidator(self._config, section='ClamAV', value='FreshClam', canEmpty=False))        
-        self.textCtrlVirDB.SetValidator(MyValidator(self._config, section='ClamAV', value='Database', canEmpty=False))                
-        
-    def _EnableArchivesControls(self, init):        
+        self.textCtrlClamScan.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ClamScan', canEmpty=False))
+        self.textCtrlFreshClam.SetValidator(MyValidator(self._config, section='ClamAV', value='FreshClam', canEmpty=False))
+        self.textCtrlVirDB.SetValidator(MyValidator(self._config, section='ClamAV', value='Database', canEmpty=False))
+
+    def _EnableArchivesControls(self, init):
         if init:
-            enable = self._config.Get('ClamAV', 'ScanArchives') == '1'                        
+            enable = self._config.Get('ClamAV', 'ScanArchives') == '1'
         else:
             enable = self.checkBoxScanArchives.IsChecked()
         self.spinCtrlArchiveFiles.Enable(enable)
         self.spinCtrlArchiveSize.Enable(enable)
-        self.spinCtrlRecursion.Enable(enable)    
-        
+        self.spinCtrlRecursion.Enable(enable)
+
     def _ArchivesPageInit(self):
-        self.checkBoxScanArchives.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ScanArchives'))  
-        self.spinCtrlArchiveSize.SetValidator(MyValidator(self._config, section='ClamAV', value='MaxSize', canEmpty=False))        
-        self.spinCtrlArchiveFiles.SetValidator(MyValidator(self._config, section='ClamAV', value='MaxFiles', canEmpty=False))        
-        self.spinCtrlRecursion.SetValidator(MyValidator(self._config, section='ClamAV', value='MaxRecursion', canEmpty=False))        
+        self.checkBoxScanArchives.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ScanArchives'))
+        self.spinCtrlArchiveSize.SetValidator(MyValidator(self._config, section='ClamAV', value='MaxSize', canEmpty=False))
+        self.spinCtrlArchiveFiles.SetValidator(MyValidator(self._config, section='ClamAV', value='MaxFiles', canEmpty=False))
+        self.spinCtrlRecursion.SetValidator(MyValidator(self._config, section='ClamAV', value='MaxRecursion', canEmpty=False))
         self._EnableArchivesControls(True)
-        
+
     def _ReportsPageInit(self):
-        self.textCtrlScanLogFile.SetValidator(MyValidator(config=self._config, section='ClamAV', value='LogFile', canEmpty=False))        
-        self.textCtrlUpdateLogFile.SetValidator(MyValidator(config=self._config, section='Updates', value='DBUpdateLogFile', canEmpty=False))        
+        self.textCtrlScanLogFile.SetValidator(MyValidator(config=self._config, section='ClamAV', value='LogFile', canEmpty=False))
+        self.textCtrlUpdateLogFile.SetValidator(MyValidator(config=self._config, section='Updates', value='DBUpdateLogFile', canEmpty=False))
         if sys.platform.startswith('win') and self._config.Get('UI', 'Standalone') != '1':
-            self.checkBoxTrayNotify.SetValidator(MyValidator(config=self._config, section='UI', value='TrayNotify'))        
+            self.checkBoxTrayNotify.SetValidator(MyValidator(config=self._config, section='UI', value='TrayNotify'))
         else:
             self.checkBoxTrayNotify.Hide()
-                    
-    def _AdvancedPageInit(self):                
+
+    def _AdvancedPageInit(self):
         self.choicePriority.SetValidator(MyValidator(config=self._config, section='ClamAV', value='Priority'))
-        self.spinCtrlMaxLogSize.SetValidator(MyValidator(self._config, section='ClamAV', value='MaxLogSize', canEmpty=False))        
+        self.spinCtrlMaxLogSize.SetValidator(MyValidator(self._config, section='ClamAV', value='MaxLogSize', canEmpty=False))
         self.checkBoxEnableMbox.SetValidator(MyValidator(config=self._config, section='ClamAV', value='EnableMbox'))
         self.checkBoxEnableOLE2.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ScanOle2'))
         self.checkBoxDetectBroken.SetValidator(MyValidator(config=self._config, section='ClamAV', value='DetectBroken'))
-        self.textCtrlAdditionalParams.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ClamScanParams', canEmpty=True))        
-          
+        self.textCtrlAdditionalParams.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ClamScanParams', canEmpty=True))
+
     def _ListAddScheduledScan(self, sc, pos = -1):
         if pos == -1:
             pos = self.listViewScheduledTasks.GetItemCount()
         self.listViewScheduledTasks.InsertImageStringItem(pos, sc.Description, 0)
         self.listViewScheduledTasks.SetStringItem(pos, 1, sc.Path)
-        self.listViewScheduledTasks.SetStringItem(pos, 2, sc.Frequency)        
+        self.listViewScheduledTasks.SetStringItem(pos, 2, sc.Frequency)
         item = self.listViewScheduledTasks.GetItem(pos)
         if sc.Active:
             item.SetTextColour(wxNullColour)
         else:
             item.SetTextColour(wxLIGHT_GREY)
-        self.listViewScheduledTasks.SetItem(item)                  
+        self.listViewScheduledTasks.SetItem(item)
 
     def OnCharHook(self, event):
         if event.GetKeyCode() == WXK_ESCAPE:
             self.EndModal(wxID_CANCEL)
         else:
-            event.Skip()                
-   
+            event.Skip()
+
     def OnButtonBrowseFreshClam(self, event):
         if sys.platform.startswith("win"):
             filename = 'freshclam.exe'
@@ -1260,12 +1261,12 @@ class wxPreferencesDlg(wxDialog):
         dlg = wxFileDialog(self, _("Choose a file"), ".", filename, mask, wxOPEN)
         try:
             if dlg.ShowModal() == wxID_OK:
-                filename = dlg.GetPath()                 
+                filename = dlg.GetPath()
             self.textCtrlFreshClam.Clear()
-            self.textCtrlFreshClam.WriteText(filename)   
+            self.textCtrlFreshClam.WriteText(filename)
         finally:
             dlg.Destroy()
-            
+
     def OnButtonBrowseClamScan(self, event):
         if sys.platform.startswith("win"):
             filename = 'clamscan.exe'
@@ -1276,19 +1277,19 @@ class wxPreferencesDlg(wxDialog):
         dlg = wxFileDialog(self, _("Choose a file"), ".", filename, mask, wxOPEN)
         try:
             if dlg.ShowModal() == wxID_OK:
-                filename = dlg.GetPath()  
+                filename = dlg.GetPath()
                 self.textCtrlClamScan.Clear()
-                self.textCtrlClamScan.WriteText(filename)   
+                self.textCtrlClamScan.WriteText(filename)
         finally:
             dlg.Destroy()
-            
+
     def OnButtonBrowseVirDB(self, event):
         dlg = wxDirDialog(self, _('Select a directory'))
         try:
             if dlg.ShowModal() == wxID_OK:
-                dir = dlg.GetPath()                            
+                dir = dlg.GetPath()
                 self.textCtrlVirDB.Clear()
-                self.textCtrlVirDB.WriteText(dir)   
+                self.textCtrlVirDB.WriteText(dir)
         finally:
             dlg.Destroy()
 
@@ -1302,12 +1303,12 @@ class wxPreferencesDlg(wxDialog):
         dlg = wxFileDialog(self, _("Choose a file"), ".", filename, mask, wxSAVE)
         try:
             if dlg.ShowModal() == wxID_OK:
-                filename = dlg.GetPath()  
+                filename = dlg.GetPath()
                 self.textCtrlScanLogFile.Clear()
-                self.textCtrlScanLogFile.WriteText(filename)   
+                self.textCtrlScanLogFile.WriteText(filename)
         finally:
             dlg.Destroy()
-            
+
     def OnButtonBrowseUpdateLog(self, event):
         if sys.platform.startswith("win"):
             filename = 'ClamUpdateLog.txt'
@@ -1318,21 +1319,21 @@ class wxPreferencesDlg(wxDialog):
         dlg = wxFileDialog(self, _("Choose a file"), ".", filename, mask, wxSAVE)
         try:
             if dlg.ShowModal() == wxID_OK:
-                filename = dlg.GetPath()  
+                filename = dlg.GetPath()
                 self.textCtrlUpdateLogFile.Clear()
-                self.textCtrlUpdateLogFile.WriteText(filename)   
+                self.textCtrlUpdateLogFile.WriteText(filename)
         finally:
             dlg.Destroy()
 
-    def OnChoiceUpdateFrequency(self, event):        
+    def OnChoiceUpdateFrequency(self, event):
         self._EnableInternetUpdateControls(False)
         event.Skip()
 
     def OnCheckBoxEnableAutoUpdate(self, event):
         self._EnableInternetUpdateControls(False)
         event.Skip()
-            
-        
+
+
     def OnCheckBoxScanArchives(self, event):
         self._EnableArchivesControls(False)
         event.Skip()
@@ -1341,28 +1342,28 @@ class wxPreferencesDlg(wxDialog):
         if self.listViewScheduledTasks.GetItemCount() > 20:
             MsgBox.ErrorBox(self, _('Maximum amount of scheduled items (20) has been reached.'))
             return
-##        sc = wxDialogScheduledScan.ScheduledScanInfo()    
-        sc = wxDialogScheduledScan.ScheduledScanInfo()    
+        sc = wxDialogScheduledScan.ScheduledScanInfo()
+        sc = wxDialogScheduledScan.ScheduledScanInfo()
         dlg = wxDialogScheduledScan.wxDialogScheduledScan(self, sc)
         try:
             if dlg.ShowModal() == wxID_OK:
                self._scheduledScans.append(sc)
-               self._ListAddScheduledScan(sc)       
+               self._ListAddScheduledScan(sc)
                id = self.listViewScheduledTasks.GetItemCount() - 1
-               self.listViewScheduledTasks.Select(id)                                      
-        finally:            
-            dlg.Destroy()        
+               self.listViewScheduledTasks.Select(id)
+        finally:
+            dlg.Destroy()
 
     def OnButtonRemoveScheduledScan(self, event):
-        id = self.listViewScheduledTasks.GetFirstSelected()        
+        id = self.listViewScheduledTasks.GetFirstSelected()
         if id != -1:
             del self._scheduledScans[id]
             self.listViewScheduledTasks.DeleteItem(id)
             if self.listViewScheduledTasks.GetItemCount():
                 if id > 0:
-                    id -= 1                  
-                self.listViewScheduledTasks.Select(id)                        
-        
+                    id -= 1
+                self.listViewScheduledTasks.Select(id)
+
     def OnButtonEditScheduledScan(self, event):
         id = self.listViewScheduledTasks.GetFirstSelected()
         if id != -1:
@@ -1371,56 +1372,56 @@ class wxPreferencesDlg(wxDialog):
             try:
                 if dlg.ShowModal() == wxID_OK:
                     self.listViewScheduledTasks.DeleteItem(id)
-                    self._ListAddScheduledScan(sc, id)                    
+                    self._ListAddScheduledScan(sc, id)
                     item = self.listViewScheduledTasks.GetItem(id)
                     if sc.Active:
                         item.SetTextColour(wxNullColour)
                     else:
                         item.SetTextColour(wxLIGHT_GREY)
-                    self.listViewScheduledTasks.SetItem(item)                  
-                    self.listViewScheduledTasks.Select(id)                      
-                    self._scheduledScans[id] = sc        
-            finally:            
-                dlg.Destroy()             
-                   
+                    self.listViewScheduledTasks.SetItem(item)
+                    self.listViewScheduledTasks.Select(id)
+                    self._scheduledScans[id] = sc
+            finally:
+                dlg.Destroy()
+
     def UpdateScheduledTasksButtons(self):
         selected = self.listViewScheduledTasks.GetFirstSelected()
         enabled = (selected != -1)
         self.buttonTaskEdit.Enable(enabled)
         self.buttonTaskRemove.Enable(enabled)
-        if selected != -1:            
-            sc = self._scheduledScans[selected]                    
+        if selected != -1:
+            sc = self._scheduledScans[selected]
             self.buttonTaskActivate.Enable(not sc.Active)
             self.buttonTaskDeactivate.Enable(sc.Active)
         else:
             self.buttonTaskActivate.Enable(False)
             self.buttonTaskDeactivate.Enable(False)
-        
+
     def OnScheduledTasksUpdate(self, event):
         self.UpdateScheduledTasksButtons()
         event.Skip()
 
     def OnRadioInfected(self, event):
         self._EnableOptionsControls(False)
-        
+
     def OnButtonBrowseQuarantine(self, event):
         dlg = wxDirDialog(self, _('Select a directory'))
         try:
             if dlg.ShowModal() == wxID_OK:
-                dir = dlg.GetPath()                            
+                dir = dlg.GetPath()
                 self.textCtrlQuarantine.Clear()
-                self.textCtrlQuarantine.WriteText(dir)   
+                self.textCtrlQuarantine.WriteText(dir)
         finally:
             dlg.Destroy()
-    
+
 
     def OnCheckBoxSMTPEnable(self, event):
         self._EnableEmailAlertsControls(False)
 
-    def OnButtonSendTestEmail(self, event):        
+    def OnButtonSendTestEmail(self, event):
         self.SetCursor(wxStockCursor(wxCURSOR_WAIT))
         try:
-            msg = EmailAlert.VirusAlertMsg(self.textCtrlSMTPFrom.GetValue(), 
+            msg = EmailAlert.VirusAlertMsg(self.textCtrlSMTPFrom.GetValue(),
                             self.textCtrlSMTPTo.GetValue(),
                             self.textCtrlSMTPSubject.GetValue() + _(' (Testing)'),
                             self.textCtrlSMTPHost.GetValue(),
@@ -1429,7 +1430,7 @@ class wxPreferencesDlg(wxDialog):
                             self.textCtrlSMTPPassword.GetValue(),
                             Body=_('This is a test message sent during configuration of ClamWin Free Antivirus on the following computer: %s.\n'\
                                 'Please do not be alarmed.\n') % Utils.GetHostName())
-            status, msg = msg.Send(True)            
+            status, msg = msg.Send(True)
             if not status:
                 raise Exception(msg)
             MsgBox.InfoBox(self, _('Test Email has been sent successfully.'))
@@ -1439,15 +1440,15 @@ class wxPreferencesDlg(wxDialog):
 
     def OnEditableListBoxChar(self, event):
         # bind F2 key to edit label function
-        if event.GetKeyCode() == WXK_F2:            
+        if event.GetKeyCode() == WXK_F2:
             listCtrl = event.GetEventObject()
-            selected = listCtrl.GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED)           
-            if selected != -1:                   
-                listCtrl.EditLabel(selected)  
+            selected = listCtrl.GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED)
+            if selected != -1:
+                listCtrl.EditLabel(selected)
         else:
             event.Skip()
-            
-    def OnButtonTaskActivate(self, event):        
+
+    def OnButtonTaskActivate(self, event):
         selected = self.listViewScheduledTasks.GetFirstSelected()
         if selected != -1:
             self._scheduledScans[selected].Active = True
@@ -1455,8 +1456,8 @@ class wxPreferencesDlg(wxDialog):
         item.SetTextColour(wxNullColour)
         self.listViewScheduledTasks.SetItem(item)
         self.UpdateScheduledTasksButtons()
-                    
-    def OnButtonTaskDeactivate(self, event):        
+
+    def OnButtonTaskDeactivate(self, event):
         selected = self.listViewScheduledTasks.GetFirstSelected()
         if selected != -1:
             self._scheduledScans[selected].Active = False
@@ -1469,35 +1470,35 @@ class wxPreferencesDlg(wxDialog):
         event.Skip()
 
 class MyBaseValidator(wxPyValidator):
-     def __init__(self, config, section, value, canEmpty=True):          
-         wxPyValidator.__init__(self)         
+     def __init__(self, config, section, value, canEmpty=True):
+         wxPyValidator.__init__(self)
          self._config = config
          self._section = section
-         self._value = value                
+         self._value = value
          self._canEmpty = canEmpty
-         
-     def Clone(self):                  
+
+     def Clone(self):
          return self.__class__(self._config, self._section, self._value, self._canEmpty)
-     
+
      def Validate(self, win):
          return True
 
-     
-class MyWeekDayValidator(MyBaseValidator):          
-     def TransferToWindow(self):         
+
+class MyWeekDayValidator(MyBaseValidator):
+     def TransferToWindow(self):
          value = self._config.Get(self._section, self._value)
          if not len(value):
              value = ''
-         ctrl = self.GetWindow()                                           
-         ctrl.SetSelection(int(value))         
-         
+         ctrl = self.GetWindow()
+         ctrl.SetSelection(int(value))
+
      def TransferFromWindow(self):
          ctrl = self.GetWindow()
-         value = ctrl.GetSelection()                  
-         self._config.Set(self._section, self._value, str(value)) 
-         
-            
-class MyValidator(MyBaseValidator):     
+         value = ctrl.GetSelection()
+         self._config.Set(self._section, self._value, str(value))
+
+
+class MyValidator(MyBaseValidator):
     
     def _getFrequencies(self):
         # get the frequencies in the current language
@@ -1542,8 +1543,8 @@ class MyValidator(MyBaseValidator):
         if not ctrl.IsEnabled():
             return True
         if isinstance(ctrl, (wxChoice, wxCheckBox, wxRadioButton)) or self._canEmpty:
-            return True   
-        if isinstance(ctrl, (wxIntCtrl, wxSpinCtrl)):     
+            return True
+        if isinstance(ctrl, (wxIntCtrl, wxSpinCtrl)):
             text = str(ctrl.GetValue())
         else:
             text = ctrl.GetValue()
@@ -1556,18 +1557,18 @@ class MyValidator(MyBaseValidator):
             return False
         else:
             ctrl.SetBackgroundColour(wxSystemSettings_GetColour(wxSYS_COLOUR_WINDOW))
-            ctrl.Refresh()             
+            ctrl.Refresh()
             return True
-        
+
     def TransferToWindow(self):
         value = self._config.Get(self._section, self._value)
-        ctrl = self.GetWindow()                     
-        if isinstance(ctrl, (wxIntCtrl, wxCheckBox, wxRadioButton, wxSpinCtrl, wxIntCtrl)):            
-            value = int(value)            
+        ctrl = self.GetWindow()
+        if isinstance(ctrl, (wxIntCtrl, wxCheckBox, wxRadioButton, wxSpinCtrl, wxIntCtrl)):
+            value = int(value)
         else:
             if not len(value):
-               value = ''         
-                              
+               value = ''
+
         if(isinstance(ctrl, wxChoice)):
             if self._value == 'Frequency':
                 value = self._getLocalFrequency(value)
@@ -1576,8 +1577,8 @@ class MyValidator(MyBaseValidator):
                 
             ctrl.SetStringSelection(value)
         else:
-            ctrl.SetValue(value)         
-        
+            ctrl.SetValue(value)
+
 
     def TransferFromWindow(self):
         ctrl = self.GetWindow()
@@ -1589,23 +1590,23 @@ class MyValidator(MyBaseValidator):
             else:
                 value = ctrl.GetStringSelection()         
         elif isinstance(ctrl, (wxCheckBox, wxRadioButton, wxIntCtrl, wxSpinCtrl)):
-            value = str(ctrl.GetValue())            
+            value = str(ctrl.GetValue())
         elif isinstance(ctrl, wxTimeCtrl):
             # set C locale, otherwise python and wxpython complain
-            locale.setlocale(locale.LC_ALL, 'C')            
+            locale.setlocale(locale.LC_ALL, 'C')
             value = ctrl.GetWxDateTime().Format('%H:%M:%S')
         else:
-            value = ctrl.GetValue()         
-        
-        if self._config is not None:            
-            self._config.Set(self._section, self._value, value)         
-    
-        
-class MyFolderPromptCreateValidator(MyValidator):     
-    def Validate(self, win):  
+            value = ctrl.GetValue()
+
+        if self._config is not None:
+            self._config.Set(self._section, self._value, value)
+
+
+class MyFolderPromptCreateValidator(MyValidator):
+    def Validate(self, win):
         if not self.GetWindow().IsEnabled():
             return True
-        if not MyValidator.Validate(self, win):       
+        if not MyValidator.Validate(self, win):
             return False
         ctrl = self.GetWindow()
         path = ctrl.GetValue()
@@ -1622,8 +1623,8 @@ class MyFolderPromptCreateValidator(MyValidator):
                     MsgBox.ErrorBox(main_win, _('Unable to create folder %s. Error: %s') % (path, str(e)))                  
         return True
 
-class MyPatternValidator(MyBaseValidator):     
-    def Validate(self, win):         
+class MyPatternValidator(MyBaseValidator):
+    def Validate(self, win):
         ctrl = self.GetWindow()
         if not ctrl.IsEnabled() or self._canEmpty:
             return True
@@ -1633,21 +1634,21 @@ class MyPatternValidator(MyBaseValidator):
             wxMessageBox(_("Value cannot be empty"), _("ClamWin Free Antivirus"), style=wxICON_EXCLAMATION|wxOK)            
             ctrl.GetListCtrl().SetBackgroundColour("yellow")
             ctrl.SetFocus()
-            ctrl.Refresh()            
+            ctrl.Refresh()
             return False
         else:
-            ctrl.SetBackgroundColour(wxSystemSettings_GetColour(wxSYS_COLOUR_WINDOW))            
+            ctrl.SetBackgroundColour(wxSystemSettings_GetColour(wxSYS_COLOUR_WINDOW))
             return True
-        
+
     def TransferToWindow(self):
         strings = self._config.Get(self._section, self._value)
-        if len(strings) > 0:            
-            self.GetWindow().SetStrings(strings.split(Config.REGEX_SEPARATOR))        
-            
+        if len(strings) > 0:
+            self.GetWindow().SetStrings(strings.split(Config.REGEX_SEPARATOR))
+
     def TransferFromWindow(self):
         # need this trick to enable saving edited label
-        # when ok is clicked  
+        # when ok is clicked
         self.GetWindow().GetListCtrl().EditLabel(0)
         value = Config.REGEX_SEPARATOR.join(self.GetWindow().GetStrings())
-        if self._config is not None:            
-            self._config.Set(self._section, self._value, value)         
+        if self._config is not None:
+            self._config.Set(self._section, self._value, value)
