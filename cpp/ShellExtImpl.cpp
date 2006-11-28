@@ -29,27 +29,25 @@
 #include <shlobj.h>
 #include "ShellExt.h"
 #include <stdlib.h>
-#include <libintl.h>
-#include <iconv.h>
-
 #define _(str) gettext(str)
 #define ResultFromShort(i)  ResultFromScode(MAKE_SCODE(SEVERITY_SUCCESS, 0, (USHORT)(i)))
 
+
 extern HINSTANCE	g_hmodThisDll;	// Handle to this DLL itself.
 
-//static int dyn_libintl_init(void);
+static int dyn_libintl_init(void);
 
-//static HINSTANCE hLibintlDLL = 0;
+static HINSTANCE hLibintlDLL = 0;
 
-//static char *null_libintl_gettext(const char *);
-//static char *null_libintl_textdomain(const char *);
-//static char *null_libintl_bindtextdomain(const char *, const char *);
-//static char *null_libintl_bind_textdomain_codeset(const char *, const char *);
+static char *null_libintl_gettext(const char *);
+static char *null_libintl_textdomain(const char *);
+static char *null_libintl_bindtextdomain(const char *, const char *);
+static char *null_libintl_bind_textdomain_codeset(const char *, const char *);
 
-//static char *(*dyn_libintl_gettext)(const char *) = null_libintl_gettext;
-//static char *(*dyn_libintl_textdomain)(const char *) = null_libintl_textdomain;
-//static char *(*dyn_libintl_bindtextdomain)(const char *, const char *) = null_libintl_bindtextdomain;
-//static char *(*dyn_libintl_bind_textdomain_codeset)(const char *, const char *) = null_libintl_bind_textdomain_codeset;
+static char *(*dyn_libintl_gettext)(const char *) = null_libintl_gettext;
+static char *(*dyn_libintl_textdomain)(const char *) = null_libintl_textdomain;
+static char *(*dyn_libintl_bindtextdomain)(const char *, const char *) = null_libintl_bindtextdomain;
+static char *(*dyn_libintl_bind_textdomain_codeset)(const char *, const char *) = null_libintl_bind_textdomain_codeset;
 
 TCHAR szClamWinPath[MAX_PATH] = _T("");
 
@@ -95,17 +93,17 @@ void setClamWinPath() {
 void getI18NString() {
 
     setClamWinPath();
-//    PTCHAR szLibIntlPath;
+    PTCHAR szLibIntlPath;
 
 	//FILE* fp = fopen("c:\\shellextimpl.log", "w+");
 
-//	szLibIntlPath = new TCHAR[MAX_PATH];
-//	szLibIntlPath[0] = _T('\0');
+	szLibIntlPath = new TCHAR[MAX_PATH];
+	szLibIntlPath[0] = _T('\0');
 
-//    _tcsncat(szLibIntlPath, szClamWinPath, MAX_PATH);
-//    _tcsncat(szLibIntlPath, _T("\\libintl-1.dll"), MAX_PATH);
+    _tcsncat(szLibIntlPath, szClamWinPath, MAX_PATH);
+    _tcsncat(szLibIntlPath, _T("\\libintl-1.dll"), MAX_PATH);
 
-//	hLibintlDLL = LoadLibrary(szLibIntlPath);
+	hLibintlDLL = LoadLibrary(szLibIntlPath);
 
 	//if (! hLibintlDLL) {
 	//	fprintf(fp, "Could not load libintl dll\n");
@@ -113,15 +111,15 @@ void getI18NString() {
 	//	fprintf(fp, "Successfully loaded libintl dll\n");
 	//}
 
-//	FARPROC* bindtextdomainPtr        = (FARPROC*)&dyn_libintl_bindtextdomain;
-//	FARPROC* textdomainPtr            = (FARPROC*)&dyn_libintl_textdomain;
-//	FARPROC* gettextPtr               = (FARPROC*)&dyn_libintl_gettext;
-//	FARPROC* bindtextdomaincodesetPtr = (FARPROC*)&dyn_libintl_bind_textdomain_codeset;
+	FARPROC* bindtextdomainPtr        = (FARPROC*)&dyn_libintl_bindtextdomain;
+	FARPROC* textdomainPtr            = (FARPROC*)&dyn_libintl_textdomain;
+	FARPROC* gettextPtr               = (FARPROC*)&dyn_libintl_gettext;
+	FARPROC* bindtextdomaincodesetPtr = (FARPROC*)&dyn_libintl_bind_textdomain_codeset;
 
-//	*bindtextdomainPtr        = GetProcAddress(hLibintlDLL, "bindtextdomain");
-//	*textdomainPtr            = GetProcAddress(hLibintlDLL, "textdomain");
-//	*gettextPtr               = GetProcAddress(hLibintlDLL, "gettext");
-//	*bindtextdomaincodesetPtr = GetProcAddress(hLibintlDLL, "bind_textdomain_codeset");
+	*bindtextdomainPtr        = GetProcAddress(hLibintlDLL, "bindtextdomain");
+	*textdomainPtr            = GetProcAddress(hLibintlDLL, "textdomain");
+	*gettextPtr               = GetProcAddress(hLibintlDLL, "gettext");
+	*bindtextdomaincodesetPtr = GetProcAddress(hLibintlDLL, "bind_textdomain_codeset");
 
 	//if (bindtextdomaincodesetPtr == NULL) {
 	//	fprintf(fp, "Could not resolve bindtexdomaincodeset\n");
@@ -160,42 +158,26 @@ void getI18NString() {
     _tcsncat(szLocalePath, szClamWinPath, MAX_PATH);
     _tcsncat(szLocalePath, _T("\\..\\locale"), MAX_PATH);
 	//fprintf(fp, "Locale directory [%s]", szLocalePath);
-//
-//#ifdef UNICODE
-//	//dyn_libintl_bindtextdomain(_T("clamwin"), szLocalePath);
-//#else
-	//binddomain(_T("clamwin"), szLocalePath);
-//#endif
-	bindtextdomain("clamwin", "fr_FR");
-	bind_textdomain_codeset("clamwin", "UTF-8");
+
+	char mbLocalePath[MAX_PATH];
+	WideCharToMultiByte( CP_UTF8, WC_SEPCHARS, szLocalePath, wcslen(szLocalePath),
+			mbLocalePath, MAX_PATH, NULL, NULL);
+
+	dyn_libintl_bindtextdomain("ShellExtImpl", mbLocalePath);
+	dyn_libintl_bind_textdomain_codeset("ShellExtImpl", "UTF-8");
+	dyn_libintl_textdomain("ShellExtImpl");
 
 	//fprintf(fp, dyn_libintl_gettext("Scan For Viruses With ClamWin"));
 	//fclose(fp);
 
-//    delete [] szLibIntlPath;
-//    szLibIntlPath = NULL;
+    delete [] szLibIntlPath;
+
+    szLibIntlPath = NULL;
 
     delete [] szLocalePath;
     szLocalePath = NULL;
 
 }
-
-//static TCHAR *gettext(const char* msgid)
-//{
-//#ifdef UNICODE
-//	char charBuffer[501] = "";
-//	TCHAR *lpszBuffer = new TCHAR[501];
-//	strncpy(charBuffer, dyn_libintl_gettext(msgid), 500);
-//	if (strlen(charBuffer) > 500)
-//		*(charBuffer + 500) = _T('\0');
-//
-//	int ret = MultiByteToWideChar(CP_UTF8, MB_PRECOMPOSED, charBuffer,
-//							strlen(charBuffer), lpszBuffer , 500);
-//	return lpszBuffer ;
-//#else
-//	return dyn_libintl_gettext(msgid);
-//#endif
-//}
 
 static char *null_libintl_gettext(const char *msgid)
 {
@@ -321,10 +303,10 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 		}
 #endif
 		// convert \ to / so cygwin doesn't go crazy (particularly over UNC names)
-//		_tcsreplace(szPath, _T('\\'), _T('/'));
+		_tcsreplace(szPath, _T('\\'), _T('/'));
 		len = _tcslen(szPath);
 		// remove last slash from the scanning path
-        if(szPath[len-1] == _T('\\'))
+        if(szPath[len-1] == _T('/'))
             szPath[len-1] = _T('\0');
         _tcsncat(m_szPath, _T(" --path=\""), cbPath);
         _tcsncat(m_szPath, szPath, cbPath);
@@ -355,45 +337,37 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 //  COMMENTS:
 //
 // The menu text
-STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,UINT indexMenu,UINT uidCmdFirst,UINT idCmdLast,UINT uFlags)
+STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,UINT indexMenu,UINT idCmdFirst,UINT idCmdLast,UINT uFlags)
 {
 
-	UINT		uidCmd = uidCmdFirst;
+	UINT			idCmd = idCmdFirst;
 	HRESULT		hr = E_INVALIDARG;
-
 	getI18NString();
 
 	// Seperator
 	::InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL);
+	//::InsertMenu(hMenu, indexMenu++, MF_STRING|MF_BYPOSITION, idCmd++, dyn_libintl_gettext("Scan For Viruses With ClamWin"));
 
-	//::InsertMenu(hMenu, indexMenu++, MF_STRING|MF_BYPOSITION, idCmd++, _("TEST"));
 
-	iconv_t cd = iconv_open("", "UTF-8");
-	if (cd == (iconv_t)(-1))
-	{
-		// FIXME : Handle error
-	}
-	char Inbuf[500];
-	strcpy(Inbuf, _("Scan with ClamWin Free Antivirus"));
-	TCHAR Outbuf[500];
-	char* pOutbuf;
-	const char* pInbuf = &Inbuf[0];
-	size_t outLeft, inLeft;
-	inLeft = strlen(Inbuf);
-	size_t ret = iconv( cd, &pInbuf, &inLeft, &pOutbuf, &outLeft);
-
+	char mbString[500];
+	strncpy(mbString, dyn_libintl_gettext("Scan with ClamWin Free Antivirus"), 500);
+	wchar_t wcString[500];
+	MultiByteToWideChar( CP_UTF8, MB_PRECOMPOSED, mbString, strlen(mbString),
+		wcString, 500);
 
 	MENUITEMINFO mii = { sizeof(MENUITEMINFO) };
 	mii.fMask = MIIM_STRING | MIIM_ID;
-	    mii.wID = uidCmd++;
-    mii.dwTypeData = Outbuf;
+		mii.wID = idCmd++;
+	mii.dwTypeData = wcString;
 
 	::InsertMenuItem(hMenu, indexMenu++, TRUE, &mii);
 
+	//::InsertMenu(hMenu, indexMenu++, MF_STRING|MF_BYPOSITION, idCmd++, dyn_libintl_gettext("Scan with ClamWin Free Antivirus"));
+	// ::InsertMenu(hMenu, indexMenu++, MF_STRING|MF_BYPOSITION, idCmd++, _T(_("Scan with ClamWin Free Antivirus")));
 	// Seperator
 	::InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL);
 
-	return ResultFromShort(uidCmd-uidCmdFirst);	//Must return number of menu
+	return ResultFromShort(idCmd-idCmdFirst);	//Must return number of menu
 	//items we added.
 }
 
