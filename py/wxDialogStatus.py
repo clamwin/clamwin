@@ -317,7 +317,9 @@ class wxDialogStatus(wxDialog):
             return
 
         self._alreadyCalled = True
-
+        
+        Utils.CleanupTemp(self._proc.getpid())
+        
         self.buttonSave.Enable(True)
         self.throbber.Rest()
         self.buttonStop.SetFocus()
@@ -377,8 +379,8 @@ class wxDialogStatus(wxDialog):
         ctrl = self.textCtrlStatus
         lastPos = ctrl.GetLastPosition()
         text = event.text
-        if not self._scan:
-            text = Utils.ReplaceClamAVWarnings(text)
+        #if not self._scan:
+        text = Utils.ReplaceClamAVWarnings(text)
         if event.append == True:
             # Check if we reached 30000 characters
             # and need to purge topmost line

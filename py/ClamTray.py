@@ -574,6 +574,8 @@ class MainWindow:
             os.remove(appendlog)
         except Exception, e:
             print 'could not remove file: %s. Error: %s' % (appendlog, str(e))
+            
+        Utils.CleanupTemp(process.getpid())
 
     ProcessFinished = staticmethod(ProcessFinished)
 

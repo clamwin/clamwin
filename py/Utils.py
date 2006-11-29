@@ -328,6 +328,7 @@ def GetScanCmd(config, path, scanlog, noprint = False):
     # shared params between memory and file scanning
     cmd = '--tempdir "%s"' % tempfile.gettempdir().rstrip('\\')
 
+    
     # 22 July 2006
     # added --keep-mbox to leave thunderbird files intact when removing or quarantining
     cmd += ' --keep-mbox --stdout --database="%s" --log="%s"' % \
@@ -374,8 +375,7 @@ def GetScanCmd(config, path, scanlog, noprint = False):
                 except:
                     pass
             cmd += ' --move="%s"' % quarantinedir
-
-
+            
         # add annoying registry files to exclude as they're locked by OS
         cmd += GetExcludeSysLockedFiles()
 
@@ -421,13 +421,48 @@ def GetScanCmd(config, path, scanlog, noprint = False):
         # append \\ when we have a DRIVE letter path only otherwise CRT gets messd up argv in clamav
         # i.e C:\ will become C:\\
         path = re.sub('([A-Za-z]):("\\|$)', r'\1:\\\2', path)
-    else:
+    else:   
         path = "--memory"
+        
+    # 21 November 2006
+    # added --kill option to unload processes from mem
+    
+    if config.Get('ClamAV', 'Kill') == '1':
+        cmd += ' --kill'        
 
     cmd = '"%s" %s %s' % (config.Get('ClamAV', 'ClamScan'), cmd, path)
+    
+    print 'clamscan.exe command line: ', cmd
+    
     return cmd
 
 
+def CleanupTemp(pid):
+    # we search for folders and files ending with 0x8pid.clamtmp
+    # and then remove them
+
+    print 'Cleanup for process %08x' % pid    
+    mask = '.%08x.clamtmp' % pid
+    try:
+        (root, dirs, files) = os.walk(tempfile.gettempdir()).next()
+    except:
+        return
+    for tmpdir in dirs:
+        if tmpdir.endswith(mask):
+            try:
+                print 'removing temp dir', tmpdir
+                shutil.rmtree(os.path.join(root, tmpdir))
+            except Exception, e:
+                print 'Could not remove %s. Error: %s' % (os.path.join(root, tmpdir), str(e))
+    for tmpfile in files:
+        if tmpfile.endswith(mask):
+            try:
+                print 'removing temp file', tmpfile
+                shutil.rmtree(os.path.join(root, tmpfile))
+            except Exception, e:
+                print 'Could not remove %s. Error: %s' % (os.path.join(root, tmpdir), str(e))
+    
+            
 def AppendLogFile(logfile, appendfile, maxsize):
     try:
         # create logs folder before appending
@@ -626,12 +661,16 @@ def ReformatLog(data, rtf):
             data = r'{\rtf1{\colortbl ;\red128\green0\blue0;;\red0\green128\blue0;}%s}' % data.replace('\n', '\\par\r\n')
     return data
 
-# replaces clamav warnings with ours
+# removes clamav warnings
 def ReplaceClamAVWarnings(data):
-    # reformat database update warnings to our FAQ
     data = data.replace('Please check if ClamAV tools are linked against proper version of libclamav\n', '')
-    data = data.replace(r'http://www.clamav.net/faq.html', 'http://www.clamwin.com/content/view/10/27/')
-
+    data = data.replace('WARNING: Your ClamAV installation is OUTDATED!\n', '')    
+    data = data.replace("DON'T PANIC! Read http://www.clamav.net/faq.html\n", '')    
+    data = re.sub('WARNING: Current functionality level = \d+, recommended = \d+\n', '', data)
+    data = data.replace('LibClamAV Warning: ********************************************************\n', '')
+    data = data.replace('LibClamAV Warning: ***  This version of the ClamAV engine is outdated.  ***\n', '')
+    data = data.replace("LibClamAV Warning: *** DON'T PANIC! Read http://www.clamav.net/faq.html ***\n", '')
+    
     # remove XXX: Excluded lines
     data = re.sub('.*\: Excluded\n', '', data)
 
