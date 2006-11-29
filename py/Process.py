@@ -1830,6 +1830,13 @@ class ProcessProxy(Process):
                                           name='<stderr>')
         self._stderrProxy.start()
 
+    def getpid(self):
+        if sys.platform.startswith("win"):
+            return self._processId
+        else:
+            return self._pid
+            
+
     def wait(self, timeout=None):
         """Wait for the started process to complete.
 

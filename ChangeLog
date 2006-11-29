@@ -1,3 +1,9 @@
+Version 0.88.6 - 29 November 2006
+- Optional unloading of infected programs before quarantining
+- Better temporary file management and cleanup
+
+
+
 Version 0.88.5 - 17 October 2006
 - Updated clamav to 0.88.5 (fixes possible security vulnerabilities)
 - Implemented "Memory Scanning" functionality as a standalone option or during a scheduled scan
