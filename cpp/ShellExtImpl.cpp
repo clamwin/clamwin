@@ -95,7 +95,7 @@ void getI18NString() {
     setClamWinPath();
     PTCHAR szLibIntlPath;
 
-	//FILE* fp = fopen("c:\\shellextimpl.log", "w+");
+	FILE* fp = fopen("c:\\shellextimpl.log", "w+");
 
 	szLibIntlPath = new TCHAR[MAX_PATH];
 	szLibIntlPath[0] = _T('\0');
@@ -105,11 +105,11 @@ void getI18NString() {
 
 	hLibintlDLL = LoadLibrary(szLibIntlPath);
 
-	//if (! hLibintlDLL) {
-	//	fprintf(fp, "Could not load libintl dll\n");
-	//} else {
-	//	fprintf(fp, "Successfully loaded libintl dll\n");
-	//}
+	if (! hLibintlDLL) {
+		fprintf(fp, "Could not load libintl dll\n");
+	} else {
+		fprintf(fp, "Successfully loaded libintl dll\n");
+	}
 
 	FARPROC* bindtextdomainPtr        = (FARPROC*)&dyn_libintl_bindtextdomain;
 	FARPROC* textdomainPtr            = (FARPROC*)&dyn_libintl_textdomain;
@@ -121,11 +121,11 @@ void getI18NString() {
 	*gettextPtr               = GetProcAddress(hLibintlDLL, "gettext");
 	*bindtextdomaincodesetPtr = GetProcAddress(hLibintlDLL, "bind_textdomain_codeset");
 
-	//if (bindtextdomaincodesetPtr == NULL) {
-	//	fprintf(fp, "Could not resolve bindtexdomaincodeset\n");
-	//} else {
-	//	fprintf(fp, "Successfully resolved bindtextdomaincodeset\n");
-	//}
+	if (bindtextdomaincodesetPtr == NULL) {
+		fprintf(fp, "Could not resolve bindtexdomaincodeset\n");
+	} else {
+		fprintf(fp, "Successfully resolved bindtextdomaincodeset\n");
+	}
 
     DWORD len;
 
@@ -147,7 +147,7 @@ void getI18NString() {
 	strcat(szLangVar, "_");
 	strcat(szLangVar, szCountry);
 
-	//fprintf(fp, "[%s]", szLangVar);
+	fprintf(fp, "[%s]\n", szLangVar);
 
 	_putenv(szLangVar);
 
@@ -157,18 +157,23 @@ void getI18NString() {
 
     _tcsncat(szLocalePath, szClamWinPath, MAX_PATH);
     _tcsncat(szLocalePath, _T("\\..\\locale"), MAX_PATH);
-	//fprintf(fp, "Locale directory [%s]", szLocalePath);
+	fprintf(fp, "Locale directory [%s]\n", szLocalePath);
 
 	char mbLocalePath[MAX_PATH];
-	WideCharToMultiByte( CP_UTF8, WC_SEPCHARS, szLocalePath, wcslen(szLocalePath),
+#ifdef UNICODE
+	WideCharToMultiByte( CP_UTF8, WC_SEPCHARS, szLocalePath, strlen(szLocalePath),
 			mbLocalePath, MAX_PATH, NULL, NULL);
+#else
+	strcpy(mbLocalePath, szLocalePath);
+#endif
+	//strcpy(mbLocalePath, "C:\\Program Files\\ClamWin\\locale");
+	dyn_libintl_bindtextdomain("clamwin", mbLocalePath);
+	dyn_libintl_bind_textdomain_codeset("clamwin", "UTF-8");
+	dyn_libintl_textdomain("clamwin");
 
-	dyn_libintl_bindtextdomain("ShellExtImpl", mbLocalePath);
-	dyn_libintl_bind_textdomain_codeset("ShellExtImpl", "UTF-8");
-	dyn_libintl_textdomain("ShellExtImpl");
-
-	//fprintf(fp, dyn_libintl_gettext("Scan For Viruses With ClamWin"));
-	//fclose(fp);
+	fprintf(fp, dyn_libintl_gettext("Scan For Viruses With ClamWin"));
+	fprintf(fp, "\n");
+	fclose(fp);
 
     delete [] szLibIntlPath;
 
@@ -358,8 +363,11 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,UINT indexMenu,UINT idCmdFi
 	MENUITEMINFO mii = { sizeof(MENUITEMINFO) };
 	mii.fMask = MIIM_STRING | MIIM_ID;
 		mii.wID = idCmd++;
+#ifdef UNICODE
 	mii.dwTypeData = wcString;
-
+#else
+	mii.dwTypeData = mbString;
+#endif
 	::InsertMenuItem(hMenu, indexMenu++, TRUE, &mii);
 
 	//::InsertMenu(hMenu, indexMenu++, MF_STRING|MF_BYPOSITION, idCmd++, dyn_libintl_gettext("Scan with ClamWin Free Antivirus"));
