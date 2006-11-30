@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-11-30 15:02+0100\n"
+"PO-Revision-Date: 2006-11-30 16:18+0100\n"
 "Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1783,5 +1783,8 @@ msgid "Scanning Programs in Computer Memory"
 msgstr "Scanna Efter Virus"
 
 msgid "Computer Memory Scan Completed"
+msgstr ""
+
+msgid "Select if you wish to scan OLE attachments and macros in MS Office Documents"
 msgstr ""
 

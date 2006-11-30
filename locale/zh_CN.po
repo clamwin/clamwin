@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-11-30 15:02+0100\n"
+"PO-Revision-Date: 2006-11-30 16:18+0100\n"
 "Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: Chinese <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -2090,4 +2090,8 @@ msgstr "对计算机中的文件或文件夹进行查毒"
 
 msgid "Computer Memory Scan Completed"
 msgstr ""
+
+#, fuzzy
+msgid "Select if you wish to scan OLE attachments and macros in MS Office Documents"
+msgstr "检查OFFICE文档中包含的宏和附件"
 

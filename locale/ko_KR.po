@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-11-30 15:01+0100\n"
+"PO-Revision-Date: 2006-11-30 16:17+0100\n"
 "Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: Korean <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -1933,4 +1933,8 @@ msgstr "파일이나 폴더를 바이러스 감염 되었는지 검사 합니다
 
 msgid "Computer Memory Scan Completed"
 msgstr ""
+
+#, fuzzy
+msgid "Select if you wish to scan OLE attachments and macros in MS Office Documents"
+msgstr "ms 오피스 도규먼트의 어태치먼트와 매크로 (&풀)기"
 
