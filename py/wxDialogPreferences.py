@@ -671,7 +671,7 @@ class wxPreferencesDlg(wxDialog):
         self.staticBoxInfected = wxStaticBox(id=wxID_WXPREFERENCESDLGSTATICBOXINFECTED,
               label=_('Infected Files'), name='staticBoxInfected',
               parent=self._panelOptions, pos=wxPoint(6, 100), size=wxSize(376,
-              106), style=0)
+              123), style=0)
 
         self.radioButtonReport = wxRadioButton(id=wxID_WXPREFERENCESDLGRADIOBUTTONREPORT,
               label=_('&Report Only'), name='radioButtonReport',
