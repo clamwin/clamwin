@@ -3,6 +3,19 @@
 * I18N Branch            *
 **************************
 
+Changes in Version ClamWinL10N-24.exe :
+***************************************
+- Added string for tooltip 
+  "Select if you wish to scan OLE attachments and macros in MS Office Documents"
+- Fixed the "Infected Files" box on the Preferences - General tab
+- Installer changes :
+  * Give the user the chance to choose the installer language
+  * customized messages were broken in L10N-23.  This version is compiled with 
+    Inno Setup 5.2.8 and customized messages should now work.
+  * Added the 6 languages to the installer for which we want a beta test.
+    These are de_DE, fr_FR, nl_BE, it_IT, es_ES and ru_RU.  Strings that are
+    not yet translated will appear in english.
+
 Changes in Version ClamWinL10N-23.exe :
 ***************************************
 - Merged the .po files, so only 1 .po file remains per language.  The 

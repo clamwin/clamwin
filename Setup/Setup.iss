@@ -4,7 +4,8 @@
 [Setup]
 AppName={cm:ClamWinFreeAntivirus1}
 AppVerName={cm:ClamWinFreeAntivirus1} 0.88.6
-AppPublisher=alch
+OutputBaseFilename=ClamWinL10N-24
+AppPublisher=budtse
 AppPublisherURL=http://www.clamwin.com/
 AppSupportURL=http://www.clamwin.com/
 AppUpdatesURL=http://www.clamwin.com/
@@ -14,9 +15,10 @@ LicenseFile=SetupFiles\License.rtf
 AllowNoIcons=true
 MinVersion=4.1.1998,5.0.2195
 
-ShowLanguageDialog=no
+ShowLanguageDialog=yes
 LanguageDetectionMethod=locale
 OutputDir=Output
+OutputManifestFile=ClamwinL10N-Manifest.txt
 Compression=lzma/ultra
 InternalCompressLevel=max
 
@@ -24,12 +26,15 @@ SolidCompression=false
 WizardImageFile=Setupfiles\WizModernImage.bmp
 WizardSmallImageFile=Setupfiles\WizModernSmallImage.bmp
 [Languages]
-Name: en; MessagesFile: compiler:Languages\English.isl
+Name: en; MessagesFile: compiler:Default.isl
 Name: ru; MessagesFile: compiler:Languages\Russian.isl
 Name: nl; MessagesFile: compiler:Languages\Dutch.isl
 Name: fr; MessagesFile: compiler:Languages\French.isl
-;Name: de; MessagesFile: compiler:Languages\German.isl
-Name: cs; MessagesFile: compiler:Languages\Czech.isl
+Name: de; MessagesFile: compiler:Languages\German.isl
+Name: it; MessagesFile: compiler:Languages\Italian.isl
+Name: es; MessagesFile: compiler:Languages\Spanish.isl
+;Name: cs; MessagesFile: compiler:Languages\Czech.isl
+
 [Files]
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 ;Source: cygwin\cygwin1.dll; DestDir: {app}\bin; Components: Cygwin; Flags: restartreplace uninsrestartdelete replacesameversion
@@ -65,21 +70,22 @@ Source: py2exe\dist\bin\img\World.png; DestDir: {app}\bin\img; Components: ClamW
 Source: py2exe\dist\bin\img\Support.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
 Source: py2exe\dist\bin\img\ListScan.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
 Source: py2exe\dist\bin\img\Splash.bmp; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
-Source: ..\..\clamav-release\contrib\msvc\Release\clamscan.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\..\clamav-release\contrib\msvc\Release\freshclam.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\..\clamav-release\contrib\msvc\Release\sigtool.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\..\clamav-release\contrib\msvc\Release\libclamav.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\..\..\clamav-release\contrib\msvc\Release\clamscan.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\..\..\clamav-release\contrib\msvc\Release\freshclam.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\..\..\clamav-release\contrib\msvc\Release\sigtool.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\..\..\clamav-release\contrib\msvc\Release\libclamav.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
 
 ; Copy the Gettext locale files
 
 ;Source: ..\locale\ca_ES.mo; DestDir: {app}\locale\ca_ES\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\cs_CZ.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+;Source: ..\locale\cs_CZ.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\de_DE.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-;Source: ..\locale\es_ES.mo; DestDir: {app}\locale\es_ES\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\es_ES.mo; DestDir: {app}\locale\es_ES\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\fr_FR.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-;Source: ..\locale\it_IT.mo; DestDir: {app}\locale\it_IT\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\it_IT.mo; DestDir: {app}\locale\it_IT\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 ;Source: ..\locale\ko_KR.mo; DestDir: {app}\locale\ko_KR\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\nl_BE.mo; DestDir: {app}\locale\nl_BE\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\ru_RU.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 ;Source: ..\locale\pt_PT.mo; DestDir: {app}\locale\pt_PT\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 ;Source: ..\locale\sv_SE.mo; DestDir: {app}\locale\sv_SE\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 ;Source: ..\locale\tr_TR.mo; DestDir: {app}\locale\tr_TR\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
@@ -179,7 +185,7 @@ Name: {app}\locale; Components: ClamWin
 ;Name: {app}\locale\en_AU\LC_MESSAGES; Components: ClamWin
 ;Name: {app}\src; Components: Sources
 [_ISTool]
-OutputExeFilename=L:\Projects\ClamWin\Setup\Output\setup.exe
+;OutputExeFilename=L:\Projects\ClamWin\Setup\Output\setup.exe
 [Components]
 ;Name: Cygwin; Description: Cygwin Files; Flags: fixed; Types: full custom typical
 Name: ClamAV; Description: {cm:ClamAVFiles1}; Flags: fixed; Types: full custom typical
@@ -467,47 +473,131 @@ ru.IntegrationOutlook1=Èíòåãðàöèÿ ñ Microsoft Outlook
 ru.ClamWinFreeAntivirus1=ClamWin Free Àíòèâèðóñ
 ru.ClamWinFreeAntivirus2=ClamWin Àíòèâèðóñ
 
-cs.LanguageName=Czech
-cs.InitializeWizard1=Vyberte typ instalace
-cs.InitializeWizard2=Pro koho má být ten to program nainstalován?
-cs.InitializeWizard3=Prosím, vyberte zda má být tento program dostupný všem uživatelum nebo pouze Vám.
-cs.InitializeWizard4=&Kdokoliv, kdo používá tento pocítac (všichni uživatelé)
-cs.InitializeWizard5=Pouze pro &me (
-cs.NoOutlookRunning1=Musíte ukoncit Outlook pred instalací ClamWinu.
-cs.NoOutlookRunning2=Zavrete, prosím, všechna okna Outlooku (Pres "Soubor->Ukoncit a Odhlásit"
-cs.NoOutlookRunning3=pokud je to dostupné) a kliknete na Opakovat nebo na Storno pro ukoncení instalace.
-cs.NoOutlookRunning4=Zustane-li tato zpráva po zavrení všech oken Outlooku, budete se
-cs.NoOutlookRunning5=muset odhlásit z Windows a zkusit to znovu.
-cs.NoOutlookRunning6=Agent dorucování zpráv Outlooku stále beží.
-cs.NoOutlookRunning7=Pokud jste práve zavreli Outlook, pockejte pár vterit a kliknete na Opakovat.
-cs.NoOutlookRunning8=Zustane-li tato zpráva, budete se muset odhlásit z Windows a zkusit to znovu.
-cs.CloseClamWin1=Instalátor nalezl nainstalovanou predchozí verzi programu.
-cs.CloseClamWin2=Chcete program ukoncit nyní? (Doporuceno)
-cs.InitializeSetup1=Instalátor nalezi nainstalovanou novejší verzi proogramu.
-cs.InitializeSetup2=Instalátor se nyní ukoncí.
-cs.DeInitializeSetup1=Prosím, zrestartujte svuj pocítac pro dokoncení instalace ClamWin Antiviru.
-cs.RemoveSetup1=Instalátor nalezl na tomto pocítaci nainstalovanou predchozí verzi programu. Kliknete na Ano pro odinstalaci.
-cs.DownloadDB1=Stáhnout soubory databáze viru. (Nevybírejte, pokud jste pripojeni pres proxy server)
-cs.DownloadDB2=Stahuji soubory databází viru.
-cs.DownloadDB3=Stáhnout
-cs.CreateDesktop1=Vytvorit ikonu na &ploše
-cs.CreateDesktop2=Další ikony:
-cs.TypicalInstallation1=Typická instalace
-cs.CustomInstallation1=Vlastní instalace
-cs.FullInstallation1=Plná instalace
-cs.ClamWinSourceCode1=Zdrojové kódy ClamWin
-cs.ClamAVSourceCode1=Zdrojové kódy ClamAV
-cs.InternationalHelpFiles1=Mezinárodní soubory nápovedy
-cs.RussianHelpFiles1=Soubory nápovedy v ruštine
-cs.FrenchHelpFiles1=Soubory nápovedy ve francouzštine
-cs.DutchHelpFiles1=Soubory nápovedy v holandštine
-cs.DownloadSourceCode1=Stáhnout zdrojové kódy
-cs.ClamAVFiles1=ClamAV soubory
-cs.ClamWinFiles1=ClamWin soubory
-cs.IntegrationExplorer1=Integrace do Pruzkumníka Windows
-cs.IntegrationOutlook1=Integrace s Microsoft Outlookem
-cs.ClamWinFreeAntivirus1=ClamWin Free Antivirus
-cs.ClamWinFreeAntivirus2=ClamWin Antivirus
+it.LanguageName=Italian
+it.InitializeWizard1=Select Installation Options
+it.InitializeWizard2=Who should this application be installed for?
+it.InitializeWizard3=Please select whether you wish to make this software available to all users or just yourself.
+it.InitializeWizard4=&Anyone who uses this computer (all users)
+it.InitializeWizard5=Only for &me (
+it.NoOutlookRunning1=You must close Outlook before ClamWin can be installed.
+it.NoOutlookRunning2=Please close all Outlook Windows (using "File->Exit and Log off"
+it.NoOutlookRunning3=if available) and click Retry, or click Cancel to exit the installation.
+it.NoOutlookRunning4=If this message persists after closing all Outlook windows, you may
+it.NoOutlookRunning5=need to log off from Windows, and try again.
+it.NoOutlookRunning6=The Outlook mail delivery agent is still running.
+it.NoOutlookRunning7=If you only recently closed Outlook, wait a few seconds and click Retry.
+it.NoOutlookRunning8=If this message persists, you may need to log off from Windows, and try again.
+it.CloseClamWin1=The Setup detected a previous version of the software is installed.
+it.CloseClamWin2=Would you like to close the program now? (Recommended)
+it.InitializeSetup1=Setup detected that a newer version of the software is already installed.
+it.InitializeSetup2=Setup will terminate now.
+it.DeInitializeSetup1=Please restart your computer in order to complete the installation of ClamWin Antivirus.
+it.RemoveSetup1=The Setup detected a previous version of the software is already installed on this computer. Click Yes to uninstall it now.
+it.DownloadDB1=Download Virus Database Files. (Do not Select if you connect via a Proxy Server)
+it.DownloadDB2=Downloading Virus Database Files.
+it.DownloadDB3=Download
+it.CreateDesktop1=Create a &desktop icon
+it.CreateDesktop2=Additional icons:
+it.TypicalInstallation1=Typical Installation
+it.CustomInstallation1=Custom Installation
+it.FullInstallation1=Full Installation
+it.ClamWinSourceCode1=ClamWin Source Code
+it.ClamAVSourceCode1=ClamAV Source Code
+it.InternationalHelpFiles1=International Help Files
+it.RussianHelpFiles1=Russian Help Files
+it.FrenchHelpFiles1=French Help Files
+it.DutchHelpFiles1=Dutch Help Files
+it.DownloadSourceCode1=Download Source Code
+it.ClamAVFiles1=ClamAV Files
+it.ClamWinFiles1=ClamWin Files
+it.IntegrationExplorer1=Integration with Windows Explorer
+it.IntegrationOutlook1=Integration with Microsoft Outlook
+it.ClamWinFreeAntivirus1=ClamWin Free Antivirus
+it.ClamWinFreeAntivirus2=ClamWin Antivirus
+
+es.LanguageName=English
+es.InitializeWizard1=Select Installation Options
+es.InitializeWizard2=Who should this application be installed for?
+es.InitializeWizard3=Please select whether you wish to make this software available to all users or just yourself.
+es.InitializeWizard4=&Anyone who uses this computer (all users)
+es.InitializeWizard5=Only for &me (
+es.NoOutlookRunning1=You must close Outlook before ClamWin can be installed.
+es.NoOutlookRunning2=Please close all Outlook Windows (using "File->Exit and Log off"
+es.NoOutlookRunning3=if available) and click Retry, or click Cancel to exit the installation.
+es.NoOutlookRunning4=If this message persists after closing all Outlook windows, you may
+es.NoOutlookRunning5=need to log off from Windows, and try again.
+es.NoOutlookRunning6=The Outlook mail delivery agent is still running.
+es.NoOutlookRunning7=If you only recently closed Outlook, wait a few seconds and click Retry.
+es.NoOutlookRunning8=If this message persists, you may need to log off from Windows, and try again.
+es.CloseClamWin1=The Setup detected a previous version of the software is installed.
+es.CloseClamWin2=Would you like to close the program now? (Recommended)
+es.InitializeSetup1=Setup detected that a newer version of the software is already installed.
+es.InitializeSetup2=Setup will terminate now.
+es.DeInitializeSetup1=Please restart your computer in order to complete the installation of ClamWin Antivirus.
+es.RemoveSetup1=The Setup detected a previous version of the software is already installed on this computer. Click Yes to uninstall it now.
+es.DownloadDB1=Download Virus Database Files. (Do not Select if you connect via a Proxy Server)
+es.DownloadDB2=Downloading Virus Database Files.
+es.DownloadDB3=Download
+es.CreateDesktop1=Create a &desktop icon
+es.CreateDesktop2=Additional icons:
+es.TypicalInstallation1=Typical Installation
+es.CustomInstallation1=Custom Installation
+es.FullInstallation1=Full Installation
+es.ClamWinSourceCode1=ClamWin Source Code
+es.ClamAVSourceCode1=ClamAV Source Code
+es.InternationalHelpFiles1=International Help Files
+es.RussianHelpFiles1=Russian Help Files
+es.FrenchHelpFiles1=French Help Files
+es.DutchHelpFiles1=Dutch Help Files
+es.DownloadSourceCode1=Download Source Code
+es.ClamAVFiles1=ClamAV Files
+es.ClamWinFiles1=ClamWin Files
+es.IntegrationExplorer1=Integration with Windows Explorer
+es.IntegrationOutlook1=Integration with Microsoft Outlook
+es.ClamWinFreeAntivirus1=ClamWin Free Antivirus
+es.ClamWinFreeAntivirus2=ClamWin Antivirus
+
+;cs.LanguageName=Czech
+;cs.InitializeWizard1=Vyberte typ instalace
+;cs.InitializeWizard2=Pro koho má být ten to program nainstalován?
+;cs.InitializeWizard3=Prosím, vyberte zda má být tento program dostupný všem uživatelum nebo pouze Vám.
+;cs.InitializeWizard4=&Kdokoliv, kdo používá tento pocítac (všichni uživatelé)
+;cs.InitializeWizard5=Pouze pro &me (
+;cs.NoOutlookRunning1=Musíte ukoncit Outlook pred instalací ClamWinu.
+;cs.NoOutlookRunning2=Zavrete, prosím, všechna okna Outlooku (Pres "Soubor->Ukoncit a Odhlásit"
+;cs.NoOutlookRunning3=pokud je to dostupné) a kliknete na Opakovat nebo na Storno pro ukoncení instalace.
+;cs.NoOutlookRunning4=Zustane-li tato zpráva po zavrení všech oken Outlooku, budete se
+;cs.NoOutlookRunning5=muset odhlásit z Windows a zkusit to znovu.
+;cs.NoOutlookRunning6=Agent dorucování zpráv Outlooku stále beží.
+;cs.NoOutlookRunning7=Pokud jste práve zavreli Outlook, pockejte pár vterit a kliknete na Opakovat.
+;cs.NoOutlookRunning8=Zustane-li tato zpráva, budete se muset odhlásit z Windows a zkusit to znovu.
+;cs.CloseClamWin1=Instalátor nalezl nainstalovanou predchozí verzi programu.
+;cs.CloseClamWin2=Chcete program ukoncit nyní? (Doporuceno)
+;cs.InitializeSetup1=Instalátor nalezi nainstalovanou novejší verzi proogramu.
+;cs.InitializeSetup2=Instalátor se nyní ukoncí.
+;cs.DeInitializeSetup1=Prosím, zrestartujte svuj pocítac pro dokoncení instalace ClamWin Antiviru.
+;cs.RemoveSetup1=Instalátor nalezl na tomto pocítaci nainstalovanou predchozí verzi programu. Kliknete na Ano pro odinstalaci.
+;cs.DownloadDB1=Stáhnout soubory databáze viru. (Nevybírejte, pokud jste pripojeni pres proxy server)
+;cs.DownloadDB2=Stahuji soubory databází viru.
+;cs.DownloadDB3=Stáhnout
+;cs.CreateDesktop1=Vytvorit ikonu na &ploše
+;cs.CreateDesktop2=Další ikony:
+;cs.TypicalInstallation1=Typická instalace
+;cs.CustomInstallation1=Vlastní instalace
+;cs.FullInstallation1=Plná instalace
+;cs.ClamWinSourceCode1=Zdrojové kódy ClamWin
+;cs.ClamAVSourceCode1=Zdrojové kódy ClamAV
+;cs.InternationalHelpFiles1=Mezinárodní soubory nápovedy
+;cs.RussianHelpFiles1=Soubory nápovedy v ruštine
+;cs.FrenchHelpFiles1=Soubory nápovedy ve francouzštine
+;cs.DutchHelpFiles1=Soubory nápovedy v holandštine
+;cs.DownloadSourceCode1=Stáhnout zdrojové kódy
+;cs.ClamAVFiles1=ClamAV soubory
+;cs.ClamWinFiles1=ClamWin soubory
+;cs.IntegrationExplorer1=Integrace do Pruzkumníka Windows
+;cs.IntegrationOutlook1=Integrace s Microsoft Outlookem
+;cs.ClamWinFreeAntivirus1=ClamWin Free Antivirus
+;cs.ClamWinFreeAntivirus2=ClamWin Antivirus
 
 [Code]
 var
