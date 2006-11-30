@@ -1,0 +1,1935 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2006-11-30 19:41+0100\n"
+"Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
+"Language-Team: Russian <team@clamwin.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+"X-Poedit-Language: Russian\n"
+"X-Poedit-Country: RUSSIAN FEDERATION\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: wxDialogUtils.py:115
+msgid ""
+"\n"
+"-----------------------------\n"
+msgstr ""
+
+#: wxDialogStatus.py:546
+msgid ""
+"\n"
+"--------------------------------------\n"
+"Cancelled\n"
+"--------------------------------------\n"
+msgstr ""
+"\n"
+"--------------------------------------\n"
+"Прервано\n"
+"--------------------------------------\n"
+
+#: wxDialogStatus.py:544
+msgid ""
+"\n"
+"--------------------------------------\n"
+"Completed\n"
+"--------------------------------------\n"
+msgstr ""
+"\n"
+"--------------------------------------\n"
+"Закончено\n"
+"--------------------------------------\n"
+
+#: wxFrameMain.py:124
+msgid "&About"
+msgstr "&О Программе"
+
+#: OlAddin.py:580
+#, fuzzy
+msgid "&About ClamWin Free Antivirus"
+msgstr "ClamWin Free Антивирус"
+
+#: wxDialogScheduledScan.py:243
+msgid "&Activate This Schedule"
+msgstr "Активировать расписание"
+
+#: wxDialogPreferences.py:603
+msgid "&Add"
+msgstr "Добавить"
+
+#: wxDialogPreferences.py:500
+msgid "&Additional Clamscan Command Line Parameters:"
+msgstr "Дополнительные параметры командной строки Clamscan:"
+
+#: wxFrameMain.py:116
+msgid "&Check Latest Version"
+msgstr "&Проверка последней версии"
+
+#: wxDialogPreferences.py:352
+msgid "&ClamScan Location:"
+msgstr "&Размещение ClamScan"
+
+#: wxDialogCheckUpdate.py:105
+#: wxFrameMain.py:265
+#: wxDialogStatus.py:500
+msgid "&Close"
+msgstr "&Закрыть"
+
+#: ClamTray.py:284
+#, fuzzy
+msgid "&Configure ClamWin"
+msgstr "Взносы для ClamWin"
+
+#: ClamTray.py:237
+msgid "&Configure Scheduler"
+msgstr "&Настройка планировщика"
+
+#: wxDialogScheduledScan.py:202
+#: wxDialogPreferences.py:567
+msgid "&Day Of The Week:"
+msgstr "День недели:"
+
+#: wxDialogPreferences.py:882
+msgid "&Deactivate"
+msgstr "Деактивировать"
+
+#: wxDialogPreferences.py:493
+msgid "&Detect Broken Executables"
+msgstr "&Обнаруживать испорченные EXE-файлы"
+
+#: wxDialogPreferences.py:622
+#, fuzzy
+msgid "&Display Infected Files Only"
+msgstr "Инфицировано файлов:"
+
+#: wxDialogPreferences.py:811
+msgid "&Display Pop-up Notification Messages In Taskbar "
+msgstr "Показывать всплывающие уведомления в панели задач"
+
+#: wxFrameMain.py:97
+msgid "&Display Reports"
+msgstr "&Отчеты"
+
+#: wxDialogCheckUpdate.py:88
+msgid "&Do Not Check for Updates in Future"
+msgstr "&Не проверять обновления в дальнейшем"
+
+#: wxDialogCheckUpdate.py:98
+#, fuzzy
+msgid "&Download"
+msgstr "Загрузка"
+
+#: ClamTray.py:283
+#, fuzzy
+msgid "&Download Virus Database Update"
+msgstr "Скачать обновление &Вирусной базы"
+
+#: wxDialogPreferences.py:616
+#, fuzzy
+msgid "&Edit"
+msgstr "Вы&ход"
+
+#: wxDialogPreferences.py:315
+#, fuzzy
+msgid "&Enable Automatic Virus Database Updates"
+msgstr "Скачать обновление &Вирусной базы"
+
+#: wxDialogPreferences.py:832
+msgid "&Exclude Matching Filenames:"
+msgstr "Исключить совпадающие имена файлов:"
+
+#: ClamTray.py:291
+#, fuzzy
+msgid "&Exit"
+msgstr "Вы&ход"
+
+#: wxDialogPreferences.py:486
+msgid "&Extract Attachments and Macros from MS Office Documents"
+msgstr "Получить присоединенные файлы и макросы из файла MS Office Documents"
+
+#: wxFrameMain.py:121
+msgid "&FAQ"
+msgstr ""
+
+#: wxFrameMain.py:106
+msgid "&File"
+msgstr "&Файл"
+
+#: wxDialogPreferences.py:371
+msgid "&FreshClam Location:"
+msgstr "Размещение &FreshClam"
+
+#: wxDialogPreferences.py:769
+#, fuzzy
+msgid "&From:"
+msgstr "от"
+
+#: wxFrameMain.py:108
+#: wxFrameMain.py:114
+msgid "&Help"
+msgstr "&Помощь"
+
+#: wxDialogPreferences.py:716
+msgid "&Mail Server:"
+msgstr "Майл сервер:"
+
+#: wxDialogPreferences.py:670
+msgid "&Move To Quarantine Folder:"
+msgstr "Переместить в папку карантина:"
+
+#: wxDialogPreferences.py:898
+msgid "&Notify About New ClamWin Releases"
+msgstr "Уведомлять о выходе новых релизов ClamWin"
+
+#: ClamTray.py:282
+#, fuzzy
+msgid "&Open ClamWin"
+msgstr "Взносы для ClamWin"
+
+#: wxDialogPreferences.py:293
+#: wxDialogPreferences.py:751
+msgid "&Password:"
+msgstr "&Пароль:"
+
+#: wxFrameMain.py:91
+msgid "&Preferences"
+msgstr "&Параметры"
+
+#: wxDialogPreferences.py:609
+msgid "&Remove"
+msgstr "Удалить"
+
+#: wxDialogPreferences.py:661
+msgid "&Remove (Use Carefully)"
+msgstr "Удаление (использовать с осторожностью)"
+
+#: wxDialogPreferences.py:653
+msgid "&Report Only"
+msgstr "Только отчет"
+
+#: ClamTray.py:257
+#, fuzzy
+msgid "&Run Scheduled Scan"
+msgstr "Запланированное сканирование"
+
+#: wxFrameMain.py:147
+#: wxFrameMain.py:257
+msgid "&Scan"
+msgstr "&Сканирование"
+
+#: wxDialogScheduledScan.py:215
+#, fuzzy
+msgid "&Scan Folder:"
+msgstr "&Отчет о сканировании"
+
+#: wxDialogPreferences.py:426
+msgid "&Scan In Archives"
+msgstr "Сканировать в &Архивах"
+
+#: wxDialogPreferences.py:409
+#, fuzzy
+msgid "&Scan In Subdirectories"
+msgstr "Просканировано директорий:"
+
+#: wxDialogPreferences.py:857
+msgid "&Scan Only Matching Filenames:"
+msgstr "Сканировать только совпадающие имена файлов:"
+
+#: wxFrameMain.py:138
+msgid "&Scan Report"
+msgstr "&Отчет о сканировании"
+
+#: wxDialogPreferences.py:521
+#, fuzzy
+msgid "&Scan Report File:"
+msgstr "&Отчет о сканировании"
+
+#: ClamTray.py:285
+#, fuzzy
+msgid "&Scheduler"
+msgstr "Расписание"
+
+#: wxDialogPreferences.py:700
+msgid "&Send Email Alert On Virus Detection"
+msgstr "Отправлять емайл уведолжение при обнаружении вируса"
+
+#: wxDialogStatus.py:319
+msgid "&Stop"
+msgstr "Стоп"
+
+#: ClamTray.py:261
+msgid "&Stop All Running Tasks Now"
+msgstr "&Останов всех выполняемых задач"
+
+#: wxDialogScheduledScan.py:187
+#: wxDialogPreferences.py:415
+#, fuzzy
+msgid "&Time:"
+msgstr "Время:"
+
+#: wxDialogPreferences.py:780
+#, fuzzy
+msgid "&To:"
+msgstr "&Настройки"
+
+#: wxFrameMain.py:107
+msgid "&Tools"
+msgstr "&Настройки"
+
+#: wxDialogPreferences.py:479
+msgid "&Treat Files As Mailboxes"
+msgstr "Считать файлы майлбоксами"
+
+msgid "&Unload Infected Programs from Computer Memory"
+msgstr ""
+
+#: wxDialogPreferences.py:334
+#, fuzzy
+msgid "&Update Frequency:"
+msgstr "Частота сканирования:"
+
+#: wxDialogPreferences.py:638
+#, fuzzy
+msgid "&Update Virus Database On Logon"
+msgstr "Открывает лог-файл обновления вирусной базы"
+
+#: wxDialogPreferences.py:283
+#: wxDialogPreferences.py:740
+msgid "&User Name:"
+msgstr "&Имя пользователя:"
+
+#: wxDialogPreferences.py:391
+#, fuzzy
+msgid "&Virus Database Folder:"
+msgstr "&Отчет об обновлении вирусной базы"
+
+#: wxFrameMain.py:136
+#: ClamTray.py:278
+msgid "&Virus Database Update Report"
+msgstr "&Отчет об обновлении вирусной базы"
+
+#: wxDialogPreferences.py:541
+#, fuzzy
+msgid "&Virus Database Update Report File:"
+msgstr "&Отчет об обновлении вирусной базы"
+
+#: ClamTray.py:271
+#, fuzzy
+msgid "&Virus Scan Report"
+msgstr "&Отчет о сканировании"
+
+#: ClamTray.py:289
+#, fuzzy
+msgid "&Visit ClamWin Website"
+msgstr "ClamWin &Вебсайт"
+
+#: wxDialogPreferences.py:908
+msgid "(No personal information is transmitted during this check)"
+msgstr "(Никакая персональная информация не передается при данной проверке)"
+
+#: wxDialogPreferences.py:827
+msgid "(To specify a regular expression include your pattern within <...>)"
+msgstr "(Для применения регулярного выражения включите шаблон в виде <...>)"
+
+#: wxDialogStatus.py:143
+#: wxDialogLogViewer.py:115
+msgid "-- summary --"
+msgstr "-- итоги --"
+
+#: wxDialogUtils.py:117
+msgid "-----------------------------"
+msgstr ""
+
+#: wxDialogStatus.py:464
+msgid ". Please check that you have write "
+msgstr ". Пожалуйста проверьте, что вы имеете права"
+
+#: wxDialogPreferences.py:890
+msgid "A&ctivate"
+msgstr "Активировать"
+
+#: wxDialogAbout.py:57
+#: wxDialogAbout.py:61
+#, fuzzy
+msgid "About ClamWin Free Antivirus"
+msgstr "ClamWin Free Антивирус"
+
+#: OlAddin.py:955
+msgid "Addin terminating: %d COM client and %d COM servers exist."
+msgstr "Закрытие плагина: %d COM клиент и %d COM сервер существуют. "
+
+#: wxDialogPreferences.py:163
+msgid "Advanced"
+msgstr "Расширенные"
+
+#: wxDialogCheckUpdate.py:69
+msgid "After you download the latest version setup file simply run it and install over the existing version."
+msgstr "После скачивания последней версии установочного файла, просто запустите его и произведите установку поверх существующей версии."
+
+#: wxDialogStatus.py:455
+#: wxDialogPreferences.py:1250
+#: wxDialogPreferences.py:1266
+msgid "All files (*)|*"
+msgstr "Все файлы (*)|*"
+
+#: OlAddin.py:294
+#, fuzzy
+msgid "An Error occurred reading clamscan report: %s"
+msgstr "При обновлении UI выделения произошла ошибка. %s"
+
+#: wxFrameMain.py:354
+msgid "An Error occurred while updating UI selection. %s"
+msgstr "При обновлении UI выделения произошла ошибка. %s"
+
+#: OlAddin.py:306
+#, fuzzy
+msgid "An Error occurred whilst converting clamscan report: %s"
+msgstr "При обновлении UI выделения произошла ошибка. %s"
+
+#: OlAddin.py:296
+#, fuzzy
+msgid ""
+"An Error occurred whilst scanning:\n"
+"%s"
+msgstr "При обновлении UI выделения произошла ошибка. %s"
+
+#: OlAddin.py:277
+#, fuzzy
+msgid "An Error occurred whilst starting clamscan: %s"
+msgstr "При обновлении UI выделения произошла ошибка. %s"
+
+#: ClamTray.py:405
+#, fuzzy
+msgid "An error occurred during Scheduled Virus Database Update. Please review the update report."
+msgstr "При обновлении вирусной базы произошла ошибка. Пожалуйста, просмотрите отчет об обновлении."
+
+#: wxDialogUtils.py:58
+msgid "An error occurred during Virus Database Update. Please review the update report."
+msgstr "При обновлении вирусной базы произошла ошибка. Пожалуйста, просмотрите отчет об обновлении."
+
+#: ClamTray.py:498
+#, fuzzy
+msgid "An error occurred during scheduled scan. Please review the scan report."
+msgstr "При сканировании произошла ошибка. Пожалуйста, просмотрите отчет о сканировании."
+
+#: wxDialogUtils.py:128
+msgid "An error occurred during virus scan. Please review the scan report."
+msgstr "При сканировании произошла ошибка. Пожалуйста, просмотрите отчет о сканировании."
+
+#: OlAddin.py:199
+#, fuzzy
+msgid "An error occurred in ClamWin Free Antivirus About Box.\n"
+msgstr "Открывает вебсайт ClamWin Free Antivirus"
+
+#: ClamTray.py:362
+#, fuzzy
+msgid ""
+"An error occurred while displaying log file %s.\n"
+"Error: %s"
+msgstr "При обновлении UI выделения произошла ошибка. %s"
+
+#: ClamTray.py:455
+#, fuzzy
+msgid "An error occurred while starting ClamWin Free Antivirus Preferences.\n"
+msgstr "При обновлении UI выделения произошла ошибка. %s"
+
+#: ClamTray.py:381
+#, fuzzy
+msgid "An error occurred while starting ClamWin Free Antivirus Update.\n"
+msgstr "При обновлении UI выделения произошла ошибка. %s"
+
+#: ClamTray.py:373
+#, fuzzy
+msgid "An error occurred while starting ClamWin Free Antivirus scanner.\n"
+msgstr "При обновлении UI выделения произошла ошибка. %s"
+
+#: OlAddin.py:918
+#, fuzzy
+msgid "An error occurred whilst displaying the splashscreen %s. Error: %s."
+msgstr "При обновлении UI выделения произошла ошибка. %s"
+
+#: ClamTray.py:532
+#, fuzzy
+msgid "An error occurred whilst running Running Scheduled Task "
+msgstr "При обновлении UI выделения произошла ошибка. %s"
+
+#: wxDialogPreferences.py:1015
+msgid "An error occurred whilst saving configuration file %s. Please check that you have write permission to the configuration file."
+msgstr "При сохранении конфигурационного файла %s произошла ошибка. Пожалуйста проверьте есть ли у вас права на запись для конфигурационного файла."
+
+#: OlAddin.py:476
+#, fuzzy
+msgid "An error occurred whilst scanning email message."
+msgstr "При обновлении UI выделения произошла ошибка. %s"
+
+#: ClamTray.py:131
+#, fuzzy
+msgid "An error occurred whilst terminating scheduler thread. Error: %s"
+msgstr "При обновлении UI выделения произошла ошибка. %s"
+
+#: wxDialogCheckUpdate.py:60
+msgid "An update of ClamWin Free Antivirus has been released. Please click on Download button and download the latest version %s"
+msgstr "Вышло обновление антивируса ClamWin Free Antivirus. Пожалуйста щелкните на кнопку Загрузить и скачайте последнюю версию %s"
+
+#: wxDialogStatus.py:219
+msgid "Apr "
+msgstr "Апр"
+
+#: wxDialogPreferences.py:157
+msgid "Archives"
+msgstr "Архивы"
+
+#: wxDialogStatus.py:227
+msgid "Aug "
+msgstr "Авг"
+
+#: wxDialogAbout.py:119
+msgid "Author: alch <alch@users.sourceforge.net>"
+msgstr "Автор: alch <alch@users.sourceforge.net>"
+
+#: wxDialogLogViewer.py:101
+#: wxDialogStatus.py:129
+msgid "Can't query"
+msgstr "Не могу послать запрос"
+
+#: wxDialogScheduledScan.py:256
+#: wxDialogPreferences.py:253
+msgid "Cancel"
+msgstr "Отмена"
+
+#: ClamTray.py:288
+#, fuzzy
+msgid "Check &Latest Version"
+msgstr "&Проверка последней версии"
+
+#: wxFrameMain.py:115
+msgid "Checks for the Latest Version"
+msgstr "Проверка последней версии"
+
+#: wxDialogPreferences.py:1209
+#: wxDialogPreferences.py:1225
+#: wxDialogPreferences.py:1251
+#: wxDialogPreferences.py:1267
+#: wxDialogStatus.py:456
+msgid "Choose a file"
+msgstr "Выберите файл"
+
+#: wxDialogAbout.py:142
+msgid "ClamAV Homepage"
+msgstr "Домашняя страница ClamAV"
+
+#: wxDialogAbout.py:79
+msgid "ClamAV Version gets here"
+msgstr "Здесь отображается версия ClamAV"
+
+#: wxDialogLogViewer.py:93
+#: wxDialogStatus.py:121
+msgid "ClamAV update process started at"
+msgstr "Процесс обновления ClamAV запущен в"
+
+#: wxFrameMain.py:118
+msgid "ClamWin &Website"
+msgstr "ClamWin &Вебсайт"
+
+#: wxFrameMain.py:221
+#: wxFrameMain.py:225
+#: wxFrameMain.py:337
+#: wxFrameMain.py:343
+#: ClamTray.py:117
+#: ClamTray.py:339
+#: ClamTray.py:363
+#: ClamTray.py:373
+#: ClamTray.py:381
+#: ClamTray.py:441
+#: ClamTray.py:455
+#: OlAddin.py:199
+#: OlAddin.py:419
+#: OlAddin.py:492
+#: wxDialogPreferences.py:1501
+#: wxDialogPreferences.py:1564
+#: wxDialogPreferences.py:1582
+#: wxDialogStatus.py:466
+msgid "ClamWin Free Antivirus"
+msgstr "ClamWin Free Антивирус"
+
+#: wxDialogAbout.py:93
+#: wxDialogAbout.py:115
+#, fuzzy
+msgid "ClamWin Free Antivirus Homepage"
+msgstr "ClamWin Free Антивирус"
+
+#: wxDialogStatus.py:294
+#, fuzzy
+msgid "ClamWin Free Antivirus Status"
+msgstr "ClamWin Free Антивирус"
+
+#: OlAddin.py:836
+#, fuzzy
+msgid "ClamWin Free Antivirus could not replace an attachment. Error: %s"
+msgstr "ClamWin Free Antivirus: Загрузка обновления..."
+
+#: OlAddin.py:418
+#, fuzzy
+msgid ""
+"ClamWin Free Antivirus could not scan file%s\n"
+".Error: %s"
+msgstr "ClamWin Free Антивирус: Сканирование..."
+
+#: OlAddin.py:470
+msgid "ClamWin Free Antivirus has detected a virus in the message attachments!"
+msgstr "ClamWin Free Antivirus обнаружил вирус во вложении сообщения!"
+
+#: wxFrameMain.py:337
+msgid "ClamWin Free Antivirus is not configured. Would you like to configure it now?"
+msgstr "Программа ClamWin Free Антивирус не настроена. Хотите ли вы настроить ее сейчас?"
+
+#: OlAddin.py:837
+#, fuzzy
+msgid "ClamWin Free Antivirus!"
+msgstr "ClamWin Free Антивирус"
+
+#: wxDialogUtils.py:65
+#, fuzzy
+msgid "ClamWin Free Antivirus: Downloading Update..."
+msgstr "ClamWin Free Антивирус"
+
+#: wxDialogUtils.py:133
+#, fuzzy
+msgid "ClamWin Free Antivirus: Scanning..."
+msgstr "ClamWin Free Антивирус"
+
+#: wxDialogLogViewer.py:68
+#, fuzzy
+msgid "ClamWin Log Viewer"
+msgstr "Показывает лог-файлы ClamWin"
+
+#: wxDialogPreferences.py:187
+#, fuzzy
+msgid "ClamWin Preferences"
+msgstr "Настройки"
+
+#: wxDialogCheckUpdate.py:54
+#, fuzzy
+msgid "ClamWin Update"
+msgstr "ClamWin &Вебсайт"
+
+#: Config.py:64
+#, fuzzy
+msgid "ClamWin Virus Alert"
+msgstr "Просмотрщик логов ClamWin"
+
+#: EmailAlert.py:95
+msgid ""
+"ClamWin detected a virus on the following computer: %s\n"
+"\n"
+"Please review the attached log files for more details.\n"
+msgstr ""
+"ClamWin обнаружил вирус на следующем компьютере: %s\n"
+"Пожалуйста, просмотрите прилагаемый лог-файл для дополнительной информации.\n"
+
+#: wxDialogScheduledScan.py:227
+msgid "Click to browse for a folder"
+msgstr "Щелкните для выбора папки"
+
+#: wxDialogPreferences.py:535
+#: wxDialogPreferences.py:555
+#, fuzzy
+msgid "Click to browse for a log file"
+msgstr "Щелкните для выбора папки"
+
+#: wxDialogPreferences.py:686
+#, fuzzy
+msgid "Click to browse for a quarantine folder"
+msgstr "Щелкните для выбора папки"
+
+#: wxDialogPreferences.py:404
+#, fuzzy
+msgid "Click to browse for a virus database folder"
+msgstr "Щелкните для выбора папки"
+
+#: wxDialogPreferences.py:365
+#, fuzzy
+msgid "Click to browse for clamscan"
+msgstr "Щелкните для выбора папки"
+
+#: wxDialogPreferences.py:385
+#, fuzzy
+msgid "Click to browse for freshclam"
+msgstr "Щелкните для выбора папки"
+
+#: wxDialogPreferences.py:805
+msgid "Click to send a test email message"
+msgstr "Щелкните для отправки тестового емайл сообщения"
+
+#: wxDialogScheduledScan.py:252
+msgid "Closes the dialog and applies the settings"
+msgstr "Закрывает диалог и сохраняет установки"
+
+#: wxDialogScheduledScan.py:258
+msgid "Closes the dialog and discards the changes"
+msgstr "Закрывает диалог и отвергает изменения"
+
+#: wxDialogPreferences.py:245
+#, fuzzy
+msgid "Closes the window and saves the changes"
+msgstr "Закрывает диалог и отвергает изменения"
+
+#: wxDialogPreferences.py:255
+#, fuzzy
+msgid "Closes the window without saving the changes"
+msgstr "Закрывает диалог и отвергает изменения"
+
+msgid "Computer Memory Scan Completed"
+msgstr ""
+
+#: wxDialogStatus.py:185
+msgid "Connection with"
+msgstr "Соединение с"
+
+#: wxDialogStatus.py:181
+msgid "Control+C pressed, aborting..."
+msgstr "Нажата клавиша Control+C, завершение..."
+
+#: wxDialogAbout.py:125
+msgid "Copyright (c) 2004 - 2006"
+msgstr ""
+
+#: wxDialogUtils.py:157
+#, fuzzy
+msgid "Could not delete logfile : %s. Error: %s"
+msgstr "Не удалось открыть файл помощи - %s не найден."
+
+#: ClamTray.py:351
+#, fuzzy
+msgid "Could not display balloon tooltip. Error: %s"
+msgstr "Не удалось отправить уведомление по email. Ошибка: %s"
+
+#: ClamTray.py:338
+#, fuzzy
+msgid "Could not launch ClamWin Scanner. Error: %s"
+msgstr "Не удалось отправить уведомление по email. Ошибка: %s"
+
+#: wxDialogAbout.py:214
+msgid "Could not locate ClamScan executable"
+msgstr "Не удалось обнаружить исполняемые файлы ClamScan"
+
+#: wxFrameMain.py:387
+msgid "Could not open help file - %s not found."
+msgstr "Не удалось открыть файл помощи - %s не найден."
+
+#: wxFrameMain.py:394
+msgid "Could not open help file. Please ensure that you have Adobe Acrobat Reader installed."
+msgstr "Не удалось открыть файл помощи. Пожалуйста убедитесь что у вас установлен Adobe Acrobat Reader."
+
+#: wxDialogScheduledScan.py:119
+#, fuzzy
+msgid "Could not open persistent storage for scheduled scans. Error: %s"
+msgstr "Не удалось удалить лог-файл: %s. Ошибка: %s"
+
+#: wxDialogStatus.py:533
+#, fuzzy
+msgid "Could not read from log file %s. Error: %s"
+msgstr "Не удалось удалить файл %s. Ошибка: %s"
+
+#: OlAddin.py:508
+#: ClamTray.py:563
+#, fuzzy
+msgid "Could not remove file: %s. Error: %s"
+msgstr "Не удалось открыть файл помощи - %s не найден."
+
+#: wxDialogStatus.py:463
+msgid "Could not save report to the file "
+msgstr "Не удалось сохранить отчет в файле"
+
+#: wxDialogScheduledScan.py:130
+#, fuzzy
+msgid "Could not save scheduled scans to persistent storage. Error: %s"
+msgstr "Не удалось отправить уведомление по email. Ошибка: %s"
+
+#: EmailAlert.py:86
+#, fuzzy
+msgid "Could not send an email. Error: %s"
+msgstr "Не удалось отправить уведомление по email. Ошибка: %s"
+
+#: wxDialogUtils.py:150
+#: ClamTray.py:555
+msgid "Could not send email alert. Error: %s"
+msgstr "Не удалось отправить уведомление по email. Ошибка: %s"
+
+#: wxDialogPreferences.py:1386
+#, fuzzy
+msgid "Could not send the email. Please ensure you are connected to the internet. Error: %s"
+msgstr "Не удалось открыть файл помощи. Пожалуйста убедитесь что у вас установлен Adobe Acrobat Reader."
+
+#: wxDialogStatus.py:636
+#: ClamTray.py:477
+msgid ""
+"Could not start process.\n"
+"%s\n"
+"File does not exist."
+msgstr ""
+"Не удалось запустить процесс.\n"
+"%s\n"
+"Файл не существует."
+
+#: wxDialogStatus.py:629
+#: ClamTray.py:470
+msgid "Could not start process. No Command Line specified"
+msgstr "Не удалось запустить процесс. Не указана командная строка"
+
+#: wxDialogStatus.py:646
+#: wxDialogStatus.py:648
+#: ClamTray.py:485
+#: ClamTray.py:487
+#, fuzzy
+msgid ""
+"Could not start process:\n"
+"%s\n"
+"Error: %s"
+msgstr "Не удалось удалить лог-файл: %s. Ошибка: %s"
+
+#: wxDialogUtils.py:83
+msgid "Couldn't remove file %s. Error: %s"
+msgstr "Не удалось удалить файл %s. Ошибка: %s"
+
+#: wxDialogScheduledScan.py:233
+msgid "D&escription:"
+msgstr "Описание:"
+
+#: wxDialogStatus.py:165
+msgid "DON'T PANIC! Read"
+msgstr "Не паникуйте! Продолжайте читать"
+
+#: wxDialogPreferences.py:339
+#: wxDialogPreferences.py:346
+#: wxDialogPreferences.py:1453
+#: wxDialogScheduledScan.py:37
+#: wxDialogScheduledScan.py:66
+#: wxDialogScheduledScan.py:175
+#: wxDialogScheduledScan.py:181
+msgid "Daily"
+msgstr "Ежедневно"
+
+#: wxDialogLogViewer.py:127
+#: wxDialogStatus.py:155
+msgid "Data scanned:"
+msgstr "Просканировано данных:"
+
+#: wxDialogStatus.py:175
+#, fuzzy
+msgid "Database updated"
+msgstr "&Отчет об обновлении вирусной базы"
+
+#: wxDialogStatus.py:235
+msgid "Dec "
+msgstr "Дек"
+
+#: wxDialogPreferences.py:851
+#: wxDialogPreferences.py:876
+msgid "Delete item"
+msgstr "Удалить строку"
+
+#: wxDialogPreferences.py:169
+#, fuzzy
+msgid "Description"
+msgstr "Описание:"
+
+#: wxDialogPreferences.py:931
+msgid "Display &File Scanned % Progress Indicator"
+msgstr "Показывать % индикатор хода сканирования"
+
+#: ClamTray.py:286
+#, fuzzy
+msgid "Display &Reports"
+msgstr "&Отчеты"
+
+#: wxFrameMain.py:113
+msgid "Displays ClamWin Free Antivirus Manual"
+msgstr "Открывает Руководство по ClamWin Free Antivirus"
+
+#: wxFrameMain.py:96
+msgid "Displays ClamWin Log Files"
+msgstr "Показывает лог-файлы ClamWin"
+
+#: wxFrameMain.py:160
+#: wxFrameMain.py:161
+msgid "Displays Preferences Window"
+msgstr "Открывает окно настроек"
+
+#: wxFrameMain.py:134
+msgid "Displays Virus Database Update Log FIle"
+msgstr "Открывает лог-файл обновления вирусной базы"
+
+#: wxFrameMain.py:137
+msgid "Displays Virus Scan Log File"
+msgstr "Открывает лог-файл сканирования"
+
+#: wxFrameMain.py:123
+msgid "Displays the  About Box"
+msgstr "Показ окна О Программе"
+
+#: wxFrameMain.py:90
+msgid "Displays the configuration window"
+msgstr "Показывает окно конфигурации"
+
+#: wxDialogPreferences.py:450
+#: wxDialogPreferences.py:464
+msgid "Do Not Extract More Than "
+msgstr "Не проверять более чем "
+
+#: wxDialogPreferences.py:435
+msgid "Do Not Scan Archives Larger Than"
+msgstr "Не сканировать архивы более чем"
+
+#: wxDialogAbout.py:100
+msgid "Donate to ClamWin"
+msgstr "Взносы для ClamWin"
+
+#: wxDialogPreferences.py:324
+#, fuzzy
+msgid "Download &Site :"
+msgstr "Загрузка"
+
+#: wxFrameMain.py:95
+msgid "Download &Virus Database Update"
+msgstr "Скачать обновление &Вирусной базы"
+
+#: wxDialogStatus.py:183
+msgid "Downloading"
+msgstr "Загрузка"
+
+#: wxFrameMain.py:93
+msgid "Downloads latest virus database from the Internet"
+msgstr "Скачивание последней вирусной базы через Интернет"
+
+#: wxFrameMain.py:150
+msgid "E&xit"
+msgstr "Вы&ход"
+
+#: wxDialogStatus.py:127
+#: wxDialogLogViewer.py:99
+msgid "ERROR: Can't get information about database.clamav.net:"
+msgstr "ОШИБКА: Не удалось получить информацию о database.clamav.net:"
+
+#: wxDialogLogViewer.py:95
+#: wxDialogStatus.py:123
+msgid "ERROR: DNS Resolver:"
+msgstr "ОШИБКА: Обращение к DNS:"
+
+#: wxDialogStatus.py:133
+#: wxDialogLogViewer.py:105
+msgid "ERROR: No servers could be reached. Giving up"
+msgstr "ОШИБКА: Ни один из серверов не доступен. Сдаюсь.."
+
+#: wxDialogLogViewer.py:111
+#: wxDialogStatus.py:139
+msgid "ERROR: Update failed. Your network may be down or none of the mirrors listed in freshclam.conf is working."
+msgstr "ОШИБКА: Обновление прервано. Существуют проблемы с сетевым доступом или ни одно из зеркал указанных в freshclam.conf не работает."
+
+#: wxDialogPreferences.py:854
+#: wxDialogPreferences.py:879
+msgid "Edit item"
+msgstr "Редактировать строку"
+
+#: wxDialogPreferences.py:155
+msgid "Email Alerts"
+msgstr "Емайл уведомления"
+
+#: wxDialogPreferences.py:763
+msgid "Email Message Details"
+msgstr "Детали емайл сообщения"
+
+#: EmailAlert.py:82
+#, fuzzy
+msgid "Email alert to %s has been sent successfully."
+msgstr "Тестовое емайл сообщение было успешно отправлено."
+
+#: wxDialogPreferences.py:318
+msgid "Enable automatic virus database downloads "
+msgstr "Разрешить автоматическую загрузку вирусной базы"
+
+#: wxDialogLogViewer.py:119
+#: wxDialogStatus.py:147
+msgid "Engine version:"
+msgstr "Версия:"
+
+#: ClamTray.py:387
+msgid "Error"
+msgstr "Ошибка"
+
+#: OlAddin.py:905
+msgid "Error connecting to Outlook!"
+msgstr "Ошибка соединения с Outlook!"
+
+#: ClamTray.py:433
+msgid "Error performing Scheduled Update."
+msgstr "Ошибка при выполнении планового обновления."
+
+#: wxDialogPreferences.py:1033
+msgid "Event Failed"
+msgstr ""
+
+#: wxDialogPreferences.py:1205
+#: wxDialogPreferences.py:1221
+#, fuzzy
+msgid "Executable files (*.exe)|*.exe|All files (*.*)|*.*"
+msgstr "Файлы отчета (*.txt)|*.txt|Все файлы (*.*)|*.*"
+
+#: wxFrameMain.py:149
+msgid "Exits the application"
+msgstr "Выход из приложения"
+
+#: wxDialogStatus.py:119
+msgid "FOUND"
+msgstr "ОБНАРУЖЕН"
+
+#: wxDialogStatus.py:215
+msgid "Feb "
+msgstr "Фев"
+
+#: wxDialogPreferences.py:159
+#, fuzzy
+msgid "File Locations"
+msgstr "Файл не найден"
+
+#: wxDialogStatus.py:193
+msgid "File excluded"
+msgstr "Файл исключен"
+
+#: wxDialogStatus.py:117
+msgid "File not found"
+msgstr "Файл не найден"
+
+#: wxDialogPreferences.py:460
+#, fuzzy
+msgid "Files"
+msgstr "&Файл"
+
+#: wxDialogPreferences.py:147
+#, fuzzy
+msgid "Filters"
+msgstr "&Файл"
+
+#: wxDialogAbout.py:150
+msgid "Finndesign Homepage"
+msgstr "Домашняя страница Finndesign"
+
+#: wxDialogPreferences.py:173
+#, fuzzy
+msgid "Frequency"
+msgstr "Частота сканирования:"
+
+#: wxDialogStatus.py:207
+msgid "Fri "
+msgstr "Пт"
+
+#: wxDialogScheduledScan.py:207
+#: wxDialogPreferences.py:629
+#, fuzzy
+msgid "Friday"
+msgstr "Пт"
+
+#: wxDialogPreferences.py:145
+msgid "General"
+msgstr "Общие"
+
+#: wxDialogStatus.py:137
+#: wxDialogLogViewer.py:109
+msgid "Giving up on"
+msgstr "Сдаюсь "
+
+#: wxDialogPreferences.py:339
+#: wxDialogPreferences.py:1453
+#: wxDialogScheduledScan.py:66
+#: wxDialogScheduledScan.py:175
+msgid "Hourly"
+msgstr "Ежечасно"
+
+#: wxDialogScheduledScan.py:180
+msgid "How often the schedule is executed"
+msgstr "Как часто срабатывает планировщик"
+
+#: wxDialogPreferences.py:345
+msgid "How often virus database is downloaded"
+msgstr "Как часто вирусная база загружается"
+
+#: OlAddin.py:175
+msgid "I'm afraid it is time to upgrade"
+msgstr "Кажется, пришло время произвести обновление.."
+
+#: wxDialogPreferences.py:648
+#, fuzzy
+msgid "Infected Files"
+msgstr "Инфицировано файлов:"
+
+#: wxDialogLogViewer.py:125
+#: wxDialogStatus.py:153
+msgid "Infected files:"
+msgstr "Инфицировано файлов:"
+
+#: wxDialogPreferences.py:149
+#, fuzzy
+msgid "Internet Updates"
+msgstr "Запускает Интернет обновление"
+
+#: wxDialogStatus.py:213
+msgid "Jan "
+msgstr "Янв"
+
+#: wxDialogStatus.py:225
+msgid "Jul "
+msgstr "Июль"
+
+#: wxDialogStatus.py:223
+msgid "Jun "
+msgstr "Июнь"
+
+#: wxDialogLogViewer.py:117
+#: wxDialogStatus.py:145
+msgid "Known viruses:"
+msgstr "Известных вирусов:"
+
+#: wxDialogPreferences.py:304
+msgid "Leave these fields blank if you do not connect via Proxy Server"
+msgstr "Оставьте эти поля пустыми если вы соединяетесь не через прокси-сервер"
+
+#: wxDialogPreferences.py:509
+msgid "Limit Log File Size To:"
+msgstr "Ограничить размер лог-файла в:"
+
+#: wxDialogCheckUpdate.py:76
+msgid "List Of Changes in Version %s:"
+msgstr "Список изменений в версии %s:"
+
+#: wxDialogPreferences.py:581
+#, fuzzy
+msgid "List of Scheduled Scans"
+msgstr "Запланированное сканирование"
+
+#: wxDialogUtils.py:179
+msgid "Log files are not properly configured. Please review ClamWin configuration"
+msgstr "Формат лог-файлов не настроен. Пожалуйста, проверьте конфигурацию ClamWin"
+
+#: wxDialogPreferences.py:922
+#: wxDialogPreferences.py:1475
+#: wxDialogPreferences.py:1483
+msgid "Low"
+msgstr "Низкий"
+
+#: wxDialogPreferences.py:748
+msgid "Mail Server Account Name (optional)"
+msgstr "Имя пользователя на майл сервере (не обязательно)"
+
+#: wxDialogPreferences.py:760
+msgid "Mail Server account password (optional)"
+msgstr "Пароль на майл сервере (не обязательно)"
+
+#: wxDialogPreferences.py:737
+msgid "Mail Server port number (0-65535)"
+msgstr "Номер порта на майл сервере (0-65535)"
+
+#: wxDialogStatus.py:217
+msgid "Mar "
+msgstr "Мар"
+
+#: wxDialogPreferences.py:1291
+msgid "Maximum amount of scheduled items (20) has been reached."
+msgstr "Достигнут максимальный размер списка запланированных сканирований"
+
+#: wxDialogStatus.py:221
+msgid "May "
+msgstr "Май"
+
+#: wxDialogPreferences.py:445
+#: wxDialogPreferences.py:913
+msgid "MegaBytes"
+msgstr "Мегабайт"
+
+#: wxDialogStatus.py:199
+msgid "Mon "
+msgstr "Пн"
+
+#: wxDialogScheduledScan.py:206
+#: wxDialogPreferences.py:628
+#, fuzzy
+msgid "Monday"
+msgstr "Май"
+
+#: wxDialogPreferences.py:845
+#: wxDialogPreferences.py:870
+msgid "Move down"
+msgstr "Вниз"
+
+#: wxDialogPreferences.py:842
+#: wxDialogPreferences.py:867
+msgid "Move up"
+msgstr "Вверх"
+
+#, fuzzy
+msgid "Netfarm Homepage"
+msgstr "Домашняя страница ClamAV"
+
+#: wxDialogPreferences.py:848
+#: wxDialogPreferences.py:873
+msgid "New item"
+msgstr "Новая строка"
+
+#: wxDialogLogViewer.py:103
+#: wxDialogStatus.py:131
+msgid "No IP address"
+msgstr "Нет IP адреса"
+
+#: wxDialogPreferences.py:922
+#: wxDialogPreferences.py:927
+#: wxDialogPreferences.py:1477
+#: wxDialogPreferences.py:1485
+msgid "Normal"
+msgstr "Нормальный"
+
+#: wxDialogStatus.py:191
+msgid "Not moved"
+msgstr "Не перемещено"
+
+#: wxDialogStatus.py:233
+msgid "Nov "
+msgstr "Ноя"
+
+#: wxDialogLogViewer.py:80
+#: wxDialogPreferences.py:242
+#: wxDialogAbout.py:162
+#: wxDialogScheduledScan.py:249
+msgid "OK"
+msgstr "Да"
+
+#: wxDialogStatus.py:231
+msgid "Oct "
+msgstr "Окт"
+
+#: wxFrameMain.py:120
+msgid "Opens Frequently Asked Questions Page in the Web Browser"
+msgstr "Открывает страницу частых вопросов и ответов (FAQ) в броузере"
+
+#: wxDialogPreferences.py:270
+#: wxDialogPreferences.py:727
+msgid "P&ort:"
+msgstr "П&орт:"
+
+#: wxDialogPreferences.py:170
+msgid "Path"
+msgstr "Путь"
+
+#: wxDialogPreferences.py:837
+#: wxDialogPreferences.py:862
+msgid "Patterns"
+msgstr "Шаблоны"
+
+#: ClamTray.py:441
+#: wxDialogUtils.py:206
+msgid "Please point your browser at: %s"
+msgstr "Пожалуйста откройте в броузере страницу: %s"
+
+#: wxFrameMain.py:159
+msgid "Preferences"
+msgstr "Настройки"
+
+#: wxDialogAbout.py:84
+msgid "Protecting from %i Viruses"
+msgstr "Защита от %i вирусов"
+
+#: wxDialogPreferences.py:151
+msgid "Proxy"
+msgstr "Прокси"
+
+#: wxDialogPreferences.py:260
+msgid "Proxy &Server:"
+msgstr "Прокси &Сервер:"
+
+#: wxDialogPreferences.py:290
+msgid "Proxy Server Account Name (optional)"
+msgstr "Имя пользователя на прокси-сервере (не обязательно)"
+
+#: wxDialogPreferences.py:301
+msgid "Proxy Server account password (optional)"
+msgstr "Пароль на прокси-сервере (не обязательно)"
+
+#: wxDialogPreferences.py:267
+msgid "Proxy Server domain name or IP address"
+msgstr "Доменное имя прокси сервера или IP адрес"
+
+#: wxDialogPreferences.py:280
+msgid "Proxy Server port number (0-65535)"
+msgstr "Номер порта на прокси-сервере (0-65535)"
+
+#: wxDialogAbout.py:158
+msgid "Python Homepage"
+msgstr "Домашняя страница Python"
+
+#: wxDialogStatus.py:163
+msgid "Recommended version:"
+msgstr "Рекомендованная версия:"
+
+#: OlAddin.py:1010
+msgid "Registering (in HKEY_CURRENT_USER)..."
+msgstr "Регистрация (в HKEY_CURRENT_USER)..."
+
+#: OlAddin.py:1007
+msgid "Registering (in HKEY_LOCAL_MACHINE)..."
+msgstr "Регистрация (в HKEY_LOCAL_MACHINE)..."
+
+#: OlAddin.py:1015
+msgid "Registration Complete"
+msgstr "Регистрация закончена"
+
+#: OlAddin.py:275
+#: OlAddin.py:1031
+msgid "Registration complete."
+msgstr "Регистрация закончена."
+
+#: wxDialogStatus.py:453
+msgid "Report files (*.txt)|*.txt|All files (*.*)|*.*"
+msgstr "Файлы отчета (*.txt)|*.txt|Все файлы (*.*)|*.*"
+
+#: wxDialogPreferences.py:161
+#, fuzzy
+msgid "Reports"
+msgstr "&Отчет о сканировании"
+
+#: ClamTray.py:530
+#, fuzzy
+msgid "Running Scheduled Task:\n"
+msgstr "Запланированные сканирования:"
+
+#: wxDialogStatus.py:327
+#, fuzzy
+msgid "S&ave Report"
+msgstr "&Отчет о сканировании"
+
+#: wxDialogPreferences.py:710
+#, fuzzy
+msgid "SMTP Connection Details"
+msgstr "Соединение с"
+
+#: wxDialogPreferences.py:724
+msgid "SMTP Server domain name or IP address"
+msgstr "Доменное имя SMTP сервера или IP адрес"
+
+#: wxDialogStatus.py:209
+msgid "Sat "
+msgstr "Сб"
+
+#: wxDialogScheduledScan.py:207
+#: wxDialogPreferences.py:629
+msgid "Saturday"
+msgstr "Суббота"
+
+#: wxFrameMain.py:171
+msgid "Scan"
+msgstr "Сканирование"
+
+#, fuzzy
+msgid "Scan &Memory"
+msgstr "&Отчет о сканировании"
+
+msgid "Scan &Programs Loaded in Computer Memory"
+msgstr ""
+
+msgid "Scan Computer Memory"
+msgstr ""
+
+#: wxDialogUtils.py:116
+#, fuzzy
+msgid ""
+"Scan Started %s\n"
+"ERROR: Virus Definitions Database Not Found! Please download it now.\n"
+msgstr "Вы еще не скачали базу описания вирусов. Хотите ли вы скачать ее прямо сейчас?"
+
+#: wxDialogStatus.py:141
+#: wxDialogLogViewer.py:113
+msgid "Scan started:"
+msgstr "Сканирование начато:"
+
+#: ShellExtImpl.cpp:292
+#, fuzzy
+msgid "Scan with ClamWin Free Antivirus"
+msgstr "ClamWin Free Антивирус"
+
+#: wxDialogLogViewer.py:121
+#: wxDialogStatus.py:149
+msgid "Scanned directories:"
+msgstr "Просканировано директорий:"
+
+#: wxDialogStatus.py:151
+#: wxDialogLogViewer.py:123
+msgid "Scanned files:"
+msgstr "Просканировано файлов:"
+
+#: wxDialogPreferences.py:918
+#, fuzzy
+msgid "Scanner &Priority:"
+msgstr "Просканировано директорий:"
+
+#: wxDialogScheduledScan.py:171
+msgid "Scanning &Frequency:"
+msgstr "Частота сканирования:"
+
+#: wxDialogPreferences.py:310
+msgid "Scanning Options"
+msgstr "Опции сканирования"
+
+msgid "Scanning Programs in Computer Memory"
+msgstr ""
+
+#, fuzzy
+msgid "Scans Computer Memory for Viruses"
+msgstr "Сканирует на вирусы"
+
+#: wxFrameMain.py:146
+msgid "Scans Files or Folders for Computer Viruses"
+msgstr "Сканирует Файлы и Папки на вирусы"
+
+#: wxFrameMain.py:173
+msgid "Scans For Viruses"
+msgstr "Сканирует на вирусы"
+
+#, fuzzy
+msgid "Scans Programs Loaded in Computer Memory for Computer Viruses"
+msgstr "Сканирует выбранный файл или папку на вирусы"
+
+#, fuzzy
+msgid "Scans Programs in Computer Memory for Viruses"
+msgstr "Сканирует Файлы и Папки на вирусы"
+
+#: wxFrameMain.py:172
+msgid "Scans Selected File or Folder for Computer Viruses"
+msgstr "Сканирует выбранный файл или папку на вирусы"
+
+#: wxDialogScheduledScan.py:167
+msgid "Schedule"
+msgstr "Расписание"
+
+#: wxDialogScheduledScan.py:160
+msgid "Scheduled Scan"
+msgstr "Запланированное сканирование"
+
+#: wxDialogPreferences.py:153
+#, fuzzy
+msgid "Scheduled Scans"
+msgstr "Запланированное сканирование"
+
+#: wxDialogPreferences.py:597
+#, fuzzy
+msgid "Scheduled Scans:"
+msgstr "Запланированное сканирование"
+
+#: wxDialogScheduledScan.py:309
+#: wxDialogPreferences.py:1235
+#, fuzzy
+msgid "Select a directory"
+msgstr "Просканировано директорий:"
+
+#: wxFrameMain.py:247
+msgid ""
+"Select a folder or a file to scan\n"
+"(Hold Shift key to select multiple files or folders)"
+msgstr ""
+"Выберите папку или файл для сканирования \n"
+"(Удерживайте кнопку Shift для выбора нескольких файлов или папок)"
+
+#: wxDialogPreferences.py:489
+#: wxDialogPreferences.py:496
+#, fuzzy
+msgid "Select if you wish to detect executable files with broken PE structure as viruses"
+msgstr "Укажите, если вы желаете получать емайл уведомления, когда ClamWin обнаруживает вирус"
+
+#: wxDialogPreferences.py:626
+#: wxDialogPreferences.py:935
+msgid "Select if you wish to display infected files only in the scan progress window"
+msgstr "Укажите, если вы желаете чтобы в окне сканирования показывались только инфицированные файлы"
+
+#: wxDialogScheduledScan.py:246
+msgid "Select if you wish to enable this schedule"
+msgstr "Выберите, если вы разрешаете работу планировщика"
+
+#: wxDialogPreferences.py:901
+msgid "Select if you wish to get a notification message when ClamWin Free Antivirus program has been updated"
+msgstr "Укажите, если вы желаете получать уведомления, когда программа ClamWin Free Antivirus обновится"
+
+#, fuzzy
+msgid "Select if you wish to include programs computer memory during every scan"
+msgstr "Укажите, если вы желаете разрешить рекурсивное сканирование в поддиректориях"
+
+#: wxDialogPreferences.py:815
+msgid "Select if you wish to receive Tray notification pop-up messages"
+msgstr "Выберите, если вы желаете получать всплывающие уведомления из системного трэя"
+
+#: wxDialogPreferences.py:704
+msgid "Select if you wish to receive email alerts when ClamWin detects a virus"
+msgstr "Укажите, если вы желаете получать емайл уведомления, когда ClamWin обнаруживает вирус"
+
+msgid "Select if you wish to scan OLE attachments and macros in MS Office Documents"
+msgstr "Указать если вы желаете сканировать OLE обьекты и макросы в MS Office Documents"
+
+#: wxDialogPreferences.py:412
+#, fuzzy
+msgid "Select if you wish to scan in subdirectories recursively"
+msgstr "Выберите, если вы разрешаете работу планировщика"
+
+#: wxDialogPreferences.py:482
+#, fuzzy
+msgid "Select if you wish to scan mailboxes"
+msgstr "Выберите, если вы разрешаете работу планировщика"
+
+#, fuzzy
+msgid "Select if you wish to unload infected programs from computer memory so they can be quarantined or removed"
+msgstr "Укажите, если вы желаете чтобы в окне сканирования показывались только инфицированные файлы"
+
+#: wxDialogPreferences.py:641
+#, fuzzy
+msgid "Select if you wish to update the virus databases just after you logged on"
+msgstr "Выберите, если вы разрешаете работу планировщика"
+
+#: wxDialogPreferences.py:517
+msgid "Select maximum size for the logfile"
+msgstr "Выберите максимальный размер для лог-файла"
+
+#: wxDialogPreferences.py:802
+msgid "Send &Test Email"
+msgstr "Отправить тестовое сообщение"
+
+#: wxDialogStatus.py:229
+msgid "Sep "
+msgstr "Сен"
+
+#: OlAddin.py:581
+#, fuzzy
+msgid "Shows the ClamWin About Box"
+msgstr "Показ окна О Программе"
+
+#: wxDialogScheduledScan.py:341
+#, fuzzy
+msgid "Specified path is invalid. Please verify your selection."
+msgstr "Указанный путь не верен. Пожалуйста, проверьте свой выбор."
+
+#: wxDialogPreferences.py:331
+msgid "Specify Database Mirror Site here. Usually this is database.clamav.net"
+msgstr "Укажите зеркало сайта вирусной базы здесь. Обычно это database.clamav.net"
+
+#: wxDialogPreferences.py:822
+msgid "Specify Filename Patterns to include and/or exclude in scanning"
+msgstr "Укажите шаблоны имен для включения и/или исключения из сканирования"
+
+#: wxDialogPreferences.py:799
+msgid "Specify Recipient's email address where the email alert will be delivered"
+msgstr ""
+
+#: wxDialogScheduledScan.py:222
+msgid "Specify a folder to be scanned"
+msgstr "Укажите папку для сканирования"
+
+#: wxDialogScheduledScan.py:240
+msgid "Specify a friendly description for the scheduled scan"
+msgstr "Введите описание для запланированного сканирования"
+
+#: wxDialogPreferences.py:777
+msgid "Specify an email address from which the notification will be sent."
+msgstr "Укажите емайл адрес от которого уведомление будет послано."
+
+#: wxDialogPreferences.py:788
+msgid "Specify an email address where the email alert will be delivered.  Separate multiple addresses with commas."
+msgstr "Укажите емайл адрес куда уведомление будет доставлено.Дополнительные адреса указывайте через запятую."
+
+#, fuzzy
+msgid "Specify any additional paramters for clamscan.exe"
+msgstr "Укажите месторасположение calmscan"
+
+#: wxDialogPreferences.py:549
+msgid "Specify location for a database updates log file"
+msgstr "Укажите место расположения лог-файла отчета об обновлении вирусной базы"
+
+#: wxDialogPreferences.py:680
+msgid "Specify location for a quarantine folder"
+msgstr "Укажите место расположения папки карантина"
+
+#: wxDialogPreferences.py:529
+msgid "Specify location for a scan reports log file"
+msgstr "Укажите место расположения лог-файла отчета сканирования"
+
+#: wxDialogPreferences.py:360
+msgid "Specify location of clamscan"
+msgstr "Укажите месторасположение calmscan"
+
+#: wxDialogPreferences.py:379
+msgid "Specify location of freshclam"
+msgstr "Укажите место расположения для freshclam"
+
+#: wxDialogPreferences.py:399
+msgid "Specify location of virus database files"
+msgstr "Укажите место расположения файлов вирусной базы"
+
+#: wxDialogPreferences.py:926
+msgid "Specify the process priority for the virus scanner."
+msgstr "Укажите приоритет процесса для вирусного сканера:"
+
+#: wxFrameMain.py:167
+msgid "Starts Internet Update"
+msgstr "Запускает Интернет обновление"
+
+#: wxFrameMain.py:239
+msgid "Status Bar"
+msgstr "Статусная строка"
+
+#: wxDialogPreferences.py:791
+msgid "Su&bject:"
+msgstr ""
+
+#: wxDialogPreferences.py:474
+msgid "Sub-Archives"
+msgstr "Суб-архивы"
+
+#: wxDialogStatus.py:211
+msgid "Sun "
+msgstr "Вс"
+
+#: wxDialogScheduledScan.py:207
+#: wxDialogPreferences.py:629
+#, fuzzy
+msgid "Sunday"
+msgstr "Вс"
+
+#: wxDialogPreferences.py:1384
+msgid "Test Email has been sent successfully."
+msgstr "Тестовое емайл сообщение было успешно отправлено."
+
+#: wxDialogPreferences.py:1247
+#: wxDialogPreferences.py:1263
+#, fuzzy
+msgid "Text Files (*.txt)|*.txt|All files (*.*)|*.*"
+msgstr "Файлы отчета (*.txt)|*.txt|Все файлы (*.*)|*.*"
+
+#: wxDialogPreferences.py:1565
+msgid "The folder you selected does not exist. Would you like to create %s now?"
+msgstr "Указанная вами папка не существует.  Желаете создать её сейчас?"
+
+msgid ""
+"There was an error initializing the ClamWin addin\r\n"
+"\r\n"
+"Please re-start Outlook and try again."
+msgstr ""
+"Ошибка при инициализации ClamWin плагина \r\n"
+"\r\n"
+"Пожалуйста, перезапустите Outlook и повторите попытку."
+
+#: wxDialogPreferences.py:1379
+msgid ""
+"This is a test message sent during configuration of ClamWin Free Antivirus on the following computer: %s.\n"
+"Please do not be alarmed.\n"
+msgstr ""
+"Это тестовое сообщение посланное при настройке программы ClamWin Free Antivirus на следующем компьютере: %s.\n"
+"Пожалуйста не беспокойтесь.\n"
+
+#: wxDialogAbout.py:130
+msgid "This program is free software"
+msgstr "Данная программа является свободной"
+
+#: wxDialogStatus.py:205
+msgid "Thu "
+msgstr "Чт"
+
+#: wxDialogScheduledScan.py:207
+#: wxDialogPreferences.py:629
+msgid "Thursday"
+msgstr "Четверг"
+
+#: wxDialogStatus.py:157
+#: wxDialogLogViewer.py:129
+msgid "Time:"
+msgstr "Время:"
+
+#: wxDialogLogViewer.py:107
+#: wxDialogStatus.py:135
+msgid "Trying again in 5 secs..."
+msgstr "Повторная попытка через 5 секунд..."
+
+#: wxDialogStatus.py:201
+msgid "Tue "
+msgstr "Вт"
+
+#: wxDialogPreferences.py:628
+#: wxDialogPreferences.py:635
+#: wxDialogScheduledScan.py:206
+#: wxDialogScheduledScan.py:212
+msgid "Tuesday"
+msgstr "Вторник"
+
+#: wxDialogPreferences.py:1571
+#, fuzzy
+msgid "Unable to create folder %s. Error: %s"
+msgstr "Не удалось удалить файл %s. Ошибка: %s"
+
+#: ClamTray.py:387
+#: wxDialogUtils.py:38
+msgid "Unable to create freshclam configuration file. Please check there is enough space on the disk"
+msgstr "Не удалось создать конфигурационный файл freshclam. Пожалуйста проверьте, доступно ли свободное место на диске."
+
+#: wxDialogUtils.py:229
+msgid ""
+"Unable to get online version. Most likely it's a temporary connectivity error and you don't have to do anything.\n"
+"If you see this error often then allow clamwin.exe in your firewall and check proxy settings.\n"
+"(%s)"
+msgstr ""
+"Не удалось получить онлайн версию. Скорее всего это результат временных проблем с доступом по сети и вам не надо ничего предпринимать.\n"
+"Если вы будете видеть эту ошибку часто - разрешите работу для clamwin.exe в своем фаерволе и проверьте настройки прокси. \n"
+"(%s)"
+
+#: wxDialogUtils.py:192
+msgid "Unable to read from the log file. Error: %s"
+msgstr "Не удалось прочитать из лог-файла. Ошибка: %s"
+
+#: wxDialogUtils.py:78
+msgid "Unable to remove file %s. Error: %s"
+msgstr "Не удалось удалить файл %s. Ошибка: %s"
+
+#: wxDialogAbout.py:227
+msgid "Unable to retrieve ClamAV version"
+msgstr "Не удалось получить версию ClamAV"
+
+#: wxDialogAbout.py:252
+#, fuzzy
+msgid "Unable to retrieve database version"
+msgstr "Ну удалось получить версию вирусной базы"
+
+#: ClamTray.py:418
+msgid ""
+"Unable to spawn scheduled process.\n"
+"Command line: %s\n"
+"Error: %s"
+msgstr ""
+" Не удалось запустить запланированный процесс.\n"
+"Команда: %s\n"
+"Ошибка: %s"
+
+#: wxDialogStatus.py:435
+msgid "Unable to stop runner thread, terminating"
+msgstr "Не удалось остановить работающий тред, прерывание"
+
+#: ClamTray.py:117
+#, fuzzy
+msgid "Unable to stop scheduled process, terminating"
+msgstr "Не удалось остановить работающий тред, прерывание"
+
+#: wxFrameMain.py:165
+msgid "Update"
+msgstr "Обновление"
+
+#: wxDialogAbout.py:174
+#, fuzzy
+msgid "Updated: %s"
+msgstr "Обновление"
+
+#: wxFrameMain.py:166
+msgid "Updates virus databases over the Internet"
+msgstr "Обновляет вирусную базу через Интернет"
+
+#: wxDialogPreferences.py:1501
+#: wxDialogPreferences.py:1582
+#: wxDialogScheduledScan.py:338
+msgid "Value cannot be empty"
+msgstr "Значение не может быть пустым"
+
+#: wxDialogAbout.py:72
+#, fuzzy
+msgid "Version "
+msgstr "версия:"
+
+#: wxDialogAbout.py:168
+msgid "Virus DB Version: (main: %i; daily: %i)"
+msgstr "Версия вирусной базы: (main: %i; daily: %i)"
+
+#: OlAddin.py:344
+#: wxDialogUtils.py:107
+#, fuzzy
+msgid "Virus Definitions Database Not Found! Please download it now."
+msgstr "Вы еще не скачали базу описания вирусов. Хотите ли вы скачать ее прямо сейчас?"
+
+#: OlAddin.py:248
+msgid "Virus Deleted by ClamWin.txt"
+msgstr "Вирус удален с помощью ClamWin.txt"
+
+#: OlAddin.py:471
+msgid "Virus Detected!"
+msgstr "Обнаружен вирус!"
+
+#: ClamTray.py:403
+#: wxDialogUtils.py:56
+#, fuzzy
+msgid "Virus database has been updated."
+msgstr "&Отчет об обновлении вирусной базы"
+
+#: wxDialogUtils.py:126
+msgid "Virus has been detected during scan! Please review the scan report."
+msgstr "При сканировании обнаружены вирусы! Пожалуйста, просмотрите отчет о сканировании."
+
+#: ClamTray.py:496
+#, fuzzy
+msgid "Virus has been detected during scheduled scan! Please review the scan report."
+msgstr "При сканировании обнаружены вирусы! Пожалуйста, просмотрите отчет о сканировании."
+
+#: OlAddin.py:474
+#, fuzzy
+msgid "Virus has been detected in an email attachment! The attachment was replaced with the report file."
+msgstr "При сканировании обнаружены вирусы! Пожалуйста, просмотрите отчет о сканировании."
+
+#: OlAddin.py:213
+msgid "WARNING - Trying to use image '%s', but it doesn't exist"
+msgstr "ПРЕДУПРЕЖДЕНИЕ - попытка использовать не существующеее изображение  '%s'"
+
+#: wxDialogStatus.py:125
+#: wxDialogLogViewer.py:97
+msgid "WARNING: Invalid DNS reply. Falling back to HTTP mode."
+msgstr "ПРЕДУПРЕЖДЕНИЕ: Не корректный ответ DNS сервера. Возврат к работе в режиме HTTP."
+
+#: wxDialogStatus.py:161
+msgid "WARNING: Local version:"
+msgstr "ПРЕДУПРЕЖДЕНИЕ: Локальная версия:"
+
+#: wxDialogStatus.py:159
+msgid "WARNING: Your ClamAV installation is OUTDATED!"
+msgstr "ПРЕДУПРЕЖДЕНИЕ: Ваша инсталляция ClamAV устарела!"
+
+#: wxDialogAbout.py:105
+msgid "Website:"
+msgstr "Вебсайт:"
+
+#: wxDialogStatus.py:203
+msgid "Wed "
+msgstr "Ср"
+
+#: wxDialogScheduledScan.py:206
+#: wxDialogPreferences.py:629
+msgid "Wednesday"
+msgstr "Среда"
+
+#: wxDialogPreferences.py:340
+#: wxDialogPreferences.py:1077
+#: wxDialogPreferences.py:1453
+#: wxDialogScheduledScan.py:66
+#: wxDialogScheduledScan.py:176
+#: wxDialogScheduledScan.py:283
+#: wxDialogScheduledScan.py:292
+msgid "Weekly"
+msgstr "Еженедельно"
+
+#: wxDialogScheduledScan.py:211
+msgid "When schedule frequency is weekly select day of the week"
+msgstr "Укажите день недели если выбрана еженедельная частота сканирования"
+
+#: wxDialogPreferences.py:564
+#, fuzzy
+msgid "When the download should be started"
+msgstr "Когда должен быть запущен планировщик"
+
+#: wxDialogScheduledScan.py:194
+msgid "When the schedule should be started"
+msgstr "Когда должен быть запущен планировщик"
+
+#: wxDialogPreferences.py:634
+#, fuzzy
+msgid "When update frequency is weekly select day of the week for an update"
+msgstr "Укажите день недели если выбрана еженедельная частота сканирования"
+
+#: wxDialogPreferences.py:340
+#: wxDialogPreferences.py:1453
+#: wxDialogScheduledScan.py:66
+#: wxDialogScheduledScan.py:175
+msgid "Workdays"
+msgstr "По рабочим дням"
+
+#: OlAddin.py:174
+msgid "You appear to be running a win32all version pre 151, which is pretty old"
+msgstr "Кажется вы используете программу win32all  версии до 151, которая сильно устарела"
+
+#: wxFrameMain.py:343
+msgid "You have not yet downloaded Virus Definitions Database. Would you like to download it now?"
+msgstr "Вы еще не скачали базу описания вирусов. Хотите ли вы скачать ее прямо сейчас?"
+
+#: Config.py:63
+msgid "admin@yourdomain"
+msgstr ""
+
+#: wxDialogStatus.py:173
+msgid "builder:"
+msgstr ""
+
+#: Config.py:63
+msgid "clamwin@yourdomain"
+msgstr ""
+
+#: wxDialogStatus.py:171
+msgid "f-level:"
+msgstr ""
+
+#: wxDialogStatus.py:246
+msgid "failed"
+msgstr "сбой"
+
+#: wxDialogStatus.py:179
+msgid "from"
+msgstr "от"
+
+#: wxFrameMain.py:405
+#: wxDialogAbout.py:110
+#: wxDialogAbout.py:199
+#: ClamTray.py:315
+msgid "http://www.clamwin.com"
+msgstr ""
+
+#: wxFrameMain.py:397
+msgid "http://www.clamwin.com/content/category/3/7/27/"
+msgstr ""
+
+#: wxDialogStatus.py:189
+msgid "http://www.clamwin.com/content/view/10/27/"
+msgstr ""
+
+#: ClamTray.py:313
+#: wxFrameMain.py:401
+msgid "http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version="
+msgstr ""
+
+#: wxDialogStatus.py:187
+msgid "http:\\\\www.clamav.net\\faq.html"
+msgstr ""
+
+#: wxDialogStatus.py:167
+msgid "is up to date"
+msgstr ""
+
+#: wxDialogStatus.py:465
+#, fuzzy
+msgid "permissions to the folder and there is enough space on the disk."
+msgstr "Не удалось создать конфигурационный файл freshclam. Пожалуйста проверьте, доступно ли свободное место на диске."
+
+#: wxDialogStatus.py:177
+msgid "signatures"
+msgstr "сигнатур"
+
+#: wxDialogStatus.py:169
+msgid "sigs:"
+msgstr ""
+
+#: wxDialogStatus.py:244
+#, fuzzy
+msgid "updated"
+msgstr "Обновление"
+
+#: wxDialogStatus.py:242
+msgid "version:"
+msgstr "версия:"
+
