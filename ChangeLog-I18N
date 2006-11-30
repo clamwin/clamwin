@@ -1,0 +1,12 @@
+**************************
+* ClamWin Free Antivirus *
+* I18N Branch            *
+**************************
+
+Changes in Version ClamWinL10N-23.exe :
+***************************************
+- Merged the .po files, so only 1 .po file remains per language.  The 
+  performance seems to be good.  The .mo files are not stored in SVN, they
+  need to be translated at build-time.
+- Merged the changes up to ClamWin Free Antivirus 0.88.6 and added new strings
+  to the .pot and .po files
