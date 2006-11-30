@@ -1,15 +1,16 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ClamWin\n"
+"Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-08-31 03:48+0900\n"
-"Last-Translator: hhan <hhan4@hotmail.com>\n"
-"Language-Team: \n"
+"PO-Revision-Date: 2006-11-30 15:01+0100\n"
+"Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
+"Language-Team: Korean <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Korean\n"
 "X-Poedit-Country: KOREA, REPUBLIC OF\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #: wxFrameMain.py:90
 msgid "Displays the configuration window"
@@ -43,7 +44,8 @@ msgstr "(&파)일"
 msgid "&Tools"
 msgstr "(&도구)"
 
-#: wxFrameMain.py:108 wxFrameMain.py:114
+#: wxFrameMain.py:108
+#: wxFrameMain.py:114
 msgid "&Help"
 msgstr "(&도움말)"
 
@@ -80,7 +82,8 @@ msgstr "ClamWin (&정)보"
 msgid "Displays Virus Database Update Log FIle"
 msgstr "바이러스 데이터베이스 업데이트 로그 파일을 보여줍니다."
 
-#: wxFrameMain.py:136 ClamTray.py:278
+#: wxFrameMain.py:136
+#: ClamTray.py:278
 msgid "&Virus Database Update Report"
 msgstr "(&바)이러스 데이터베이스 업데이트 리포트"
 
@@ -96,7 +99,8 @@ msgstr "검사 (&결)과"
 msgid "Scans Files or Folders for Computer Viruses"
 msgstr "파일이나 폴더를 바이러스 감염 되었는지 검사 합니다."
 
-#: wxFrameMain.py:147 wxFrameMain.py:257
+#: wxFrameMain.py:147
+#: wxFrameMain.py:257
 msgid "&Scan"
 msgstr "(&검)사"
 
@@ -112,7 +116,8 @@ msgstr "(&끝)내기"
 msgid "Preferences"
 msgstr "환경 설정"
 
-#: wxFrameMain.py:160 wxFrameMain.py:161
+#: wxFrameMain.py:160
+#: wxFrameMain.py:161
 msgid "Displays Preferences Window"
 msgstr "환경 창을 보여줍니다."
 
@@ -142,11 +147,23 @@ msgstr "선택된 파일이나 폴더를 바이러스 감염 되었는지 검사
 msgid "Scans For Viruses"
 msgstr "바이러스 검사를 합니다."
 
-#: wxFrameMain.py:221 wxFrameMain.py:225 wxFrameMain.py:337 wxFrameMain.py:343
-#: ClamTray.py:117 ClamTray.py:339 ClamTray.py:363 ClamTray.py:373
-#: ClamTray.py:381 ClamTray.py:441 ClamTray.py:455 OlAddin.py:199
-#: OlAddin.py:419 OlAddin.py:492 wxDialogPreferences.py:1501
-#: wxDialogPreferences.py:1564 wxDialogPreferences.py:1582
+#: wxFrameMain.py:221
+#: wxFrameMain.py:225
+#: wxFrameMain.py:337
+#: wxFrameMain.py:343
+#: ClamTray.py:117
+#: ClamTray.py:339
+#: ClamTray.py:363
+#: ClamTray.py:373
+#: ClamTray.py:381
+#: ClamTray.py:441
+#: ClamTray.py:455
+#: OlAddin.py:199
+#: OlAddin.py:419
+#: OlAddin.py:492
+#: wxDialogPreferences.py:1501
+#: wxDialogPreferences.py:1564
+#: wxDialogPreferences.py:1582
 #: wxDialogStatus.py:466
 msgid "ClamWin Free Antivirus"
 msgstr "ClamWin Free 백신"
@@ -178,11 +195,8 @@ msgid "Could not open help file - %s not found."
 msgstr "도움말을 열 수 없음 - %s 을 찾을 수 없음"
 
 #: wxFrameMain.py:394
-msgid ""
-"Could not open help file. Please ensure that you have Adobe Acrobat Reader "
-"installed."
-msgstr ""
-"도움말을 열 수 없음. Adobe Acrobat Reader가 설치되어 있는지 확인해 주십시오."
+msgid "Could not open help file. Please ensure that you have Adobe Acrobat Reader installed."
+msgstr "도움말을 열 수 없음. Adobe Acrobat Reader가 설치되어 있는지 확인해 주십시오."
 
 #: wxDialogStatus.py:117
 #, fuzzy
@@ -193,29 +207,35 @@ msgstr "파일 로케이션"
 msgid "FOUND"
 msgstr ""
 
-#: wxDialogStatus.py:133 wxDialogLogViewer.py:105
+#: wxDialogStatus.py:133
+#: wxDialogLogViewer.py:105
 msgid "ERROR: No servers could be reached. Giving up"
 msgstr ""
 
-#: wxDialogStatus.py:137 wxDialogLogViewer.py:109
+#: wxDialogStatus.py:137
+#: wxDialogLogViewer.py:109
 #, fuzzy
 msgid "Giving up on"
 msgstr "(&로)그인 시 바이러스 업데이트 하기"
 
-#: wxDialogStatus.py:141 wxDialogLogViewer.py:113
+#: wxDialogStatus.py:141
+#: wxDialogLogViewer.py:113
 msgid "Scan started:"
 msgstr ""
 
-#: wxDialogStatus.py:143 wxDialogLogViewer.py:115
+#: wxDialogStatus.py:143
+#: wxDialogLogViewer.py:115
 msgid "-- summary --"
 msgstr ""
 
-#: wxDialogStatus.py:151 wxDialogLogViewer.py:123
+#: wxDialogStatus.py:151
+#: wxDialogLogViewer.py:123
 #, fuzzy
 msgid "Scanned files:"
 msgstr "검사 (&리)포트 파일:"
 
-#: wxDialogStatus.py:157 wxDialogLogViewer.py:129
+#: wxDialogStatus.py:157
+#: wxDialogLogViewer.py:129
 #, fuzzy
 msgid "Time:"
 msgstr "(&시)간"
@@ -410,7 +430,8 @@ msgstr "러너 스래드를 중지 할수 없어 종료 함."
 msgid "Report files (*.txt)|*.txt|All files (*.*)|*.*"
 msgstr "리포트 파일 (*.txt)|*.txt|모든 파일 (*.*)|*.*"
 
-#: wxDialogStatus.py:455 wxDialogPreferences.py:1250
+#: wxDialogStatus.py:455
+#: wxDialogPreferences.py:1250
 #: wxDialogPreferences.py:1266
 msgid "All files (*)|*"
 msgstr "모든 파일 (*)|*"
@@ -421,15 +442,11 @@ msgstr "리포트를 파일로 저장할 수 없습니다."
 
 #: wxDialogStatus.py:464
 msgid ". Please check that you have write "
-msgstr ""
-"폴더에 쓰기 권한(write permission)을 가지고 있는지와 디스크에 충분한 여유 공"
-"간이 있는지를 확인해 주십시오. "
+msgstr "폴더에 쓰기 권한(write permission)을 가지고 있는지와 디스크에 충분한 여유 공간이 있는지를 확인해 주십시오. "
 
 #: wxDialogStatus.py:465
 msgid "permissions to the folder and there is enough space on the disk."
-msgstr ""
-"폴더에 쓰기 권한(write permission)을 가지고 있는지와 디스크에 충분한 여유 공"
-"간이 있는지를 확인해 주십시오. "
+msgstr "폴더에 쓰기 권한(write permission)을 가지고 있는지와 디스크에 충분한 여유 공간이 있는지를 확인해 주십시오. "
 
 #: wxDialogStatus.py:533
 msgid "Could not read from log file %s. Error: %s"
@@ -461,11 +478,13 @@ msgstr ""
 "완료\n"
 "-------------------\n"
 
-#: wxDialogStatus.py:629 ClamTray.py:470
+#: wxDialogStatus.py:629
+#: ClamTray.py:470
 msgid "Could not start process. No Command Line specified"
 msgstr "작업을 시작 할 수 없음. 코맨드 라인(명령줄)이 명시되어 있지 않음"
 
-#: wxDialogStatus.py:636 ClamTray.py:477
+#: wxDialogStatus.py:636
+#: ClamTray.py:477
 msgid ""
 "Could not start process.\n"
 "%s\n"
@@ -475,7 +494,10 @@ msgstr ""
 "%s\n"
 "파일이 없음."
 
-#: wxDialogStatus.py:646 wxDialogStatus.py:648 ClamTray.py:485 ClamTray.py:487
+#: wxDialogStatus.py:646
+#: wxDialogStatus.py:648
+#: ClamTray.py:485
+#: ClamTray.py:487
 msgid ""
 "Could not start process:\n"
 "%s\n"
@@ -501,7 +523,8 @@ msgstr "검사 (&주)기"
 msgid "How often the schedule is executed"
 msgstr "예약 검사를 얼마나 자주 실행할 것인지를 정하십시오."
 
-#: wxDialogScheduledScan.py:187 wxDialogPreferences.py:415
+#: wxDialogScheduledScan.py:187
+#: wxDialogPreferences.py:415
 msgid "&Time:"
 msgstr "(&시)간"
 
@@ -509,7 +532,8 @@ msgstr "(&시)간"
 msgid "When the schedule should be started"
 msgstr "예약 검사를 시작할 시간"
 
-#: wxDialogScheduledScan.py:202 wxDialogPreferences.py:567
+#: wxDialogScheduledScan.py:202
+#: wxDialogPreferences.py:567
 msgid "&Day Of The Week:"
 msgstr "(&요)일"
 
@@ -550,7 +574,8 @@ msgstr "이 스케줄을 적용하려면, 선택 하십시오."
 msgid "Closes the dialog and applies the settings"
 msgstr "창을 닫고 변경된 사항을 적용 합니다."
 
-#: wxDialogScheduledScan.py:256 wxDialogPreferences.py:253
+#: wxDialogScheduledScan.py:256
+#: wxDialogPreferences.py:253
 msgid "Cancel"
 msgstr "취소"
 
@@ -558,7 +583,8 @@ msgstr "취소"
 msgid "Closes the dialog and discards the changes"
 msgstr "창을 닫고 변경된 사항을 적용하지 않습니다."
 
-#: wxDialogScheduledScan.py:309 wxDialogPreferences.py:1235
+#: wxDialogScheduledScan.py:309
+#: wxDialogPreferences.py:1235
 msgid "Select a directory"
 msgstr ""
 
@@ -648,7 +674,8 @@ msgstr "프록시 (&서)버:"
 msgid "Proxy Server domain name or IP address"
 msgstr "프록시 서버 도메인 내임 또는 IP Address"
 
-#: wxDialogPreferences.py:270 wxDialogPreferences.py:727
+#: wxDialogPreferences.py:270
+#: wxDialogPreferences.py:727
 msgid "P&ort:"
 msgstr "(&포)트"
 
@@ -656,7 +683,8 @@ msgstr "(&포)트"
 msgid "Proxy Server port number (0-65535)"
 msgstr "프록시 서버 포트 넘버 (0-65535)"
 
-#: wxDialogPreferences.py:283 wxDialogPreferences.py:740
+#: wxDialogPreferences.py:283
+#: wxDialogPreferences.py:740
 msgid "&User Name:"
 msgstr "사용자 이름"
 
@@ -664,7 +692,8 @@ msgstr "사용자 이름"
 msgid "Proxy Server Account Name (optional)"
 msgstr "프록시 서버 사용자 이름 (옵션)"
 
-#: wxDialogPreferences.py:293 wxDialogPreferences.py:751
+#: wxDialogPreferences.py:293
+#: wxDialogPreferences.py:751
 msgid "&Password:"
 msgstr "암호"
 
@@ -695,36 +724,44 @@ msgstr "다운로드 (&사)이트"
 
 #: wxDialogPreferences.py:331
 msgid "Specify Database Mirror Site here. Usually this is database.clamav.net"
-msgstr ""
-"데이터베이스 미러 사이트를 이 곳에 설정 하십시오. 대부분의 경우, database."
-"clamav.net 사용"
+msgstr "데이터베이스 미러 사이트를 이 곳에 설정 하십시오. 대부분의 경우, database.clamav.net 사용"
 
 #: wxDialogPreferences.py:334
 #, fuzzy
 msgid "&Update Frequency:"
 msgstr "검사 (&주)기"
 
-#: wxDialogPreferences.py:339 wxDialogPreferences.py:346
-#: wxDialogPreferences.py:1453 wxDialogScheduledScan.py:37
-#: wxDialogScheduledScan.py:66 wxDialogScheduledScan.py:175
+#: wxDialogPreferences.py:339
+#: wxDialogPreferences.py:346
+#: wxDialogPreferences.py:1453
+#: wxDialogScheduledScan.py:37
+#: wxDialogScheduledScan.py:66
+#: wxDialogScheduledScan.py:175
 #: wxDialogScheduledScan.py:181
 msgid "Daily"
 msgstr "매 일"
 
-#: wxDialogPreferences.py:339 wxDialogPreferences.py:1453
-#: wxDialogScheduledScan.py:66 wxDialogScheduledScan.py:175
+#: wxDialogPreferences.py:339
+#: wxDialogPreferences.py:1453
+#: wxDialogScheduledScan.py:66
+#: wxDialogScheduledScan.py:175
 msgid "Hourly"
 msgstr "매 시간"
 
-#: wxDialogPreferences.py:340 wxDialogPreferences.py:1077
-#: wxDialogPreferences.py:1453 wxDialogScheduledScan.py:66
-#: wxDialogScheduledScan.py:176 wxDialogScheduledScan.py:283
+#: wxDialogPreferences.py:340
+#: wxDialogPreferences.py:1077
+#: wxDialogPreferences.py:1453
+#: wxDialogScheduledScan.py:66
+#: wxDialogScheduledScan.py:176
+#: wxDialogScheduledScan.py:283
 #: wxDialogScheduledScan.py:292
 msgid "Weekly"
 msgstr "매 주"
 
-#: wxDialogPreferences.py:340 wxDialogPreferences.py:1453
-#: wxDialogScheduledScan.py:66 wxDialogScheduledScan.py:175
+#: wxDialogPreferences.py:340
+#: wxDialogPreferences.py:1453
+#: wxDialogScheduledScan.py:66
+#: wxDialogScheduledScan.py:175
 msgid "Workdays"
 msgstr "평일 만"
 
@@ -789,11 +826,13 @@ msgstr "(&압)축 파일 검사"
 msgid "Do Not Scan Archives Larger Than"
 msgstr "압축 파일이 xx MB 보다 큰 경우 검사에서 제외"
 
-#: wxDialogPreferences.py:445 wxDialogPreferences.py:913
+#: wxDialogPreferences.py:445
+#: wxDialogPreferences.py:913
 msgid "MegaBytes"
 msgstr "MB"
 
-#: wxDialogPreferences.py:450 wxDialogPreferences.py:464
+#: wxDialogPreferences.py:450
+#: wxDialogPreferences.py:464
 msgid "Do Not Extract More Than "
 msgstr "xx 이상의 압축 파일은 풀지 않음"
 
@@ -819,11 +858,11 @@ msgstr "이 스케줄을 적용하려면, 선택 하십시오."
 msgid "&Extract Attachments and Macros from MS Office Documents"
 msgstr "ms 오피스 도규먼트의 어태치먼트와 매크로 (&풀)기"
 
-#: wxDialogPreferences.py:489 wxDialogPreferences.py:496
-msgid ""
-"Select if you wish to scan OLE attachments and macros in MS Office Documents"
-msgstr ""
-"ms 오피스 도규먼트의 OLE 어태치먼트와 매크로 파일을 검사하려면 선택하십시오."
+#: wxDialogPreferences.py:489
+#: wxDialogPreferences.py:496
+#, fuzzy
+msgid "Select if you wish to detect executable files with broken PE structure as viruses"
+msgstr "바이러스 발견시, ClamWin으로 부터  알림 메시지를 이메일로 받아보려면 선택하십시오."
 
 #: wxDialogPreferences.py:493
 msgid "&Detect Broken Executables"
@@ -850,7 +889,8 @@ msgstr "검사 (&결)과"
 msgid "Specify location for a scan reports log file"
 msgstr "검사 리포트 로그 파일의 위치를 선택하십시오."
 
-#: wxDialogPreferences.py:535 wxDialogPreferences.py:555
+#: wxDialogPreferences.py:535
+#: wxDialogPreferences.py:555
 #, fuzzy
 msgid "Click to browse for a log file"
 msgstr "폴더를 찾기 위해서는 이 버튼을 클릭하십시오."
@@ -895,37 +935,45 @@ msgstr "(&수)정"
 msgid "&Display Infected Files Only"
 msgstr "감염된 파일만 (&보)기"
 
-#: wxDialogPreferences.py:626 wxDialogPreferences.py:935
-msgid ""
-"Select if you wish to display infected files only in the scan progress window"
+#: wxDialogPreferences.py:626
+#: wxDialogPreferences.py:935
+msgid "Select if you wish to display infected files only in the scan progress window"
 msgstr "검사 진행 창에서 감염된 파일만 보려면 선택하십시오."
 
-#: wxDialogScheduledScan.py:206 wxDialogPreferences.py:628
+#: wxDialogScheduledScan.py:206
+#: wxDialogPreferences.py:628
 msgid "Monday"
 msgstr "월"
 
-#: wxDialogPreferences.py:628 wxDialogPreferences.py:635
-#: wxDialogScheduledScan.py:206 wxDialogScheduledScan.py:212
+#: wxDialogPreferences.py:628
+#: wxDialogPreferences.py:635
+#: wxDialogScheduledScan.py:206
+#: wxDialogScheduledScan.py:212
 msgid "Tuesday"
 msgstr "화"
 
-#: wxDialogScheduledScan.py:206 wxDialogPreferences.py:629
+#: wxDialogScheduledScan.py:206
+#: wxDialogPreferences.py:629
 msgid "Wednesday"
 msgstr "수"
 
-#: wxDialogScheduledScan.py:207 wxDialogPreferences.py:629
+#: wxDialogScheduledScan.py:207
+#: wxDialogPreferences.py:629
 msgid "Thursday"
 msgstr "목"
 
-#: wxDialogScheduledScan.py:207 wxDialogPreferences.py:629
+#: wxDialogScheduledScan.py:207
+#: wxDialogPreferences.py:629
 msgid "Friday"
 msgstr "금"
 
-#: wxDialogScheduledScan.py:207 wxDialogPreferences.py:629
+#: wxDialogScheduledScan.py:207
+#: wxDialogPreferences.py:629
 msgid "Saturday"
 msgstr "토"
 
-#: wxDialogScheduledScan.py:207 wxDialogPreferences.py:629
+#: wxDialogScheduledScan.py:207
+#: wxDialogPreferences.py:629
 msgid "Sunday"
 msgstr "일"
 
@@ -941,8 +989,7 @@ msgstr "바이러스 데이터베이스 업데이트 로그 파일을 보여줍�
 
 #: wxDialogPreferences.py:641
 #, fuzzy
-msgid ""
-"Select if you wish to update the virus databases just after you logged on"
+msgid "Select if you wish to update the virus databases just after you logged on"
 msgstr "이 스케줄을 적용하려면, 선택 하십시오."
 
 #: wxDialogPreferences.py:648
@@ -976,9 +1023,7 @@ msgstr "바이러스 발견시 이메일 알림 메시지 (&보)내기"
 
 #: wxDialogPreferences.py:704
 msgid "Select if you wish to receive email alerts when ClamWin detects a virus"
-msgstr ""
-"바이러스 발견시, ClamWin으로 부터  알림 메시지를 이메일로 받아보려면 선택하십"
-"시오."
+msgstr "바이러스 발견시, ClamWin으로 부터  알림 메시지를 이메일로 받아보려면 선택하십시오."
 
 #: wxDialogPreferences.py:710
 msgid "SMTP Connection Details"
@@ -1021,20 +1066,15 @@ msgid "&To:"
 msgstr "(&받)는이"
 
 #: wxDialogPreferences.py:788
-msgid ""
-"Specify an email address where the email alert will be delivered.  Separate "
-"multiple addresses with commas."
-msgstr ""
-"알림 메시지를 받는 이의 이메일 주소를 선택하십시오. 여러 곳으로 이메일을 보내"
-"는 경우 쉼표(,)를 사용 하십시오."
+msgid "Specify an email address where the email alert will be delivered.  Separate multiple addresses with commas."
+msgstr "알림 메시지를 받는 이의 이메일 주소를 선택하십시오. 여러 곳으로 이메일을 보내는 경우 쉼표(,)를 사용 하십시오."
 
 #: wxDialogPreferences.py:791
 msgid "Su&bject:"
 msgstr "(&주)제"
 
 #: wxDialogPreferences.py:799
-msgid ""
-"Specify Recipient's email address where the email alert will be delivered"
+msgid "Specify Recipient's email address where the email alert will be delivered"
 msgstr "알림 메시지를 받는 이의 이메일 주소를 선택하십시오."
 
 #: wxDialogPreferences.py:802
@@ -1065,27 +1105,33 @@ msgstr "Regular Expression사용시 <..> 안에 패턴을 넣으십시오."
 msgid "&Exclude Matching Filenames:"
 msgstr "제외할 파일 이름:"
 
-#: wxDialogPreferences.py:837 wxDialogPreferences.py:862
+#: wxDialogPreferences.py:837
+#: wxDialogPreferences.py:862
 msgid "Patterns"
 msgstr "패턴"
 
-#: wxDialogPreferences.py:842 wxDialogPreferences.py:867
+#: wxDialogPreferences.py:842
+#: wxDialogPreferences.py:867
 msgid "Move up"
 msgstr ""
 
-#: wxDialogPreferences.py:845 wxDialogPreferences.py:870
+#: wxDialogPreferences.py:845
+#: wxDialogPreferences.py:870
 msgid "Move down"
 msgstr ""
 
-#: wxDialogPreferences.py:848 wxDialogPreferences.py:873
+#: wxDialogPreferences.py:848
+#: wxDialogPreferences.py:873
 msgid "New item"
 msgstr ""
 
-#: wxDialogPreferences.py:851 wxDialogPreferences.py:876
+#: wxDialogPreferences.py:851
+#: wxDialogPreferences.py:876
 msgid "Delete item"
 msgstr ""
 
-#: wxDialogPreferences.py:854 wxDialogPreferences.py:879
+#: wxDialogPreferences.py:854
+#: wxDialogPreferences.py:879
 msgid "Edit item"
 msgstr ""
 
@@ -1106,9 +1152,7 @@ msgid "&Notify About New ClamWin Releases"
 msgstr ""
 
 #: wxDialogPreferences.py:901
-msgid ""
-"Select if you wish to get a notification message when ClamWin Free Antivirus "
-"program has been updated"
+msgid "Select if you wish to get a notification message when ClamWin Free Antivirus program has been updated"
 msgstr ""
 
 #: wxDialogPreferences.py:908
@@ -1119,12 +1163,15 @@ msgstr ""
 msgid "Scanner &Priority:"
 msgstr "스캐너 (&우)선순위:"
 
-#: wxDialogPreferences.py:922 wxDialogPreferences.py:927
-#: wxDialogPreferences.py:1477 wxDialogPreferences.py:1485
+#: wxDialogPreferences.py:922
+#: wxDialogPreferences.py:927
+#: wxDialogPreferences.py:1477
+#: wxDialogPreferences.py:1485
 msgid "Normal"
 msgstr "정상"
 
-#: wxDialogPreferences.py:922 wxDialogPreferences.py:1475
+#: wxDialogPreferences.py:922
+#: wxDialogPreferences.py:1475
 #: wxDialogPreferences.py:1483
 msgid "Low"
 msgstr "낮음"
@@ -1139,27 +1186,29 @@ msgstr ""
 
 #: wxDialogPreferences.py:1015
 #, fuzzy
-msgid ""
-"An error occurred whilst saving configuration file %s. Please check that you "
-"have write permission to the configuration file."
+msgid "An error occurred whilst saving configuration file %s. Please check that you have write permission to the configuration file."
 msgstr "설정 파일 %s 저장 중 에러 발생. 설정 파일의 사용 권한을 확인 하십시오."
 
 #: wxDialogPreferences.py:1033
 msgid "Event Failed"
 msgstr "실패"
 
-#: wxDialogPreferences.py:1205 wxDialogPreferences.py:1221
+#: wxDialogPreferences.py:1205
+#: wxDialogPreferences.py:1221
 #, fuzzy
 msgid "Executable files (*.exe)|*.exe|All files (*.*)|*.*"
 msgstr "리포트 파일 (*.txt)|*.txt|모든 파일 (*.*)|*.*"
 
-#: wxDialogPreferences.py:1209 wxDialogPreferences.py:1225
-#: wxDialogPreferences.py:1251 wxDialogPreferences.py:1267
+#: wxDialogPreferences.py:1209
+#: wxDialogPreferences.py:1225
+#: wxDialogPreferences.py:1251
+#: wxDialogPreferences.py:1267
 #: wxDialogStatus.py:456
 msgid "Choose a file"
 msgstr "파일을 선택하십시오"
 
-#: wxDialogPreferences.py:1247 wxDialogPreferences.py:1263
+#: wxDialogPreferences.py:1247
+#: wxDialogPreferences.py:1263
 #, fuzzy
 msgid "Text Files (*.txt)|*.txt|All files (*.*)|*.*"
 msgstr "리포트 파일 (*.txt)|*.txt|모든 파일 (*.*)|*.*"
@@ -1171,8 +1220,7 @@ msgstr "최대 예약 검사 수(20) 초과"
 
 #: wxDialogPreferences.py:1379
 msgid ""
-"This is a test message sent during configuration of ClamWin Free Antivirus "
-"on the following computer: %s.\n"
+"This is a test message sent during configuration of ClamWin Free Antivirus on the following computer: %s.\n"
 "Please do not be alarmed.\n"
 msgstr ""
 "%s ClamWin Free 백신 설정 중 보내진 메시지 입니다.\n"
@@ -1184,20 +1232,17 @@ msgstr "테스트 이메일이 성공적으로 보내졌습니다."
 
 #: wxDialogPreferences.py:1386
 #, fuzzy
-msgid ""
-"Could not send the email. Please ensure you are connected to the internet. "
-"Error: %s"
-msgstr ""
-"도움말을 열 수 없음. Adobe Acrobat Reader가 설치되어 있는지 확인해 주십시오."
+msgid "Could not send the email. Please ensure you are connected to the internet. Error: %s"
+msgstr "도움말을 열 수 없음. Adobe Acrobat Reader가 설치되어 있는지 확인해 주십시오."
 
-#: wxDialogPreferences.py:1501 wxDialogPreferences.py:1582
+#: wxDialogPreferences.py:1501
+#: wxDialogPreferences.py:1582
 #: wxDialogScheduledScan.py:338
 msgid "Value cannot be empty"
 msgstr "값이 비어 있습니다."
 
 #: wxDialogPreferences.py:1565
-msgid ""
-"The folder you selected does not exist. Would you like to create %s now?"
+msgid "The folder you selected does not exist. Would you like to create %s now?"
 msgstr "선택한 폴더가 존재 하지 않음. 새로 %s 폴더를 만드시겠습니까?"
 
 #: wxDialogPreferences.py:1571
@@ -1210,65 +1255,78 @@ msgstr "로그 파일 %s을 읽을 수 없음. 에러: %s"
 msgid "ClamWin Log Viewer"
 msgstr "ClamWin 로그 파일을 보여줍니다."
 
-#: wxDialogLogViewer.py:93 wxDialogStatus.py:121
+#: wxDialogLogViewer.py:93
+#: wxDialogStatus.py:121
 msgid "ClamAV update process started at"
 msgstr ""
 
-#: wxDialogLogViewer.py:95 wxDialogStatus.py:123
+#: wxDialogLogViewer.py:95
+#: wxDialogStatus.py:123
 msgid "ERROR: DNS Resolver:"
 msgstr ""
 
-#: wxDialogStatus.py:125 wxDialogLogViewer.py:97
+#: wxDialogStatus.py:125
+#: wxDialogLogViewer.py:97
 msgid "WARNING: Invalid DNS reply. Falling back to HTTP mode."
 msgstr ""
 
-#: wxDialogStatus.py:127 wxDialogLogViewer.py:99
+#: wxDialogStatus.py:127
+#: wxDialogLogViewer.py:99
 msgid "ERROR: Can't get information about database.clamav.net:"
 msgstr ""
 
-#: wxDialogLogViewer.py:101 wxDialogStatus.py:129
+#: wxDialogLogViewer.py:101
+#: wxDialogStatus.py:129
 msgid "Can't query"
 msgstr ""
 
-#: wxDialogLogViewer.py:103 wxDialogStatus.py:131
+#: wxDialogLogViewer.py:103
+#: wxDialogStatus.py:131
 msgid "No IP address"
 msgstr ""
 
-#: wxDialogLogViewer.py:107 wxDialogStatus.py:135
+#: wxDialogLogViewer.py:107
+#: wxDialogStatus.py:135
 msgid "Trying again in 5 secs..."
 msgstr ""
 
-#: wxDialogLogViewer.py:111 wxDialogStatus.py:139
-msgid ""
-"ERROR: Update failed. Your network may be down or none of the mirrors listed "
-"in freshclam.conf is working."
+#: wxDialogLogViewer.py:111
+#: wxDialogStatus.py:139
+msgid "ERROR: Update failed. Your network may be down or none of the mirrors listed in freshclam.conf is working."
 msgstr ""
 
-#: wxDialogLogViewer.py:117 wxDialogStatus.py:145
+#: wxDialogLogViewer.py:117
+#: wxDialogStatus.py:145
 #, fuzzy
 msgid "Known viruses:"
 msgstr "%i 개의 바이러스로 부터 보호 중"
 
-#: wxDialogLogViewer.py:119 wxDialogStatus.py:147
+#: wxDialogLogViewer.py:119
+#: wxDialogStatus.py:147
 #, fuzzy
 msgid "Engine version:"
 msgstr "ClamAV 버전"
 
-#: wxDialogLogViewer.py:121 wxDialogStatus.py:149
+#: wxDialogLogViewer.py:121
+#: wxDialogStatus.py:149
 #, fuzzy
 msgid "Scanned directories:"
 msgstr "(&서)브디렉토리 검사"
 
-#: wxDialogLogViewer.py:125 wxDialogStatus.py:153
+#: wxDialogLogViewer.py:125
+#: wxDialogStatus.py:153
 #, fuzzy
 msgid "Infected files:"
 msgstr "감염된 파일"
 
-#: wxDialogLogViewer.py:127 wxDialogStatus.py:155
+#: wxDialogLogViewer.py:127
+#: wxDialogStatus.py:155
 msgid "Data scanned:"
 msgstr ""
 
-#: wxDialogLogViewer.py:80 wxDialogPreferences.py:242 wxDialogAbout.py:162
+#: wxDialogLogViewer.py:80
+#: wxDialogPreferences.py:242
+#: wxDialogAbout.py:162
 #: wxDialogScheduledScan.py:249
 msgid "OK"
 msgstr "확인"
@@ -1294,38 +1352,36 @@ msgstr "ClamAV 버전을 검색 할 수 없음"
 msgid "Unable to retrieve database version"
 msgstr "데이터베이스 버전을 검색 할 수 없음"
 
-#: wxDialogCheckUpdate.py:105 wxFrameMain.py:265 wxDialogStatus.py:500
+#: wxDialogCheckUpdate.py:105
+#: wxFrameMain.py:265
+#: wxDialogStatus.py:500
 msgid "&Close"
 msgstr "(&닫)기"
 
 #: wxFrameMain.py:337
 #, fuzzy
-msgid ""
-"ClamWin Free Antivirus is not configured. Would you like to configure it now?"
+msgid "ClamWin Free Antivirus is not configured. Would you like to configure it now?"
 msgstr "ClamWin이 설정 되어 있지 않습니다. 지금 설정 하시겠습니까?"
 
 #: wxFrameMain.py:343
-msgid ""
-"You have not yet downloaded Virus Definitions Database. Would you like to "
-"download it now?"
+msgid "You have not yet downloaded Virus Definitions Database. Would you like to download it now?"
 msgstr ""
 
 #: wxFrameMain.py:397
 msgid "http://www.clamwin.com/content/category/3/7/27/"
 msgstr ""
 
-#: wxFrameMain.py:405 wxDialogAbout.py:110 wxDialogAbout.py:199
+#: wxFrameMain.py:405
+#: wxDialogAbout.py:110
+#: wxDialogAbout.py:199
 #: ClamTray.py:315
 msgid "http://www.clamwin.com"
 msgstr ""
 
 #: wxDialogUtils.py:58
 #, fuzzy
-msgid ""
-"An error occurred during Virus Database Update. Please review the update "
-"report."
-msgstr ""
-"예약된 바이러스 데이터베이스 업데이트 중 에러 발생. 업데이트 리포트 참조"
+msgid "An error occurred during Virus Database Update. Please review the update report."
+msgstr "예약된 바이러스 데이터베이스 업데이트 중 에러 발생. 업데이트 리포트 참조"
 
 #: wxDialogUtils.py:65
 #, fuzzy
@@ -1383,7 +1439,8 @@ msgstr "예약 검사 중 에러 발생. 치료 결과 리포트 참조."
 msgid "ClamWin Free Antivirus: Scanning..."
 msgstr "ClamWin Free 백신"
 
-#: wxDialogUtils.py:150 ClamTray.py:555
+#: wxDialogUtils.py:150
+#: ClamTray.py:555
 #, fuzzy
 msgid "Could not send email alert. Error: %s"
 msgstr "로그 파일 %s을 읽을 수 없음. 에러: %s"
@@ -1394,8 +1451,7 @@ msgid "Could not delete logfile : %s. Error: %s"
 msgstr "로그 파일 %s을 읽을 수 없음. 에러: %s"
 
 #: wxDialogUtils.py:179
-msgid ""
-"Log files are not properly configured. Please review ClamWin configuration"
+msgid "Log files are not properly configured. Please review ClamWin configuration"
 msgstr ""
 
 #: wxDialogUtils.py:192
@@ -1405,10 +1461,8 @@ msgstr "로그 파일 %s을 읽을 수 없음. 에러: %s"
 
 #: wxDialogUtils.py:229
 msgid ""
-"Unable to get online version. Most likely it's a temporary connectivity "
-"error and you don't have to do anything.\n"
-"If you see this error often then allow clamwin.exe in your firewall and "
-"check proxy settings.\n"
+"Unable to get online version. Most likely it's a temporary connectivity error and you don't have to do anything.\n"
+"If you see this error often then allow clamwin.exe in your firewall and check proxy settings.\n"
 "(%s)"
 msgstr ""
 
@@ -1468,8 +1522,7 @@ msgstr "로그 파일 %s을 읽을 수 없음. 에러: %s"
 
 #: wxDialogScheduledScan.py:130
 msgid "Could not save scheduled scans to persistent storage. Error: %s"
-msgstr ""
-"영속적 저장공간(퍼시스턴트 스토리지)에 예약 검사를 저장할 수 없음. 에러: %s"
+msgstr "영속적 저장공간(퍼시스턴트 스토리지)에 예약 검사를 저장할 수 없음. 에러: %s"
 
 #: wxDialogCheckUpdate.py:54
 #, fuzzy
@@ -1477,18 +1530,15 @@ msgid "ClamWin Update"
 msgstr "ClamWin (&웹)사이트"
 
 #: wxDialogCheckUpdate.py:60
-msgid ""
-"An update of ClamWin Free Antivirus has been released. Please click on "
-"Download button and download the latest version %s"
+msgid "An update of ClamWin Free Antivirus has been released. Please click on Download button and download the latest version %s"
 msgstr ""
 
 #: wxDialogCheckUpdate.py:69
-msgid ""
-"After you download the latest version setup file simply run it and install "
-"over the existing version."
+msgid "After you download the latest version setup file simply run it and install over the existing version."
 msgstr ""
 
-#: wxDialogAbout.py:57 wxDialogAbout.py:61
+#: wxDialogAbout.py:57
+#: wxDialogAbout.py:61
 #, fuzzy
 msgid "About ClamWin Free Antivirus"
 msgstr "ClamWin Free 백신"
@@ -1505,7 +1555,8 @@ msgstr "ClamAV 버전"
 msgid "Protecting from %i Viruses"
 msgstr "%i 개의 바이러스로 부터 보호 중"
 
-#: wxDialogAbout.py:93 wxDialogAbout.py:115
+#: wxDialogAbout.py:93
+#: wxDialogAbout.py:115
 #, fuzzy
 msgid "ClamWin Free Antivirus Homepage"
 msgstr "ClamWin Free 백신"
@@ -1544,8 +1595,7 @@ msgid "Python Homepage"
 msgstr "Python 홈페이지"
 
 #: OlAddin.py:174
-msgid ""
-"You appear to be running a win32all version pre 151, which is pretty old"
+msgid "You appear to be running a win32all version pre 151, which is pretty old"
 msgstr ""
 
 #: OlAddin.py:175
@@ -1565,7 +1615,8 @@ msgstr ""
 msgid "Virus Deleted by ClamWin.txt"
 msgstr ""
 
-#: OlAddin.py:275 OlAddin.py:1031
+#: OlAddin.py:275
+#: OlAddin.py:1031
 msgid "Registration complete."
 msgstr ""
 
@@ -1591,7 +1642,8 @@ msgstr "UI Selection를 업데이트 하던 중, 에러가 발생 %s"
 msgid "An Error occurred whilst converting clamscan report: %s"
 msgstr "UI Selection를 업데이트 하던 중, 에러가 발생 %s"
 
-#: OlAddin.py:344 wxDialogUtils.py:107
+#: OlAddin.py:344
+#: wxDialogUtils.py:107
 msgid "Virus Definitions Database Not Found! Please download it now."
 msgstr ""
 
@@ -1612,9 +1664,7 @@ msgstr ""
 
 #: OlAddin.py:474
 #, fuzzy
-msgid ""
-"Virus has been detected in an email attachment! The attachment was replaced "
-"with the report file."
+msgid "Virus has been detected in an email attachment! The attachment was replaced with the report file."
 msgstr "예약 검사 중 바이러스 발견. 치료 결과 리포트 참조."
 
 #: OlAddin.py:476
@@ -1622,7 +1672,8 @@ msgstr "예약 검사 중 바이러스 발견. 치료 결과 리포트 참조."
 msgid "An error occurred whilst scanning email message."
 msgstr "UI Selection를 업데이트 하던 중, 에러가 발생 %s"
 
-#: OlAddin.py:508 ClamTray.py:563
+#: OlAddin.py:508
+#: ClamTray.py:563
 #, fuzzy
 msgid "Could not remove file: %s. Error: %s"
 msgstr "도움말을 열 수 없음 - %s 을 찾을 수 없음"
@@ -1739,10 +1790,9 @@ msgstr "ClamWin 웹사이트를 엽니다"
 msgid "&Exit"
 msgstr "(&끝)내기"
 
-#: ClamTray.py:313 wxFrameMain.py:401
-msgid ""
-"http://www.clamwin.com/index.php?"
-"option=content&task=view&id=40&Itemid=60&version="
+#: ClamTray.py:313
+#: wxFrameMain.py:401
+msgid "http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version="
 msgstr ""
 
 #: ClamTray.py:338
@@ -1776,27 +1826,22 @@ msgstr "UI Selection를 업데이트 하던 중, 에러가 발생 %s"
 msgid "Error"
 msgstr ""
 
-#: ClamTray.py:387 wxDialogUtils.py:38
+#: ClamTray.py:387
+#: wxDialogUtils.py:38
 #, fuzzy
-msgid ""
-"Unable to create freshclam configuration file. Please check there is enough "
-"space on the disk"
-msgstr ""
-"폴더에 쓰기 권한(write permission)을 가지고 있는지와 디스크에 충분한 여유 공"
-"간이 있는지를 확인해 주십시오. "
+msgid "Unable to create freshclam configuration file. Please check there is enough space on the disk"
+msgstr "폴더에 쓰기 권한(write permission)을 가지고 있는지와 디스크에 충분한 여유 공간이 있는지를 확인해 주십시오. "
 
-#: ClamTray.py:403 wxDialogUtils.py:56
+#: ClamTray.py:403
+#: wxDialogUtils.py:56
 #, fuzzy
 msgid "Virus database has been updated."
 msgstr "(&바)이러스 데이터베이스 업데이트 리포트"
 
 #: ClamTray.py:405
 #, fuzzy
-msgid ""
-"An error occurred during Scheduled Virus Database Update. Please review the "
-"update report."
-msgstr ""
-"예약된 바이러스 데이터베이스 업데이트 중 에러 발생. 업데이트 리포트 참조"
+msgid "An error occurred during Scheduled Virus Database Update. Please review the update report."
+msgstr "예약된 바이러스 데이터베이스 업데이트 중 에러 발생. 업데이트 리포트 참조"
 
 #: ClamTray.py:418
 msgid ""
@@ -1812,7 +1857,8 @@ msgstr ""
 msgid "Error performing Scheduled Update."
 msgstr "예약된 업데이트 실행 중 에러 발생."
 
-#: ClamTray.py:441 wxDialogUtils.py:206
+#: ClamTray.py:441
+#: wxDialogUtils.py:206
 msgid "Please point your browser at: %s"
 msgstr "브라우저에서 %s를 확인 하십시오."
 
@@ -1822,8 +1868,7 @@ msgid "An error occurred while starting ClamWin Free Antivirus Preferences.\n"
 msgstr "ClamWin 환경 설정 시작 중 에러 발생.\n"
 
 #: ClamTray.py:496
-msgid ""
-"Virus has been detected during scheduled scan! Please review the scan report."
+msgid "Virus has been detected during scheduled scan! Please review the scan report."
 msgstr "예약 검사 중 바이러스 발견. 치료 결과 리포트 참조."
 
 #: ClamTray.py:498
@@ -1841,13 +1886,51 @@ msgstr "예약 검사:"
 msgid "An error occurred whilst running Running Scheduled Task "
 msgstr "UI Selection를 업데이트 하던 중, 에러가 발생 %s"
 
-msgid ""
-"\n"
-"-------------------\n"
-"Command has been interrupted...\n"
-"-------------------\n"
+#, fuzzy
+msgid "Scans Programs in Computer Memory for Viruses"
+msgstr "파일이나 폴더를 바이러스 감염 되었는지 검사 합니다."
+
+#, fuzzy
+msgid "Scan &Memory"
+msgstr "검사 (&결)과"
+
+msgid "Scan Computer Memory"
 msgstr ""
-"\n"
-"-------------------\n"
-"명령문이 중단되 었습니다...\n"
-"-------------------\n"
+
+#, fuzzy
+msgid "Scans Programs Loaded in Computer Memory for Computer Viruses"
+msgstr "선택된 파일이나 폴더를 바이러스 감염 되었는지 검사 합니다."
+
+#, fuzzy
+msgid "Scans Computer Memory for Viruses"
+msgstr "바이러스 검사를 합니다."
+
+#, fuzzy
+msgid "Specify any additional paramters for clamscan.exe"
+msgstr "ClamScan의 위치를 선택하십시오."
+
+msgid "&Unload Infected Programs from Computer Memory"
+msgstr ""
+
+#, fuzzy
+msgid "Select if you wish to unload infected programs from computer memory so they can be quarantined or removed"
+msgstr "검사 진행 창에서 감염된 파일만 보려면 선택하십시오."
+
+msgid "Scan &Programs Loaded in Computer Memory"
+msgstr ""
+
+#, fuzzy
+msgid "Select if you wish to include programs computer memory during every scan"
+msgstr "이 스케줄을 적용하려면, 선택 하십시오."
+
+#, fuzzy
+msgid "Netfarm Homepage"
+msgstr "ClamAV 홈페이지"
+
+#, fuzzy
+msgid "Scanning Programs in Computer Memory"
+msgstr "파일이나 폴더를 바이러스 감염 되었는지 검사 합니다."
+
+msgid "Computer Memory Scan Completed"
+msgstr ""
+

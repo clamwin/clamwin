@@ -538,7 +538,7 @@ class wxPreferencesDlg(wxDialog):
         self.textCtrlAdditionalParams = wxTextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLADDITIONALPARAMS,
               name='textCtrlAdditionalParams', parent=self._panelAdvanced,
               pos=wxPoint(6, 97), size=wxSize(379, 21), style=0, value='')
-        self.textCtrlAdditionalParams.SetToolTipString('Specify any additional paramters for clamscan.exe')
+        self.textCtrlAdditionalParams.SetToolTipString(_('Specify any additional paramters for clamscan.exe'))
 
         self.staticTextMaxLogSize = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTMAXLOGSIZE,
               label=_('Limit Log File Size To:'), name='staticTextMaxLogSize',
@@ -988,11 +988,11 @@ class wxPreferencesDlg(wxDialog):
         self.checkBoxShowProgress.SetToolTipString(_('Select if you wish to display infected files only in the scan progress window'))
 
         self.checkBoxUnload = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXUNLOAD,
-              label='&Unload Infected Programs from Computer Memory',
+              label=_('&Unload Infected Programs from Computer Memory'),
               name='checkBoxUnload', parent=self._panelOptions, pos=wxPoint(15,
               202), size=wxSize(354, 17), style=0)
         self.checkBoxUnload.SetValue(False)
-        self.checkBoxUnload.SetToolTipString('Select if you wish to unload infected programs from computer memory so they can be quarantined or removed')
+        self.checkBoxUnload.SetToolTipString( _('Select if you wish to unload infected programs from computer memory so they can be quarantined or removed'))
 
         self._init_coll_notebook_Pages(self.notebook)
 

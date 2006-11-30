@@ -172,9 +172,9 @@ class wxMainFrame(wxFrame):
         parent.AddSeparator()
         parent.DoAddTool(bitmap=wxBitmap('img/ScanMem.png', wxBITMAP_TYPE_PNG),
               bmpDisabled=wxNullBitmap, id=wxID_WXMAINFRAMETOOLBARTOOLS_SCANMEM,
-              kind=wxITEM_NORMAL, label='Scan Computer Memory',
-              longHelp='Scans Programs Loaded in Computer Memory for Computer Viruses',
-              shortHelp='Scans Computer Memory for Viruses')
+              kind=wxITEM_NORMAL, label=_('Scan Computer Memory'),
+              longHelp=_('Scans Programs Loaded in Computer Memory for Computer Viruses'),
+              shortHelp=_('Scans Computer Memory for Viruses'))
         parent.DoAddTool(bitmap=wxBitmap('img/Scan.png', wxBITMAP_TYPE_PNG),
               bmpDisabled=wxNullBitmap, id=wxID_WXMAINFRAMETOOLBARTOOLS_SCAN,
               kind=wxITEM_NORMAL, label=_('Scan'),

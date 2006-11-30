@@ -34,7 +34,7 @@ from I18N import getClamString as _
 # scheduled scan information holder
 # it is used for persistent storage
 class ScheduledScanInfo(list):
-    def __init__(self, frequency='Daily', time='18:30:00', weekDay=3, path='', description='', active=True, scanmem=True):
+    def __init__(self, frequency=_('Daily'), time='18:30:00', weekDay=3, path='', description='', active=True, scanmem=True):
         list.__init__(self, [frequency, time, weekDay, path, description, active, scanmem])
 
     def __getFrequency(self): return self[0]
@@ -168,9 +168,9 @@ class wxDialogScheduledScan(wxDialog):
         STRETCH_LEN = 30
         wxDialog.__init__(self, id=wxID_WXDIALOGSCHEDULEDSCAN,
               name='wxDialogScheduledScan', parent=prnt, pos=wxPoint(427, 201),
-              size=wxSize(311 + STRETCH_LEN*2, 301), style=wxDEFAULT_DIALOG_STYLE,
+              size=wxSize(311 + STRETCH_LEN*2, 318), style=wxDEFAULT_DIALOG_STYLE,
               title=_('Scheduled Scan'))
-        self.SetClientSize(wxSize(303 + STRETCH_LEN*2, 274))
+        self.SetClientSize(wxSize(303 + STRETCH_LEN*2, 291))
         self.SetToolTipString('')
         self.Center(wxBOTH)
         EVT_CHAR_HOOK(self, self.OnCharHook)
@@ -235,7 +235,7 @@ class wxDialogScheduledScan(wxDialog):
 
         self.buttonBrowseFolder = wxButton(id=wxID_WXDIALOGSCHEDULEDSCANBUTTONBROWSEFOLDER,
               label='...', name='buttonBrowseFolder', parent=self,
-              pos=wxPoint(273 + STRETCH_LEN*2, 139), size=wxSize(20, 20), style=0)
+              pos=wxPoint(273 + STRETCH_LEN*2, 183), size=wxSize(20, 20), style=0)
         self.buttonBrowseFolder.SetToolTipString(_('Click to browse for a folder'))
         EVT_BUTTON(self.buttonBrowseFolder,
               wxID_WXDIALOGSCHEDULEDSCANBUTTONBROWSEFOLDER,
@@ -258,7 +258,7 @@ class wxDialogScheduledScan(wxDialog):
         self.checkBoxEnabled.SetToolTipString(_('Select if you wish to enable this schedule'))
 
         self.buttonOK = wxButton(id=wxID_WXDIALOGSCHEDULEDSCANBUTTONOK,
-              label=_('OK'), name='buttonOK', parent=self, pos=wxPoint(73 + STRETCH_LEN, 242),
+              label=_('OK'), name='buttonOK', parent=self, pos=wxPoint(73 + STRETCH_LEN, 258),
               size=wxSize(75, 23), style=0)
         self.buttonOK.SetDefault()
         self.buttonOK.SetToolTipString(_('Closes the dialog and applies the settings'))
@@ -266,17 +266,17 @@ class wxDialogScheduledScan(wxDialog):
 
         self.buttonCancel = wxButton(id=wxID_WXDIALOGSCHEDULEDSCANBUTTONCANCEL,
               label=_('Cancel'), name='buttonCancel', parent=self, pos=wxPoint(160 + STRETCH_LEN,
-              242), size=wxSize(75, 23), style=0)
+              258), size=wxSize(75, 23), style=0)
         self.buttonCancel.SetToolTipString(_('Closes the dialog and discards the changes'))
         EVT_BUTTON(self.buttonCancel, wxID_WXDIALOGSCHEDULEDSCANBUTTONCANCEL,
               self.OnCancel)
 
         self.checkBoxScanMemory = wxCheckBox(id=wxID_WXDIALOGSCHEDULEDSCANCHECKBOXSCANMEMORY,
-              label='Scan &Programs Loaded in Computer Memory',
+              label=_('Scan &Programs Loaded in Computer Memory'),
               name='checkBoxScanMemory', parent=self, pos=wxPoint(11, 141),
-              size=wxSize(277, 18), style=0)
+              size=wxSize(282 + STRETCH_LEN*2, 18), style=0)
         self.checkBoxScanMemory.SetValue(False)
-        self.checkBoxScanMemory.SetToolTipString('Select if you wish to include programs computer memory during every scan')
+        self.checkBoxScanMemory.SetToolTipString(_('Select if you wish to include programs computer memory during every scan'))
 
     def __init__(self, parent, scanInfo):
         self._scanInfo = None

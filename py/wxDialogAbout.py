@@ -185,7 +185,7 @@ class wxAboutDlg(wxDialog):
               wxBITMAP_TYPE_PNG), id=wxID_WXABOUTDLGSTATICBITMAPNETFARM,
               name='staticBitmapNetfarm', parent=self, pos=wxPoint(143, 257),
               size=wxSize(160, 33), style=0)
-        self.staticBitmapNetfarm.SetToolTipString('Netfarm Homepage')
+        self.staticBitmapNetfarm.SetToolTipString(_('Netfarm Homepage'))
         self.staticBitmapNetfarm.SetCursor(wxStockCursor(wxCURSOR_HAND))
         EVT_LEFT_DOWN(self.staticBitmapNetfarm, self.OnNetfarmHomepage)
 
@@ -193,7 +193,7 @@ class wxAboutDlg(wxDialog):
               wxBITMAP_TYPE_PNG), id=wxID_WXABOUTDLGSTATICBITMAPCLAMAV,
               name='staticBitmapClamAV', parent=self, pos=wxPoint(7, 256),
               size=wxSize(125, 34), style=0)
-        self.staticBitmapClamAV.SetToolTipString('ClamAV Homepage')
+        self.staticBitmapClamAV.SetToolTipString(_('ClamAV Homepage'))
         self.staticBitmapClamAV.SetCursor(wxStockCursor(wxCURSOR_HAND))
         EVT_LEFT_DOWN(self.staticBitmapClamAV, self.OnClamAVHomePage)
 

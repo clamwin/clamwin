@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ClamWin Free Antivirus\n"
+"Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-11-24 19:02+0100\n"
+"PO-Revision-Date: 2006-11-30 15:02+0100\n"
 "Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: Chinese <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -957,8 +957,8 @@ msgstr "检查OFFICE文档中包含的宏和附件"
 #: wxDialogPreferences.py:489
 #: wxDialogPreferences.py:496
 #, fuzzy
-msgid "Select if you wish to scan OLE attachments and macros in MS Office Documents"
-msgstr "选择将检查OFFICE文档的OLE附件和宏"
+msgid "Select if you wish to detect executable files with broken PE structure as viruses"
+msgstr "选择此处发现病毒时将收到电子邮件的提醒"
 
 #: wxDialogPreferences.py:493
 msgid "&Detect Broken Executables"
@@ -1615,7 +1615,7 @@ msgid ""
 "(%s)"
 msgstr ""
 
-#: ShellExtImpl.cpp:
+# ShellExtImpl.cpp:
 #: 292
 msgid "Scan with ClamWin Free Antivirus"
 msgstr ""
@@ -2042,4 +2042,52 @@ msgstr "执行计划任务:\n"
 #, fuzzy
 msgid "An error occurred whilst running Running Scheduled Task "
 msgstr "执行计划任务时发生错误 "
+
+#, fuzzy
+msgid "Scans Programs in Computer Memory for Viruses"
+msgstr "对计算机中的文件或文件夹进行查毒"
+
+#, fuzzy
+msgid "Scan &Memory"
+msgstr "查毒报告(&S)"
+
+msgid "Scan Computer Memory"
+msgstr ""
+
+#, fuzzy
+msgid "Scans Programs Loaded in Computer Memory for Computer Viruses"
+msgstr "选择文件或文件夹进行查毒"
+
+#, fuzzy
+msgid "Scans Computer Memory for Viruses"
+msgstr "查毒"
+
+#, fuzzy
+msgid "Specify any additional paramters for clamscan.exe"
+msgstr "指定clamscan的位置"
+
+msgid "&Unload Infected Programs from Computer Memory"
+msgstr ""
+
+#, fuzzy
+msgid "Select if you wish to unload infected programs from computer memory so they can be quarantined or removed"
+msgstr "选择此处杀毒时将只显示感染病毒的文件"
+
+msgid "Scan &Programs Loaded in Computer Memory"
+msgstr ""
+
+#, fuzzy
+msgid "Select if you wish to include programs computer memory during every scan"
+msgstr "选择此处可以检查所有子目录"
+
+#, fuzzy
+msgid "Netfarm Homepage"
+msgstr "ClamAV主页"
+
+#, fuzzy
+msgid "Scanning Programs in Computer Memory"
+msgstr "对计算机中的文件或文件夹进行查毒"
+
+msgid "Computer Memory Scan Completed"
+msgstr ""
 

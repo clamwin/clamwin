@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ClamWin Free Antivirus\n"
+"Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-11-24 19:02+0100\n"
+"PO-Revision-Date: 2006-11-30 15:01+0100\n"
 "Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: Spanish <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -828,8 +828,8 @@ msgstr ""
 
 #: wxDialogPreferences.py:489
 #: wxDialogPreferences.py:496
-msgid "Select if you wish to scan OLE attachments and macros in MS Office Documents"
-msgstr "Seleccionar si deseas analizar adjuntos OLE y macros en documentos de MS Office"
+msgid "Select if you wish to detect executable files with broken PE structure as viruses"
+msgstr ""
 
 #: wxDialogPreferences.py:493
 msgid "&Detect Broken Executables"
@@ -1388,7 +1388,7 @@ msgid ""
 "(%s)"
 msgstr ""
 
-#: ShellExtImpl.cpp:
+# ShellExtImpl.cpp:
 #: 292
 msgid "Scan with ClamWin Free Antivirus"
 msgstr ""
@@ -1756,5 +1756,50 @@ msgstr ""
 
 #: ClamTray.py:532
 msgid "An error occurred whilst running Running Scheduled Task "
+msgstr ""
+
+#, fuzzy
+msgid "Scans Programs in Computer Memory for Viruses"
+msgstr "Analiza archivos o carpetas en busca de virus"
+
+#, fuzzy
+msgid "Scan &Memory"
+msgstr "&Informe del análisis"
+
+msgid "Scan Computer Memory"
+msgstr ""
+
+#, fuzzy
+msgid "Scans Programs Loaded in Computer Memory for Computer Viruses"
+msgstr "Busca virus en archivo o carpeta seleccionados"
+
+#, fuzzy
+msgid "Scans Computer Memory for Viruses"
+msgstr "Busca virus"
+
+#, fuzzy
+msgid "Specify any additional paramters for clamscan.exe"
+msgstr "Especificar ubicación de ClamScan"
+
+msgid "&Unload Infected Programs from Computer Memory"
+msgstr ""
+
+msgid "Select if you wish to unload infected programs from computer memory so they can be quarantined or removed"
+msgstr ""
+
+msgid "Scan &Programs Loaded in Computer Memory"
+msgstr ""
+
+msgid "Select if you wish to include programs computer memory during every scan"
+msgstr ""
+
+msgid "Netfarm Homepage"
+msgstr ""
+
+#, fuzzy
+msgid "Scanning Programs in Computer Memory"
+msgstr "Analiza archivos o carpetas en busca de virus"
+
+msgid "Computer Memory Scan Completed"
 msgstr ""
 

@@ -188,7 +188,10 @@ def translateClamAVLines(lines):
                 _('Not moved'),
             'File excluded':
                 _('File excluded'),
-            
+            'Scanning Programs in Computer Memory':
+                _('Scanning Programs in Computer Memory'),
+            'Computer Memory Scan Completed':
+                _('Computer Memory Scan Completed'),
         }
 
     dDateStrings = {
