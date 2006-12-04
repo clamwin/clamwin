@@ -109,175 +109,124 @@ class ThreadUpdateStatusEvent(wxPyCommandEvent):
 
 def translateClamAVLines(lines):
     # Translate a list of lines of ClamAV output based on 0.88.2 output
-    dClamAVStrings = {
-            'File not found':           # only seems to occur on WINE
-                _('File not found'),
-            'FOUND':
-                _('FOUND'),
-            'ClamAV update process started at':
-                _('ClamAV update process started at'),
-            'ERROR: DNS Resolver:':
-                _('ERROR: DNS Resolver:'),
-            'WARNING: Invalid DNS reply. Falling back to HTTP mode.':
-                _('WARNING: Invalid DNS reply. Falling back to HTTP mode.'),
-            'ERROR: Can\'t get information about database.clamav.net:':
-                _('ERROR: Can\'t get information about database.clamav.net:'),
-            'Can\'t query':
-                _('Can\'t query'),
-            'No IP address':
-                _('No IP address'),
-            'ERROR: No servers could be reached. Giving up':
-                _('ERROR: No servers could be reached. Giving up'),
-            'Trying again in 5 secs...':
-                _('Trying again in 5 secs...'),
-            'Giving up on':
-                _('Giving up on'),
-            'ERROR: Update failed. Your network may be down or none of the mirrors listed in freshclam.conf is working.':
-                _('ERROR: Update failed. Your network may be down or none of the mirrors listed in freshclam.conf is working.'),
-            'Scan started:':
-                _('Scan started:'),
-            '-- summary --':
-                _('-- summary --'),
-            'Known viruses:':
-                _('Known viruses:'),
-            'Engine version:':
-                _('Engine version:'),
-            'Scanned directories:':
-                _('Scanned directories:'),
-            'Scanned files:':
-                _('Scanned files:'),
-            'Infected files:':
-                _('Infected files:'),
-            'Data scanned:':
-                _('Data scanned:'),
-            'Time:':
-                _('Time:'),
-            'WARNING: Your ClamAV installation is OUTDATED!':
-                _('WARNING: Your ClamAV installation is OUTDATED!'),
-            'WARNING: Local version:':
-                _('WARNING: Local version:'),
-            'Recommended version:':
-                _('Recommended version:'),
-            'DON\'T PANIC! Read':
-                _('DON\'T PANIC! Read'),
-            'is up to date':
-                _('is up to date'),
-            'sigs:':
-                _('sigs:'),
-            'f-level:':
-                _('f-level:'),
-            'builder:':
-                _('builder:'),
-            'Database updated':
-                _('Database updated'),
-            'signatures':
-                _('signatures'),
-            'from':
-                _('from'),
-            'Control+C pressed, aborting...':
-                _('Control+C pressed, aborting...'),
-            'Downloading':
-                _('Downloading'),
-            'Connection with':
-                _('Connection with'),
-            'http:\\\\www.clamav.net\\faq.html':
-                _('http:\\\\www.clamav.net\\faq.html'),
-            'http://www.clamwin.com/content/view/10/27/':
-                _('http://www.clamwin.com/content/view/10/27/'),
-            'Not moved':
-                _('Not moved'),
-            'File excluded':
-                _('File excluded'),
-            'Scanning Programs in Computer Memory':
-                _('Scanning Programs in Computer Memory'),
-            'Computer Memory Scan Completed':
-                _('Computer Memory Scan Completed'),
-        }
+    lClamAVStrings = [
+            'File not found',           # only seems to occur on WINE
+            'FOUND',
+            'ClamAV update process started at',
+            'ERROR: DNS Resolver:',
+            'WARNING: Invalid DNS reply. Falling back to HTTP mode.',
+            'ERROR: Can\'t get information about database.clamav.net:',
+            'Can\'t query',
+            'No IP address',
+            'ERROR: No servers could be reached. Giving up',
+            'Trying again in 5 secs...',
+            'Giving up on',
+            'ERROR: Update failed. Your network may be down or none of the mirrors listed in freshclam.conf is working.',
+            'Scan started:',
+            '-- summary --',
+            'Known viruses:',
+            'Engine version:',
+            'Scanned directories:',
+            'Scanned files:',
+            'Infected files:',
+            'Data scanned:',
+            'Time:',
+            'WARNING: Your ClamAV installation is OUTDATED!',
+            'WARNING: Local version:',
+            'Recommended version:',
+            'DON\'T PANIC! Read',
+            'is up to date',
+            'sigs:',
+            'f-level:',
+            'builder:',
+            'Database updated',
+            'signatures',
+            'from',
+            'Control+C pressed, aborting...',
+            'Downloading',
+            'Connection with',
+            'http:\\\\www.clamav.net\\faq.html',
+            'http://www.clamwin.com/content/view/10/27/',
+            'Not moved',
+            'File excluded',
+            'Scanning Programs in Computer Memory',
+            'Computer Memory Scan Completed'
+        ]
 
-    dDateStrings = {
-            'Mon ':
-                _('Mon '),
-            'Tue ':
-                _('Tue '),
-            'Wed ':
-                _('Wed '),
-            'Thu ':
-                _('Thu '),
-            'Fri ':
-                _('Fri '),
-            'Sat ':
-                _('Sat '),
-            'Sun ':
-                _('Sun '),
-            'Jan ':
-                _('Jan '),
-            'Feb ':
-                _('Feb '),
-            'Mar ':
-                _('Mar '),
-            'Apr ':
-                _('Apr '),
-            'May ':
-                _('May '),
-            'Jun ':
-                _('Jun '),
-            'Jul ':
-                _('Jul '),
-            'Aug ':
-                _('Aug '),
-            'Sep ':
-                _('Sep '),
-            'Oct ':
-                _('Oct '),
-            'Nov ':
-                _('Nov '),
-            'Dec ':
-                _('Dec ')
-        }
+    lDateStrings = [
+            'Mon ',
+            'Tue ',
+            'Wed ',
+            'Thu ',
+            'Fri ',
+            'Sat ',
+            'Sun ',
+            'Jan ',
+            'Feb ',
+            'Mar ',
+            'Apr ',
+            'May ',
+            'Jun ',
+            'Jul ',
+            'Aug ',
+            'Sep ',
+            'Oct ',
+            'Nov ',
+            'Dec '
+        ]
 
     # These are strings that must be replaced afterwards as
     # they are substrings of the above strings
-    dClamAVAfterStrings = {
-            'version:':
-                _('version:'),
-            'updated':
-                _('updated'),
-            'failed':
-                _('failed')
-
-        }
+    lClamAVAfterStrings = [
+            'version:',
+            'updated',
+            'failed'
+        ]
 
 
-    locale.setlocale(locale.LC_ALL, '')
-    decimalPoint = locale.localeconv()['decimal_point']
     translatedLines = []
     doneDate = False
     regexPattern = re.compile("[0-9]+\.[0-9]+")
     
     for line in lines:
-        if not doneDate:
-            if line.find("Scan started:") >= 0 or line.find("ClamAV update process started at") >= 0:
-                for sToReplace in dDateStrings.keys():
-                    sToEncode = dDateStrings[sToReplace].encode('utf-8')
+        # all strings containing backslashes represent the current file being scanned,
+        # so these don't need to be translated (performance boost)
+        if line.find('\\') < 0:
+            if not doneDate:
+                if line.find("Scan started:") >= 0 or line.find("ClamAV update process started at") >= 0:
+                    for sToReplace in lDateStrings:
+                        if line.find(sToReplace) >= 0:
+                            locale.setlocale(locale.LC_ALL, '')
+                            sToEncode = _(sToReplace).encode('utf-8')
+                            locale.setlocale(locale.LC_ALL, 'C')
+                            line = line.replace(sToReplace, sToEncode)
+                    doneDate = True
+            
+            if regexPattern.search(line):
+                locale.setlocale(locale.LC_ALL, '')
+                decimalPoint = locale.localeconv()['decimal_point']
+                locale.setlocale(locale.LC_ALL, 'C')
+                line = line.replace(".", decimalPoint)
+            
+            for sToReplace in lClamAVStrings:
+                if line.find(sToReplace) >= 0:
+                    locale.setlocale(locale.LC_ALL, '')
+                    sToEncode = _(sToReplace).encode('utf-8')
+                    locale.setlocale(locale.LC_ALL, 'C')
+                    try:
+                        line = line.replace(sToReplace, sToEncode)
+                    except:
+                        pass    # TODO: Exceptions occur with czech for some reason
+                
+            for sToReplace in lClamAVAfterStrings:
+                if line.find(sToReplace) >= 0:
+                    locale.setlocale(locale.LC_ALL, '')
+                    sToEncode = _(sToReplace).encode('utf-8')
+                    locale.setlocale(locale.LC_ALL, 'C')
                     line = line.replace(sToReplace, sToEncode)
-                doneDate = True
-        
-        if regexPattern.search(line):
-            line = line.replace(".", decimalPoint)
-        
-        for sToReplace in dClamAVStrings.keys():
-            sToEncode = dClamAVStrings[sToReplace].encode('utf-8')
-            try:
-                line = line.replace(sToReplace, sToEncode)
-            except:
-                pass    # TODO: Exceptions occur with czech for some reason
-        for sToReplace in dClamAVAfterStrings.keys():
-            sToEncode = dClamAVAfterStrings[sToReplace].encode('utf-8')
-            line = line.replace(sToReplace, sToEncode)
 
         translatedLines.append(line)
 
-    locale.setlocale(locale.LC_ALL, 'C')
 
     return translatedLines
 
@@ -483,7 +432,17 @@ class wxDialogStatus(wxDialog):
     ThreadFinished = staticmethod(ThreadFinished)
 
     def ThreadUpdateStatus(owner, text, append=True):
-        text = translateClamAVLines([text])[0]
+        # Since all lines with backslashes are just showing files that
+        # are scanned, there's no need to translate them.
+        # This will increase performance
+        translationNeeded = false;
+        for line in text:
+            if line.find("\\") < 0:
+                translationNeeded = true;
+                
+        if translationNeeded:    
+            text = translateClamAVLines([text])[0]
+                
         if owner.terminating:
             text = ''
             return
