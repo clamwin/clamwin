@@ -3,6 +3,24 @@
 * I18N Branch            *
 **************************
 
+KNOWN ISSUES:
+*************
+- The link button to the clamav homepage in the about box is broken.
+  Can't see why, it is broken in the original package too.
+
+
+Changes in Version ClamWinL10N-25.exe :
+***************************************
+- Fixed a bug in the About box (didn't show because of the removed Python
+  image, which left some garbage after merging)
+- Moved help files and manuals to a separate clamwin\doc directory
+- If the localized help file can not be found, the english help will be
+  shown in stead.
+- Some small modifications to make it compile with Visual C++ 2005 Express
+- Fixed the Unicode build of Explorer shell (Win64 build is still todo)
+- Improved performance : A folder that took 76'19" to scan with L10N-25
+  now scans in 50'31".
+
 Changes in Version ClamWinL10N-24.exe :
 ***************************************
 - Added string for tooltip 

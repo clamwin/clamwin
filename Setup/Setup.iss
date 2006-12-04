@@ -4,7 +4,7 @@
 [Setup]
 AppName={cm:ClamWinFreeAntivirus1}
 AppVerName={cm:ClamWinFreeAntivirus1} 0.88.6
-OutputBaseFilename=ClamWinL10N-24
+OutputBaseFilename=ClamWinL10N-25
 AppPublisher=budtse
 AppPublisherURL=http://www.clamwin.com/
 AppSupportURL=http://www.clamwin.com/
@@ -48,13 +48,13 @@ Name: es; MessagesFile: compiler:Languages\Spanish.isl
 Source: py2exe\dist\bin\python23.dll; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 Source: py2exe\dist\bin\ClamTray.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: py2exe\dist\bin\ClamWin.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\doc\nl_BE\Manual_NL.chm; DestDir: {app}\bin; Components: InternationalHelp\Dutch; Flags: ignoreversion
-Source: ..\doc\nl_BE\Manual_NL.pdf; DestDir: {app}\bin; Components: InternationalHelp\Dutch; Flags: ignoreversion
-;Source: ..\doc\l10n\ItalianManual.chm; DestDir: {app}\bin; Components: InternationalHelp\Italian; Flags: replacesameversion
-Source: ..\doc\en_UK\manual_EN.pdf; DestDir: {app}\bin; Components: ClamWin; Flags: ignoreversion
-Source: ..\doc\en_UK\manual_en.chm; DestDir: {app}\bin; Components: ClamWin; Flags: ignoreversion; DestName: manual.chm
-Source: ..\doc\ru_RU\manual_ru.chm; DestDir: {app}\bin; Components: InternationalHelp\Russian; Flags: ignoreversion
-Source: ..\doc\fr_FR\manual_fr.pdf; DestDir: {app}\bin; Components: InternationalHelp\French; Flags: ignoreversion
+Source: ..\doc\nl_BE\Manual_NL.chm; DestDir: {app}\doc; Components: InternationalHelp\Dutch; Flags: ignoreversion
+Source: ..\doc\nl_BE\Manual_NL.pdf; DestDir: {app}\doc; Components: InternationalHelp\Dutch; Flags: ignoreversion
+;Source: ..\doc\l10n\ItalianManual.chm; DestDir: {app}\doc; Components: InternationalHelp\Italian; Flags: replacesameversion
+Source: ..\doc\en_UK\manual_EN.pdf; DestDir: {app}\doc; Components: ClamWin; Flags: ignoreversion
+Source: ..\doc\en_UK\manual_en.chm; DestDir: {app}\doc; Components: ClamWin; Flags: ignoreversion; DestName: manual.chm
+Source: ..\doc\ru_RU\manual_ru.chm; DestDir: {app}\doc; Components: InternationalHelp\Russian; Flags: ignoreversion
+Source: ..\doc\fr_FR\manual_fr.pdf; DestDir: {app}\doc; Components: InternationalHelp\French; Flags: ignoreversion
 Source: py2exe\dist\bin\img\Clam.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
 Source: py2exe\dist\bin\img\ClamAV.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
 Source: py2exe\dist\bin\img\netfarm.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
