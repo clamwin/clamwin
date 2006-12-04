@@ -161,7 +161,7 @@ void getI18NString() {
 
 	char mbLocalePath[MAX_PATH];
 #ifdef UNICODE
-	WideCharToMultiByte( CP_UTF8, WC_SEPCHARS, szLocalePath, strlen(szLocalePath),
+	WideCharToMultiByte( CP_UTF8, WC_SEPCHARS, szLocalePath, wcslen(szLocalePath),
 			mbLocalePath, MAX_PATH, NULL, NULL);
 #else
 	strcpy(mbLocalePath, szLocalePath);
@@ -357,7 +357,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,UINT indexMenu,UINT idCmdFi
 	char mbString[500];
 	strncpy(mbString, dyn_libintl_gettext("Scan with ClamWin Free Antivirus"), 500);
 	wchar_t wcString[500];
-	MultiByteToWideChar( CP_UTF8, MB_PRECOMPOSED, mbString, strlen(mbString),
+	MultiByteToWideChar( CP_UTF8, MB_PRECOMPOSED, mbString, (int)strlen(mbString),
 		wcString, 500);
 
 	MENUITEMINFO mii = { sizeof(MENUITEMINFO) };
