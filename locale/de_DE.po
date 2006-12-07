@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-12-07 19:35+0100\n"
+"PO-Revision-Date: 2006-12-07 20:22+0100\n"
 "Last-Translator: Hogi <berensREPLACETHISWITHATwelcomeMINUSsoftDOTde>\n"
 "Language-Team: German <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -182,7 +182,7 @@ msgstr "Warnung - Bild '%s' existiert nicht."
 
 #: OlAddin.py:248
 msgid "Virus Deleted by ClamWin.txt"
-msgstr "Virus von ClamWin.txt gelöscht"
+msgstr "Virus gelöscht von ClamWin.txt"
 
 #: OlAddin.py:275
 #: OlAddin.py:1031
@@ -244,7 +244,7 @@ msgstr "Zeigt Informationen über ClamWin"
 
 #: OlAddin.py:581
 msgid "Shows the ClamWin About Box"
-msgstr "Zeigt ein Fenster mit Informationen"
+msgstr "Zeigt ein Fenster mit Informationen über ClamWin an"
 
 #: OlAddin.py:836
 msgid "ClamWin Free Antivirus could not replace an attachment. Error: %s"
@@ -527,7 +527,7 @@ msgstr "Schließt das Fenster und ohne die Änderungen zu speichern"
 
 #: wxDialogPreferences.py:260
 msgid "Proxy &Server:"
-msgstr "Proxy &Server:"
+msgstr "Proxy-&Server:"
 
 #: wxDialogPreferences.py:267
 msgid "Proxy Server domain name or IP address"
@@ -545,7 +545,7 @@ msgstr "Port des Proxy-Servers (0-65535)"
 #: wxDialogPreferences.py:283
 #: wxDialogPreferences.py:740
 msgid "&User Name:"
-msgstr "Benutzername:"
+msgstr "&Benutzername:"
 
 #: wxDialogPreferences.py:290
 msgid "Proxy Server Account Name (optional)"
@@ -562,7 +562,9 @@ msgstr "Passwort für den Proxy-Server (optional)"
 
 #: wxDialogPreferences.py:304
 msgid "Leave these fields blank if you do not connect via Proxy Server"
-msgstr "Lassen Sie diese Felder leer, falls Sie sich nicht über einen Proxy-Server verbinden"
+msgstr ""
+"Lassen Sie diese Felder leer,\n"
+"falls Sie sich nicht über einen Proxy-Server verbinden"
 
 #: wxDialogPreferences.py:310
 msgid "Scanning Options"
@@ -570,15 +572,15 @@ msgstr "Scan-Optionen"
 
 #: wxDialogPreferences.py:315
 msgid "&Enable Automatic Virus Database Updates"
-msgstr "Automatische Updates der Virus-Datenbank &aktivieren"
+msgstr "&Automatisches Update der Viren-Datenbank"
 
 #: wxDialogPreferences.py:318
 msgid "Enable automatic virus database downloads "
-msgstr "Automatische Updates der Virus-Datenbank aktivieren"
+msgstr "Automatische Updates der Viren-Datenbank aktivieren"
 
 #: wxDialogPreferences.py:324
 msgid "Download &Site :"
-msgstr "Download-&Seite"
+msgstr "Update-&Server"
 
 #: wxDialogPreferences.py:331
 msgid "Specify Database Mirror Site here. Usually this is database.clamav.net"
@@ -590,15 +592,15 @@ msgstr "&Update-Häufigkeit"
 
 #: wxDialogPreferences.py:345
 msgid "How often virus database is downloaded"
-msgstr "Wie oft die Virus-Datenbank heruntergeladen wird"
+msgstr "Wie oft die Viren-Datenbank heruntergeladen wird"
 
 #: wxDialogPreferences.py:352
 msgid "&ClamScan Location:"
-msgstr "Ort, an dem sich &ClamScan befindet:"
+msgstr "Pfad, in dem sich &ClamScan befindet:"
 
 #: wxDialogPreferences.py:360
 msgid "Specify location of clamscan"
-msgstr "Ort, an dem sich ClamScan befindet"
+msgstr "Pfad, in dem sich ClamScan befindet"
 
 #: wxDialogPreferences.py:365
 msgid "Click to browse for clamscan"
@@ -606,11 +608,11 @@ msgstr "Hier klicken um ClamScan zu suchen"
 
 #: wxDialogPreferences.py:371
 msgid "&FreshClam Location:"
-msgstr "Ort, an dem sich &FreshClam befindet"
+msgstr "Pfad, in dem sich &FreshClam befindet"
 
 #: wxDialogPreferences.py:379
 msgid "Specify location of freshclam"
-msgstr "Ort angeben, an dem sich FreshClam befindet"
+msgstr "Pfad angeben, in dem sich FreshClam befindet"
 
 #: wxDialogPreferences.py:385
 msgid "Click to browse for freshclam"
@@ -618,15 +620,15 @@ msgstr "Hier klicken um FreshClam zu suchen"
 
 #: wxDialogPreferences.py:391
 msgid "&Virus Database Folder:"
-msgstr "Ordner für die &Virus-Datenbank"
+msgstr "Ordner für die &Viren-Datenbank"
 
 #: wxDialogPreferences.py:399
 msgid "Specify location of virus database files"
-msgstr "Geben Sie den Ort an, an dem sich die Virus-Datenbank befindet"
+msgstr "Geben Sie den Pfad an, in dem sich die Viren-Datenbank befindet"
 
 #: wxDialogPreferences.py:404
 msgid "Click to browse for a virus database folder"
-msgstr "Hier klicken, um nach dem Ordner für die Virus-Datenbank zu suchen"
+msgstr "Hier klicken, um nach dem Ordner für die Viren-Datenbank zu suchen"
 
 #: wxDialogPreferences.py:409
 msgid "&Scan In Subdirectories"
@@ -681,7 +683,7 @@ msgstr "OLE-Anhänge und Makros in MS Office-Dokumenten scannen"
 
 #: wxDialogPreferences.py:493
 msgid "&Detect Broken Executables"
-msgstr "&Defekte ausführbare Dateien erkennen"
+msgstr "Defekte &ausführbare Dateien erkennen"
 
 #: wxDialogPreferences.py:500
 msgid "&Additional Clamscan Command Line Parameters:"
@@ -701,7 +703,7 @@ msgstr "Bericht für den &Scan:"
 
 #: wxDialogPreferences.py:529
 msgid "Specify location for a scan reports log file"
-msgstr "Geben Sie den Ort für den Scan-Bericht an"
+msgstr "Geben Sie den Pfad für den Scan-Bericht an"
 
 #: wxDialogPreferences.py:535
 #: wxDialogPreferences.py:555
@@ -710,11 +712,11 @@ msgstr "Nach einer Log-Datei zu suchen"
 
 #: wxDialogPreferences.py:541
 msgid "&Virus Database Update Report File:"
-msgstr "Update-Bericht für die &Virus-Datenbank"
+msgstr "Update-Bericht für die &Viren-Datenbank"
 
 #: wxDialogPreferences.py:549
 msgid "Specify location for a database updates log file"
-msgstr "Ort für den Update-Bericht für das Viren-Datenbank-Update"
+msgstr "Pfad für den Update-Bericht für das Viren-Datenbank-Update"
 
 #: wxDialogPreferences.py:564
 msgid "When the download should be started"
@@ -755,11 +757,11 @@ msgstr "&Wenn die Update-Häufigkeit auf \"wöchentlich\" gesetzt ist, können S
 
 #: wxDialogPreferences.py:638
 msgid "&Update Virus Database On Logon"
-msgstr "&Virus-Datenbank beim Anmelden aktualisieren"
+msgstr "&Viren-Datenbank beim Anmelden aktualisieren"
 
 #: wxDialogPreferences.py:641
 msgid "Select if you wish to update the virus databases just after you logged on"
-msgstr "Auswählen, wenn Sie die Virus-Datenbank direkt nach jedem Login aktualisieren möchten"
+msgstr "Auswählen, wenn Sie die Viren-Datenbank direkt nach jedem Login aktualisieren möchten"
 
 #: wxDialogPreferences.py:648
 msgid "Infected Files"
@@ -779,7 +781,7 @@ msgstr "In den Quarantäne-Ordner &verschieben"
 
 #: wxDialogPreferences.py:680
 msgid "Specify location for a quarantine folder"
-msgstr "Geben Sie einen Ort für den Quarantäne-Ordner an"
+msgstr "Geben Sie den Pfad für den Quarantäne-Ordner an"
 
 #: wxDialogPreferences.py:686
 msgid "Click to browse for a quarantine folder"
@@ -863,15 +865,19 @@ msgstr "Auswählen, wenn Sie Popup-Nachrichten in der Taskleiste anzeigen lassen
 
 #: wxDialogPreferences.py:822
 msgid "Specify Filename Patterns to include and/or exclude in scanning"
-msgstr "Muster für Dateinamen, die beim Scan eingeschlossen und/oder ausgeschlossen werden sollen"
+msgstr ""
+"Muster für Dateinamen, die beim Scan eingeschlossen\n"
+"und/oder ausgeschlossen werden sollen"
 
 #: wxDialogPreferences.py:827
 msgid "(To specify a regular expression include your pattern within <...>)"
-msgstr "(\"Regular Expression\"-Platzhalter in < spitze Klammern > einschließen)"
+msgstr "\"Regular Expression\"-Platzhalter in < spitze Klammern > einschließen"
 
 #: wxDialogPreferences.py:832
 msgid "&Exclude Matching Filenames:"
-msgstr "&Dateinamen ausschließen, die folgendes Muster treffen:"
+msgstr ""
+"&Dateien ausschließen,\n"
+"die folgendes Muster treffen:"
 
 #: wxDialogPreferences.py:837
 #: wxDialogPreferences.py:862
@@ -905,7 +911,9 @@ msgstr "Eintrag bearbeiten"
 
 #: wxDialogPreferences.py:857
 msgid "&Scan Only Matching Filenames:"
-msgstr "Nur Einträge scannen, die folgendes Muster treffen:"
+msgstr ""
+"&Nur Dateien scannen,\n"
+"die folgendes Muster treffen:"
 
 #: wxDialogPreferences.py:882
 msgid "&Deactivate"
