@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-12-04 23:39+0100\n"
-"Last-Translator: Peter Budts <budtse@users.sourceforge.net>\n"
+"PO-Revision-Date: 2006-12-07 19:35+0100\n"
+"Last-Translator: Hogi <berensREPLACETHISWITHATwelcomeMINUSsoftDOTde>\n"
 "Language-Team: German <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -459,7 +459,7 @@ msgid "Computer Memory Scan Completed"
 msgstr "Scan des Arbeitsspeichers beendet"
 
 msgid "Scan For Viruses With ClamWin"
-msgstr "Mit ClamWin auf Viren prÃ¼fen"
+msgstr "Mit ClamWin auf Viren prüfen"
 
 #: wxDialogPreferences.py:145
 msgid "General"
@@ -1575,7 +1575,7 @@ msgstr "http://www.clamwin.com/content/category/3/7/27/"
 #: wxDialogAbout.py:57
 #: wxDialogAbout.py:61
 msgid "About ClamWin Free Antivirus"
-msgstr "Ãœber ClamWin Free Antivirus"
+msgstr "Über ClamWin Free Antivirus"
 
 #: wxDialogAbout.py:72
 msgid "Version "
@@ -1587,7 +1587,7 @@ msgstr "ClamAV Version"
 
 #: wxDialogAbout.py:84
 msgid "Protecting from %i Viruses"
-msgstr "SchÃ¼tzt vor %i Viren."
+msgstr "Schützt vor %i Viren."
 
 #: wxDialogAbout.py:93
 #: wxDialogAbout.py:115
