@@ -8,18 +8,32 @@ KNOWN ISSUES:
 - The link button to the clamav homepage in the about box is broken.
   Can't see why, it is broken in the original package too.
 
+Changes in Version ClamWinL10N-26.exe :
+***************************************
+- Changed localization in the Explorer Shell extension:
+  It now uses a MessageTable resource file in stead of gettext, which 
+  eliminates the need for the libintl and iconv dlls.  This works for both
+  Unicode32 and Non-Unicode builds.
+- The explorer shell can now be tested for different languages by setting the
+  string registry key "Language" in the clamwin registry tree (either in HKLM
+  or HKCU).  Implemented values are: "German", "Greek", "English", "French", 
+  "Polish", "Korean", "Dutch", "Spanish", "Italian", "Russian" and "Chinese".
+  If this key is not one of these values (or not set at all), the default 
+  locale is used.
+
 
 Changes in Version ClamWinL10N-25.exe :
 ***************************************
 - Fixed a bug in the About box (didn't show because of the removed Python
   image, which left some garbage after merging)
 - Moved help files and manuals to a separate clamwin\doc directory
-- If the localized help file can not be found, the english help will be
+- If the localized help file cannot be found, the english help will be
   shown in stead.
 - Some small modifications to make it compile with Visual C++ 2005 Express
 - Fixed the Unicode build of Explorer shell (Win64 build is still todo)
 - Improved performance : A folder that took 76'19" to scan with L10N-25
   now scans in 50'31".
+- Included German installer strings
 
 Changes in Version ClamWinL10N-24.exe :
 ***************************************

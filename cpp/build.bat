@@ -9,21 +9,28 @@ call "%VCINSTALLDIR%\vcvarsall.bat" x86
 :: 32 bit unicode
 echo Building 32bit Release Unicode
 mkdir Release_Unicode
+%MC% -u -U MessageTable.mc
+rc.exe /d "NDEBUG" /l 0x409 /fo".\Release_Unicode/MessageTable.res" .\MessageTable.rc
+if not "%ERRORLEVEL%"=="0" goto END
 rc.exe /d "NDEBUG" /l 0x409 /fo".\Release_Unicode/ExplorerShell.res" .\ExplorerShell.rc
 if not "%ERRORLEVEL%"=="0" goto END
 cl /O1 %DEFINES% %UNICODE% /O1 /FD /EHsc /MT /Fo".\Release_Unicode/" /Fd".\Release_Unicode/" /W3 /c /TP .\ShellExtImpl.cpp .\ShellExt.cpp
 if not "%ERRORLEVEL%"=="0" goto END
-link.exe /OUT:".\Release_Unicode/ExpShell.dll" /INCREMENTAL:NO /NOLOGO /DLL /DEF:".\ExplorerShell.def" /PDB:".\Release_Unicode/ExplorerShell.pdb" /IMPLIB:".\Release_Unicode/ExplorerShell.lib" /MACHINE:X86 .\Release_Unicode\ExplorerShell.res .\Release_Unicode\ShellExt.obj .\Release_Unicode\ShellExtImpl.obj %LIBS%
+link.exe /OUT:".\Release_Unicode/ExpShell.dll" /INCREMENTAL:NO /NOLOGO /DLL /DEF:".\ExplorerShell.def" /PDB:".\Release_Unicode/ExplorerShell.pdb" /IMPLIB:".\Release_Unicode/ExplorerShell.lib" /MACHINE:X86 .\Release_Unicode\ExplorerShell.res .\Release_Unicode/MessageTable.res .\Release_Unicode\ShellExt.obj .\Release_Unicode\ShellExtImpl.obj %LIBS%
 if not "%ERRORLEVEL%"=="0" goto END
+
+echo.
+echo.
 
 :: 32 bit ansi
 echo Building 32bit Release Ansi
 mkdir Release
+%MC% -u -A MessageTable.mc
 rc.exe /d "NDEBUG" /l 0x409 /fo".\Release/ExplorerShell.res" .\ExplorerShell.rc
 if not "%ERRORLEVEL%"=="0" goto END
 cl /O1 %DEFINES% /O1 /FD /EHsc /MT /Fo".\Release/" /Fd".\Release/" /W3 /c /TP .\ShellExtImpl.cpp .\ShellExt.cpp
 if not "%ERRORLEVEL%"=="0" goto END
-link.exe /OUT:".\Release/ExpShell.dll" /INCREMENTAL:NO /NOLOGO /DLL /DEF:".\ExplorerShell.def" /PDB:".\Release/ExplorerShell.pdb" /IMPLIB:".\Release/ExplorerShell.lib" /MACHINE:X86 .\Release\ExplorerShell.res .\Release\ShellExt.obj .\Release\ShellExtImpl.obj %LIBS%
+link.exe /OUT:".\Release/ExpShell.dll" /INCREMENTAL:NO /NOLOGO /DLL /DEF:".\ExplorerShell.def" /PDB:".\Release/ExplorerShell.pdb" /IMPLIB:".\Release/ExplorerShell.lib" /MACHINE:X86 .\Release\ExplorerShell.res .\Release_Unicode/MessageTable.res .\Release\ShellExt.obj .\Release\ShellExtImpl.obj %LIBS%
 if not "%ERRORLEVEL%"=="0" goto END
 
 echo.

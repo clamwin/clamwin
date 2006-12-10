@@ -4,7 +4,7 @@
 [Setup]
 AppName={cm:ClamWinFreeAntivirus1}
 AppVerName={cm:ClamWinFreeAntivirus1} 0.88.6
-OutputBaseFilename=ClamWinL10N-25
+OutputBaseFilename=ClamWinL10N-26
 AppPublisher=budtse
 AppPublisherURL=http://www.clamwin.com/
 AppSupportURL=http://www.clamwin.com/
@@ -105,16 +105,9 @@ Source: Microsoft.VC80.CRT\msvcp80.dll; DestDir: {app}\bin; Components: ClamAV; 
 
 ;Source: ..\clamav-stable\sigtool\sigtool.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
 ; TODO : Copy Unicode build in NT and ANSI in 9x
-Source: ..\cpp\Release\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete
-Source: ..\cpp\libintl-1.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete
-;Source: ..\cpp\Release\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: IsWin9x
-;Source: ..\cpp\libintl-1.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: IsWin9x
-;Source: ..\cpp\Release_Unicode\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: UsingWinNT
-;Source: ..\cpp\libintl-1.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: UsingWinNT
-;Source: ..\cpp\iconv.dll; DestDir: {win}; Components: ExplorerShell; Flags: restartreplace sharedfile; Check: UsingWinNT
+Source: ..\cpp\Release\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: IsWin9x
+Source: ..\cpp\Release_Unicode\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: UsingWinNT
 ;Source: ..\cpp\Release_x64\ExpShell64.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete 64bit; Check: IsWin64
-;Source: ..\cpp\libintl-1.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: IsWin64
-;Source: ..\cpp\iconv.dll; DestDir: {win}; Components: ExplorerShell; Flags: restartreplace sharedfile; Check: IsWin64
 
 Source: py2exe\dist\bin\WClose.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: py2exe\dist\bin\w9xpopen.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
@@ -181,13 +174,9 @@ Name: {app}\bin; Components: ExplorerShell ClamWin
 Name: {app}\lib; Components: ClamWin
 Name: {app}\bin\img; Components: ClamWin
 Name: {app}\locale; Components: ClamWin
-;Name: {app}\locale\en_AU; Components: ClamWin
-;Name: {app}\locale\en_AU\LC_MESSAGES; Components: ClamWin
-;Name: {app}\src; Components: Sources
 [_ISTool]
-;OutputExeFilename=L:\Projects\ClamWin\Setup\Output\setup.exe
+
 [Components]
-;Name: Cygwin; Description: Cygwin Files; Flags: fixed; Types: full custom typical
 Name: ClamAV; Description: {cm:ClamAVFiles1}; Flags: fixed; Types: full custom typical
 Name: ClamWin; Description: {cm:ClamWinFiles1}; Flags: fixed; Types: full custom typical
 Name: ExplorerShell; Description: {cm:IntegrationExplorer1}; Types: full custom typical
@@ -345,6 +334,48 @@ en.IntegrationExplorer1=Integration with Windows Explorer
 en.IntegrationOutlook1=Integration with Microsoft Outlook
 en.ClamWinFreeAntivirus1=ClamWin Free Antivirus
 en.ClamWinFreeAntivirus2=ClamWin Antivirus
+
+de.LanguageName=Deutsch
+de.InitializeWizard1=Installations-Optionen festlegen
+de.InitializeWizard2=Für wen soll dieses Programm installiert werden?
+de.InitializeWizard3=Bitte wählen Sie, ob dieses Programm für alle Benutzer installiert werden soll, oder nur für Sie selbst.
+de.InitializeWizard4=&Alle Benutzer
+de.InitializeWizard5=Nur für &Mich (
+de.NoOutlookRunning1=Sie müssen Outlook schließen, bevor Sie ClamWin installieren können!
+de.NoOutlookRunning2=Bitte schließen Sie alle Outlook-Fenster (wenn möglich über "Datei->Beenden")
+de.NoOutlookRunning3=und klicken Sie "Wiederholen". Ansonsten "Abbrechen", um das Installationsprogramm zu Verlassen.
+de.NoOutlookRunning4=Falls diese Meldung nach dem Schließen von Outlook immernoch angezeigt wird,
+de.NoOutlookRunning5=starten Sie Windows neu, und versuchen Sie es noch einmal.
+de.NoOutlookRunning6=Die Outlook-Nachrichtenübermittlung ist noch aktiv.
+de.NoOutlookRunning7=Wenn Sie Outlook eben erst geschlossen haben, warten Sie ein paar Sekunden und versuchen es dann erneut.
+de.NoOutlookRunning8=Falls diese Meldung wiederholt angezeigt wird, starten Sie Windows erneut.
+de.CloseClamWin1=Setup hat eine vorherige Installation von ClamWin gefunden.
+de.CloseClamWin2=Laufendes ClamWin beenden? (Empfohlen)
+de.InitializeSetup1=Es ist bereits eine neuere Version von ClamWin installiert.
+de.InitializeSetup2=Setup wird abgebrochen.
+de.DeInitializeSetup1=Bitte starten Sie den Computer neu, damit die Installation von ClamWin Antivirus abgeschlossen werden kann.
+de.RemoveSetup1=Setup hat eine vorherige Installation von ClamWin gefunden. Klicken Sie auf Ja, um Diese jetzt zu deinstallieren.
+de.DownloadDB1=Viren-Datenbank herunterladen (ohne Proxy-Server)
+de.DownloadDB2=Lade Viren-Datenbank herunter...
+de.DownloadDB3=Internet Update
+de.CreateDesktop1=&Desktop-Verknüpfung erstellen
+de.CreateDesktop2=Zusätzliche Symbole:
+de.TypicalInstallation1=Typische Installation
+de.CustomInstallation1=Benutzerdefinierte Installation
+de.FullInstallation1=Vollständige Installation
+de.ClamWinSourceCode1=ClamWin Source Code
+de.ClamAVSourceCode1=ClamAV Source Code
+de.InternationalHelpFiles1=Internationale Hilfe Dateien
+de.RussianHelpFiles1=Russische Hilfe Dateien
+de.FrenchHelpFiles1=Französische Hilfe Dateien
+de.DutchHelpFiles1=Niederländische Hilfe Dateien
+de.DownloadSourceCode1=Source Code herunterladen
+de.ClamAVFiles1=ClamAV Dateien
+de.ClamWinFiles1=ClamWin Dateien
+de.IntegrationExplorer1=Integration in den Windows Explorer
+de.IntegrationOutlook1=Integration in Microsoft Outlook
+de.ClamWinFreeAntivirus1=ClamWin Free Antivirus
+de.ClamWinFreeAntivirus2=ClamWin Antivirus
 
 nl.LanguageName=Dutch
 nl.InitializeWizard1=Kies de Installatie Opties

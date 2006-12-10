@@ -29,7 +29,9 @@
 #include <shlobj.h>
 #include "ShellExt.h"
 #include <stdlib.h>
-#define _(str) gettext(str)
+#include "messagetable.h"
+#include <locale.h>
+
 #define ResultFromShort(i)  ResultFromScode(MAKE_SCODE(SEVERITY_SUCCESS, 0, (USHORT)(i)))
 
 
@@ -37,22 +39,67 @@ extern HINSTANCE	g_hmodThisDll;	// Handle to this DLL itself.
 
 static int dyn_libintl_init(void);
 
-static HINSTANCE hLibintlDLL = 0;
-
-static char *null_libintl_gettext(const char *);
-static char *null_libintl_textdomain(const char *);
-static char *null_libintl_bindtextdomain(const char *, const char *);
-static char *null_libintl_bind_textdomain_codeset(const char *, const char *);
-
-static char *(*dyn_libintl_gettext)(const char *) = null_libintl_gettext;
-static char *(*dyn_libintl_textdomain)(const char *) = null_libintl_textdomain;
-static char *(*dyn_libintl_bindtextdomain)(const char *, const char *) = null_libintl_bindtextdomain;
-static char *(*dyn_libintl_bind_textdomain_codeset)(const char *, const char *) = null_libintl_bind_textdomain_codeset;
-
 TCHAR szClamWinPath[MAX_PATH] = _T("");
+DWORD dwLangId = 0;
 
+#define STRING_TABLE_MAX	1024
+#define _(x)				CLocalize(x).value
 
-void setClamWinPath() {
+class CLocalize
+{
+public:
+	CLocalize(UINT uID);
+	TCHAR value[STRING_TABLE_MAX];
+};
+
+CLocalize::CLocalize(UINT uID)
+{
+	DWORD retValue = 0;
+	TCHAR szModule[MAX_PATH];
+
+	_tcscpy(szModule, szClamWinPath);
+	_tcscat(szModule, _T("\\ExpShell.dll"));
+
+#ifdef _UNICODE
+	retValue = FormatMessageW(FORMAT_MESSAGE_FROM_HMODULE, GetModuleHandle(szModule), uID, dwLangId, value, STRING_TABLE_MAX, NULL);
+#else
+	retValue = FormatMessage(FORMAT_MESSAGE_FROM_HMODULE, GetModuleHandle(szModule), uID, dwLangId, value, STRING_TABLE_MAX, NULL);
+#endif
+	if (retValue == 0)
+	{
+		if (uID == S_SCANWITHCLAMWIN)
+			_tcscpy(value, _T("Scan with ClamWin Free AV..."));
+	}
+}
+
+DWORD getLangId(TCHAR* szLanguage)
+{
+	if (_tcsstr(szLanguage, _T("German")) != NULL)
+		return 0x407;
+	else if (_tcsstr(szLanguage, _T("Greek")) != NULL)
+		return 0x408;
+	else if (_tcsstr(szLanguage, _T("English")) != NULL)
+		return 0x409;
+	else if (_tcsstr(szLanguage, _T("Spanish")) != NULL)
+		return 0x40a;
+	else if (_tcsstr(szLanguage, _T("French")) !=NULL)
+		return 0x40c;
+	else if (_tcsstr(szLanguage, _T("Italian")) != NULL)
+		return 0x410;
+	else if (_tcsstr(szLanguage, _T("Korean")) != NULL)
+		return 0x412;
+	else if (_tcsstr(szLanguage, _T("Dutch")) != NULL)
+		return 0x413;
+	else if (_tcsstr(szLanguage, _T("Polish")) != NULL)
+		return 0x415;
+	else if (_tcsstr(szLanguage, _T("Russian")) != NULL)
+		return 0x419;
+	else if (_tcsstr(szLanguage, _T("Chinese")) != NULL)
+		return 0x404;
+	return 0x000;
+}
+
+void initI18N() {
 
     DWORD dwType, cbData;
     // get path to ClamWin
@@ -88,128 +135,40 @@ void setClamWinPath() {
         }
     }
 
-}
+    // Retrieve the LangId from registry if set
+    TCHAR szLanguage[MAX_PATH];
+    // try in hkey_current_user
+    if (ERROR_SUCCESS == RegOpenKeyEx(HKEY_CURRENT_USER, _T("Software\\ClamWin"), 0, KEY_READ, &hKey))
+    {
+        cbData = sizeof(szLanguage);
+        RegQueryValueEx(hKey, _T("Language"), NULL, &dwType, (PBYTE)szLanguage, &cbData);
+        CloseHandle(hKey);
+		if (dwType == REG_SZ)
+        {
+			dwLangId = getLangId(szLanguage);
+		}
+    }
+    // try in hkey_local_machine if failed
+    if (dwLangId == 0 &&
+        (ERROR_SUCCESS == RegOpenKeyEx(HKEY_LOCAL_MACHINE, _T("Software\\ClamWin"), 0, KEY_READ, &hKey)))
 
-void getI18NString() {
+    {
+        cbData = sizeof(szLanguage);
+        RegQueryValueEx(hKey, _T("Language"), NULL, &dwType, (PBYTE)szLanguage, &cbData);
+        CloseHandle(hKey);
+		if (dwType == REG_SZ)
+        {
+			dwLangId = getLangId(szLanguage);
+		}
+    }
 
-    setClamWinPath();
-    PTCHAR szLibIntlPath;
-
-	FILE* fp = fopen("c:\\shellextimpl.log", "w+");
-
-	szLibIntlPath = new TCHAR[MAX_PATH];
-	szLibIntlPath[0] = _T('\0');
-
-    _tcsncat(szLibIntlPath, szClamWinPath, MAX_PATH);
-    _tcsncat(szLibIntlPath, _T("\\libintl-1.dll"), MAX_PATH);
-
-	hLibintlDLL = LoadLibrary(szLibIntlPath);
-
-	if (! hLibintlDLL) {
-		fprintf(fp, "Could not load libintl dll\n");
-	} else {
-		fprintf(fp, "Successfully loaded libintl dll\n");
+	if (dwLangId == 0)
+	{
+		// Get the LanguageId from the set locale
+		_tcscpy(szLanguage, _tsetlocale(LC_CTYPE, _T("")));
+		dwLangId = getLangId(szLanguage);
 	}
-
-	FARPROC* bindtextdomainPtr        = (FARPROC*)&dyn_libintl_bindtextdomain;
-	FARPROC* textdomainPtr            = (FARPROC*)&dyn_libintl_textdomain;
-	FARPROC* gettextPtr               = (FARPROC*)&dyn_libintl_gettext;
-	FARPROC* bindtextdomaincodesetPtr = (FARPROC*)&dyn_libintl_bind_textdomain_codeset;
-
-	*bindtextdomainPtr        = GetProcAddress(hLibintlDLL, "bindtextdomain");
-	*textdomainPtr            = GetProcAddress(hLibintlDLL, "textdomain");
-	*gettextPtr               = GetProcAddress(hLibintlDLL, "gettext");
-	*bindtextdomaincodesetPtr = GetProcAddress(hLibintlDLL, "bind_textdomain_codeset");
-
-	if (bindtextdomaincodesetPtr == NULL) {
-		fprintf(fp, "Could not resolve bindtexdomaincodeset\n");
-	} else {
-		fprintf(fp, "Successfully resolved bindtextdomaincodeset\n");
-	}
-
-    DWORD len;
-
-	char szLangVar[20];
-	char szLanguage[5];
-	char szCountry[5];
-
-	len = GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SABBREVLANGNAME, (LPTSTR)szLanguage, 5);
-	if (len > 2) {
-		szLanguage[2] = 0;
-	}
-	_strlwr(szLanguage);
-	len = GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SABBREVCTRYNAME, (LPTSTR)szCountry, 5);
-	if (len > 2) {
-		szCountry[2] = 0;
-	}
-	strcpy(szLangVar, "LANGUAGE=");
-	strcat(szLangVar, szLanguage);
-	strcat(szLangVar, "_");
-	strcat(szLangVar, szCountry);
-
-	fprintf(fp, "[%s]\n", szLangVar);
-
-	_putenv(szLangVar);
-
-    PTCHAR szLocalePath;
-	szLocalePath = new TCHAR[MAX_PATH];
-	szLocalePath[0] = _T('\0');
-
-    _tcsncat(szLocalePath, szClamWinPath, MAX_PATH);
-    _tcsncat(szLocalePath, _T("\\..\\locale"), MAX_PATH);
-	fprintf(fp, "Locale directory [%s]\n", szLocalePath);
-
-	char mbLocalePath[MAX_PATH];
-#ifdef UNICODE
-	WideCharToMultiByte( CP_UTF8, WC_SEPCHARS, szLocalePath, wcslen(szLocalePath),
-			mbLocalePath, MAX_PATH, NULL, NULL);
-#else
-	strcpy(mbLocalePath, szLocalePath);
-#endif
-	//strcpy(mbLocalePath, "C:\\Program Files\\ClamWin\\locale");
-	dyn_libintl_bindtextdomain("clamwin", mbLocalePath);
-	dyn_libintl_bind_textdomain_codeset("clamwin", "UTF-8");
-	dyn_libintl_textdomain("clamwin");
-
-	fprintf(fp, dyn_libintl_gettext("Scan For Viruses With ClamWin"));
-	fprintf(fp, "\n");
-	fclose(fp);
-
-    delete [] szLibIntlPath;
-
-    szLibIntlPath = NULL;
-
-    delete [] szLocalePath;
-    szLocalePath = NULL;
-
 }
-
-static char *null_libintl_gettext(const char *msgid)
-{
-    return (char *)msgid;
-}
-
-static char *null_libintl_bindtextdomain(const char *domainname, const char *dirname)
-{
-    return NULL;
-}
-
-static char *null_libintl_bind_textdomain_codeset(const char *domainname, const char *dirname)
-{
-    return NULL;
-}
-
-static char *null_libintl_textdomain(const char* domainname)
-{
-    return NULL;
-}
-
-
-
-
-
-
-
 
 int _tcsreplace(LPTSTR sz, TCHAR chr,  TCHAR repl_chr)
 {
@@ -319,6 +278,8 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 	}
 	::ReleaseStgMedium(&medium);
 
+	initI18N();
+
 	return NOERROR;
 }
 
@@ -345,33 +306,16 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
 STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,UINT indexMenu,UINT idCmdFirst,UINT idCmdLast,UINT uFlags)
 {
 
-	UINT			idCmd = idCmdFirst;
+	UINT		idCmd = idCmdFirst;
 	HRESULT		hr = E_INVALIDARG;
-	getI18NString();
+	//TCHAR		menuString[STRING_TABLE_MAX];
 
 	// Seperator
 	::InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL);
-	//::InsertMenu(hMenu, indexMenu++, MF_STRING|MF_BYPOSITION, idCmd++, dyn_libintl_gettext("Scan For Viruses With ClamWin"));
 
+	// Menu
+	::InsertMenu(hMenu, indexMenu++, MF_STRING|MF_BYPOSITION, idCmd++, _(S_SCANWITHCLAMWIN));
 
-	char mbString[500];
-	strncpy(mbString, dyn_libintl_gettext("Scan with ClamWin Free Antivirus"), 500);
-	wchar_t wcString[500];
-	MultiByteToWideChar( CP_UTF8, MB_PRECOMPOSED, mbString, (int)strlen(mbString),
-		wcString, 500);
-
-	MENUITEMINFO mii = { sizeof(MENUITEMINFO) };
-	mii.fMask = MIIM_STRING | MIIM_ID;
-		mii.wID = idCmd++;
-#ifdef UNICODE
-	mii.dwTypeData = wcString;
-#else
-	mii.dwTypeData = mbString;
-#endif
-	::InsertMenuItem(hMenu, indexMenu++, TRUE, &mii);
-
-	//::InsertMenu(hMenu, indexMenu++, MF_STRING|MF_BYPOSITION, idCmd++, dyn_libintl_gettext("Scan with ClamWin Free Antivirus"));
-	// ::InsertMenu(hMenu, indexMenu++, MF_STRING|MF_BYPOSITION, idCmd++, _T(_("Scan with ClamWin Free Antivirus")));
 	// Seperator
 	::InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL);
 
