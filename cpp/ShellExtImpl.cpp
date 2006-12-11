@@ -72,30 +72,32 @@ CLocalize::CLocalize(UINT uID)
 	}
 }
 
-DWORD getLangId(TCHAR* szLanguage)
+DWORD getLangId(TCHAR* szLocale)
 {
-	if (_tcsstr(szLanguage, _T("German")) != NULL)
-		return 0x407;
-	else if (_tcsstr(szLanguage, _T("Greek")) != NULL)
-		return 0x408;
-	else if (_tcsstr(szLanguage, _T("English")) != NULL)
-		return 0x409;
-	else if (_tcsstr(szLanguage, _T("Spanish")) != NULL)
-		return 0x40a;
-	else if (_tcsstr(szLanguage, _T("French")) !=NULL)
-		return 0x40c;
-	else if (_tcsstr(szLanguage, _T("Italian")) != NULL)
-		return 0x410;
-	else if (_tcsstr(szLanguage, _T("Korean")) != NULL)
-		return 0x412;
-	else if (_tcsstr(szLanguage, _T("Dutch")) != NULL)
-		return 0x413;
-	else if (_tcsstr(szLanguage, _T("Polish")) != NULL)
-		return 0x415;
-	else if (_tcsstr(szLanguage, _T("Russian")) != NULL)
-		return 0x419;
-	else if (_tcsstr(szLanguage, _T("Chinese")) != NULL)
+	if (_tcsstr(szLocale, _T("zh_CN")) != NULL || _tcsstr(szLocale, _T("Chinese")) != NULL)
 		return 0x404;
+	else if (_tcsstr(szLocale, _T("nl_NL")) != NULL || _tcsstr(szLocale, _T("Dutch")) != NULL)
+		return 0x413;
+	else if (_tcsstr(szLocale, _T("nl_BE")) != NULL || _tcsstr(szLocale, _T("Dutch")) != NULL)
+		return 0x413;
+	else if (_tcsstr(szLocale, _T("en_US")) != NULL || _tcsstr(szLocale, _T("English")) != NULL)
+		return 0x409;
+	else if (_tcsstr(szLocale, _T("fr_FR")) !=NULL || _tcsstr(szLocale, _T("French")) != NULL)
+		return 0x40c;
+	else if (_tcsstr(szLocale, _T("de_DE")) != NULL || _tcsstr(szLocale, _T("German")) != NULL)
+		return 0x407;
+	else if (_tcsstr(szLocale, _T("gr_GR")) != NULL || _tcsstr(szLocale, _T("Greek")) != NULL)
+		return 0x408;
+	else if (_tcsstr(szLocale, _T("it_IT")) != NULL || _tcsstr(szLocale, _T("Italian")) != NULL)
+		return 0x410;
+	else if (_tcsstr(szLocale, _T("ko_KO")) != NULL || _tcsstr(szLocale, _T("Korean")) != NULL)
+		return 0x412;
+	else if (_tcsstr(szLocale, _T("pl_PL")) != NULL || _tcsstr(szLocale, _T("Polish")) != NULL)
+		return 0x415;
+	else if (_tcsstr(szLocale, _T("ru_RU")) != NULL || _tcsstr(szLocale, _T("Russian")) != NULL)
+		return 0x419;
+	else if (_tcsstr(szLocale, _T("es_ES")) != NULL || _tcsstr(szLocale, _T("Spanish")) != NULL)
+		return 0x40a;
 	return 0x000;
 }
 
@@ -135,17 +137,17 @@ void initI18N() {
         }
     }
 
-    // Retrieve the LangId from registry if set
-    TCHAR szLanguage[MAX_PATH];
+    // Retrieve the Locale from registry if set
+    TCHAR szLocale[MAX_PATH];
     // try in hkey_current_user
     if (ERROR_SUCCESS == RegOpenKeyEx(HKEY_CURRENT_USER, _T("Software\\ClamWin"), 0, KEY_READ, &hKey))
     {
-        cbData = sizeof(szLanguage);
-        RegQueryValueEx(hKey, _T("Language"), NULL, &dwType, (PBYTE)szLanguage, &cbData);
+        cbData = sizeof(szLocale);
+        RegQueryValueEx(hKey, _T("Locale"), NULL, &dwType, (PBYTE)szLocale, &cbData);
         CloseHandle(hKey);
 		if (dwType == REG_SZ)
         {
-			dwLangId = getLangId(szLanguage);
+			dwLangId = getLangId(szLocale);
 		}
     }
     // try in hkey_local_machine if failed
@@ -153,20 +155,20 @@ void initI18N() {
         (ERROR_SUCCESS == RegOpenKeyEx(HKEY_LOCAL_MACHINE, _T("Software\\ClamWin"), 0, KEY_READ, &hKey)))
 
     {
-        cbData = sizeof(szLanguage);
-        RegQueryValueEx(hKey, _T("Language"), NULL, &dwType, (PBYTE)szLanguage, &cbData);
+        cbData = sizeof(szLocale);
+        RegQueryValueEx(hKey, _T("Locale"), NULL, &dwType, (PBYTE)szLocale, &cbData);
         CloseHandle(hKey);
 		if (dwType == REG_SZ)
         {
-			dwLangId = getLangId(szLanguage);
+			dwLangId = getLangId(szLocale);
 		}
     }
 
 	if (dwLangId == 0)
 	{
 		// Get the LanguageId from the set locale
-		_tcscpy(szLanguage, _tsetlocale(LC_CTYPE, _T("")));
-		dwLangId = getLangId(szLanguage);
+		_tcscpy(szLocale, _tsetlocale(LC_CTYPE, _T("")));
+		dwLangId = getLangId(szLocale);
 	}
 }
 

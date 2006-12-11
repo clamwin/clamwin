@@ -225,7 +225,7 @@ class wxDialogScheduledScan(wxDialog):
 
         self.staticTextFolder = wxStaticText(id=wxID_WXDIALOGSCHEDULEDSCANSTATICTEXTFOLDER,
               label=_('&Scan Folder:'), name='staticTextFolder', parent=self,
-              pos=wxPoint(12, 165), size=wxSize(78, 15), style=0)
+              pos=wxPoint(12, 165), size=wxSize(282 + STRETCH_LEN*2, 15), style=0)
         self.staticTextFolder.SetToolTipString('')
 
         self.textCtrlFolder = wxTextCtrl(id=wxID_WXDIALOGSCHEDULEDSCANTEXTCTRLFOLDER,
@@ -243,7 +243,7 @@ class wxDialogScheduledScan(wxDialog):
 
         self.staticTextDescription = wxStaticText(id=wxID_WXDIALOGSCHEDULEDSCANSTATICTEXTDESCRIPTION,
               label=_('D&escription:'), name='staticTextDescription', parent=self,
-              pos=wxPoint(12, 208), size=wxSize(68, 16), style=0)
+              pos=wxPoint(12, 208), size=wxSize(282 + STRETCH_LEN*2, 16), style=0)
         self.staticTextDescription.SetToolTipString('')
 
         self.textCtrlDescription = wxTextCtrl(id=wxID_WXDIALOGSCHEDULEDSCANTEXTCTRLDESCRIPTION,

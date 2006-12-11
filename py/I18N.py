@@ -24,38 +24,39 @@
 import gettext, locale, os, sys, traceback
 import _winreg as wreg
 
-localePath = "..\\locale"
+gLocalePath = ""
+gLocale = ""
 
-def getCallingModule():
-    stackList = traceback.extract_stack()
-    stackList.reverse()
-    
-    for stackItem in stackList:
-        modName = stackItem[0]
-        indexNum = modName.rfind("\\")
-        if indexNum >= 0:
-            modName = modName[indexNum+1:]
-        if modName.find("I18N.py") < 0:
-            callingModName = modName
-            return callingModName
-    
-    raise "Could not find name of calling module"
+##def getCallingModule():
+##    stackList = traceback.extract_stack()
+##    stackList.reverse()
+##    
+##    for stackItem in stackList:
+##        modName = stackItem[0]
+##        indexNum = modName.rfind("\\")
+##        if indexNum >= 0:
+##            modName = modName[indexNum+1:]
+##        if modName.find("I18N.py") < 0:
+##            callingModName = modName
+##            return callingModName
+##    
+##    raise "Could not find name of calling module"
 
 
 """ Get a translated version of the specified English
     string, based on the current locale.
 """
 def getClamString(englishString):
-    global localePath
-    os.environ['LANGUAGE'] = locale.getdefaultlocale()[0]
-    modName = getCallingModule().replace(".pyo", "")
-    modName = modName.replace(".py", "")
-    #print "modName = [%s]" % modName
-#    gettext.bindtextdomain(modName, localePath)
-#    gettext.textdomain(modName)
-    gettext.bindtextdomain("clamwin", localePath)
+    global gLocalePath
+    global gLocale
+    if gLocalePath == "":
+        setLocalePath()
+    if gLocale == "":
+        setLocale()
+
+    os.environ['LANGUAGE'] = gLocale
+    gettext.bindtextdomain("clamwin", gLocalePath)
     gettext.textdomain("clamwin")
-    #return gettext.gettext(englishString)
     return gettext.gettext(englishString).decode("utf-8")
 
 
@@ -63,11 +64,25 @@ def getClamString(englishString):
     using the Path value in the registr
 """
 def getClamBinPath():
-    regHandle = wreg.ConnectRegistry(None, wreg.HKEY_LOCAL_MACHINE)
-    keyHandle = wreg.OpenKey(regHandle, "SOFTWARE\\ClamWin")
-    (clamBinPath, _) = wreg.QueryValueEx(keyHandle, "Path")
-    wreg.CloseKey(keyHandle)
-    wreg.CloseKey(regHandle)
+    clamBinPath = ""
+    try:
+        regHandle = wreg.ConnectRegistry(None, wreg.HKEY_CURRENT_USER)
+        keyHandle = wreg.OpenKey(regHandle, "SOFTWARE\\ClamWin")
+        (clamBinPath, _) = wreg.QueryValueEx(keyHandle, "Path")
+        wreg.CloseKey(keyHandle)
+        wreg.CloseKey(regHandle)
+    except Exception, e:
+        pass
+    if clamBinPath == "":
+        try:
+            regHandle = wreg.ConnectRegistry(None, wreg.HKEY_LOCAL_MACHINE)
+            keyHandle = wreg.OpenKey(regHandle, "SOFTWARE\\ClamWin")
+            (clamBinPath, _) = wreg.QueryValueEx(keyHandle, "Path")
+            wreg.CloseKey(keyHandle)
+            wreg.CloseKey(regHandle)
+        except Exception, e:
+            pass
+    print "clambinPath = [%s]" % clamBinPath
     return clamBinPath
 
 
@@ -75,25 +90,59 @@ def getClamBinPath():
     on the Path value in the registry
 """
 def setLocalePath():
-    global localePath
-    regHandle = wreg.ConnectRegistry(None, wreg.HKEY_LOCAL_MACHINE)
-    keyHandle = wreg.OpenKey(regHandle, "SOFTWARE\\ClamWin")
-    (clamBinPath, _) = wreg.QueryValueEx(keyHandle, "Path")
-    wreg.CloseKey(keyHandle)
-    wreg.CloseKey(regHandle)
-    localePath = clamBinPath[:clamBinPath.rfind("\\")] + "\\locale"    
+    global gLocalePath
+    clamBinPath = getClamBinPath()
+    gLocalePath = clamBinPath[:clamBinPath.rfind("\\")] + "\\locale"    
+
+""" Set the locale.
+    First check the registry (both HKCU and HKLM) for the Language setting.
+    Then use the system locale.
+"""
+def setLocale():
+    global gLocale
+    try:
+        regHandle = wreg.ConnectRegistry(None, wreg.HKEY_CURRENT_USER)
+        keyHandle = wreg.OpenKey(regHandle, "SOFTWARE\\ClamWin")
+        (gLocale, _) = wreg.QueryValueEx(keyHandle, "Locale")
+        wreg.CloseKey(keyHandle)
+        wreg.CloseKey(regHandle)
+        print "HKCU Locale = '[%s]'" % gLocale
+    except Exception, e:
+        gLocale = ""
+        pass
+    if gLocale == "":
+        try:
+            regHandle = wreg.ConnectRegistry(None, wreg.HKEY_LOCAL_MACHINE)
+            keyHandle = wreg.OpenKey(regHandle, "SOFTWARE\\ClamWin")
+            (gLocale, _) = wreg.QueryValueEx(keyHandle, "Locale")
+            wreg.CloseKey(keyHandle)
+            wreg.CloseKey(regHandle)
+            print "HKLM Locale = '[%s]'" % gLocale
+        except Exception, e:
+            gLocale = ""
+            pass
+    if gLocale == "":
+        gLocale = locale.getdefaultlocale()[0]
+        print "Default Locale = '[%s]'" % gLocale
 
 
 """ Get the full path including file name, to the
     HTML help file, based on the current locale.
 """
 def getHelpFilePath():
+    global gLocale
+    if gLocale == "":
+        setLocale()
     clamBinPath = getClamBinPath()
-    localeCode = locale.getdefaultlocale()[0]
-    countryCode = localeCode[:localeCode.find('_')]
-    helpPath = clamBinPath + "\\manual_" + countryCode + ".chm"
+    localeCode = gLocale
+    countryCode = gLocaled[:gLocale.find('_')]
+    helpPath = clamBinPath + "\\..\\doc\\manual_" + countryCode + ".chm"
     if not os.path.exists(helpPath):
-        helpPath = clamBinPath + "\\manual_" + countryCode + ".pdf"
+        helpPath = clamBinPath + "\\..\\doc\\manual_" + countryCode + ".pdf"
+        if not os.path.exists(helpPath):
+            helpPath = clamBinPath + "\\..\\doc\\manual_EN.chm"
+            if not os.path.exists(helpPath):
+                helpPath = clamBinPath + "\\..\\doc\\manual_EN.pdf"
         
     return helpPath
 
@@ -103,24 +152,20 @@ def getHelpFilePath():
     add-in which is run from another directory.
 """
 def findAndGetClamString(englishString):
-
-    regHandle = wreg.ConnectRegistry(None, wreg.HKEY_LOCAL_MACHINE)
-    keyHandle = wreg.OpenKey(regHandle, "SOFTWARE\\ClamWin")
-    (clamBinPath, _) = wreg.QueryValueEx(keyHandle, "Path")
-    wreg.CloseKey(keyHandle)
-    wreg.CloseKey(regHandle)
-    localePath = clamBinPath[:clamBinPath.rfind("\\")] + "\\locale"
-    #print "localePath = [%s]" % localePath
-    os.environ['LANGUAGE'] = locale.getdefaultlocale()[0]
-    modName = getCallingModule().replace(".pyo", "")
-    modName = modName.replace(".py", "")
-    #print "modName = [%s]" % modName
-#    gettext.bindtextdomain(modName, localePath)
-#    gettext.textdomain(modName)
-    gettext.bindtextdomain("clamwin", localePath)
+    global gLocalePath
+    global gLocale
+    if gLocalePath == "":
+        setLocalePath()
+    if gLocale == "":
+        setLocale()
+    os.environ['LANGUAGE'] = gLocale
+    gettext.bindtextdomain("clamwin", gLocalePath)
     gettext.textdomain("clamwin")
     return gettext.gettext(englishString).decode("utf-8")
 
-
-
+# module test function
+if __name__ == '__main__':
+    setLocalePath()
+    print "LocalePath = [%s]" % gLocalePath
+    setLocale()
 

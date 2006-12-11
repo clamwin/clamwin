@@ -14,12 +14,15 @@ Changes in Version ClamWinL10N-26.exe :
   It now uses a MessageTable resource file in stead of gettext, which 
   eliminates the need for the libintl and iconv dlls.  This works for both
   Unicode32 and Non-Unicode builds.
-- The explorer shell can now be tested for different languages by setting the
-  string registry key "Language" in the clamwin registry tree (either in HKLM
-  or HKCU).  Implemented values are: "German", "Greek", "English", "French", 
-  "Polish", "Korean", "Dutch", "Spanish", "Italian", "Russian" and "Chinese".
-  If this key is not one of these values (or not set at all), the default 
-  locale is used.
+- Both explorer shell and Python modules can now be tested for different 
+  languages by setting the string registry key "Locale" in the clamwin 
+  registry tree (either in HKLM or HKCU).  Implemented values are: 
+  "de_DE", "gr_GR", "en_US", "fr_FR", "pl_PL", "ko_KO", "nl_BE", "es_ES", 
+  "it_IT", "ru_RU" and "zh_CN".
+  The order for the choice of locale is : 
+  1. Locale setting in HKCU
+  2. Locale setting in HKLM
+  3. Default system locale
 
 
 Changes in Version ClamWinL10N-25.exe :
