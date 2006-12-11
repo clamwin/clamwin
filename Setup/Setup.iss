@@ -34,6 +34,7 @@ Name: de; MessagesFile: compiler:Languages\German.isl
 Name: it; MessagesFile: compiler:Languages\Italian.isl
 Name: es; MessagesFile: compiler:Languages\Spanish.isl
 ;Name: cs; MessagesFile: compiler:Languages\Czech.isl
+Name: pl; MessagesFile: compiler:Languages\Polish.isl
 
 [Files]
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
@@ -48,13 +49,6 @@ Name: es; MessagesFile: compiler:Languages\Spanish.isl
 Source: py2exe\dist\bin\python23.dll; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 Source: py2exe\dist\bin\ClamTray.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: py2exe\dist\bin\ClamWin.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\doc\nl_BE\Manual_NL.chm; DestDir: {app}\doc; Components: InternationalHelp\Dutch; Flags: ignoreversion
-Source: ..\doc\nl_BE\Manual_NL.pdf; DestDir: {app}\doc; Components: InternationalHelp\Dutch; Flags: ignoreversion
-;Source: ..\doc\l10n\ItalianManual.chm; DestDir: {app}\doc; Components: InternationalHelp\Italian; Flags: replacesameversion
-Source: ..\doc\en_UK\manual_EN.pdf; DestDir: {app}\doc; Components: ClamWin; Flags: ignoreversion
-Source: ..\doc\en_UK\manual_en.chm; DestDir: {app}\doc; Components: ClamWin; Flags: ignoreversion; DestName: manual.chm
-Source: ..\doc\ru_RU\manual_ru.chm; DestDir: {app}\doc; Components: InternationalHelp\Russian; Flags: ignoreversion
-Source: ..\doc\fr_FR\manual_fr.pdf; DestDir: {app}\doc; Components: InternationalHelp\French; Flags: ignoreversion
 Source: py2exe\dist\bin\img\Clam.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
 Source: py2exe\dist\bin\img\ClamAV.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
 Source: py2exe\dist\bin\img\netfarm.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
@@ -75,21 +69,23 @@ Source: ..\..\..\clamav-release\contrib\msvc\Release\freshclam.exe; DestDir: {ap
 Source: ..\..\..\clamav-release\contrib\msvc\Release\sigtool.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\..\..\clamav-release\contrib\msvc\Release\libclamav.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
 
-; Copy the Gettext locale files
+; Copy the manuals and Help Files
+Source: ..\doc\en_UK\manual_EN.pdf; DestDir: {app}\doc; Components: ClamWin; Flags: ignoreversion
+Source: ..\doc\en_UK\manual_en.chm; DestDir: {app}\doc; Components: ClamWin; Flags: ignoreversion; DestName: manual.chm
 
-;Source: ..\locale\ca_ES.mo; DestDir: {app}\locale\ca_ES\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-;Source: ..\locale\cs_CZ.mo; DestDir: {app}\locale\cs_CZ\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\de_DE.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\es_ES.mo; DestDir: {app}\locale\es_ES\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\fr_FR.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\it_IT.mo; DestDir: {app}\locale\it_IT\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-;Source: ..\locale\ko_KR.mo; DestDir: {app}\locale\ko_KR\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\nl_BE.mo; DestDir: {app}\locale\nl_BE\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\ru_RU.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-;Source: ..\locale\pt_PT.mo; DestDir: {app}\locale\pt_PT\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-;Source: ..\locale\sv_SE.mo; DestDir: {app}\locale\sv_SE\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-;Source: ..\locale\tr_TR.mo; DestDir: {app}\locale\tr_TR\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
-;Source: ..\locale\zh_CN.mo; DestDir: {app}\locale\zh_CN\LC_MESSAGES; DestName: clamwin.mo; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\doc\nl_BE\Manual_NL.chm; DestDir: {app}\doc; Components: LanguageSupport\Dutch; Flags: ignoreversion
+Source: ..\doc\nl_BE\Manual_NL.pdf; DestDir: {app}\doc; Components: LanguageSupport\Dutch; Flags: ignoreversion
+Source: ..\doc\fr_FR\manual_fr.pdf; DestDir: {app}\doc; Components: LanguageSupport\French; Flags: ignoreversion
+Source: ..\doc\ru_RU\manual_ru.chm; DestDir: {app}\doc; Components: LanguageSupport\Russian; Flags: ignoreversion
+
+; Copy the Gettext locale files
+Source: ..\locale\nl_BE.mo; DestDir: {app}\locale\nl_BE\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Dutch; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\fr_FR.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\French; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\de_DE.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\German; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\it_IT.mo; DestDir: {app}\locale\it_IT\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Italian; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\pl_PL.mo; DestDir: {app}\locale\pl_PL\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Polish; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\ru_RU.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Russian; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\es_ES.mo; DestDir: {app}\locale\es_ES\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Spanish; Flags: restartreplace uninsrestartdelete replacesameversion
 
 
 ; on xp and greater VC80 CRT needs to be installed in Microsoft.VC80.CRT
@@ -124,8 +120,8 @@ Source: py2exe\dist\lib\_winreg.pyd; DestDir: {app}\lib; Components: ClamWin; Fl
 Source: py2exe\dist\lib\clamwin.zip; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 Source: py2exe\dist\lib\datetime.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 Source: py2exe\dist\lib\mxDateTime.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
-;Source: py2exe\dist\lib\exchange.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
-;Source: py2exe\dist\lib\exchdapi.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\exchange.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\exchdapi.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 Source: py2exe\dist\lib\shell.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 Source: py2exe\dist\lib\htmlc.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 Source: py2exe\dist\lib\gizmosc.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
@@ -152,10 +148,10 @@ Name: {group}\Virus Scanner; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\
 Name: {code:DesktopDir}\ClamWin Antivirus; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: ClamWin; Tasks: desktopicon
 Name: {group}\Help\Printable Manual; Filename: {app}\bin\manual.pdf; Components: ; WorkingDir: {app}\bin
 Name: {group}\Help\Online Help; Filename: {app}\bin\manual.chm; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: ClamWin
-Name: {group}\Help\International\Russian Help; Filename: {app}\bin\manual_ru.chm; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: InternationalHelp\Russian
-Name: {group}\Help\International\French Help; Filename: {app}\bin\manual_fr.pdf; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: InternationalHelp\French
-Name: {group}\Help\International\Dutch Help; Filename: {app}\bin\Manual_NL.chm; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: InternationalHelp\Dutch
-;Name: {group}\Help\International\Italian Help; Filename: {app}\bin\ItalianManual.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: InternationalHelp\Italian
+Name: {group}\Help\International\Russian Help; Filename: {app}\bin\manual_ru.chm; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: LanguageSupport\Russian
+Name: {group}\Help\International\French Help; Filename: {app}\bin\manual_fr.pdf; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: LanguageSupport\French
+Name: {group}\Help\International\Dutch Help; Filename: {app}\bin\Manual_NL.chm; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: LanguageSupport\Dutch
+;Name: {group}\Help\International\Italian Help; Filename: {app}\bin\ItalianManual.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: LanguageSupport\Italian
 
 [Run]
 ; NOTE: The following entry contains an English phrase ("Launch"). You are free to translate it into another language if required.
@@ -181,12 +177,15 @@ Name: ClamAV; Description: {cm:ClamAVFiles1}; Flags: fixed; Types: full custom t
 Name: ClamWin; Description: {cm:ClamWinFiles1}; Flags: fixed; Types: full custom typical
 Name: ExplorerShell; Description: {cm:IntegrationExplorer1}; Types: full custom typical
 Name: OutlookAddin; Description: {cm:IntegrationOutlook1}; Types: full custom typical; Check: IsOutlookInstalled
-Name: InternationalHelp; Description: {cm:InternationalHelpFiles1}; Types: full
-Name: InternationalHelp\Russian; Description: {cm:RussianHelpFiles1}; Types: full
-Name: InternationalHelp\French; Description: {cm:FrenchHelpFiles1}; Types: full
-Name: InternationalHelp\Dutch; Description: {cm:DutchHelpFiles1}; Types: full
-;Name: InternationalHelp\Italian; Description: Italian Help Files; Types: full
-;Name: Sources; Description: {cm:DownloadSourceCode1}; ExtraDiskSpaceRequired: 9437184; Types: full
+Name: LanguageSupport; Description: {cm:LanguageSupport1}; Types: full
+Name: LanguageSupport\Dutch; Description: {cm:DutchLanguage1}; Types: full
+Name: LanguageSupport\French; Description: {cm:FrenchLanguage1}; Types: full
+Name: LanguageSupport\German; Description: {cm:GermanLanguage1}; Types: full
+Name: LanguageSupport\Italian; Description: {cm:ItalianLanguage1}; Types: full
+Name: LanguageSupport\Polish; Description: {cm:PolishLanguage1}; Types: full
+Name: LanguageSupport\Russian; Description: {cm:RussianLanguage1}; Types: full
+Name: LanguageSupport\Spanish; Description: {cm:SpanishLanguage1}; Types: full
+
 [INI]
 Filename: {app}\bin\ClamWin.conf; Section: ClamAV; Key: clamscan; String: {app}\bin\clamscan.exe; Check: IsIniValueEmpty(ExpandConstant('ClamAV*clamscan*{app}\bin\ClamWin.conf'))
 Filename: {app}\bin\ClamWin.conf; Section: ClamAV; Key: freshclam; String: {app}\bin\freshclam.exe; Check: IsIniValueEmpty(ExpandConstant('ClamAV*freshclam*{app}\bin\ClamWin.conf'))
@@ -202,9 +201,9 @@ Filename: {app}\bin\ClamWin.conf; Section: Updates; Key: time; String: {code:Cur
 ;Name: Sources_Cygwin; Description: Cygwin Source Code; GroupDescription: Source Codes; Flags: unchecked; Source: http://mirrors.kernel.org/sources.redhat.com/cygwin/release/cygwin/cygwin-1.5.18-1-src.tar.bz2; DestDir: {%TEMP|{localappdata}}; DestName: cygwin-src.tar.bz2; Components: Sources
 
 [Types]
+Name: full; Description: {cm:FullInstallation1}
 Name: typical; Description: {cm:TypicalInstallation1}
 Name: custom; Description: {cm:CustomInstallation1}; Flags: iscustom
-Name: full; Description: {cm:FullInstallation1}
 
 [UninstallDelete]
 Name: {tmp}\ClamWin_Scheduler_Info; Type: files; Components: ClamWin
@@ -323,10 +322,6 @@ en.CustomInstallation1=Custom Installation
 en.FullInstallation1=Full Installation
 en.ClamWinSourceCode1=ClamWin Source Code
 en.ClamAVSourceCode1=ClamAV Source Code
-en.InternationalHelpFiles1=International Help Files
-en.RussianHelpFiles1=Russian Help Files
-en.FrenchHelpFiles1=French Help Files
-en.DutchHelpFiles1=Dutch Help Files
 en.DownloadSourceCode1=Download Source Code
 en.ClamAVFiles1=ClamAV Files
 en.ClamWinFiles1=ClamWin Files
@@ -334,6 +329,14 @@ en.IntegrationExplorer1=Integration with Windows Explorer
 en.IntegrationOutlook1=Integration with Microsoft Outlook
 en.ClamWinFreeAntivirus1=ClamWin Free Antivirus
 en.ClamWinFreeAntivirus2=ClamWin Antivirus
+en.LanguageSupport1=Language Support
+en.DutchLanguage1=Dutch
+en.FrenchLanguage1=French
+en.GermanLanguage1=German
+en.ItalianLanguage1=Italian
+en.PolishLanguage1=Polish
+en.RussianLanguage1=Russian
+en.SpanishLanguage1=Spanish
 
 de.LanguageName=Deutsch
 de.InitializeWizard1=Installations-Optionen festlegen
@@ -365,10 +368,6 @@ de.CustomInstallation1=Benutzerdefinierte Installation
 de.FullInstallation1=Vollständige Installation
 de.ClamWinSourceCode1=ClamWin Source Code
 de.ClamAVSourceCode1=ClamAV Source Code
-de.InternationalHelpFiles1=Internationale Hilfe Dateien
-de.RussianHelpFiles1=Russische Hilfe Dateien
-de.FrenchHelpFiles1=Französische Hilfe Dateien
-de.DutchHelpFiles1=Niederländische Hilfe Dateien
 de.DownloadSourceCode1=Source Code herunterladen
 de.ClamAVFiles1=ClamAV Dateien
 de.ClamWinFiles1=ClamWin Dateien
@@ -376,6 +375,14 @@ de.IntegrationExplorer1=Integration in den Windows Explorer
 de.IntegrationOutlook1=Integration in Microsoft Outlook
 de.ClamWinFreeAntivirus1=ClamWin Free Antivirus
 de.ClamWinFreeAntivirus2=ClamWin Antivirus
+de.LanguageSupport1=Language Support
+de.DutchLanguage1=Dutch
+de.FrenchLanguage1=French
+de.GermanLanguage1=German
+de.ItalianLanguage1=Italian
+de.PolishLanguage1=Polish
+de.RussianLanguage1=Russian
+de.SpanishLanguage1=Spanish
 
 nl.LanguageName=Dutch
 nl.InitializeWizard1=Kies de Installatie Opties
@@ -407,10 +414,6 @@ nl.CustomInstallation1=Aangepaste Installatie
 nl.FullInstallation1=Volledige Installatie
 nl.ClamWinSourceCode1=ClamWin Broncode
 nl.ClamAVSourceCode1=ClamAV Broncode
-nl.InternationalHelpFiles1=Internationale Help Bestanden
-nl.RussianHelpFiles1=Russische Help Bestanden
-nl.FrenchHelpFiles1=Franse Help Bestanden
-nl.DutchHelpFiles1=Nederlandse Help Bestanden
 nl.DownloadSourceCode1=Download de Broncode
 nl.ClamAVFiles1=ClamAV Bestanden
 nl.ClamWinFiles1=ClamWin Bestanden
@@ -418,6 +421,14 @@ nl.IntegrationExplorer1=Integratie met de Windows Verkenner
 nl.IntegrationOutlook1=Integratie met Microsoft Outlook
 nl.ClamWinFreeAntivirus1=ClamWin Free Antivirus
 nl.ClamWinFreeAntivirus2=ClamWin Antivirus
+nl.LanguageSupport1=Taal ondersteuning
+nl.DutchLanguage1=Nederlands
+nl.FrenchLanguage1=Frans
+nl.GermanLanguage1=Duits
+nl.ItalianLanguage1=Italiaans
+nl.PolishLanguage1=Pools
+nl.RussianLanguage1=Russisch
+nl.SpanishLanguage1=Spaans
 
 fr.LanguageName=French
 fr.InitializeWizard1=Sélectionnez les Options d'Installation
@@ -449,10 +460,6 @@ fr.CustomInstallation1=Installation Personnalisée
 fr.FullInstallation1=Installation Complète
 fr.ClamWinSourceCode1=Code Source de ClamWin
 fr.ClamAVSourceCode1=Code Source de ClamAV
-fr.InternationalHelpFiles1=Fichiers d'aide internationalisés
-fr.RussianHelpFiles1=Fichiers d'aide en russe
-fr.FrenchHelpFiles1=Fichiers d'aide en français
-fr.DutchHelpFiles1=Fichiers d'aide en hollandais
 fr.DownloadSourceCode1=Télécharger le Code Source
 fr.ClamAVFiles1=Fichiers ClamAV
 fr.ClamWinFiles1=Fichiers ClamWin
@@ -460,6 +467,14 @@ fr.IntegrationExplorer1=Intégration avec L'Explorateur Windows
 fr.IntegrationOutlook1=Intégration avec Microsoft Outlook
 fr.ClamWinFreeAntivirus1=Antivirus Libre et Gratuit ClamWin
 fr.ClamWinFreeAntivirus2=Antivirus ClamWin
+fr.LanguageSupport1=Language Support
+fr.DutchLanguage1=Dutch
+fr.FrenchLanguage1=French
+fr.GermanLanguage1=German
+fr.ItalianLanguage1=Italian
+fr.PolishLanguage1=Polish
+fr.RussianLanguage1=Russian
+fr.SpanishLanguage1=Spanish
 
 ru.LanguageName=Russian
 ru.InitializeWizard1=Âûáåðèòå âàðèàíò èíñòàëëÿöèè
@@ -492,10 +507,6 @@ ru.CustomInstallation1=Ðó÷íîé âûáîð
 ru.FullInstallation1=Ïîëíàÿ óñòàíîâêà
 ru.ClamWinSourceCode1=Èñõîäíûå êîäû ClamWin
 ru.ClamAVSourceCode1=Èñõîäíûå êîäû ClamAV
-ru.InternationalHelpFiles1=Ïåðåâåäåííûå ôàéëû ïîìîùè
-ru.RussianHelpFiles1=Ðóññêèé ôàéë ïîìîùè
-ru.FrenchHelpFiles1=Ôðàíöóçñêèé ôàéë ïîìîùè
-ru.DutchHelpFiles1=Äàòñêèé ôàéë ïîìîùè
 ru.DownloadSourceCode1=Çàãðóçèòü èñõîäíûå êîäû
 ru.ClamAVFiles1=Ôàéëû ClamAV
 ru.ClamWinFiles1=Ôàéëû ClamWin
@@ -503,6 +514,14 @@ ru.IntegrationExplorer1=Èíòåãðàöèÿ ñ Windows Explorer
 ru.IntegrationOutlook1=Èíòåãðàöèÿ ñ Microsoft Outlook
 ru.ClamWinFreeAntivirus1=ClamWin Free Àíòèâèðóñ
 ru.ClamWinFreeAntivirus2=ClamWin Àíòèâèðóñ
+ru.LanguageSupport1=Language Support
+ru.DutchLanguage1=Dutch
+ru.FrenchLanguage1=French
+ru.GermanLanguage1=German
+ru.ItalianLanguage1=Italian
+ru.PolishLanguage1=Polish
+ru.RussianLanguage1=Russian
+ru.SpanishLanguage1=Spanish
 
 it.LanguageName=Italian
 it.InitializeWizard1=Select Installation Options
@@ -534,10 +553,6 @@ it.CustomInstallation1=Custom Installation
 it.FullInstallation1=Full Installation
 it.ClamWinSourceCode1=ClamWin Source Code
 it.ClamAVSourceCode1=ClamAV Source Code
-it.InternationalHelpFiles1=International Help Files
-it.RussianHelpFiles1=Russian Help Files
-it.FrenchHelpFiles1=French Help Files
-it.DutchHelpFiles1=Dutch Help Files
 it.DownloadSourceCode1=Download Source Code
 it.ClamAVFiles1=ClamAV Files
 it.ClamWinFiles1=ClamWin Files
@@ -545,6 +560,14 @@ it.IntegrationExplorer1=Integration with Windows Explorer
 it.IntegrationOutlook1=Integration with Microsoft Outlook
 it.ClamWinFreeAntivirus1=ClamWin Free Antivirus
 it.ClamWinFreeAntivirus2=ClamWin Antivirus
+it.LanguageSupport1=Language Support
+it.DutchLanguage1=Dutch
+it.FrenchLanguage1=French
+it.GermanLanguage1=German
+it.ItalianLanguage1=Italian
+it.PolishLanguage1=Polish
+it.RussianLanguage1=Russian
+it.SpanishLanguage1=Spanish
 
 es.LanguageName=English
 es.InitializeWizard1=Select Installation Options
@@ -576,10 +599,6 @@ es.CustomInstallation1=Custom Installation
 es.FullInstallation1=Full Installation
 es.ClamWinSourceCode1=ClamWin Source Code
 es.ClamAVSourceCode1=ClamAV Source Code
-es.InternationalHelpFiles1=International Help Files
-es.RussianHelpFiles1=Russian Help Files
-es.FrenchHelpFiles1=French Help Files
-es.DutchHelpFiles1=Dutch Help Files
 es.DownloadSourceCode1=Download Source Code
 es.ClamAVFiles1=ClamAV Files
 es.ClamWinFiles1=ClamWin Files
@@ -587,6 +606,60 @@ es.IntegrationExplorer1=Integration with Windows Explorer
 es.IntegrationOutlook1=Integration with Microsoft Outlook
 es.ClamWinFreeAntivirus1=ClamWin Free Antivirus
 es.ClamWinFreeAntivirus2=ClamWin Antivirus
+es.LanguageSupport1=Language Support
+es.DutchLanguage1=Dutch
+es.FrenchLanguage1=French
+es.GermanLanguage1=German
+es.ItalianLanguage1=Italian
+es.PolishLanguage1=Polish
+es.RussianLanguage1=Russian
+es.SpanishLanguage1=Spanish
+
+pl.LanguageName=Polish
+pl.InitializeWizard1=Wybór opcji instalacyjnych
+pl.InitializeWizard2=Dla kogo ma byæ zainstalowana aplikacja?
+pl.InitializeWizard3=Wybierz czy aplikacja ma byæ dostêpna dla wszystkich, czy tylko dla Ciebie.
+pl.InitializeWizard4=&Dla wszystkich, kto u¿ywa ten komputer (wszyscy u¿ytkownicy)
+pl.InitializeWizard5=Tylko dla &mnie (
+pl.NoOutlookRunning1=Przed instalacj¹ ClamWin musisz zamkn¹æ Outlooka.
+pl.NoOutlookRunning2=Zamknij wszystkie okna Outlooka (u¿ywaj¹c "Plik->Zamknij i wyloguj"
+pl.NoOutlookRunning3=i naciœnij "Ponów", lub "Anuluj" aby przerwaæ instalacjê.
+pl.NoOutlookRunning4=Je¿eli ta wiadomoœæ siê ci¹gle pojawia, to po zamkniêciu wszystkich okien,
+pl.NoOutlookRunning5=wyloguj siê z Windowsa i spróbuj ponownie.
+pl.NoOutlookRunning6=Agent dostarczania poczty Outlooka jest ci¹gle uruchomiony.
+pl.NoOutlookRunning7=Je¿eli niedawno zamkn¹³eœ Outlooka, poczekaj parê sekund i naciœnij "Ponów".
+pl.NoOutlookRunning8=Je¿eli ta wiadomoœæ siê ci¹gle pojawia, wyloguj siê z Windowsa i spróbuj ponownie.
+pl.CloseClamWin1=Instalator wykry³ zainstalowan¹ poprzedni¹ wersjê programu.
+pl.CloseClamWin2=Czy chcesz zamkn¹æ ten program teraz? (Zalecane)
+pl.InitializeSetup1=Instalator wykry³ zainstalowan¹ nowsz¹ wersjê programu.
+pl.InitializeSetup2=Instalacja zostanie teraz przerwana.
+pl.DeInitializeSetup1=Aby zakoñczyæ instalacjê antywirusa ClamWin , zrestartuj swój komputer.
+pl.RemoveSetup1=Instalator wykry³ zainstalowan¹ starsz¹ wersjê programu. Kliknij "Tak", aby j¹ odinstalowaæ.
+pl.DownloadDB1=Pobierz pliki bazy wirusów (Nie zaznaczaj, je¿eli ³¹czysz siê przez serwer Proxy)
+pl.DownloadDB2=Pobieranie plików bazy wirusów.
+pl.DownloadDB3=Pobierz
+pl.CreateDesktop1=Utwórz ikonê na &pulpicie
+pl.CreateDesktop2=Dodatkowe ikony:
+pl.TypicalInstallation1=Typowa instalacja
+pl.CustomInstallation1=Instalacja u¿ytkownika
+pl.FullInstallation1=Pe³na instalacja
+pl.ClamWinSourceCode1=Kod Ÿród³owy ClamWin
+pl.ClamAVSourceCode1=Kod Ÿród³owy ClamAV
+pl.DownloadSourceCode1=Pobierz kod Ÿród³owy
+pl.ClamAVFiles1=Pliki ClamAV
+pl.ClamWinFiles1=Pliki ClamWin
+pl.IntegrationExplorer1=Integracja z Explorerem Windows
+pl.IntegrationOutlook1=Integracja z Microsoft Outlookiem
+pl.ClamWinFreeAntivirus1=ClamWin Free Antivirus
+pl.ClamWinFreeAntivirus2=ClamWin Antivirus
+pl.LanguageSupport1=Language Support
+pl.DutchLanguage1=Dutch
+pl.FrenchLanguage1=French
+pl.GermanLanguage1=German
+pl.ItalianLanguage1=Italian
+pl.PolishLanguage1=Polish
+pl.RussianLanguage1=Russian
+pl.SpanishLanguage1=Spanish
 
 ;cs.LanguageName=Czech
 ;cs.InitializeWizard1=Vyberte typ instalace
@@ -618,10 +691,6 @@ es.ClamWinFreeAntivirus2=ClamWin Antivirus
 ;cs.FullInstallation1=Plná instalace
 ;cs.ClamWinSourceCode1=Zdrojové kódy ClamWin
 ;cs.ClamAVSourceCode1=Zdrojové kódy ClamAV
-;cs.InternationalHelpFiles1=Mezinárodní soubory nápovedy
-;cs.RussianHelpFiles1=Soubory nápovedy v ruštine
-;cs.FrenchHelpFiles1=Soubory nápovedy ve francouzštine
-;cs.DutchHelpFiles1=Soubory nápovedy v holandštine
 ;cs.DownloadSourceCode1=Stáhnout zdrojové kódy
 ;cs.ClamAVFiles1=ClamAV soubory
 ;cs.ClamWinFiles1=ClamWin soubory
@@ -629,6 +698,14 @@ es.ClamWinFreeAntivirus2=ClamWin Antivirus
 ;cs.IntegrationOutlook1=Integrace s Microsoft Outlookem
 ;cs.ClamWinFreeAntivirus1=ClamWin Free Antivirus
 ;cs.ClamWinFreeAntivirus2=ClamWin Antivirus
+;cs.LanguageSupport1=Language Support
+;cs.DutchLanguage1=Dutch
+;cs.FrenchLanguage1=French
+;cs.GermanLanguage1=German
+;cs.ItalianLanguage1=Italian
+;cs.PolishLanguage1=Polish
+;cs.RussianLanguage1=Russian
+;cs.SpanishLanguage1=Spanish
 
 [Code]
 var

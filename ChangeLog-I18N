@@ -6,7 +6,7 @@
 KNOWN ISSUES:
 *************
 - The link button to the clamav homepage in the about box is broken.
-  Can't see why, it is broken in the original package too.
+  Can't see why, it is broken in the official ClamWin package too.
 
 Changes in Version ClamWinL10N-26.exe :
 ***************************************
@@ -23,6 +23,10 @@ Changes in Version ClamWinL10N-26.exe :
   1. Locale setting in HKCU
   2. Locale setting in HKLM
   3. Default system locale
+- Changed the installer so the "International Help" component is replaced
+  by a "Language Support" Component, so each user can decide which languages
+  to install (language = .po file + manual + helpfile (if available)).
+- Made the label field "Scan folder:" wider in the Scheduled Scan dialog.
 
 
 Changes in Version ClamWinL10N-25.exe :
