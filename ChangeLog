@@ -1,3 +1,9 @@
+Version 0.88.7 - 12 December 2006
+- Upgraded ClamAV to 0.88.7
+- fixed possible naming problem on ole2 temp files
+- fixed remove/moving of invalid filenames
+
+
 Version 0.88.6 - 29 November 2006
 - Optional unloading of infected programs before quarantining
 - Better temporary file management and cleanup

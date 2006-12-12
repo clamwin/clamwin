@@ -667,6 +667,9 @@ def ReplaceClamAVWarnings(data):
     data = data.replace('WARNING: Your ClamAV installation is OUTDATED!\n', '')    
     data = data.replace("DON'T PANIC! Read http://www.clamav.net/faq.html\n", '')    
     data = re.sub('WARNING: Current functionality level = \d+, recommended = \d+\n', '', data)
+    data = re.sub('WARNING: Local version: \d+\.??\d*?\.??\d*? Recommended version: \d+\.??\d*?\.??\d*?\n', '', data)
+
+
     data = data.replace('LibClamAV Warning: ********************************************************\n', '')
     data = data.replace('LibClamAV Warning: ***  This version of the ClamAV engine is outdated.  ***\n', '')
     data = data.replace("LibClamAV Warning: *** DON'T PANIC! Read http://www.clamav.net/faq.html ***\n", '')
