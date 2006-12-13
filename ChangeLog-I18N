@@ -8,6 +8,10 @@ KNOWN ISSUES:
 - The link button to the clamav homepage in the about box is broken.
   Can't see why, it is broken in the official ClamWin package too.
 
+Changes in Version ClamWinL10N-27.exe :
+***************************************
+- Merged with the trunk up to 0.88.7 (r997)
+
 Changes in Version ClamWinL10N-26.exe :
 ***************************************
 - Changed localization in the Explorer Shell extension:

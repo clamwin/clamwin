@@ -1,26 +1,28 @@
 @echo off
 
-set LIBS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib advapi32.lib shell32.lib ole32.lib libintl.lib libiconv.lib
+rem set LIBS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib advapi32.lib shell32.lib ole32.lib libintl.lib libiconv.lib
+set LIBS=user32.lib advapi32.lib shell32.lib ole32.lib 
 set DEFINES=/D "WIN32" /D "_CRT_SECURE_NO_DEPRECATE" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "EXPLORERSHELL_EXPORTS"
 set UNICODE=/D "UNICODE" /D "_UNICODE"
 
-call "%VCINSTALLDIR%\vcvarsall.bat" x86
+rem call "%VCINSTALLDIR%\vcvarsall.bat" x86
 
 :: 32 bit unicode
-echo Building 32bit Release Unicode
-mkdir Release_Unicode
-%MC% -u -U MessageTable.mc
-rc.exe /d "NDEBUG" /l 0x409 /fo".\Release_Unicode/MessageTable.res" .\MessageTable.rc
-if not "%ERRORLEVEL%"=="0" goto END
-rc.exe /d "NDEBUG" /l 0x409 /fo".\Release_Unicode/ExplorerShell.res" .\ExplorerShell.rc
-if not "%ERRORLEVEL%"=="0" goto END
-cl /O1 %DEFINES% %UNICODE% /O1 /FD /EHsc /MT /Fo".\Release_Unicode/" /Fd".\Release_Unicode/" /W3 /c /TP .\ShellExtImpl.cpp .\ShellExt.cpp
-if not "%ERRORLEVEL%"=="0" goto END
+:: echo Building 32bit Release Unicode
+:: mkdir Release_Unicode
+:: %MC% -u -U MessageTable.mc
+:: rc.exe /d "NDEBUG" /l 0x409 /fo".\Release_Unicode/MessageTable.res" .\MessageTable.rc
+:: if not "%ERRORLEVEL%"=="0" goto END
+:: rc.exe /d "NDEBUG" /l 0x409 /fo".\Release_Unicode/ExplorerShell.res" .\ExplorerShell.rc
+:: if not "%ERRORLEVEL%"=="0" goto END
+:: cl /O1 %DEFINES% %UNICODE% /O1 /FD /EHsc /MT /Fo".\Release_Unicode/" /Fd".\Release_Unicode/" /W3 /c /TP .\ShellExtImpl.cpp .\ShellExt.cpp
+:: if not "%ERRORLEVEL%"=="0" goto END
 link.exe /OUT:".\Release_Unicode/ExpShell.dll" /INCREMENTAL:NO /NOLOGO /DLL /DEF:".\ExplorerShell.def" /PDB:".\Release_Unicode/ExplorerShell.pdb" /IMPLIB:".\Release_Unicode/ExplorerShell.lib" /MACHINE:X86 .\Release_Unicode\ExplorerShell.res .\Release_Unicode/MessageTable.res .\Release_Unicode\ShellExt.obj .\Release_Unicode\ShellExtImpl.obj %LIBS%
 if not "%ERRORLEVEL%"=="0" goto END
 
 echo.
 echo.
+goto END
 
 :: 32 bit ansi
 echo Building 32bit Release Ansi
@@ -28,6 +30,7 @@ mkdir Release
 %MC% -u -A MessageTable.mc
 rc.exe /d "NDEBUG" /l 0x409 /fo".\Release/ExplorerShell.res" .\ExplorerShell.rc
 if not "%ERRORLEVEL%"=="0" goto END
+
 cl /O1 %DEFINES% /O1 /FD /EHsc /MT /Fo".\Release/" /Fd".\Release/" /W3 /c /TP .\ShellExtImpl.cpp .\ShellExt.cpp
 if not "%ERRORLEVEL%"=="0" goto END
 link.exe /OUT:".\Release/ExpShell.dll" /INCREMENTAL:NO /NOLOGO /DLL /DEF:".\ExplorerShell.def" /PDB:".\Release/ExplorerShell.pdb" /IMPLIB:".\Release/ExplorerShell.lib" /MACHINE:X86 .\Release\ExplorerShell.res .\Release_Unicode/MessageTable.res .\Release\ShellExt.obj .\Release\ShellExtImpl.obj %LIBS%
