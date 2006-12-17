@@ -492,7 +492,7 @@ class wxPreferencesDlg(wxDialog):
         self.textCtrlAdditionalParams = wxTextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLADDITIONALPARAMS,
               name='textCtrlAdditionalParams', parent=self._panelAdvanced,
               pos=wxPoint(6, 97), size=wxSize(379, 21), style=0, value='')
-        self.textCtrlAdditionalParams.SetToolTipString('Specify any additional paramters for clamscan.exe')
+        self.textCtrlAdditionalParams.SetToolTipString('Specify any additional parameters for clamscan.exe')
 
         self.staticTextMaxLogSize = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTMAXLOGSIZE,
               label='Limit Log File Size To:', name='staticTextMaxLogSize',
