@@ -1,4 +1,4 @@
-# Copyright (C) YEAR ORGANIZATION
+﻿# Copyright (C) YEAR ORGANIZATION
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
@@ -1777,7 +1777,7 @@ msgstr ""
 msgid "Scans Computer Memory for Viruses"
 msgstr ""
 
-msgid "Specify any additional paramters for clamscan.exe"
+msgid "Specify any additional parameters for clamscan.exe"
 msgstr ""
 
 msgid "&Unload Infected Programs from Computer Memory"

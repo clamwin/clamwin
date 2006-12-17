@@ -1,4 +1,4 @@
-msgid ""
+﻿msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.4\n"
 "POT-Creation-Date: \n"
@@ -1783,7 +1783,7 @@ msgstr "Skanuje programy załadowane do pamięci operacyjnej w poszukiwaniu wiru
 msgid "Scans Computer Memory for Viruses"
 msgstr "Skanuje pamięć operacyjną w poszukiwaniu wirusów"
 
-msgid "Specify any additional paramters for clamscan.exe"
+msgid "Specify any additional parameters for clamscan.exe"
 msgstr "Określa dodatkowe parametry dla clamscan.exe"
 
 msgid "&Unload Infected Programs from Computer Memory"

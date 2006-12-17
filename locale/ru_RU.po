@@ -1,4 +1,4 @@
-# Copyright (C) YEAR ORGANIZATION
+﻿# Copyright (C) YEAR ORGANIZATION
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
@@ -1543,7 +1543,7 @@ msgid "Specify an email address where the email alert will be delivered.  Separa
 msgstr "Укажите емайл адрес куда уведомление будет доставлено.Дополнительные адреса указывайте через запятую."
 
 #, fuzzy
-msgid "Specify any additional paramters for clamscan.exe"
+msgid "Specify any additional parameters for clamscan.exe"
 msgstr "Укажите месторасположение calmscan"
 
 #: wxDialogPreferences.py:549

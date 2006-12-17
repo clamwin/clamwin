@@ -11,6 +11,12 @@ KNOWN ISSUES:
 Changes in Version ClamWinL10N-27.exe :
 ***************************************
 - Merged with the trunk up to 0.88.7 (r997)
+- Removed the need for trailing spaces in the translations of weekdays
+  ('Mon' to 'Sun') and months ('Jan' to 'Dec')
+- Allowed the Outlook Addin to not be installed (requested by lots of
+  users and testers)
+- Fixed the translation of the clamav version output (which displayed as
+  '0,88,7' in stead of '0.88.7')
 
 Changes in Version ClamWinL10N-26.exe :
 ***************************************

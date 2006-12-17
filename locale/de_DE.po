@@ -1,4 +1,4 @@
-# SOME DESCRIPTIVE TITLE.
+﻿# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR ORGANIZATION
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
@@ -434,7 +434,7 @@ msgstr "Programme im Arbeitsspeicher auf Viren prüfen"
 msgid "Scans Computer Memory for Viruses"
 msgstr "Programme im Arbeitsspeicher auf Viren prüfen"
 
-msgid "Specify any additional paramters for clamscan.exe"
+msgid "Specify any additional parameters for clamscan.exe"
 msgstr "Weitere Parameter für ClamScan.exe"
 
 msgid "&Unload Infected Programs from Computer Memory"
