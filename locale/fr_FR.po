@@ -304,79 +304,79 @@ msgid "File excluded"
 msgstr "Fichier exclu"
 
 #: wxDialogStatus.py:199
-msgid "Mon "
+msgid "Mon"
 msgstr "Lun"
 
 #: wxDialogStatus.py:201
-msgid "Tue "
+msgid "Tue"
 msgstr "Mar"
 
 #: wxDialogStatus.py:203
-msgid "Wed "
+msgid "Wed"
 msgstr "Mer"
 
 #: wxDialogStatus.py:205
-msgid "Thu "
+msgid "Thu"
 msgstr "Jeu"
 
 #: wxDialogStatus.py:207
-msgid "Fri "
+msgid "Fri"
 msgstr "Ven"
 
 #: wxDialogStatus.py:209
-msgid "Sat "
+msgid "Sat"
 msgstr "Sam"
 
 #: wxDialogStatus.py:211
-msgid "Sun "
+msgid "Sun"
 msgstr "Dim"
 
 #: wxDialogStatus.py:213
-msgid "Jan "
+msgid "Jan"
 msgstr "Jan"
 
 #: wxDialogStatus.py:215
-msgid "Feb "
+msgid "Feb"
 msgstr "Fév"
 
 #: wxDialogStatus.py:217
-msgid "Mar "
+msgid "Mar"
 msgstr "Mar"
 
 #: wxDialogStatus.py:219
-msgid "Apr "
+msgid "Apr"
 msgstr "Avr"
 
 #: wxDialogStatus.py:221
-msgid "May "
+msgid "May"
 msgstr "Mai"
 
 #: wxDialogStatus.py:223
-msgid "Jun "
+msgid "Jun"
 msgstr "Juin"
 
 #: wxDialogStatus.py:225
-msgid "Jul "
+msgid "Jul"
 msgstr "Juil"
 
 #: wxDialogStatus.py:227
-msgid "Aug "
+msgid "Aug"
 msgstr "Août"
 
 #: wxDialogStatus.py:229
-msgid "Sep "
+msgid "Sep"
 msgstr "Sep"
 
 #: wxDialogStatus.py:231
-msgid "Oct "
+msgid "Oct"
 msgstr "Oct"
 
 #: wxDialogStatus.py:233
-msgid "Nov "
+msgid "Nov"
 msgstr "Nov"
 
 #: wxDialogStatus.py:235
-msgid "Dec "
+msgid "Dec"
 msgstr "Déc"
 
 #: wxDialogStatus.py:242

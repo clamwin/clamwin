@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-11-30 16:18+0100\n"
+"PO-Revision-Date: 2006-12-17 13:37+0100\n"
 "Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: Catalan <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -304,80 +304,80 @@ msgid "File excluded"
 msgstr "Fitxer exclós"
 
 #: wxDialogStatus.py:199
-msgid "Mon "
-msgstr "Dl "
+msgid "Mon"
+msgstr "Dl"
 
 #: wxDialogStatus.py:201
-msgid "Tue "
-msgstr "Dm "
+msgid "Tue"
+msgstr "Dm"
 
 #: wxDialogStatus.py:203
-msgid "Wed "
-msgstr "Dc "
+msgid "Wed"
+msgstr "Dc"
 
 #: wxDialogStatus.py:205
-msgid "Thu "
-msgstr "Dj "
+msgid "Thu"
+msgstr "Dj"
 
 #: wxDialogStatus.py:207
-msgid "Fri "
-msgstr "Dv "
+msgid "Fri"
+msgstr "Dv"
 
 #: wxDialogStatus.py:209
-msgid "Sat "
-msgstr "Ds "
+msgid "Sat"
+msgstr "Ds"
 
 #: wxDialogStatus.py:211
-msgid "Sun "
-msgstr "Dg "
+msgid "Sun"
+msgstr "Dg"
 
 #: wxDialogStatus.py:213
-msgid "Jan "
-msgstr "Gen "
+msgid "Jan"
+msgstr "Gen"
 
 #: wxDialogStatus.py:215
-msgid "Feb "
-msgstr "Feb "
+msgid "Feb"
+msgstr "Feb"
 
 #: wxDialogStatus.py:217
-msgid "Mar "
-msgstr "Mar "
+msgid "Mar"
+msgstr "Mar"
 
 #: wxDialogStatus.py:219
-msgid "Apr "
-msgstr "Abr "
+msgid "Apr"
+msgstr "Abr"
 
 #: wxDialogStatus.py:221
-msgid "May "
-msgstr "Mai "
+msgid "May"
+msgstr "Mai"
 
 #: wxDialogStatus.py:223
-msgid "Jun "
-msgstr "Jun "
+msgid "Jun"
+msgstr "Jun"
 
 #: wxDialogStatus.py:225
-msgid "Jul "
-msgstr "Jul "
+msgid "Jul"
+msgstr "Jul"
 
 #: wxDialogStatus.py:227
-msgid "Aug "
-msgstr "Ag "
+msgid "Aug"
+msgstr "Ag"
 
 #: wxDialogStatus.py:229
-msgid "Sep "
-msgstr "Set "
+msgid "Sep"
+msgstr "Set"
 
 #: wxDialogStatus.py:231
-msgid "Oct "
-msgstr "Oct "
+msgid "Oct"
+msgstr "Oct"
 
 #: wxDialogStatus.py:233
-msgid "Nov "
-msgstr "Nov "
+msgid "Nov"
+msgstr "Nov"
 
 #: wxDialogStatus.py:235
-msgid "Dec "
-msgstr "Des "
+msgid "Dec"
+msgstr "Des"
 
 #: wxDialogStatus.py:242
 msgid "version:"

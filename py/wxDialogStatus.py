@@ -154,25 +154,25 @@ def translateClamAVLines(lines):
         ]
 
     lDateStrings = [
-            'Mon ',
-            'Tue ',
-            'Wed ',
-            'Thu ',
-            'Fri ',
-            'Sat ',
-            'Sun ',
-            'Jan ',
-            'Feb ',
-            'Mar ',
-            'Apr ',
-            'May ',
-            'Jun ',
-            'Jul ',
-            'Aug ',
-            'Sep ',
-            'Oct ',
-            'Nov ',
-            'Dec '
+            'Mon',
+            'Tue',
+            'Wed',
+            'Thu',
+            'Fri',
+            'Sat',
+            'Sun',
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec'
         ]
 
     # These are strings that must be replaced afterwards as
@@ -195,11 +195,11 @@ def translateClamAVLines(lines):
             if not doneDate:
                 if line.find("Scan started:") >= 0 or line.find("ClamAV update process started at") >= 0:
                     for sToReplace in lDateStrings:
-                        if line.find(sToReplace) >= 0:
+                        if line.find(sToReplace + ' ') >= 0:
                             locale.setlocale(locale.LC_ALL, '')
                             sToEncode = _(sToReplace).encode('utf-8')
                             locale.setlocale(locale.LC_ALL, 'C')
-                            line = line.replace(sToReplace, sToEncode)
+                            line = line.replace(sToReplace + ' ', sToEncode + ' ')
                     doneDate = True
 
             if len(line.split('.')) < 3:
