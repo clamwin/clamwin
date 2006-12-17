@@ -176,7 +176,7 @@ Name: {app}\locale; Components: ClamWin
 Name: ClamAV; Description: {cm:ClamAVFiles1}; Flags: fixed; Types: full custom typical
 Name: ClamWin; Description: {cm:ClamWinFiles1}; Flags: fixed; Types: full custom typical
 Name: ExplorerShell; Description: {cm:IntegrationExplorer1}; Types: full custom typical
-Name: OutlookAddin; Description: {cm:IntegrationOutlook1}; Types: full custom typical; Check: IsOutlookInstalled
+Name: OutlookAddin; Description: {cm:IntegrationOutlook1}; Types: full typical; Check: IsOutlookInstalled
 Name: LanguageSupport; Description: {cm:LanguageSupport1}; Types: full
 Name: LanguageSupport\Dutch; Description: {cm:DutchLanguage1}; Types: full
 Name: LanguageSupport\French; Description: {cm:FrenchLanguage1}; Types: full

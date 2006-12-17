@@ -201,12 +201,13 @@ def translateClamAVLines(lines):
                             locale.setlocale(locale.LC_ALL, 'C')
                             line = line.replace(sToReplace, sToEncode)
                     doneDate = True
-            
-            if regexPattern.search(line):
-                locale.setlocale(locale.LC_ALL, '')
-                decimalPoint = locale.localeconv()['decimal_point']
-                locale.setlocale(locale.LC_ALL, 'C')
-                line = line.replace(".", decimalPoint)
+
+            if len(line.split('.')) < 3:
+                if regexPattern.search(line):
+                    locale.setlocale(locale.LC_ALL, '')
+                    decimalPoint = locale.localeconv()['decimal_point']
+                    locale.setlocale(locale.LC_ALL, 'C')
+                    line = line.replace(".", decimalPoint)
             
             for sToReplace in lClamAVStrings:
                 if line.find(sToReplace) >= 0:
