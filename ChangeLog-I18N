@@ -10,6 +10,14 @@ KNOWN ISSUES:
 
 Changes in Version ClamWinL10N-27.exe :
 ***************************************
+- Separated the installer strings from the main Setup.iss file for easier
+  maintenance.  These strings are now in LANGUAGE_STRING.iss files in the 
+  locale directory.
+- Added Hungarian translation and prepared several string translations in
+  the explorershell Message Table.
+
+Changes in Version ClamWinL10N-27.exe :
+***************************************
 - Merged with the trunk up to 0.88.7 (r997)
 - Removed the need for trailing spaces in the translations of weekdays
   ('Mon' to 'Sun') and months ('Jan' to 'Dec')

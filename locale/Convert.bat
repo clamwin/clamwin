@@ -5,7 +5,8 @@ msgfmt -o cs_CZ.mo cs_CZ.po
 msgfmt -o bg_BG.mo bg_BG.po
 msgfmt -o de_DE.mo de_DE.po 
 msgfmt -o es_ES.mo es_ES.po 
-msgfmt -o fr_FR.mo fr_FR.po 
+msgfmt -o fr_FR.mo fr_FR.po
+msgfmt -o hu_HU.mo hu_HU.po 
 msgfmt -o it_IT.mo it_IT.po 
 msgfmt -o ko_KR.mo ko_KR.po 
 msgfmt -o nl_BE.mo nl_BE.po 

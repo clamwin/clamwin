@@ -1,148 +1,147 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
+"Project-Id-Version: Clamwin\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-12-17 16:11+0100\n"
-"Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
-"Language-Team: Italian <team@clamwin.com>\n"
+"PO-Revision-Date: 2006-12-27 13:04+0100\n"
+"Last-Translator: Peter Budts <budtse@users.sourceforge.net>\n"
+"Language-Team: Hungarian ClamWin Team <clamwin-hungarian@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Italian\n"
-"X-Poedit-Country: Italy\n"
-"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Language: Hungarian\n"
+"X-Poedit-Country: HUNGARY\n"
 
 #: wxFrameMain.py:90
 msgid "Displays the configuration window"
-msgstr "Visualizza la finestra di configurazione"
+msgstr "Megjeleníti a beállítások panelt"
 
 #: wxFrameMain.py:91
 msgid "&Preferences"
-msgstr "&Preferenze"
+msgstr "&Beállítások"
 
 #: wxFrameMain.py:93
 msgid "Downloads latest virus database from the Internet"
-msgstr "Scarica da internet l'ultima versione del database dei virus"
+msgstr "Letölti a legújabb vírusismereti adatbázist az Internetről"
 
 #: wxFrameMain.py:95
 msgid "Download &Virus Database Update"
-msgstr "Scarica l'aggiornamento del Database dei &Virus"
+msgstr "&Vírusismereti adatbázis frissítése"
 
 #: wxFrameMain.py:96
 msgid "Displays ClamWin Log Files"
-msgstr "Visualizza i log di ClamWin"
+msgstr "Megjeleníti a ClamWin Jelentésfájlt"
 
 #: wxFrameMain.py:97
 msgid "&Display Reports"
-msgstr "&Visualizza i rapporti"
+msgstr "&Naplók megjelenítése"
 
 #: wxFrameMain.py:106
 msgid "&File"
-msgstr "&File"
+msgstr "&Fájl"
 
 #: wxFrameMain.py:107
 msgid "&Tools"
-msgstr "&Strumenti"
+msgstr "&Eszközök"
 
 #: wxFrameMain.py:108
 #: wxFrameMain.py:114
 msgid "&Help"
-msgstr "&Aiuto"
+msgstr "&Súgó"
 
 #: wxFrameMain.py:113
 msgid "Displays ClamWin Free Antivirus Manual"
-msgstr "Visualizza il manuale di ClamWin Free Antivirus"
+msgstr "Megjeleníti a ClamWin Free Antivirus Kézikönyvet"
 
 #: wxFrameMain.py:116
 msgid "&Check Latest Version"
-msgstr "&Controlla l'ultima versione"
+msgstr "&Alkalmazás frissítés keresése"
 
 #: wxFrameMain.py:118
 msgid "ClamWin &Website"
-msgstr "Sito &Web di ClamWin"
+msgstr "ClamWin &honlap"
 
 #: wxFrameMain.py:120
 msgid "Opens Frequently Asked Questions Page in the Web Browser"
-msgstr "Apre la pagina delle FAQ nel Browser"
+msgstr "Megnyitja a Gyakra Ismételt Kérdések oldalt a webböngészőben"
 
 #: wxFrameMain.py:121
 msgid "&FAQ"
-msgstr "&FAQ"
+msgstr "&Gyakori kérdések"
 
 #: wxFrameMain.py:123
 msgid "Displays the  About Box"
-msgstr "Visualizza la finestra informativa"
+msgstr "Megjeleníti a névjegy panelt"
 
 #: wxFrameMain.py:124
 msgid "&About"
-msgstr "&Informazioni su"
+msgstr "&Névjegy"
 
 #: wxFrameMain.py:134
 msgid "Displays Virus Database Update Log FIle"
-msgstr "Visualizza il log dell'aggiornamento del Database dei Virus"
+msgstr "Megjeleníti a vírusismeret adatbázis frissítés jelentésfájlt"
 
 #: wxFrameMain.py:136
 #: ClamTray.py:278
 msgid "&Virus Database Update Report"
-msgstr "Visualizza il rapporto dell'aggiornamente del Database dei &Virus"
+msgstr "&Vírusismereti adatbázis frissítés jelentés"
 
 #: wxFrameMain.py:137
 msgid "Displays Virus Scan Log File"
-msgstr "Visualizza il log della scansione"
+msgstr "Megjeleníti a Vírusellenőrzés jelentésfájlt"
 
 #: wxFrameMain.py:138
 msgid "&Scan Report"
-msgstr "Rapporto &Scansione"
+msgstr "&Ellenőrzési jelentés"
 
 #: wxFrameMain.py:146
 msgid "Scans Files or Folders for Computer Viruses"
-msgstr "Scansione File e Cartelle"
+msgstr "Fájlok és mappák vírusellenőrzése"
 
 #: wxFrameMain.py:147
 #: wxFrameMain.py:257
 msgid "&Scan"
-msgstr "&Scansione"
+msgstr "&Ellenőrzés"
 
 #: wxFrameMain.py:149
 msgid "Exits the application"
-msgstr "Esce dall'applicazione"
+msgstr "Kilépés a programból"
 
 #: wxFrameMain.py:150
 msgid "E&xit"
-msgstr "&Esci"
+msgstr "&Kilépés"
 
 #: wxFrameMain.py:159
 msgid "Preferences"
-msgstr "Preferenze"
+msgstr "Beállítások"
 
 #: wxFrameMain.py:160
 #: wxFrameMain.py:161
 msgid "Displays Preferences Window"
-msgstr "Visualizza la finestra delle preferenze"
+msgstr "Megjeleníti a beállítások panelt"
 
 #: wxFrameMain.py:165
 msgid "Update"
-msgstr "Aggiorna"
+msgstr "Frissítés"
 
 #: wxFrameMain.py:166
 msgid "Updates virus databases over the Internet"
-msgstr "Aggiorna il database dei virus da internet"
+msgstr "Frissíti a vírusismereti adatbázist az Interneten keresztül"
 
 #: wxFrameMain.py:167
 msgid "Starts Internet Update"
-msgstr "Inizia l'aggiornamente da internet"
+msgstr "Elindítja az internetes frissítést"
 
 #: wxFrameMain.py:171
 msgid "Scan"
-msgstr "Scansione"
+msgstr "Ellenőrzés"
 
 #: wxFrameMain.py:172
 msgid "Scans Selected File or Folder for Computer Viruses"
-msgstr "Scansione dei File e delle cartelle selezionate"
+msgstr "Kiválasztott fájlok és mappák vírusellenőrzése"
 
 #: wxFrameMain.py:173
 msgid "Scans For Viruses"
-msgstr "Scansione"
+msgstr "Vírusellenőrzés"
 
 #: wxFrameMain.py:221
 #: wxFrameMain.py:225
@@ -163,129 +162,129 @@ msgstr "Scansione"
 #: wxDialogPreferences.py:1582
 #: wxDialogStatus.py:466
 msgid "ClamWin Free Antivirus"
-msgstr "ClamWin L'Antivirus Libero"
+msgstr "ClamWin Free Antivirus"
 
 #: wxFrameMain.py:239
 msgid "Status Bar"
-msgstr "Barra di stato"
+msgstr "Állapotsor"
 
 #: wxFrameMain.py:247
 msgid ""
 "Select a folder or a file to scan\n"
 "(Hold Shift key to select multiple files or folders)"
 msgstr ""
-"Seleziona una cartella o un file per la scansione\n"
-"(Tieni premuto il tasto Shift per selezionare più elementi"
+"Válassza ki az ellenőrizendő mappákat és fájlokat\n"
+"(A Shift gomb nyomvatartásával több mappát és fájlt választhat ki.)"
 
 #: wxFrameMain.py:115
 msgid "Checks for the Latest Version"
-msgstr "Controlla Aggiornamento"
+msgstr "Újabb verzió keresése"
 
 #: wxFrameMain.py:354
 msgid "An Error occurred while updating UI selection. %s"
-msgstr "Si è verificato un errore aggiornando la selezione dell'interfaccia. %s"
+msgstr "Hiba lépett fel az UI kiválasztás frissítése során: %s"
 
 #: wxFrameMain.py:387
 msgid "Could not open help file - %s not found."
-msgstr "Non posso apre il file di aiuto - % non trovato"
+msgstr "A súgófájl nem nyitható meg - %s nem található."
 
 #: wxFrameMain.py:394
 msgid "Could not open help file. Please ensure that you have Adobe Acrobat Reader installed."
-msgstr "Non posso aprire il file di aiuto. Accertati ti avere Adobe Acrobat Reader installato."
+msgstr "A súgófájl nem nyitható meg. Ellenőrizze, hogy rendelkezik-e telepített Adobe Acrobat Reader programmal."
 
 #: wxDialogStatus.py:117
 msgid "File not found"
-msgstr "File non trovato"
+msgstr "Fájl nem található"
 
 #: wxDialogStatus.py:119
 msgid "FOUND"
-msgstr "TROVATO"
+msgstr "VÍRUSTALÁLAT"
 
 #: wxDialogStatus.py:133
 #: wxDialogLogViewer.py:105
 msgid "ERROR: No servers could be reached. Giving up"
-msgstr "ERRORE: Nessun server può essere raggiunto. Abbandono"
+msgstr "HIBA: Nincsenek elérhető szerverek."
 
 #: wxDialogStatus.py:137
 #: wxDialogLogViewer.py:109
 msgid "Giving up on"
-msgstr "Abbandono"
+msgstr "Meghiúsult"
 
 #: wxDialogStatus.py:141
 #: wxDialogLogViewer.py:113
 msgid "Scan started:"
-msgstr "Scansione iniziata:"
+msgstr "Ellenőrzés elindítva:"
 
 #: wxDialogStatus.py:143
 #: wxDialogLogViewer.py:115
 msgid "-- summary --"
-msgstr "-- sommario --"
+msgstr "-- összegzés --"
 
 #: wxDialogStatus.py:151
 #: wxDialogLogViewer.py:123
 msgid "Scanned files:"
-msgstr "File controllati:"
+msgstr "Ellenőrzött fájlok"
 
 #: wxDialogStatus.py:157
 #: wxDialogLogViewer.py:129
 msgid "Time:"
-msgstr "Tempo:"
+msgstr "Idő:"
 
 #: wxDialogStatus.py:159
 msgid "WARNING: Your ClamAV installation is OUTDATED!"
-msgstr "ATTENZIONE: La versione di ClamAV non è aggiornata!"
+msgstr "FIGYELMEZTETÉS: Az Ön ClamAV telepítése ELAVULT!"
 
 #: wxDialogStatus.py:161
 msgid "WARNING: Local version:"
-msgstr "ATTENZIONE: Version locale:"
+msgstr "FIGYELMEZTETÉS: Helyi verzió:"
 
 #: wxDialogStatus.py:163
 msgid "Recommended version:"
-msgstr "Versione raccomandata:"
+msgstr "Ajánlott verzió:"
 
 #: wxDialogStatus.py:165
 msgid "DON'T PANIC! Read"
-msgstr "NIENTE PAURA! Leggi"
+msgstr "NE ESSEN KÉTSÉGBE! Olvassa el"
 
 #: wxDialogStatus.py:167
 msgid "is up to date"
-msgstr "è aggiornato"
+msgstr "a lehető legújabb"
 
 #: wxDialogStatus.py:169
 msgid "sigs:"
-msgstr "segnature:"
+msgstr "minták:"
 
 #: wxDialogStatus.py:171
 msgid "f-level:"
-msgstr "f-level"
+msgstr "f-szint:"
 
 #: wxDialogStatus.py:173
 msgid "builder:"
-msgstr "creatore:"
+msgstr "készítő:"
 
 #: wxDialogStatus.py:175
 msgid "Database updated"
-msgstr "Database aggiornato"
+msgstr "&Vírusismereti adatbázis frissítve"
 
 #: wxDialogStatus.py:177
 msgid "signatures"
-msgstr "segnature"
+msgstr "minták"
 
 #: wxDialogStatus.py:179
 msgid "from"
-msgstr "da"
+msgstr "a következőről"
 
 #: wxDialogStatus.py:181
 msgid "Control+C pressed, aborting..."
-msgstr "Hai premuto Control+C, interrompo"
+msgstr "Control+C hatására megszakítás..."
 
 #: wxDialogStatus.py:183
 msgid "Downloading"
-msgstr "Scaricamento in corso"
+msgstr "Letöltés"
 
 #: wxDialogStatus.py:185
 msgid "Connection with"
-msgstr "Connesso con"
+msgstr "Kapcsolódva"
 
 #: wxDialogStatus.py:187
 msgid "http:\\\\www.clamav.net\\faq.html"
@@ -297,43 +296,43 @@ msgstr "http://www.clamwin.com/content/view/10/27/"
 
 #: wxDialogStatus.py:191
 msgid "Not moved"
-msgstr "Non mosso"
+msgstr "Nem áthelyezett"
 
 #: wxDialogStatus.py:193
 msgid "File excluded"
-msgstr "File escluso"
+msgstr "Kihagyott fájl"
 
 #: wxDialogStatus.py:199
 msgid "Mon"
-msgstr "Lun"
+msgstr "Hét"
 
 #: wxDialogStatus.py:201
 msgid "Tue"
-msgstr "Mar"
+msgstr "Ked"
 
 #: wxDialogStatus.py:203
 msgid "Wed"
-msgstr "Mer"
+msgstr "Sze"
 
 #: wxDialogStatus.py:205
 msgid "Thu"
-msgstr "Gio"
+msgstr "Csü"
 
 #: wxDialogStatus.py:207
 msgid "Fri"
-msgstr "Ven"
+msgstr "Pén"
 
 #: wxDialogStatus.py:209
 msgid "Sat"
-msgstr "Sab"
+msgstr "Szo"
 
 #: wxDialogStatus.py:211
 msgid "Sun"
-msgstr "Dom"
+msgstr "Vas"
 
 #: wxDialogStatus.py:213
 msgid "Jan"
-msgstr "Gen"
+msgstr "Jan"
 
 #: wxDialogStatus.py:215
 msgid "Feb"
@@ -341,35 +340,35 @@ msgstr "Feb"
 
 #: wxDialogStatus.py:217
 msgid "Mar"
-msgstr "Mar"
+msgstr "Már"
 
 #: wxDialogStatus.py:219
 msgid "Apr"
-msgstr "Apr"
+msgstr "Ápr"
 
 #: wxDialogStatus.py:221
-msgid "May "
-msgstr "Mag"
+msgid "May"
+msgstr "Máj"
 
 #: wxDialogStatus.py:223
 msgid "Jun"
-msgstr "Giu"
+msgstr "Jún"
 
 #: wxDialogStatus.py:225
 msgid "Jul"
-msgstr "Lug"
+msgstr "Júl"
 
 #: wxDialogStatus.py:227
 msgid "Aug"
-msgstr "Ago"
+msgstr "Aug"
 
 #: wxDialogStatus.py:229
 msgid "Sep"
-msgstr "Set"
+msgstr "Sze"
 
 #: wxDialogStatus.py:231
 msgid "Oct"
-msgstr "Ott"
+msgstr "Okt"
 
 #: wxDialogStatus.py:233
 msgid "Nov"
@@ -377,61 +376,61 @@ msgstr "Nov"
 
 #: wxDialogStatus.py:235
 msgid "Dec"
-msgstr "Dic"
+msgstr "Dec"
 
 #: wxDialogStatus.py:242
 msgid "version:"
-msgstr "versione:"
+msgstr "verzió:"
 
 #: wxDialogStatus.py:244
 msgid "updated"
-msgstr "aggiornato"
+msgstr "frissítve"
 
 #: wxDialogStatus.py:246
 msgid "failed"
-msgstr "fallito"
+msgstr "meghiúsult"
 
 #: wxDialogStatus.py:294
 msgid "ClamWin Free Antivirus Status"
-msgstr "ClamWin l'Antivirus Libero - Stato"
+msgstr "ClamWin Free Antivirus Állapot"
 
 #: wxDialogStatus.py:319
 msgid "&Stop"
-msgstr "&Stop"
+msgstr "&Leállítás"
 
 #: wxDialogStatus.py:327
 msgid "S&ave Report"
-msgstr "S&alva Rapporto"
+msgstr "Jelentés &mentése"
 
 #: wxDialogStatus.py:435
 msgid "Unable to stop runner thread, terminating"
-msgstr "Non è possibile fermare il thread, termino"
+msgstr "A futó szál nem állítható le, kilépés"
 
 #: wxDialogStatus.py:453
 msgid "Report files (*.txt)|*.txt|All files (*.*)|*.*"
-msgstr "File di rapporto (*.txt)|*.txt|Tutti i file (*.*)|*.*"
+msgstr "Jelentésfájlok (*.txt)|*.txt|Minden fájl (*.*)|*.*"
 
 #: wxDialogStatus.py:455
 #: wxDialogPreferences.py:1250
 #: wxDialogPreferences.py:1266
 msgid "All files (*)|*"
-msgstr "Tutti i file (*)|*"
+msgstr "Minden fájl (*)|*"
 
 #: wxDialogStatus.py:463
 msgid "Could not save report to the file "
-msgstr "Non posso salvare il file di rapporto "
+msgstr "A jelentés nem menthető fájlba"
 
 #: wxDialogStatus.py:464
 msgid ". Please check that you have write "
-msgstr ". Controlla se hai diritti di scrittura "
+msgstr ". Ellenőrizze, hogy rendelkezik-e írási"
 
 #: wxDialogStatus.py:465
 msgid "permissions to the folder and there is enough space on the disk."
-msgstr "alla cartella e che ci sia abbastanza spazio libero sull'hard disk."
+msgstr "jogosultsággal a mappába és hogy van-e elegendő tárterület a lemezen."
 
 #: wxDialogStatus.py:533
 msgid "Could not read from log file %s. Error: %s"
-msgstr "Non posso leggere dal file di log %s. Errore %s"
+msgstr "Nem olvasható a jelentésfájl: %s. Hiba: %s"
 
 #: wxDialogStatus.py:544
 msgid ""
@@ -441,10 +440,9 @@ msgid ""
 "--------------------------------------\n"
 msgstr ""
 "\n"
-"↵\n"
-"--------------------------------------↵\n"
-"Completato↵\n"
-"--------------------------------------↵\n"
+"--------------------------------------\n"
+"Befejeződött\n"
+"--------------------------------------\n"
 
 #: wxDialogStatus.py:546
 msgid ""
@@ -454,14 +452,14 @@ msgid ""
 "--------------------------------------\n"
 msgstr ""
 "\n"
-"--------------------------------------↵\n"
-"Annullato↵\n"
-"--------------------------------------↵\n"
+"--------------------------------------\n"
+"Megszakítva\n"
+"--------------------------------------\n"
 
 #: wxDialogStatus.py:629
 #: ClamTray.py:470
 msgid "Could not start process. No Command Line specified"
-msgstr "Non posso lanciare il processo. Nessuna linea di comando specificata"
+msgstr "A folyamat nem indítható. Nincs parancssor megadva."
 
 #: wxDialogStatus.py:636
 #: ClamTray.py:477
@@ -470,9 +468,9 @@ msgid ""
 "%s\n"
 "File does not exist."
 msgstr ""
-"Non posso lanciare il processo.↵\n"
-"%s↵\n"
-"Il file non esiste."
+"A folyamat nem indítható.\n"
+"%s\n"
+"A fájl nem létezik."
 
 #: wxDialogStatus.py:646
 #: wxDialogStatus.py:648
@@ -483,105 +481,105 @@ msgid ""
 "%s\n"
 "Error: %s"
 msgstr ""
-"Non posso lanciare il processo:↵\n"
-"%s↵\n"
-"Errore: %s"
+"A folyamat nem indítható:\n"
+"%s\n"
+"Hiba: %s"
 
 #: wxDialogScheduledScan.py:160
 msgid "Scheduled Scan"
-msgstr "Scansione Pianificata"
+msgstr "Ütemezett ellenőrzés"
 
 #: wxDialogScheduledScan.py:167
 msgid "Schedule"
-msgstr "Pianifica"
+msgstr "Ütemezés"
 
 #: wxDialogScheduledScan.py:171
 msgid "Scanning &Frequency:"
-msgstr "&Frequenza delle scansioni"
+msgstr "Ellenőrzési &gyakoriság:"
 
 #: wxDialogScheduledScan.py:180
 msgid "How often the schedule is executed"
-msgstr "Quante volte è pianificato"
+msgstr "Milyen gyakran kerüljön az ütemezés végrehajtásra"
 
 #: wxDialogScheduledScan.py:187
 #: wxDialogPreferences.py:415
 msgid "&Time:"
-msgstr "&Tempo:"
+msgstr "&Idő:"
 
 #: wxDialogScheduledScan.py:194
 msgid "When the schedule should be started"
-msgstr "Quando dovrebbe partire la scansione pianificata"
+msgstr "Az ütemezett feladat indításának időpontja"
 
 #: wxDialogScheduledScan.py:202
 #: wxDialogPreferences.py:567
 msgid "&Day Of The Week:"
-msgstr "&Giorno della Settimana"
+msgstr "&Megadott napon:"
 
 #: wxDialogScheduledScan.py:211
 msgid "When schedule frequency is weekly select day of the week"
-msgstr "Quando la pianificazione è settimanale scegli il giorno della settimana"
+msgstr "Ha az ütemezés gyakorisága heti, válassza ki a hét napját"
 
 #: wxDialogScheduledScan.py:215
 msgid "&Scan Folder:"
-msgstr "&Scansione Cartella:"
+msgstr "&Mappa ellenőrzése:"
 
 #: wxDialogScheduledScan.py:222
 msgid "Specify a folder to be scanned"
-msgstr "Specifica la cartella da controllare"
+msgstr "Ellenőrizendő mappa megadása"
 
 #: wxDialogScheduledScan.py:227
 msgid "Click to browse for a folder"
-msgstr "Clicca per scegliere una cartella"
+msgstr "Tallózva megadhatja a mappát"
 
 #: wxDialogScheduledScan.py:233
 msgid "D&escription:"
-msgstr "D&escrizione"
+msgstr "&Leírás:"
 
 #: wxDialogScheduledScan.py:240
 msgid "Specify a friendly description for the scheduled scan"
-msgstr "Specifica una descrizione sommaria per la scansione pianificata"
+msgstr "Adja meg az ütemezett ellenőrzés leírását"
 
 #: wxDialogScheduledScan.py:243
 msgid "&Activate This Schedule"
-msgstr "&Attiva questa scansione pianificata"
+msgstr "Üzemezett feladat &bekapcsolása"
 
 #: wxDialogScheduledScan.py:246
 msgid "Select if you wish to enable this schedule"
-msgstr "Selezione se vuoi abilitare questa scansione pianificata"
+msgstr "Válassza ki, ha be kívánja kapcsolni ezt az ütemezett feladatot"
 
 #: wxDialogScheduledScan.py:252
 msgid "Closes the dialog and applies the settings"
-msgstr "Chiude la finestra ed applica i cambiamenti"
+msgstr "Bezárja az ablakot és alkalmazza az új beállításokat"
 
 #: wxDialogScheduledScan.py:256
 #: wxDialogPreferences.py:253
 msgid "Cancel"
-msgstr "Annulla"
+msgstr "Mégse"
 
 #: wxDialogScheduledScan.py:258
 msgid "Closes the dialog and discards the changes"
-msgstr "Chiudi la finestra e ignora i cambiamenti"
+msgstr "Bezárja az ablakot és elveti az új beállításokat"
 
 #: wxDialogScheduledScan.py:309
 #: wxDialogPreferences.py:1235
 msgid "Select a directory"
-msgstr "Selezione una cartella"
+msgstr "Mappa kiválasztása"
 
 #: wxDialogScheduledScan.py:341
 msgid "Specified path is invalid. Please verify your selection."
-msgstr "La cartella selezionata non è valida. Verifica la tua selezione"
+msgstr "A megadott elérési út hibás. Ellenőrizze az elérési utat."
 
 #: wxDialogPreferences.py:145
 msgid "General"
-msgstr "Generale"
+msgstr "Általános"
 
 #: wxDialogPreferences.py:147
 msgid "Filters"
-msgstr "Filtri"
+msgstr "Szűrők"
 
 #: wxDialogPreferences.py:149
 msgid "Internet Updates"
-msgstr "Aggiornamenti Internet"
+msgstr "Internetes frissítések"
 
 #: wxDialogPreferences.py:151
 msgid "Proxy"
@@ -589,114 +587,114 @@ msgstr "Proxy"
 
 #: wxDialogPreferences.py:153
 msgid "Scheduled Scans"
-msgstr "Scansioni Pianificate"
+msgstr "Ütemezett ellenőrzések"
 
 #: wxDialogPreferences.py:155
 msgid "Email Alerts"
-msgstr "Avvisi Email"
+msgstr "E-mail riasztások"
 
 #: wxDialogPreferences.py:157
 msgid "Archives"
-msgstr "Archivi"
+msgstr "Tömörített fájlok"
 
 #: wxDialogPreferences.py:159
 msgid "File Locations"
-msgstr "Posizione File"
+msgstr "Elérési utak"
 
 #: wxDialogPreferences.py:161
 msgid "Reports"
-msgstr "Rapporti"
+msgstr "Jelentések"
 
 #: wxDialogPreferences.py:163
 msgid "Advanced"
-msgstr "Avanzato"
+msgstr "Haladó"
 
 #: wxDialogPreferences.py:169
 msgid "Description"
-msgstr "Descrizione"
+msgstr "Leírás"
 
 #: wxDialogPreferences.py:170
 msgid "Path"
-msgstr "Path"
+msgstr "Útvonal"
 
 #: wxDialogPreferences.py:173
 msgid "Frequency"
-msgstr "Frequenza"
+msgstr "Gyakoriság"
 
 #: wxDialogPreferences.py:187
 msgid "ClamWin Preferences"
-msgstr "Preferenze ClamWin"
+msgstr "ClamWin beállítások"
 
 #: wxDialogPreferences.py:245
 msgid "Closes the window and saves the changes"
-msgstr "Chiude la finestra e salva i cambiamenti"
+msgstr "Bezárja az ablakot és menti a változásokat"
 
 #: wxDialogPreferences.py:255
 msgid "Closes the window without saving the changes"
-msgstr "Chiude la finestra senza salvari i cambiamenti"
+msgstr "Bezárja az ablakot a változások mentése nélkül"
 
 #: wxDialogPreferences.py:260
 msgid "Proxy &Server:"
-msgstr "Proxy &Server:"
+msgstr "Proxy&szerver:"
 
 #: wxDialogPreferences.py:267
 msgid "Proxy Server domain name or IP address"
-msgstr "nome Proxy Server o indirizzo IP"
+msgstr "Proxyszerver domén név vagy IP cím"
 
 #: wxDialogPreferences.py:270
 #: wxDialogPreferences.py:727
 msgid "P&ort:"
-msgstr "P&orta"
+msgstr "P&ort:"
 
 #: wxDialogPreferences.py:280
 msgid "Proxy Server port number (0-65535)"
-msgstr "Porta del Server proxy (0-65535)"
+msgstr "Proxyszerver portszám (0-65535)"
 
 #: wxDialogPreferences.py:283
 #: wxDialogPreferences.py:740
 msgid "&User Name:"
-msgstr "Nome &Utente"
+msgstr "&Felhasználónév:"
 
 #: wxDialogPreferences.py:290
 msgid "Proxy Server Account Name (optional)"
-msgstr "Account per il Server Proxy (opzionale)"
+msgstr "Proxyszerver fióknév (opcionális)"
 
 #: wxDialogPreferences.py:293
 #: wxDialogPreferences.py:751
 msgid "&Password:"
-msgstr "&Password:"
+msgstr "&Jelszó:"
 
 #: wxDialogPreferences.py:301
 msgid "Proxy Server account password (optional)"
-msgstr "Password account Server Proxy (opzionale)"
+msgstr "Proxyszerver jelszó (opcionális)"
 
 #: wxDialogPreferences.py:304
 msgid "Leave these fields blank if you do not connect via Proxy Server"
-msgstr "Lascia questi campi vuoti se non vuoi connetterti tramite un Server Proxy"
+msgstr "Ezek a mezők üresen hagyhatók, ha a számítógép nem Proxyszerveren keresztül csatlakozik az Internetre"
 
 #: wxDialogPreferences.py:310
 msgid "Scanning Options"
-msgstr "Opzioni Scansione"
+msgstr "Ellenőrzési beállítások"
 
 #: wxDialogPreferences.py:315
 msgid "&Enable Automatic Virus Database Updates"
-msgstr "&Abilita aggiornamenti automatici del Database dei Virus"
+msgstr "&Automatikus vírusismereti adatbázis frissítés"
 
 #: wxDialogPreferences.py:318
 msgid "Enable automatic virus database downloads "
-msgstr "Abilita il download automatico del database dei virus "
+msgstr "Automatikusan letölti a legfrissebb vírusismereti adatbázist"
 
 #: wxDialogPreferences.py:324
 msgid "Download &Site :"
-msgstr "&Sito per gli aggiornamenti:"
+msgstr "Letöltési &hely:"
 
 #: wxDialogPreferences.py:331
 msgid "Specify Database Mirror Site here. Usually this is database.clamav.net"
-msgstr "Specifica il Mirror per i Database. Di solito database.clamav.net"
+msgstr "Az Adatbázis Tükörszerver adható meg itt. Rendszerint ez a database.clamav.net"
 
 #: wxDialogPreferences.py:334
 msgid "&Update Frequency:"
-msgstr "Frequenza &Aggiornamenti"
+msgstr "&Frissítés gyakorisága"
 
 #: wxDialogPreferences.py:339
 #: wxDialogPreferences.py:346
@@ -706,14 +704,14 @@ msgstr "Frequenza &Aggiornamenti"
 #: wxDialogScheduledScan.py:175
 #: wxDialogScheduledScan.py:181
 msgid "Daily"
-msgstr "Giornaliera"
+msgstr "naponta"
 
 #: wxDialogPreferences.py:339
 #: wxDialogPreferences.py:1453
 #: wxDialogScheduledScan.py:66
 #: wxDialogScheduledScan.py:175
 msgid "Hourly"
-msgstr "Oraria"
+msgstr "óránként"
 
 #: wxDialogPreferences.py:340
 #: wxDialogPreferences.py:1077
@@ -723,428 +721,428 @@ msgstr "Oraria"
 #: wxDialogScheduledScan.py:283
 #: wxDialogScheduledScan.py:292
 msgid "Weekly"
-msgstr "Settimanale"
+msgstr "hetente"
 
 #: wxDialogPreferences.py:340
 #: wxDialogPreferences.py:1453
 #: wxDialogScheduledScan.py:66
 #: wxDialogScheduledScan.py:175
 msgid "Workdays"
-msgstr "Giorni lavorativi"
+msgstr "munkanapokon"
 
 #: wxDialogPreferences.py:345
 msgid "How often virus database is downloaded"
-msgstr "Quanto spesso il database dei virus viene aggiornato"
+msgstr "Milyen gyakran kerüljön frissítésre a vírusismereti adatbázis"
 
 #: wxDialogPreferences.py:352
 msgid "&ClamScan Location:"
-msgstr "Posizione &ClamScan"
+msgstr "&ClamScan elérési útja:"
 
 #: wxDialogPreferences.py:360
 msgid "Specify location of clamscan"
-msgstr "Specifica la posizione di clamscan"
+msgstr "Adja meg a ClamScan alkalmazás elérési útját"
 
 #: wxDialogPreferences.py:365
 msgid "Click to browse for clamscan"
-msgstr "Clicca per cercare clamscan"
+msgstr "Tallózva megadhatja a ClamScan alkalmazást"
 
 #: wxDialogPreferences.py:371
 msgid "&FreshClam Location:"
-msgstr "Posizione &FreshClam:"
+msgstr "&FreshClam elérési útja:"
 
 #: wxDialogPreferences.py:379
 msgid "Specify location of freshclam"
-msgstr "Specifica la posizione di freshclam"
+msgstr "Adja meg a FreshClam alkalmazás elérési útját"
 
 #: wxDialogPreferences.py:385
 msgid "Click to browse for freshclam"
-msgstr "Clicca per cercare freshclam"
+msgstr "Tallózva megadhatja a FreshScan alkalmazást"
 
 #: wxDialogPreferences.py:391
 msgid "&Virus Database Folder:"
-msgstr "Cartella per il Database dei &Virus:"
+msgstr "&Vírusismereti adatbázis mappája:"
 
 #: wxDialogPreferences.py:399
 msgid "Specify location of virus database files"
-msgstr "Specifica la posizione per i file del database dei virus"
+msgstr "Adja meg a a vírusismereti adatbázis tárolómappáját"
 
 #: wxDialogPreferences.py:404
 msgid "Click to browse for a virus database folder"
-msgstr "Clicca per cercare la cartella per il database dei virus"
+msgstr "Tallózva megadhatja a vírusismereti adatbázis tárolómappát"
 
 #: wxDialogPreferences.py:409
 msgid "&Scan In Subdirectories"
-msgstr "Esamina le &sottocartelle"
+msgstr "Ellenőrzés &almappákban is"
 
 #: wxDialogPreferences.py:412
 msgid "Select if you wish to scan in subdirectories recursively"
-msgstr "Seleziona se vuoi esaminare ricorsivamente le sottocartelle"
+msgstr "Válassza ki, ha az almappákat is ellenőrizni szeretné"
 
 #: wxDialogPreferences.py:426
 msgid "&Scan In Archives"
-msgstr "Esamina gli &Archivi"
+msgstr "&Tömörített fájlok ellenőrzése"
 
 #: wxDialogPreferences.py:435
 msgid "Do Not Scan Archives Larger Than"
-msgstr "Non esaminare archivi più grandi di"
+msgstr "Kihagyás, ha az nagyobb mint"
 
 #: wxDialogPreferences.py:445
 #: wxDialogPreferences.py:913
 msgid "MegaBytes"
-msgstr "MegaBytes"
+msgstr "Megabájt"
 
 #: wxDialogPreferences.py:450
 #: wxDialogPreferences.py:464
 msgid "Do Not Extract More Than "
-msgstr "Non estrarre più di "
+msgstr "Ne tömörítsen ki több mint"
 
 #: wxDialogPreferences.py:460
 msgid "Files"
-msgstr "File"
+msgstr "fájlt"
 
 #: wxDialogPreferences.py:474
 msgid "Sub-Archives"
-msgstr "Sottoarchivi"
+msgstr "al-tömörítvényt"
 
 #: wxDialogPreferences.py:479
 msgid "&Treat Files As Mailboxes"
-msgstr "&Tratta i file come Mailbox"
+msgstr "&Postafiókok ellenőrzése"
 
 #: wxDialogPreferences.py:482
 msgid "Select if you wish to scan mailboxes"
-msgstr "Seleziona se vuoi esaminare le mailbox"
+msgstr "Válassza ki, ha a postafiókokat is ellenőrizni kívánja"
 
 #: wxDialogPreferences.py:486
 msgid "&Extract Attachments and Macros from MS Office Documents"
-msgstr "&Estrai gli Attachment e le Macro dai documenti MS Office"
+msgstr "OLE objektumok és makrók &kibontása az MS Office dokumentumokból"
 
 #: wxDialogPreferences.py:489
 #: wxDialogPreferences.py:496
 msgid "Select if you wish to detect executable files with broken PE structure as viruses"
-msgstr ""
+msgstr "Válassza ki, ha a hibás PE strutúrájú futtatható fájlokat vírusként kívánja azonosítani"
 
 #: wxDialogPreferences.py:493
 msgid "&Detect Broken Executables"
-msgstr "&Riconosci gli eseguibili non validi"
+msgstr "&Hibás futtatható állományok érzékelése"
 
 #: wxDialogPreferences.py:500
 msgid "&Additional Clamscan Command Line Parameters:"
-msgstr "Opzioni &addizionali per clamscan"
+msgstr "&További paraméterek megadása a ClamScan program számára"
 
 #: wxDialogPreferences.py:509
 msgid "Limit Log File Size To:"
-msgstr "Limita il file di log a:"
+msgstr "Jelentésfájl mérethatár:"
 
 #: wxDialogPreferences.py:517
 msgid "Select maximum size for the logfile"
-msgstr "Selezione la grandezza massima per il file di log"
+msgstr "Megadja a jelentésfájl maximális méretét"
 
 #: wxDialogPreferences.py:521
 msgid "&Scan Report File:"
-msgstr "File di rapporto per la &scansione"
+msgstr "Vírus&ellenőrzés jelentésfájl:"
 
 #: wxDialogPreferences.py:529
 msgid "Specify location for a scan reports log file"
-msgstr "Specifica la posizione per il file di rapporto scansione"
+msgstr "Adja meg a helyét a vírusellenőrzési jelentéseket tároló fájlnak"
 
 #: wxDialogPreferences.py:535
 #: wxDialogPreferences.py:555
 msgid "Click to browse for a log file"
-msgstr "Clicca per selezionare la posizione del file di log"
+msgstr "Tallózva megadhatja a jelentésfájlt"
 
 #: wxDialogPreferences.py:541
 msgid "&Virus Database Update Report File:"
-msgstr "File di rapport per l'aggiornamento del database dei &virus"
+msgstr "&Vírusismereti adatbázis frissítés jelentésfájl:"
 
 #: wxDialogPreferences.py:549
 msgid "Specify location for a database updates log file"
-msgstr "Specifica la posizione per il log degli aggiornamenti del database"
+msgstr "Adja meg a helyét a vírusismereti adatbázis frissítés jelentéseket tároló fájlnak"
 
 #: wxDialogPreferences.py:564
 msgid "When the download should be started"
-msgstr "Quando dovrebbe partire il download"
+msgstr "A vírusismereti adatbázis frissítésének időpontja"
 
 #: wxDialogPreferences.py:581
 msgid "List of Scheduled Scans"
-msgstr "Lista delle scansioni pianificate"
+msgstr "Ütemezett ellenőrzések"
 
 #: wxDialogPreferences.py:597
 msgid "Scheduled Scans:"
-msgstr "Scansioni pianificate:"
+msgstr "Ütemezett ellenőrzések:"
 
 #: wxDialogPreferences.py:603
 msgid "&Add"
-msgstr "&Aggiungi"
+msgstr "&Hozzáadás"
 
 #: wxDialogPreferences.py:609
 msgid "&Remove"
-msgstr "&Rimuovi"
+msgstr "&Eltávolítás"
 
 #: wxDialogPreferences.py:616
 msgid "&Edit"
-msgstr "&Modifica"
+msgstr "&Szerkesztés"
 
 #: wxDialogPreferences.py:622
 msgid "&Display Infected Files Only"
-msgstr "&Visualizza solo i file infetti"
+msgstr "&Csak a fertőzött állományok megjelenítése"
 
 #: wxDialogPreferences.py:626
 #: wxDialogPreferences.py:935
 msgid "Select if you wish to display infected files only in the scan progress window"
-msgstr "Seleziona se vuoi visualizzare solo i file infetti nella finestra di scansione"
+msgstr "Válassza ki, ha csak a fertőzött fájlokat kívánja megjeleníteni az ellenőrzés közben megjelenő ablakban"
 
 #: wxDialogScheduledScan.py:206
 #: wxDialogPreferences.py:628
 msgid "Monday"
-msgstr "Lunedì"
+msgstr "Hétfő"
 
 #: wxDialogPreferences.py:628
 #: wxDialogPreferences.py:635
 #: wxDialogScheduledScan.py:206
 #: wxDialogScheduledScan.py:212
 msgid "Tuesday"
-msgstr "Martedì"
+msgstr "Kedd"
 
 #: wxDialogScheduledScan.py:206
 #: wxDialogPreferences.py:629
 msgid "Wednesday"
-msgstr "Mercoledì"
+msgstr "Szerda"
 
 #: wxDialogScheduledScan.py:207
 #: wxDialogPreferences.py:629
 msgid "Thursday"
-msgstr "Giovedì"
+msgstr "Csütörtök"
 
 #: wxDialogScheduledScan.py:207
 #: wxDialogPreferences.py:629
 msgid "Friday"
-msgstr "Venerdì"
+msgstr "Péntek"
 
 #: wxDialogScheduledScan.py:207
 #: wxDialogPreferences.py:629
 msgid "Saturday"
-msgstr "Sabato"
+msgstr "Szombat"
 
 #: wxDialogScheduledScan.py:207
 #: wxDialogPreferences.py:629
 msgid "Sunday"
-msgstr "Domenica"
+msgstr "Vasárnap"
 
 #: wxDialogPreferences.py:634
 msgid "When update frequency is weekly select day of the week for an update"
-msgstr "Quando la frequenza di aggiornamento è settimanale scegli il giorno della settimana"
+msgstr "Ha a frissítés gyakorisága heti, válassza ki a hét napját"
 
 #: wxDialogPreferences.py:638
 msgid "&Update Virus Database On Logon"
-msgstr "&Aggiorna il database dei virus al Login"
+msgstr "Vírusismereti adatbázis &frissítése indításkor"
 
 #: wxDialogPreferences.py:641
 msgid "Select if you wish to update the virus databases just after you logged on"
-msgstr "Seleziona se vuoi aggiornare il database dei virus appena effettuato il Login"
+msgstr "Válassza ki, ha szeretné a vírusismereti adatbázis frissíteni indításkor"
 
 #: wxDialogPreferences.py:648
 msgid "Infected Files"
-msgstr "File Infetti"
+msgstr "Fertőzött fájlok"
 
 #: wxDialogPreferences.py:653
 msgid "&Report Only"
-msgstr "Solo &rapporto"
+msgstr "Csak &jelentés"
 
 #: wxDialogPreferences.py:661
 msgid "&Remove (Use Carefully)"
-msgstr "&Rimuovi (Fai attenzione)"
+msgstr "&Eltávolítás (körültekintéssel alkalmazza)"
 
 #: wxDialogPreferences.py:670
 msgid "&Move To Quarantine Folder:"
-msgstr "&Muovi nella cartella della Quarantena"
+msgstr "Á&thelyezés a karantén mappába:"
 
 #: wxDialogPreferences.py:680
 msgid "Specify location for a quarantine folder"
-msgstr "Specifica la posizione per la cartella della Quarantena"
+msgstr "Adja meg a a karantén mappa helyét"
 
 #: wxDialogPreferences.py:686
 msgid "Click to browse for a quarantine folder"
-msgstr "Clicca per selzionare la cartella della Quarantena"
+msgstr "Tallózva megadhatja a karantén tárolómappát"
 
 #: wxDialogPreferences.py:700
 msgid "&Send Email Alert On Virus Detection"
-msgstr "&Invia un avviso via Email quando un virus è stato individuato"
+msgstr "&E-mail riasztás küldése vírustalálatkor"
 
 #: wxDialogPreferences.py:704
 msgid "Select if you wish to receive email alerts when ClamWin detects a virus"
-msgstr "Seleziona se vuoi ricevere un avviso via email quando ClamWin individua un virus"
+msgstr "Válassza ki, ha E-mail riasztást kér a ClamWin vírustalálata esetén"
 
 #: wxDialogPreferences.py:710
 msgid "SMTP Connection Details"
-msgstr "Dettagli connessione SMTP"
+msgstr "SMTP kapcsolat beállításai"
 
 #: wxDialogPreferences.py:716
 msgid "&Mail Server:"
-msgstr "&Mail Server:"
+msgstr "&Levelezőszerver:"
 
 #: wxDialogPreferences.py:724
 msgid "SMTP Server domain name or IP address"
-msgstr "Nome server SMTP o indirizzo IP"
+msgstr "Levelezőszerver domén név vagy IP cím"
 
 #: wxDialogPreferences.py:737
 msgid "Mail Server port number (0-65535)"
-msgstr "Porta del Mail Server (0-65535)"
+msgstr "Levelezőszerver portszám (0-65535)"
 
 #: wxDialogPreferences.py:748
 msgid "Mail Server Account Name (optional)"
-msgstr "Account del Mail Server (opzionale)"
+msgstr "Levelezőszerver fióknév (opcionális)"
 
 #: wxDialogPreferences.py:760
 msgid "Mail Server account password (optional)"
-msgstr "Password dell'account del Mail Server (opzionale)"
+msgstr "Levelezőszerver jelszó (opcionális)"
 
 #: wxDialogPreferences.py:763
 msgid "Email Message Details"
-msgstr "Dettagli messaggio email"
+msgstr "E-mail üzenet"
 
 #: wxDialogPreferences.py:769
 msgid "&From:"
-msgstr "&Da:"
+msgstr "&Feladó:"
 
 #: wxDialogPreferences.py:777
 msgid "Specify an email address from which the notification will be sent."
-msgstr "Specifica un indirizzo email dal quale la notifica sarà inviata."
+msgstr "Adja meg az E-mail címet, ahonnan a riasztást küldésre kerül"
 
 #: wxDialogPreferences.py:780
 msgid "&To:"
-msgstr "&A:"
+msgstr "&Címzett:"
 
 #: wxDialogPreferences.py:788
 msgid "Specify an email address where the email alert will be delivered.  Separate multiple addresses with commas."
-msgstr "Specifica un indirizzo email al quale l'avviso verrà inviato. Per indirizzi multipli dividili con la virgola."
+msgstr "Adja meg az E-mail címet, ahova a riasztást küldeni kell. Vesszővel elválasztva több címet is megadhat."
 
 #: wxDialogPreferences.py:791
 msgid "Su&bject:"
-msgstr "&Oggetto:"
+msgstr "&Tárgy:"
 
 #: wxDialogPreferences.py:799
 msgid "Specify Recipient's email address where the email alert will be delivered"
-msgstr "Specifica l'indirizzo email al quale l'avviso verrà inviato"
+msgstr "Adja meg a címzett E-mail címét, ahova a riasztást küldeni kell."
 
 #: wxDialogPreferences.py:802
 msgid "Send &Test Email"
-msgstr "Invia un'email di &test"
+msgstr "&Tesztüzenet küldése"
 
 #: wxDialogPreferences.py:805
 msgid "Click to send a test email message"
-msgstr "Clicca per inviare un'email di test"
+msgstr "Tesztüzenet küldéséhez kattintson a gombra"
 
 #: wxDialogPreferences.py:811
 msgid "&Display Pop-up Notification Messages In Taskbar "
-msgstr "&Visualizza messaggi di notivia nella Taskbar "
+msgstr "&Előugró értesítések megjelenítése a tálcán"
 
 #: wxDialogPreferences.py:815
 msgid "Select if you wish to receive Tray notification pop-up messages"
-msgstr "Seleziona se vuoi ricevere messaggi di notifica nella Tray"
+msgstr "Válassza ki, ha szeretne megjeleníteni előugró értesítéseket a tálcán"
 
 #: wxDialogPreferences.py:822
 msgid "Specify Filename Patterns to include and/or exclude in scanning"
-msgstr "Speficica il Pattern per i file da includere e/o escludere nella scansione"
+msgstr "Adja meg az ellenőrizendő és/vagy kihagyandó fájlnév mintákat"
 
 #: wxDialogPreferences.py:827
 msgid "(To specify a regular expression include your pattern within <...>)"
-msgstr "(Per specificare espressioni regolare inseriscile dentro <...>)"
+msgstr "(Reguláris kifejezés megadásához a mintát <...> jelek közé tegye)"
 
 #: wxDialogPreferences.py:832
 msgid "&Exclude Matching Filenames:"
-msgstr "&Escludi file che corrispondono"
+msgstr "&Kivéve az egyező fájlneveket:"
 
 #: wxDialogPreferences.py:837
 #: wxDialogPreferences.py:862
 msgid "Patterns"
-msgstr "Pattern"
+msgstr "Minták"
 
 #: wxDialogPreferences.py:842
 #: wxDialogPreferences.py:867
 msgid "Move up"
-msgstr "Muovi su"
+msgstr "Felfelé"
 
 #: wxDialogPreferences.py:845
 #: wxDialogPreferences.py:870
 msgid "Move down"
-msgstr "Muovi giù"
+msgstr "Lefelé"
 
 #: wxDialogPreferences.py:848
 #: wxDialogPreferences.py:873
 msgid "New item"
-msgstr "Nuovo elemento"
+msgstr "Új elem"
 
 #: wxDialogPreferences.py:851
 #: wxDialogPreferences.py:876
 msgid "Delete item"
-msgstr "Elimina elemento"
+msgstr "Elem törlése"
 
 #: wxDialogPreferences.py:854
 #: wxDialogPreferences.py:879
 msgid "Edit item"
-msgstr "Edita elemento"
+msgstr "Elem szerkesztése"
 
 #: wxDialogPreferences.py:857
 msgid "&Scan Only Matching Filenames:"
-msgstr "&Controlla solo i File che corrispondono:"
+msgstr "&Csak egyező fájlnevek ellenőrzése:"
 
 #: wxDialogPreferences.py:882
 msgid "&Deactivate"
-msgstr "&Disattiva"
+msgstr "&Kikapcsolás"
 
 #: wxDialogPreferences.py:890
 msgid "A&ctivate"
-msgstr "&Attiva"
+msgstr "&Bekapcsolás"
 
 #: wxDialogPreferences.py:898
 msgid "&Notify About New ClamWin Releases"
-msgstr "&Notifica nuove release di ClamWin"
+msgstr "É&rtesítés új ClamWin kiadásokról"
 
 #: wxDialogPreferences.py:901
 msgid "Select if you wish to get a notification message when ClamWin Free Antivirus program has been updated"
-msgstr "Seleziona se vuoi un messaggio di notifica quando ClamWin è stato aggiornato"
+msgstr "Válassza ki, ha értesítést kíván kapni, amikor a ClamWin Free Antivirus program frissült."
 
 #: wxDialogPreferences.py:908
 msgid "(No personal information is transmitted during this check)"
-msgstr "(Nessuna informazione personale verrà trasmessa)"
+msgstr "(Személyes adatok nem kerülnek elküldésre az ellenőrzés során)"
 
 #: wxDialogPreferences.py:918
 msgid "Scanner &Priority:"
-msgstr "&Priorità dello Scanner"
+msgstr "&Prioritás:"
 
 #: wxDialogPreferences.py:922
 #: wxDialogPreferences.py:927
 #: wxDialogPreferences.py:1477
 #: wxDialogPreferences.py:1485
 msgid "Normal"
-msgstr "Normale"
+msgstr "Normál"
 
 #: wxDialogPreferences.py:922
 #: wxDialogPreferences.py:1475
 #: wxDialogPreferences.py:1483
 msgid "Low"
-msgstr "Bassa"
+msgstr "Alacsony"
 
 #: wxDialogPreferences.py:926
 msgid "Specify the process priority for the virus scanner."
-msgstr "Specifica la priorità dell'antivirus scanner"
+msgstr "Adja meg a vírusellenőrző priorítását."
 
 #: wxDialogPreferences.py:931
 msgid "Display &File Scanned % Progress Indicator"
-msgstr "&Visualizza il progresso della scansione in percentuale?"
+msgstr "Ellenőrzött &fájlok % állapotjelző megjelenítése"
 
 #: wxDialogPreferences.py:1015
 msgid "An error occurred whilst saving configuration file %s. Please check that you have write permission to the configuration file."
-msgstr "Si è verificato un errore salvando il file di configurazione %s. Controlla se hai i diritti per poter scrivere il file di configurazione."
+msgstr "Hiba lépett fel a konfigurációs fájl mentése során: %s. Ellenőrizze, hogy rendelkezik-e írási jogosultsággal a konfigurációs fájlhoz."
 
 #: wxDialogPreferences.py:1033
 msgid "Event Failed"
-msgstr "Evento Fallito"
+msgstr "Sikertelen esemény"
 
 #: wxDialogPreferences.py:1205
 #: wxDialogPreferences.py:1221
 msgid "Executable files (*.exe)|*.exe|All files (*.*)|*.*"
-msgstr "File eseguibili (*.exe)|*.exe|Tutti i file (*.*)|*.*"
+msgstr "Futtatható fájlok (*.exe)|*.exe|Minden fájl (*.*)|*.*"
 
 #: wxDialogPreferences.py:1209
 #: wxDialogPreferences.py:1225
@@ -1152,115 +1150,115 @@ msgstr "File eseguibili (*.exe)|*.exe|Tutti i file (*.*)|*.*"
 #: wxDialogPreferences.py:1267
 #: wxDialogStatus.py:456
 msgid "Choose a file"
-msgstr "Scegli un file"
+msgstr "Fájl kiválasztása"
 
 #: wxDialogPreferences.py:1247
 #: wxDialogPreferences.py:1263
 msgid "Text Files (*.txt)|*.txt|All files (*.*)|*.*"
-msgstr "File di testo (*.txt)|*.txt|Tutti i file (*.*)|*.*"
+msgstr "Szövegfájlok (*.txt)|*.txt|Minden fájl (*.*)|*.*"
 
 #: wxDialogPreferences.py:1291
 msgid "Maximum amount of scheduled items (20) has been reached."
-msgstr "Hai raggiunto il limite massimo di scansioni schedulate (20)."
+msgstr "Elérte az ütemezett feladatok maximális számát (20)."
 
 #: wxDialogPreferences.py:1379
 msgid ""
 "This is a test message sent during configuration of ClamWin Free Antivirus on the following computer: %s.\n"
 "Please do not be alarmed.\n"
 msgstr ""
-"Questo è un messaggio di test inviato durante la configurazione di ClamWin sul seguente computer: %s↵\n"
-"Niente paura.↵\n"
+"Ez egy tesztüzenet, amelyet a ClamWin Free Antivirus generált a beállítások elvégzése során a következő számítógépen: %s.\n"
+"Ez az üzenet nem riasztás!\n"
 
 #: wxDialogPreferences.py:1384
 msgid "Test Email has been sent successfully."
-msgstr "L'email di Test è stata inviata correttamente."
+msgstr "A tesztlevél sikeresen elküldve."
 
 #: wxDialogPreferences.py:1386
 msgid "Could not send the email. Please ensure you are connected to the internet. Error: %s"
-msgstr "Non è possibile inviare l'email. Assicurati di essere connesso a internet. Errore: %s"
+msgstr "Az e-mail nem küldhető el. Győződjön meg róla, hogy kapcsolódik az Internethez. Hiba: %s"
 
 #: wxDialogPreferences.py:1501
 #: wxDialogPreferences.py:1582
 #: wxDialogScheduledScan.py:338
 msgid "Value cannot be empty"
-msgstr "Il valore non può essere vuoto"
+msgstr "Az érték nem lehet üres"
 
 #: wxDialogPreferences.py:1565
 msgid "The folder you selected does not exist. Would you like to create %s now?"
-msgstr "La cartella che hai selezionato non esiste. Vuoi creare %s adesso?"
+msgstr "A megadott mappa nem létezik. Kívánja most létrehozni a mappát: %s?"
 
 #: wxDialogPreferences.py:1571
 msgid "Unable to create folder %s. Error: %s"
-msgstr "Non posso creare la cartella %s. Errore: %s"
+msgstr "Nem hozható létre a következő mappa: %s. Hiba: %s"
 
 #: wxDialogLogViewer.py:68
 msgid "ClamWin Log Viewer"
-msgstr "Visualizzazione Log ClamWin"
+msgstr "ClamWin Jelentés Megjelenítő"
 
 #: wxDialogLogViewer.py:93
 #: wxDialogStatus.py:121
 msgid "ClamAV update process started at"
-msgstr "Processo aggiornamento ClamAV iniziato"
+msgstr "ClamAV frissítési eljárás elindítva"
 
 #: wxDialogLogViewer.py:95
 #: wxDialogStatus.py:123
 msgid "ERROR: DNS Resolver:"
-msgstr "ERRORE: Risoluzione DNS"
+msgstr "HIBA: DNS névfeloldás:"
 
 #: wxDialogStatus.py:125
 #: wxDialogLogViewer.py:97
 msgid "WARNING: Invalid DNS reply. Falling back to HTTP mode."
-msgstr "ATTENZIONE: Risposta DNS non valida. Riprovo con la modalità HTTP."
+msgstr "FIGYELMEZTETÉS: Érvénytelen DNS válasz. Visszatérés HTTP módra."
 
 #: wxDialogStatus.py:127
 #: wxDialogLogViewer.py:99
 msgid "ERROR: Can't get information about database.clamav.net:"
-msgstr "ERRORE: Non riesco a rivere informazioni su database.clamav.net:"
+msgstr "HIBA: Nem kérhető le információ a database.clamav.net címről:"
 
 #: wxDialogLogViewer.py:101
 #: wxDialogStatus.py:129
 msgid "Can't query"
-msgstr "Non posso fare la richiesta"
+msgstr "Nem kérhető le"
 
 #: wxDialogLogViewer.py:103
 #: wxDialogStatus.py:131
 msgid "No IP address"
-msgstr "Nessun indirizzo IP"
+msgstr "Nincs IP cím"
 
 #: wxDialogLogViewer.py:107
 #: wxDialogStatus.py:135
 msgid "Trying again in 5 secs..."
-msgstr "Riprova ancora tra 5 secondi..."
+msgstr "Ismételt próbálkozás 5 másodperc múlva..."
 
 #: wxDialogLogViewer.py:111
 #: wxDialogStatus.py:139
 msgid "ERROR: Update failed. Your network may be down or none of the mirrors listed in freshclam.conf is working."
-msgstr "ERRORE: Aggiornamento fallito. La tua connessione può essere non funzionante o nessun indirizzo elencati in freshclam.conf sta funzionando."
+msgstr "HIBA: A frissítés nem sikerült. A hálózat nem működik, vagy egyetlen - a freshclam.conf fájlban megadott - tükörszerver sem üzemel."
 
 #: wxDialogLogViewer.py:117
 #: wxDialogStatus.py:145
 msgid "Known viruses:"
-msgstr "Virus conosciuti:"
+msgstr "Ismert vírusok:"
 
 #: wxDialogLogViewer.py:119
 #: wxDialogStatus.py:147
 msgid "Engine version:"
-msgstr "Versione del motore:"
+msgstr "Motor verzió:"
 
 #: wxDialogLogViewer.py:121
 #: wxDialogStatus.py:149
 msgid "Scanned directories:"
-msgstr "Cartelle scansionate:"
+msgstr "Ellenőrzött mappák:"
 
 #: wxDialogLogViewer.py:125
 #: wxDialogStatus.py:153
 msgid "Infected files:"
-msgstr "File infettati"
+msgstr "Fertőzött fájlok:"
 
 #: wxDialogLogViewer.py:127
 #: wxDialogStatus.py:155
 msgid "Data scanned:"
-msgstr "Data scansione:"
+msgstr "Ellenőrzött adatmennyiség:"
 
 #: wxDialogLogViewer.py:80
 #: wxDialogPreferences.py:242
@@ -1271,37 +1269,37 @@ msgstr "OK"
 
 #: wxDialogAbout.py:168
 msgid "Virus DB Version: (main: %i; daily: %i)"
-msgstr "Versione dei Virus DB: (principale: %i; quotidiano: %i)"
+msgstr "Vírusadatbázis verzió: (fő: %i; napi: %i)"
 
 #: wxDialogAbout.py:174
 msgid "Updated: %s"
-msgstr "Aggiornamento: %s"
+msgstr "Frissítve: %s"
 
 #: wxDialogAbout.py:214
 msgid "Could not locate ClamScan executable"
-msgstr "Non trovo l'eseguibile ClamScan"
+msgstr "Nem található a ClamScan alkalmazás"
 
 #: wxDialogAbout.py:227
 msgid "Unable to retrieve ClamAV version"
-msgstr "Non riesco a ricevere la version di ClamAV"
+msgstr "Nem állapítható meg a ClamAV verziója"
 
 #: wxDialogAbout.py:252
 msgid "Unable to retrieve database version"
-msgstr "Non riesco a ricevere la versione del database"
+msgstr "Nem állapítható meg a vírusismereti adatbázis verziója"
 
 #: wxDialogCheckUpdate.py:105
 #: wxFrameMain.py:265
 #: wxDialogStatus.py:500
 msgid "&Close"
-msgstr "&Chiudi"
+msgstr "&Bezárás"
 
 #: wxFrameMain.py:337
 msgid "ClamWin Free Antivirus is not configured. Would you like to configure it now?"
-msgstr "ClamWin non è configurato. Vuoi configurarlo adesso?"
+msgstr "ClamWin Free Antivirus nincs beállítva. Be kívánja most állítani az alkalmazást?"
 
 #: wxFrameMain.py:343
 msgid "You have not yet downloaded Virus Definitions Database. Would you like to download it now?"
-msgstr "Non hai ancora scaricato il Database delle Definizioni dei Virus. Vuoi scaricarlo adesso?"
+msgstr "Még nincsen letöltött vírusismereti adatbázis. Le kívánja most tölteni?"
 
 #: wxFrameMain.py:397
 msgid "http://www.clamwin.com/content/category/3/7/27/"
@@ -1316,19 +1314,19 @@ msgstr "http://www.clamwin.com"
 
 #: wxDialogUtils.py:58
 msgid "An error occurred during Virus Database Update. Please review the update report."
-msgstr "Si è verificato un errore durante l'aggiornamento del Database dei Virus. Controlla il rapporto di aggiornamento."
+msgstr "Hiba lépett fel az vírusismereti adatbázis frissítése során. Tekintse meg az frissítési jelentést a részletekért."
 
 #: wxDialogUtils.py:65
 msgid "ClamWin Free Antivirus: Downloading Update..."
-msgstr "ClamWin: Scaricamento aggiornamento..."
+msgstr "ClamWin Free Antivirus: Frissítés letöltése..."
 
 #: wxDialogUtils.py:78
 msgid "Unable to remove file %s. Error: %s"
-msgstr "Non posso rimuovere il file %s. Errore: %s"
+msgstr "Nem távolítható el a fájl: %s. Hiba: %s"
 
 #: wxDialogUtils.py:83
 msgid "Couldn't remove file %s. Error: %s"
-msgstr "Non posso rimuovere il file %s. Errore: %s"
+msgstr "Nem távolítható el a fájl: %s. Hiba: %s"
 
 #: wxDialogUtils.py:115
 msgid ""
@@ -1336,16 +1334,15 @@ msgid ""
 "-----------------------------\n"
 msgstr ""
 "\n"
-"↵\n"
-"-----------------------------↵\n"
+"-----------------------------\n"
 
 #: wxDialogUtils.py:116
 msgid ""
 "Scan Started %s\n"
 "ERROR: Virus Definitions Database Not Found! Please download it now.\n"
 msgstr ""
-"Scansione iniziata%s↵\n"
-"ERRORE: Database delle Definizioni dei Virus non trovato. Scaricalo ora.↵\n"
+"Ellenőrzés elindítva %s\n"
+"HIBA: A vírusismereti adatbázis nem található! Töltse le most.\n"
 
 #: wxDialogUtils.py:117
 msgid "-----------------------------"
@@ -1353,32 +1350,32 @@ msgstr "-----------------------------"
 
 #: wxDialogUtils.py:126
 msgid "Virus has been detected during scan! Please review the scan report."
-msgstr "Un virus è stato individuato durante la scansione! Controlla il rapporto scansione."
+msgstr "Vírus találat az ellenőrzés során! Tekintse meg az ellenőrzési jelentést a részletekért."
 
 #: wxDialogUtils.py:128
 msgid "An error occurred during virus scan. Please review the scan report."
-msgstr "Si è verificato un errore durante la scansione. Controlla il rapporto scansione."
+msgstr "Hiba lépett fel az ellenőrzés során! Tekintse meg az ellenőrzési jelentést a részletekért."
 
 #: wxDialogUtils.py:133
 msgid "ClamWin Free Antivirus: Scanning..."
-msgstr "ClamWin: Scansione in corso..."
+msgstr "ClamWin Free Antivirus: Ellenőrzés..."
 
 #: wxDialogUtils.py:150
 #: ClamTray.py:555
 msgid "Could not send email alert. Error: %s"
-msgstr "Non posso inviare l'avviso email. Errore: %s"
+msgstr "E-mail riasztás nem küldhető el. Hiba: %s"
 
 #: wxDialogUtils.py:157
 msgid "Could not delete logfile : %s. Error: %s"
-msgstr "Non posso cancellare il file di log: %s. Errore: %s"
+msgstr "Nem távolítható el a jelentésfájl: %s. Hiba: %s"
 
 #: wxDialogUtils.py:179
 msgid "Log files are not properly configured. Please review ClamWin configuration"
-msgstr "I file Log non sono propriamente configurati. Per favore rivedere la configurazione di ClamWin"
+msgstr "A jelentésfájlok nincsenek jól beállítva. Ellenőrizze a ClamWin beállításokat."
 
 #: wxDialogUtils.py:192
 msgid "Unable to read from the log file. Error: %s"
-msgstr "Impossibile leggere dal file log. Errore: %s"
+msgstr "Nem olvasható a jelentésfájl. Hiba: %s"
 
 #: wxDialogUtils.py:229
 msgid ""
@@ -1386,38 +1383,39 @@ msgid ""
 "If you see this error often then allow clamwin.exe in your firewall and check proxy settings.\n"
 "(%s)"
 msgstr ""
-"Impossibile ottenere la versione online. Molto probabilmente è un errore di connessione provvisorio e non sei obbligato a fare qualcosa.\n"
-"Se vedi questi errori spesso permetti al tuo firewall di far collegare clamwin.exe e controlla le impostazioni del proxy.\n"
+"Nem állapítható meg, hogy melyik a legújabb verzió. Általában ezt a hibát átmeneti kapcsolati hiba okozhatja, így Önnek semmit nem kell tennie.\n"
+"Ha ez az üzenet mindig megjelenik engedélyezze a clamwin.exe programot a tűzfalban és ellenőrizze a proxy-beállításokat.\n"
 "(%s)"
 
+# This is the explorer shell string
 # ShellExtImpl.cpp:
 #: 292
 msgid "Scan with ClamWin Free Antivirus"
-msgstr "Scansiona con ClamWin Free Antivirus"
+msgstr "Ellenőrzés ClamWin Free Antivirus programmal"
 
 #: wxDialogCheckUpdate.py:98
 msgid "&Download"
-msgstr "&Scarica"
+msgstr "&Letöltés"
 
 #: EmailAlert.py:82
 msgid "Email alert to %s has been sent successfully."
-msgstr "E-mail dall'erta a %s è stato inviato con successo"
+msgstr "E-maill riasztás a(z) %s címzettnek sikeresen elküldve."
 
 #: Config.py:63
 msgid "admin@yourdomain"
-msgstr "amministratore@tuodominio"
+msgstr "rendszergazda@domén"
 
 #: Config.py:63
 msgid "clamwin@yourdomain"
-msgstr "clamwin@tuodominio"
+msgstr "clamwin@domén"
 
 #: Config.py:64
 msgid "ClamWin Virus Alert"
-msgstr "ClamWin Allarme Virus"
+msgstr "ClamWin Vírus Riasztás"
 
 #: EmailAlert.py:86
 msgid "Could not send an email. Error: %s"
-msgstr "Impossibile spedire un'e-mail. Errore: %s"
+msgstr "E-mail üzenet nem küldhető el. Hiba: %s"
 
 #: EmailAlert.py:95
 msgid ""
@@ -1425,71 +1423,71 @@ msgid ""
 "\n"
 "Please review the attached log files for more details.\n"
 msgstr ""
-"ClamWin ha individuato un virus sul seguente computer: %s↵\n"
-"↵\n"
-"Controlla il log allegato per avere maggiori dettagli.↵\n"
+"A ClamWin vírust talált a következő számítógépen: %s\n"
+"\n"
+"Tekintse meg a csatolt ellenőrzési jelentést a részletekért.\n"
 
 #: wxDialogCheckUpdate.py:88
 msgid "&Do Not Check for Updates in Future"
-msgstr "&Non controllare gli aggiornamenti in futuro"
+msgstr "&Ne keressen frissítéseket"
 
 #: wxDialogCheckUpdate.py:76
 msgid "List Of Changes in Version %s:"
-msgstr "Lista dei cambiamenti nella Versione %s:"
+msgstr "Változások ebben a(z) %s verzióban:"
 
 #: wxDialogScheduledScan.py:119
 msgid "Could not open persistent storage for scheduled scans. Error: %s"
-msgstr "Non posso aprire lo storage persistente per le scansioni pianificate. Errore: %s"
+msgstr "Nem nyitható meg állandó tároló az ütemezett feladatok számára. Hiba: %s"
 
 #: wxDialogScheduledScan.py:130
 msgid "Could not save scheduled scans to persistent storage. Error: %s"
-msgstr "Non posso salvare le scansioni modificate nello storage persistente. Errore: %s"
+msgstr "Nem menthetők el az ütemezett feladatok az állandó tárolóba. Hiba: %s"
 
 #: wxDialogCheckUpdate.py:54
 msgid "ClamWin Update"
-msgstr "ClamWin Update"
+msgstr "ClamWin Frissítés"
 
 #: wxDialogCheckUpdate.py:60
 msgid "An update of ClamWin Free Antivirus has been released. Please click on Download button and download the latest version %s"
-msgstr "Un'aggiornamento di ClamWin Free Antivirus è stata rilasciato. Clicca sul pulsante Download e scarica l'ultima versione %s"
+msgstr "Új verzió jelent meg a ClamWin Free Antivirus programból. Kattintson a Letöltés gombra és töltse le a legújabb %s verziót."
 
 #: wxDialogCheckUpdate.py:69
 msgid "After you download the latest version setup file simply run it and install over the existing version."
-msgstr "Dopo aver scaricato il setup dell'ultima versione, eseguilo e installalo sopra la versione corrente."
+msgstr "A legújabb verzió letöltése után a indítsa el a telepítőt és a programot telepítse a meglévő verzióra."
 
 #: wxDialogAbout.py:57
 #: wxDialogAbout.py:61
 msgid "About ClamWin Free Antivirus"
-msgstr "Informazioni su ClamWin Free Antivirus"
+msgstr "A ClamWin Free Antivirus névjegye"
 
 #: wxDialogAbout.py:72
 msgid "Version "
-msgstr "Versione "
+msgstr "Verzió "
 
 #: wxDialogAbout.py:79
 msgid "ClamAV Version gets here"
-msgstr "Prendi qui la versione di ClamAV"
+msgstr "ClamAV verziószáma kerül ide"
 
 #: wxDialogAbout.py:84
 msgid "Protecting from %i Viruses"
-msgstr "Protezione da %i Virus"
+msgstr "Védelem %i vírus ellen"
 
 #: wxDialogAbout.py:93
 #: wxDialogAbout.py:115
 msgid "ClamWin Free Antivirus Homepage"
-msgstr "Pagina iniziale di ClamWin Free Antivirus"
+msgstr "ClamWin Free Antivirus honlap"
 
 #: wxDialogAbout.py:100
 msgid "Donate to ClamWin"
-msgstr "Donare a ClamWin"
+msgstr "Támogatás a ClamWin részére"
 
 #: wxDialogAbout.py:105
 msgid "Website:"
-msgstr "Sito Web:"
+msgstr "Honlap:"
 
 #: wxDialogAbout.py:119
 msgid "Author: alch <alch@users.sourceforge.net>"
-msgstr "Autore: alch <alch@users.sourceforge.net>"
+msgstr "Készítette: alch <alch@users.sourceforge.net>"
 
 #: wxDialogAbout.py:125
 msgid "Copyright (c) 2004 - 2006"
@@ -1497,110 +1495,110 @@ msgstr "Copyright (c) 2004 - 2006"
 
 #: wxDialogAbout.py:130
 msgid "This program is free software"
-msgstr "Questo programma è un software libero"
+msgstr "Ez a program egy szabad szoftver"
 
 #: wxDialogAbout.py:142
 msgid "ClamAV Homepage"
-msgstr "Pagina iniziale di ClamAV"
+msgstr "ClamAV honlap"
 
 #: wxDialogAbout.py:150
 msgid "Finndesign Homepage"
-msgstr "Pagina iniziale Finndesign"
+msgstr "Finndesign honlap"
 
 #: wxDialogAbout.py:158
 msgid "Python Homepage"
-msgstr "Python Homepage"
+msgstr "Python honlap"
 
 #: OlAddin.py:174
 msgid "You appear to be running a win32all version pre 151, which is pretty old"
-msgstr "Sembra che stai usando una versione di win32all precedente alla 151, è datata"
+msgstr "A rendszerében található win32all verziója pre 151, ami igen elavult"
 
 #: OlAddin.py:175
 msgid "I'm afraid it is time to upgrade"
-msgstr "mi dispiace ma è ora di aggiornarla"
+msgstr "Legfőbb ideje frissíteni"
 
 #: OlAddin.py:199
 msgid "An error occurred in ClamWin Free Antivirus About Box.\n"
-msgstr "Si è verificato un errore visualizzando la finestra di Informazioni\n"
+msgstr "Hiba lépett fel a ClamWin Free Antivirus névjegy panelban.\n"
 
 #: OlAddin.py:213
 msgid "WARNING - Trying to use image '%s', but it doesn't exist"
-msgstr "ATTENZIONE - Cerco di usare l'immagine %s, ma non esiste"
+msgstr "FIGYELMEZTETÉS - A(z) '%s' kép nem létezik."
 
 #: OlAddin.py:248
 msgid "Virus Deleted by ClamWin.txt"
-msgstr "Virus cancellato da ClamWin.txt"
+msgstr "A vírus le lett törölve a ClamWin.txt által"
 
 #: OlAddin.py:275
 #: OlAddin.py:1031
 msgid "Registration complete."
-msgstr "Registrazione completa."
+msgstr "Sikeresen regisztrálva."
 
 #: OlAddin.py:277
 msgid "An Error occurred whilst starting clamscan: %s"
-msgstr "Si è verificato un errore lanciando clamscan: %s"
+msgstr "Hiba lépett fel a ClamScan elindítása során: %s"
 
 #: OlAddin.py:294
 msgid "An Error occurred reading clamscan report: %s"
-msgstr "Si è verificato un errore leggendo il report di clamscan: %s"
+msgstr "Hiba lépett fel a ClamScan jelentés beolvasása közben: %s"
 
 #: OlAddin.py:296
 msgid ""
 "An Error occurred whilst scanning:\n"
 "%s"
 msgstr ""
-"Si è verificato un errore nella scansione:↵\n"
+"Hiba lépett fel az ellenőrzés közben:\n"
 "%s"
 
 #: OlAddin.py:306
 msgid "An Error occurred whilst converting clamscan report: %s"
-msgstr "Errore improvviso nel convertire il rapporto calmscan: %s"
+msgstr "Hiba lépett fel a ClamScan jelentés átalakítása közben: %s"
 
 #: OlAddin.py:344
 #: wxDialogUtils.py:107
 msgid "Virus Definitions Database Not Found! Please download it now."
-msgstr "Definizioni del Database dei Virus Non Trovata! Per favore scaricali ora."
+msgstr "Vírusismereti adatbázis nem található! Töltse le most."
 
 #: OlAddin.py:418
 msgid ""
 "ClamWin Free Antivirus could not scan file%s\n"
 ".Error: %s"
 msgstr ""
-"ClamWin Free Antivirus impossibile scansionare il file%s\n"
-".Errore: %s"
+"A ClamWin Free Antivirus nem tudja ellenőrizni a következő fájlt: %s\n"
+".Hiba: %s"
 
 #: OlAddin.py:470
 msgid "ClamWin Free Antivirus has detected a virus in the message attachments!"
-msgstr "ClamWin Free Antivirus ha rilevato un virus in un allegato e-mail"
+msgstr "A ClamWin Free Antivirus VÍRUST TALÁLT az üzenet csatolmányában!"
 
 #: OlAddin.py:471
 msgid "Virus Detected!"
-msgstr "Rilevato Virus!"
+msgstr "VÍRUS TALÁLAT!"
 
 #: OlAddin.py:474
 msgid "Virus has been detected in an email attachment! The attachment was replaced with the report file."
-msgstr "Il Virus è stato rilevato in un allegato e-mail! L'allegato è stato sostituito con il file del rapporto."
+msgstr "Vírus találat az E-mail üzenet csatolmányában! A csatolmány a jelentésfájlra lett kicserélve."
 
 #: OlAddin.py:476
 msgid "An error occurred whilst scanning email message."
-msgstr "Errore improvviso nella scansione di un messaggio e-mail"
+msgstr "Hiba lépett fel az E-mail üzenet ellenőrzése közben."
 
 #: OlAddin.py:508
 #: ClamTray.py:563
 msgid "Could not remove file: %s. Error: %s"
-msgstr "Impossibile rimuovere il file: %s. Errore: %s"
+msgstr "Nem távolítható el a fájl: %s. Hiba: %s"
 
 #: OlAddin.py:580
 msgid "&About ClamWin Free Antivirus"
-msgstr "&Informazioni su ClamWin Free Antivirus"
+msgstr "A ClamWin Free Antivirus &névjegye"
 
 #: OlAddin.py:581
 msgid "Shows the ClamWin About Box"
-msgstr "Mostra la finestra informativa di ClamWin"
+msgstr "Megjeleníti a ClamWin névjegyét"
 
 #: OlAddin.py:836
 msgid "ClamWin Free Antivirus could not replace an attachment. Error: %s"
-msgstr "ClamWin Free Antivirus non può sostituire un allegato. Errore: %s"
+msgstr "ClamWin Free Antivirus nem tudja kicserélni a csatolmányt. Hiba: %s"
 
 #: OlAddin.py:837
 msgid "ClamWin Free Antivirus!"
@@ -1608,230 +1606,209 @@ msgstr "ClamWin Free Antivirus!"
 
 #: OlAddin.py:905
 msgid "Error connecting to Outlook!"
-msgstr "Errore di connessione a Outlook!"
+msgstr "Hiba lépett fel az Outlook-hoz történő kapcsolódás során."
 
 #: OlAddin.py:918
 msgid "An error occurred whilst displaying the splashscreen %s. Error: %s."
-msgstr "Errore improvviso nella visualizzazione del logo %s. Errore: %s."
+msgstr "Hiba lépett fel az indítóképernyő megjelenítése során %s. Hiba: %s."
 
 #: OlAddin.py:955
 msgid "Addin terminating: %d COM client and %d COM servers exist."
-msgstr "Terminato l'addin: cliente di %d COM e sistema di servizio %d COM esistono"
+msgstr "Kilépés a bővítményből: %d COM kliens és %d COM szerver már létezik."
 
 #: OlAddin.py:1007
 msgid "Registering (in HKEY_LOCAL_MACHINE)..."
-msgstr "Sto registrando (in HKEY_LOCAL_MACHINE)..."
+msgstr "Regisztrálás (HKEY_LOCAL_MACHINE)..."
 
 #: OlAddin.py:1010
 msgid "Registering (in HKEY_CURRENT_USER)..."
-msgstr "Sto registrando (in HKEY_CURRENT_USER)..."
+msgstr "Regisztrálás (in HKEY_CURRENT_USER)..."
 
 #: OlAddin.py:1015
 msgid "Registration Complete"
-msgstr "Registrazione Completa"
+msgstr "Regisztrálás végrehajtva"
 
 #: ClamTray.py:117
 msgid "Unable to stop scheduled process, terminating"
-msgstr "Impossibile arrestare il processo previsto, terminato"
+msgstr "Az ütemezett folyamat nem állítható le, kilépés"
 
 #: ClamTray.py:131
-#, fuzzy
 msgid "An error occurred whilst terminating scheduler thread. Error: %s"
-msgstr "Un errore improvviso nel terminare il thread di sistema. Errore: %s"
+msgstr "Hiba lépett fel az ütemező folyamat leállítása során. Hiba: %s"
 
 #: ClamTray.py:237
-#, fuzzy
 msgid "&Configure Scheduler"
-msgstr "%Configura Scheduler"
+msgstr "Ü&temezés testreszabása"
 
 #: ClamTray.py:257
-#, fuzzy
 msgid "&Run Scheduled Scan"
-msgstr "&Avvia la scansione Scheduled"
+msgstr "Ütemezett ellenőrzés &indítása"
 
 #: ClamTray.py:261
 msgid "&Stop All Running Tasks Now"
-msgstr "&Arresta tutti i processi in corso ora"
+msgstr "É&ppen végrehajtott feladatok leállítása"
 
 #: ClamTray.py:271
 msgid "&Virus Scan Report"
-msgstr "Rapporto della scansione dei &Virus"
+msgstr "&Vírusellenőrzés jelentések"
 
 #: ClamTray.py:282
 msgid "&Open ClamWin"
-msgstr "&Apri ClamWin"
+msgstr "ClamWin &megnyitása"
 
 #: ClamTray.py:283
 msgid "&Download Virus Database Update"
-msgstr "%Scarica l'aggiornamento del database dei Virus"
+msgstr "&Vírusismereti adatbázis frissítése"
 
 #: ClamTray.py:284
 msgid "&Configure ClamWin"
-msgstr "&Configura ClamWin"
+msgstr "ClamWin &beállítása"
 
 #: ClamTray.py:285
 msgid "&Scheduler"
-msgstr "&Scheduler"
+msgstr "Ü&temező"
 
 #: ClamTray.py:286
 msgid "Display &Reports"
-msgstr "Visualizza i &Rapporti"
+msgstr "&Jelentések megjelenítése"
 
 #: ClamTray.py:288
 msgid "Check &Latest Version"
-msgstr "Controlla &l'ultima Versione"
+msgstr "&Alkalmazás frissítés keresése"
 
 #: ClamTray.py:289
 msgid "&Visit ClamWin Website"
-msgstr "&Visita il sito web di ClamWin"
+msgstr "&Látogatás a ClamWin honlapjára"
 
 #: ClamTray.py:291
 msgid "&Exit"
-msgstr "%Esci"
+msgstr "&Kilépés"
 
 #: ClamTray.py:313
 #: wxFrameMain.py:401
 msgid "http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version="
-msgstr "http://it.clamwin.com/content/view/18/46/"
+msgstr "http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version="
 
 #: ClamTray.py:338
 msgid "Could not launch ClamWin Scanner. Error: %s"
-msgstr "Impossibile lanciare la scansione di ClamWin. Errore: %s"
+msgstr "A ClamWin Ellenőrző nem indítható el. Hiba: %s"
 
 #: ClamTray.py:351
-#, fuzzy
 msgid "Could not display balloon tooltip. Error: %s"
-msgstr "Impossibile visualizzazre il balloon tooltip. Errore: %s"
+msgstr "A buboréksúgó nem jeleníthető meg. Hiba: %s"
 
 #: ClamTray.py:362
 msgid ""
 "An error occurred while displaying log file %s.\n"
 "Error: %s"
 msgstr ""
-"Errore improvviso nella visualizzazione del file log %s.\n"
-"Errore: %s"
+"Hiba lépett fel a következő jelentésfájl megjelenítése során: %s\n"
+" Hiba: %s"
 
 #: ClamTray.py:373
 msgid "An error occurred while starting ClamWin Free Antivirus scanner.\n"
-msgstr "Errore improvviso nell'avvio dello scanner di ClamWin Free Antivirus\n"
+msgstr "Hiba lépett fel a ClamWin Free Antivirus ellenőrző elindítása során.\n"
 
 #: ClamTray.py:381
 msgid "An error occurred while starting ClamWin Free Antivirus Update.\n"
-msgstr "Errore improvviso nell'avvio dell'aggiornamento di ClamWin Free Antivirus\n"
+msgstr "Hiba lépett fel a ClamWin Free Antivirus Frissítő elindítása során.\n"
 
 #: ClamTray.py:387
 msgid "Error"
-msgstr "Errore"
+msgstr "Hiba"
 
 #: ClamTray.py:387
 #: wxDialogUtils.py:38
 msgid "Unable to create freshclam configuration file. Please check there is enough space on the disk"
-msgstr "Impossibile creare il file di configurazione di freshclam. Per favore controllare la presenza di spazio nel disco fisso"
+msgstr "A FreshClam konfigurációs állomány nem hozható létre. Ellenőrizze, hogy van-e elegendő tárterület a lemezen."
 
 #: ClamTray.py:403
 #: wxDialogUtils.py:56
 msgid "Virus database has been updated."
-msgstr "Il database dei Virus è stato aggiornato con successo"
+msgstr "A vírusismereti adatbázis frissítése sikerült."
 
 #: ClamTray.py:405
-#, fuzzy
 msgid "An error occurred during Scheduled Virus Database Update. Please review the update report."
-msgstr "Errore nell'aggiornamento del Database Scheduled Virus. Per favore riguardare il rapporto dell'aggiornamento."
+msgstr "Hiba lépett fel az ütemezett vírusismereti adatbázis frissítése során. Tekintse meg az frissítési jelentést a részletekért."
 
 #: ClamTray.py:418
-#, fuzzy
 msgid ""
 "Unable to spawn scheduled process.\n"
 "Command line: %s\n"
 "Error: %s"
 msgstr ""
-"??? Unable to spawn scheduled process. ???\n"
-"Riga di comando: %s\n"
-"Errore: %s"
+"Az ütemezett folyamat nem indítható.\n"
+"Parancssor: %s\n"
+"Hiba: %s"
 
 #: ClamTray.py:433
-#, fuzzy
 msgid "Error performing Scheduled Update."
-msgstr "Errore nell'eseguire l'aggiornamento del Scheduled."
+msgstr "Az ütemezett frissítés nem sikerült."
 
 #: ClamTray.py:441
 #: wxDialogUtils.py:206
 msgid "Please point your browser at: %s"
-msgstr "Per favore indirizza il tuo browser a: %s"
+msgstr "Keresse fel a következő weboldalt: %s"
 
 #: ClamTray.py:455
 msgid "An error occurred while starting ClamWin Free Antivirus Preferences.\n"
-msgstr "Errore improvviso nell'avvio delle preferenze di ClamWin Free Antivirus\n"
+msgstr "Hiba lépett fel a ClamWin Free Antivirus Beállítások elindítása során.\n"
 
 #: ClamTray.py:496
-#, fuzzy
 msgid "Virus has been detected during scheduled scan! Please review the scan report."
-msgstr "Il virus è stato cancellato durante la scansione scheduled! Per favore riguarda il rapporto della scansione."
+msgstr "Vírus találat az ütemezett ellenőrzés során! Tekintse meg az ellenőrzési jelentést a részletekért."
 
 #: ClamTray.py:498
-#, fuzzy
 msgid "An error occurred during scheduled scan. Please review the scan report."
-msgstr "Errore improvviso durante la scansione scheduled. Per favore riguarda il rapporto della scansione."
+msgstr "Hiba lépett fel az ütemezett ellenőrzés során! Tekintse meg az ellenőrzési jelentést a részletekért."
 
 #: ClamTray.py:530
-#, fuzzy
 msgid "Running Scheduled Task:\n"
-msgstr "Avvio in corso Scheduled Task:\n"
+msgstr "Ütemezett feladat indítása:\n"
 
 #: ClamTray.py:532
-#, fuzzy
 msgid "An error occurred whilst running Running Scheduled Task "
-msgstr "Errore improvviso nell'avviare il Scheduled Task "
+msgstr "Hiba lépett fel az Ütemezett Feladatok futtatása során"
 
-#, fuzzy
 msgid "Scans Programs in Computer Memory for Viruses"
-msgstr "Scansione File e Cartelle"
+msgstr "Programok vírusellenőrzése a számítógép memóriában"
 
-#, fuzzy
 msgid "Scan &Memory"
-msgstr "Rapporto &Scansione"
+msgstr "&Memória ellenőrzése"
 
 msgid "Scan Computer Memory"
-msgstr ""
+msgstr "A számítógép memória ellenőrzése"
 
-#, fuzzy
 msgid "Scans Programs Loaded in Computer Memory for Computer Viruses"
-msgstr "Scansione dei File e delle cartelle selezionate"
+msgstr "A számítógép memóriába betöltött programok vírusellenőrzése "
 
-#, fuzzy
 msgid "Scans Computer Memory for Viruses"
-msgstr "Scansione"
+msgstr "Számítógép memória ellenőrzése"
 
-#, fuzzy
 msgid "Specify any additional parameters for clamscan.exe"
-msgstr "Specifica la posizione di clamscan"
+msgstr "További paraméterek megadása a clamscan.exe program számára"
 
 msgid "&Unload Infected Programs from Computer Memory"
-msgstr ""
+msgstr "Fertőzött programok &eltávolítása a memóriából"
 
-#, fuzzy
 msgid "Select if you wish to unload infected programs from computer memory so they can be quarantined or removed"
-msgstr "Seleziona se vuoi visualizzare solo i file infetti nella finestra di scansione"
+msgstr "Válassza ki, ha a fertőzött programokat el kívánja távolítani a memóriából. Így a fertőzött fájl karanténba tehető, vagy eltávolítható lesz"
 
 msgid "Scan &Programs Loaded in Computer Memory"
-msgstr ""
+msgstr "&Programok ellenőrzése a memóriában"
 
-#, fuzzy
 msgid "Select if you wish to include programs computer memory during every scan"
-msgstr "Seleziona se vuoi esaminare ricorsivamente le sottocartelle"
+msgstr "Válassza ki, ha minden ellenőrzéskor a futó programokat is ellenőrizni szeretné"
 
-#, fuzzy
 msgid "Netfarm Homepage"
-msgstr "Pagina iniziale di ClamAV"
+msgstr "Netfarm honlap"
 
-#, fuzzy
 msgid "Scanning Programs in Computer Memory"
-msgstr "Scansione File e Cartelle"
+msgstr "Programok ellenőrzése a számítógép memóriában"
 
 msgid "Computer Memory Scan Completed"
-msgstr ""
+msgstr "A memória ellenőrzése befejeződött"
 
-#, fuzzy
 msgid "Select if you wish to scan OLE attachments and macros in MS Office Documents"
-msgstr "&Estrai gli Attachment e le Macro dai documenti MS Office"
+msgstr "Válassza ki, ha az OLE objektumokat és makrókat is ellenőrizni szeretne az MS Office dokumentumokban"
 
