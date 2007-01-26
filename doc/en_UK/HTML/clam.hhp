@@ -1,6 +1,6 @@
 [OPTIONS]
 Compatibility=1.1 or later
-Compiled file=clam.chm
+Compiled file=..\manual_EN.chm
 Contents file=Table of Contents.hhc
 Default topic=cover.html
 Display compile progress=No
