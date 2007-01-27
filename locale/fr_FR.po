@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-12-17 16:11+0100\n"
-"Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
+"PO-Revision-Date: 2007-01-27 20:43+0100\n"
+"Last-Translator: Peter Budts <budtse@users.sourceforge.net>\n"
 "Language-Team: French <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -817,7 +817,7 @@ msgstr "&Extraire les Pièces Jointes et les Macros des Documents MS Office"
 #: wxDialogPreferences.py:489
 #: wxDialogPreferences.py:496
 msgid "Select if you wish to detect executable files with broken PE structure as viruses"
-msgstr ""
+msgstr "Sélectionner si vous désirez détecter les fichiers executables avec une structure PE corrompue comme des virus"
 
 #: wxDialogPreferences.py:493
 msgid "&Detect Broken Executables"
@@ -1760,45 +1760,45 @@ msgid "An error occurred whilst running Running Scheduled Task "
 msgstr "Une erreur est survenue lors du rafraichissement de la sélection dans l'interface graphique. %s"
 
 msgid "Scans Programs in Computer Memory for Viruses"
-msgstr ""
+msgstr "Recherche des Virus dans les Programmes dans la Mémoire de l'Ordinateur"
 
 msgid "Scan &Memory"
-msgstr ""
+msgstr "Analyser la &Mémoire"
 
 msgid "Scan Computer Memory"
-msgstr ""
+msgstr "Analyser la Mémoire de l'Ordinateur"
 
 msgid "Scans Programs Loaded in Computer Memory for Computer Viruses"
-msgstr ""
+msgstr "Recherche d'Eventuels Virus dans les Programmes Chargés dans la Mémoire de l'Ordinateur"
 
 msgid "Scans Computer Memory for Viruses"
-msgstr ""
+msgstr "Recherche des Virus dans la Mémoire de l'Ordinateur"
 
 msgid "Specify any additional parameters for clamscan.exe"
-msgstr ""
+msgstr "Spécifiez tout paramètre additionnel pour clamscan.exe"
 
 msgid "&Unload Infected Programs from Computer Memory"
-msgstr ""
+msgstr "&Décharger les Programmes Infectés de la Mémoire de l'Ordinateur"
 
 msgid "Select if you wish to unload infected programs from computer memory so they can be quarantined or removed"
-msgstr ""
+msgstr "Selectionner si vous désirez décharger les programmes infectés de la mémoire de l'ordinateur afin qu'ils puissent être mis en quarantaine ou supprimés"
 
 msgid "Scan &Programs Loaded in Computer Memory"
-msgstr ""
+msgstr "Analyser les &Programmes Chargés dans la Mémoire de l'Ordinateur"
 
+# Sentence doesn't make any sense
 msgid "Select if you wish to include programs computer memory during every scan"
-msgstr ""
+msgstr "Selectionner si vous désirez inclure la mémoire de l'ordinateur chaque fois que vous scannez"
 
 msgid "Netfarm Homepage"
-msgstr ""
+msgstr "Page d'Accueil de Netfarm"
 
 msgid "Scanning Programs in Computer Memory"
-msgstr ""
+msgstr "Analyse de la Mémoire de l'Ordinateur en Cours"
 
 msgid "Computer Memory Scan Completed"
-msgstr ""
+msgstr "Analyse de la Mémoire de l'Ordinateur Achevée"
 
-#, fuzzy
 msgid "Select if you wish to scan OLE attachments and macros in MS Office Documents"
-msgstr "&Extraire les Pièces Jointes et les Macros des Documents MS Office"
+msgstr "Selectionnez si vous désirez extraire les pièces jointes OLE et les macros des Documents MS Office"
 
