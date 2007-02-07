@@ -40,7 +40,7 @@
 //
 // MessageText:
 //
-//  (de)ClamWin Free Antivirus...
+//  (bg)Scan with Clamwin Free AV...
 //
 #define S_SCANWITHCLAMWIN                ((DWORD)0x000001F5L)
 

@@ -1,0 +1,45 @@
+PURPOSE
+*******
+The main purpose of this document is to have a reminder of the things to do
+when building a new version of ClamWin's I18N branch.
+
+RELEASE PROCEDURE
+*****************
+
+To Release a new build of the I18N Branch, follow these ordered steps :
+
+1. Remove the "Fuzzy" flags from all .po files for the languages that you want to 
+   be complete.  Currently these are:
+      - I18N\clamwin\locale\de_DE.po
+      - I18N\clamwin\locale\es_ES.po
+      - I18N\clamwin\locale\fr_FR.po
+      - I18N\clamwin\locale\hu_HU.po
+      - I18N\clamwin\locale\nl_BE.po
+   Rationale : Strings that are marked as Fuzzy will not be translated in the GUI.
+
+2. Generate the .mo files for all languages that need to be included.  This can\
+   be done by launching the "I18N\clamwin\locale\Convert.bat" script.
+
+3. Open the I18N\clamwin\cpp\MessageTable.mc file with Notepad or another text
+   editor that supports UTF-8, and check for untranslated strings that might need
+   to be looked up in and copied from the .po files.
+
+4. Open I18N\clamwin\Setup\Setup.iss with ISTool and modify the following setting:
+      
+      OutputBaseFileName=<Filename>
+
+   For the <FileName>, use the format "ClamWin-0.88.7-L10N-28", where 0.88.7 is the
+   official release version the branch is merged against, and 28 is the release
+   version of the L10N branch (which will continue to grow until the code is generally
+   accepted and we can merge the I18N branch back to the main branch).
+
+   Optionally, you may need to add .po or .iss files for additional languages.  We 
+   will describe the procedure for adding a language later.
+
+5. Update the Changelog, mentioning the new version and changes.
+
+6. Build the software package.
+
+7. Upload the software package and the ChangeLog.
+
+8. Notify the mailing lists and the beta testing forum of the new build.

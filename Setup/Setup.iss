@@ -4,7 +4,7 @@
 [Setup]
 AppName={cm:ClamWinFreeAntivirus1}
 AppVerName={cm:ClamWinFreeAntivirus1} 0.88.7
-OutputBaseFilename=ClamWinL10N-28
+OutputBaseFilename=ClamWin-0.88.7-L10N-28
 AppPublisher=budtse
 AppPublisherURL=http://www.clamwin.com/
 AppSupportURL=http://www.clamwin.com/

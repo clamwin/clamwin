@@ -3,6 +3,7 @@
 set LIBS=user32.lib advapi32.lib shell32.lib ole32.lib 
 set DEFINES=/D "WIN32" /D "_CRT_SECURE_NO_DEPRECATE" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "EXPLORERSHELL_EXPORTS"
 set UNICODE=/D "UNICODE" /D "_UNICODE"
+set MC="C:\Program Files\Microsoft Visual Studio .NET 2003\Common7\Tools\Bin\mc.exe"
 
 call "%VCINSTALLDIR%\vcvarsall.bat" x86
 

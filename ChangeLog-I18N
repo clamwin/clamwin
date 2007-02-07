@@ -8,6 +8,14 @@ KNOWN ISSUES:
 - The link button to the clamav homepage in the about box is broken.
   Can't see why, it is broken in the official ClamWin package too.
 
+Changes in Version ClamWin-0.88.7-L10N-28.exe :
+***************************************
+- Changed the filename to include the main ClamWin release the I18N branch
+  is merged against.
+- French translation is completed (Thanks Teolemon)
+- Spanish translation is completed (Thanks JuanJo)
+  Shortcuts (like &Abbrir) may need to be reviewed (67 Fuzzy).
+
 Changes in Version ClamWinL10N-27.exe :
 ***************************************
 - Separated the installer strings from the main Setup.iss file for easier
