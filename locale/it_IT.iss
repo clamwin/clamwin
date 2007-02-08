@@ -1,39 +1,56 @@
-it_IT.LanguageName=Italian
-it_IT.InitializeWizard1=Select Installation Options
-it_IT.InitializeWizard2=Who should this application be installed for?
-it_IT.InitializeWizard3=Please select whether you wish to make this software available to all users or just yourself.
-it_IT.InitializeWizard4=&Anyone who uses this computer (all users)
-it_IT.InitializeWizard5=Only for &me (
-it_IT.NoOutlookRunning1=You must close Outlook before ClamWin can be installed.
-it_IT.NoOutlookRunning2=Please close all Outlook Windows (using "File->Exit and Log off"
-it_IT.NoOutlookRunning3=if available) and click Retry, or click Cancel to exit the installation.
-it_IT.NoOutlookRunning4=If this message persists after closing all Outlook windows, you may
-it_IT.NoOutlookRunning5=need to log off from Windows, and try again.
-it_IT.NoOutlookRunning6=The Outlook mail delivery agent is still running.
-it_IT.NoOutlookRunning7=If you only recently closed Outlook, wait a few seconds and click Retry.
-it_IT.NoOutlookRunning8=If this message persists, you may need to log off from Windows, and try again.
-it_IT.CloseClamWin1=The Setup detected a previous version of the software is installed.
-it_IT.CloseClamWin2=Would you like to close the program now? (Recommended)
-it_IT.InitializeSetup1=Setup detected that a newer version of the software is already installed.
-it_IT.InitializeSetup2=Setup will terminate now.
-it_IT.DeInitializeSetup1=Please restart your computer in order to complete the installation of ClamWin Antivirus.
-it_IT.RemoveSetup1=The Setup detected a previous version of the software is already installed on this computer. Click Yes to uninstall it now.
-it_IT.DownloadDB1=Download Virus Database Files. (Do not Select if you connect via a Proxy Server)
-it_IT.DownloadDB2=Downloading Virus Database Files.
-it_IT.DownloadDB3=Download
-it_IT.CreateDesktop1=Create a &desktop icon
-it_IT.CreateDesktop2=Additional icons:
-it_IT.TypicalInstallation1=Typical Installation
-it_IT.CustomInstallation1=Custom Installation
-it_IT.FullInstallation1=Full Installation
-it_IT.ClamWinSourceCode1=ClamWin Source Code
-it_IT.ClamAVSourceCode1=ClamAV Source Code
-it_IT.DownloadSourceCode1=Download Source Code
-it_IT.ClamAVFiles1=ClamAV Files
-it_IT.ClamWinFiles1=ClamWin Files
-it_IT.IntegrationExplorer1=Integration with Windows Explorer
-it_IT.IntegrationOutlook1=Integration with Microsoft Outlook
+<div class="moz-text-flowed" style="font-family: -moz-fixed">it_IT.LanguageName=Italiano
+it_IT.InitializeWizard1=Seleziona Opzioni di Installazione
+it_IT.InitializeWizard2=Per chi dovrebbe essere installata questa 
+applicazione ?
+it_IT.InitializeWizard3=Per favore scegli se preferisci rendere questo 
+programma disponibile a tutti gli utenti o solo a te stesso.
+it_IT.InitializeWizard4=&Chiunque usi questo computer (tutti gli utenti)
+it_IT.InitializeWizard5=Solo per &me (
+it_IT.NoOutlookRunning1=Devi chiudere Outlook prima di installare ClamWin.
+it_IT.NoOutlookRunning2=Per favore chiudi tutte le finestre di Outlook 
+(usando "File->Esci e scollegati"
+it_IT.NoOutlookRunning3=se disponibile) e premi Riprova, o premi Cancella 
+per uscire dall'installazione.
+it_IT.NoOutlookRunning4=Se questo messaggio persiste dopo la chiusura di 
+tutte le finestre di Outlook, potrebbe
+it_IT.NoOutlookRunning5=essere necessario scollegarsi da Windows e riprovare 
+nuovamente.
+it_IT.NoOutlookRunning6=L'agente di consegna posta Outlook é ancora in 
+funzione.
+it_IT.NoOutlookRunning7=Se solo recentemente hai chiuso Outlook, aspetta 
+pochi secondi e premi Riprova.
+it_IT.NoOutlookRunning8=Se questo messaggio persiste, potrebbe essere 
+necessario scollegarsi da Windows e riprovare.
+it_IT.CloseClamWin1=L'installazione ha rilevato che una versione precedente 
+del programma é installata.
+it_IT.CloseClamWin2=Vuoi chiudere il programma ora? (Raccomandato)
+it_IT.InitializeSetup1=L'installazione ha rilevato che una versione più 
+recente del programma é già installata.
+it_IT.InitializeSetup2=L'installazione terminerà ora.
+it_IT.DeInitializeSetup1=Per favore riavvia il computer per permettere il 
+completamento dell'installazione di ClamWin Antivirus.
+it_IT.RemoveSetup1=L'installazione ha rilevato che una versione precedente 
+del programma é giù installata su questo computer. Premi Sì per 
+disinstallarla ora.
+it_IT.DownloadDB1=Scarica i file del Database Virus. (Non selezionare se 
+connesso tramite un server Proxy)
+it_IT.DownloadDB2=Scaricamente file Database Virus.
+it_IT.DownloadDB3=Scarica
+it_IT.CreateDesktop1=Crea una icona sul &desktop
+it_IT.CreateDesktop2=Icone aggiuntive:
+it_IT.TypicalInstallation1=Installazione tipica
+it_IT.CustomInstallation1=Installazione personalizzata
+it_IT.FullInstallation1=Installazione completa
+it_IT.ClamWinSourceCode1=Codice sorgente ClamWin
+it_IT.ClamAVSourceCode1=Codice sorgente ClamAV
+it_IT.DownloadSourceCode1=Scarica codice sorgente
+it_IT.ClamAVFiles1=File ClamAV
+it_IT.ClamWinFiles1=File ClamWin
+it_IT.IntegrationExplorer1=Integrazione con Esplora Risorse di Windows
+it_IT.IntegrationOutlook1=Integrazione con Microsoft Outlook
 it_IT.ClamWinFreeAntivirus1=ClamWin Free Antivirus
 it_IT.ClamWinFreeAntivirus2=ClamWin Antivirus
-it_IT.LanguageSupport1=Language Support
+it_IT.LanguageSupport1=Supporto lingua
 
+
+</div>

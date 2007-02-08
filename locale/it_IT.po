@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-12-17 16:11+0100\n"
-"Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
+"PO-Revision-Date: 2007-02-08 09:50+0100\n"
+"Last-Translator: \n"
 "Language-Team: Italian <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -26,7 +26,7 @@ msgstr "Scarica da internet l'ultima versione del database dei virus"
 
 #: wxFrameMain.py:95
 msgid "Download &Virus Database Update"
-msgstr "Scarica l'aggiornamento del Database dei &Virus"
+msgstr "Scarica l'aggiornamento del database dei &Virus"
 
 #: wxFrameMain.py:96
 msgid "Displays ClamWin Log Files"
@@ -175,7 +175,7 @@ msgid ""
 "(Hold Shift key to select multiple files or folders)"
 msgstr ""
 "Seleziona una cartella o un file per la scansione\n"
-"(Tieni premuto il tasto Shift per selezionare più elementi"
+"(Tieni premuto il tasto Shift per selezionare più elementi)"
 
 #: wxFrameMain.py:115
 msgid "Checks for the Latest Version"
@@ -187,7 +187,7 @@ msgstr "Si è verificato un errore aggiornando la selezione dell'interfaccia. %s
 
 #: wxFrameMain.py:387
 msgid "Could not open help file - %s not found."
-msgstr "Non posso apre il file di aiuto - % non trovato"
+msgstr "Non posso aprire il file di aiuto - % non trovato"
 
 #: wxFrameMain.py:394
 msgid "Could not open help file. Please ensure that you have Adobe Acrobat Reader installed."
@@ -237,7 +237,7 @@ msgstr "ATTENZIONE: La versione di ClamAV non è aggiornata!"
 
 #: wxDialogStatus.py:161
 msgid "WARNING: Local version:"
-msgstr "ATTENZIONE: Version locale:"
+msgstr "ATTENZIONE: Versione locale:"
 
 #: wxDialogStatus.py:163
 msgid "Recommended version:"
@@ -253,7 +253,7 @@ msgstr "è aggiornato"
 
 #: wxDialogStatus.py:169
 msgid "sigs:"
-msgstr "segnature:"
+msgstr "firme:"
 
 #: wxDialogStatus.py:171
 msgid "f-level:"
@@ -269,7 +269,7 @@ msgstr "Database aggiornato"
 
 #: wxDialogStatus.py:177
 msgid "signatures"
-msgstr "segnature"
+msgstr "firme"
 
 #: wxDialogStatus.py:179
 msgid "from"
@@ -821,7 +821,7 @@ msgstr "&Estrai gli Attachment e le Macro dai documenti MS Office"
 #: wxDialogPreferences.py:489
 #: wxDialogPreferences.py:496
 msgid "Select if you wish to detect executable files with broken PE structure as viruses"
-msgstr ""
+msgstr "Scegli se preferisci identificare file eseguibili con struttura PE danneggiata come virus"
 
 #: wxDialogPreferences.py:493
 msgid "&Detect Broken Executables"
@@ -1057,7 +1057,7 @@ msgstr "&Escludi file che corrispondono"
 #: wxDialogPreferences.py:837
 #: wxDialogPreferences.py:862
 msgid "Patterns"
-msgstr "Pattern"
+msgstr "Modelli"
 
 #: wxDialogPreferences.py:842
 #: wxDialogPreferences.py:867
@@ -1505,15 +1505,15 @@ msgstr "Pagina iniziale di ClamAV"
 
 #: wxDialogAbout.py:150
 msgid "Finndesign Homepage"
-msgstr "Pagina iniziale Finndesign"
+msgstr "Pagina iniziale di Finndesign"
 
 #: wxDialogAbout.py:158
 msgid "Python Homepage"
-msgstr "Python Homepage"
+msgstr "Pagina iniziale di Python"
 
 #: OlAddin.py:174
 msgid "You appear to be running a win32all version pre 151, which is pretty old"
-msgstr "Sembra che stai usando una versione di win32all precedente alla 151, è datata"
+msgstr "Sembra che tu stia usando una versione di win32all precedente alla 151, quindi piuttosto datata"
 
 #: OlAddin.py:175
 msgid "I'm afraid it is time to upgrade"
@@ -1640,14 +1640,12 @@ msgid "An error occurred whilst terminating scheduler thread. Error: %s"
 msgstr "Un errore improvviso nel terminare il thread di sistema. Errore: %s"
 
 #: ClamTray.py:237
-#, fuzzy
 msgid "&Configure Scheduler"
-msgstr "%Configura Scheduler"
+msgstr "%Configura Schedulatore"
 
 #: ClamTray.py:257
-#, fuzzy
 msgid "&Run Scheduled Scan"
-msgstr "&Avvia la scansione Scheduled"
+msgstr "&Avvia la scansione pianificata"
 
 #: ClamTray.py:261
 msgid "&Stop All Running Tasks Now"
@@ -1699,9 +1697,8 @@ msgid "Could not launch ClamWin Scanner. Error: %s"
 msgstr "Impossibile lanciare la scansione di ClamWin. Errore: %s"
 
 #: ClamTray.py:351
-#, fuzzy
 msgid "Could not display balloon tooltip. Error: %s"
-msgstr "Impossibile visualizzazre il balloon tooltip. Errore: %s"
+msgstr "Impossibile visualizzare il fumetto di suggerimento. Errore: %s"
 
 #: ClamTray.py:362
 msgid ""
@@ -1734,25 +1731,22 @@ msgid "Virus database has been updated."
 msgstr "Il database dei Virus è stato aggiornato con successo"
 
 #: ClamTray.py:405
-#, fuzzy
 msgid "An error occurred during Scheduled Virus Database Update. Please review the update report."
-msgstr "Errore nell'aggiornamento del Database Scheduled Virus. Per favore riguardare il rapporto dell'aggiornamento."
+msgstr "Errore nell'aggiornamento pianificato del Database Virus. Per favore riguardare il rapporto dell'aggiornamento."
 
 #: ClamTray.py:418
-#, fuzzy
 msgid ""
 "Unable to spawn scheduled process.\n"
 "Command line: %s\n"
 "Error: %s"
 msgstr ""
-"??? Unable to spawn scheduled process. ???\n"
+"Impossibile generare processo pianificato.\n"
 "Riga di comando: %s\n"
 "Errore: %s"
 
 #: ClamTray.py:433
-#, fuzzy
 msgid "Error performing Scheduled Update."
-msgstr "Errore nell'eseguire l'aggiornamento del Scheduled."
+msgstr "Errore nell'eseguire l'aggiornamento del pianificatore."
 
 #: ClamTray.py:441
 #: wxDialogUtils.py:206
@@ -1764,24 +1758,20 @@ msgid "An error occurred while starting ClamWin Free Antivirus Preferences.\n"
 msgstr "Errore improvviso nell'avvio delle preferenze di ClamWin Free Antivirus\n"
 
 #: ClamTray.py:496
-#, fuzzy
 msgid "Virus has been detected during scheduled scan! Please review the scan report."
-msgstr "Il virus è stato cancellato durante la scansione scheduled! Per favore riguarda il rapporto della scansione."
+msgstr "Il virus è stato cancellato durante la scansione pianificata! Per favore riguarda il rapporto della scansione."
 
 #: ClamTray.py:498
-#, fuzzy
 msgid "An error occurred during scheduled scan. Please review the scan report."
-msgstr "Errore improvviso durante la scansione scheduled. Per favore riguarda il rapporto della scansione."
+msgstr "Errore improvviso durante la scansione pianificata. Per favore riguarda il rapporto della scansione."
 
 #: ClamTray.py:530
-#, fuzzy
 msgid "Running Scheduled Task:\n"
-msgstr "Avvio in corso Scheduled Task:\n"
+msgstr "Avvio in corso operazione pianificata:\n"
 
 #: ClamTray.py:532
-#, fuzzy
 msgid "An error occurred whilst running Running Scheduled Task "
-msgstr "Errore improvviso nell'avviare il Scheduled Task "
+msgstr "Errore improvviso nell'avviare l'operazione pianificata"
 
 #, fuzzy
 msgid "Scans Programs in Computer Memory for Viruses"
@@ -1792,7 +1782,7 @@ msgid "Scan &Memory"
 msgstr "Rapporto &Scansione"
 
 msgid "Scan Computer Memory"
-msgstr ""
+msgstr "Scansiona la memoria del computer"
 
 #, fuzzy
 msgid "Scans Programs Loaded in Computer Memory for Computer Viruses"
@@ -1807,14 +1797,14 @@ msgid "Specify any additional parameters for clamscan.exe"
 msgstr "Specifica la posizione di clamscan"
 
 msgid "&Unload Infected Programs from Computer Memory"
-msgstr ""
+msgstr "Scarica programmi infetti dalla memoria del comp&uter"
 
 #, fuzzy
 msgid "Select if you wish to unload infected programs from computer memory so they can be quarantined or removed"
 msgstr "Seleziona se vuoi visualizzare solo i file infetti nella finestra di scansione"
 
 msgid "Scan &Programs Loaded in Computer Memory"
-msgstr ""
+msgstr "Scansiona i %programmi caricati nella memoria del computer"
 
 #, fuzzy
 msgid "Select if you wish to include programs computer memory during every scan"
@@ -1829,9 +1819,8 @@ msgid "Scanning Programs in Computer Memory"
 msgstr "Scansione File e Cartelle"
 
 msgid "Computer Memory Scan Completed"
-msgstr ""
+msgstr "Scansione memoria computer completata"
 
-#, fuzzy
 msgid "Select if you wish to scan OLE attachments and macros in MS Office Documents"
-msgstr "&Estrai gli Attachment e le Macro dai documenti MS Office"
+msgstr "&Estrai gli allegati e le Macro dai documenti MS Office"
 
