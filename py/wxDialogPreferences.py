@@ -56,7 +56,8 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLGCHECKBOXSHOWPROGRESS, 
  wxID_WXPREFERENCESDLGCHECKBOXSMTPENABLE, 
  wxID_WXPREFERENCESDLGCHECKBOXTRAYNOTIFY, wxID_WXPREFERENCESDLGCHECKBOXUNLOAD, 
- wxID_WXPREFERENCESDLGCHECKBOXUPDATELOGON, 
+ wxID_WXPREFERENCESDLGCHECKBOXUPDATELOGON,
+ wxID_WXPREFERENCESDLGCHECKBOXOUTLOOKADDINENABLED, 
  wxID_WXPREFERENCESDLGCHOICEPRIORITY, wxID_WXPREFERENCESDLGCHOICEUPDATEDAY, 
  wxID_WXPREFERENCESDLGCHOICEUPDATEFREQUENCY, 
  wxID_WXPREFERENCESDLGEDITABLELISTBOXFILTERSEXCLUDE, 
@@ -74,7 +75,8 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLGSTATICBOXEMAILDETAILS, 
  wxID_WXPREFERENCESDLGSTATICBOXINFECTED, 
  wxID_WXPREFERENCESDLGSTATICBOXSCANOPTIONS, 
- wxID_WXPREFERENCESDLGSTATICBOXSMTPCONNECTION, 
+ wxID_WXPREFERENCESDLGSTATICBOXSMTPCONNECTION,
+ wxID_WXPREFERENCESDLGSTATICBOXOUTLOOKADDIN, 
  wxID_WXPREFERENCESDLGSTATICLINEUPDATETIMECTRL, 
  wxID_WXPREFERENCESDLGSTATICTEXT1, wxID_WXPREFERENCESDLGSTATICTEXT2, 
  wxID_WXPREFERENCESDLGSTATICTEXTADDITIONALPARAMS, 
@@ -128,8 +130,9 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLG_PANELFILES, wxID_WXPREFERENCESDLG_PANELFILTERS, 
  wxID_WXPREFERENCESDLG_PANELINTERNETUPDATE, 
  wxID_WXPREFERENCESDLG_PANELOPTIONS, wxID_WXPREFERENCESDLG_PANELPROXY, 
- wxID_WXPREFERENCESDLG_PANELREPORTS, wxID_WXPREFERENCESDLG_PANELSCHEDULER, 
-] = map(lambda _init_ctrls: wxNewId(), range(114))
+ wxID_WXPREFERENCESDLG_PANELREPORTS, wxID_WXPREFERENCESDLG_PANELSCHEDULER,
+ wxID_WXPREFERENCESDLG_PANELEMAILSCANNING,
+] = map(lambda _init_ctrls: wxNewId(), range(117))
 
 class wxPreferencesDlg(wxDialog):
     def _init_coll_imageListScheduler_Images(self, parent):
@@ -159,6 +162,8 @@ class wxPreferencesDlg(wxDialog):
               text='File Locations')
         parent.AddPage(imageId=-1, page=self._panelReports, select=False,
               text='Reports')
+        parent.AddPage(imageId=-1, page=self._panelEmailScanning, select=False,
+              text='Email Scanning')
         parent.AddPage(imageId=-1, page=self._panelAdvanced, select=False,
               text='Advanced')
 
@@ -221,6 +226,11 @@ class wxPreferencesDlg(wxDialog):
 
         self._panelReports = wxPanel(id=wxID_WXPREFERENCESDLG_PANELREPORTS,
               name='_panelReports', parent=self.notebook, pos=wxPoint(0, 0),
+              size=wxSize(390, 234), style=wxTAB_TRAVERSAL)
+        self._panelReports.SetAutoLayout(False)
+
+        self._panelEmailScanning = wxPanel(id=wxID_WXPREFERENCESDLG_PANELEMAILSCANNING,
+              name='_panelEmailScanning', parent=self.notebook, pos=wxPoint(0, 0),
               size=wxSize(390, 234), style=wxTAB_TRAVERSAL)
         self._panelReports.SetAutoLayout(False)
 
@@ -897,6 +907,18 @@ class wxPreferencesDlg(wxDialog):
         self.checkBoxUnload.SetValue(False)
         self.checkBoxUnload.SetToolTipString('Select if you wish to unload infected programs from computer memory so they can be quarantined or removed')
 
+        self.staticBoxOutlookAddin = wxStaticBox(id=wxID_WXPREFERENCESDLGSTATICBOXOUTLOOKADDIN,
+              label='Outlook Addin', name='staticBoxOutlookAddin',
+              parent=self._panelEmailScanning, pos=wxPoint(6, 11), size=wxSize(376,
+              87), style=0)
+
+        self.checkBoxOutlookAddinEnabled = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXOUTLOOKADDINENABLED,
+              label='&Enable Outlook Addin', name='checkBoxOutlookAddinEnabled',
+              parent=self._panelEmailScanning, pos=wxPoint(15, 29), size=wxSize(354,
+              18), style=0)
+        self.checkBoxOutlookAddinEnabled.SetValue(True)
+        self.checkBoxOutlookAddinEnabled.SetToolTipString('Select if you wish to enable email scanning in MS Outlook')
+
         self._init_coll_notebook_Pages(self.notebook)
 
     def __init__(self, parent, config, switchToSchedule):
@@ -924,6 +946,7 @@ class wxPreferencesDlg(wxDialog):
                         self._ProxyPageInit,
                         self._FilesPageInit, self._ArchivesPageInit,
                         self._ReportsPageInit,
+                        self._EmailScanningPageInit,
                         self._AdvancedPageInit]
         # added check for self._config.Get('UI', 'Standalone')
         # to enable running the scanner only with no scheduler
@@ -973,6 +996,9 @@ class wxPreferencesDlg(wxDialog):
                     return False
                 self.notebook.GetPage(page).TransferDataFromWindow()
 
+            # Save the Email Scanning setting to the registry
+            Utils.EnableOutlookAddin(self.checkBoxOutlookAddinEnabled.IsChecked());
+            
             # save config to properties file
             if not self._config.Write():
                 MsgBox.ErrorBox(self, 'An error occured whilst saving configuration file %s. Please check that you have write permsiison to the configuratuion file.' % self._config.GetFilename())
@@ -980,6 +1006,7 @@ class wxPreferencesDlg(wxDialog):
 
             # raise the event so other programs can reload config
             if sys.platform.startswith("win"):
+                # Save scheduled scans separately
                 wxDialogScheduledScan.SavePersistentScheduledScans(
                     os.path.join(Utils.GetScheduleShelvePath(self._config), 'ScheduledScans'),
                     self._scheduledScans)
@@ -1136,6 +1163,13 @@ class wxPreferencesDlg(wxDialog):
         else:
             self.checkBoxTrayNotify.Hide()
 
+    def _EmailScanningPageInit(self):
+        # Check if Outlook is installed, if not, disable this option
+        self.checkBoxOutlookAddinEnabled.Enable(Utils.IsOutlookInstalled());
+        # check if addin is enabled
+        self.checkBoxOutlookAddinEnabled.SetValue(Utils.IsOutlookAddinEnabled());
+        #self.checkBoxOutlookAddinEnabled.SetValidator(MyValidator(config=self._config, section='ClamAV', value='', canEmpty=True));
+        
     def _AdvancedPageInit(self):
         self.choicePriority.SetValidator(MyValidator(config=self._config, section='ClamAV', value='Priority'))
         self.spinCtrlMaxLogSize.SetValidator(MyValidator(self._config, section='ClamAV', value='MaxLogSize', canEmpty=False))
@@ -1394,8 +1428,7 @@ class MyBaseValidator(wxPyValidator):
 
      def Validate(self, win):
          return True
-
-
+        
 class MyWeekDayValidator(MyBaseValidator):
      def TransferToWindow(self):
          value = self._config.Get(self._section, self._value)
@@ -1408,7 +1441,6 @@ class MyWeekDayValidator(MyBaseValidator):
          ctrl = self.GetWindow()
          value = ctrl.GetSelection()
          self._config.Set(self._section, self._value, str(value))
-
 
 class MyValidator(MyBaseValidator):
     def Validate(self, win):

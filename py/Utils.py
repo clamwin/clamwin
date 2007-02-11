@@ -25,6 +25,7 @@
 import os, sys, time, tempfile, shutil, locale
 import Config, ConfigParser
 import re, fnmatch, urllib2
+import _winreg
 
 import win32api, win32con, win32gui, win32event, win32con, pywintypes
 from win32com.shell import shell, shellcon
@@ -743,17 +744,97 @@ def CheckDatabase(config):
     return os.path.isfile(os.path.join(path, 'main.cvd')) and \
            os.path.isfile(os.path.join(path, 'daily.cvd'))
 
+def RegKeyExists(key, subkey):
+    # try to open the regkey
+    try:
+        hKey = _winreg.OpenKey(key, subkey);
+        _winreg.CloseKey(hKey);
+        return True;
+    except:
+        return False;
 
+def IsOutlookInstalled():
+    return (RegKeyExists(_winreg.HKEY_CURRENT_USER, 'Software\\Microsoft\\Office\\Outlook') or
+        RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\Outlook') or
+        RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\9.0\\Outlook') or
+        RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\10.0\\Outlook') or
+        RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\11.0\\Outlook'))
 
+def IsOutlookAddinEnabled():
+    key = _winreg.HKEY_LOCAL_MACHINE
+    subKey = ''
+    enabled = False
+    if (RegKeyExists(_winreg.HKEY_CURRENT_USER, 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+        key = _winreg.HKEY_CURRENT_USER
+        subKey = 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin'
+    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+        key = _winreg.HKEY_LOCAL_MACHINE
+        subKey = 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin'
+    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\9.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+        key = _winreg.HKEY_LOCAL_MACHINE
+        subKey = 'Software\\Microsoft\\Office\\9.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
+    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\10.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+        key = _winreg.HKEY_LOCAL_MACHINE
+        subKey = 'Software\\Microsoft\\Office\\10.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
+    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\11.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+        key = _winreg.HKEY_LOCAL_MACHINE
+        subKey = 'Software\\Microsoft\\Office\\11.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
+    if (subKey != ''):
+        hKey = _winreg.OpenKey(key, subKey);
+        enabled = int(_winreg.QueryValueEx(hKey, "LoadBehavior")[0])==3;
+        _winreg.CloseKey(hKey)
+    return enabled
+
+def EnableOutlookAddin(enable):
+    # Find the key and subkey to set
+    key = _winreg.HKEY_LOCAL_MACHINE
+    subKey = ''
+    if (RegKeyExists(_winreg.HKEY_CURRENT_USER, 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+        key = _winreg.HKEY_CURRENT_USER
+        subKey = 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin'
+    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+        key = _winreg.HKEY_LOCAL_MACHINE
+        subKey = 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin'
+    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\9.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+        key = _winreg.HKEY_LOCAL_MACHINE
+        subKey = 'Software\\Microsoft\\Office\\9.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
+    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\10.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+        key = _winreg.HKEY_LOCAL_MACHINE
+        subKey = 'Software\\Microsoft\\Office\\10.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
+    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\11.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+        key = _winreg.HKEY_LOCAL_MACHINE
+        subKey = 'Software\\Microsoft\\Office\\11.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
+    print '   Subkey = ' + subKey
+    if (subKey != ''):
+        hKey = _winreg.OpenKey(key, subKey, 0,_winreg.KEY_WRITE);
+        if enable:
+            print '   Writing value to 3...'
+            _winreg.SetValueEx(hKey, 'LoadBehavior', 0, _winreg.REG_DWORD, 3)
+        else:
+            print '   Writing value to 2...'
+            _winreg.SetValueEx(hKey, 'LoadBehavior', 0, _winreg.REG_DWORD, 2)
+        _winreg.CloseKey(hKey)
+            
 if __name__ == '__main__':
-    f = file('c:\\2.txt', 'rt')
-    file('c:\\3.rtf', 'wt').write(ReformatLog(f.read(), True))
+    #f = file('c:\\2.txt', 'rt')
+    #file('c:\\3.rtf', 'wt').write(ReformatLog(f.read(), True))
     #AppendLogFile('c:\\1.txt',  'C:\\MSDE2kLog.txt', 30000)
     #currentDir = GetCurrentDir(True)
     #os.chdir(currentDir)
     #CreateProfile()
-    config_file = os.path.join(GetProfileDir(True),'ClamWin.conf')
-    config = Config.Settings(config_file)
-    b = config.Read()
-    print GetOnlineVersion(config)
-    print CheckDatabase(config)
+    
+    #config_file = os.path.join(GetProfileDir(True),'ClamWin.conf')
+    #config = Config.Settings(config_file)
+    #b = config.Read()
+    #print GetOnlineVersion(config)
+    #print CheckDatabase(config)
+
+    print 'IsOutLookInstalled = ' + str(IsOutlookInstalled())
+    if (IsOutlookInstalled()):
+        print 'IsOutlookAddinEnabled = ' + str(IsOutlookAddinEnabled())
+        print 'Enabling Outlook ...'
+        EnableOutlookAddin(True)
+        print 'IsOutlookAddinEnabled = ' + str(IsOutlookAddinEnabled())
+        print 'Disabling Outlook ...'
+        EnableOutlookAddin(False)
+        print 'IsOutlookAddinEnabled = ' + str(IsOutlookAddinEnabled())
