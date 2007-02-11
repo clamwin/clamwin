@@ -264,7 +264,3 @@ class wxAboutDlg(wxDialog):
             (mainver, dailyver))
         self.staticTextDBUpdated3.SetLabel(self.staticTextDBUpdated3.GetLabel() % \
             updatedstr)
-
-    def OnClamAVHomePage(self, event):
-        event.Skip()
-
