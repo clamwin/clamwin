@@ -140,8 +140,8 @@ Source: py2exe\dist\lib\zlib.pyd; DestDir: {app}\lib; Components: ClamWin; Flags
 [Icons]
 Name: {group}\{cm:StartMenuItemVirusScanner}; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: ClamWin
 Name: {code:DesktopDir}\{cm:ClamWinFreeAntivirus2}; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: ClamWin; Tasks: desktopicon
-Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuItemPrintableManual}; Filename: {app}\bin\manual.pdf; Components: ; WorkingDir: {app}\bin
-Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuItemOnlineHelp}; Filename: {app}\bin\manual.chm; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: ClamWin
+Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuItemPrintableManual}; Filename: {app}\doc\manual.pdf; Components: ; WorkingDir: {app}\bin
+Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuItemOnlineHelp}; Filename: {app}\doc\manual.chm; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: ClamWin
 Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuGroupHelpInternational}\Russian (Russian Help); Filename: {app}\doc\manual_ru.chm; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: LanguageSupport\Russian
 Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuGroupHelpInternational}\Français (French Manual); Filename: {app}\doc\manual_fr.pdf; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: LanguageSupport\French
 Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuGroupHelpInternational}\Nederlands (Dutch Help); Filename: {app}\doc\Manual_NL.chm; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: LanguageSupport\Dutch
@@ -167,10 +167,10 @@ Name: {app}\locale; Components: ClamWin
 [_ISTool]
 
 [Components]
-Name: ClamAV; Description: {cm:ClamAVFiles1}; Flags: fixed; Types: full custom typical
-Name: ClamWin; Description: {cm:ClamWinFiles1}; Flags: fixed; Types: full custom typical
-Name: ExplorerShell; Description: {cm:IntegrationExplorer1}; Types: full custom typical
-Name: OutlookAddin; Description: {cm:IntegrationOutlook1}; Types: full typical; Check: IsOutlookInstalled
+Name: ClamAV; Description: {cm:ClamAVFiles1}; Flags: fixed; Types: full custom
+Name: ClamWin; Description: {cm:ClamWinFiles1}; Flags: fixed; Types: full custom
+Name: ExplorerShell; Description: {cm:IntegrationExplorer1}; Types: full custom
+Name: OutlookAddin; Description: {cm:IntegrationOutlook1}; Types: full; Check: IsOutlookInstalled
 Name: LanguageSupport; Description: {cm:LanguageSupport1}; Types: full
 Name: LanguageSupport\Dutch; Description: Nederlands (Dutch); Types: full
 Name: LanguageSupport\French; Description: Français (French); Types: full
@@ -197,7 +197,6 @@ Filename: {app}\bin\ClamWin.conf; Section: Updates; Key: time; String: {code:Cur
 
 [Types]
 Name: full; Description: {cm:FullInstallation1}
-Name: typical; Description: {cm:TypicalInstallation1}
 Name: custom; Description: {cm:CustomInstallation1}; Flags: iscustom
 
 [UninstallDelete]
@@ -228,7 +227,6 @@ Root: HKCR; Subkey: CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32
 Root: HKCR64; Subkey: CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueData: Apartment; Flags: uninsdeletekey; ValueName: ThreadingModel; Components: ExplorerShell; Check: IsAllUsers and IsWin64
 Root: HKCR; Subkey: *\shellex\ContextMenuHandlers\ClamWin; ValueType: string; ValueData: {{65713842-C410-4f44-8383-BFE01A398C90}; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers
 Root: HKCR; Subkey: Folder\shellex\ContextMenuHandlers\ClamWin; ValueType: string; ValueData: {{65713842-C410-4f44-8383-BFE01A398C90}; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers
-
 
 Root: HKCU; Subkey: Software\Classes\CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueData: {app}\bin\ExpShell.dll; Flags: uninsdeletekey; Components: ExplorerShell; Check: not IsAllUsers
 Root: HKCU64; Subkey: Software\Classes\CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueData: {app}\bin\ExpShell64.dll; Flags: uninsdeletekey; Components: ExplorerShell; Check: not IsAllUsers and IsWin64
@@ -281,7 +279,6 @@ Root: HKCU; Subkey: Software\Microsoft\Office\Outlook\Addins\ClamWin.OutlookAddi
 
 [Tasks]
 Name: DownloadDB; Description: {cm:DownloadDB1}; GroupDescription: {cm:DownloadDB3}; Components: ClamAV
-; NOTE: The following entry contains English phrases ("Create a desktop icon" and "Additional icons"). You are free to translate them into another language if required.
 Name: desktopicon; Description: {cm:CreateDesktop1}; GroupDescription: {cm:CreateDesktop2}; Flags: unchecked
 [UninstallRun]
 Filename: {app}\bin\WClose.exe; WorkingDir: {app}\bin
@@ -302,7 +299,6 @@ Filename: {app}\bin\WClose.exe; WorkingDir: {app}\bin
 
 [Code]
 var
-  //CygwinChecked, CygwinFound: Boolean;
   AllUsers: Boolean;
   SetupCompleted: Boolean;
   Time: String;
@@ -539,28 +535,6 @@ begin
 	end;
 end;
 
-
-//function NoCygwin(): Boolean;
-//begin
-//	if not CygWinChecked then begin
-//		CygwinFound := RegKeyExists(HKEY_LOCAL_MACHINE, 'SOFTWARE\Cygnus Solutions\Cygwin\mounts v2\/');
-//		CygwinChecked := True;
-//		Result := not CygwinFound;
-//	end
-//	else begin
-//		Result := not CygwinFound;
-//	end
-//end;
-
-//function NoCygwinAllUsers(): Boolean;
-//begin
-//	Result := NoCygWin() and IsAllUsers();
-//end;
-
-//function NoCygwinNotAllUsers(): Boolean;
-//begin
-//	Result := NoCygWin() and not IsAllUsers();
-//end;
 
 function
 BaseDir(Default: String): String;

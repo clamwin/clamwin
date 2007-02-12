@@ -60,16 +60,25 @@ CLocalize::CLocalize(UINT uID)
 	_tcscpy(szModule, szClamWinPath);
 	_tcscat(szModule, _T("\\ExpShell.dll"));
 
-#ifdef _UNICODE
-	retValue = FormatMessageW(FORMAT_MESSAGE_FROM_HMODULE, GetModuleHandle(szModule), uID, dwLangId, value, STRING_TABLE_MAX, NULL);
-#else
+
 	retValue = FormatMessage(FORMAT_MESSAGE_FROM_HMODULE, GetModuleHandle(szModule), uID, dwLangId, value, STRING_TABLE_MAX, NULL);
-#endif
+
 	if (retValue == 0)
 	{
 		if (uID == S_SCANWITHCLAMWIN)
 			_tcscpy(value, _T("Scan with ClamWin Free AV..."));
 	}
+    else
+    {
+        // Remove trailing \r and \n characters
+        for (int i = 0; i < (int)_tcslen(value); i++)
+        {
+            if (value[i] == _T('\r') || value[i] == _T('\n'))
+            {
+                value[i] = _T('\0');
+            }
+        }
+    }
 }
 
 DWORD getLangId(TCHAR* szLocale)
@@ -315,13 +324,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,UINT indexMenu,UINT idCmdFi
 	::InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL);
 
 	// Menu
-	MENUITEMINFO miiScheduler = { sizeof(MENUITEMINFO) };
-	miiScheduler.fMask = MIIM_STRING | MIIM_ID;
-	miiScheduler.wID = idCmd++;
-	miiScheduler.dwTypeData = _(S_SCANWITHCLAMWIN);
-	InsertMenuItem ( hMenu, indexMenu++, TRUE, &miiScheduler );
-
-	//::InsertMenu(hMenu, indexMenu++, MF_STRING|MF_BYPOSITION, idCmd++, _(S_SCANWITHCLAMWIN));
+	::InsertMenu(hMenu, indexMenu++, MF_STRING|MF_BYPOSITION, idCmd++, _(S_SCANWITHCLAMWIN));
 
 	// Seperator
 	::InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL);
