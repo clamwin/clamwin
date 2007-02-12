@@ -36,4 +36,8 @@ cs_CZ.IntegrationOutlook1=Integrace s Microsoft Outlookem
 cs_CZ.ClamWinFreeAntivirus1=ClamWin Free Antivirus
 cs_CZ.ClamWinFreeAntivirus2=ClamWin Antivirus
 cs_CZ.LanguageSupport1=Language Support
-
+cs_CZ.StartMenuGroupHelp=Help
+cs_CZ.StartMenuGroupHelpInternational=International
+cs_CZ.StartMenuItemVirusScanner=Virus Scanner
+cs_CZ.StartMenuItemPrintableManual=Printable Manual
+cs_CZ.StartMenuItemOnlineHelp=Online Help

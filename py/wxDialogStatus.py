@@ -191,7 +191,8 @@ def translateClamAVLines(lines):
     for line in lines:
         # all strings containing backslashes represent the current file being scanned,
         # so these don't need to be translated (performance boost)
-        if line.find('\\') < 0:
+        # An exception is "Downloading ... [\]"
+        if (line.find('\\') < 0) or (line.find('Downloading') >= 0):
             if not doneDate:
                 if line.find("Scan started:") >= 0 or line.find("ClamAV update process started at") >= 0:
                     for sToReplace in lDateStrings:

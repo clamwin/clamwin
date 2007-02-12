@@ -27,22 +27,6 @@ import _winreg as wreg
 gLocalePath = ""
 gLocale = ""
 
-##def getCallingModule():
-##    stackList = traceback.extract_stack()
-##    stackList.reverse()
-##    
-##    for stackItem in stackList:
-##        modName = stackItem[0]
-##        indexNum = modName.rfind("\\")
-##        if indexNum >= 0:
-##            modName = modName[indexNum+1:]
-##        if modName.find("I18N.py") < 0:
-##            callingModName = modName
-##            return callingModName
-##    
-##    raise "Could not find name of calling module"
-
-
 """ Get a translated version of the specified English
     string, based on the current locale.
 """

@@ -42,14 +42,14 @@ static int dyn_libintl_init(void);
 TCHAR szClamWinPath[MAX_PATH] = _T("");
 DWORD dwLangId = 0;
 
-#define STRING_TABLE_MAX	1024
+#define STRING_TABLE_MAX	100
 #define _(x)				CLocalize(x).value
 
 class CLocalize
 {
 public:
 	CLocalize(UINT uID);
-	TCHAR value[STRING_TABLE_MAX];
+	TCHAR value[STRING_TABLE_MAX + 1];
 };
 
 CLocalize::CLocalize(UINT uID)
@@ -310,19 +310,24 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,UINT indexMenu,UINT idCmdFi
 
 	UINT		idCmd = idCmdFirst;
 	HRESULT		hr = E_INVALIDARG;
-	//TCHAR		menuString[STRING_TABLE_MAX];
 
 	// Seperator
 	::InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL);
 
 	// Menu
-	::InsertMenu(hMenu, indexMenu++, MF_STRING|MF_BYPOSITION, idCmd++, _(S_SCANWITHCLAMWIN));
+	MENUITEMINFO miiScheduler = { sizeof(MENUITEMINFO) };
+	miiScheduler.fMask = MIIM_STRING | MIIM_ID;
+	miiScheduler.wID = idCmd++;
+	miiScheduler.dwTypeData = _(S_SCANWITHCLAMWIN);
+	InsertMenuItem ( hMenu, indexMenu++, TRUE, &miiScheduler );
+
+	//::InsertMenu(hMenu, indexMenu++, MF_STRING|MF_BYPOSITION, idCmd++, _(S_SCANWITHCLAMWIN));
 
 	// Seperator
 	::InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL);
 
 	return ResultFromShort(idCmd-idCmdFirst);	//Must return number of menu
-	//items we added.
+												//items we added.
 }
 
 BOOL CShellExt::Scan(HWND hwnd)

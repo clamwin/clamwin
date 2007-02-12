@@ -129,6 +129,7 @@ def LoadPersistentScheduledScans(filename):
         scheduledScans = []
         print _('Could not open persistent storage for scheduled scans. Error: %s') % str(e)            
 
+    _convertDataFromEnglish(scheduledScans)
     return scheduledScans
 
 def SavePersistentScheduledScans(filename, scheduledScans):

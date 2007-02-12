@@ -36,4 +36,8 @@ es_ES.IntegrationOutlook1=Integración con Microsoft Outlook
 es_ES.ClamWinFreeAntivirus1=Antivirus Libre ClamWin
 es_ES.ClamWinFreeAntivirus2=Antivirus ClamWin
 es_ES.LanguageSupport1=Soporte de idioma
-
+es_ES.StartMenuGroupHelp=Help
+es_ES.StartMenuGroupHelpInternational=International
+es_ES.StartMenuItemVirusScanner=Virus Scanner
+es_ES.StartMenuItemPrintableManual=Printable Manual
+es_ES.StartMenuItemOnlineHelp=Online Help

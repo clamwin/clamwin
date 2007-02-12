@@ -4,7 +4,7 @@
 [Setup]
 AppName={cm:ClamWinFreeAntivirus1}
 AppVerName={cm:ClamWinFreeAntivirus1} 0.88.7
-OutputBaseFilename=ClamWin-0.88.7-L10N-28
+OutputBaseFilename=ClamWin-0.88.7-L10N-30
 AppPublisher=budtse
 AppPublisherURL=http://www.clamwin.com/
 AppSupportURL=http://www.clamwin.com/
@@ -95,8 +95,8 @@ Source: Microsoft.VC80.CRT\msvcp80.dll; DestDir: {app}\bin; Components: ClamAV; 
 
 ;Source: ..\clamav-stable\sigtool\sigtool.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
 ; TODO : Copy Unicode build in NT and ANSI in 9x
-Source: ..\cpp\Release\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: IsWin9x
-Source: ..\cpp\Release_Unicode\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete; Check: UsingWinNT
+Source: ..\cpp\Release\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete 32bit; Check: IsWin9x
+Source: ..\cpp\Release_Unicode\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete 32bit; Check: UsingWinNT
 ;Source: ..\cpp\Release_x64\ExpShell64.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete 64bit; Check: IsWin64
 
 Source: py2exe\dist\bin\WClose.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
@@ -138,13 +138,13 @@ Source: py2exe\dist\lib\wxmsw24h.dll; DestDir: {app}\lib; Components: ClamWin; F
 Source: py2exe\dist\lib\zlib.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 ;Source: py2exe\dist\lib\BalloonTip.pyd; DestDir: {app}\lib; Components: ClamWin; Check: IsWin9x; Flags: restartreplace uninsrestartdelete
 [Icons]
-Name: {group}\Virus Scanner; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: ClamWin
-Name: {code:DesktopDir}\ClamWin Antivirus; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: ClamWin; Tasks: desktopicon
-Name: {group}\Help\Printable Manual; Filename: {app}\bin\manual.pdf; Components: ; WorkingDir: {app}\bin
-Name: {group}\Help\Online Help; Filename: {app}\bin\manual.chm; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: ClamWin
-Name: {group}\Help\International\Russian Help; Filename: {app}\bin\manual_ru.chm; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: LanguageSupport\Russian
-Name: {group}\Help\International\French Help; Filename: {app}\bin\manual_fr.pdf; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: LanguageSupport\French
-Name: {group}\Help\International\Dutch Help; Filename: {app}\bin\Manual_NL.chm; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: LanguageSupport\Dutch
+Name: {group}\{cm:StartMenuItemVirusScanner}; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: ClamWin
+Name: {code:DesktopDir}\{cm:ClamWinFreeAntivirus2}; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: ClamWin; Tasks: desktopicon
+Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuItemPrintableManual}; Filename: {app}\bin\manual.pdf; Components: ; WorkingDir: {app}\bin
+Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuItemOnlineHelp}; Filename: {app}\bin\manual.chm; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: ClamWin
+Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuGroupHelpInternational}\Russian (Russian Help); Filename: {app}\doc\manual_ru.chm; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: LanguageSupport\Russian
+Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuGroupHelpInternational}\Français (French Manual); Filename: {app}\doc\manual_fr.pdf; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: LanguageSupport\French
+Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuGroupHelpInternational}\Nederlands (Dutch Help); Filename: {app}\doc\Manual_NL.chm; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: LanguageSupport\Dutch
 ;Name: {group}\Help\International\Italian Help; Filename: {app}\bin\ItalianManual.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: LanguageSupport\Italian
 
 [Run]
@@ -175,10 +175,10 @@ Name: LanguageSupport; Description: {cm:LanguageSupport1}; Types: full
 Name: LanguageSupport\Dutch; Description: Nederlands (Dutch); Types: full
 Name: LanguageSupport\French; Description: Français (French); Types: full
 Name: LanguageSupport\German; Description: Deutsch (German); Types: full
-Name: LanguageSupport\Hungarian; Description: Hungarian; Types: full
-Name: LanguageSupport\Italian; Description: Italian; Types: full
-Name: LanguageSupport\Polish; Description: Polish; Types: full
-Name: LanguageSupport\Russian; Description: Russian; Types: full
+Name: LanguageSupport\Hungarian; Description: Magyar (Hungarian); Types: full
+Name: LanguageSupport\Italian; Description: Italiano (Italian); Types: full
+Name: LanguageSupport\Polish; Description: (Polish); Types: full
+Name: LanguageSupport\Russian; Description: (Russian); Types: full
 Name: LanguageSupport\Spanish; Description: Español (Spanish); Types: full
 
 [INI]

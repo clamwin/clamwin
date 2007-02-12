@@ -37,4 +37,8 @@ ru_RU.IntegrationOutlook1=Интеграция с Microsoft Outlook
 ru_RU.ClamWinFreeAntivirus1=ClamWin Free Антивирус
 ru_RU.ClamWinFreeAntivirus2=ClamWin Антивирус
 ru_RU.LanguageSupport1=Language Support
-
+ru_RU.StartMenuGroupHelp=Help
+ru_RU.StartMenuGroupHelpInternational=International
+ru_RU.StartMenuItemVirusScanner=Virus Scanner
+ru_RU.StartMenuItemPrintableManual=Printable Manual
+ru_RU.StartMenuItemOnlineHelp=Online Help

@@ -7,9 +7,37 @@ KNOWN ISSUES:
 *************
 - The link button to the clamav homepage in the about box is broken.
   Can't see why, it is broken in the official ClamWin package too.
+- On a clean install, the installer will default to "Full Installation", 
+  including all languages.  However, when installing over an existing 
+  installation of the official ClamWin release, no language support will be 
+  added by default, so you'll have to check the languages you want to install.
+  This is caused by Inno Setup remembering the settings of previous installs.
+
+Completed Languages
+*******************
+- Dutch/Belgian Dutch   (0.88.7)
+- French                (0.88.7)
+- German                (0.88.7)
+- Hungarian             (0.88.7)
+- Italian               (0.88.7)
+- Spanish               (0.88.7)
+
+History
+*******
+
+Changes in Version ClamWin-0.88.7-L10N-30.exe :
+- Hungarian installer was completed (Thanks KAMI)
+- The start menu items and groups are now localized (translations todo)
+- Fixed ClamAV link button in About box
+- Fixed the status window so strings containing "[\]" will be translated.
+  They were skipped because the program presumed these were file paths.
+- Fixed a bug showing Scheduled scans in the preferences
+
+Changes in Version ClamWin-0.88.7-L10N-29.exe :
+- Fixed a small grammar fault in French installer.
+- Completed Italian translation.
 
 Changes in Version ClamWin-0.88.7-L10N-28.exe :
-***************************************
 - Changed the filename to include the main ClamWin release the I18N branch
   is merged against.
 - French translation is completed (Thanks Teolemon)
@@ -17,7 +45,6 @@ Changes in Version ClamWin-0.88.7-L10N-28.exe :
   Shortcuts (like &Abbrir) may need to be reviewed (67 Fuzzy).
 
 Changes in Version ClamWinL10N-27.exe :
-***************************************
 - Separated the installer strings from the main Setup.iss file for easier
   maintenance.  These strings are now in LANGUAGE_STRING.iss files in the 
   locale directory.
@@ -25,7 +52,6 @@ Changes in Version ClamWinL10N-27.exe :
   the explorershell Message Table.
 
 Changes in Version ClamWinL10N-27.exe :
-***************************************
 - Merged with the trunk up to 0.88.7 (r997)
 - Removed the need for trailing spaces in the translations of weekdays
   ('Mon' to 'Sun') and months ('Jan' to 'Dec')
@@ -35,7 +61,6 @@ Changes in Version ClamWinL10N-27.exe :
   '0,88,7' in stead of '0.88.7')
 
 Changes in Version ClamWinL10N-26.exe :
-***************************************
 - Changed localization in the Explorer Shell extension:
   It now uses a MessageTable resource file in stead of gettext, which 
   eliminates the need for the libintl and iconv dlls.  This works for both
@@ -56,7 +81,6 @@ Changes in Version ClamWinL10N-26.exe :
 
 
 Changes in Version ClamWinL10N-25.exe :
-***************************************
 - Fixed a bug in the About box (didn't show because of the removed Python
   image, which left some garbage after merging)
 - Moved help files and manuals to a separate clamwin\doc directory
@@ -69,7 +93,6 @@ Changes in Version ClamWinL10N-25.exe :
 - Included German installer strings
 
 Changes in Version ClamWinL10N-24.exe :
-***************************************
 - Added string for tooltip 
   "Select if you wish to scan OLE attachments and macros in MS Office Documents"
 - Fixed the "Infected Files" box on the Preferences - General tab
@@ -82,7 +105,6 @@ Changes in Version ClamWinL10N-24.exe :
     not yet translated will appear in english.
 
 Changes in Version ClamWinL10N-23.exe :
-***************************************
 - Merged the .po files, so only 1 .po file remains per language.  The 
   performance seems to be good.  The .mo files are not stored in SVN, they
   need to be translated at build-time.

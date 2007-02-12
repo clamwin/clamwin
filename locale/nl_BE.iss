@@ -36,4 +36,8 @@ nl_BE.IntegrationOutlook1=Integratie met Microsoft Outlook
 nl_BE.ClamWinFreeAntivirus1=ClamWin Free Antivirus
 nl_BE.ClamWinFreeAntivirus2=ClamWin Antivirus
 nl_BE.LanguageSupport1=Taal ondersteuning
-
+nl_BE.StartMenuGroupHelp=Hulp
+nl_BE.StartMenuGroupHelpInternational=Internationaal
+nl_BE.StartMenuItemVirusScanner=Virus Scanner
+nl_BE.StartMenuItemPrintableManual=Afdrukbare Handleiding
+nl_BE.StartMenuItemOnlineHelp=Online Help

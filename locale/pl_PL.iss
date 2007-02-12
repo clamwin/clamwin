@@ -36,4 +36,8 @@ pl_PL.IntegrationOutlook1=Integracja z Microsoft Outlookiem
 pl_PL.ClamWinFreeAntivirus1=ClamWin Free Antivirus
 pl_PL.ClamWinFreeAntivirus2=ClamWin Antivirus
 pl_PL.LanguageSupport1=Language Support
-
+pl_PL.StartMenuGroupHelp=Help
+pl_PL.StartMenuGroupHelpInternational=International
+pl_PL.StartMenuItemVirusScanner=Virus Scanner
+pl_PL.StartMenuItemPrintableManual=Printable Manual
+pl_PL.StartMenuItemOnlineHelp=Online Help
