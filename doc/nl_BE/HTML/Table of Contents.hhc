@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
+<OBJECT type="text/site properties">
+	<param name="ImageType" value="Folder">
+</OBJECT>
+<UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Handleiding">
+		<param name="Local" value="Cover.html">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Inleiding">
+			<param name="Local" value="Intro.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Installatie handleiding">
+			<param name="Local" value="Install.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Instellingen">
+			<param name="Local" value="Config.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Gebruik">
+			<param name="Local" value="Usage.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Geavanceerd gebruik">
+			<param name="Local" value="Advanced.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="FAQ: Vaak gestelde vragen">
+			<param name="Local" value="Faq.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Problemen oplossen">
+			<param name="Local" value="Troubleshooting.html">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Bijlagen">
+		<param name="Local" value="App_CD-USB.html">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Bijlage A - ClamWin uitvoeren vanaf een CD of USB-stick">
+			<param name="Local" value="App_CD-USB.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Licentie">
+			<param name="Local" value="Licence.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Licentie (vertaald)">
+			<param name="Local" value="LicenceTranslation.html">
+			</OBJECT>
+	</UL>
+</UL>
+</BODY></HTML>

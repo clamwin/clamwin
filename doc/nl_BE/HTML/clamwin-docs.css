@@ -1,0 +1,24 @@
+P {
+	margin-bottom: 0.08in;
+	font-family: "Arial", sans-serif;
+	font-size: 12pt;
+}
+
+H1 {
+	margin-bottom: 0.08in;
+	text-align: center;
+	font-family: "Arial", sans-serif;
+	font-size: 16pt;
+}
+
+img {
+	border-style: none;
+}
+
+img.WrapLeft {
+	border-style: none;
+	padding-right: 3ex;
+	padding-top: 1ex;
+	padding-bottom: 1ex;
+	float: left;
+}
