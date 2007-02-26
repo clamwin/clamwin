@@ -1,8 +1,0 @@
-ClamWin provides Graphical User Interface to Clam Antivirus scanning engine.
-
-It allows to select and scan a folder or file, configure settings and
-update virus databases.
-
-It also includes a Windows Taskbar tray icon. ClamWin also features a context
-menu handler for Windows Explorer which installs Scan into the right-click
-explorer menu for files and folders.
