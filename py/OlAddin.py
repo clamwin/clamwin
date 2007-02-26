@@ -293,6 +293,7 @@ def ScanFile(path, config, attname):
 
 # returns 0 if everything is okay, or number fo infected files
 def ScanMailItem(item, sending, added_attachments = None):
+
     if not item.Attachments.Count:
         return 0
 
@@ -303,6 +304,14 @@ def ScanMailItem(item, sending, added_attachments = None):
         config_file = 'ClamWin.conf'
     config = Config.Settings(config_file)
     config.Read()
+
+    # scanning is disabled in the config    
+    if sending:
+        if config.Get('EmailScan', 'ScanOutgoing') != '1':
+            return 0    
+    else:
+        if config.Get('EmailScan', 'ScanIncoming') != '1':
+            return 0
 
     # get the virus database version from daily.cvd
     # we will need it when deciding if the message should be rescanned;
@@ -883,13 +892,21 @@ class OutlookAddin(ObjectsEvent):
 
     def OnStartupComplete(self, custom):
         dbg_print('OutlookAddin:OnStartupComplete')
-        Utils.CreateProfile()
+        Utils.CreateProfile()        
         # display SplashScreen
         try:
-            splash = os.path.join(Utils.GetCurrentDir(False), "img\\Splash.bmp")
-            SplashScreen.ShowSplashScreen(splash, 5)
+            config_file = os.path.join(Utils.GetProfileDir(True),'ClamWin.conf')
+            if not os.path.isfile(config_file):
+                config_file = 'ClamWin.conf'
+            config = Config.Settings(config_file)
+            config.Read()
+
+            if config.Get('EmailScan', 'ScanOutgoing') == '1' or \
+                config.Get('EmailScan', 'ScanIncoming') == '1':
+                splash = os.path.join(Utils.GetCurrentDir(False), "img\\Splash.bmp")             
+                SplashScreen.ShowSplashScreen(splash, 5)
         except Exception, e:
-            print "An error occured whilst displaying the spashscreen %s. Error: %s." % (splash, str(e))
+            print "An error occured whilst displaying the spashscreen Error: %s." % str(e)
         # Setup all our filters and hooks.  We used to do this in OnConnection,
         # but a number of 'strange' bugs were reported which I suspect would
         # go away if done during this later event - and this later place

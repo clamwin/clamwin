@@ -48,8 +48,8 @@ def create(parent, config):
  wxID_WXMAINFRAMETOOLSREPORTS,
 ] = map(lambda _init_coll_Tools_Items: wxNewId(), range(3))
 
-[wxID_WXMAINFRAMEHELPABOUT, wxID_WXMAINFRAMEHELPFAQ, wxID_WXMAINFRAMEHELPUPDATE, wxID_WXMAINFRAMEHELPWEBSITE, wxID_WXMAINFRAMEHELPHELP,
-] = map(lambda _init_coll_Help_Items: wxNewId(), range(5))
+[wxID_WXMAINFRAMEHELPABOUT, wxID_WXMAINFRAMEHELPFAQ, wxID_WXMAINFRAMEHELPUPDATE, wxID_WXMAINFRAMEHELPWEBSITE, wxID_WXMAINFRAMEHELPHELP, wxID_WXMAINFRAMEHELPSUPPORT,
+] = map(lambda _init_coll_Help_Items: wxNewId(), range(6))
 
 [wxID_WXMAINFRAMEFILEITEMS0, wxID_WXMAINFRAMEFILESCAN, wxID_WXMAINFRAMEFILESCANMEM
 ] = map(lambda _init_coll_File_Items: wxNewId(), range(3))
@@ -111,6 +111,8 @@ class wxMainFrame(wxFrame):
 
         parent.Append(helpString='Displays ClamWin Free Antivirus Manual',
               id=wxID_WXMAINFRAMEHELPHELP, item='&Help', kind=wxITEM_NORMAL)
+        parent.Append(helpString='Opens Support Forum in the Web Browser',
+              id=wxID_WXMAINFRAMEHELPSUPPORT, item='&Technical Support', kind=wxITEM_NORMAL)
         parent.Append(helpString='Checks for the Latest Version',
               id=wxID_WXMAINFRAMEHELPUPDATE, item='&Check Latest Version', kind=wxITEM_NORMAL)
         parent.Append(helpString='Opens ClamWin Free Antivirus Website',
@@ -118,11 +120,13 @@ class wxMainFrame(wxFrame):
 
         parent.Append(helpString='Opens Frequently Asked Questions Page in the Web Browser',
               id=wxID_WXMAINFRAMEHELPFAQ, item='&FAQ', kind=wxITEM_NORMAL)
+              
         parent.AppendSeparator()
         parent.Append(helpString='Displays the About Box',
               id=wxID_WXMAINFRAMEHELPABOUT, item='&About', kind=wxITEM_NORMAL)
         EVT_MENU(self, wxID_WXMAINFRAMEHELPABOUT, self.OnHelpAbout)
         EVT_MENU(self, wxID_WXMAINFRAMEHELPHELP, self.OnHelpHelp)
+        EVT_MENU(self, wxID_WXMAINFRAMEHELPSUPPORT, self.OnHelpSupport)
         EVT_MENU(self, wxID_WXMAINFRAMEHELPUPDATE, self.OnHelpUpdate)
         EVT_MENU(self, wxID_WXMAINFRAMEHELPWEBSITE, self.OnHelpWebsite)
         EVT_MENU(self, wxID_WXMAINFRAMEHELPFAQ, self.OnHelpFAQ)
@@ -401,7 +405,10 @@ class wxMainFrame(wxFrame):
                     MsgBox.ErrorBox(self, 'Could not open help file. Please ensure that you have Adobe Acrobat Reader installed.')
 
     def OnHelpFAQ(self, event):
-        wxDialogUtils.wxGoToInternetUrl('http://sourceforge.net/docman/display_doc.php?docid=22588&group_id=105508')
+        wxDialogUtils.wxGoToInternetUrl('http://www.clamwin.com/content/category/3/7/27/')
+    
+    def OnHelpSupport(self, event):
+        wxDialogUtils.wxGoToInternetUrl('http://forums.clamwin.com/')
 
 
     def OnHelpUpdate(self, event):

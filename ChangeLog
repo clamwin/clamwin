@@ -1,3 +1,9 @@
+Version 0.90  - 26 February 2006
+- Upgraded ClamAV to 0.90
+- Added option to scan only MS Windows Executable files (detection is done by file content rather than extension)
+- Added "Email Scanning" tab to preferences with an option to disable scanning of incoming and/or outgoing emails in MS Outlook
+- Added "Technical Support" link to Help Menu
+
 Version 0.88.7 - 12 December 2006
 - Upgraded ClamAV to 0.88.7
 - fixed possible naming problem on ole2 temp files

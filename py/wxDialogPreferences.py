@@ -46,18 +46,19 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLGBUTTONTASKDEACTIVATE, 
  wxID_WXPREFERENCESDLGBUTTONTASKEDIT, wxID_WXPREFERENCESDLGBUTTONTASKREMOVE, 
  wxID_WXPREFERENCESDLGBUTTONVIRDB, wxID_WXPREFERENCESDLGCHECKBOXCHECKVERSION, 
- wxID_WXPREFERENCESDLGCHECKBOXDETECTBROKEN, 
  wxID_WXPREFERENCESDLGCHECKBOXENABLEAUTOUPDATE, 
  wxID_WXPREFERENCESDLGCHECKBOXENABLEMBOX, 
  wxID_WXPREFERENCESDLGCHECKBOXENABLEOLE2, 
  wxID_WXPREFERENCESDLGCHECKBOXINFECTEDONLY, 
+ wxID_WXPREFERENCESDLGCHECKBOXOUTLOOKSCANINCOMING, 
+ wxID_WXPREFERENCESDLGCHECKBOXOUTLOOKSCANOUTGOING, 
  wxID_WXPREFERENCESDLGCHECKBOXSCANARCHIVES, 
+ wxID_WXPREFERENCESDLGCHECKBOXSCANEXEONLY, 
  wxID_WXPREFERENCESDLGCHECKBOXSCANRECURSIVE, 
  wxID_WXPREFERENCESDLGCHECKBOXSHOWPROGRESS, 
  wxID_WXPREFERENCESDLGCHECKBOXSMTPENABLE, 
  wxID_WXPREFERENCESDLGCHECKBOXTRAYNOTIFY, wxID_WXPREFERENCESDLGCHECKBOXUNLOAD, 
- wxID_WXPREFERENCESDLGCHECKBOXUPDATELOGON,
- wxID_WXPREFERENCESDLGCHECKBOXOUTLOOKADDINENABLED, 
+ wxID_WXPREFERENCESDLGCHECKBOXUPDATELOGON, 
  wxID_WXPREFERENCESDLGCHOICEPRIORITY, wxID_WXPREFERENCESDLGCHOICEUPDATEDAY, 
  wxID_WXPREFERENCESDLGCHOICEUPDATEFREQUENCY, 
  wxID_WXPREFERENCESDLGEDITABLELISTBOXFILTERSEXCLUDE, 
@@ -74,9 +75,9 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLGSPINCTRLRECURSION, 
  wxID_WXPREFERENCESDLGSTATICBOXEMAILDETAILS, 
  wxID_WXPREFERENCESDLGSTATICBOXINFECTED, 
- wxID_WXPREFERENCESDLGSTATICBOXSCANOPTIONS, 
- wxID_WXPREFERENCESDLGSTATICBOXSMTPCONNECTION,
  wxID_WXPREFERENCESDLGSTATICBOXOUTLOOKADDIN, 
+ wxID_WXPREFERENCESDLGSTATICBOXSCANOPTIONS, 
+ wxID_WXPREFERENCESDLGSTATICBOXSMTPCONNECTION, 
  wxID_WXPREFERENCESDLGSTATICLINEUPDATETIMECTRL, 
  wxID_WXPREFERENCESDLGSTATICTEXT1, wxID_WXPREFERENCESDLGSTATICTEXT2, 
  wxID_WXPREFERENCESDLGSTATICTEXTADDITIONALPARAMS, 
@@ -127,12 +128,12 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLGTEXTCTRLUPDATELOGFILE, 
  wxID_WXPREFERENCESDLGTEXTCTRLVIRDB, wxID_WXPREFERENCESDLG_PANELADVANCED, 
  wxID_WXPREFERENCESDLG_PANELARCHIVES, wxID_WXPREFERENCESDLG_PANELEMAILALERTS, 
- wxID_WXPREFERENCESDLG_PANELFILES, wxID_WXPREFERENCESDLG_PANELFILTERS, 
+ wxID_WXPREFERENCESDLG_PANELEMAILSCANNING, wxID_WXPREFERENCESDLG_PANELFILES, 
+ wxID_WXPREFERENCESDLG_PANELFILTERS, 
  wxID_WXPREFERENCESDLG_PANELINTERNETUPDATE, 
  wxID_WXPREFERENCESDLG_PANELOPTIONS, wxID_WXPREFERENCESDLG_PANELPROXY, 
- wxID_WXPREFERENCESDLG_PANELREPORTS, wxID_WXPREFERENCESDLG_PANELSCHEDULER,
- wxID_WXPREFERENCESDLG_PANELEMAILSCANNING,
-] = map(lambda _init_ctrls: wxNewId(), range(117))
+ wxID_WXPREFERENCESDLG_PANELREPORTS, wxID_WXPREFERENCESDLG_PANELSCHEDULER, 
+] = map(lambda _init_ctrls: wxNewId(), range(118))
 
 class wxPreferencesDlg(wxDialog):
     def _init_coll_imageListScheduler_Images(self, parent):
@@ -185,7 +186,7 @@ class wxPreferencesDlg(wxDialog):
     def _init_ctrls(self, prnt):
         # generated method, don't edit
         wxDialog.__init__(self, id=wxID_WXPREFERENCESDLG, name='', parent=prnt,
-              pos=wxPoint(1011, 469), size=wxSize(419, 351),
+              pos=wxPoint(523, 301), size=wxSize(419, 351),
               style=wxDEFAULT_DIALOG_STYLE, title='ClamWin Preferences')
         self._init_utils()
         self.SetClientSize(wxSize(411, 324))
@@ -230,9 +231,8 @@ class wxPreferencesDlg(wxDialog):
         self._panelReports.SetAutoLayout(False)
 
         self._panelEmailScanning = wxPanel(id=wxID_WXPREFERENCESDLG_PANELEMAILSCANNING,
-              name='_panelEmailScanning', parent=self.notebook, pos=wxPoint(0, 0),
-              size=wxSize(390, 234), style=wxTAB_TRAVERSAL)
-        self._panelReports.SetAutoLayout(False)
+              name='_panelEmailScanning', parent=self.notebook, pos=wxPoint(0,
+              0), size=wxSize(390, 234), style=wxTAB_TRAVERSAL)
 
         self._panelAdvanced = wxPanel(id=wxID_WXPREFERENCESDLG_PANELADVANCED,
               name='_panelAdvanced', parent=self.notebook, pos=wxPoint(0, 0),
@@ -487,12 +487,12 @@ class wxPreferencesDlg(wxDialog):
         self.checkBoxEnableOLE2.SetToolTipString('Select if you wish to scan OLE attachments and macros in MS Office Documents')
         self.checkBoxEnableOLE2.SetValue(False)
 
-        self.checkBoxDetectBroken = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXDETECTBROKEN,
-              label='&Detect Broken Executables', name='checkBoxDetectBroken',
-              parent=self._panelAdvanced, pos=wxPoint(6, 55), size=wxSize(381,
-              18), style=0)
-        self.checkBoxDetectBroken.SetToolTipString('Select if you wish to detect executable files with broken PE structure as viruses')
-        self.checkBoxDetectBroken.SetValue(False)
+        self.checkBoxScanExeOnly = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXSCANEXEONLY,
+              label='Try to Scan &Executable Files Only',
+              name='checkBoxScanExeOnly', parent=self._panelAdvanced,
+              pos=wxPoint(6, 55), size=wxSize(381, 18), style=0)
+        self.checkBoxScanExeOnly.SetToolTipString('Select if you wish to detect executable files with broken PE structure as viruses')
+        self.checkBoxScanExeOnly.SetValue(False)
 
         self.staticTextAdditionalParams = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTADDITIONALPARAMS,
               label='&Additional Clamscan Command Line Parameters:',
@@ -908,16 +908,31 @@ class wxPreferencesDlg(wxDialog):
         self.checkBoxUnload.SetToolTipString('Select if you wish to unload infected programs from computer memory so they can be quarantined or removed')
 
         self.staticBoxOutlookAddin = wxStaticBox(id=wxID_WXPREFERENCESDLGSTATICBOXOUTLOOKADDIN,
-              label='Outlook Addin', name='staticBoxOutlookAddin',
-              parent=self._panelEmailScanning, pos=wxPoint(6, 11), size=wxSize(376,
-              87), style=0)
+              label='Microsoft Outlook', name='staticBoxOutlookAddin',
+              parent=self._panelEmailScanning, pos=wxPoint(6, 11),
+              size=wxSize(376, 77), style=0)
 
-        self.checkBoxOutlookAddinEnabled = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXOUTLOOKADDINENABLED,
-              label='&Enable Outlook Addin', name='checkBoxOutlookAddinEnabled',
-              parent=self._panelEmailScanning, pos=wxPoint(15, 29), size=wxSize(354,
-              18), style=0)
-        self.checkBoxOutlookAddinEnabled.SetValue(True)
-        self.checkBoxOutlookAddinEnabled.SetToolTipString('Select if you wish to enable email scanning in MS Outlook')
+        self.checkBoxOutlookScanIncoming = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXOUTLOOKSCANINCOMING,
+              label='&Scan &Incoming Email Messages',
+              name='checkBoxOutlookScanIncoming',
+              parent=self._panelEmailScanning, pos=wxPoint(15, 32),
+              size=wxSize(354, 18), style=0)
+        self.checkBoxOutlookScanIncoming.SetValue(False)
+        self.checkBoxOutlookScanIncoming.SetToolTipString('Select if you wish to enable scanning of incoming email messages in MS Outlook')
+        EVT_CHECKBOX(self.checkBoxOutlookScanIncoming,
+              wxID_WXPREFERENCESDLGCHECKBOXOUTLOOKSCANINCOMING,
+              self.OnCheckBoxOutlookAddinEnabledCheckbox)
+
+        self.checkBoxOutlookScanOutgoing = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXOUTLOOKSCANOUTGOING,
+              label='&Scan &Outgoing Email Messages',
+              name='checkBoxOutlookScanOutgoing',
+              parent=self._panelEmailScanning, pos=wxPoint(15, 57),
+              size=wxSize(354, 18), style=0)
+        self.checkBoxOutlookScanOutgoing.SetValue(False)
+        self.checkBoxOutlookScanOutgoing.SetToolTipString('Select if you wish to enable scanning of outgoing email messages in MS Outlook')
+        EVT_CHECKBOX(self.checkBoxOutlookScanOutgoing,
+              wxID_WXPREFERENCESDLGCHECKBOXOUTLOOKSCANOUTGOING,
+              self.OnCheckBoxOutlookScanOutgoingCheckbox)
 
         self._init_coll_notebook_Pages(self.notebook)
 
@@ -952,11 +967,16 @@ class wxPreferencesDlg(wxDialog):
         # to enable running the scanner only with no scheduler
         # needed in clamwin plugin to BartPE <http://oss.netfarm.it/winpe/>
         if self._config.Get('UI', 'Standalone') == '1':
-            # remove internet updates page on unix
-            init_pages.remove(self._ScheduledScanPageInit)
+            init_pages.remove(self._EmailScanningPageInit)
             init_pages.remove(self._InternetUpdatePageInit)
+            init_pages.remove(self._ScheduledScanPageInit)                        
+            self.notebook.RemovePage(9)
             self.notebook.RemovePage(4)
             self.notebook.RemovePage(2)
+        else:            
+            # remove "Email Scanning page if there is no MS Outlook
+            if not Utils.IsOutlookInstalled():
+                self.notebook.RemovePage(9)
 
 
         for init_page in init_pages:
@@ -995,9 +1015,6 @@ class wxPreferencesDlg(wxDialog):
                     self.notebook.SetSelection(page)
                     return False
                 self.notebook.GetPage(page).TransferDataFromWindow()
-
-            # Save the Email Scanning setting to the registry
-            Utils.EnableOutlookAddin(self.checkBoxOutlookAddinEnabled.IsChecked());
             
             # save config to properties file
             if not self._config.Write():
@@ -1164,18 +1181,15 @@ class wxPreferencesDlg(wxDialog):
             self.checkBoxTrayNotify.Hide()
 
     def _EmailScanningPageInit(self):
-        # Check if Outlook is installed, if not, disable this option
-        self.checkBoxOutlookAddinEnabled.Enable(Utils.IsOutlookInstalled());
-        # check if addin is enabled
-        self.checkBoxOutlookAddinEnabled.SetValue(Utils.IsOutlookAddinEnabled());
-        #self.checkBoxOutlookAddinEnabled.SetValidator(MyValidator(config=self._config, section='ClamAV', value='', canEmpty=True));
+        self.checkBoxOutlookScanIncoming.SetValidator(MyValidator(config=self._config, section='EmailScan', value='ScanIncoming'));
+        self.checkBoxOutlookScanOutgoing.SetValidator(MyValidator(config=self._config, section='EmailScan', value='ScanOutgoing'));
         
     def _AdvancedPageInit(self):
         self.choicePriority.SetValidator(MyValidator(config=self._config, section='ClamAV', value='Priority'))
         self.spinCtrlMaxLogSize.SetValidator(MyValidator(self._config, section='ClamAV', value='MaxLogSize', canEmpty=False))
         self.checkBoxEnableMbox.SetValidator(MyValidator(config=self._config, section='ClamAV', value='EnableMbox'))
         self.checkBoxEnableOLE2.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ScanOle2'))
-        self.checkBoxDetectBroken.SetValidator(MyValidator(config=self._config, section='ClamAV', value='DetectBroken'))
+        self.checkBoxScanExeOnly.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ScanExeOnly'))
         self.textCtrlAdditionalParams.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ClamScanParams', canEmpty=True))
 
     def _ListAddScheduledScan(self, sc, pos = -1):
@@ -1413,6 +1427,12 @@ class wxPreferencesDlg(wxDialog):
         self.UpdateScheduledTasksButtons()
 
     def OnCheckBoxCheckVersionCheckbox(self, event):
+        event.Skip()
+
+    def OnCheckBoxOutlookAddinEnabledCheckbox(self, event):
+        event.Skip()
+
+    def OnCheckBoxOutlookScanOutgoingCheckbox(self, event):
         event.Skip()
 
 class MyBaseValidator(wxPyValidator):

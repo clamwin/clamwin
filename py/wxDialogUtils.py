@@ -72,6 +72,7 @@ def wxUpdateVirDB(parent, config, autoClose = False):
     finally:
         try:
             os.remove(updatelog)
+            print updatelog
         except Exception, e:
             print 'Unable to remove file %s. Error: %s' % (updatelog, str(e))
         dlg.Destroy()

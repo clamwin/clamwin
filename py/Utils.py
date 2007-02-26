@@ -344,8 +344,8 @@ def GetScanCmd(config, path, scanlog, noprint = False):
         cmd += ' --no-mail'
     if config.Get('ClamAV', 'ScanOle2') != '1':
         cmd += ' --no-ole2'
-    if config.Get('ClamAV', 'DetectBroken') == '1':
-        cmd += ' --detect-broken'
+    if config.Get('ClamAV', 'ScanExeOnly') == '1':
+        cmd += ' --skip-noexe'
     if config.Get('ClamAV', 'ClamScanParams') != '':
         cmd += ' ' + config.Get('ClamAV', 'ClamScanParams')
     if config.Get('ClamAV', 'InfectedOnly') == '1' or noprint:
@@ -361,22 +361,22 @@ def GetScanCmd(config, path, scanlog, noprint = False):
     if not noprint and config.Get('ClamAV', 'ShowProgress') == '1':
         cmd += ' --show-progress'
 
-     # file scan only params
+    if config.Get('ClamAV', 'RemoveInfected') == '1':
+        cmd += ' --remove'
+    elif config.Get('ClamAV', 'MoveInfected') == '1':
+        quarantinedir = config.Get('ClamAV', 'QuarantineDir')
+        # create quarantine folder before scanning
+        if quarantinedir and not os.path.exists(quarantinedir):
+            try:
+                os.makedirs(quarantinedir)
+            except:
+                pass
+        cmd += ' --move="%s"' % quarantinedir
+ 
+    # file scan only params
     if path != None:
         if config.Get('ClamAV', 'ScanRecursive') == '1':
-            cmd += ' --recursive'
-        if config.Get('ClamAV', 'RemoveInfected') == '1':
-            cmd += ' --remove'
-        elif config.Get('ClamAV', 'MoveInfected') == '1':
-            quarantinedir = config.Get('ClamAV', 'QuarantineDir')
-            # create quarantine folder before scanning
-            if quarantinedir and not os.path.exists(quarantinedir):
-                try:
-                    os.makedirs(quarantinedir)
-                except:
-                    pass
-            cmd += ' --move="%s"' % quarantinedir
-            
+            cmd += ' --recursive'            
         # add annoying registry files to exclude as they're locked by OS
         cmd += GetExcludeSysLockedFiles()
 
@@ -742,8 +742,10 @@ def CheckDatabase(config):
     if path == '':
         return False
     return os.path.isfile(os.path.join(path, 'main.cvd')) and \
-           os.path.isfile(os.path.join(path, 'daily.cvd'))
+           (os.path.isfile(os.path.join(path, 'daily.cvd'))  or  \
+            os.path.isfile(os.path.join(os.path.join(path, 'daily.inc'), 'daily.info')))
 
+            
 def RegKeyExists(key, subkey):
     # try to open the regkey
     try:
@@ -759,82 +761,73 @@ def IsOutlookInstalled():
         RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\9.0\\Outlook') or
         RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\10.0\\Outlook') or
         RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\11.0\\Outlook'))
+        
+#def IsOutlookAddinEnabled():
+#    key = _winreg.HKEY_LOCAL_MACHINE
+#    subKey = ''
+#    enabled = False
+#    if (RegKeyExists(_winreg.HKEY_CURRENT_USER, 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+#        key = _winreg.HKEY_CURRENT_USER
+#        subKey = 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin'
+#    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+#        key = _winreg.HKEY_LOCAL_MACHINE
+#        subKey = 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin'
+#    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\9.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+#        key = _winreg.HKEY_LOCAL_MACHINE
+#        subKey = 'Software\\Microsoft\\Office\\9.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
+#    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\10.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+#        key = _winreg.HKEY_LOCAL_MACHINE
+#        subKey = 'Software\\Microsoft\\Office\\10.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
+#    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\11.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+#        key = _winreg.HKEY_LOCAL_MACHINE
+#        subKey = 'Software\\Microsoft\\Office\\11.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
+#    if (subKey != ''):
+#        hKey = _winreg.OpenKey(key, subKey);
+#        enabled = int(_winreg.QueryValueEx(hKey, "LoadBehavior")[0])==3;
+#        _winreg.CloseKey(hKey)
+#    return enabled
 
-def IsOutlookAddinEnabled():
-    key = _winreg.HKEY_LOCAL_MACHINE
-    subKey = ''
-    enabled = False
-    if (RegKeyExists(_winreg.HKEY_CURRENT_USER, 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin')):
-        key = _winreg.HKEY_CURRENT_USER
-        subKey = 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin'
-    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin')):
-        key = _winreg.HKEY_LOCAL_MACHINE
-        subKey = 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin'
-    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\9.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
-        key = _winreg.HKEY_LOCAL_MACHINE
-        subKey = 'Software\\Microsoft\\Office\\9.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
-    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\10.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
-        key = _winreg.HKEY_LOCAL_MACHINE
-        subKey = 'Software\\Microsoft\\Office\\10.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
-    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\11.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
-        key = _winreg.HKEY_LOCAL_MACHINE
-        subKey = 'Software\\Microsoft\\Office\\11.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
-    if (subKey != ''):
-        hKey = _winreg.OpenKey(key, subKey);
-        enabled = int(_winreg.QueryValueEx(hKey, "LoadBehavior")[0])==3;
-        _winreg.CloseKey(hKey)
-    return enabled
+#def EnableOutlookAddin(enable):
+#    # Find the key and subkey to set
+#    key = _winreg.HKEY_LOCAL_MACHINE
+#    subKey = ''
+#    if (RegKeyExists(_winreg.HKEY_CURRENT_USER, 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+#        key = _winreg.HKEY_CURRENT_USER
+#        subKey = 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin'
+#    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+#        key = _winreg.HKEY_LOCAL_MACHINE
+#        subKey = 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin'
+#    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\9.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+#        key = _winreg.HKEY_LOCAL_MACHINE
+#        subKey = 'Software\\Microsoft\\Office\\9.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
+#    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\10.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+#        key = _winreg.HKEY_LOCAL_MACHINE
+#        subKey = 'Software\\Microsoft\\Office\\10.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
+#    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\11.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+#        key = _winreg.HKEY_LOCAL_MACHINE
+#        subKey = 'Software\\Microsoft\\Office\\11.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
+#    print '   Subkey = ' + subKey
+#    if (subKey != ''):
+#        hKey = _winreg.OpenKey(key, subKey, 0,_winreg.KEY_WRITE);
+#        if enable:
+#            print '   Writing value to 3...'
+#            _winreg.SetValueEx(hKey, 'LoadBehavior', 0, _winreg.REG_DWORD, 3)
+#        else:
+#            print '   Writing value to 2...'
+#            _winreg.SetValueEx(hKey, 'LoadBehavior', 0, _winreg.REG_DWORD, 2)
+#        _winreg.CloseKey(hKey)
 
-def EnableOutlookAddin(enable):
-    # Find the key and subkey to set
-    key = _winreg.HKEY_LOCAL_MACHINE
-    subKey = ''
-    if (RegKeyExists(_winreg.HKEY_CURRENT_USER, 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin')):
-        key = _winreg.HKEY_CURRENT_USER
-        subKey = 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin'
-    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin')):
-        key = _winreg.HKEY_LOCAL_MACHINE
-        subKey = 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin'
-    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\9.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
-        key = _winreg.HKEY_LOCAL_MACHINE
-        subKey = 'Software\\Microsoft\\Office\\9.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
-    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\10.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
-        key = _winreg.HKEY_LOCAL_MACHINE
-        subKey = 'Software\\Microsoft\\Office\\10.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
-    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\11.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
-        key = _winreg.HKEY_LOCAL_MACHINE
-        subKey = 'Software\\Microsoft\\Office\\11.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
-    print '   Subkey = ' + subKey
-    if (subKey != ''):
-        hKey = _winreg.OpenKey(key, subKey, 0,_winreg.KEY_WRITE);
-        if enable:
-            print '   Writing value to 3...'
-            _winreg.SetValueEx(hKey, 'LoadBehavior', 0, _winreg.REG_DWORD, 3)
-        else:
-            print '   Writing value to 2...'
-            _winreg.SetValueEx(hKey, 'LoadBehavior', 0, _winreg.REG_DWORD, 2)
-        _winreg.CloseKey(hKey)
-            
+
+
 if __name__ == '__main__':
-    #f = file('c:\\2.txt', 'rt')
-    #file('c:\\3.rtf', 'wt').write(ReformatLog(f.read(), True))
+    f = file('c:\\2.txt', 'rt')
+    file('c:\\3.rtf', 'wt').write(ReformatLog(f.read(), True))
     #AppendLogFile('c:\\1.txt',  'C:\\MSDE2kLog.txt', 30000)
     #currentDir = GetCurrentDir(True)
     #os.chdir(currentDir)
     #CreateProfile()
-    
-    #config_file = os.path.join(GetProfileDir(True),'ClamWin.conf')
-    #config = Config.Settings(config_file)
-    #b = config.Read()
-    #print GetOnlineVersion(config)
-    #print CheckDatabase(config)
-
-    print 'IsOutLookInstalled = ' + str(IsOutlookInstalled())
-    if (IsOutlookInstalled()):
-        print 'IsOutlookAddinEnabled = ' + str(IsOutlookAddinEnabled())
-        print 'Enabling Outlook ...'
-        EnableOutlookAddin(True)
-        print 'IsOutlookAddinEnabled = ' + str(IsOutlookAddinEnabled())
-        print 'Disabling Outlook ...'
-        EnableOutlookAddin(False)
-        print 'IsOutlookAddinEnabled = ' + str(IsOutlookAddinEnabled())
+    config_file = os.path.join(GetProfileDir(True),'ClamWin.conf')
+    config = Config.Settings(config_file)
+    b = config.Read()
+    print GetOnlineVersion(config)
+    print CheckDatabase(config)

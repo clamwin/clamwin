@@ -389,7 +389,10 @@ class wxDialogStatus(wxDialog):
             # detect progress message in the new text
             #print_over = re.search('\[( {0,2}\d{1,3}\%)?[|/\-\\\*]?\]',
             #    ctrl.GetRange(self._previousStart, lastPos)) is not None
-            print_over = ctrl.GetRange(self._previousStart, lastPos).endswith(']\n')
+            curtext = ctrl.GetRange(self._previousStart, lastPos)
+            print_over = curtext.endswith(']\n') and \
+                         (self._scan or \
+                         not ctrl.GetRange(self._previousStart, lastPos).endswith('100%]\n'))
             if print_over:
                 # prevent form blinking text by disabling richedit selection here
                 win32api.SendMessage(ctrl.GetHandle(),Utils.EM_HIDESELECTION, 1, 0)
@@ -399,7 +402,8 @@ class wxDialogStatus(wxDialog):
                 win32api.PostMessage(self.textCtrlStatus.GetHandle(), win32con.EM_SCROLLCARET, 0, 0)
                 lastPos = self._previousStart
             else:
-                ctrl.AppendText(text)
+                if text != '\n':
+                    ctrl.AppendText(text)
             # highlight FOUND entries in red
             if text.endswith(' FOUND\n'):
                 ctrl.SetStyle(lastPos, ctrl.GetLastPosition() - 1,

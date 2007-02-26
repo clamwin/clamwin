@@ -44,7 +44,7 @@ class Settings:
              'ScanArchives': '1', 'MaxSize': '10', 'MaxFiles': '500',
              'MaxRecursion': '5', 'LogFile': '', 'MaxLogSize': '1',
              'MoveInfected': '0', 'QuarantineDir': '',  'Debug': '0',
-             'DetectBroken': '0', 'ClamScanParams':'', 'Kill': '1',
+             'ScanExeOnly': '1', 'ClamScanParams':'', 'Kill': '1',
              'IncludePatterns': '',
              'ExcludePatterns': REGEX_SEPARATOR.join(('*.dbx','*.tbb','*.pst', '*.dat', '*.log', '*.evt', '*.nsf', '*.ntf', '*.chm')),}],
         'Proxy':
@@ -65,6 +65,8 @@ class Settings:
         [0, {'TrayNotify': '1', 'ReportInfected': '1', 'Standalone': '0', 'Version': ''}],
         'Schedule':
         [0, {'Path': '', }],
+        'EmailScan':
+        [0, {'ScanIncoming': '1', 'ScanOutgoing': '1', }],
         }
 
     def Read(self):
@@ -85,12 +87,6 @@ class Settings:
         # for older version set display infected only to 1
         if self._settings['UI'][1]['Version'] == '':
             self._settings['ClamAV'][1]['InfectedOnly'] = '1'
-
-        # turn detect broken executables option off for versions lower then 0.88.2.2
-        # due to high rate of falsepositives
-        if self._settings['UI'][1]['Version'] < '0.88.2.2':
-            self._settings['ClamAV'][1]['DetectBroken'] = '0'
-
 
         self._settings['UI'][1]['Version'] = version.clamwin_version
         return True
