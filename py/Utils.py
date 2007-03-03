@@ -677,7 +677,12 @@ def ReplaceClamAVWarnings(data):
     
     # remove XXX: Excluded lines
     data = re.sub('.*\: Excluded\n', '', data)
-
+    
+    # remove incremental db update warnings and errors
+    data = re.sub('ERROR: getfile: .* not found on remote server \(IP: .*\)\n', '', data)
+    data = re.sub('ERROR: getpatch: Can\'t download .* from .*\n', '', data)
+    data = data.replace('WARNING: Incremental update failed, trying to download daily.cvd\n', '')
+    
     return data
 
 # returns tuple (version, url, changelog)
