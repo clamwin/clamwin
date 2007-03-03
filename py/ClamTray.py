@@ -507,10 +507,10 @@ class MainWindow:
             except:
                 priority = 'n'
             # clamav stopped writing start time of the scan to the log file
-            #try:
-            #    file(scanlog, 'wt').write('Scan Started %s\n' % time.ctime(time.time()))
-            #except:
-            #    pass
+            try:
+                file(scanlog, 'wt').write('Scan Started %s\n' % time.ctime(time.time()))
+            except:
+                pass
             proc = self._SpawnProcess(cmd,
                         priority,
                         self.ProcessFinished,
