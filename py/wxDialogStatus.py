@@ -199,10 +199,10 @@ class wxDialogStatus(wxDialog):
 
         # spawn and monitor our process
         # clamav stopped writing start time of the scan to the log file
-        #try:
-        #    file(logfile, 'wt').write('Scan Started %s\n' % time.ctime(time.time()))
-        #except:
-        #    pass
+        try:
+            file(logfile, 'wt').write('Scan Started %s\n' % time.ctime(time.time()))
+        except:
+            pass
         try:
             self._SpawnProcess(cmd, priority)
         except Process.ProcessError, e:
