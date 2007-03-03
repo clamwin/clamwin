@@ -488,10 +488,10 @@ class wxPreferencesDlg(wxDialog):
         self.checkBoxEnableOLE2.SetValue(False)
 
         self.checkBoxScanExeOnly = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXSCANEXEONLY,
-              label='Try to &Scan Executable Files Only',
+              label='Try to Scan &Executable Files Only',
               name='checkBoxScanExeOnly', parent=self._panelAdvanced,
               pos=wxPoint(6, 55), size=wxSize(381, 18), style=0)
-        self.checkBoxScanExeOnly.SetToolTipString('Select if you want to skip the scanning of non-executable files')
+        self.checkBoxScanExeOnly.SetToolTipString('Select if you wish to scan files that can be executed on MS Windows platform')
         self.checkBoxScanExeOnly.SetValue(False)
 
         self.staticTextAdditionalParams = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTADDITIONALPARAMS,
@@ -913,7 +913,7 @@ class wxPreferencesDlg(wxDialog):
               size=wxSize(376, 77), style=0)
 
         self.checkBoxOutlookScanIncoming = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXOUTLOOKSCANINCOMING,
-              label='Scan &Incoming Email Messages',
+              label='&Scan &Incoming Email Messages',
               name='checkBoxOutlookScanIncoming',
               parent=self._panelEmailScanning, pos=wxPoint(15, 32),
               size=wxSize(354, 18), style=0)
@@ -924,7 +924,7 @@ class wxPreferencesDlg(wxDialog):
               self.OnCheckBoxOutlookAddinEnabledCheckbox)
 
         self.checkBoxOutlookScanOutgoing = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXOUTLOOKSCANOUTGOING,
-              label='Scan &Outgoing Email Messages',
+              label='&Scan &Outgoing Email Messages',
               name='checkBoxOutlookScanOutgoing',
               parent=self._panelEmailScanning, pos=wxPoint(15, 57),
               size=wxSize(354, 18), style=0)
