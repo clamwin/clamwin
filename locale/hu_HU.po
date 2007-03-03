@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Clamwin\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-01-04 07:50+0100\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2007-03-03 16:29+0100\n"
+"Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: Hungarian ClamWin Team <clamwin-hungarian-bounces@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -229,22 +229,6 @@ msgstr "Ellenőrzött fájlok"
 #: wxDialogLogViewer.py:129
 msgid "Time:"
 msgstr "Idő:"
-
-#: wxDialogStatus.py:159
-msgid "WARNING: Your ClamAV installation is OUTDATED!"
-msgstr "FIGYELMEZTETÉS: Az Ön ClamAV telepítése ELAVULT!"
-
-#: wxDialogStatus.py:161
-msgid "WARNING: Local version:"
-msgstr "FIGYELMEZTETÉS: Helyi verzió:"
-
-#: wxDialogStatus.py:163
-msgid "Recommended version:"
-msgstr "Ajánlott verzió:"
-
-#: wxDialogStatus.py:165
-msgid "DON'T PANIC! Read"
-msgstr "NE ESSEN KÉTSÉGBE! Olvassa el"
 
 #: wxDialogStatus.py:167
 msgid "is up to date"
@@ -815,15 +799,6 @@ msgstr "Válassza ki, ha a postafiókokat is ellenőrizni kívánja"
 #: wxDialogPreferences.py:486
 msgid "&Extract Attachments and Macros from MS Office Documents"
 msgstr "OLE objektumok és makrók &kibontása az MS Office dokumentumokból"
-
-#: wxDialogPreferences.py:489
-#: wxDialogPreferences.py:496
-msgid "Select if you wish to detect executable files with broken PE structure as viruses"
-msgstr "Válassza ki, ha a hibás PE struktúrájú futtatható fájlokat vírusként kívánja azonosítani"
-
-#: wxDialogPreferences.py:493
-msgid "&Detect Broken Executables"
-msgstr "&Hibás futtatható állományok érzékelése"
 
 #: wxDialogPreferences.py:500
 msgid "&Additional Clamscan Command Line Parameters:"
@@ -1811,4 +1786,47 @@ msgstr "A memória ellenőrzése befejeződött"
 
 msgid "Select if you wish to scan OLE attachments and macros in MS Office Documents"
 msgstr "Válassza ki, ha az OLE objektumokat és makrókat is ellenőrizni szeretne az MS Office dokumentumokban"
+
+msgid "Email Scanning"
+msgstr ""
+
+msgid "Try to Scan &Executable Files Only"
+msgstr ""
+
+msgid "Select if you skip scanning of non-executable files"
+msgstr ""
+
+msgid "Microsoft Outlook"
+msgstr ""
+
+msgid "Scan &Incoming Email Messages"
+msgstr ""
+
+msgid "Select if you wish to enable scanning of incoming email messages in MS Outlook"
+msgstr ""
+
+msgid "Scan &Outgoing Email Messages"
+msgstr ""
+
+msgid "Select if you wish to enable scanning of outgoing email messages in MS Outlook"
+msgstr ""
+
+msgid "Opens Support Forum in the Web Browser"
+msgstr ""
+
+msgid "&Technical Support"
+msgstr ""
+
+msgid "SCAN SUMMARY"
+msgstr ""
+
+msgid "Skipped non-executable files:"
+msgstr ""
+
+msgid "ERROR: Can't download main.cvd"
+msgstr ""
+
+#, fuzzy
+msgid "Your network may be down or none of the mirrors listed in freshclam.conf is working. Check http://www.clamav.net/support/mirror-problem for possible reasons."
+msgstr "HIBA: A frissítés nem sikerült. A hálózat nem működik, vagy egyetlen - a freshclam.conf fájlban megadott - tükörszerver sem üzemel."
 

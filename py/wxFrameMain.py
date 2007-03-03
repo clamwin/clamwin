@@ -49,8 +49,8 @@ def create(parent, config):
  wxID_WXMAINFRAMETOOLSREPORTS,
 ] = map(lambda _init_coll_Tools_Items: wxNewId(), range(3))
 
-[wxID_WXMAINFRAMEHELPABOUT, wxID_WXMAINFRAMEHELPFAQ, wxID_WXMAINFRAMEHELPUPDATE, wxID_WXMAINFRAMEHELPWEBSITE, wxID_WXMAINFRAMEHELPHELP,
-] = map(lambda _init_coll_Help_Items: wxNewId(), range(5))
+[wxID_WXMAINFRAMEHELPABOUT, wxID_WXMAINFRAMEHELPFAQ, wxID_WXMAINFRAMEHELPUPDATE, wxID_WXMAINFRAMEHELPWEBSITE, wxID_WXMAINFRAMEHELPHELP, wxID_WXMAINFRAMEHELPSUPPORT,
+] = map(lambda _init_coll_Help_Items: wxNewId(), range(6))
 
 [wxID_WXMAINFRAMEFILEITEMS0, wxID_WXMAINFRAMEFILESCAN, wxID_WXMAINFRAMEFILESCANMEM
 ] = map(lambda _init_coll_File_Items: wxNewId(), range(3))
@@ -112,6 +112,8 @@ class wxMainFrame(wxFrame):
 
         parent.Append(helpString=_('Displays ClamWin Free Antivirus Manual'),
               id=wxID_WXMAINFRAMEHELPHELP, item=_('&Help'), kind=wxITEM_NORMAL)
+        parent.Append(helpString=_('Opens Support Forum in the Web Browser'),
+              id=wxID_WXMAINFRAMEHELPSUPPORT, item=_('&Technical Support'), kind=wxITEM_NORMAL)
         parent.Append(helpString=_('Checks for the Latest Version'),
               id=wxID_WXMAINFRAMEHELPUPDATE, item=_('&Check Latest Version'), kind=wxITEM_NORMAL)
         parent.Append(helpString=_('Opens ClamWin Free Antivirus Website'),
@@ -119,11 +121,13 @@ class wxMainFrame(wxFrame):
 
         parent.Append(helpString=_('Opens Frequently Asked Questions Page in the Web Browser'),
               id=wxID_WXMAINFRAMEHELPFAQ, item=_('&FAQ'), kind=wxITEM_NORMAL)
+              
         parent.AppendSeparator()
         parent.Append(helpString=_('Displays the  About Box'),
               id=wxID_WXMAINFRAMEHELPABOUT, item=_('&About'), kind=wxITEM_NORMAL)
         EVT_MENU(self, wxID_WXMAINFRAMEHELPABOUT, self.OnHelpAbout)
         EVT_MENU(self, wxID_WXMAINFRAMEHELPHELP, self.OnHelpHelp)
+        EVT_MENU(self, wxID_WXMAINFRAMEHELPSUPPORT, self.OnHelpSupport)
         EVT_MENU(self, wxID_WXMAINFRAMEHELPUPDATE, self.OnHelpUpdate)
         EVT_MENU(self, wxID_WXMAINFRAMEHELPWEBSITE, self.OnHelpWebsite)
         EVT_MENU(self, wxID_WXMAINFRAMEHELPFAQ, self.OnHelpFAQ)
@@ -279,8 +283,6 @@ class wxMainFrame(wxFrame):
 
         self._init_coll_toolBar_Tools(self.toolBar)
 
-        ##self._init_sizers()
-
     def __init__(self, parent, config):
         self._config = None
         self._config = config
@@ -389,9 +391,6 @@ class wxMainFrame(wxFrame):
     def OnHelpHelp(self, event):
         if sys.platform.startswith('win'):
             import win32api, win32con
-            # kleankoder: commented out the following two lines
-            #curDir = Utils.GetCurrentDir(True)
-            #helpfile = os.path.join(curDir, 'manual_en.chm')
             helpfile = I18N.getHelpFilePath()
             helppath = helpfile[:helpfile.rfind("\\")]
             if not os.path.isfile(helpfile):
@@ -406,6 +405,8 @@ class wxMainFrame(wxFrame):
 
     def OnHelpFAQ(self, event):
         wxDialogUtils.wxGoToInternetUrl(_('http://www.clamwin.com/content/category/3/7/27/'))
+    def OnHelpSupport(self, event):
+        wxDialogUtils.wxGoToInternetUrl('http://forums.clamwin.com/')
 
 
     def OnHelpUpdate(self, event):

@@ -5,17 +5,15 @@
 
 KNOWN ISSUES:
 *************
-- The link button to the clamav homepage in the about box is broken.
-  Can't see why, it is broken in the official ClamWin package too.
-- On a clean install, the installer will default to "Full Installation", 
-  including all languages.  However, when installing over an existing 
-  installation of the official ClamWin release, no language support will be 
-  added by default, so you'll have to check the languages you want to install.
-  This is caused by Inno Setup remembering the settings of previous installs.
+- In the database download status window, the subsequent messages aren't
+  correctly overwritten.
+- "Infected Files:" line in scan status window should be displayed in green or
+  red, depending if viruses were found or not (still looking into that).
+
 
 Completed Languages
 *******************
-- Dutch/Belgian Dutch   (0.88.7)
+- Dutch/Belgian Dutch   (0.90)
 - French                (0.88.7)
 - German                (0.88.7)
 - Hungarian             (0.88.7)
@@ -24,6 +22,12 @@ Completed Languages
 
 History
 *******
+
+Changes in Version ClamWin-0.90-L10N-31.exe :
+- Merged the changes up to ClamWin Free Antivirus release 0.90 and added some 
+  new strings for that release.
+- The warnings about a new scanning engine are now suppressed, as in the 
+  official release.
 
 Changes in Version ClamWin-0.88.7-L10N-30.exe :
 - Hungarian installer was completed (Thanks KAMI)

@@ -149,8 +149,6 @@ class wxDialogUpdateChecker(wxDialog):
             event.Skip()
 
     def OnInitDialog(self, event):
-        #self.textCtrl.SetInsertionPoint(0)
-        #self.textCtrl.ShowPosition(0)
         event.Skip()
 
     def OnButtonClose(self, event):

@@ -23,6 +23,7 @@
 
 import gettext, locale, os, sys, traceback
 import _winreg as wreg
+import locale
 
 gLocalePath = ""
 gLocale = ""
@@ -33,6 +34,7 @@ gLocale = ""
 def getClamString(englishString):
     global gLocalePath
     global gLocale
+    locale.setlocale(locale.LC_ALL, '')
     if gLocalePath == "":
         setLocalePath()
     if gLocale == "":
@@ -41,7 +43,9 @@ def getClamString(englishString):
     os.environ['LANGUAGE'] = gLocale
     gettext.bindtextdomain("clamwin", gLocalePath)
     gettext.textdomain("clamwin")
-    return gettext.gettext(englishString).decode("utf-8")
+    output = gettext.gettext(englishString).decode("utf-8")
+    locale.setlocale(locale.LC_ALL, 'C')
+    return output
 
 
 """ Get the path to the ClamWin bin directory,

@@ -1,8 +1,11 @@
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# Translators
+# Bartosz Kosiorek <gang65@poczta.onet.pl>, 2006-2007.
 msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.4\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-12-17 16:11+0100\n"
+"PO-Revision-Date: 2007-03-03 16:29+0100\n"
 "Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: Localization <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -30,7 +33,7 @@ msgstr "Pobierz najnowszą bazę &wirusów"
 
 #: wxFrameMain.py:96
 msgid "Displays ClamWin Log Files"
-msgstr "Wyświetla raportu programu ClamWin"
+msgstr "Wyświetla raporty programu ClamWin"
 
 #: wxFrameMain.py:97
 msgid "&Display Reports"
@@ -79,7 +82,7 @@ msgstr "&O programie"
 
 #: wxFrameMain.py:134
 msgid "Displays Virus Database Update Log FIle"
-msgstr ""
+msgstr "Wyświetla plik Log bazy danych wirusów"
 
 #: wxFrameMain.py:136
 #: ClamTray.py:278
@@ -183,7 +186,7 @@ msgstr "Sprawdzanie najnowszej wersji"
 
 #: wxFrameMain.py:354
 msgid "An Error occurred while updating UI selection. %s"
-msgstr ""
+msgstr "Wystąpił błąd podczas aktualizowania wyboru UI. %s"
 
 #: wxFrameMain.py:387
 msgid "Could not open help file - %s not found."
@@ -231,37 +234,21 @@ msgstr "Przeskanowano plików:"
 msgid "Time:"
 msgstr "Czas:"
 
-#: wxDialogStatus.py:159
-msgid "WARNING: Your ClamAV installation is OUTDATED!"
-msgstr "OSTRZEŻENIE: Twoja instalacja ClamAV jest przedawniona!"
-
-#: wxDialogStatus.py:161
-msgid "WARNING: Local version:"
-msgstr "OSTRZEŻENIE: Zainstalowana wersja:"
-
-#: wxDialogStatus.py:163
-msgid "Recommended version:"
-msgstr "Zalecana wersja:"
-
-#: wxDialogStatus.py:165
-msgid "DON'T PANIC! Read"
-msgstr "BEZ PANIKI! Przeczytaj"
-
 #: wxDialogStatus.py:167
 msgid "is up to date"
 msgstr "jest aktualny"
 
 #: wxDialogStatus.py:169
 msgid "sigs:"
-msgstr ""
+msgstr "sygn:"
 
 #: wxDialogStatus.py:171
 msgid "f-level:"
-msgstr ""
+msgstr "f-level:"
 
 #: wxDialogStatus.py:173
 msgid "builder:"
-msgstr ""
+msgstr "twórca:"
 
 #: wxDialogStatus.py:175
 msgid "Database updated"
@@ -297,7 +284,7 @@ msgstr "http://www.clamwin.com/content/view/10/27/"
 
 #: wxDialogStatus.py:191
 msgid "Not moved"
-msgstr ""
+msgstr "Nie przeniesiono"
 
 #: wxDialogStatus.py:193
 msgid "File excluded"
@@ -389,7 +376,7 @@ msgstr "zaktualizowano"
 
 #: wxDialogStatus.py:246
 msgid "failed"
-msgstr ""
+msgstr "niepowodzenie"
 
 #: wxDialogStatus.py:294
 msgid "ClamWin Free Antivirus Status"
@@ -405,7 +392,7 @@ msgstr "Z&apisz Raport"
 
 #: wxDialogStatus.py:435
 msgid "Unable to stop runner thread, terminating"
-msgstr ""
+msgstr "Nie można zatrzymać uruchomionego wątku, zakańczanie"
 
 #: wxDialogStatus.py:453
 msgid "Report files (*.txt)|*.txt|All files (*.*)|*.*"
@@ -460,7 +447,7 @@ msgstr ""
 #: wxDialogStatus.py:629
 #: ClamTray.py:470
 msgid "Could not start process. No Command Line specified"
-msgstr ""
+msgstr "Nie można uruchomić procesu. Brak ustalonego wiersza poleceń"
 
 #: wxDialogStatus.py:636
 #: ClamTray.py:477
@@ -518,7 +505,7 @@ msgstr "&Dzień tygodnia:"
 
 #: wxDialogScheduledScan.py:211
 msgid "When schedule frequency is weekly select day of the week"
-msgstr ""
+msgstr "Kiedy zaznaczone jest tygodniowe sprawdzanie, wybierz dzień tygodnia"
 
 #: wxDialogScheduledScan.py:215
 msgid "&Scan Folder:"
@@ -817,15 +804,6 @@ msgstr "Zaznacz tą opcję jeśli chcesz skanować skrzynki pocztowe"
 msgid "&Extract Attachments and Macros from MS Office Documents"
 msgstr "&Rozpakuj załączniki i makra z dokumentów MS Office"
 
-#: wxDialogPreferences.py:489
-#: wxDialogPreferences.py:496
-msgid "Select if you wish to detect executable files with broken PE structure as viruses"
-msgstr ""
-
-#: wxDialogPreferences.py:493
-msgid "&Detect Broken Executables"
-msgstr "&Wykryj uszkodzone pliki wykonywalne"
-
 #: wxDialogPreferences.py:500
 msgid "&Additional Clamscan Command Line Parameters:"
 msgstr "&Dodatkowe parametry linii komend Clamscana:"
@@ -1023,7 +1001,7 @@ msgstr "&Temat:"
 
 #: wxDialogPreferences.py:799
 msgid "Specify Recipient's email address where the email alert will be delivered"
-msgstr ""
+msgstr "Określa adresy mailowe, gdzie mają być wysłane ostrzeżenia"
 
 #: wxDialogPreferences.py:802
 msgid "Send &Test Email"
@@ -1035,19 +1013,19 @@ msgstr "Kliknij aby wysłać testową wiadomość"
 
 #: wxDialogPreferences.py:811
 msgid "&Display Pop-up Notification Messages In Taskbar "
-msgstr ""
+msgstr "&Wyświetl wyskakujące powiadomienia dymkowe na pasku zadań"
 
 #: wxDialogPreferences.py:815
 msgid "Select if you wish to receive Tray notification pop-up messages"
-msgstr ""
+msgstr "Zaznacz tą opcję jeżeli chcesz aby były wyświetlane wyskakujące wiadomości w formie dymków na pasku zadań"
 
 #: wxDialogPreferences.py:822
 msgid "Specify Filename Patterns to include and/or exclude in scanning"
-msgstr ""
+msgstr "Określa maski pliku do włączenia i/lub wyłączenia ze skanowania"
 
 #: wxDialogPreferences.py:827
 msgid "(To specify a regular expression include your pattern within <...>)"
-msgstr ""
+msgstr "(Określenie wyrażenia zawierającego maskę z <...>)"
 
 #: wxDialogPreferences.py:832
 msgid "&Exclude Matching Filenames:"
@@ -1134,11 +1112,11 @@ msgstr "&Wyświetl pasek postępu podczas skanowania"
 
 #: wxDialogPreferences.py:1015
 msgid "An error occurred whilst saving configuration file %s. Please check that you have write permission to the configuration file."
-msgstr ""
+msgstr "Wystąpił błąd podczas zapisywania pliku konfiguracyjnego %s. Sprawdź czy masz uprawnienia zapisu do tego pliku."
 
 #: wxDialogPreferences.py:1033
 msgid "Event Failed"
-msgstr ""
+msgstr "Błąd wątku"
 
 #: wxDialogPreferences.py:1205
 #: wxDialogPreferences.py:1221
@@ -1160,7 +1138,7 @@ msgstr "Pliki tekstowe (*.txt)|*.txt| Wszystkie pliki (*.*)|*.*"
 
 #: wxDialogPreferences.py:1291
 msgid "Maximum amount of scheduled items (20) has been reached."
-msgstr ""
+msgstr "Maksymalna ilość obiektów hramonogramu (20) została osiągnięta."
 
 #: wxDialogPreferences.py:1379
 msgid ""
@@ -1384,9 +1362,12 @@ msgid ""
 "If you see this error often then allow clamwin.exe in your firewall and check proxy settings.\n"
 "(%s)"
 msgstr ""
+"Nie można pobrać wersji online. Najczęściej są to tymczasowe problemy z łączem i nie trzeba nic robić.\n"
+"Jeżeli błąd ten często się pojawia, sprawdź ustawienia zapory sieciowej (dla pliku clamwin.exe) oraz sprawdź ustawienia proxy.\n"
+"(%s)"
 
 # This is the explorer shell string
-#: ShellExtImpl.cpp:
+# ShellExtImpl.cpp:
 #: 292
 msgid "Scan with ClamWin Free Antivirus"
 msgstr "Skanuj ClamWin Free Antivirus"
@@ -1435,11 +1416,11 @@ msgstr "Lista zmian w wersji %s:"
 
 #: wxDialogScheduledScan.py:119
 msgid "Could not open persistent storage for scheduled scans. Error: %s"
-msgstr ""
+msgstr "Nie można otworzyć nośnika do zaplanowanych skanowań. Błąd : %s"
 
 #: wxDialogScheduledScan.py:130
 msgid "Could not save scheduled scans to persistent storage. Error: %s"
-msgstr ""
+msgstr "Nie można zapisać skanowań harmonogramowych na nośnik . Błąd: %s"
 
 #: wxDialogCheckUpdate.py:54
 msgid "ClamWin Update"
@@ -1464,7 +1445,7 @@ msgstr "Wesja"
 
 #: wxDialogAbout.py:79
 msgid "ClamAV Version gets here"
-msgstr ""
+msgstr "Pobierana jest stąd wersja ClamAV"
 
 #: wxDialogAbout.py:84
 msgid "Protecting from %i Viruses"
@@ -1509,7 +1490,7 @@ msgstr "Strona domowa Pythona"
 
 #: OlAddin.py:174
 msgid "You appear to be running a win32all version pre 151, which is pretty old"
-msgstr ""
+msgstr "Uruchamiasz win32all wersję pre 151, która jest przestarzała"
 
 #: OlAddin.py:175
 msgid "I'm afraid it is time to upgrade"
@@ -1632,7 +1613,7 @@ msgstr "Nie można przerwać zaplanowanego procesu, przerywanie"
 
 #: ClamTray.py:131
 msgid "An error occurred whilst terminating scheduler thread. Error: %s"
-msgstr ""
+msgstr "Wystąpił błąd podczas przerywania zaplanowanego wątku. Błąd : %s"
 
 #: ClamTray.py:237
 msgid "&Configure Scheduler"
@@ -1693,7 +1674,7 @@ msgstr "Nie można uruchomić skanera ClamWin. Błąd: %s"
 
 #: ClamTray.py:351
 msgid "Could not display balloon tooltip. Error: %s"
-msgstr ""
+msgstr "Nie można wyświetlić wyskakującej wskazówki. Błąd : %s"
 
 #: ClamTray.py:362
 msgid ""
@@ -1718,7 +1699,7 @@ msgstr "Błąd"
 #: ClamTray.py:387
 #: wxDialogUtils.py:38
 msgid "Unable to create freshclam configuration file. Please check there is enough space on the disk"
-msgstr ""
+msgstr "Nie można tworzyć pliku konfiguracyjnego freshclam. Sprawdź czy jest wystarczająco miejsca na twardym dysku."
 
 #: ClamTray.py:403
 #: wxDialogUtils.py:56
@@ -1741,12 +1722,12 @@ msgstr ""
 
 #: ClamTray.py:433
 msgid "Error performing Scheduled Update."
-msgstr ""
+msgstr "Wystąpił błąd podczas wykonywania aktualizacji harmonogramu."
 
 #: ClamTray.py:441
 #: wxDialogUtils.py:206
 msgid "Please point your browser at: %s"
-msgstr ""
+msgstr "Ustaw swoją przeglądarkę na: %s"
 
 #: ClamTray.py:455
 msgid "An error occurred while starting ClamWin Free Antivirus Preferences.\n"
@@ -1809,4 +1790,47 @@ msgstr "Skanowanie pamięci zakończone"
 
 msgid "Select if you wish to scan OLE attachments and macros in MS Office Documents"
 msgstr "Zaznacz jeżeli chcesz skanować załączniki OLE oraz makra dokumentów MS Office"
+
+msgid "Email Scanning"
+msgstr ""
+
+msgid "Try to Scan &Executable Files Only"
+msgstr ""
+
+msgid "Select if you skip scanning of non-executable files"
+msgstr ""
+
+msgid "Microsoft Outlook"
+msgstr ""
+
+msgid "Scan &Incoming Email Messages"
+msgstr ""
+
+msgid "Select if you wish to enable scanning of incoming email messages in MS Outlook"
+msgstr ""
+
+msgid "Scan &Outgoing Email Messages"
+msgstr ""
+
+msgid "Select if you wish to enable scanning of outgoing email messages in MS Outlook"
+msgstr ""
+
+msgid "Opens Support Forum in the Web Browser"
+msgstr ""
+
+msgid "&Technical Support"
+msgstr ""
+
+msgid "SCAN SUMMARY"
+msgstr ""
+
+msgid "Skipped non-executable files:"
+msgstr ""
+
+msgid "ERROR: Can't download main.cvd"
+msgstr ""
+
+#, fuzzy
+msgid "Your network may be down or none of the mirrors listed in freshclam.conf is working. Check http://www.clamav.net/support/mirror-problem for possible reasons."
+msgstr "BŁĄD: Aktualizacja nie powiodła się. Prawdopodobnie twoja sieć nie działa lub żaden z serwerów znajdujących się w pliku freshclam.conf nie działa."
 

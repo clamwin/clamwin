@@ -3,10 +3,10 @@
 <HEAD>
 	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
 	<TITLE>ClamWin CD/USB - HowTo</TITLE>
-	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.0  (Win32)">
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.1  (Win32)">
 	<META NAME="CREATED" CONTENT="20050531;10214200">
 	<META NAME="CHANGEDBY" CONTENT="Peter Budts">
-	<META NAME="CHANGED" CONTENT="20060709;14274400">
+	<META NAME="CHANGED" CONTENT="20070123;22563800">
 	<STYLE>
 	<!--
 		@page { size: 21.01cm 29.69cm; margin-left: 2cm; margin-right: 2.01cm; margin-top: 2.01cm; margin-bottom: 2.01cm }
@@ -15,6 +15,8 @@
 		H1.western { font-family: "Arial", sans-serif; font-size: 16pt }
 		H2 { color: #000000 }
 		H2.western { font-family: "Arial", sans-serif; font-size: 14pt; font-style: italic }
+		H2.cjk { font-family: "Arial Unicode MS" }
+		H2.ctl { font-family: "Tahoma" }
 		H3 { color: #000000 }
 		H3.western { font-family: "Albany", sans-serif }
 		H3.cjk { font-family: "HG Mincho Light J" }
@@ -33,6 +35,18 @@ install ClamWin. Note that the CD/USB key is <I>not</I> bootable, and
 so can only be used on a working Windows PC.</P>
 <P>The PC that is used to create the CD/USB will need to have ClamWin
 installed, and be able to copy files/folders to a CD or USB key.</P>
+<H3 CLASS="western">The easy way : Portable ClamWin</H3>
+<P>The easy way is to use the pre-built portable version of ClamWin,
+which can be find on
+<A HREF="http://portableapps.com/apps/utilities/clamwin_portable">http://portableapps.com/apps/utilities/clamwin_portable</A>.
+ 
+</P>
+<P>Note that the maintainers of this Portable ClamWin are not
+affiliated with the ClamWin team, so the team might not be able to
+answer all your questions regarding this version.  Also, ClamWin
+Portable might be some versions behind the official ClamWin release
+(e.g. At this moment ClamWin is at version 0.88.7, while Portable
+ClamWin is at 0.88.5).</P>
 <H3 CLASS="western">Preparation</H3>
 <P>Start by installing the latest version of ClamWin, and download
 the latest virus definitions. See the ClamWin manual for full details
@@ -47,8 +61,8 @@ that are to be copied onto CD/USB, eg <TT>C:\ClamWin-CD</TT>.</P>
 <TT>C:\ClamWin-CD\ClamWin</TT>. By default, the ClamWin program
 folder is installed to <TT>C:\Program Files\ClamWin</TT></P>
 <P>Create folders named <TT>log</TT>, <TT>db</TT> and <TT>quarantine</TT>
-in <TT>C:\ClamWin-CD\ClamWin</TT></P>
-<P>Copy the ClamWin database files (<TT>main.cvd</TT> &amp;
+in <TT>C:\ClamWin-CD\ClamWin.</TT></P>
+<P><TT>C</TT>opy the ClamWin database files (<TT>main.cvd</TT> &amp;
 <TT>daily.cvd</TT>) into <TT>C:\ClamWin-CD\ClamWin\db</TT>. In
 Windows 2000/XP, the ClamWin database folder defaults to <TT>C:\Documents
 and Settings\USERNAME\.clamwin\db</TT>, where <TT>USERNAME</TT> is
@@ -110,9 +124,7 @@ subject = ClamWin Virus Alert
 host = 
 password = 
 port = 3128
-user = 
-
-</PRE><P>
+user = </PRE><P>
 You should now have the following folders:</P>
 <PRE>C:\ClamWin-CD
 C:\ClamWin-CD\ClamWin\bin
@@ -125,9 +137,7 @@ to a CD or USB key. Do not copy the <TT>C:\ClamWin-CD</TT> folder
 itself, only the contents. Exactly how this is done will depend on
 whether a CD or USB key is to be used, and what software is to be
 used.</P>
-<H2 CLASS="western"></H2>
-<H3 CLASS="western" STYLE="page-break-before: always">Using the
-CD/USB</H3>
+<H2 CLASS="western">Using the CD/USB</H2>
 <P>To use it, insert the CD/USB into the PC to be scanned. Run
 ClamWin by double-clicking on the <TT>ClamWin.exe</TT> file in the
 <TT>ClamWin\bin</TT> folder.</P>

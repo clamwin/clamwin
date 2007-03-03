@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-12-17 16:11+0100\n"
+"PO-Revision-Date: 2007-03-03 16:36+0100\n"
 "Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: ClamWin Free Antivirus <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -230,22 +230,6 @@ msgstr "Gescande bestanden:"
 #: wxDialogLogViewer.py:129
 msgid "Time:"
 msgstr "Tijd:"
-
-#: wxDialogStatus.py:159
-msgid "WARNING: Your ClamAV installation is OUTDATED!"
-msgstr "WAARSCHUWING: Uw ClamAV installatie is VEROUDERD!"
-
-#: wxDialogStatus.py:161
-msgid "WARNING: Local version:"
-msgstr "WAARSCHUWING: Lokale versie:"
-
-#: wxDialogStatus.py:163
-msgid "Recommended version:"
-msgstr "Aangeraden versie:"
-
-#: wxDialogStatus.py:165
-msgid "DON'T PANIC! Read"
-msgstr "GEEN PANIEK! Lees"
 
 #: wxDialogStatus.py:167
 msgid "is up to date"
@@ -817,15 +801,6 @@ msgstr "Vink dit aan als u mailboxen wil scannen"
 msgid "&Extract Attachments and Macros from MS Office Documents"
 msgstr "&Controleer bijlagen en macros van MS Office Documenten"
 
-#: wxDialogPreferences.py:489
-#: wxDialogPreferences.py:496
-msgid "Select if you wish to detect executable files with broken PE structure as viruses"
-msgstr "Vink aan als u uitvoerbare bestanden met corrupte PE structuren als virus wil behandelen"
-
-#: wxDialogPreferences.py:493
-msgid "&Detect Broken Executables"
-msgstr "&Detecteer corrupte uitvoerbare bestanden"
-
 #: wxDialogPreferences.py:500
 msgid "&Additional Clamscan Command Line Parameters:"
 msgstr "&Extra ClamScan opdrachtregel parameters:"
@@ -1035,7 +1010,7 @@ msgstr "Klik om een test email te verzenden"
 
 #: wxDialogPreferences.py:811
 msgid "&Display Pop-up Notification Messages In Taskbar "
-msgstr "&Toont een Pop-Up waarschuwing in de taakbalk "
+msgstr "&Toon een Pop-Up waarschuwing in de taakbalk "
 
 #: wxDialogPreferences.py:815
 msgid "Select if you wish to receive Tray notification pop-up messages"
@@ -1199,7 +1174,7 @@ msgstr "ClamWin Log"
 #: wxDialogLogViewer.py:93
 #: wxDialogStatus.py:121
 msgid "ClamAV update process started at"
-msgstr "ClamAV update process is gestart om"
+msgstr "ClamAV update proces is gestart op"
 
 #: wxDialogLogViewer.py:95
 #: wxDialogStatus.py:123
@@ -1811,4 +1786,46 @@ msgstr "Scan van het Computergeheugen is voltooid"
 
 msgid "Select if you wish to scan OLE attachments and macros in MS Office Documents"
 msgstr "Vink aan als u OLE bijlagen en macros in MS Office Documenten wil scannen"
+
+msgid "Email Scanning"
+msgstr "Scannen van Email"
+
+msgid "Try to Scan &Executable Files Only"
+msgstr "Probeer enkel &Uitvoerbare Bestanden te scannen"
+
+msgid "Select if you skip scanning of non-executable files"
+msgstr "Vink aan als u het scannen van niet-uitvoerbare bestanden wil overslaan"
+
+msgid "Microsoft Outlook"
+msgstr "Microsoft Outlook"
+
+msgid "Scan &Incoming Email Messages"
+msgstr "Scan &Inkomende Email berichten"
+
+msgid "Select if you wish to enable scanning of incoming email messages in MS Outlook"
+msgstr "Vink aan als u inkomende email berichten in MS Outlook wil scannen"
+
+msgid "Scan &Outgoing Email Messages"
+msgstr "Scan &Uitgaande Email berichten"
+
+msgid "Select if you wish to enable scanning of outgoing email messages in MS Outlook"
+msgstr "Vink aan als u uitgaande email berichten in MS Outlook wil scannen"
+
+msgid "Opens Support Forum in the Web Browser"
+msgstr "Opent het ondersteuningsforum in uw Web Browser"
+
+msgid "&Technical Support"
+msgstr "&Technische ondersteuning"
+
+msgid "SCAN SUMMARY"
+msgstr "SCAN OVERZICHT"
+
+msgid "Skipped non-executable files:"
+msgstr "Overgeslagen niet-uitvoerbare bestanden:"
+
+msgid "ERROR: Can't download main.cvd"
+msgstr "FOUT: Kan main.cvd niet ophalen"
+
+msgid "Your network may be down or none of the mirrors listed in freshclam.conf is working. Check http://www.clamav.net/support/mirror-problem for possible reasons."
+msgstr "Er is een probleem met uw netwerkverbinding of geen van de mirrors in freshclam.conf werken.  Kijk op http://www.clamav.net/support/mirror-problem voor mogelijke redenen"
 

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-02-08 09:50+0100\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2007-03-03 16:29+0100\n"
+"Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: Italian <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -231,22 +231,6 @@ msgstr "File controllati:"
 msgid "Time:"
 msgstr "Tempo:"
 
-#: wxDialogStatus.py:159
-msgid "WARNING: Your ClamAV installation is OUTDATED!"
-msgstr "ATTENZIONE: La versione di ClamAV non è aggiornata!"
-
-#: wxDialogStatus.py:161
-msgid "WARNING: Local version:"
-msgstr "ATTENZIONE: Versione locale:"
-
-#: wxDialogStatus.py:163
-msgid "Recommended version:"
-msgstr "Versione raccomandata:"
-
-#: wxDialogStatus.py:165
-msgid "DON'T PANIC! Read"
-msgstr "NIENTE PAURA! Leggi"
-
 #: wxDialogStatus.py:167
 msgid "is up to date"
 msgstr "è aggiornato"
@@ -348,7 +332,8 @@ msgid "Apr"
 msgstr "Apr"
 
 #: wxDialogStatus.py:221
-msgid "May "
+#, fuzzy
+msgid "May"
 msgstr "Mag"
 
 #: wxDialogStatus.py:223
@@ -817,15 +802,6 @@ msgstr "Seleziona se vuoi esaminare le mailbox"
 #: wxDialogPreferences.py:486
 msgid "&Extract Attachments and Macros from MS Office Documents"
 msgstr "&Estrai gli Attachment e le Macro dai documenti MS Office"
-
-#: wxDialogPreferences.py:489
-#: wxDialogPreferences.py:496
-msgid "Select if you wish to detect executable files with broken PE structure as viruses"
-msgstr "Scegli se preferisci identificare file eseguibili con struttura PE danneggiata come virus"
-
-#: wxDialogPreferences.py:493
-msgid "&Detect Broken Executables"
-msgstr "&Riconosci gli eseguibili non validi"
 
 #: wxDialogPreferences.py:500
 msgid "&Additional Clamscan Command Line Parameters:"
@@ -1777,9 +1753,8 @@ msgstr "Errore improvviso nell'avviare l'operazione pianificata"
 msgid "Scans Programs in Computer Memory for Viruses"
 msgstr "Scansione File e Cartelle"
 
-#, fuzzy
 msgid "Scan &Memory"
-msgstr "Rapporto &Scansione"
+msgstr ""
 
 msgid "Scan Computer Memory"
 msgstr "Scansiona la memoria del computer"
@@ -1788,13 +1763,11 @@ msgstr "Scansiona la memoria del computer"
 msgid "Scans Programs Loaded in Computer Memory for Computer Viruses"
 msgstr "Scansione dei File e delle cartelle selezionate"
 
-#, fuzzy
 msgid "Scans Computer Memory for Viruses"
-msgstr "Scansione"
+msgstr ""
 
-#, fuzzy
 msgid "Specify any additional parameters for clamscan.exe"
-msgstr "Specifica la posizione di clamscan"
+msgstr ""
 
 msgid "&Unload Infected Programs from Computer Memory"
 msgstr "Scarica programmi infetti dalla memoria del comp&uter"
@@ -1806,21 +1779,61 @@ msgstr "Seleziona se vuoi visualizzare solo i file infetti nella finestra di sca
 msgid "Scan &Programs Loaded in Computer Memory"
 msgstr "Scansiona i %programmi caricati nella memoria del computer"
 
-#, fuzzy
 msgid "Select if you wish to include programs computer memory during every scan"
-msgstr "Seleziona se vuoi esaminare ricorsivamente le sottocartelle"
+msgstr ""
 
-#, fuzzy
 msgid "Netfarm Homepage"
-msgstr "Pagina iniziale di ClamAV"
+msgstr ""
 
-#, fuzzy
 msgid "Scanning Programs in Computer Memory"
-msgstr "Scansione File e Cartelle"
+msgstr ""
 
 msgid "Computer Memory Scan Completed"
 msgstr "Scansione memoria computer completata"
 
 msgid "Select if you wish to scan OLE attachments and macros in MS Office Documents"
 msgstr "&Estrai gli allegati e le Macro dai documenti MS Office"
+
+msgid "Email Scanning"
+msgstr ""
+
+msgid "Try to Scan &Executable Files Only"
+msgstr ""
+
+msgid "Select if you skip scanning of non-executable files"
+msgstr ""
+
+msgid "Microsoft Outlook"
+msgstr ""
+
+msgid "Scan &Incoming Email Messages"
+msgstr ""
+
+msgid "Select if you wish to enable scanning of incoming email messages in MS Outlook"
+msgstr ""
+
+msgid "Scan &Outgoing Email Messages"
+msgstr ""
+
+msgid "Select if you wish to enable scanning of outgoing email messages in MS Outlook"
+msgstr ""
+
+msgid "Opens Support Forum in the Web Browser"
+msgstr ""
+
+msgid "&Technical Support"
+msgstr ""
+
+msgid "SCAN SUMMARY"
+msgstr ""
+
+msgid "Skipped non-executable files:"
+msgstr ""
+
+msgid "ERROR: Can't download main.cvd"
+msgstr ""
+
+#, fuzzy
+msgid "Your network may be down or none of the mirrors listed in freshclam.conf is working. Check http://www.clamav.net/support/mirror-problem for possible reasons."
+msgstr "ERRORE: Aggiornamento fallito. La tua connessione può essere non funzionante o nessun indirizzo elencati in freshclam.conf sta funzionando."
 

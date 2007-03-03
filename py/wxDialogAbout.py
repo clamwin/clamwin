@@ -1,4 +1,4 @@
-#-----------------------------------------------------------------------------
+1#-----------------------------------------------------------------------------
 #Boa:Dialog:wxAboutDlg
 
 #-----------------------------------------------------------------------------
@@ -242,7 +242,9 @@ class wxAboutDlg(wxDialog):
             if mainver is None:
                 raise Exception()
             dailyver, dailynumv, updated = Utils.GetDBInfo(os.path.join(dbpath, 'daily.cvd'))
-            if dailyver is None:
+            if dailyver is None:            
+                dailyver, dailynumv, updated = Utils.GetDBInfo(os.path.join(os.path.join(dbpath, 'daily.inc'), 'daily.info'))
+            if dailyver is None:                            
                 raise Exception()
             else:
                 # set user's locale
@@ -262,4 +264,3 @@ class wxAboutDlg(wxDialog):
             (mainver, dailyver))
         self.staticTextDBUpdated3.SetLabel(self.staticTextDBUpdated3.GetLabel() % \
             updatedstr)
-

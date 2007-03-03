@@ -74,6 +74,7 @@ def wxUpdateVirDB(parent, config, autoClose = False):
     finally:
         try:
             os.remove(updatelog)
+            print updatelog
         except Exception, e:
             print _('Unable to remove file %s. Error: %s') % (updatelog, str(e))
         dlg.Destroy()
@@ -99,7 +100,7 @@ def wxScan(parent, config, path, autoClose = False):
     except:
         priority = 'n'
 
-        #check if we have downloaded the virus database and bail out if not
+    #check if we have downloaded the virus database and bail out if not
     hasdb = Utils.CheckDatabase(config)
     if not hasdb:
         if config.Get('UI', 'TrayNotify') == '1':

@@ -244,7 +244,6 @@ def ScanFile(path, config, attname):
 
 
     logfile = os.path.split(path)[0]+"\\"+_('Virus Deleted by ClamWin.txt')
-    print "Debug line to delete - using log file [%s]" % logfile
     cmd = '--tempdir "%s"' % tempfile.gettempdir().rstrip('\\')
 
     cmd = '--max-ratio=0 --stdout --database="%s" --log="%s" "%s"' % \
@@ -255,12 +254,9 @@ def ScanFile(path, config, attname):
     retcode = 1
     proc = None
     try:
-        print "Debug line to delete - Running command [%s]" % cmd
         proc = Process.ProcessOpen(cmd)
         retcode = proc.wait()
         # Translate log file
-        print "Debug line to delete - Translating log file"
-
         # translate self._logfile and copy the translation to self._logfile
         logfileobj = file(logfile, "r")
         lines = logfileobj.readlines()
@@ -287,7 +283,6 @@ def ScanFile(path, config, attname):
             proc.close()
         safe_remove(logfile)
         print _("Registration complete.")
-        print "Debug line to delete - currently in [%s]" % os.getcwd()
         raise ScanError(_('An Error occurred whilst starting clamscan: %s') % str(e))
 
     if proc is not None:
@@ -319,7 +314,7 @@ def ScanFile(path, config, attname):
 
 # returns 0 if everything is okay, or number fo infected files
 def ScanMailItem(item, sending, added_attachments = None):
-    print "Debug line to delete - In scan mail item!"
+
     if not item.Attachments.Count:
         return 0
 
@@ -330,6 +325,14 @@ def ScanMailItem(item, sending, added_attachments = None):
         config_file = 'ClamWin.conf'
     config = Config.Settings(config_file)
     config.Read()
+
+    # scanning is disabled in the config    
+    if sending:
+        if config.Get('EmailScan', 'ScanOutgoing') != '1':
+            return 0    
+    else:
+        if config.Get('EmailScan', 'ScanIncoming') != '1':
+            return 0
 
     # get the virus database version from daily.cvd
     # we will need it when deciding if the message should be rescanned;
@@ -347,7 +350,6 @@ def ScanMailItem(item, sending, added_attachments = None):
     # dbg_print('Daily.cvd Version: %s' % str(virdb_ver))
 
     # check that there are database files and display an error ballon if not
-    print "Debug line to delete - Check database files!"
     hasdb = Utils.CheckDatabase(config)      
     if not hasdb:
         if config.Get('UI', 'TrayNotify') == '1':
@@ -386,16 +388,13 @@ def ScanMailItem(item, sending, added_attachments = None):
             path = tempfile.mktemp(dir=dir)
             dbg_print('ScanMailItem: saving attachment - ', path)
             try:
-                print "Debug line to delete - Save as file"
                 att.SaveAsFile(path)
             except pythoncom.com_error, e:
-                print "Debug line to delete - Save as file exception"
                 # ignore "Object not found" save errors
                 # most likely the file won't be saved by outlook anyway
                 hr, desc, exc, argErr = e
                 if exc[5] in (-2147221233, -2147024894, -2147467259): #0x8004010F, 0x80070002, 0x80040005
                     dbg_print('error saving attachment to %s. Error: %s' % (path, str(exc)))
-                    print "Debug line to delete - Calling safe remove"
                     safe_remove(dir)
                     continue
                 else:
@@ -649,7 +648,6 @@ class ExplorerWithEvents(ObjectWithEvents):
         pass
 
     def OnSelectionChange(self):
-        print "Debug line to delete"
         dbg_print('ExplorerWithEvents:OnSelectionChange')
         # See comments for OnNewExplorer below.
         if not self.have_setup_ui:
@@ -787,7 +785,6 @@ class MailItemWithEvents(ObjectWithEvents):
 
 
     def OnRead(self):
-        print "Debug line to remove"
         dbg_print('MailItemWithEvents:OnRead')
         # OnOpen event is not always fired
         # only when a user double-clicks the message
@@ -799,7 +796,6 @@ class MailItemWithEvents(ObjectWithEvents):
 
 
     def OnOpen(self, cancel):
-        print "Debug line to delete"
         dbg_print('MailItemWithEvents:OnOpen')
         if not self._scanned and self.Sent :
             # in case OnRead has not been called
@@ -857,7 +853,6 @@ class MailItemWithEvents(ObjectWithEvents):
         #        prop.Delete()
 
     def OnSend(self, cancel):
-        print "Debug line to remove"
         dbg_print('MailItemWithEvents:OnSend')
         virus_found = (ScanMailItem(self, True) > 0)
         cancel = virus_found
@@ -918,11 +913,19 @@ class OutlookAddin(ObjectsEvent):
 
     def OnStartupComplete(self, custom):
         dbg_print('OutlookAddin:OnStartupComplete')
-        Utils.CreateProfile()
+        Utils.CreateProfile()        
         # display SplashScreen
         try:
-            splash = os.path.join(Utils.GetCurrentDir(False), "img\\Splash.bmp")
-            SplashScreen.ShowSplashScreen(splash, 5)
+            config_file = os.path.join(Utils.GetProfileDir(True),'ClamWin.conf')
+            if not os.path.isfile(config_file):
+                config_file = 'ClamWin.conf'
+            config = Config.Settings(config_file)
+            config.Read()
+
+            if config.Get('EmailScan', 'ScanOutgoing') == '1' or \
+                config.Get('EmailScan', 'ScanIncoming') == '1':
+                splash = os.path.join(Utils.GetCurrentDir(False), "img\\Splash.bmp")             
+                SplashScreen.ShowSplashScreen(splash, 5)
         except Exception, e:
             print _("An error occurred whilst displaying the splashscreen %s. Error: %s.") % (splash, str(e))
         # Setup all our filters and hooks.  We used to do this in OnConnection,

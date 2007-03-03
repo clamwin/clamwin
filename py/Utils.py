@@ -25,6 +25,7 @@
 import os, sys, time, tempfile, shutil, locale
 import Config, ConfigParser
 import re, fnmatch, urllib2
+import _winreg
 
 import win32api, win32con, win32gui, win32event, win32con, pywintypes
 from win32com.shell import shell, shellcon
@@ -343,8 +344,8 @@ def GetScanCmd(config, path, scanlog, noprint = False):
         cmd += ' --no-mail'
     if config.Get('ClamAV', 'ScanOle2') != '1':
         cmd += ' --no-ole2'
-    if config.Get('ClamAV', 'DetectBroken') == '1':
-        cmd += ' --detect-broken'
+    if config.Get('ClamAV', 'ScanExeOnly') == '1':
+        cmd += ' --skip-noexe'
     if config.Get('ClamAV', 'ClamScanParams') != '':
         cmd += ' ' + config.Get('ClamAV', 'ClamScanParams')
     if config.Get('ClamAV', 'InfectedOnly') == '1' or noprint:
@@ -360,22 +361,22 @@ def GetScanCmd(config, path, scanlog, noprint = False):
     if not noprint and config.Get('ClamAV', 'ShowProgress') == '1':
         cmd += ' --show-progress'
 
-     # file scan only params
+    if config.Get('ClamAV', 'RemoveInfected') == '1':
+        cmd += ' --remove'
+    elif config.Get('ClamAV', 'MoveInfected') == '1':
+        quarantinedir = config.Get('ClamAV', 'QuarantineDir')
+        # create quarantine folder before scanning
+        if quarantinedir and not os.path.exists(quarantinedir):
+            try:
+                os.makedirs(quarantinedir)
+            except:
+                pass
+        cmd += ' --move="%s"' % quarantinedir
+ 
+    # file scan only params
     if path != None:
         if config.Get('ClamAV', 'ScanRecursive') == '1':
-            cmd += ' --recursive'
-        if config.Get('ClamAV', 'RemoveInfected') == '1':
-            cmd += ' --remove'
-        elif config.Get('ClamAV', 'MoveInfected') == '1':
-            quarantinedir = config.Get('ClamAV', 'QuarantineDir')
-            # create quarantine folder before scanning
-            if quarantinedir and not os.path.exists(quarantinedir):
-                try:
-                    os.makedirs(quarantinedir)
-                except:
-                    pass
-            cmd += ' --move="%s"' % quarantinedir
-            
+            cmd += ' --recursive'            
         # add annoying registry files to exclude as they're locked by OS
         cmd += GetExcludeSysLockedFiles()
 
@@ -619,12 +620,22 @@ def SafeExpandEnvironmentStrings(s):
 def ReformatLog(data, rtf):
     data = ReplaceClamAVWarnings(data.replace('\r\n', '\n'))
     # retrieve the pure report strings
-    rex = re.compile('(.*)(-- summary --.*)(Infected files: \d*?\n)(.*)', re.M|re.S)
+    compileString = '(.*)(-- summary --.*)(Infected files: \d*?\n)(.*)'
+    sToEncode1 = _("-- summary --").encode('utf-8')
+    sToEncode2 = _("Infected files:").encode('utf-8')
+    compileString = compileString.replace("-- summary --", sToEncode1)
+    compileString = compileString.replace("Infected files:", sToEncode2)
+    rex = re.compile(compileString, re.M|re.S)
     r = rex.search(data)
     # we have 2 different formats depending on what's happened in clamscan
     # so cater for both
     if r is None:
-        rex = re.compile('(.*)(----------- SCAN SUMMARY -----------.*)(Infected files: \d*?\n)(.*)', re.M|re.S)
+        compileString = translateClamAVLines('(.*)(----------- SCAN SUMMARY -----------.*)(Infected files: \d*?\n)(.*)')
+        sToEncode1 = _("SCAN SUMMARY").encode('utf-8')
+        sToEncode2 = _("Infected files:").encode('utf-8')
+        compileString = compileString.replace("SCAN SUMMARY", sToEncode1)
+        compileString = compileString.replace("Infected files:", sToEncode2)
+        rex = re.compile(compileString, re.M|re.S)
         r = rex.search(data)
 
     if r is not None:
@@ -665,14 +676,14 @@ def ReformatLog(data, rtf):
 def ReplaceClamAVWarnings(data):
     data = data.replace('Please check if ClamAV tools are linked against proper version of libclamav\n', '')
     data = data.replace('WARNING: Your ClamAV installation is OUTDATED!\n', '')    
-    data = data.replace("DON'T PANIC! Read http://www.clamav.net/faq.html\n", '')    
+    data = data.replace("DON'T PANIC! Read http://www.clamav.net/support/faq\n", '')    
     data = re.sub('WARNING: Current functionality level = \d+, recommended = \d+\n', '', data)
     data = re.sub('WARNING: Local version: \d+\.??\d*?\.??\d*? Recommended version: \d+\.??\d*?\.??\d*?\n', '', data)
 
 
-    data = data.replace('LibClamAV Warning: ********************************************************\n', '')
-    data = data.replace('LibClamAV Warning: ***  This version of the ClamAV engine is outdated.  ***\n', '')
-    data = data.replace("LibClamAV Warning: *** DON'T PANIC! Read http://www.clamav.net/faq.html ***\n", '')
+    data = data.replace('LibClamAV Warning: ***********************************************************\n', '')
+    data = data.replace('LibClamAV Warning: ***  This version of the ClamAV engine is outdated.     ***\n', '')
+    data = data.replace("LibClamAV Warning: *** DON'T PANIC! Read http://www.clamav.net/support/faq ***\n", '')
     
     # remove XXX: Excluded lines
     data = re.sub('.*\: Excluded\n', '', data)
@@ -741,7 +752,80 @@ def CheckDatabase(config):
     if path == '':
         return False
     return os.path.isfile(os.path.join(path, 'main.cvd')) and \
-           os.path.isfile(os.path.join(path, 'daily.cvd'))
+           (os.path.isfile(os.path.join(path, 'daily.cvd'))  or  \
+            os.path.isfile(os.path.join(os.path.join(path, 'daily.inc'), 'daily.info')))
+
+            
+def RegKeyExists(key, subkey):
+    # try to open the regkey
+    try:
+        hKey = _winreg.OpenKey(key, subkey);
+        _winreg.CloseKey(hKey);
+        return True;
+    except:
+        return False;
+
+def IsOutlookInstalled():
+    return (RegKeyExists(_winreg.HKEY_CURRENT_USER, 'Software\\Microsoft\\Office\\Outlook') or
+        RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\Outlook') or
+        RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\9.0\\Outlook') or
+        RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\10.0\\Outlook') or
+        RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\11.0\\Outlook'))
+        
+#def IsOutlookAddinEnabled():
+#    key = _winreg.HKEY_LOCAL_MACHINE
+#    subKey = ''
+#    enabled = False
+#    if (RegKeyExists(_winreg.HKEY_CURRENT_USER, 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+#        key = _winreg.HKEY_CURRENT_USER
+#        subKey = 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin'
+#    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+#        key = _winreg.HKEY_LOCAL_MACHINE
+#        subKey = 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin'
+#    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\9.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+#        key = _winreg.HKEY_LOCAL_MACHINE
+#        subKey = 'Software\\Microsoft\\Office\\9.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
+#    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\10.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+#        key = _winreg.HKEY_LOCAL_MACHINE
+#        subKey = 'Software\\Microsoft\\Office\\10.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
+#    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\11.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+#        key = _winreg.HKEY_LOCAL_MACHINE
+#        subKey = 'Software\\Microsoft\\Office\\11.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
+#    if (subKey != ''):
+#        hKey = _winreg.OpenKey(key, subKey);
+#        enabled = int(_winreg.QueryValueEx(hKey, "LoadBehavior")[0])==3;
+#        _winreg.CloseKey(hKey)
+#    return enabled
+
+#def EnableOutlookAddin(enable):
+#    # Find the key and subkey to set
+#    key = _winreg.HKEY_LOCAL_MACHINE
+#    subKey = ''
+#    if (RegKeyExists(_winreg.HKEY_CURRENT_USER, 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+#        key = _winreg.HKEY_CURRENT_USER
+#        subKey = 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin'
+#    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+#        key = _winreg.HKEY_LOCAL_MACHINE
+#        subKey = 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin'
+#    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\9.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+#        key = _winreg.HKEY_LOCAL_MACHINE
+#        subKey = 'Software\\Microsoft\\Office\\9.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
+#    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\10.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+#        key = _winreg.HKEY_LOCAL_MACHINE
+#        subKey = 'Software\\Microsoft\\Office\\10.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
+#    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\11.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
+#        key = _winreg.HKEY_LOCAL_MACHINE
+#        subKey = 'Software\\Microsoft\\Office\\11.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
+#    print '   Subkey = ' + subKey
+#    if (subKey != ''):
+#        hKey = _winreg.OpenKey(key, subKey, 0,_winreg.KEY_WRITE);
+#        if enable:
+#            print '   Writing value to 3...'
+#            _winreg.SetValueEx(hKey, 'LoadBehavior', 0, _winreg.REG_DWORD, 3)
+#        else:
+#            print '   Writing value to 2...'
+#            _winreg.SetValueEx(hKey, 'LoadBehavior', 0, _winreg.REG_DWORD, 2)
+#        _winreg.CloseKey(hKey)
 
 
 

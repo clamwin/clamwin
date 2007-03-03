@@ -123,7 +123,8 @@ def translateClamAVLines(lines):
             'Giving up on',
             'ERROR: Update failed. Your network may be down or none of the mirrors listed in freshclam.conf is working.',
             'Scan started:',
-            '-- summary --',
+            '-- scan summary --',
+            'SCAN SUMMARY',
             'Known viruses:',
             'Engine version:',
             'Scanned directories:',
@@ -131,10 +132,6 @@ def translateClamAVLines(lines):
             'Infected files:',
             'Data scanned:',
             'Time:',
-            'WARNING: Your ClamAV installation is OUTDATED!',
-            'WARNING: Local version:',
-            'Recommended version:',
-            'DON\'T PANIC! Read',
             'is up to date',
             'sigs:',
             'f-level:',
@@ -150,7 +147,10 @@ def translateClamAVLines(lines):
             'Not moved',
             'File excluded',
             'Scanning Programs in Computer Memory',
-            'Computer Memory Scan Completed'
+            'Computer Memory Scan Completed',
+            'Skipped non-executable files:',
+            "ERROR: Can't download main.cvd",
+            "Your network may be down or none of the mirrors listed in freshclam.conf is working. Check http://www.clamav.net/support/mirror-problem for possible reasons."
         ]
 
     lDateStrings = [
@@ -197,24 +197,18 @@ def translateClamAVLines(lines):
                 if line.find("Scan started:") >= 0 or line.find("ClamAV update process started at") >= 0:
                     for sToReplace in lDateStrings:
                         if line.find(sToReplace + ' ') >= 0:
-                            locale.setlocale(locale.LC_ALL, '')
                             sToEncode = _(sToReplace).encode('utf-8')
-                            locale.setlocale(locale.LC_ALL, 'C')
                             line = line.replace(sToReplace + ' ', sToEncode + ' ')
                     doneDate = True
 
             if len(line.split('.')) < 3:
                 if regexPattern.search(line):
-                    locale.setlocale(locale.LC_ALL, '')
                     decimalPoint = locale.localeconv()['decimal_point']
-                    locale.setlocale(locale.LC_ALL, 'C')
                     line = line.replace(".", decimalPoint)
             
             for sToReplace in lClamAVStrings:
                 if line.find(sToReplace) >= 0:
-                    locale.setlocale(locale.LC_ALL, '')
                     sToEncode = _(sToReplace).encode('utf-8')
-                    locale.setlocale(locale.LC_ALL, 'C')
                     try:
                         line = line.replace(sToReplace, sToEncode)
                     except:
@@ -222,9 +216,7 @@ def translateClamAVLines(lines):
                 
             for sToReplace in lClamAVAfterStrings:
                 if line.find(sToReplace) >= 0:
-                    locale.setlocale(locale.LC_ALL, '')
                     sToEncode = _(sToReplace).encode('utf-8')
-                    locale.setlocale(locale.LC_ALL, 'C')
                     line = line.replace(sToReplace, sToEncode)
 
         translatedLines.append(line)
@@ -325,19 +317,11 @@ class wxDialogStatus(wxDialog):
         # change colour of read-only controls (gray)
         self.textCtrlStatus.SetBackgroundColour(wxSystemSettings_GetColour(wxSYS_COLOUR_BTNFACE))
 
-        # spawn and monitor our process
-        # clamav stopped writing start time of the scan to the log file
-        #try:
-        #    file(logfile, 'wt').write('Scan Started %s\n' % time.ctime(time.time()))
-        #except:
-        #    pass
         try:
             self._SpawnProcess(cmd, priority)
         except Process.ProcessError, e:
             event = ThreadUpdateStatusEvent(self.GetId(), str(e), False)
             self.GetEventHandler().AddPendingEvent(event)
-            #event = ThreadFinishedEvent(self.GetId())
-            #self.GetEventHandler().AddPendingEvent(event)
 
     def SetAutoClose(self, autoClose, closeRetCode=None):
         self._autoClose = autoClose
@@ -515,7 +499,6 @@ class wxDialogStatus(wxDialog):
             self.textCtrlStatus.ShowPosition(self.textCtrlStatus.GetLastPosition())                
         else:
             win32api.PostMessage(self.textCtrlStatus.GetHandle(), win32con.EM_SCROLL, win32con.SB_PAGEUP, 0)
-            #self.textCtrlStatus.ShowPosition(0)
             
         try:                
             self._returnCode = self._proc.wait(_WAIT_TIMEOUT)            
@@ -544,9 +527,10 @@ class wxDialogStatus(wxDialog):
             if lastPos + len(text) + _NEWLINE_LEN >= 30000:
                 ctrl.Clear()
             # detect progress message in the new text
-            #print_over = re.search('\[( {0,2}\d{1,3}\%)?[|/\-\\\*]?\]',
-            #    ctrl.GetRange(self._previousStart, lastPos)) is not None
-            print_over = ctrl.GetRange(self._previousStart, lastPos).endswith(']\n')
+            curtext = ctrl.GetRange(self._previousStart, lastPos)
+            print_over = curtext.endswith(']\n') and \
+                         (self._scan or \
+                         not ctrl.GetRange(self._previousStart, lastPos).endswith('100%]\n'))
             if print_over:
                 # prevent form blinking text by disabling richedit selection here
                 win32api.SendMessage(ctrl.GetHandle(),Utils.EM_HIDESELECTION, 1, 0)

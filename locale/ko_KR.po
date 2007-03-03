@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-12-17 16:11+0100\n"
+"PO-Revision-Date: 2007-03-03 16:29+0100\n"
 "Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: Korean <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -239,24 +239,6 @@ msgstr "검사 (&리)포트 파일:"
 #, fuzzy
 msgid "Time:"
 msgstr "(&시)간"
-
-#: wxDialogStatus.py:159
-msgid "WARNING: Your ClamAV installation is OUTDATED!"
-msgstr ""
-
-#: wxDialogStatus.py:161
-#, fuzzy
-msgid "WARNING: Local version:"
-msgstr "ClamAV 버전"
-
-#: wxDialogStatus.py:163
-#, fuzzy
-msgid "Recommended version:"
-msgstr "ClamAV 버전"
-
-#: wxDialogStatus.py:165
-msgid "DON'T PANIC! Read"
-msgstr ""
 
 #: wxDialogStatus.py:167
 msgid "is up to date"
@@ -857,16 +839,6 @@ msgstr "이 스케줄을 적용하려면, 선택 하십시오."
 #: wxDialogPreferences.py:486
 msgid "&Extract Attachments and Macros from MS Office Documents"
 msgstr "ms 오피스 도규먼트의 어태치먼트와 매크로 (&풀)기"
-
-#: wxDialogPreferences.py:489
-#: wxDialogPreferences.py:496
-#, fuzzy
-msgid "Select if you wish to detect executable files with broken PE structure as viruses"
-msgstr "바이러스 발견시, ClamWin으로 부터  알림 메시지를 이메일로 받아보려면 선택하십시오."
-
-#: wxDialogPreferences.py:493
-msgid "&Detect Broken Executables"
-msgstr ""
 
 #: wxDialogPreferences.py:500
 msgid "&Additional Clamscan Command Line Parameters:"
@@ -1937,4 +1909,50 @@ msgstr ""
 #, fuzzy
 msgid "Select if you wish to scan OLE attachments and macros in MS Office Documents"
 msgstr "ms 오피스 도규먼트의 어태치먼트와 매크로 (&풀)기"
+
+msgid "Email Scanning"
+msgstr ""
+
+msgid "Try to Scan &Executable Files Only"
+msgstr ""
+
+#, fuzzy
+msgid "Select if you skip scanning of non-executable files"
+msgstr "이 스케줄을 적용하려면, 선택 하십시오."
+
+msgid "Microsoft Outlook"
+msgstr ""
+
+msgid "Scan &Incoming Email Messages"
+msgstr ""
+
+#, fuzzy
+msgid "Select if you wish to enable scanning of incoming email messages in MS Outlook"
+msgstr "ms 오피스 도규먼트의 어태치먼트와 매크로 (&풀)기"
+
+msgid "Scan &Outgoing Email Messages"
+msgstr ""
+
+msgid "Select if you wish to enable scanning of outgoing email messages in MS Outlook"
+msgstr ""
+
+#, fuzzy
+msgid "Opens Support Forum in the Web Browser"
+msgstr "자주 문의 되는 질문을 웹브라우저에서 엽니다."
+
+msgid "&Technical Support"
+msgstr ""
+
+msgid "SCAN SUMMARY"
+msgstr ""
+
+#, fuzzy
+msgid "Skipped non-executable files:"
+msgstr "이 스케줄을 적용하려면, 선택 하십시오."
+
+msgid "ERROR: Can't download main.cvd"
+msgstr ""
+
+msgid "Your network may be down or none of the mirrors listed in freshclam.conf is working. Check http://www.clamav.net/support/mirror-problem for possible reasons."
+msgstr ""
 

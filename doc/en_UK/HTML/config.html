@@ -1,11 +1,12 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML>
 <HEAD>
-	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1251">
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
 	<TITLE></TITLE>
-	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.0  (Win32)">
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.1  (Win32)">
 	<META NAME="CREATED" CONTENT="20040426;21532900">
-	<META NAME="CHANGED" CONTENT="20060710;18421157">
+	<META NAME="CHANGEDBY" CONTENT="Peter Budts">
+	<META NAME="CHANGED" CONTENT="20070123;22382200">
 	<META NAME="SDFOOTNOTE" CONTENT=";;;;P">
 	<META NAME="SDENDNOTE" CONTENT="ARABIC">
 	<STYLE>
@@ -20,7 +21,7 @@
 		H2 { margin-bottom: 0.21cm }
 		H2.western { font-family: "Arial", sans-serif; font-size: 14pt; font-style: italic }
 		H2.cjk { font-family: "Mincho"; font-size: 14pt; font-style: italic }
-		H2.ctl { font-size: 14pt; font-style: italic }
+		H2.ctl { font-family: "Tahoma"; font-size: 14pt; font-style: italic }
 	-->
 	</STYLE>
 </HEAD>
@@ -36,7 +37,7 @@ Clicking </SPAN><B>OK</B><SPAN STYLE="font-weight: medium"> will
 close the dialogue box and save any changes made. Clicking </SPAN><B>Cancel</B><SPAN STYLE="font-weight: medium">
 will close the dialogue box without saving any changes.</SPAN></SPAN></P>
 <P CLASS="western" STYLE="font-weight: medium; text-decoration: none">
-<IMG SRC="config_html_m7ebe80f4.png" NAME="graphics1" ALIGN=LEFT WIDTH=417 HEIGHT=349 BORDER=0><BR CLEAR=LEFT><BR><BR>
+<IMG SRC="config_html_m727d6bac.png" NAME="graphics1" ALIGN=LEFT WIDTH=417 HEIGHT=349 BORDER=0><BR CLEAR=LEFT><BR><BR>
 </P>
 <P CLASS="western" STYLE="font-weight: medium; text-decoration: none">
 Each of the tabs is discussed below.</P>
@@ -84,6 +85,11 @@ is in the quarantine folder, and a virus is found in a file named
 <B>eicar.com</B>, then the second copy will be moved to the
 quarantine folder and renamed to <B>eicar.com.000</B>, a third copy
 would be moved and renamed to <B>eicar.com.001</B>, etc.</P>
+<P CLASS="western" STYLE="font-weight: medium">Finally, the <B>Unload
+Infected Programs from Computer Memory</B> option determines whether
+ClamWin should try to unload a file from memory, if it detects it to
+be infected while performing a memory scan.  This is necessary to
+successfully quarantine such a file.</P>
 <H2 CLASS="western">Filters</H2>
 <P CLASS="western">On this tab, ClamWin can be configured to scan
 only certain types of file, or to ignore certain types of file. The
@@ -119,8 +125,7 @@ e-mails <SPAN LANG="en-GB">etc.</SPAN>)</P>
 <P CLASS="western">*.tbb (used by Ritlabs The Bat! to store e-mails
 etc)</P>
 <P CLASS="western">*.pst (used by Microsoft Outlook to store data)</P>
-<H2 CLASS="western" STYLE="page-break-before: always">Internet
-Updates</H2>
+<H2 CLASS="western">Internet Updates</H2>
 <P CLASS="western">On this tab, you can control how ClamWin gets
 updates to the virus database. 
 </P>
@@ -141,7 +146,8 @@ anything until Monday
 server to be queried can be set manually. Most users will want to
 leave this at the default setting (database.clamav.net). However, if
 you have a local server that mirrors database.clamav.net, you can
-enter its address instead.</P>
+enter its address instead.  For a list of mirrors, check out
+<A HREF="http://www.clamav.net/">http://www.clamav.net</A>.</P>
 <P CLASS="western"><B>Update Virus Database On Logon:</B><SPAN STYLE="font-weight: medium">
 If this option is selected, ClamWin will check for database updates
 when a user logs on to the PC.</SPAN></P>
@@ -150,21 +156,23 @@ ClamWin Releases:</B> If this option is selected, ClamWin will check
 for new releases.  This check is run five minutes after startup of
 ClamWin, and every 24 hours after that.</P>
 <H2 CLASS="western">Proxy</H2>
-<P CLASS="western"><IMG SRC="config_html_m678936f6.png" NAME="graphics4" ALIGN=LEFT WIDTH=417 HEIGHT=349 BORDER=0><BR CLEAR=LEFT>If
-you connect to the Internet via a proxy server, enter the details on
-this tab. If not, leave the details blank. Most users do not use a
-proxy server, and so can safely ignore this tab.</P>
-<H2 CLASS="western"></H2>
+<P CLASS="western">If you connect to the Internet via a proxy server,
+enter the details on this tab. If not, leavethe details blank.  Most
+users do not use a proxy server, and so can safely ignore this tab.</P>
+<H2 CLASS="western"><IMG SRC="config_html_m678936f6.png" NAME="graphics4" ALIGN=LEFT WIDTH=417 HEIGHT=349 BORDER=0><BR CLEAR=LEFT></H2>
 <H2 CLASS="western">Scheduled Scans</H2>
 <P CLASS="western"><IMG SRC="config_html_m1f3b181b.png" NAME="graphics5" ALIGN=LEFT WIDTH=417 HEIGHT=349 BORDER=0><BR CLEAR=LEFT><BR><BR>
 </P>
 <P CLASS="western">This tab allows the user to configure ClamWin to
 run scans at certain times. Details of scheduled scans are displayed.
 To add a scan, click the <B>Add </B><SPAN STYLE="font-weight: medium">button,
-then set the description, frequency, time, and folder to scan. An
-existing scheduled scan can be changed by clicking the </SPAN><B>Edit
-</B><SPAN STYLE="font-weight: medium">button, or removed by clicking
-the </SPAN><B>Remove</B><SPAN STYLE="font-weight: medium"> button.</SPAN></P>
+then set the description, frequency, time, and folder to scan. </SPAN>
+</P>
+<P CLASS="western" STYLE="font-weight: medium"><IMG SRC="config_html_6be9163f.png" NAME="graphics11" ALIGN=LEFT WIDTH=309 HEIGHT=316 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<P CLASS="western" STYLE="font-weight: medium">An existing scheduled
+scan can be changed by clicking the <B>Edit </B>button, or removed by
+clicking the <B>Remove</B> button.</P>
 <P CLASS="western" STYLE="font-weight: medium">Scheduled scans can be
 activated or deactivated by clicking on the appropriate button. A
 deactivated scan will not run at the scheduled time.</P>
@@ -201,15 +209,17 @@ extracted, and the maximum number of sub-archives to be extracted.</P>
 can slow down a scan, so disabling scanning of archives may reduce
 the time taken for a scan to complete.</P>
 <H2 CLASS="western">File Locations</H2>
-<P CLASS="western"><IMG SRC="config_html_590bc174.png" NAME="graphics8" ALIGN=LEFT WIDTH=417 HEIGHT=349 BORDER=0><BR CLEAR=LEFT><BR><BR>
-</P>
 <P CLASS="western">This tab allows the locations of the ClamScan
 program file, FreshClam program file (the program used to retrieve
-database updates) and the virus database to be altered. These values
-are set during installation, and should not normally need to be
-altered. <I>Do not change these settings unless you know what you are
-doing</I><SPAN STYLE="font-style: normal">. If they are incorrectly
-set, ClamWin will stop working.</SPAN></P>
+database updates) and the virus database to be altered. 
+</P>
+<P CLASS="western"><IMG SRC="config_html_590bc174.png" NAME="graphics8" ALIGN=LEFT WIDTH=417 HEIGHT=349 BORDER=0><BR CLEAR=LEFT>These
+values are set during installation, and should not normally need to
+be altered. <I>Do not change these settings unless you know what you
+are doing</I><SPAN STYLE="font-style: normal">. If they are
+incorrectly set, ClamWin will stop working.</SPAN></P>
+<P CLASS="western"><BR><BR>
+</P>
 <H2 CLASS="western">Reports</H2>
 <P CLASS="western">This tab allows the user to change the location &amp;
 name of the log files. Most users will not need to change these
@@ -237,7 +247,12 @@ Documents: </B><SPAN STYLE="font-weight: medium">If selected, ClamWin
 will check for macro viruses in MS Office documents.</SPAN></P>
 <P CLASS="western"><B>Detect broken executables: </B><SPAN STYLE="font-weight: medium">If
 selected, ClamWin will check the structure of executable files and
-treat corrupted executables as viruses.</SPAN></P>
+treat corrupted executables as viruses.  </SPAN>
+</P>
+<P CLASS="western" STYLE="font-weight: medium"><I>Note that the
+broken executables detection might lead to unexpected results and
+should only be used when there is suspicion about a specific file. 
+Do not use turn on this option as a default.</I></P>
 <P CLASS="western" STYLE="font-weight: medium"><B>Additional Clamscan
 command line parameters:</B> If you want to use Clamscan command line
 options that are not currently supported by ClamWin, you can add them
