@@ -666,7 +666,7 @@ def ReformatLog(data, rtf):
 def ReplaceClamAVWarnings(data):
     data = data.replace('Please check if ClamAV tools are linked against proper version of libclamav\n', '')
     data = data.replace('WARNING: Your ClamAV installation is OUTDATED!\n', '')    
-    data = data.replace("DON'T PANIC! Read http://www.clamav.net/faq.html\n", '')    
+    data = data.replace("DON'T PANIC! Read http://www.clamav.net/support/faq\n", '')    
     data = re.sub('WARNING: Current functionality level = \d+, recommended = \d+\n', '', data)
     data = re.sub('WARNING: Local version: \d+\.??\d*?\.??\d*? Recommended version: \d+\.??\d*?\.??\d*?\n', '', data)
 
