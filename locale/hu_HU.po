@@ -1,15 +1,18 @@
+# translation of hu_HU.po to Hungarian
+#
+# KAMI <kamihir@freemail.hu>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: Clamwin\n"
+"Project-Id-Version: hu_HU\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-03-03 16:29+0100\n"
-"Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
-"Language-Team: Hungarian ClamWin Team <clamwin-hungarian-bounces@lists.sourceforge.net>\n"
+"PO-Revision-Date: 2007-03-04 12:44+0100\n"
+"Last-Translator: KAMI <kamihir@freemail.hu>\n"
+"Language-Team: Hungarian\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Hungarian\n"
-"X-Poedit-Country: HUNGARY\n"
+"X-Generator: KBabel 1.11.4\n"
 
 #: wxFrameMain.py:90
 msgid "Displays the configuration window"
@@ -1788,45 +1791,44 @@ msgid "Select if you wish to scan OLE attachments and macros in MS Office Docume
 msgstr "Válassza ki, ha az OLE objektumokat és makrókat is ellenőrizni szeretne az MS Office dokumentumokban"
 
 msgid "Email Scanning"
-msgstr ""
+msgstr "E-mail ellenőrzés"
 
 msgid "Try to Scan &Executable Files Only"
-msgstr ""
+msgstr "Kizárólag &végrehajtható fájlok ellenőrzése"
 
 msgid "Select if you skip scanning of non-executable files"
-msgstr ""
+msgstr "Válassza ki, ha nem kívánja ellenőrízni a nem végrehejtható fájlokat"
 
 msgid "Microsoft Outlook"
-msgstr ""
+msgstr "Microsoft Outlook"
 
 msgid "Scan &Incoming Email Messages"
-msgstr ""
+msgstr "&Bejövő e-mail üzenetek ellenőrzése"
 
 msgid "Select if you wish to enable scanning of incoming email messages in MS Outlook"
-msgstr ""
+msgstr "Válassza ki, ha ellenőrízni kívánja az Microsoft Outlook levelezőprogramba érkező e-mail üzeneteket"
 
 msgid "Scan &Outgoing Email Messages"
-msgstr ""
+msgstr "&Kimenő e-mail üzenetek ellenőrzése"
 
 msgid "Select if you wish to enable scanning of outgoing email messages in MS Outlook"
-msgstr ""
+msgstr "Válassza ki, ha ellenőrízni kívánja az Microsoft Outlook levelezőprogramból elküldött e-mail üzeneteket"
 
 msgid "Opens Support Forum in the Web Browser"
-msgstr ""
+msgstr "Megnyitja a technikai támogatás fórumot a webböngészőben"
 
 msgid "&Technical Support"
-msgstr ""
+msgstr "&Technikai támogatás"
 
 msgid "SCAN SUMMARY"
-msgstr ""
+msgstr "AZ ELLENÖRZÉS ÖSSZEGZÉSE"
 
 msgid "Skipped non-executable files:"
-msgstr ""
+msgstr "Kihagyott nem végrehajtható fájlok:"
 
 msgid "ERROR: Can't download main.cvd"
-msgstr ""
+msgstr "HIBA: A main.cvd fájl nem tölthető le"
 
-#, fuzzy
 msgid "Your network may be down or none of the mirrors listed in freshclam.conf is working. Check http://www.clamav.net/support/mirror-problem for possible reasons."
-msgstr "HIBA: A frissítés nem sikerült. A hálózat nem működik, vagy egyetlen - a freshclam.conf fájlban megadott - tükörszerver sem üzemel."
+msgstr "HIBA: A frissítés nem sikerült. A hálózat nem működik, vagy egyetlen - a freshclam.conf fájlban megadott - tükörszerver sem üzemel. Tekintse meg a http://www.clamav.net/support/mirror-problem weboldalt a lehetséges okokért."
 
