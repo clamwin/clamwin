@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-03-03 16:30+0100\n"
-"Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
+"PO-Revision-Date: 2007-03-05 15:37+0100\n"
+"Last-Translator: \n"
 "Language-Team: German <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -377,7 +377,7 @@ msgstr "aktualisiert"
 
 #: wxDialogStatus.py:246
 msgid "failed"
-msgstr ""
+msgstr "fehlgeschlagen"
 
 #: wxDialogStatus.py:294
 msgid "ClamWin Free Antivirus Status"
@@ -1799,45 +1799,44 @@ msgid "Select if you wish to scan OLE attachments and macros in MS Office Docume
 msgstr "OLE-Anhänge und Makros in MS Office-Dokumenten scannen"
 
 msgid "Email Scanning"
-msgstr ""
+msgstr "E-Mail Prüfung"
 
 msgid "Try to Scan &Executable Files Only"
-msgstr ""
+msgstr "Versuchen, nur ausführbare Dateien zu überprüfen."
 
 msgid "Select if you skip scanning of non-executable files"
-msgstr ""
+msgstr "Nicht-ausführbare Dateien werden übersprungen."
 
 msgid "Microsoft Outlook"
-msgstr ""
+msgstr "Microsoft Outlook"
 
 msgid "Scan &Incoming Email Messages"
-msgstr ""
+msgstr "E&ingehende E-Mails prüfen"
 
 msgid "Select if you wish to enable scanning of incoming email messages in MS Outlook"
-msgstr ""
+msgstr "Auswählen, ob eingehende E-Mails in MS Outlook geprüft werden sollen."
 
 msgid "Scan &Outgoing Email Messages"
-msgstr ""
+msgstr "%Ausgehende E-Mails prüfen"
 
 msgid "Select if you wish to enable scanning of outgoing email messages in MS Outlook"
-msgstr ""
+msgstr "Auswählen, ob ausgehende E-Mails in MS Outlook geprüft werden sollen."
 
 msgid "Opens Support Forum in the Web Browser"
-msgstr ""
+msgstr "Öffnet das Clamwin Forum im Web Browser"
 
 msgid "&Technical Support"
-msgstr ""
+msgstr "&Technischer Support"
 
 msgid "SCAN SUMMARY"
-msgstr ""
+msgstr "Zusammenfassung der Scanvorgangs"
 
 msgid "Skipped non-executable files:"
-msgstr ""
+msgstr "Übersprungene nicht-ausführbare Dateien:"
 
 msgid "ERROR: Can't download main.cvd"
-msgstr ""
+msgstr "Fehler: Kann main.cvd nicht herunterladen."
 
-#, fuzzy
 msgid "Your network may be down or none of the mirrors listed in freshclam.conf is working. Check http://www.clamav.net/support/mirror-problem for possible reasons."
-msgstr "Fehler: Update fehlgeschlagen. Ihr Netzwerk könnte ein Problem haben oder keiner der Mirror-Server aus der Datei freshclam.conf funktioniert."
+msgstr "Update fehlgeschlagen. Ihr Netzwerk hat ein Problem, oder keiner der Mirror-Server aus der Datei freshclam.conf funktioniert."
 
