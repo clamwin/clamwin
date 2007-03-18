@@ -3,7 +3,7 @@
 
 [Setup]
 AppName=ClamWin Free Antivirus
-AppVerName=ClamWin Free Antivirus 0.90
+AppVerName=ClamWin Free Antivirus 0.90.1
 AppPublisher=alch
 AppPublisherURL=http://www.clamwin.com/
 AppSupportURL=http://www.clamwin.com/
@@ -188,11 +188,11 @@ Name: {code:CommonProfileDir}\.clamwin; Type: filesandordirs
 Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: ClamWin; ValueData: """{app}\bin\ClamTray.exe"" --logon"; Flags: uninsdeletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKLM; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKLM64; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers and IsWin64
-Root: HKLM; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 900; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
+Root: HKLM; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 901; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKCU; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: ClamWin; ValueData: """{app}\bin\ClamTray.exe"" --logon"; Flags: uninsdeletevalue; Components: ClamWin; Check: not IsAllUsers
 Root: HKCU; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
 Root: HKCU64; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers and IsWin64
-Root: HKCU; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 900; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
+Root: HKCU; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 901; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
 
 ; ExplorerShell entries
 Root: HKCR; Subkey: CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueData: {app}\bin\ExpShell.dll; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers
@@ -452,7 +452,7 @@ begin
 	else
 		AllUsers := IsAdminLoggedOn();
 
-	ThisVersion := 900;
+	ThisVersion := 901;
 	value := 0;
 	if not RegQueryDWordValue(HKEY_CURRENT_USER, 'SOFTWARE\Clamwin', 'Version',  value) then begin
 		value := 0;

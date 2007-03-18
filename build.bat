@@ -1,6 +1,6 @@
 rem @echo off
 set CYGWINDIR=d:\cygwin
-set THISDIR=l:\Projects\ClamWin\clamwin
+set THISDIR=l:\Projects\ClamWin\0.90\clamwin
 set ISTOOLDIR=C:\Program Files (x86)\ISTool
 
 set VCINSTALLDIR=C:\Program Files (x86)\Microsoft Visual Studio 8\VC
