@@ -59,7 +59,8 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLGCHECKBOXSMTPENABLE, 
  wxID_WXPREFERENCESDLGCHECKBOXTRAYNOTIFY, wxID_WXPREFERENCESDLGCHECKBOXUNLOAD, 
  wxID_WXPREFERENCESDLGCHECKBOXUPDATELOGON, 
- wxID_WXPREFERENCESDLGCHOICEPRIORITY, wxID_WXPREFERENCESDLGCHOICEUPDATEDAY, 
+ wxID_WXPREFERENCESDLGCHECKBOXWARNDBOLD, wxID_WXPREFERENCESDLGCHOICEPRIORITY, 
+ wxID_WXPREFERENCESDLGCHOICEUPDATEDAY, 
  wxID_WXPREFERENCESDLGCHOICEUPDATEFREQUENCY, 
  wxID_WXPREFERENCESDLGEDITABLELISTBOXFILTERSEXCLUDE, 
  wxID_WXPREFERENCESDLGEDITABLELISTBOXFILTERSINCLUDE, 
@@ -133,7 +134,7 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLG_PANELINTERNETUPDATE, 
  wxID_WXPREFERENCESDLG_PANELOPTIONS, wxID_WXPREFERENCESDLG_PANELPROXY, 
  wxID_WXPREFERENCESDLG_PANELREPORTS, wxID_WXPREFERENCESDLG_PANELSCHEDULER, 
-] = map(lambda _init_ctrls: wxNewId(), range(118))
+] = map(lambda _init_ctrls: wxNewId(), range(119))
 
 class wxPreferencesDlg(wxDialog):
     def _init_coll_imageListScheduler_Images(self, parent):
@@ -186,7 +187,7 @@ class wxPreferencesDlg(wxDialog):
     def _init_ctrls(self, prnt):
         # generated method, don't edit
         wxDialog.__init__(self, id=wxID_WXPREFERENCESDLG, name='', parent=prnt,
-              pos=wxPoint(523, 301), size=wxSize(419, 351),
+              pos=wxPoint(604, 269), size=wxSize(419, 351),
               style=wxDEFAULT_DIALOG_STYLE, title='ClamWin Preferences')
         self._init_utils()
         self.SetClientSize(wxSize(411, 324))
@@ -491,7 +492,7 @@ class wxPreferencesDlg(wxDialog):
               label='Try to &Scan Executable Files Only',
               name='checkBoxScanExeOnly', parent=self._panelAdvanced,
               pos=wxPoint(6, 55), size=wxSize(381, 18), style=0)
-        self.checkBoxScanExeOnly.SetToolTipString('Select if you wish to scan files that can be executed on MS Windows platform')
+        self.checkBoxScanExeOnly.SetToolTipString('Select if you only wish to scan files that can run on MS Windows platform')
         self.checkBoxScanExeOnly.SetValue(False)
 
         self.staticTextAdditionalParams = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTADDITIONALPARAMS,
@@ -633,15 +634,14 @@ class wxPreferencesDlg(wxDialog):
         self.choiceUpdateDay.SetToolTipString('When update frequency is weekly select day of the week for an update')
         self.choiceUpdateDay.SetStringSelection('Tuesday')
 
-        self.checkBoxUpdateLogon = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXUPDATELOGON,
-              label='&Update Virus Database On Logon',
-              name='checkBoxUpdateLogon', parent=self._panelInternetUpdate,
-              pos=wxPoint(6, 139), size=wxSize(322, 20), style=0)
-        self.checkBoxUpdateLogon.SetToolTipString('Select if you wish to update the virus databases just after you logged on')
-        self.checkBoxUpdateLogon.SetValue(False)
-        EVT_CHECKBOX(self.checkBoxUpdateLogon,
-              wxID_WXPREFERENCESDLGCHECKBOXUPDATELOGON,
-              self.OnCheckBoxEnableAutoUpdate)
+        self.checkBoxWarnDBOld = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXWARNDBOLD,
+              label='&Warn if Virus database is Out of Date',
+              name='checkBoxWarnDBOld', parent=self._panelInternetUpdate,
+              pos=wxPoint(6, 138), size=wxSize(322, 20), style=0)
+        self.checkBoxWarnDBOld.SetToolTipString('Will display a reminder if the virus database is older than 3 days')
+        self.checkBoxWarnDBOld.SetValue(False)
+        EVT_CHECKBOX(self.checkBoxWarnDBOld,
+              wxID_WXPREFERENCESDLGCHECKBOXWARNDBOLD, self.OnCheckBoxWarnDBOld)
 
         self.staticBoxInfected = wxStaticBox(id=wxID_WXPREFERENCESDLGSTATICBOXINFECTED,
               label='Infected Files', name='staticBoxInfected',
@@ -860,20 +860,25 @@ class wxPreferencesDlg(wxDialog):
               wxID_WXPREFERENCESDLGBUTTONTASKACTIVATE,
               self.OnButtonTaskActivate)
 
+        self.checkBoxUpdateLogon = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXUPDATELOGON,
+              label='&Update Virus Database On Logon',
+              name='checkBoxUpdateLogon', parent=self._panelInternetUpdate,
+              pos=wxPoint(6, 166), size=wxSize(322, 20), style=0)
+        self.checkBoxUpdateLogon.SetToolTipString('Select if you wish to update the virus databases just after you logged on')
+        self.checkBoxUpdateLogon.SetValue(False)
+        EVT_CHECKBOX(self.checkBoxUpdateLogon,
+              wxID_WXPREFERENCESDLGCHECKBOXUPDATELOGON,
+              self.OnCheckBoxEnableAutoUpdate)
+
         self.checkBoxCheckVersion = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXCHECKVERSION,
               label='&Notify About New ClamWin Releases',
               name='checkBoxCheckVersion', parent=self._panelInternetUpdate,
-              pos=wxPoint(6, 172), size=wxSize(322, 20), style=0)
+              pos=wxPoint(6, 193), size=wxSize(322, 20), style=0)
         self.checkBoxCheckVersion.SetToolTipString('Select if you wish to get a notification message when ClamWin Free Antivirus program has been updated')
         self.checkBoxCheckVersion.SetValue(False)
         EVT_CHECKBOX(self.checkBoxCheckVersion,
               wxID_WXPREFERENCESDLGCHECKBOXCHECKVERSION,
               self.OnCheckBoxCheckVersionCheckbox)
-
-        self.staticTextNoPersonal = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTNOPERSONAL,
-              label='(No personal information is transmitted during this check)',
-              name='staticTextNoPersonal', parent=self._panelInternetUpdate,
-              pos=wxPoint(27, 193), size=wxSize(265, 13), style=0)
 
         self.staticTextMB2 = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTMB2,
               label='MegaBytes', name='staticTextMB2',
@@ -933,6 +938,11 @@ class wxPreferencesDlg(wxDialog):
         EVT_CHECKBOX(self.checkBoxOutlookScanOutgoing,
               wxID_WXPREFERENCESDLGCHECKBOXOUTLOOKSCANOUTGOING,
               self.OnCheckBoxOutlookScanOutgoingCheckbox)
+
+        self.staticTextNoPersonal = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTNOPERSONAL,
+              label='(No personal information is transmitted during this check)',
+              name='staticTextNoPersonal', parent=self._panelInternetUpdate,
+              pos=wxPoint(27, 214), size=wxSize(265, 13), style=0)
 
         self._init_coll_notebook_Pages(self.notebook)
 
@@ -1103,10 +1113,8 @@ class wxPreferencesDlg(wxDialog):
         self.checkBoxCheckVersion.SetValidator(MyValidator(config=self._config, section='Updates', value='CheckVersion'))
         self.choiceUpdateFrequency.SetValidator(MyValidator(config=self._config, section='Updates', value='Frequency'))
         self.timeUpdate.SetValidator(MyValidator(config=self._config, section='Updates', value='Time'))
-        if sys.platform.startswith('win'):
-            self.checkBoxUpdateLogon.SetValidator(MyValidator(config=self._config, section='Updates', value='UpdateOnLogon'))
-        else:
-            self.checkBoxUpdateLogon.Hide()
+        self.checkBoxUpdateLogon.SetValidator(MyValidator(config=self._config, section='Updates', value='UpdateOnLogon'))
+        self.checkBoxWarnDBOld.SetValidator(MyValidator(config=self._config, section='Updates', value='WarnOutOfDate'))
         self.choiceUpdateDay.SetValidator(MyWeekDayValidator(config=self._config, section='Updates', value='WeekDay'))
         self._EnableInternetUpdateControls(True)
 
@@ -1433,6 +1441,9 @@ class wxPreferencesDlg(wxDialog):
         event.Skip()
 
     def OnCheckBoxOutlookScanOutgoingCheckbox(self, event):
+        event.Skip()
+
+    def OnCheckBoxWarnDBOld(self, event):
         event.Skip()
 
 class MyBaseValidator(wxPyValidator):
