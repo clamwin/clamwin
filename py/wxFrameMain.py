@@ -24,7 +24,7 @@
 #   along with this program; if not, write to the Free Software
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import sys, os
+import sys, os, time
 from wxPython.wx import *
 import MsgBox, Utils, wxDialogUtils, version
 
@@ -355,12 +355,29 @@ class wxMainFrame(wxFrame):
             if configured and not hasdb:
                 if wxID_YES == MsgBox.MessageBox(None, 'ClamWin Free Antivirus', 'You have not yet downloaded Virus Definitions Database. Would you like to download it now?', wxYES_NO | wxICON_QUESTION):
                     wxDialogUtils.wxUpdateVirDB(self, self._config)
-                    hasdb = Utils.CheckDatabase(self._config)
+                    hasdb = Utils.CheckDatabase(self._config)                    
+            
 
             self.buttonScan.Enable(configured and hasdb)
             self.toolBar.EnableTool(wxID_WXMAINFRAMETOOLBARTOOLS_INETUPDATE, configured)
             self.toolBar.EnableTool(wxID_WXMAINFRAMETOOLBARTOOLS_SCAN, configured and hasdb)
             self.toolBar.EnableTool(wxID_WXMAINFRAMETOOLBARTOOLS_SCANMEM, configured and hasdb)
+            
+            # check if the db is current (not older than 3 days)                    
+            if hasdb:
+                dbpath =  self._config.Get('ClamAV', 'Database')                
+                daily = os.path.join(dbpath, 'daily.cvd')
+                if not os.path.isfile(daily):
+                    daily = os.path.join(os.path.join(dbpath, 'daily.inc'), 'daily.info')                   
+                ver, numv, updated = Utils.GetDBInfo(daily)
+                
+            # print updated, time.mktime(time.localtime()), time.mktime(time.localtime()) - updated
+            if hasdb and self._config.Get('Updates', 'WarnOutOfDate') == '1' and (time.mktime(time.localtime()) - updated > 86400*3):
+                if wxID_YES == MsgBox.MessageBox(None, 'ClamWin Free Antivirus', 'Virus signature database is older than 3 days and may not offer the latest protection. Would you like to update it now?', wxYES_NO | wxICON_QUESTION):
+                    wxDialogUtils.wxUpdateVirDB(self, self._config)
+                    hasdb = Utils.CheckDatabase(self._config)                    
+            
+            
 
 
 
