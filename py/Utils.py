@@ -676,14 +676,14 @@ def ReformatLog(data, rtf):
 def ReplaceClamAVWarnings(data):
     data = data.replace('Please check if ClamAV tools are linked against proper version of libclamav\n', '')
     data = data.replace('WARNING: Your ClamAV installation is OUTDATED!\n', '')    
-    data = data.replace("DON'T PANIC! Read http://www.clamav.net/support/faq\n", '')    
+    data = re.sub("DON'T PANIC! Read .*\n", '', data)    
     data = re.sub('WARNING: Current functionality level = \d+, recommended = \d+\n', '', data)
     data = re.sub('WARNING: Local version: \d+\.??\d*?\.??\d*? Recommended version: \d+\.??\d*?\.??\d*?\n', '', data)
 
 
-    data = data.replace('LibClamAV Warning: ***********************************************************\n', '')
-    data = data.replace('LibClamAV Warning: ***  This version of the ClamAV engine is outdated.     ***\n', '')
-    data = data.replace("LibClamAV Warning: *** DON'T PANIC! Read http://www.clamav.net/support/faq ***\n", '')
+    data = data.replace('LibClamAV Warning: ********************************************************\n', '')
+    data = data.replace('LibClamAV Warning: ***  This version of the ClamAV engine is outdated.  ***\n', '')
+    data = re.sub("LibClamAV Warning: \*\*\* DON'T PANIC! .* \*\*\*\n", '', data)
     
     # remove XXX: Excluded lines
     data = re.sub('.*\: Excluded\n', '', data)
@@ -830,8 +830,6 @@ def IsOutlookInstalled():
 
 
 if __name__ == '__main__':
-    f = file('c:\\2.txt', 'rt')
-    file('c:\\3.rtf', 'wt').write(ReformatLog(f.read(), True))
     #AppendLogFile('c:\\1.txt',  'C:\\MSDE2kLog.txt', 30000)
     #currentDir = GetCurrentDir(True)
     #os.chdir(currentDir)
@@ -839,5 +837,11 @@ if __name__ == '__main__':
     config_file = os.path.join(GetProfileDir(True),'ClamWin.conf')
     config = Config.Settings(config_file)
     b = config.Read()
-    print GetOnlineVersion(config)
-    print CheckDatabase(config)
+#    print GetOnlineVersion(config)
+#    print CheckDatabase(config)
+    dbpath =  config.Get('ClamAV', 'Database')                
+    daily = os.path.join(dbpath, 'daily.cvd')
+    if not os.path.isfile(daily):
+        daily = os.path.join(os.path.join(dbpath, 'daily.inc'), 'daily.info')                   
+    print GetDBInfo(daily)
+

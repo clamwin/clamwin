@@ -3,8 +3,8 @@
 
 [Setup]
 AppName={cm:ClamWinFreeAntivirus1}
-AppVerName={cm:ClamWinFreeAntivirus1} 0.90
-OutputBaseFilename=ClamWin-0.90-L10N-31
+AppVerName={cm:ClamWinFreeAntivirus1} 0.90.1
+OutputBaseFilename=ClamWin-0.90.1-L10N-32
 AppPublisher=budtse
 AppPublisherURL=http://www.clamwin.com/
 AppSupportURL=http://www.clamwin.com/
@@ -75,7 +75,7 @@ Source: ..\doc\ru_RU\manual_ru.chm; DestDir: {app}\doc; Components: LanguageSupp
 Source: ..\locale\nl_BE.mo; DestDir: {app}\locale\nl_BE\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Dutch; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\fr_FR.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\French; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\de_DE.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\German; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\hu_HU.mo; DestDir: {app}\locale\hu_HU\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Italian; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\hu_HU.mo; DestDir: {app}\locale\hu_HU\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Hungarian; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\it_IT.mo; DestDir: {app}\locale\it_IT\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Italian; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\pl_PL.mo; DestDir: {app}\locale\pl_PL\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Polish; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\ru_RU.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Russian; Flags: restartreplace uninsrestartdelete replacesameversion
@@ -177,7 +177,7 @@ Name: LanguageSupport\French; Description: Français (French); Types: full
 Name: LanguageSupport\German; Description: Deutsch (German); Types: full
 Name: LanguageSupport\Hungarian; Description: Magyar (Hungarian); Types: full
 Name: LanguageSupport\Italian; Description: Italiano (Italian); Types: full
-Name: LanguageSupport\Polish; Description: (Polish); Types: full
+Name: LanguageSupport\Polish; Description: Polski (Polish); Types: full
 Name: LanguageSupport\Russian; Description: (Russian); Types: full
 Name: LanguageSupport\Spanish; Description: Español (Spanish); Types: full
 
@@ -214,11 +214,11 @@ Name: {code:CommonProfileDir}\.clamwin; Type: filesandordirs
 Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: ClamWin; ValueData: """{app}\bin\ClamTray.exe"" --logon"; Flags: uninsdeletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKLM; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKLM64; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers and IsWin64
-Root: HKLM; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 900; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
+Root: HKLM; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 901; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKCU; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: ClamWin; ValueData: """{app}\bin\ClamTray.exe"" --logon"; Flags: uninsdeletevalue; Components: ClamWin; Check: not IsAllUsers
 Root: HKCU; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
 Root: HKCU64; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers and IsWin64
-Root: HKCU; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 900; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
+Root: HKCU; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 901; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
 
 ; ExplorerShell entries
 Root: HKCR; Subkey: CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueData: {app}\bin\ExpShell.dll; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers
@@ -489,7 +489,7 @@ begin
 	else
 		AllUsers := IsAdminLoggedOn();
 
-	ThisVersion := 900;
+	ThisVersion := 901;
 	value := 0;
 	if not RegQueryDWordValue(HKEY_CURRENT_USER, 'SOFTWARE\Clamwin', 'Version',  value) then begin
 		value := 0;

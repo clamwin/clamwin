@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-03-05 15:37+0100\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2007-03-18 15:36+0100\n"
+"Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: German <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1801,11 +1801,8 @@ msgstr "OLE-Anhänge und Makros in MS Office-Dokumenten scannen"
 msgid "Email Scanning"
 msgstr "E-Mail Prüfung"
 
-msgid "Try to Scan &Executable Files Only"
+msgid "Try to &Scan Executable Files Only"
 msgstr "Versuchen, nur ausführbare Dateien zu überprüfen."
-
-msgid "Select if you skip scanning of non-executable files"
-msgstr "Nicht-ausführbare Dateien werden übersprungen."
 
 msgid "Microsoft Outlook"
 msgstr "Microsoft Outlook"
@@ -1839,4 +1836,23 @@ msgstr "Fehler: Kann main.cvd nicht herunterladen."
 
 msgid "Your network may be down or none of the mirrors listed in freshclam.conf is working. Check http://www.clamav.net/support/mirror-problem for possible reasons."
 msgstr "Update fehlgeschlagen. Ihr Netzwerk hat ein Problem, oder keiner der Mirror-Server aus der Datei freshclam.conf funktioniert."
+
+msgid "Select if you only wish to scan files that can run on MS Windows platform"
+msgstr ""
+
+msgid "&Warn if Virus database is Out of Date"
+msgstr ""
+
+msgid "Will display a reminder if the virus database is older than 3 days"
+msgstr ""
+
+msgid ""
+"\n"
+"Scan Started %s"
+msgstr ""
+"\n"
+"Scan gestartet %s"
+
+msgid "Virus signature database is older than 3 days and may not offer the latest protection. Would you like to update it now?"
+msgstr ""
 

@@ -13,15 +13,21 @@ KNOWN ISSUES:
 
 Completed Languages
 *******************
-- Dutch/Belgian Dutch   (0.90)
+- Dutch/Belgian Dutch   (0.90.1)
 - French                (0.88.7)
-- German                (0.88.7)
-- Hungarian             (0.88.7)
+- German                (0.90.0)
+- Hungarian             (0.90.0)
 - Italian               (0.88.7)
 - Spanish               (0.88.7)
+- Polish                (0.90.0)
 
 History
 *******
+
+Changes in Version ClamWin-0.90.1-L10N-32.exe :
+- Merged the changes up to ClamWin Free Antivirus release 0.90.1 and added some 
+  new strings for that release.
+- Some minor fixes in the installer and release procedure.
 
 Changes in Version ClamWin-0.90-L10N-31.exe :
 - Merged the changes up to ClamWin Free Antivirus release 0.90 and added some 

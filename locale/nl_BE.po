@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-03-03 16:36+0100\n"
+"PO-Revision-Date: 2007-03-18 14:55+0100\n"
 "Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: ClamWin Free Antivirus <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -1080,7 +1080,7 @@ msgstr "Vink dit aan als u wil gewaarschuwd worden wanneer een nieuwe versie van
 
 #: wxDialogPreferences.py:908
 msgid "(No personal information is transmitted during this check)"
-msgstr "(Bij deze controle wordt geen persoonlijke informatie doorgezonden)"
+msgstr "(Bij deze controle wordt geen persoonlijke informatie verzonden)"
 
 #: wxDialogPreferences.py:918
 msgid "Scanner &Priority:"
@@ -1790,11 +1790,8 @@ msgstr "Vink aan als u OLE bijlagen en macros in MS Office Documenten wil scanne
 msgid "Email Scanning"
 msgstr "Scannen van Email"
 
-msgid "Try to Scan &Executable Files Only"
+msgid "Try to &Scan Executable Files Only"
 msgstr "Probeer enkel &Uitvoerbare Bestanden te scannen"
-
-msgid "Select if you skip scanning of non-executable files"
-msgstr "Vink aan als u het scannen van niet-uitvoerbare bestanden wil overslaan"
 
 msgid "Microsoft Outlook"
 msgstr "Microsoft Outlook"
@@ -1828,4 +1825,23 @@ msgstr "FOUT: Kan main.cvd niet ophalen"
 
 msgid "Your network may be down or none of the mirrors listed in freshclam.conf is working. Check http://www.clamav.net/support/mirror-problem for possible reasons."
 msgstr "Er is een probleem met uw netwerkverbinding of geen van de mirrors in freshclam.conf werken.  Kijk op http://www.clamav.net/support/mirror-problem voor mogelijke redenen"
+
+msgid "Select if you only wish to scan files that can run on MS Windows platform"
+msgstr "Selecteer als u enkel bestanden wil scannen die uitvoerbaar zijn op het MS Windows platform"
+
+msgid "&Warn if Virus database is Out of Date"
+msgstr "Waarschuw bij verouderde virus database"
+
+msgid "Will display a reminder if the virus database is older than 3 days"
+msgstr "Toont een waarschuwing wanneer de virus database meer dan 3 dagen oud is"
+
+msgid ""
+"\n"
+"Scan Started %s"
+msgstr ""
+"\n"
+"Scan gestart op %s"
+
+msgid "Virus signature database is older than 3 days and may not offer the latest protection. Would you like to update it now?"
+msgstr "De virus definitie database is ouder dan 3 dagen en biedt niet de recentste bescherming. Wil u deze nu bijwerken?"
 

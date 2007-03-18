@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-03-03 16:28+0100\n"
+"PO-Revision-Date: 2007-03-18 14:39+0100\n"
 "Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: Russian <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -1894,10 +1894,7 @@ msgstr "Указать если вы желаете сканировать OLE �
 msgid "Email Scanning"
 msgstr ""
 
-msgid "Try to Scan &Executable Files Only"
-msgstr ""
-
-msgid "Select if you skip scanning of non-executable files"
+msgid "Try to &Scan Executable Files Only"
 msgstr ""
 
 msgid "Microsoft Outlook"
@@ -1933,4 +1930,24 @@ msgstr ""
 #, fuzzy
 msgid "Your network may be down or none of the mirrors listed in freshclam.conf is working. Check http://www.clamav.net/support/mirror-problem for possible reasons."
 msgstr "ОШИБКА: Обновление прервано. Существуют проблемы с сетевым доступом или ни одно из зеркал указанных в freshclam.conf не работает."
+
+#, fuzzy
+msgid "Select if you only wish to scan files that can run on MS Windows platform"
+msgstr "Укажите, если вы желаете чтобы в окне сканирования показывались только инфицированные файлы"
+
+#, fuzzy
+msgid "&Warn if Virus database is Out of Date"
+msgstr "Как часто вирусная база загружается"
+
+msgid "Will display a reminder if the virus database is older than 3 days"
+msgstr ""
+
+#, fuzzy
+msgid ""
+"\n"
+"Scan Started %s"
+msgstr "Сканирование начато:"
+
+msgid "Virus signature database is older than 3 days and may not offer the latest protection. Would you like to update it now?"
+msgstr ""
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-03-03 16:29+0100\n"
+"PO-Revision-Date: 2007-03-18 14:43+0100\n"
 "Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: Korean <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -1913,12 +1913,8 @@ msgstr "ms 오피스 도규먼트의 어태치먼트와 매크로 (&풀)기"
 msgid "Email Scanning"
 msgstr ""
 
-msgid "Try to Scan &Executable Files Only"
+msgid "Try to &Scan Executable Files Only"
 msgstr ""
-
-#, fuzzy
-msgid "Select if you skip scanning of non-executable files"
-msgstr "이 스케줄을 적용하려면, 선택 하십시오."
 
 msgid "Microsoft Outlook"
 msgstr ""
@@ -1954,5 +1950,24 @@ msgid "ERROR: Can't download main.cvd"
 msgstr ""
 
 msgid "Your network may be down or none of the mirrors listed in freshclam.conf is working. Check http://www.clamav.net/support/mirror-problem for possible reasons."
+msgstr ""
+
+#, fuzzy
+msgid "Select if you only wish to scan files that can run on MS Windows platform"
+msgstr "검사 진행 창에서 감염된 파일만 보려면 선택하십시오."
+
+#, fuzzy
+msgid "&Warn if Virus database is Out of Date"
+msgstr "바이러스 데이터베이스 다운로드 주기"
+
+msgid "Will display a reminder if the virus database is older than 3 days"
+msgstr ""
+
+msgid ""
+"\n"
+"Scan Started %s"
+msgstr ""
+
+msgid "Virus signature database is older than 3 days and may not offer the latest protection. Would you like to update it now?"
 msgstr ""
 

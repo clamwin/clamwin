@@ -1,4 +1,11 @@
-Version 0.90  - 26 February 2006
+Version 0.91  - 12 March 2007
+- Upgraded ClamAV to 0.90.1
+- Fixed relative path problem with database lock mechanism in freshclam
+- Supressed getfile and getpatch errors for intranet database updates
+- Added a warning if the database is older than 3 days
+- Minor bugfixes
+
+Version 0.90  - 26 February 2007
 - Upgraded ClamAV to 0.90
 - Added option to scan only MS Windows Executable files (detection is done by file content rather than extension)
 - Added "Email Scanning" tab to preferences with an option to disable scanning of incoming and/or outgoing emails in MS Outlook

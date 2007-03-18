@@ -318,6 +318,10 @@ class wxDialogStatus(wxDialog):
         self.textCtrlStatus.SetBackgroundColour(wxSystemSettings_GetColour(wxSYS_COLOUR_BTNFACE))
 
         try:
+            file(logfile, 'wt').write(_('\nScan Started %s') % time.ctime(time.time()))
+        except:
+            pass
+        try:
             self._SpawnProcess(cmd, priority)
         except Process.ProcessError, e:
             event = ThreadUpdateStatusEvent(self.GetId(), str(e), False)
