@@ -53,7 +53,7 @@ class Settings:
         'Updates':
         [0, {'Enable': '1', 'Frequency': 'Daily', 'Time': '10:00:00',
             'WeekDay': '2', 'DBMirror': 'database.clamav.net',
-            'DBUpdateLogFile': '', 'UpdateOnLogon': '0',
+            'DBUpdateLogFile': '', 'UpdateOnLogon': '0', 'WarnOutOfDate': '1',
             'CheckVersion': '1', 'CheckVersionURL': 'http://clamwin.sourceforge.net/clamwin.ver'}],
         'EmailAlerts':
         [0, {'Enable': '0',
