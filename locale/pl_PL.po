@@ -3,10 +3,10 @@
 # Bartosz Kosiorek <gang65@poczta.onet.pl>, 2006-2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: ClamWin Free Antivirus 0.88.4\n"
+"Project-Id-Version: ClamWin Free Antivirus 0.90.0\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-03-03 16:29+0100\n"
-"Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
+"PO-Revision-Date: 2007-03-04 20:12+0100\n"
+"Last-Translator: Bartosz Kosiorek <gang65@poczta.onet.pl>\n"
 "Language-Team: Localization <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -260,7 +260,7 @@ msgstr "sygnatury"
 
 #: wxDialogStatus.py:179
 msgid "from"
-msgstr "od"
+msgstr "z"
 
 #: wxDialogStatus.py:181
 msgid "Control+C pressed, aborting..."
@@ -709,7 +709,7 @@ msgstr "Co godzinę"
 #: wxDialogScheduledScan.py:283
 #: wxDialogScheduledScan.py:292
 msgid "Weekly"
-msgstr "Cotygodniowe"
+msgstr "Co tydzień"
 
 #: wxDialogPreferences.py:340
 #: wxDialogPreferences.py:1453
@@ -1083,7 +1083,7 @@ msgstr "Zaznacz jeżeli chcesz być powiadomiony  o nowych wersjach ClamWin Free
 
 #: wxDialogPreferences.py:908
 msgid "(No personal information is transmitted during this check)"
-msgstr "(Żadne osobiste informacje nie zostaną przesłane podczas sprawdzania)"
+msgstr "(Żadne informacje osobiste nie zostaną przesłane podczas sprawdzania)"
 
 #: wxDialogPreferences.py:918
 msgid "Scanner &Priority:"
@@ -1177,7 +1177,7 @@ msgstr "Przeglądarka logów ClamWin"
 #: wxDialogLogViewer.py:93
 #: wxDialogStatus.py:121
 msgid "ClamAV update process started at"
-msgstr "Proces aktualizacji ClamAV rozpoczął się"
+msgstr "Proces aktualizacji ClamAV rozpoczął się w"
 
 #: wxDialogLogViewer.py:95
 #: wxDialogStatus.py:123
@@ -1593,7 +1593,7 @@ msgstr "Wystąpił błąd podczas wyświetlania ekranu powitalnego %s. Error: %s
 
 #: OlAddin.py:955
 msgid "Addin terminating: %d COM client and %d COM servers exist."
-msgstr ""
+msgstr "Zakańczanie wtyczki:  klient COM %d , oraz serwery COM %d COM istnieją."
 
 #: OlAddin.py:1007
 msgid "Registering (in HKEY_LOCAL_MACHINE)..."
@@ -1625,7 +1625,7 @@ msgstr "&Uruchom automatyczne skanowanie"
 
 #: ClamTray.py:261
 msgid "&Stop All Running Tasks Now"
-msgstr "&Zatrzymaj wszystkie uruchomione zadania"
+msgstr "&Zatrzymaj uruchomione zadania"
 
 #: ClamTray.py:271
 msgid "&Virus Scan Report"
@@ -1637,7 +1637,7 @@ msgstr "&Otwórz ClamWin"
 
 #: ClamTray.py:283
 msgid "&Download Virus Database Update"
-msgstr "&Pobierz aktualizację bazy wirusów"
+msgstr "Ak&tualizuj bazę wirusów"
 
 #: ClamTray.py:284
 msgid "&Configure ClamWin"
@@ -1792,45 +1792,44 @@ msgid "Select if you wish to scan OLE attachments and macros in MS Office Docume
 msgstr "Zaznacz jeżeli chcesz skanować załączniki OLE oraz makra dokumentów MS Office"
 
 msgid "Email Scanning"
-msgstr ""
+msgstr "Skanowanie wiadomości"
 
 msgid "Try to Scan &Executable Files Only"
-msgstr ""
+msgstr "Skanuj tylko pliki &wykonywalne "
 
 msgid "Select if you skip scanning of non-executable files"
-msgstr ""
+msgstr "Zaznacz tą opcję, jeśli chcesz pomijać skanowanie plików niewykonywalnych"
 
 msgid "Microsoft Outlook"
-msgstr ""
+msgstr "Microsoft Outlook"
 
 msgid "Scan &Incoming Email Messages"
-msgstr ""
+msgstr "Skanuj &przychodzące wiadomości"
 
 msgid "Select if you wish to enable scanning of incoming email messages in MS Outlook"
-msgstr ""
+msgstr "Zaznacz tą opcję, jeśli chcesz włączyć skanowanie przychodzących wiadomośći MS Outooka"
 
 msgid "Scan &Outgoing Email Messages"
-msgstr ""
+msgstr "Skanuj &wychodzące wiadomości"
 
 msgid "Select if you wish to enable scanning of outgoing email messages in MS Outlook"
-msgstr ""
+msgstr "Zaznacz tą opcję, jeśli chcesz włączyć skanowanie wychodzących wiadomośći MS Outooka"
 
 msgid "Opens Support Forum in the Web Browser"
-msgstr ""
+msgstr "Otwiera forum wsparcia w przeglądarce"
 
 msgid "&Technical Support"
-msgstr ""
+msgstr "Wsparcie &techniczne"
 
 msgid "SCAN SUMMARY"
-msgstr ""
+msgstr "PODSUMOWANIE SKANOWANIA"
 
 msgid "Skipped non-executable files:"
-msgstr ""
+msgstr "Pominięto niewykonywalnych plików:"
 
 msgid "ERROR: Can't download main.cvd"
-msgstr ""
+msgstr "BŁĄD: Nie można pobrać main.cvd"
 
-#, fuzzy
 msgid "Your network may be down or none of the mirrors listed in freshclam.conf is working. Check http://www.clamav.net/support/mirror-problem for possible reasons."
-msgstr "BŁĄD: Aktualizacja nie powiodła się. Prawdopodobnie twoja sieć nie działa lub żaden z serwerów znajdujących się w pliku freshclam.conf nie działa."
+msgstr "Twoja sieć lub wszystkie serwery znajdujące się w pliku freshclam.conf nie działają. Sprawdź stronę http://www.clamav.net/support/mirror-problem aby znaleźć potecjalne źródła awarii."
 
