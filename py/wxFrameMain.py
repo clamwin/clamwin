@@ -376,11 +376,7 @@ class wxMainFrame(wxFrame):
                 if wxID_YES == MsgBox.MessageBox(None, 'ClamWin Free Antivirus', 'Virus signature database is older than 3 days and may not offer the latest protection. Would you like to update it now?', wxYES_NO | wxICON_QUESTION):
                     wxDialogUtils.wxUpdateVirDB(self, self._config)
                     hasdb = Utils.CheckDatabase(self._config)                    
-            
-            
-
-
-
+                       
         except Exception, e:
             print 'An Error occured while updating UI selection. %s' % str(e)
 

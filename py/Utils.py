@@ -746,7 +746,8 @@ def CheckDatabase(config):
     path = config.Get('ClamAV', 'Database')
     if path == '':
         return False
-    return os.path.isfile(os.path.join(path, 'main.cvd')) and \
+    return (os.path.isfile(os.path.join(path, 'main.cvd')) or \
+           os.path.isfile(os.path.join(os.path.join(path, 'main.inc'), 'main.info'))) and \
            (os.path.isfile(os.path.join(path, 'daily.cvd'))  or  \
             os.path.isfile(os.path.join(os.path.join(path, 'daily.inc'), 'daily.info')))
 

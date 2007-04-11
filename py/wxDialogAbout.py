@@ -242,6 +242,8 @@ class wxAboutDlg(wxDialog):
             dbpath =  self.config.Get('ClamAV', 'Database')
             mainver, mainnumv = Utils.GetDBInfo(os.path.join(dbpath, 'main.cvd'))[:2]
             if mainver is None:
+                mainver, mainnumv = Utils.GetDBInfo(os.path.join(os.path.join(dbpath, 'main.inc'), 'main.info'))[:2]                
+            if mainver is None:
                 raise Exception()
             dailyver, dailynumv, updated = Utils.GetDBInfo(os.path.join(dbpath, 'daily.cvd'))
             if dailyver is None:            
