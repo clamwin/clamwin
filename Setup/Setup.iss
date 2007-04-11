@@ -3,7 +3,7 @@
 
 [Setup]
 AppName=ClamWin Free Antivirus
-AppVerName=ClamWin Free Antivirus 0.90.1
+AppVerName=ClamWin Free Antivirus 0.90.1.1
 AppPublisher=alch
 AppPublisherURL=http://www.clamwin.com/
 AppSupportURL=http://www.clamwin.com/
@@ -116,6 +116,11 @@ Source: py2exe\dist\lib\wxc.pyd; DestDir: {app}\lib; Components: ClamWin; Flags:
 Source: py2exe\dist\lib\wxmsw24h.dll; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 Source: py2exe\dist\lib\zlib.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 Source: py2exe\dist\lib\BalloonTip.pyd; DestDir: {app}\lib; Components: ClamWin; Check: IsWin9x; Flags: restartreplace uninsrestartdelete
+
+; added main.cvd as per clamav team request
+Source: cvd\main.cvd; DestDir: {code:CommonProfileDir}\.clamwin\db; Components: ClamWin; Flags: ignoreversion comparetimestamp; Check: NoMainInc
+Source: cvd\daily.cvd; DestDir: {code:CommonProfileDir}\.clamwin\db; Components: ClamWin; Flags: ignoreversion comparetimestamp; Check: NoDailyInc
+
 [Icons]
 Name: {group}\Virus Scanner; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: ClamWin
 Name: {code:DesktopDir}\ClamWin Antivirus; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: ClamWin; Tasks: desktopicon
@@ -124,7 +129,7 @@ Name: {group}\Help\Online Help; Filename: {app}\bin\manual.chm; WorkingDir: {app
 Name: {group}\Help\International\Russian Help; Filename: {app}\bin\manual_ru.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: InternationalHelp\Russian
 Name: {group}\Help\International\French Help; Filename: {app}\bin\manual_fr.pdf; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: InternationalHelp\French
 ;Name: {group}\Help\International\Italian Help; Filename: {app}\bin\manual_it.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: InternationalHelp\Italian
-Name: "{group}\Uninstall ClamWin Free Antivirus"; Filename: "{uninstallexe}"
+Name: {group}\Uninstall ClamWin Free Antivirus; Filename: {uninstallexe}
 [Run]
 ; NOTE: The following entry contains an English phrase ("Launch"). You are free to translate it into another language if required.
 Filename: {app}\bin\ClamWin.exe; Parameters: --mode=update --close; WorkingDir: {app}\bin; StatusMsg: Downloading Virus Database Files.; Components: ClamWin; Tasks: DownloadDB
@@ -607,4 +612,18 @@ end;
 function IsTemplateConfig(Filename: String): Boolean;
 begin
 	Result := (not IsWin9x()) and (not FileExists(Filename));
+end;
+
+function NoMainInc(): Boolean;
+var
+	Temp: String;
+begin
+	Result := not DirExists(CommonProfileDir(Temp) + '\.clamwin\db\main.inc')
+end;
+
+function NoDailyInc(): Boolean;
+var
+	Temp: String;
+begin
+	Result := not DirExists(CommonProfileDir(Temp) + '\.clamwin\db\daily.inc')
 end;
