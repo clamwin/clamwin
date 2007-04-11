@@ -1,4 +1,8 @@
-Version 0.91  - 12 March 2007
+Version 0.90.1.1  - 12 March 2007
+- Added support for main.inc database folder
+- Added meaningful output to "cannot open file" messages
+
+Version 0.90.1  - 12 March 2007
 - Upgraded ClamAV to 0.90.1
 - Fixed relative path problem with database lock mechanism in freshclam
 - Supressed getfile and getpatch errors for intranet database updates
