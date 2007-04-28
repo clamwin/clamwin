@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-03-18 14:44+0100\n"
-"Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
+"PO-Revision-Date: 2007-04-27 00:09+0100\n"
+"Last-Translator: Dylan Aïssi <aissi.dylan@free.fr>\n"
 "Language-Team: French <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1763,7 +1763,7 @@ msgstr "Analyser les &Programmes Chargés dans la Mémoire de l'Ordinateur"
 
 # Sentence doesn't make any sense
 msgid "Select if you wish to include programs computer memory during every scan"
-msgstr "Selectionner si vous désirez inclure la mémoire de l'ordinateur chaque fois que vous scannez"
+msgstr "Selectionner si vous désirez analyse la mémoire de l'ordinateur à chaque analyse"
 
 msgid "Netfarm Homepage"
 msgstr "Page d'Accueil de Netfarm"
@@ -1778,62 +1778,60 @@ msgid "Select if you wish to scan OLE attachments and macros in MS Office Docume
 msgstr "Selectionnez si vous désirez extraire les pièces jointes OLE et les macros des Documents MS Office"
 
 msgid "Email Scanning"
-msgstr ""
+msgstr "Analyse des mails"
 
 msgid "Try to &Scan Executable Files Only"
-msgstr ""
+msgstr "Essayer d'&analyser les fichiers exécutable uniquement"
 
 msgid "Microsoft Outlook"
-msgstr ""
+msgstr "Microsoft Outlook"
 
 msgid "Scan &Incoming Email Messages"
-msgstr ""
+msgstr "Analyser les mails &entrants"
 
 msgid "Select if you wish to enable scanning of incoming email messages in MS Outlook"
-msgstr ""
+msgstr "Sélectionner si vous désirez analyser les mails entrants dans MS Outlook"
 
 msgid "Scan &Outgoing Email Messages"
-msgstr ""
+msgstr "Analyser les mails &sortants"
 
 msgid "Select if you wish to enable scanning of outgoing email messages in MS Outlook"
-msgstr ""
+msgstr "Sélectionner si vous désirez analyser les mails sortants dans MS Outlook"
 
 msgid "Opens Support Forum in the Web Browser"
-msgstr ""
+msgstr "Aller sur le forum d'aide"
 
 msgid "&Technical Support"
-msgstr ""
+msgstr "Support &Technique"
 
 msgid "SCAN SUMMARY"
-msgstr ""
+msgstr "Résumé de l'analyse"
 
 msgid "Skipped non-executable files:"
-msgstr ""
+msgstr "Passer les fichiers non exécutables:"
 
 msgid "ERROR: Can't download main.cvd"
-msgstr ""
+msgstr "ERREUR: Impossible de télécharger main.cvd"
 
-#, fuzzy
 msgid "Your network may be down or none of the mirrors listed in freshclam.conf is working. Check http://www.clamav.net/support/mirror-problem for possible reasons."
-msgstr "EEREUR: La mise à jour a échoué. Votre réseau est peut-être en panne ou aucun des miroirs listés dans le fichier freshclam.conf ne fonctionne actuellement"
+msgstr "Votre réseau est peut-être en panne ou aucun des miroirs listés dans le fichier freshclam.conf ne fonctionne actuellement. Aller sur www.clamav.net/support/mirror-problem/lang-pref/fr/ pour voir les raisons possibles."
 
-#, fuzzy
 msgid "Select if you only wish to scan files that can run on MS Windows platform"
-msgstr "A sélectionner si vous désirez afficher uniquement les fichiers infectés dans la fenêtre de progression de l'analyse anti-virus"
+msgstr "Sélectionner si vous désirez analyser uniquement les fichiers utilisable sur les plateformes MS Windows"
 
-#, fuzzy
 msgid "&Warn if Virus database is Out of Date"
-msgstr "La fréquence à laquelle la base de définitions est mise à jour"
+msgstr "&Afficher une alerte si les fichiers de définitions de virus est périmée"
 
 msgid "Will display a reminder if the virus database is older than 3 days"
-msgstr ""
+msgstr "Affichera une alerte si les fichiers de définitions de virus sont plus ancien que 3 jours"
 
-#, fuzzy
 msgid ""
 "\n"
 "Scan Started %s"
-msgstr "Analyse démarrée:"
+msgstr ""
+"\n"
+"Analyse démarrée: %s"
 
 msgid "Virus signature database is older than 3 days and may not offer the latest protection. Would you like to update it now?"
-msgstr ""
+msgstr "Les fichiers de définitions de virus sont plus ancien que 3 jours, ils n'offrent plus les dernières protections. Voulez vous les mettre à jour maintenant?"
 
