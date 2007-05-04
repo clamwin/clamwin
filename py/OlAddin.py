@@ -236,59 +236,46 @@ def ScanFile(path, config, attname):
     try:
         if os.getenv('TMPDIR') is None:
             os.putenv('TMPDIR', tempfile.gettempdir())
+                        
+        # add datadir env variablke pointing to the clamav db
+        if os.getenv('CLAMAV_DATADIR') is None:
+            os.putenv('CLAMAV_DATADIR', config.Get('ClamAV', 'Database'))    
     except Exception, e:
         print str(e)
-
+        
+    
+    # now import pyclamav and load the database
+    try:
+        import pyclamav
+    except Exception, e:
+        raise ScanError('ClamWin Error occured whilst loading virus database: %s' % str(e))
+    
 
     logfile = os.path.split(path)[0]+'\\Virus Deleted by ClamWin.txt'
-    cmd = '--tempdir "%s"' % tempfile.gettempdir().rstrip('\\')
-
-    cmd = '--max-ratio=0 --stdout --database="%s" --log="%s" "%s"' % \
-            (config.Get('ClamAV', 'Database'), logfile, path)
-    cmd = '"%s" %s' % (config.Get('ClamAV', 'ClamScan'), cmd)
-
-    scanstatus = ''
     retcode = 1
-    proc = None
+    scanstatus = ''
     try:
-        proc = Process.ProcessOpen(cmd)
-        retcode = proc.wait()
-        dbg_print('scanning completed with %i' % retcode)
-        # returns 100 if a damaged rar archive was found
-        if retcode >= 100 and retcode <= 106:
-            dbg_print('damaged archive - ignoring')
-            retcode = 0
+        retcode, scanstatus = pyclamav.scanfile(path)
     except Exception, e:
-        if proc is not None:
-            proc.close()
-        safe_remove(logfile)
         raise ScanError('An Error occured whilst starting clamscan: %s' % str(e))
 
-    if proc is not None:
-        proc.close()
+    if retcode >= 100 and retcode <= 106:
+        dbg_print('damaged archive - ignoring')
+        retcode = 0
+    
     if retcode == 0:
         virusFound = False
     # check the retrun Code
     elif retcode == 1:
-        virusFound = True
+        virusFound = True        
+        try:
+            file(logfile, 'w+t').write(scanstatus.replace(path, attname))
+        except Exception, e:
+            raise ScanError('An Error occured whilst saving scan report: %s' % str(e))    
     else:
         # error, raise an exception
-        try:
-            error = file(logfile, 'rt').read()
-            safe_remove(logfile)
-        except Exception, e:
-            raise ScanError('An Error occured reading clamscan report: %s' % str(e))
-        raise ScanError('An Error occured whilst scanning:\n%s' % error)
+        raise ScanError('An Error occured whilst scanning:\n%s' % scanstatus)
 
-    # replace \n's with \r\n's
-    # so it can be shown in notepad
-    # also replace temp filename with real attachment name
-    try:
-        text = file(logfile, 'rt').read().replace('\n', '\r\n').replace(path, attname)
-        file(logfile, 'wt').write(text)
-    except Exception, e:
-        safe_remove(logfile)
-        raise ScanError('An Error occured whilst converting clamscan report: %s' % str(e))
     return (virusFound, logfile)
 
 # returns 0 if everything is okay, or number fo infected files
