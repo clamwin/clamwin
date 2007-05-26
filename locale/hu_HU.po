@@ -1,14 +1,15 @@
-# translation of hu_HU.po to Hungarian
+# translation of clamwin.po to Hungarian
 #
 # KAMI <kamihir@freemail.hu>, 2007.
+# Hungarian ClamWin Team <kamihir@freemail.hu>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: hu_HU\n"
+"Project-Id-Version: clamwin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-03-18 14:43+0100\n"
-"Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
-"Language-Team: Hungarian\n"
+"PO-Revision-Date: 2007-03-18 18:59+0100\n"
+"Last-Translator: Hungarian ClamWin Team <kamihir@freemail.hu>\n"
+"Language-Team: Hungarian <clamwin-hungarian-bounces@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1829,23 +1830,22 @@ msgstr "HIBA: A main.cvd fájl nem tölthető le"
 msgid "Your network may be down or none of the mirrors listed in freshclam.conf is working. Check http://www.clamav.net/support/mirror-problem for possible reasons."
 msgstr "HIBA: A frissítés nem sikerült. A hálózat nem működik, vagy egyetlen - a freshclam.conf fájlban megadott - tükörszerver sem üzemel. Tekintse meg a http://www.clamav.net/support/mirror-problem weboldalt a lehetséges okokért."
 
-#, fuzzy
 msgid "Select if you only wish to scan files that can run on MS Windows platform"
-msgstr "Válassza ki, ha csak a fertőzött fájlokat kívánja megjeleníteni az ellenőrzés közben megjelenő ablakban"
+msgstr "Válassza ki, ha csak a Microsoft Windows platformon futtatható állományokat kívánja ellenőrizni"
 
-#, fuzzy
 msgid "&Warn if Virus database is Out of Date"
-msgstr "Milyen gyakran kerüljön frissítésre a vírusismereti adatbázis"
+msgstr "&Figyelmeztessen, ha a vírusismereti adatbázis elavult"
 
 msgid "Will display a reminder if the virus database is older than 3 days"
-msgstr ""
+msgstr "Emlékeztetőt jelenít meg ha, a vírusismereti adabázis több mint három napja nem került frissítésre"
 
-#, fuzzy
 msgid ""
 "\n"
 "Scan Started %s"
-msgstr "Ellenőrzés elindítva:"
+msgstr ""
+"\n"
+"Ellenőrzés elindítva %s"
 
 msgid "Virus signature database is older than 3 days and may not offer the latest protection. Would you like to update it now?"
-msgstr ""
+msgstr "A vírusismereti adabázis több mint három napja nem került frissítésre és lehetséges, hogy nem nyújt teljes védelmet. Kívánja frissíteni a vírusismereti adatbázist?"
 

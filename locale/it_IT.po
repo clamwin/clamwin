@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-03-18 14:40+0100\n"
-"Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
+"PO-Revision-Date: 2007-03-20 12:06+0100\n"
+"Last-Translator: \n"
 "Language-Team: Italian <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -1754,7 +1754,7 @@ msgid "Scans Programs in Computer Memory for Viruses"
 msgstr "Scansione File e Cartelle"
 
 msgid "Scan &Memory"
-msgstr ""
+msgstr "Scansione &Memoria"
 
 msgid "Scan Computer Memory"
 msgstr "Scansiona la memoria del computer"
@@ -1764,10 +1764,10 @@ msgid "Scans Programs Loaded in Computer Memory for Computer Viruses"
 msgstr "Scansione dei File e delle cartelle selezionate"
 
 msgid "Scans Computer Memory for Viruses"
-msgstr ""
+msgstr "Scansiona la memoria del computer in cerca di virus"
 
 msgid "Specify any additional parameters for clamscan.exe"
-msgstr ""
+msgstr "Specifica ogni parametro aggiuntivo per clamscan.exe"
 
 msgid "&Unload Infected Programs from Computer Memory"
 msgstr "Scarica programmi infetti dalla memoria del comp&uter"
@@ -1780,13 +1780,13 @@ msgid "Scan &Programs Loaded in Computer Memory"
 msgstr "Scansiona i %programmi caricati nella memoria del computer"
 
 msgid "Select if you wish to include programs computer memory during every scan"
-msgstr ""
+msgstr "Scegli se preferisci includere la memoria occupata dai programmi durante ogni scansione"
 
 msgid "Netfarm Homepage"
-msgstr ""
+msgstr "Pagina principale di Netfarm"
 
 msgid "Scanning Programs in Computer Memory"
-msgstr ""
+msgstr "Scansione programmi nella memoria del computer"
 
 msgid "Computer Memory Scan Completed"
 msgstr "Scansione memoria computer completata"
@@ -1795,40 +1795,40 @@ msgid "Select if you wish to scan OLE attachments and macros in MS Office Docume
 msgstr "&Estrai gli allegati e le Macro dai documenti MS Office"
 
 msgid "Email Scanning"
-msgstr ""
+msgstr "Scansione Email"
 
 msgid "Try to &Scan Executable Files Only"
-msgstr ""
+msgstr "Cerca di effettuare la scansione dei soli file eseguibili"
 
 msgid "Microsoft Outlook"
-msgstr ""
+msgstr "Microsoft Outlook"
 
 msgid "Scan &Incoming Email Messages"
-msgstr ""
+msgstr "Scansione messagg&i email in arrivo"
 
 msgid "Select if you wish to enable scanning of incoming email messages in MS Outlook"
-msgstr ""
+msgstr "Scegli se preferisci abilitare la scansione delle email in arrivo su MS Outlook"
 
 msgid "Scan &Outgoing Email Messages"
-msgstr ""
+msgstr "Scansione messaggi email in uscita"
 
 msgid "Select if you wish to enable scanning of outgoing email messages in MS Outlook"
-msgstr ""
+msgstr "Scegli se preferisci abilitare la scansione delle email in uscita da MS Outlook"
 
 msgid "Opens Support Forum in the Web Browser"
-msgstr ""
+msgstr "Apre il forum di supporto nel navigatore web"
 
 msgid "&Technical Support"
-msgstr ""
+msgstr "Supporto &Tecnico"
 
 msgid "SCAN SUMMARY"
-msgstr ""
+msgstr "RIASSUNTO SCANSIONE"
 
 msgid "Skipped non-executable files:"
-msgstr ""
+msgstr "File non eseguibili ignorati:"
 
 msgid "ERROR: Can't download main.cvd"
-msgstr ""
+msgstr "ERRORE: impossibile scaricare main.cvd"
 
 #, fuzzy
 msgid "Your network may be down or none of the mirrors listed in freshclam.conf is working. Check http://www.clamav.net/support/mirror-problem for possible reasons."
@@ -1843,7 +1843,7 @@ msgid "&Warn if Virus database is Out of Date"
 msgstr "Quanto spesso il database dei virus viene aggiornato"
 
 msgid "Will display a reminder if the virus database is older than 3 days"
-msgstr ""
+msgstr "Mostrerà un promemoria se il database dei virus é più vecchio di 3 giorni"
 
 msgid ""
 "\n"
@@ -1853,5 +1853,5 @@ msgstr ""
 "Scansione iniziata %s"
 
 msgid "Virus signature database is older than 3 days and may not offer the latest protection. Would you like to update it now?"
-msgstr ""
+msgstr "Il database delle firme dei virus é più vecchio di 3 giorni e potrebbe non offrire la protezione più aggiornata. Preferisci aggiornarlo ora ?"
 
