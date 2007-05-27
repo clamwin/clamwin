@@ -82,7 +82,7 @@
 
 import SetUnicode
 import sys
-import os
+import os, errno
 import re
 import tempfile
 import warnings
@@ -130,6 +130,18 @@ import win32gui, win32con, win32clipboard # for button images!
 from win32com.mapi import mapi, mapiutil, mapitags
 import RedirectStd
 
+# import pyclamav here
+hLibClamAV = 0                             
+try:
+    hLibClamav = win32api.LoadLibrary(os.path.join(Utils.GetCurrentDir(False), "libclamav.dll"))
+except Exception, e:
+    print str(e), os.path.join(Utils.GetCurrentDir(False), "libclamav.dll")
+    
+try:
+    import pyclamav
+except Exception, e:
+    print str(e)
+
 _DEBUG=False
 
 def dbg_print(*args):
@@ -166,6 +178,7 @@ gencache.EnsureModule('{AC0714F2-3D04-11D1-AE7D-00A0C90F26F4}', 0, 1, 0,
 # ... and also for its _IDTExtensibility2 vtable interface.
 universal.RegisterInterfaces('{AC0714F2-3D04-11D1-AE7D-00A0C90F26F4}', 0, 1, 0,
                              ["_IDTExtensibility2"])
+                             
 
 try:
     from win32com.client import CastTo, WithEvents
@@ -207,7 +220,7 @@ def SetButtonImage(button, fname):
 
     if not os.path.isabs(fname):
         # images relative to the application path
-        fname = os.path.join(Utils.GetCurrentDir(False),"images", fname)
+        fname = os.path.join(Utils.GetCurrentDir(False),"img", fname)
         if not os.path.isfile(fname):
             print "WARNING - Trying to use image '%s', but it doesn't exist" % (fname,)
             return None
@@ -236,17 +249,14 @@ def ScanFile(path, config, attname):
     try:
         if os.getenv('TMPDIR') is None:
             os.putenv('TMPDIR', tempfile.gettempdir())
+            
+        os.putenv('PATH', os.getenv('PATH') + ';' + Utils.GetCurrentDir(False))
                         
-        # add datadir env variablke pointing to the clamav db
-        if os.getenv('CLAMAV_DATADIR') is None:
-            os.putenv('CLAMAV_DATADIR', config.Get('ClamAV', 'Database'))    
     except Exception, e:
         print str(e)
-        
-    
-    # now import pyclamav and load the database
+            
     try:
-        import pyclamav
+        pyclamav.setdbpath(config.Get('ClamAV', 'Database'))
     except Exception, e:
         raise ScanError('ClamWin Error occured whilst loading virus database: %s' % str(e))
     
@@ -257,7 +267,7 @@ def ScanFile(path, config, attname):
     try:
         retcode, scanstatus = pyclamav.scanfile(path)
     except Exception, e:
-        raise ScanError('An Error occured whilst starting clamscan: %s' % str(e))
+        raise ScanError('An Error occured whilst scanning: %s' % str(e))
 
     if retcode >= 100 and retcode <= 106:
         dbg_print('damaged archive - ignoring')
@@ -269,7 +279,7 @@ def ScanFile(path, config, attname):
     elif retcode == 1:
         virusFound = True        
         try:
-            file(logfile, 'w+t').write(scanstatus.replace(path, attname))
+            file(logfile, 'w+t').write('ClamWin Free Antivirus report:\n\n%s virus has been found in the attached file %s!' % (scanstatus, attname))
         except Exception, e:
             raise ScanError('An Error occured whilst saving scan report: %s' % str(e))    
     else:
@@ -474,11 +484,21 @@ def safe_remove(path, removeLastDir = False):
             os.remove(path)
         else:
             os.rmdir(path)
+    except OSError, e:
+        if e.errno != errno.ENOENT:        
+            print 'Could not remove file: %s. Error: %s' % (path, str(e))
+    except Exception, e:
+        print 'Could not remove file: %s. Error: %s' % (path, str(e))
+
+    try:
         if removeLastDir:
             dir = os.path.split(path)[0]
-            if os.path.exists(dir):
+            if os.path.exists(dir):                
                 os.rmdir(dir)
-    except Exception, e:
+    except OSError, e:
+        if e.errno != errno.ENOENT:        
+            print 'Could not remove file: %s. Error: %s' % (path, str(e))
+    except Exception, e:       
         print 'Could not remove file: %s. Error: %s' % (path, str(e))
 
 class WaitCursor:
@@ -891,9 +911,10 @@ class OutlookAddin(ObjectsEvent):
             if config.Get('EmailScan', 'ScanOutgoing') == '1' or \
                 config.Get('EmailScan', 'ScanIncoming') == '1':
                 splash = os.path.join(Utils.GetCurrentDir(False), "img\\Splash.bmp")             
-                SplashScreen.ShowSplashScreen(splash, 5)
+                SplashScreen.ShowSplashScreen(splash, 5)                            
         except Exception, e:
             print "An error occured whilst displaying the spashscreen Error: %s." % str(e)
+            
         # Setup all our filters and hooks.  We used to do this in OnConnection,
         # but a number of 'strange' bugs were reported which I suspect would
         # go away if done during this later event - and this later place
@@ -925,6 +946,12 @@ class OutlookAddin(ObjectsEvent):
 
     def OnDisconnection(self, mode, custom):
         dbg_print('ClamWin - Disconnecting from Outlook')
+        try:
+            if hLibClamAV != 0:
+                win32api.FreeLibrary(hLibClamAV)
+        except Exception, e:
+            print str(e)
+             
         for handler in self.event_handlers:
             handler.Close()
         self.event_handlers = []
