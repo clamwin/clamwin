@@ -751,7 +751,8 @@ def CheckDatabase(config):
     path = config.Get('ClamAV', 'Database')
     if path == '':
         return False
-    return os.path.isfile(os.path.join(path, 'main.cvd')) and \
+    return (os.path.isfile(os.path.join(path, 'main.cvd')) or \
+           os.path.isfile(os.path.join(os.path.join(path, 'main.inc'), 'main.info'))) and \
            (os.path.isfile(os.path.join(path, 'daily.cvd'))  or  \
             os.path.isfile(os.path.join(os.path.join(path, 'daily.inc'), 'daily.info')))
 
@@ -771,7 +772,8 @@ def IsOutlookInstalled():
         RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\9.0\\Outlook') or
         RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\10.0\\Outlook') or
         RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\11.0\\Outlook'))
-        
+
+
 #def IsOutlookAddinEnabled():
 #    key = _winreg.HKEY_LOCAL_MACHINE
 #    subKey = ''

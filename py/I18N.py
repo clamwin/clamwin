@@ -24,6 +24,7 @@
 import gettext, locale, os, sys, traceback
 import _winreg as wreg
 import locale
+import Utils
 
 gLocalePath = ""
 gLocale = ""
@@ -82,33 +83,56 @@ def setLocalePath():
     clamBinPath = getClamBinPath()
     gLocalePath = clamBinPath[:clamBinPath.rfind("\\")] + "\\locale"    
 
+""" Force the Locale in the registry to override Windows UI locale
+"""
+def forceLocale(loc):
+    key = wreg.HKEY_CURRENT_USER
+    subKey = 'SOFTWARE\\ClamWin'
+    if Utils.RegKeyExists(key, subKey) == False:
+        key = wreg.HKEY_LOCAL_MACHINE
+    hKey = wreg.OpenKey(key, subKey, 0,wreg.KEY_WRITE)
+    wreg.SetValueEx(hKey, 'Locale', 0, wreg.REG_SZ, loc)
+    wreg.CloseKey(hKey)
+
+
+""" see which locale should be used
+"""
+def getLocale():
+    loc = ''
+    key = wreg.HKEY_CURRENT_USER
+    subKey = 'SOFTWARE\\ClamWin'
+    if (Utils.RegKeyExists(key, subKey)):
+        try:
+            regHandle = wreg.ConnectRegistry(None, wreg.HKEY_CURRENT_USER)
+            keyHandle = wreg.OpenKey(regHandle, "SOFTWARE\\ClamWin")
+            (loc, _) = wreg.QueryValueEx(keyHandle, "Locale")
+            wreg.CloseKey(keyHandle)
+            wreg.CloseKey(regHandle)
+            print "HKCU Locale = '[%s]'" % loc
+            return loc
+        except Exception, e:
+            pass
+    key = wreg.HKEY_LOCAL_MACHINE
+    if (Utils.RegKeyExists(key, subKey)):
+        try:
+            regHandle = wreg.ConnectRegistry(None, wreg.HKEY_LOCAL_MACHINE)
+            keyHandle = wreg.OpenKey(regHandle, "SOFTWARE\\ClamWin")
+            (loc, _) = wreg.QueryValueEx(keyHandle, "Locale")
+            wreg.CloseKey(keyHandle)
+            wreg.CloseKey(regHandle)
+            print "HKLM Locale = '[%s]'" % loc
+            return loc
+        except Exception, e:
+            pass
+    return ''
+
 """ Set the locale.
     First check the registry (both HKCU and HKLM) for the Language setting.
     Then use the system locale.
 """
 def setLocale():
     global gLocale
-    try:
-        regHandle = wreg.ConnectRegistry(None, wreg.HKEY_CURRENT_USER)
-        keyHandle = wreg.OpenKey(regHandle, "SOFTWARE\\ClamWin")
-        (gLocale, _) = wreg.QueryValueEx(keyHandle, "Locale")
-        wreg.CloseKey(keyHandle)
-        wreg.CloseKey(regHandle)
-        print "HKCU Locale = '[%s]'" % gLocale
-    except Exception, e:
-        gLocale = ""
-        pass
-    if gLocale == "":
-        try:
-            regHandle = wreg.ConnectRegistry(None, wreg.HKEY_LOCAL_MACHINE)
-            keyHandle = wreg.OpenKey(regHandle, "SOFTWARE\\ClamWin")
-            (gLocale, _) = wreg.QueryValueEx(keyHandle, "Locale")
-            wreg.CloseKey(keyHandle)
-            wreg.CloseKey(regHandle)
-            print "HKLM Locale = '[%s]'" % gLocale
-        except Exception, e:
-            gLocale = ""
-            pass
+    gLocale = getLocale()
     if gLocale == "":
         gLocale = locale.getdefaultlocale()[0]
         print "Default Locale = '[%s]'" % gLocale
@@ -153,6 +177,7 @@ def findAndGetClamString(englishString):
 
 # module test function
 if __name__ == '__main__':
+    forceLocale("nl_BE")
     setLocalePath()
     print "LocalePath = [%s]" % gLocalePath
     setLocale()

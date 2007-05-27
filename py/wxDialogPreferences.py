@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 #-----------------------------------------------------------------------------
 #Boa:Dialog:wxPreferencesDlg
 
@@ -32,6 +33,7 @@ import MsgBox, Utils, EmailAlert, Config
 import os, sys, time, locale
 import wxDialogScheduledScan
 from I18N import getClamString as _
+import I18N
 def create(parent, config=None, switchToSchedule=False):
     return wxPreferencesDlg(parent, config, switchToSchedule)
 
@@ -62,6 +64,7 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLGCHECKBOXWARNDBOLD, wxID_WXPREFERENCESDLGCHOICEPRIORITY, 
  wxID_WXPREFERENCESDLGCHOICEUPDATEDAY, 
  wxID_WXPREFERENCESDLGCHOICEUPDATEFREQUENCY, 
+ wxID_WXPREFERENCESDLGCHOICELANGUAGE,
  wxID_WXPREFERENCESDLGEDITABLELISTBOXFILTERSEXCLUDE, 
  wxID_WXPREFERENCESDLGEDITABLELISTBOXFILTERSINCLUDE, 
  wxID_WXPREFERENCESDLGINTCTRLPROXYPORT, wxID_WXPREFERENCESDLGINTCTRLSMTPPORT, 
@@ -79,6 +82,7 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLGSTATICBOXOUTLOOKADDIN, 
  wxID_WXPREFERENCESDLGSTATICBOXSCANOPTIONS, 
  wxID_WXPREFERENCESDLGSTATICBOXSMTPCONNECTION, 
+ wxID_WXPREFERENCESDLGSTATICBOXLANGUAGE,
  wxID_WXPREFERENCESDLGSTATICLINEUPDATETIMECTRL, 
  wxID_WXPREFERENCESDLGSTATICTEXT1, wxID_WXPREFERENCESDLGSTATICTEXT2, 
  wxID_WXPREFERENCESDLGSTATICTEXTADDITIONALPARAMS, 
@@ -113,7 +117,9 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLGSTATICTEXTUPDATEDAY, 
  wxID_WXPREFERENCESDLGSTATICTEXTUPDATEFREQUENCY, 
  wxID_WXPREFERENCESDLGSTATICTEXTUPDATETIME, 
- wxID_WXPREFERENCESDLGSTATICTEXTVIRDB, 
+ wxID_WXPREFERENCESDLGSTATICTEXTVIRDB,
+ wxID_WXPREFERENCESDLGSTATICTEXTLANGUAGE,
+ wxID_WXPREFERENCESDLGSTATICTEXTLANGUAGEREMARK,
  wxID_WXPREFERENCESDLGTEXTCTRLADDITIONALPARAMS, 
  wxID_WXPREFERENCESDLGTEXTCTRLCLAMSCAN, wxID_WXPREFERENCESDLGTEXTCTRLDBMIRROR, 
  wxID_WXPREFERENCESDLGTEXTCTRLFRESHCLAM, 
@@ -134,7 +140,21 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLG_PANELINTERNETUPDATE, 
  wxID_WXPREFERENCESDLG_PANELOPTIONS, wxID_WXPREFERENCESDLG_PANELPROXY, 
  wxID_WXPREFERENCESDLG_PANELREPORTS, wxID_WXPREFERENCESDLG_PANELSCHEDULER, 
-] = map(lambda _init_ctrls: wxNewId(), range(119))
+] = map(lambda _init_ctrls: wxNewId(), range(123))
+
+
+AVAILABLE_LANGUAGES = {'en_UK' : 'English',
+                       'de_DE' : 'Deutsch',
+                       'es_ES' : 'Espanol',
+                       'fr_FR' : 'Francais',
+                       'hu_HU' : 'Hungarian',
+                       'it_IT' : 'Italian',
+                       'nl_BE' : 'Nederlands',
+                       'pl_PL' : 'Polish',
+                       'ru_RU' : 'Russian'
+                       }
+
+WINDOWSUILANGUAGESTRING = _('Windows UI Language')
 
 class wxPreferencesDlg(wxDialog):
     def _init_coll_imageListScheduler_Images(self, parent):
@@ -189,33 +209,33 @@ class wxPreferencesDlg(wxDialog):
 
         INTERNETUPDATE_INPUTXPOS = 150
         wxDialog.__init__(self, id=wxID_WXPREFERENCESDLG, name='', parent=prnt,
-              pos=wxPoint(604, 301), size=wxSize(419, 371),
+              pos=wxPoint(604, 301), size=wxSize(419, 391),
               style=wxDEFAULT_DIALOG_STYLE, title=_('ClamWin Preferences'))
         self._init_utils()
-        self.SetClientSize(wxSize(411, 394))
+        self.SetClientSize(wxSize(411, 414))
         self.SetAutoLayout(False)
         self.Center(wxBOTH)
         EVT_CHAR_HOOK(self, self.OnCharHook)
 
         self.notebook = wxNotebook(id=wxID_WXPREFERENCESDLGNOTEBOOK,
               name='notebook', parent=self, pos=wxPoint(7, 7), size=wxSize(398,
-              348), style=wxNB_MULTILINE)
+              368), style=wxNB_MULTILINE)
         self.notebook.SetAutoLayout(true)
         self.notebook.SetToolTipString('')
 
         self._panelOptions = wxPanel(id=wxID_WXPREFERENCESDLG_PANELOPTIONS,
               name='_panelOptions', parent=self.notebook, pos=wxPoint(0, 0),
-              size=wxSize(390, 254), style=wxTAB_TRAVERSAL)
+              size=wxSize(390, 274), style=wxTAB_TRAVERSAL)
         self._panelOptions.SetAutoLayout(False)
 
         self._panelInternetUpdate = wxPanel(id=wxID_WXPREFERENCESDLG_PANELINTERNETUPDATE,
               name='_panelInternetUpdate', parent=self.notebook, pos=wxPoint(0,
-              0), size=wxSize(390, 254), style=wxTAB_TRAVERSAL)
+              0), size=wxSize(390, 274), style=wxTAB_TRAVERSAL)
         self._panelInternetUpdate.SetAutoLayout(False)
 
         self._panelProxy = wxPanel(id=wxID_WXPREFERENCESDLG_PANELPROXY,
               name='_panelProxy', parent=self.notebook, pos=wxPoint(0, 0),
-              size=wxSize(390, 254), style=wxTAB_TRAVERSAL)
+              size=wxSize(390, 274), style=wxTAB_TRAVERSAL)
         self._panelProxy.SetAutoLayout(False)
 
         self._panelFiles = wxPanel(id=wxID_WXPREFERENCESDLG_PANELFILES,
@@ -225,25 +245,25 @@ class wxPreferencesDlg(wxDialog):
 
         self._panelArchives = wxPanel(id=wxID_WXPREFERENCESDLG_PANELARCHIVES,
               name='_panelArchives', parent=self.notebook, pos=wxPoint(0, 0),
-              size=wxSize(390, 254), style=wxTAB_TRAVERSAL)
+              size=wxSize(390, 274), style=wxTAB_TRAVERSAL)
         self._panelArchives.SetAutoLayout(False)
 
         self._panelReports = wxPanel(id=wxID_WXPREFERENCESDLG_PANELREPORTS,
               name='_panelReports', parent=self.notebook, pos=wxPoint(0, 0),
-              size=wxSize(390, 254), style=wxTAB_TRAVERSAL)
+              size=wxSize(390, 274), style=wxTAB_TRAVERSAL)
         self._panelReports.SetAutoLayout(False)
 
         self._panelEmailScanning = wxPanel(id=wxID_WXPREFERENCESDLG_PANELEMAILSCANNING,
               name='_panelEmailScanning', parent=self.notebook, pos=wxPoint(0,
-              0), size=wxSize(390, 254), style=wxTAB_TRAVERSAL)
+              0), size=wxSize(390, 274), style=wxTAB_TRAVERSAL)
 
         self._panelAdvanced = wxPanel(id=wxID_WXPREFERENCESDLG_PANELADVANCED,
               name='_panelAdvanced', parent=self.notebook, pos=wxPoint(0, 0),
-              size=wxSize(390, 254), style=wxTAB_TRAVERSAL)
+              size=wxSize(390, 274), style=wxTAB_TRAVERSAL)
         self._panelAdvanced.SetAutoLayout(False)
 
         self.buttonOK = wxButton(id=wxID_WXPREFERENCESDLGBUTTONOK, label=_('OK'),
-              name='buttonOK', parent=self, pos=wxPoint(128, 364),
+              name='buttonOK', parent=self, pos=wxPoint(128, 384),
               size=wxSize(72, 23), style=0)
         self.buttonOK.SetToolTipString(_('Closes the window and saves the changes'))
         self.buttonOK.SetDefault()
@@ -251,7 +271,7 @@ class wxPreferencesDlg(wxDialog):
 
         self.buttonCancel = wxButton(id=wxID_WXPREFERENCESDLGBUTTONCANCEL,
               label=_('Cancel'), name='buttonCancel', parent=self, pos=wxPoint(209,
-              364), size=wxSize(75, 23), style=0)
+              384), size=wxSize(75, 23), style=0)
         self.buttonCancel.SetToolTipString(_('Closes the window without saving the changes'))
         EVT_BUTTON(self.buttonCancel, wxID_WXPREFERENCESDLGBUTTONCANCEL,
               self.OnCancel)
@@ -356,6 +376,34 @@ class wxPreferencesDlg(wxDialog):
         EVT_CHOICE(self.choiceUpdateFrequency,
               wxID_WXPREFERENCESDLGCHOICEUPDATEFREQUENCY,
               self.OnChoiceUpdateFrequency)
+
+        self.staticTextLanguage = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTLANGUAGE,
+                label=_('&Language:'), name='staticTextLanguage',
+                parent=self._panelOptions, pos=wxPoint(15,243), size=wxSize(100, 13),
+                style=0)
+        self.staticTextLanguage.SetToolTipString('')
+        
+        listLanguages = [WINDOWSUILANGUAGESTRING]
+        for i in AVAILABLE_LANGUAGES.itervalues():
+            listLanguages = listLanguages + [i]
+        self.choiceLanguage = wxChoice(choices=listLanguages,
+            id=wxID_WXPREFERENCESDLGCHOICELANGUAGE,
+            name='choiceLanguage', parent=self._panelOptions,
+            pos=wxPoint(100,243), size=wxSize(200,21), style=0)
+        self.choiceLanguage.SetColumns(2)
+        self.choiceLanguage.SetToolTipString(_('Choose auto-detect or an available language'))
+        loc = I18N.getLocale()
+        self.choiceLanguage.SetStringSelection(WINDOWSUILANGUAGESTRING)
+        EVT_CHOICE(self.choiceLanguage,
+            wxID_WXPREFERENCESDLGCHOICELANGUAGE,
+            self.OnChoiceLanguage)
+
+        self.staticTextLanguageRemark = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTLANGUAGEREMARK,
+                label=_('The language will change next time ClamWin is started'), name='staticTextLanguageRemark',
+                parent=self._panelOptions, pos=wxPoint(15,265), size=wxSize(350, 13),
+                style=0)
+        self.staticTextLanguageRemark.SetToolTipString('')
+        
 
         self.staticTextClamScan = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTCLAMSCAN,
               label=_('&ClamScan Location:'), name='staticTextClamScan',
@@ -658,6 +706,11 @@ class wxPreferencesDlg(wxDialog):
               label=_('Infected Files'), name='staticBoxInfected',
               parent=self._panelOptions, pos=wxPoint(6, 100), size=wxSize(376,
               123), style=0)
+
+        self.staticBoxLanguage = wxStaticBox(id=wxID_WXPREFERENCESDLGSTATICBOXLANGUAGE,
+            label=_('Language Settings'), name='staticBoxLanguage',
+            parent=self._panelOptions, pos=wxPoint(6, 225), size=wxSize(376,
+            58), style=0)
 
         self.radioButtonReport = wxRadioButton(id=wxID_WXPREFERENCESDLGRADIOBUTTONREPORT,
               label=_('&Report Only'), name='radioButtonReport',
@@ -1121,6 +1174,7 @@ class wxPreferencesDlg(wxDialog):
         self.radioButtonQuarantine.SetValidator(MyValidator(config=self._config, section='ClamAV', value='MoveInfected'))
         self.textCtrlQuarantine.SetValidator(MyValidator(config=self._config, section='ClamAV', value='QuarantineDir', canEmpty = False))
         self.checkBoxUnload.SetValidator(MyValidator(config=self._config, section='ClamAV', value='Kill'))
+        self.choiceLanguage.SetValidator(MyValidator(config=self._config, section='ClamAV', value='Language'))
         self._EnableOptionsControls(True)
 
     def _FiltersPageInit(self):
@@ -1339,6 +1393,10 @@ class wxPreferencesDlg(wxDialog):
         finally:
             dlg.Destroy()
 
+    def OnChoiceLanguage(self, event):
+        self._EnableOptionsControls(false)
+        event.Skip()
+
     def OnChoiceUpdateFrequency(self, event):
         self._EnableInternetUpdateControls(False)
         event.Skip()
@@ -1519,6 +1577,26 @@ class MyWeekDayValidator(MyBaseValidator):
          value = ctrl.GetSelection()
          self._config.Set(self._section, self._value, str(value))
 
+##class MyLanguageValidator(MyBaseValidator):
+##    def TransferToWindow(self):
+##        key = I18N.getLocale()
+##        if not len(key):
+##            value = WINDOWSUILANGUAGESTRING
+##        else:
+##            value = AVAILABLE_LANGUAGES[key]
+##        ctrl = self.GetWindow()
+##        ctrl.SetSelection(value)
+##
+##    def TransferFromWindow(self):
+##        ctrl = self.GetWindow()
+##        value = ctrl.GetSelection()
+##        for key in AVAILABLE_LANGUAGES.iterkeys():
+##            if AVAILABLE_LANGUAGES[i] == value:
+##                I18N.forceLocale(key)
+##                return
+##        # if no key was found, revert to Windows UI Locale
+##        I18N.forceLocale('')
+        
 class MyValidator(MyBaseValidator):
     
     def _getFrequencies(self):
@@ -1544,6 +1622,25 @@ class MyValidator(MyBaseValidator):
             return choiceFrequencies[freqIndex]
         raise "Could not find local frequency %s" % englishFrequency
 
+    def _getLanguages(self):
+        # get the languages in the current language
+        choiceLanguages=[WINDOWSUILANGUAGESTRING]
+        for key in AVAILABLE_LANGUAGES.iterkeys():
+            choiceLanguages=choiceLanguages + [AVAILABLE_LANGUAGES[key]]
+        return choiceLanguages
+
+    def _getEnglishLanguages(self, transLanguage):
+        # take a translated language and return the English language selected
+        if transLanguage == WINDOWSUILANGUAGESTRING:
+            return 'Windows UI Language'
+        return transLanguage
+
+    def _getLocalLanguage(self, englishLanguage):
+        # take an english language and return the corresponding local language name
+        if englishLanguage == 'Windows UI Language':
+            return WINDOWSUILANGUAGESTRING
+        return englishLanguage
+                
     def _getEnglishPriority(self, transPriority):
         if transPriority == _('Low'):
             return 'Low'
@@ -1582,8 +1679,18 @@ class MyValidator(MyBaseValidator):
             return True
 
     def TransferToWindow(self):
-        value = self._config.Get(self._section, self._value)
         ctrl = self.GetWindow()
+        # Language setting does not use _config, so check this first
+        if self._value == 'Language':
+            key = I18N.getLocale()
+            if key == '':
+                value = WINDOWSUILANGUAGESTRING
+            else:
+                value = AVAILABLE_LANGUAGES[key]
+            ctrl.SetStringSelection(value)
+            return
+            
+        value = self._config.Get(self._section, self._value)
         if isinstance(ctrl, (wxIntCtrl, wxCheckBox, wxRadioButton, wxSpinCtrl, wxIntCtrl)):
             value = int(value)
         else:
@@ -1608,6 +1715,13 @@ class MyValidator(MyBaseValidator):
                 value = self._getEnglishFrequency(ctrl.GetStringSelection())
             elif self._value == 'Priority':
                 value = self._getEnglishPriority(ctrl.GetStringSelection())
+            elif self._value == 'Language':
+                value = ctrl.GetStringSelection()
+                for key in AVAILABLE_LANGUAGES.iterkeys():
+                    if AVAILABLE_LANGUAGES[key] == value:
+                        I18N.forceLocale(key)
+                        return
+                I18N.forceLocale('')
             else:
                 value = ctrl.GetStringSelection()         
         elif isinstance(ctrl, (wxCheckBox, wxRadioButton, wxIntCtrl, wxSpinCtrl)):

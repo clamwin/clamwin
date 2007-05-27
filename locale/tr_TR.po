@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-03-18 14:39+0100\n"
+"PO-Revision-Date: 2007-05-27 17:26+0100\n"
 "Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: Turkish <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -2049,5 +2049,24 @@ msgid ""
 msgstr "&Tarama Raporu"
 
 msgid "Virus signature database is older than 3 days and may not offer the latest protection. Would you like to update it now?"
+msgstr ""
+
+# wxDialogPreferences.py:
+msgid "Language Settings"
+msgstr ""
+
+msgid "&Language:"
+msgstr ""
+
+# wxDialogPreferences.py:
+msgid "Windows UI Language"
+msgstr ""
+
+# wxDialogPreferences.py:
+# Language setting box :
+msgid "The language will change next time ClamWin is started"
+msgstr ""
+
+msgid "Choose auto-detect or an available language"
 msgstr ""
 

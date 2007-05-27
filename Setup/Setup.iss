@@ -4,7 +4,7 @@
 [Setup]
 AppName={cm:ClamWinFreeAntivirus1}
 AppVerName={cm:ClamWinFreeAntivirus1} 0.90.1
-OutputBaseFilename=ClamWin-0.90.1-L10N-33
+OutputBaseFilename=ClamWin-0.90.2-L10N-34
 AppPublisher=budtse
 AppPublisherURL=http://www.clamwin.com/
 AppSupportURL=http://www.clamwin.com/
@@ -137,6 +137,11 @@ Source: py2exe\dist\lib\wxc.pyd; DestDir: {app}\lib; Components: ClamWin; Flags:
 Source: py2exe\dist\lib\wxmsw24h.dll; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 Source: py2exe\dist\lib\zlib.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 ;Source: py2exe\dist\lib\BalloonTip.pyd; DestDir: {app}\lib; Components: ClamWin; Check: IsWin9x; Flags: restartreplace uninsrestartdelete
+
+; added main.cvd as per clamav team request
+Source: cvd\main.cvd; DestDir: {code:CommonProfileDir}\.clamwin\db; Components: ClamWin; Flags: ignoreversion comparetimestamp; Check: NoMainInc
+Source: cvd\daily.cvd; DestDir: {code:CommonProfileDir}\.clamwin\db; Components: ClamWin; Flags: ignoreversion comparetimestamp; Check: NoDailyInc
+
 [Icons]
 Name: {group}\{cm:StartMenuItemVirusScanner}; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: ClamWin
 Name: {code:DesktopDir}\{cm:ClamWinFreeAntivirus2}; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: ClamWin; Tasks: desktopicon
@@ -214,11 +219,11 @@ Name: {code:CommonProfileDir}\.clamwin; Type: filesandordirs
 Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: ClamWin; ValueData: """{app}\bin\ClamTray.exe"" --logon"; Flags: uninsdeletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKLM; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKLM64; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers and IsWin64
-Root: HKLM; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 901; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
+Root: HKLM; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 902; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKCU; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: ClamWin; ValueData: """{app}\bin\ClamTray.exe"" --logon"; Flags: uninsdeletevalue; Components: ClamWin; Check: not IsAllUsers
 Root: HKCU; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
 Root: HKCU64; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers and IsWin64
-Root: HKCU; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 901; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
+Root: HKCU; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 902; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
 
 ; ExplorerShell entries
 Root: HKCR; Subkey: CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueData: {app}\bin\ExpShell.dll; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers
@@ -489,7 +494,7 @@ begin
 	else
 		AllUsers := IsAdminLoggedOn();
 
-	ThisVersion := 901;
+	ThisVersion := 902;
 	value := 0;
 	if not RegQueryDWordValue(HKEY_CURRENT_USER, 'SOFTWARE\Clamwin', 'Version',  value) then begin
 		value := 0;
@@ -622,4 +627,18 @@ end;
 function IsTemplateConfig(Filename: String): Boolean;
 begin
 	Result := (not IsWin9x()) and (not FileExists(Filename));
+end;
+
+function NoMainInc(): Boolean;
+var
+	Temp: String;
+begin
+	Result := not DirExists(CommonProfileDir(Temp) + '\.clamwin\db\main.inc')
+end;
+
+function NoDailyInc(): Boolean;
+var
+	Temp: String;
+begin
+	Result := not DirExists(CommonProfileDir(Temp) + '\.clamwin\db\daily.inc')
 end;

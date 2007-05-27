@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-03-20 12:06+0100\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2007-05-27 17:28+0100\n"
+"Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: Italian <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -332,7 +332,6 @@ msgid "Apr"
 msgstr "Apr"
 
 #: wxDialogStatus.py:221
-#, fuzzy
 msgid "May"
 msgstr "Mag"
 
@@ -1611,7 +1610,6 @@ msgid "Unable to stop scheduled process, terminating"
 msgstr "Impossibile arrestare il processo previsto, terminato"
 
 #: ClamTray.py:131
-#, fuzzy
 msgid "An error occurred whilst terminating scheduler thread. Error: %s"
 msgstr "Un errore improvviso nel terminare il thread di sistema. Errore: %s"
 
@@ -1749,7 +1747,6 @@ msgstr "Avvio in corso operazione pianificata:\n"
 msgid "An error occurred whilst running Running Scheduled Task "
 msgstr "Errore improvviso nell'avviare l'operazione pianificata"
 
-#, fuzzy
 msgid "Scans Programs in Computer Memory for Viruses"
 msgstr "Scansione File e Cartelle"
 
@@ -1759,7 +1756,6 @@ msgstr "Scansione &Memoria"
 msgid "Scan Computer Memory"
 msgstr "Scansiona la memoria del computer"
 
-#, fuzzy
 msgid "Scans Programs Loaded in Computer Memory for Computer Viruses"
 msgstr "Scansione dei File e delle cartelle selezionate"
 
@@ -1772,7 +1768,6 @@ msgstr "Specifica ogni parametro aggiuntivo per clamscan.exe"
 msgid "&Unload Infected Programs from Computer Memory"
 msgstr "Scarica programmi infetti dalla memoria del comp&uter"
 
-#, fuzzy
 msgid "Select if you wish to unload infected programs from computer memory so they can be quarantined or removed"
 msgstr "Seleziona se vuoi visualizzare solo i file infetti nella finestra di scansione"
 
@@ -1830,15 +1825,12 @@ msgstr "File non eseguibili ignorati:"
 msgid "ERROR: Can't download main.cvd"
 msgstr "ERRORE: impossibile scaricare main.cvd"
 
-#, fuzzy
 msgid "Your network may be down or none of the mirrors listed in freshclam.conf is working. Check http://www.clamav.net/support/mirror-problem for possible reasons."
 msgstr "ERRORE: Aggiornamento fallito. La tua connessione può essere non funzionante o nessun indirizzo elencati in freshclam.conf sta funzionando."
 
-#, fuzzy
 msgid "Select if you only wish to scan files that can run on MS Windows platform"
 msgstr "Seleziona se vuoi visualizzare solo i file infetti nella finestra di scansione"
 
-#, fuzzy
 msgid "&Warn if Virus database is Out of Date"
 msgstr "Quanto spesso il database dei virus viene aggiornato"
 
@@ -1854,4 +1846,23 @@ msgstr ""
 
 msgid "Virus signature database is older than 3 days and may not offer the latest protection. Would you like to update it now?"
 msgstr "Il database delle firme dei virus é più vecchio di 3 giorni e potrebbe non offrire la protezione più aggiornata. Preferisci aggiornarlo ora ?"
+
+# wxDialogPreferences.py:
+msgid "Language Settings"
+msgstr ""
+
+msgid "&Language:"
+msgstr ""
+
+# wxDialogPreferences.py:
+msgid "Windows UI Language"
+msgstr ""
+
+# wxDialogPreferences.py:
+# Language setting box :
+msgid "The language will change next time ClamWin is started"
+msgstr ""
+
+msgid "Choose auto-detect or an available language"
+msgstr ""
 

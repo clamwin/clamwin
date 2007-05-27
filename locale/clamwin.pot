@@ -1802,3 +1802,18 @@ msgstr ""
 
 msgid "Virus signature database is older than 3 days and may not offer the latest protection. Would you like to update it now?"
 msgstr ""
+
+msgid "Language Settings"
+msgstr ""
+
+msgid "&Language:"
+msgstr ""
+
+msgid "Windows UI Language"
+msgstr ""
+
+msgid "The language will change next time ClamWin is started"
+msgstr ""
+
+msgid "Choose auto-detect or an available language"
+msgstr ""

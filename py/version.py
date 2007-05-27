@@ -1,1 +1,1 @@
-clamwin_version='0.90.1-L10N-33'
+clamwin_version='0.90.2-L10N-34'

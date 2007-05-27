@@ -13,17 +13,23 @@ KNOWN ISSUES:
 
 Completed Languages
 *******************
-- Dutch/Belgian Dutch   (0.90.1)
-- French                (0.88.7)
+- Dutch/Belgian Dutch   (0.90.2)
+- French                (0.90.2)
 - German                (0.90.0)
-- Hungarian             (0.90.1)
-- Italian               (0.90.1)
+- Hungarian             (0.90.2)
+- Italian               (0.90.2)
 - Russian               (0.90.1)
-- Spanish               (0.88.7)
+- Spanish               (0.90.2)
 - Polish                (0.90.0)
 
 History
 *******
+
+Changes in Version ClamWin-0.90.2-L10N-34.exe :
+- Merged the changes up to ClamWin Free Antivirus release 0.90.2
+- Updated some translations
+- Include the main.cvd and daily.cvd in the setup file
+- Added a preference setting to choose the language to be used
 
 Changes in Version ClamWin-0.90.1-L10N-33.exe :
 - Updated translations of Russian, Italian and Hungarian

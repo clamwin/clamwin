@@ -39,7 +39,7 @@ To Release a new build of the I18N Branch, follow these ordered steps :
    (which will continue to grow until the code is generally accepted and we
    can merge the I18N branch back into the main branch)
    
-5. Update the Changelog, mentioning the new version and changes.
+5. Update the file Changelog-I18N, mentioning the new version and changes.
 
 6. Make sure you have the latest Clam exes and dlls in the right folder, as 
    specified in setup.iss (..\..\..\clamav-release\contrib\msvc\Release\).
