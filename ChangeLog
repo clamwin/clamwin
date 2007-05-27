@@ -1,3 +1,8 @@
+Version 0.90.2.1  - 27 May 2007
+- Outlook Addin now uses pylibclamav instead of clamscan to improve speed of email opening
+- New upgrades system getting ready for incremental updates
+
+
 Version 0.90.1.1  - 12 March 2007
 - Added support for main.inc database folder
 - Added meaningful output to "cannot open file" messages
