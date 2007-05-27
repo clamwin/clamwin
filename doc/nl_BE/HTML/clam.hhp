@@ -1,0 +1,26 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=..\Manual_NL.chm
+Contents file=Table of Contents.hhc
+Default topic=Cover.html
+Display compile progress=Yes
+Full-text search=Yes
+Language=0x813 Dutch (Belgium)
+Title=ClamWin Free Antivirus
+
+
+[FILES]
+Usage.html
+Advanced.html
+App_CD-USB.html
+Config.html
+Cover.html
+Faq.html
+Install.html
+Intro.html
+Licence.html
+LicenceTranslation.html
+Troubleshooting.html
+
+[INFOTYPES]
+
