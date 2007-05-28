@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.90.2.1\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-05-27 17:27+0100\n"
-"Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
+"PO-Revision-Date: 2007-05-28 08:38+0100\n"
+"Last-Translator: Bartosz Kosiorek <gang65@poczta.onet.pl>\n"
 "Language-Team: Localization <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -1851,20 +1851,20 @@ msgstr "Sygnatura bazy wirusw jest starsza niż 3 dni i może nie zapewniać wł
 
 # wxDialogPreferences.py:
 msgid "Language Settings"
-msgstr ""
+msgstr "Ustawienia językowe"
 
 msgid "&Language:"
-msgstr ""
+msgstr "&Język:"
 
 # wxDialogPreferences.py:
 msgid "Windows UI Language"
-msgstr ""
+msgstr "Język interfejsu użytkownika"
 
 # wxDialogPreferences.py:
 # Language setting box :
 msgid "The language will change next time ClamWin is started"
-msgstr ""
+msgstr "Język zostanie zmieniony przy następnym uruchomieniu programu ClamWin"
 
 msgid "Choose auto-detect or an available language"
-msgstr ""
+msgstr "Wybierz język lub tryb autodetekcji"
 
