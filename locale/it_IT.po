@@ -1,10 +1,22 @@
+# Copyright (C) 2007 Free Software Foundation, Inc.
+# ?
+# Budtse ? <budtse@users.sourceforge.net>, 2007
+# Marco Ciampa <ciampix@libero.it>, 2007
+#
+# Note per una buona traduzione: 
+# - è errato in italiano riportare le capitalizzazioni anglosassoni
+# - Internet va sempre maiuscolo
+# - in italiano in genere non si usa la forma diretta ma una forma impersonale,
+# esempio:
+# "tieni premuto il tasto x": no!
+# "tenere premuto il tasto x": si!
 msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-05-27 17:28+0100\n"
-"Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
-"Language-Team: Italian <team@clamwin.com>\n"
+"PO-Revision-Date: 2007-05-31 17:45+0200\n"
+"Last-Translator: Marco Ciampa <ciampix@libero.it>\n"
+"Language-Team: Italian <italian@clamwin.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,11 +34,11 @@ msgstr "&Preferenze"
 
 #: wxFrameMain.py:93
 msgid "Downloads latest virus database from the Internet"
-msgstr "Scarica da internet l'ultima versione del database dei virus"
+msgstr "Scarica da Internet l'ultima versione del database dei virus"
 
 #: wxFrameMain.py:95
 msgid "Download &Virus Database Update"
-msgstr "Scarica l'aggiornamento del database dei &Virus"
+msgstr "Scarica l'aggiornamento del database dei &virus"
 
 #: wxFrameMain.py:96
 msgid "Displays ClamWin Log Files"
@@ -55,7 +67,7 @@ msgstr "Visualizza il manuale di ClamWin Free Antivirus"
 
 #: wxFrameMain.py:116
 msgid "&Check Latest Version"
-msgstr "&Controlla l'ultima versione"
+msgstr "&Controlla se è l'ultima versione"
 
 #: wxFrameMain.py:118
 msgid "ClamWin &Website"
@@ -63,7 +75,7 @@ msgstr "Sito &Web di ClamWin"
 
 #: wxFrameMain.py:120
 msgid "Opens Frequently Asked Questions Page in the Web Browser"
-msgstr "Apre la pagina delle FAQ nel Browser"
+msgstr "Apre la pagina delle FAQ nel programma di navigazione Internet"
 
 #: wxFrameMain.py:121
 msgid "&FAQ"
@@ -79,12 +91,12 @@ msgstr "&Informazioni su"
 
 #: wxFrameMain.py:134
 msgid "Displays Virus Database Update Log FIle"
-msgstr "Visualizza il log dell'aggiornamento del Database dei Virus"
+msgstr "Visualizza il log dell'aggiornamento del database dei virus"
 
 #: wxFrameMain.py:136
 #: ClamTray.py:278
 msgid "&Virus Database Update Report"
-msgstr "Visualizza il rapporto dell'aggiornamente del Database dei &Virus"
+msgstr "Visualizza il rapporto dell'aggiornamente del database dei &virus"
 
 #: wxFrameMain.py:137
 msgid "Displays Virus Scan Log File"
@@ -92,11 +104,11 @@ msgstr "Visualizza il log della scansione"
 
 #: wxFrameMain.py:138
 msgid "&Scan Report"
-msgstr "Rapporto &Scansione"
+msgstr "Rapporto &scansione"
 
 #: wxFrameMain.py:146
 msgid "Scans Files or Folders for Computer Viruses"
-msgstr "Scansione File e Cartelle"
+msgstr "Scansione file e cartelle"
 
 #: wxFrameMain.py:147
 #: wxFrameMain.py:257
@@ -126,11 +138,11 @@ msgstr "Aggiorna"
 
 #: wxFrameMain.py:166
 msgid "Updates virus databases over the Internet"
-msgstr "Aggiorna il database dei virus da internet"
+msgstr "Aggiorna il database dei virus da Internet"
 
 #: wxFrameMain.py:167
 msgid "Starts Internet Update"
-msgstr "Inizia l'aggiornamente da internet"
+msgstr "Inizia l'aggiornamente da Internet"
 
 #: wxFrameMain.py:171
 msgid "Scan"
@@ -138,7 +150,7 @@ msgstr "Scansione"
 
 #: wxFrameMain.py:172
 msgid "Scans Selected File or Folder for Computer Viruses"
-msgstr "Scansione dei File e delle cartelle selezionate"
+msgstr "Scansione dei file e delle cartelle selezionate"
 
 #: wxFrameMain.py:173
 msgid "Scans For Viruses"
@@ -163,7 +175,7 @@ msgstr "Scansione"
 #: wxDialogPreferences.py:1582
 #: wxDialogStatus.py:466
 msgid "ClamWin Free Antivirus"
-msgstr "ClamWin L'Antivirus Libero"
+msgstr "ClamWin l'antivirus libero"
 
 #: wxFrameMain.py:239
 msgid "Status Bar"
@@ -175,11 +187,11 @@ msgid ""
 "(Hold Shift key to select multiple files or folders)"
 msgstr ""
 "Seleziona una cartella o un file per la scansione\n"
-"(Tieni premuto il tasto Shift per selezionare più elementi)"
+"(tenere premuto il tasto Maiusc per selezionare più elementi)"
 
 #: wxFrameMain.py:115
 msgid "Checks for the Latest Version"
-msgstr "Controlla Aggiornamento"
+msgstr "Controlla l'aggiornamento"
 
 #: wxFrameMain.py:354
 msgid "An Error occurred while updating UI selection. %s"
@@ -187,7 +199,7 @@ msgstr "Si è verificato un errore aggiornando la selezione dell'interfaccia. %s
 
 #: wxFrameMain.py:387
 msgid "Could not open help file - %s not found."
-msgstr "Non posso aprire il file di aiuto - % non trovato"
+msgstr "Non posso aprire il file della guida - % non trovato"
 
 #: wxFrameMain.py:394
 msgid "Could not open help file. Please ensure that you have Adobe Acrobat Reader installed."
@@ -204,7 +216,7 @@ msgstr "TROVATO"
 #: wxDialogStatus.py:133
 #: wxDialogLogViewer.py:105
 msgid "ERROR: No servers could be reached. Giving up"
-msgstr "ERRORE: Nessun server può essere raggiunto. Abbandono"
+msgstr "ERRORE: nessun server può essere raggiunto. Abbandono"
 
 #: wxDialogStatus.py:137
 #: wxDialogLogViewer.py:109
@@ -377,7 +389,7 @@ msgstr "fallito"
 
 #: wxDialogStatus.py:294
 msgid "ClamWin Free Antivirus Status"
-msgstr "ClamWin l'Antivirus Libero - Stato"
+msgstr "Stato di ClamWin"
 
 #: wxDialogStatus.py:319
 msgid "&Stop"
@@ -385,7 +397,7 @@ msgstr "&Stop"
 
 #: wxDialogStatus.py:327
 msgid "S&ave Report"
-msgstr "S&alva Rapporto"
+msgstr "S&alva un rapporto"
 
 #: wxDialogStatus.py:435
 msgid "Unable to stop runner thread, terminating"
@@ -425,10 +437,10 @@ msgid ""
 "--------------------------------------\n"
 msgstr ""
 "\n"
-"↵\n"
-"--------------------------------------↵\n"
-"Completato↵\n"
-"--------------------------------------↵\n"
+"\n"
+"--------------------------------------\n"
+"Completato\n"
+"--------------------------------------\n"
 
 #: wxDialogStatus.py:546
 msgid ""
@@ -438,9 +450,9 @@ msgid ""
 "--------------------------------------\n"
 msgstr ""
 "\n"
-"--------------------------------------↵\n"
-"Annullato↵\n"
-"--------------------------------------↵\n"
+"--------------------------------------\n"
+"Annullato\n"
+"--------------------------------------\n"
 
 #: wxDialogStatus.py:629
 #: ClamTray.py:470
@@ -454,8 +466,8 @@ msgid ""
 "%s\n"
 "File does not exist."
 msgstr ""
-"Non posso lanciare il processo.↵\n"
-"%s↵\n"
+"Non posso lanciare il processo.\n"
+"%s\n"
 "Il file non esiste."
 
 #: wxDialogStatus.py:646
@@ -467,8 +479,8 @@ msgid ""
 "%s\n"
 "Error: %s"
 msgstr ""
-"Non posso lanciare il processo:↵\n"
-"%s↵\n"
+"Non posso lanciare il processo:\n"
+"%s\n"
 "Errore: %s"
 
 #: wxDialogScheduledScan.py:160
@@ -499,7 +511,7 @@ msgstr "Quando dovrebbe partire la scansione pianificata"
 #: wxDialogScheduledScan.py:202
 #: wxDialogPreferences.py:567
 msgid "&Day Of The Week:"
-msgstr "&Giorno della Settimana"
+msgstr "&Giorno della settimana"
 
 #: wxDialogScheduledScan.py:211
 msgid "When schedule frequency is weekly select day of the week"
@@ -565,7 +577,7 @@ msgstr "Filtri"
 
 #: wxDialogPreferences.py:149
 msgid "Internet Updates"
-msgstr "Aggiornamenti Internet"
+msgstr "Aggiornamenti da Internet"
 
 #: wxDialogPreferences.py:151
 msgid "Proxy"
@@ -573,7 +585,7 @@ msgstr "Proxy"
 
 #: wxDialogPreferences.py:153
 msgid "Scheduled Scans"
-msgstr "Scansioni Pianificate"
+msgstr "Scansioni pianificate"
 
 #: wxDialogPreferences.py:155
 msgid "Email Alerts"
@@ -585,7 +597,7 @@ msgstr "Archivi"
 
 #: wxDialogPreferences.py:159
 msgid "File Locations"
-msgstr "Posizione File"
+msgstr "Posizione file"
 
 #: wxDialogPreferences.py:161
 msgid "Reports"
@@ -621,11 +633,11 @@ msgstr "Chiude la finestra senza salvari i cambiamenti"
 
 #: wxDialogPreferences.py:260
 msgid "Proxy &Server:"
-msgstr "Proxy &Server:"
+msgstr "&Server proxy:"
 
 #: wxDialogPreferences.py:267
 msgid "Proxy Server domain name or IP address"
-msgstr "nome Proxy Server o indirizzo IP"
+msgstr "Nome server proxy o indirizzo IP"
 
 #: wxDialogPreferences.py:270
 #: wxDialogPreferences.py:727
@@ -634,16 +646,16 @@ msgstr "P&orta"
 
 #: wxDialogPreferences.py:280
 msgid "Proxy Server port number (0-65535)"
-msgstr "Porta del Server proxy (0-65535)"
+msgstr "Porta del server proxy (0-65535)"
 
 #: wxDialogPreferences.py:283
 #: wxDialogPreferences.py:740
 msgid "&User Name:"
-msgstr "Nome &Utente"
+msgstr "Nome &utente"
 
 #: wxDialogPreferences.py:290
 msgid "Proxy Server Account Name (optional)"
-msgstr "Account per il Server Proxy (opzionale)"
+msgstr "Registrazione per il server proxy (opzionale)"
 
 #: wxDialogPreferences.py:293
 #: wxDialogPreferences.py:751
@@ -652,19 +664,19 @@ msgstr "&Password:"
 
 #: wxDialogPreferences.py:301
 msgid "Proxy Server account password (optional)"
-msgstr "Password account Server Proxy (opzionale)"
+msgstr "Password account server proxy (opzionale)"
 
 #: wxDialogPreferences.py:304
 msgid "Leave these fields blank if you do not connect via Proxy Server"
-msgstr "Lascia questi campi vuoti se non vuoi connetterti tramite un Server Proxy"
+msgstr "Lascia questi campi vuoti se non vuoi connetterti tramite un server proxy"
 
 #: wxDialogPreferences.py:310
 msgid "Scanning Options"
-msgstr "Opzioni Scansione"
+msgstr "Opzioni di scansione"
 
 #: wxDialogPreferences.py:315
 msgid "&Enable Automatic Virus Database Updates"
-msgstr "&Abilita aggiornamenti automatici del Database dei Virus"
+msgstr "&Abilita aggiornamenti automatici del database dei virus"
 
 #: wxDialogPreferences.py:318
 msgid "Enable automatic virus database downloads "
@@ -676,11 +688,11 @@ msgstr "&Sito per gli aggiornamenti:"
 
 #: wxDialogPreferences.py:331
 msgid "Specify Database Mirror Site here. Usually this is database.clamav.net"
-msgstr "Specifica il Mirror per i Database. Di solito database.clamav.net"
+msgstr "Specifica il mirror per i database. Di solito database.clamav.net"
 
 #: wxDialogPreferences.py:334
 msgid "&Update Frequency:"
-msgstr "Frequenza &Aggiornamenti"
+msgstr "Frequenza &aggiornamenti"
 
 #: wxDialogPreferences.py:339
 #: wxDialogPreferences.py:346
@@ -722,7 +734,7 @@ msgstr "Quanto spesso il database dei virus viene aggiornato"
 
 #: wxDialogPreferences.py:352
 msgid "&ClamScan Location:"
-msgstr "Posizione &ClamScan"
+msgstr "Posizione &clamscan:"
 
 #: wxDialogPreferences.py:360
 msgid "Specify location of clamscan"
@@ -734,7 +746,7 @@ msgstr "Clicca per cercare clamscan"
 
 #: wxDialogPreferences.py:371
 msgid "&FreshClam Location:"
-msgstr "Posizione &FreshClam:"
+msgstr "Posizione &freshclam:"
 
 #: wxDialogPreferences.py:379
 msgid "Specify location of freshclam"
@@ -742,11 +754,11 @@ msgstr "Specifica la posizione di freshclam"
 
 #: wxDialogPreferences.py:385
 msgid "Click to browse for freshclam"
-msgstr "Clicca per cercare freshclam"
+msgstr "Fare clic per cercare freshclam"
 
 #: wxDialogPreferences.py:391
 msgid "&Virus Database Folder:"
-msgstr "Cartella per il Database dei &Virus:"
+msgstr "Cartella per il database dei &virus:"
 
 #: wxDialogPreferences.py:399
 msgid "Specify location of virus database files"
@@ -754,7 +766,7 @@ msgstr "Specifica la posizione per i file del database dei virus"
 
 #: wxDialogPreferences.py:404
 msgid "Click to browse for a virus database folder"
-msgstr "Clicca per cercare la cartella per il database dei virus"
+msgstr "Fare clic per cercare la cartella per il database dei virus"
 
 #: wxDialogPreferences.py:409
 msgid "&Scan In Subdirectories"
@@ -766,7 +778,7 @@ msgstr "Seleziona se vuoi esaminare ricorsivamente le sottocartelle"
 
 #: wxDialogPreferences.py:426
 msgid "&Scan In Archives"
-msgstr "Esamina gli &Archivi"
+msgstr "Esamina gli &archivi"
 
 #: wxDialogPreferences.py:435
 msgid "Do Not Scan Archives Larger Than"
@@ -775,7 +787,7 @@ msgstr "Non esaminare archivi più grandi di"
 #: wxDialogPreferences.py:445
 #: wxDialogPreferences.py:913
 msgid "MegaBytes"
-msgstr "MegaBytes"
+msgstr "Megabytes"
 
 #: wxDialogPreferences.py:450
 #: wxDialogPreferences.py:464
@@ -800,11 +812,11 @@ msgstr "Seleziona se vuoi esaminare le mailbox"
 
 #: wxDialogPreferences.py:486
 msgid "&Extract Attachments and Macros from MS Office Documents"
-msgstr "&Estrai gli Attachment e le Macro dai documenti MS Office"
+msgstr "&Estrai gli allegati e le macro dai documenti MS Office"
 
 #: wxDialogPreferences.py:500
 msgid "&Additional Clamscan Command Line Parameters:"
-msgstr "Opzioni &addizionali per clamscan"
+msgstr "Opzioni &aggiuntive per clamscan"
 
 #: wxDialogPreferences.py:509
 msgid "Limit Log File Size To:"
@@ -829,7 +841,7 @@ msgstr "Clicca per selezionare la posizione del file di log"
 
 #: wxDialogPreferences.py:541
 msgid "&Virus Database Update Report File:"
-msgstr "File di rapport per l'aggiornamento del database dei &virus"
+msgstr "File di rapporto per l'aggiornamento del database dei &virus"
 
 #: wxDialogPreferences.py:549
 msgid "Specify location for a database updates log file"
@@ -911,15 +923,15 @@ msgstr "Quando la frequenza di aggiornamento è settimanale scegli il giorno del
 
 #: wxDialogPreferences.py:638
 msgid "&Update Virus Database On Logon"
-msgstr "&Aggiorna il database dei virus al Login"
+msgstr "&Aggiorna il database dei virus al login"
 
 #: wxDialogPreferences.py:641
 msgid "Select if you wish to update the virus databases just after you logged on"
-msgstr "Seleziona se vuoi aggiornare il database dei virus appena effettuato il Login"
+msgstr "Seleziona se vuoi aggiornare il database dei virus appena effettuato il login"
 
 #: wxDialogPreferences.py:648
 msgid "Infected Files"
-msgstr "File Infetti"
+msgstr "File infetti"
 
 #: wxDialogPreferences.py:653
 msgid "&Report Only"
@@ -927,19 +939,19 @@ msgstr "Solo &rapporto"
 
 #: wxDialogPreferences.py:661
 msgid "&Remove (Use Carefully)"
-msgstr "&Rimuovi (Fai attenzione)"
+msgstr "&Rimuovi (usare con attenzione)"
 
 #: wxDialogPreferences.py:670
 msgid "&Move To Quarantine Folder:"
-msgstr "&Muovi nella cartella della Quarantena"
+msgstr "&Muovi nella cartella della quarantena"
 
 #: wxDialogPreferences.py:680
 msgid "Specify location for a quarantine folder"
-msgstr "Specifica la posizione per la cartella della Quarantena"
+msgstr "Specifica la posizione per la cartella della quarantena"
 
 #: wxDialogPreferences.py:686
 msgid "Click to browse for a quarantine folder"
-msgstr "Clicca per selzionare la cartella della Quarantena"
+msgstr "Clicca per selzionare la cartella della quarantena"
 
 #: wxDialogPreferences.py:700
 msgid "&Send Email Alert On Virus Detection"
@@ -955,7 +967,7 @@ msgstr "Dettagli connessione SMTP"
 
 #: wxDialogPreferences.py:716
 msgid "&Mail Server:"
-msgstr "&Mail Server:"
+msgstr "Server di &posta:"
 
 #: wxDialogPreferences.py:724
 msgid "SMTP Server domain name or IP address"
@@ -963,15 +975,15 @@ msgstr "Nome server SMTP o indirizzo IP"
 
 #: wxDialogPreferences.py:737
 msgid "Mail Server port number (0-65535)"
-msgstr "Porta del Mail Server (0-65535)"
+msgstr "Porta del server di posta (0-65535)"
 
 #: wxDialogPreferences.py:748
 msgid "Mail Server Account Name (optional)"
-msgstr "Account del Mail Server (opzionale)"
+msgstr "Account del server di posta (opzionale)"
 
 #: wxDialogPreferences.py:760
 msgid "Mail Server account password (optional)"
-msgstr "Password dell'account del Mail Server (opzionale)"
+msgstr "Password dell'account del server di posta (opzionale)"
 
 #: wxDialogPreferences.py:763
 msgid "Email Message Details"
@@ -1007,23 +1019,23 @@ msgstr "Invia un'email di &test"
 
 #: wxDialogPreferences.py:805
 msgid "Click to send a test email message"
-msgstr "Clicca per inviare un'email di test"
+msgstr "Fare clic per inviare un'email di test"
 
 #: wxDialogPreferences.py:811
 msgid "&Display Pop-up Notification Messages In Taskbar "
-msgstr "&Visualizza messaggi di notivia nella Taskbar "
+msgstr "&Visualizza messaggi di notifica nella barra delle applicazioni "
 
 #: wxDialogPreferences.py:815
 msgid "Select if you wish to receive Tray notification pop-up messages"
-msgstr "Seleziona se vuoi ricevere messaggi di notifica nella Tray"
+msgstr "Seleziona se vuoi ricevere messaggi di notifica nella barra laterale"
 
 #: wxDialogPreferences.py:822
 msgid "Specify Filename Patterns to include and/or exclude in scanning"
-msgstr "Speficica il Pattern per i file da includere e/o escludere nella scansione"
+msgstr "Specifica il tipo di file da includere e/o escludere nella scansione"
 
 #: wxDialogPreferences.py:827
 msgid "(To specify a regular expression include your pattern within <...>)"
-msgstr "(Per specificare espressioni regolare inseriscile dentro <...>)"
+msgstr "(per inserire espressioni regolari basta metterle dentro <...>)"
 
 #: wxDialogPreferences.py:832
 msgid "&Exclude Matching Filenames:"
@@ -1057,11 +1069,11 @@ msgstr "Elimina elemento"
 #: wxDialogPreferences.py:854
 #: wxDialogPreferences.py:879
 msgid "Edit item"
-msgstr "Edita elemento"
+msgstr "Modifica elemento"
 
 #: wxDialogPreferences.py:857
 msgid "&Scan Only Matching Filenames:"
-msgstr "&Controlla solo i File che corrispondono:"
+msgstr "&Controlla solo i file che corrispondono:"
 
 #: wxDialogPreferences.py:882
 msgid "&Deactivate"
@@ -1073,7 +1085,7 @@ msgstr "&Attiva"
 
 #: wxDialogPreferences.py:898
 msgid "&Notify About New ClamWin Releases"
-msgstr "&Notifica nuove release di ClamWin"
+msgstr "&Notifica nuove versioni di ClamWin"
 
 #: wxDialogPreferences.py:901
 msgid "Select if you wish to get a notification message when ClamWin Free Antivirus program has been updated"
@@ -1081,7 +1093,7 @@ msgstr "Seleziona se vuoi un messaggio di notifica quando ClamWin è stato aggio
 
 #: wxDialogPreferences.py:908
 msgid "(No personal information is transmitted during this check)"
-msgstr "(Nessuna informazione personale verrà trasmessa)"
+msgstr "(nessuna informazione personale verrà trasmessa)"
 
 #: wxDialogPreferences.py:918
 msgid "Scanner &Priority:"
@@ -1114,7 +1126,7 @@ msgstr "Si è verificato un errore salvando il file di configurazione %s. Contro
 
 #: wxDialogPreferences.py:1033
 msgid "Event Failed"
-msgstr "Evento Fallito"
+msgstr "Evento fallito"
 
 #: wxDialogPreferences.py:1205
 #: wxDialogPreferences.py:1221
@@ -1136,23 +1148,23 @@ msgstr "File di testo (*.txt)|*.txt|Tutti i file (*.*)|*.*"
 
 #: wxDialogPreferences.py:1291
 msgid "Maximum amount of scheduled items (20) has been reached."
-msgstr "Hai raggiunto il limite massimo di scansioni schedulate (20)."
+msgstr "Hai raggiunto il limite massimo di scansioni programmate (20)."
 
 #: wxDialogPreferences.py:1379
 msgid ""
 "This is a test message sent during configuration of ClamWin Free Antivirus on the following computer: %s.\n"
 "Please do not be alarmed.\n"
 msgstr ""
-"Questo è un messaggio di test inviato durante la configurazione di ClamWin sul seguente computer: %s↵\n"
-"Niente paura.↵\n"
+"Questo è un messaggio di test inviato durante la configurazione di ClamWin sul seguente computer: %s\n"
+"Niente paura.\n"
 
 #: wxDialogPreferences.py:1384
 msgid "Test Email has been sent successfully."
-msgstr "L'email di Test è stata inviata correttamente."
+msgstr "L'email di test è stata inviata correttamente."
 
 #: wxDialogPreferences.py:1386
 msgid "Could not send the email. Please ensure you are connected to the internet. Error: %s"
-msgstr "Non è possibile inviare l'email. Assicurati di essere connesso a internet. Errore: %s"
+msgstr "Non è possibile inviare l'email. Assicurati di essere connesso a Internet. Errore: %s"
 
 #: wxDialogPreferences.py:1501
 #: wxDialogPreferences.py:1582
@@ -1170,7 +1182,7 @@ msgstr "Non posso creare la cartella %s. Errore: %s"
 
 #: wxDialogLogViewer.py:68
 msgid "ClamWin Log Viewer"
-msgstr "Visualizzazione Log ClamWin"
+msgstr "Visualizzazione log di ClamWin"
 
 #: wxDialogLogViewer.py:93
 #: wxDialogStatus.py:121
@@ -1180,17 +1192,17 @@ msgstr "Processo aggiornamento ClamAV iniziato"
 #: wxDialogLogViewer.py:95
 #: wxDialogStatus.py:123
 msgid "ERROR: DNS Resolver:"
-msgstr "ERRORE: Risoluzione DNS"
+msgstr "ERRORE: risoluzione DNS"
 
 #: wxDialogStatus.py:125
 #: wxDialogLogViewer.py:97
 msgid "WARNING: Invalid DNS reply. Falling back to HTTP mode."
-msgstr "ATTENZIONE: Risposta DNS non valida. Riprovo con la modalità HTTP."
+msgstr "ATTENZIONE: risposta DNS non valida. Riprovo con la modalità HTTP."
 
 #: wxDialogStatus.py:127
 #: wxDialogLogViewer.py:99
 msgid "ERROR: Can't get information about database.clamav.net:"
-msgstr "ERRORE: Non riesco a rivere informazioni su database.clamav.net:"
+msgstr "ERRORE: non riesco a rivere informazioni su database.clamav.net:"
 
 #: wxDialogLogViewer.py:101
 #: wxDialogStatus.py:129
@@ -1210,7 +1222,7 @@ msgstr "Riprova ancora tra 5 secondi..."
 #: wxDialogLogViewer.py:111
 #: wxDialogStatus.py:139
 msgid "ERROR: Update failed. Your network may be down or none of the mirrors listed in freshclam.conf is working."
-msgstr "ERRORE: Aggiornamento fallito. La tua connessione può essere non funzionante o nessun indirizzo elencati in freshclam.conf sta funzionando."
+msgstr "ERRORE: aggiornamento fallito. La tua connessione può essere non funzionante o nessun indirizzo elencato in freshclam.conf sta funzionando."
 
 #: wxDialogLogViewer.py:117
 #: wxDialogStatus.py:145
@@ -1246,7 +1258,7 @@ msgstr "OK"
 
 #: wxDialogAbout.py:168
 msgid "Virus DB Version: (main: %i; daily: %i)"
-msgstr "Versione dei Virus DB: (principale: %i; quotidiano: %i)"
+msgstr "Versione del DB di virus: (principale: %i; quotidiano: %i)"
 
 #: wxDialogAbout.py:174
 msgid "Updated: %s"
@@ -1276,7 +1288,7 @@ msgstr "ClamWin non è configurato. Vuoi configurarlo adesso?"
 
 #: wxFrameMain.py:343
 msgid "You have not yet downloaded Virus Definitions Database. Would you like to download it now?"
-msgstr "Non hai ancora scaricato il Database delle Definizioni dei Virus. Vuoi scaricarlo adesso?"
+msgstr "Non hai ancora scaricato il database delle definizioni dei virus. Vuoi scaricarlo adesso?"
 
 #: wxFrameMain.py:397
 msgid "http://www.clamwin.com/content/category/3/7/27/"
@@ -1291,11 +1303,11 @@ msgstr "http://www.clamwin.com"
 
 #: wxDialogUtils.py:58
 msgid "An error occurred during Virus Database Update. Please review the update report."
-msgstr "Si è verificato un errore durante l'aggiornamento del Database dei Virus. Controlla il rapporto di aggiornamento."
+msgstr "Si è verificato un errore durante l'aggiornamento del database dei virus. Controlla il rapporto di aggiornamento."
 
 #: wxDialogUtils.py:65
 msgid "ClamWin Free Antivirus: Downloading Update..."
-msgstr "ClamWin: Scaricamento aggiornamento..."
+msgstr "ClamWin: scaricamento aggiornamenti..."
 
 #: wxDialogUtils.py:78
 msgid "Unable to remove file %s. Error: %s"
@@ -1309,18 +1321,15 @@ msgstr "Non posso rimuovere il file %s. Errore: %s"
 msgid ""
 "\n"
 "-----------------------------\n"
-msgstr ""
-"\n"
-"↵\n"
-"-----------------------------↵\n"
+msgstr "\n\n-----------------------------\n"
 
 #: wxDialogUtils.py:116
 msgid ""
 "Scan Started %s\n"
 "ERROR: Virus Definitions Database Not Found! Please download it now.\n"
 msgstr ""
-"Scansione iniziata%s↵\n"
-"ERRORE: Database delle Definizioni dei Virus non trovato. Scaricalo ora.↵\n"
+"Scansione iniziata%s\n"
+"ERRORE: Database delle Definizioni dei Virus non trovato. Scaricalo ora.\n"
 
 #: wxDialogUtils.py:117
 msgid "-----------------------------"
@@ -1336,7 +1345,7 @@ msgstr "Si è verificato un errore durante la scansione. Controlla il rapporto s
 
 #: wxDialogUtils.py:133
 msgid "ClamWin Free Antivirus: Scanning..."
-msgstr "ClamWin: Scansione in corso..."
+msgstr "ClamWin: scansione in corso..."
 
 #: wxDialogUtils.py:150
 #: ClamTray.py:555
@@ -1349,7 +1358,7 @@ msgstr "Non posso cancellare il file di log: %s. Errore: %s"
 
 #: wxDialogUtils.py:179
 msgid "Log files are not properly configured. Please review ClamWin configuration"
-msgstr "I file Log non sono propriamente configurati. Per favore rivedere la configurazione di ClamWin"
+msgstr "I file Log non sono configurati correttamente. Prego controllare la configurazione di ClamWin"
 
 #: wxDialogUtils.py:192
 msgid "Unable to read from the log file. Error: %s"
@@ -1362,7 +1371,7 @@ msgid ""
 "(%s)"
 msgstr ""
 "Impossibile ottenere la versione online. Molto probabilmente è un errore di connessione provvisorio e non sei obbligato a fare qualcosa.\n"
-"Se vedi questi errori spesso permetti al tuo firewall di far collegare clamwin.exe e controlla le impostazioni del proxy.\n"
+"Se si vedono spesso questo tipo di errori, consentire al proprio firewall di far collegare clamwin.exe e controllare le impostazioni del proxy.\n"
 "(%s)"
 
 # ShellExtImpl.cpp:
@@ -1376,7 +1385,7 @@ msgstr "&Scarica"
 
 #: EmailAlert.py:82
 msgid "Email alert to %s has been sent successfully."
-msgstr "E-mail dall'erta a %s è stato inviato con successo"
+msgstr "E-mail d'avvertimento che %s è stato inviato con successo."
 
 #: Config.py:63
 msgid "admin@yourdomain"
@@ -1400,9 +1409,9 @@ msgid ""
 "\n"
 "Please review the attached log files for more details.\n"
 msgstr ""
-"ClamWin ha individuato un virus sul seguente computer: %s↵\n"
-"↵\n"
-"Controlla il log allegato per avere maggiori dettagli.↵\n"
+"ClamWin ha individuato un virus sul seguente computer: %s\n"
+"\n"
+"Controlla il log allegato per avere maggiori dettagli.\n"
 
 #: wxDialogCheckUpdate.py:88
 msgid "&Do Not Check for Updates in Future"
@@ -1410,7 +1419,7 @@ msgstr "&Non controllare gli aggiornamenti in futuro"
 
 #: wxDialogCheckUpdate.py:76
 msgid "List Of Changes in Version %s:"
-msgstr "Lista dei cambiamenti nella Versione %s:"
+msgstr "Lista dei cambiamenti nella versione %s:"
 
 #: wxDialogScheduledScan.py:119
 msgid "Could not open persistent storage for scheduled scans. Error: %s"
@@ -1422,15 +1431,15 @@ msgstr "Non posso salvare le scansioni modificate nello storage persistente. Err
 
 #: wxDialogCheckUpdate.py:54
 msgid "ClamWin Update"
-msgstr "ClamWin Update"
+msgstr "Aggiornamento ClamWin"
 
 #: wxDialogCheckUpdate.py:60
 msgid "An update of ClamWin Free Antivirus has been released. Please click on Download button and download the latest version %s"
-msgstr "Un'aggiornamento di ClamWin Free Antivirus è stata rilasciato. Clicca sul pulsante Download e scarica l'ultima versione %s"
+msgstr "Un'aggiornamento di ClamWin Free Antivirus è stato rilasciato. Premere il pulsante Download e scaricare l'ultima versione %s"
 
 #: wxDialogCheckUpdate.py:69
 msgid "After you download the latest version setup file simply run it and install over the existing version."
-msgstr "Dopo aver scaricato il setup dell'ultima versione, eseguilo e installalo sopra la versione corrente."
+msgstr "Dopo aver scaricato il setup dell'ultima versione, eseguirlo e installarlo sopra la versione corrente."
 
 #: wxDialogAbout.py:57
 #: wxDialogAbout.py:61
@@ -1443,11 +1452,11 @@ msgstr "Versione "
 
 #: wxDialogAbout.py:79
 msgid "ClamAV Version gets here"
-msgstr "Prendi qui la versione di ClamAV"
+msgstr "Prendere qui la versione di ClamAV"
 
 #: wxDialogAbout.py:84
 msgid "Protecting from %i Viruses"
-msgstr "Protezione da %i Virus"
+msgstr "Protezione da %i virus"
 
 #: wxDialogAbout.py:93
 #: wxDialogAbout.py:115
@@ -1472,7 +1481,7 @@ msgstr "Copyright (c) 2004 - 2006"
 
 #: wxDialogAbout.py:130
 msgid "This program is free software"
-msgstr "Questo programma è un software libero"
+msgstr "Questo programma è software libero"
 
 #: wxDialogAbout.py:142
 msgid "ClamAV Homepage"
@@ -1492,11 +1501,11 @@ msgstr "Sembra che tu stia usando una versione di win32all precedente alla 151, 
 
 #: OlAddin.py:175
 msgid "I'm afraid it is time to upgrade"
-msgstr "mi dispiace ma è ora di aggiornarla"
+msgstr "Mi spiace ma è ora di aggiornarsi"
 
 #: OlAddin.py:199
 msgid "An error occurred in ClamWin Free Antivirus About Box.\n"
-msgstr "Si è verificato un errore visualizzando la finestra di Informazioni\n"
+msgstr "Si è verificato un errore visualizzando la finestra informazioni\n"
 
 #: OlAddin.py:213
 msgid "WARNING - Trying to use image '%s', but it doesn't exist"
@@ -1517,14 +1526,14 @@ msgstr "Si è verificato un errore lanciando clamscan: %s"
 
 #: OlAddin.py:294
 msgid "An Error occurred reading clamscan report: %s"
-msgstr "Si è verificato un errore leggendo il report di clamscan: %s"
+msgstr "Si è verificato un errore leggendo il rapporto di clamscan: %s"
 
 #: OlAddin.py:296
 msgid ""
 "An Error occurred whilst scanning:\n"
 "%s"
 msgstr ""
-"Si è verificato un errore nella scansione:↵\n"
+"Si è verificato un errore nella scansione:\n"
 "%s"
 
 #: OlAddin.py:306
@@ -1534,7 +1543,7 @@ msgstr "Errore improvviso nel convertire il rapporto calmscan: %s"
 #: OlAddin.py:344
 #: wxDialogUtils.py:107
 msgid "Virus Definitions Database Not Found! Please download it now."
-msgstr "Definizioni del Database dei Virus Non Trovata! Per favore scaricali ora."
+msgstr "Definizioni del database dei virus non trovata! Prego scaricarli ora."
 
 #: OlAddin.py:418
 msgid ""
@@ -1550,7 +1559,7 @@ msgstr "ClamWin Free Antivirus ha rilevato un virus in un allegato e-mail"
 
 #: OlAddin.py:471
 msgid "Virus Detected!"
-msgstr "Rilevato Virus!"
+msgstr "Rilevato virus!"
 
 #: OlAddin.py:474
 msgid "Virus has been detected in an email attachment! The attachment was replaced with the report file."
@@ -1603,7 +1612,7 @@ msgstr "Sto registrando (in HKEY_CURRENT_USER)..."
 
 #: OlAddin.py:1015
 msgid "Registration Complete"
-msgstr "Registrazione Completa"
+msgstr "Registrazione completa"
 
 #: ClamTray.py:117
 msgid "Unable to stop scheduled process, terminating"
@@ -1615,7 +1624,7 @@ msgstr "Un errore improvviso nel terminare il thread di sistema. Errore: %s"
 
 #: ClamTray.py:237
 msgid "&Configure Scheduler"
-msgstr "%Configura Schedulatore"
+msgstr "&Configura schedulatore"
 
 #: ClamTray.py:257
 msgid "&Run Scheduled Scan"
@@ -1623,11 +1632,11 @@ msgstr "&Avvia la scansione pianificata"
 
 #: ClamTray.py:261
 msgid "&Stop All Running Tasks Now"
-msgstr "&Arresta tutti i processi in corso ora"
+msgstr "&Arresta ora tutti i processi in corso"
 
 #: ClamTray.py:271
 msgid "&Virus Scan Report"
-msgstr "Rapporto della scansione dei &Virus"
+msgstr "Rapporto della scansione dei &virus"
 
 #: ClamTray.py:282
 msgid "&Open ClamWin"
@@ -1635,7 +1644,7 @@ msgstr "&Apri ClamWin"
 
 #: ClamTray.py:283
 msgid "&Download Virus Database Update"
-msgstr "%Scarica l'aggiornamento del database dei Virus"
+msgstr "&Scarica l'aggiornamento del database dei Virus"
 
 #: ClamTray.py:284
 msgid "&Configure ClamWin"
@@ -1647,11 +1656,11 @@ msgstr "&Scheduler"
 
 #: ClamTray.py:286
 msgid "Display &Reports"
-msgstr "Visualizza i &Rapporti"
+msgstr "Visualizza i &rapporti"
 
 #: ClamTray.py:288
 msgid "Check &Latest Version"
-msgstr "Controlla &l'ultima Versione"
+msgstr "Controlla &l'ultima versione"
 
 #: ClamTray.py:289
 msgid "&Visit ClamWin Website"
@@ -1659,12 +1668,12 @@ msgstr "&Visita il sito web di ClamWin"
 
 #: ClamTray.py:291
 msgid "&Exit"
-msgstr "%Esci"
+msgstr "&Esci"
 
 #: ClamTray.py:313
 #: wxFrameMain.py:401
 msgid "http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version="
-msgstr "http://it.clamwin.com/content/view/18/46/"
+msgstr "http://it.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version="
 
 #: ClamTray.py:338
 msgid "Could not launch ClamWin Scanner. Error: %s"
@@ -1702,11 +1711,11 @@ msgstr "Impossibile creare il file di configurazione di freshclam. Per favore co
 #: ClamTray.py:403
 #: wxDialogUtils.py:56
 msgid "Virus database has been updated."
-msgstr "Il database dei Virus è stato aggiornato con successo"
+msgstr "Il database dei virus è stato aggiornato con successo."
 
 #: ClamTray.py:405
 msgid "An error occurred during Scheduled Virus Database Update. Please review the update report."
-msgstr "Errore nell'aggiornamento pianificato del Database Virus. Per favore riguardare il rapporto dell'aggiornamento."
+msgstr "Errore nell'aggiornamento pianificato del database virus. Per favore riguardare il rapporto dell'aggiornamento."
 
 #: ClamTray.py:418
 msgid ""
@@ -1733,11 +1742,11 @@ msgstr "Errore improvviso nell'avvio delle preferenze di ClamWin Free Antivirus\
 
 #: ClamTray.py:496
 msgid "Virus has been detected during scheduled scan! Please review the scan report."
-msgstr "Il virus è stato cancellato durante la scansione pianificata! Per favore riguarda il rapporto della scansione."
+msgstr "Il virus è stato cancellato durante la scansione pianificata! Prego controllare il rapporto scansione."
 
 #: ClamTray.py:498
 msgid "An error occurred during scheduled scan. Please review the scan report."
-msgstr "Errore improvviso durante la scansione pianificata. Per favore riguarda il rapporto della scansione."
+msgstr "Errore improvviso durante la scansione pianificata. Prego controllare il rapporto scansione."
 
 #: ClamTray.py:530
 msgid "Running Scheduled Task:\n"
@@ -1748,16 +1757,16 @@ msgid "An error occurred whilst running Running Scheduled Task "
 msgstr "Errore improvviso nell'avviare l'operazione pianificata"
 
 msgid "Scans Programs in Computer Memory for Viruses"
-msgstr "Scansione File e Cartelle"
+msgstr "Scansione file e cartelle"
 
 msgid "Scan &Memory"
-msgstr "Scansione &Memoria"
+msgstr "Scansione &memoria"
 
 msgid "Scan Computer Memory"
 msgstr "Scansiona la memoria del computer"
 
 msgid "Scans Programs Loaded in Computer Memory for Computer Viruses"
-msgstr "Scansione dei File e delle cartelle selezionate"
+msgstr "Scansiona i programmi caricati in memoria alla ricerca di virus"
 
 msgid "Scans Computer Memory for Viruses"
 msgstr "Scansiona la memoria del computer in cerca di virus"
@@ -1769,10 +1778,10 @@ msgid "&Unload Infected Programs from Computer Memory"
 msgstr "Scarica programmi infetti dalla memoria del comp&uter"
 
 msgid "Select if you wish to unload infected programs from computer memory so they can be quarantined or removed"
-msgstr "Seleziona se vuoi visualizzare solo i file infetti nella finestra di scansione"
+msgstr "Selezionare se si desidera visualizzare solo i file infetti nella finestra di scansione"
 
 msgid "Scan &Programs Loaded in Computer Memory"
-msgstr "Scansiona i %programmi caricati nella memoria del computer"
+msgstr "Scansiona i &programmi caricati nella memoria del computer"
 
 msgid "Select if you wish to include programs computer memory during every scan"
 msgstr "Scegli se preferisci includere la memoria occupata dai programmi durante ogni scansione"
@@ -1787,7 +1796,7 @@ msgid "Computer Memory Scan Completed"
 msgstr "Scansione memoria computer completata"
 
 msgid "Select if you wish to scan OLE attachments and macros in MS Office Documents"
-msgstr "&Estrai gli allegati e le Macro dai documenti MS Office"
+msgstr "Scegliere se si desidera scansionare gli allegati OLE e le Macro nei documenti MS Office"
 
 msgid "Email Scanning"
 msgstr "Scansione Email"
@@ -1802,19 +1811,19 @@ msgid "Scan &Incoming Email Messages"
 msgstr "Scansione messagg&i email in arrivo"
 
 msgid "Select if you wish to enable scanning of incoming email messages in MS Outlook"
-msgstr "Scegli se preferisci abilitare la scansione delle email in arrivo su MS Outlook"
+msgstr "Scegliere se preferisce abilitare la scansione delle email in arrivo su MS Outlook"
 
 msgid "Scan &Outgoing Email Messages"
 msgstr "Scansione messaggi email in uscita"
 
 msgid "Select if you wish to enable scanning of outgoing email messages in MS Outlook"
-msgstr "Scegli se preferisci abilitare la scansione delle email in uscita da MS Outlook"
+msgstr "Scegliere se preferisce abilitare la scansione delle email in uscita da MS Outlook"
 
 msgid "Opens Support Forum in the Web Browser"
 msgstr "Apre il forum di supporto nel navigatore web"
 
 msgid "&Technical Support"
-msgstr "Supporto &Tecnico"
+msgstr "Supporto &tecnico"
 
 msgid "SCAN SUMMARY"
 msgstr "RIASSUNTO SCANSIONE"
@@ -1826,13 +1835,13 @@ msgid "ERROR: Can't download main.cvd"
 msgstr "ERRORE: impossibile scaricare main.cvd"
 
 msgid "Your network may be down or none of the mirrors listed in freshclam.conf is working. Check http://www.clamav.net/support/mirror-problem for possible reasons."
-msgstr "ERRORE: Aggiornamento fallito. La tua connessione può essere non funzionante o nessun indirizzo elencati in freshclam.conf sta funzionando."
+msgstr "ERRORE: aggiornamento fallito. La tua connessione potrebbe non funzionare o nessun indirizzo elencato in freshclam.conf sta funzionando."
 
 msgid "Select if you only wish to scan files that can run on MS Windows platform"
 msgstr "Seleziona se vuoi visualizzare solo i file infetti nella finestra di scansione"
 
 msgid "&Warn if Virus database is Out of Date"
-msgstr "Quanto spesso il database dei virus viene aggiornato"
+msgstr "Av&verti quando il database dei virus è da aggiornare"
 
 msgid "Will display a reminder if the virus database is older than 3 days"
 msgstr "Mostrerà un promemoria se il database dei virus é più vecchio di 3 giorni"
@@ -1845,24 +1854,24 @@ msgstr ""
 "Scansione iniziata %s"
 
 msgid "Virus signature database is older than 3 days and may not offer the latest protection. Would you like to update it now?"
-msgstr "Il database delle firme dei virus é più vecchio di 3 giorni e potrebbe non offrire la protezione più aggiornata. Preferisci aggiornarlo ora ?"
+msgstr "Il database delle firme dei virus è vecchio più di 3 giorni e potrebbe non offrire una protezione adeguata. Aggiornarlo ora?"
 
 # wxDialogPreferences.py:
 msgid "Language Settings"
-msgstr ""
+msgstr "Impostazioni lingua"
 
 msgid "&Language:"
-msgstr ""
+msgstr "&Lingua"
 
 # wxDialogPreferences.py:
 msgid "Windows UI Language"
-msgstr ""
+msgstr "Lingua dell'interfaccia windows"
 
 # wxDialogPreferences.py:
 # Language setting box :
 msgid "The language will change next time ClamWin is started"
-msgstr ""
+msgstr "La lingua cambierà al prossimo riavvio di ClamWin"
 
 msgid "Choose auto-detect or an available language"
-msgstr ""
+msgstr "Scegliere auto-detect o una lingua disponibile"
 
