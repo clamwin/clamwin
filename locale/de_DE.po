@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-06-04 17:06+0100\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2007-07-06 20:02+0100\n"
+"Last-Translator: Erkan Yilmaz\n"
 "Language-Team: German <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1664,7 +1664,7 @@ msgstr "&Aktualisieren"
 
 #: ClamTray.py:289
 msgid "&Visit ClamWin Website"
-msgstr "&http://de.clamwin.com"
+msgstr "&Gehe zur ClamWin Webseite"
 
 #: ClamTray.py:291
 msgid "&Exit"
@@ -1778,7 +1778,7 @@ msgid "&Unload Infected Programs from Computer Memory"
 msgstr "Infizierte Programme aus dem Arbeitsspeicher &entladen"
 
 msgid "Select if you wish to unload infected programs from computer memory so they can be quarantined or removed"
-msgstr "Infizierte Programme aus dem Arbeitsspeicher &entladen, damit Diese gelöscht oder in die Quarantäne verschoben werden können."
+msgstr "Infizierte Programme aus dem Arbeitsspeicher &entladen, damit diese gelöscht oder in die Quarantäne verschoben werden können."
 
 msgid "Scan &Programs Loaded in Computer Memory"
 msgstr "&Programme im Arbeitsspeicher auf Viren prüfen"
@@ -1814,7 +1814,7 @@ msgid "Select if you wish to enable scanning of incoming email messages in MS Ou
 msgstr "Auswählen, ob eingehende E-Mails in MS Outlook geprüft werden sollen."
 
 msgid "Scan &Outgoing Email Messages"
-msgstr "%Ausgehende E-Mails prüfen"
+msgstr "Ausgehende E-Mails prüfen"
 
 msgid "Select if you wish to enable scanning of outgoing email messages in MS Outlook"
 msgstr "Auswählen, ob ausgehende E-Mails in MS Outlook geprüft werden sollen."
@@ -1826,7 +1826,7 @@ msgid "&Technical Support"
 msgstr "&Technischer Support"
 
 msgid "SCAN SUMMARY"
-msgstr "Zusammenfassung der Scanvorgangs"
+msgstr "Zusammenfassung des Scanvorgangs"
 
 msgid "Skipped non-executable files:"
 msgstr "Übersprungene nicht-ausführbare Dateien:"
