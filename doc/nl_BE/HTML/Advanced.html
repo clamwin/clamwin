@@ -3,11 +3,11 @@
 <HEAD>
 	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
 	<TITLE></TITLE>
-	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.0  (Win32)">
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.2  (Win32)">
 	<META NAME="CREATED" CONTENT="20040426;21532900">
 	<META NAME="CHANGEDBY" CONTENT="Peter Budts">
-	<META NAME="CHANGED" CONTENT="20060706;20093800">
-	<STYLE>
+	<META NAME="CHANGED" CONTENT="20070708;14210100">
+	<STYLE TYPE="text/css">
 	<!--
 		@page { size: 21.01cm 29.69cm; margin: 2cm }
 		P { margin-bottom: 0.21cm }
@@ -19,7 +19,7 @@
 		H2 { margin-bottom: 0.21cm }
 		H2.western { font-family: "Arial", sans-serif; font-size: 14pt; font-style: italic }
 		H2.cjk { font-family: "Mincho"; font-size: 14pt; font-style: italic }
-		H2.ctl { font-size: 14pt; font-style: italic }
+		H2.ctl { font-family: "Tahoma"; font-size: 14pt; font-style: italic }
 		P.monospace-western { margin-bottom: 0cm; font-family: "Courier New", monospace; font-size: 11pt; page-break-before: auto }
 		P.monospace-cjk { margin-bottom: 0cm; page-break-before: auto }
 		P.monospace-ctl { margin-bottom: 0cm; page-break-before: auto }
@@ -54,23 +54,24 @@ Files\ClamWin\bin&quot; bij een standaard installatie) en het
 volgende commando uitvoeren :</P>
 <P CLASS="monospace-western"><CODE CLASS="western"><SPAN LANG="nl-NL">clamscan.exe
 --help</SPAN></CODE></P>
-<P CLASS="western"><CODE CLASS="western"><SPAN LANG="nl-NL"><FONT FACE="Arial, sans-serif">De
-database locatie <I>moet</I> gespecifi&euml;erd worden door gebruik
-te maken van de parameter --</FONT>database=FILE/DIR<FONT FACE="Arial, sans-serif">.
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">De
+database locatie </SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL"><I>moet</I></SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">
+gespecifi&euml;erd worden door gebruik te maken van de parameter
+--</SPAN></FONT></CODE><CODE CLASS="western"><SPAN LANG="nl-NL">database=FILE/DIR</SPAN></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">.
  Bij een standaard installatie is het commando om de volledige C:
-partitie te scannen bijvoorbeeld :</FONT></SPAN></CODE></P>
+partitie te scannen bijvoorbeeld :</SPAN></FONT></CODE></P>
 <P CLASS="monospace-western"><CODE CLASS="western">clamscan.exe
 --database=&quot;C:\Program Files\ClamWin\db&quot; --recursive C:\</CODE></P>
-<P CLASS="western"><CODE CLASS="western"><SPAN LANG="nl-NL"><FONT FACE="Arial, sans-serif">Merk
-op dat u best de parameter </FONT>--recursive<FONT FACE="Arial, sans-serif">
-gebruikt om zeker te zijn dat de sub-mappen ook worden gescand.</FONT></SPAN></CODE></P>
-<P CLASS="western"><CODE CLASS="western"><SPAN LANG="nl-NL"><FONT FACE="Arial, sans-serif">Wanneer
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">Merk
+op dat u best de parameter </SPAN></FONT></CODE><CODE CLASS="western"><SPAN LANG="nl-NL">--recursive</SPAN></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">
+gebruikt om zeker te zijn dat de sub-mappen ook worden gescand.</SPAN></FONT></CODE></P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">Wanneer
 ClamWin wordt uitgevoerd vanaf de command line zal een waarde worden
 teruggegeven die aanduidt of er al dan niet een virus is gevonden. 
 Wanneer geen virus is gevonden is de teruggegeven waarde 0.  Is er
 wel een virus gevonden, dan is deze waarde 1.  Elke andere waarde
-geeft een fout aan.</FONT></SPAN></CODE></P>
-<H2 CLASS="western"><CODE CLASS="western"><FONT SIZE=4><FONT FACE="Arial, sans-serif">De
+geeft een fout aan.</SPAN></FONT></CODE></P>
+<H2 CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=4>De
 Virus Database vernieuwen vanaf de command line</FONT></FONT></CODE></H2>
 <P CLASS="western"><SPAN LANG="nl-NL">ClamWin gebruikt het programma
 </SPAN><CODE CLASS="western"><SPAN LANG="nl-NL">freshclam.exe</SPAN></CODE><SPAN LANG="nl-NL">
@@ -85,16 +86,17 @@ programmabestanden (&quot;C:\Program Files\ClamWin\bin&quot; bij een
 standaard installatie) en voert u het volgende commando uit :</P>
 <P CLASS="monospace-western"><CODE CLASS="western"><SPAN LANG="nl-NL">freshclam.exe
 --help</SPAN></CODE></P>
-<P CLASS="western"><CODE CLASS="western"><SPAN LANG="nl-NL"><FONT FACE="Arial, sans-serif">Zowel
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">Zowel
 de map met de database als de plaats van het configuratie bestand
-<I>moeten</I> gespecifi&euml;erd worden.  ClamWin genereert een
-freshclam configuratie bestand enkel op het moment dat dit nodig is,
-dus u zal uw eigen bestand moeten samenstellen.  Dit
-configuratiebestand is een tekstbestand.  Bekijk de </FONT></SPAN></CODE><FONT COLOR="#000080"><U><A HREF="http://www.clamav.net/doc/" TARGET="_blank"><SPAN LANG="nl-NL"><FONT FACE="Arial, sans-serif">ClamAV
-documentatie</FONT></SPAN></A></U></FONT><CODE CLASS="western"><SPAN LANG="nl-NL"><FONT FACE="Arial, sans-serif">
+</SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL"><I>moeten</I></SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">
+gespecifi&euml;erd worden.  ClamWin genereert een freshclam
+configuratie bestand enkel op het moment dat dit nodig is, dus u zal
+uw eigen bestand moeten samenstellen.  Dit configuratiebestand is een
+tekstbestand.  Bekijk de </SPAN></FONT></CODE><FONT COLOR="#000080"><U><A HREF="http://www.clamav.net/doc/"></A><A HREF="http://www.clamav.net/doc/"></A><A HREF="http://www.clamav.net/doc/" TARGET="_blank"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">ClamAV
+documentatie</SPAN></FONT></A><A HREF="http://www.clamav.net/doc/"></A><A HREF="http://www.clamav.net/doc/"></A></U></FONT><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">
 voor de volledige details van de mogelijke instellingen. Een
 eenvoudig freshclam configuratiebestand zou de volgende regels
-bevatten (lijnen die met # beginnen zijn commentaar) :</FONT></SPAN></CODE></P>
+bevatten (lijnen die met # beginnen zijn commentaar) :</SPAN></FONT></CODE></P>
 <P CLASS="monospace-western"><CODE CLASS="western"># URL of server
 where database updates are to be downloaded from<BR># If this option
 is given multiple times, each will be tried in<BR># the order given
@@ -107,60 +109,65 @@ to try each mirror before moving to the next one</CODE></P>
 3</SPAN></CODE></P>
 <P LANG="nl-NL" CLASS="western"><BR><BR>
 </P>
-<P CLASS="western"><CODE CLASS="western"><SPAN LANG="nl-NL"><FONT FACE="Arial, sans-serif">Wanneer
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">Wanneer
 u &eacute;&eacute;nmaal een configuratie bestand hebt aangemaakt kunt
-u  freshclam uitvoeren met een opdracht zoals de volgende :</FONT></SPAN></CODE></P>
+u  freshclam uitvoeren met een opdracht zoals de volgende :</SPAN></FONT></CODE></P>
 <P CLASS="monospace-western"><CODE CLASS="western">freshclam
 --datadir=&quot;C:\Documents and Settings\All Users\.clamwin\db&quot;
 --config-file=&quot;C:\Program Files\ClamWin\bin\freshclam.conf&quot;</CODE></P>
-<H2 CLASS="western"><CODE CLASS="western"><FONT SIZE=4><FONT FACE="Arial, sans-serif">Updates
+<H2 CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=4>Updates
 afhalen van een lokale server</FONT></FONT></CODE></H2>
-<P CLASS="western"><CODE CLASS="western"><SPAN LANG="nl-NL"><FONT FACE="Arial, sans-serif">Wanneer
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">Wanneer
 u ClamWin heeft ge&iuml;nstalleerd op meerdere computers in uw
 netwerk, kan het wenselijk zijn de updates maar op &eacute;&eacute;n
 PC te laten downloaden van het internet, en de andere PC's de updates
 over het netwerk van daar op te halen.  Dit kan op drie manieren
-gebeuren.</FONT></SPAN></CODE></P>
-<P CLASS="western"><CODE CLASS="western"><SPAN LANG="nl-NL"><FONT FACE="Arial, sans-serif">De
+gebeuren.</SPAN></FONT></CODE></P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">De
 eerste (en meest aangewezen) manier maakt gebruik van een web server.
  Op deze web server moet de bestanden main.cvd en daily.cvd in de web
 root map te vinden zijn.  Het moet mogelijk zijn de bestanden te
 downloaden naar de andere PC's door in een web browser de adressen
-</FONT></SPAN></CODE><FONT COLOR="#000080"><U><A HREF="http://YOURSERVERNAME/main.cvd"><SPAN LANG="nl-NL"><FONT FACE="Courier New, monospace">http://YOURSERVERNAME/main.cvd</FONT></SPAN></A></U></FONT><CODE CLASS="western"><SPAN LANG="nl-NL">
-<FONT FACE="Arial, sans-serif">en </FONT></SPAN></CODE><FONT COLOR="#000080"><U><A HREF="http://YOURSERVERNAME/daily.cvd"><SPAN LANG="nl-NL"><FONT FACE="Courier New, monospace">http://YOURSERVERNAME/daily.cvd</FONT></SPAN></A></U></FONT><CODE CLASS="western"><SPAN LANG="nl-NL">
+</SPAN></FONT></CODE><FONT COLOR="#000080"><U><A HREF="http://YOURSERVERNAME/main.cvd"></A><A HREF="http://YOURSERVERNAME/main.cvd"></A><A HREF="http://YOURSERVERNAME/main.cvd"><FONT FACE="Courier New, monospace"><SPAN LANG="nl-NL">http://YOURSERVERNAME/main.cvd</SPAN></FONT></A><A HREF="http://YOURSERVERNAME/main.cvd"></A><A HREF="http://YOURSERVERNAME/main.cvd"></A></U></FONT><CODE CLASS="western"><SPAN LANG="nl-NL">
+</SPAN></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">en
+</SPAN></FONT></CODE><FONT COLOR="#000080"><U><A HREF="http://YOURSERVERNAME/daily.cvd"></A><A HREF="http://YOURSERVERNAME/daily.cvd"></A><A HREF="http://YOURSERVERNAME/daily.cvd"><FONT FACE="Courier New, monospace"><SPAN LANG="nl-NL">http://YOURSERVERNAME/daily.cvd</SPAN></FONT></A><A HREF="http://YOURSERVERNAME/daily.cvd"></A><A HREF="http://YOURSERVERNAME/daily.cvd"></A></U></FONT><CODE CLASS="western"><SPAN LANG="nl-NL">
 in te geven.</SPAN></CODE></P>
-<P CLASS="western"><CODE CLASS="western"><SPAN LANG="nl-NL"><FONT FACE="Arial, sans-serif">In
-de configuratie pagina <B>Internet Updates</B> stelt u het IP adres
-of de domeinnaam van de web server in in het ingaveveld <B>Download
-Site</B>.  Vul hier niets anders in dan het IP adres of de domein
-naam (dit wil zeggen </FONT>192.168.1.1<FONT FACE="Arial, sans-serif">
-is correct, </FONT>http://192.168.1.1/<FONT FACE="Arial, sans-serif">
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">In
+de configuratie pagina </SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL"><B>Internet
+Updates</B></SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">
+stelt u het IP adres of de domeinnaam van de web server in in het
+ingaveveld </SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL"><B>Download
+Site</B></SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">.
+ Vul hier niets anders in dan het IP adres of de domein naam (dit wil
+zeggen </SPAN></FONT></CODE><CODE CLASS="western"><SPAN LANG="nl-NL">192.168.1.1</SPAN></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">
+is correct, </SPAN></FONT></CODE><CODE CLASS="western"><SPAN LANG="nl-NL">http://192.168.1.1/</SPAN></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">
 is fout). ClamWin zal dan toegang zoeken tot deze lokale web server
-om de updates op te halen in de plaats van een Internet server.</FONT></SPAN></CODE></P>
-<P CLASS="western"><CODE CLASS="western"><SPAN LANG="nl-NL"><FONT FACE="Arial, sans-serif">De
+om de updates op te halen in de plaats van een Internet server.</SPAN></FONT></CODE></P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">De
 tweede manier is via een batch bestand of iets dergelijks de
 bestanden main.cvd en daily.cvd van de server naar de relevante
 locaties op de clients te copi&euml;ren en daarbij de bestaande
 versies te overschrijven.  Via de Windows Takenplanner kunt u dit
 batch bestand dan zo vaak als nodig uitvoeren.  Schakel in dit geval
-de optie <B>Automatische Virus Database Updates inschakelen</B> van
+de optie</SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL"><B>
+Automatic Virus Database Updates </B></SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">van
 ClamWin uit, zodat de Internet server niet wordt gecontacteerd voor
-updates.</FONT></SPAN></CODE></P>
-<P CLASS="western"><CODE CLASS="western"><SPAN LANG="nl-NL"><FONT FACE="Arial, sans-serif">Tenslotte
+updates.</SPAN></FONT></CODE></P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">Tenslotte
 kunt u ook via de instelling Virus Database Folder voor alle ClamWin
 installaties naar een gedeelde map in het netwerk verwijzen
 (bijvoorbeeld \\SERVER-NAME\SHARED-DRIVE\db). Let wel op : in dit
 geval moet maar &eacute;&eacute;n installatie van ClamWin (best die
-op de server) ingesteld worden om automatische updates op te halen.</FONT></SPAN></CODE></P>
-<H2 CLASS="western"><CODE CLASS="western"><B><FONT SIZE=4><FONT FACE="Arial, sans-serif">Handmatig
-bijwerken van de Virus Database</FONT></FONT></B></CODE></H2>
-<P CLASS="western"><CODE CLASS="western"><SPAN STYLE="font-weight: medium"><SPAN LANG="nl-NL"><FONT FACE="Arial, sans-serif">Als
+op de server) ingesteld worden om automatische updates op te halen.</SPAN></FONT></CODE></P>
+<H2 CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=4><B>Handmatig
+bijwerken van de Virus Database</B></FONT></FONT></CODE></H2>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL"><SPAN STYLE="font-weight: medium">Als
 u de virus database handmatig wil updaten, moet u de virus database
-files </FONT></SPAN></SPAN><CODE CLASS="western"><SPAN STYLE="font-weight: medium"><SPAN LANG="nl-NL"><FONT FACE="Courier New, monospace">main.cvd</FONT><FONT FACE="Arial, sans-serif">
-en </FONT><FONT FACE="Courier New, monospace">daily.cvd</FONT><FONT FACE="Arial, sans-serif">
+files </SPAN></SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Courier New, monospace"><SPAN LANG="nl-NL"><SPAN STYLE="font-weight: medium">main.cvd</SPAN></SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL"><SPAN STYLE="font-weight: medium">
+en </SPAN></SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Courier New, monospace"><SPAN LANG="nl-NL"><SPAN STYLE="font-weight: medium">daily.cvd</SPAN></SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL"><SPAN STYLE="font-weight: medium">
 downloaden en copi&euml;ren naar ClamWin's virus database map,
 waarbij u de bestaande bestanden overschrijft.  De virus database
 files kunnen gedownload worden vanaf ClamAV's homepage op
-</FONT></SPAN></SPAN></CODE><FONT COLOR="#000080"><U><A HREF="http://www.clamav.net/"><SPAN STYLE="font-weight: medium"><SPAN LANG="nl-NL"><FONT FACE="Arial, sans-serif">www.clamav.net</FONT></SPAN></SPAN></A></U></FONT></CODE></P>
+</SPAN></SPAN></FONT></CODE><FONT COLOR="#000080"><U><A HREF="http://www.clamav.net/"></A><A HREF="http://www.clamav.net/"></A><A HREF="http://www.clamav.net/"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL"><SPAN STYLE="font-weight: medium">www.clamav.net</SPAN></SPAN></FONT></A><A HREF="http://www.clamav.net/"></A><A HREF="http://www.clamav.net/"></A></U></FONT></P>
 </BODY>
 </HTML>
