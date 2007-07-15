@@ -6,7 +6,7 @@
 	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.2  (Win32)">
 	<META NAME="CREATED" CONTENT="20040426;21532900">
 	<META NAME="CHANGEDBY" CONTENT="Peter Budts">
-	<META NAME="CHANGED" CONTENT="20070123;22583500">
+	<META NAME="CHANGED" CONTENT="20070715;16385136">
 	<STYLE TYPE="text/css">
 	<!--
 		@page { size: 21.01cm 29.69cm; margin: 2cm }
@@ -77,8 +77,8 @@ on a default installation) and run</P>
 the database directory and the configuration file </FONT></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=3><I>must</I></FONT></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=3><SPAN STYLE="font-style: normal">
 be specified. ClamWin generates a freshclam configuration file on the
 fly, so you will have to create your own. The configuration file is a
-text file. See the </SPAN></FONT></FONT></CODE><CODE CLASS="western"><A HREF="http://www.clamav.net/doc/"></A><A HREF="http://www.clamav.net/doc/" TARGET="_top"></A><A HREF="http://www.clamav.net/doc/"><FONT FACE="Arial, sans-serif"><FONT SIZE=3><SPAN STYLE="font-style: normal">ClamAV
-documentation</SPAN></FONT></FONT></A><A HREF="http://www.clamav.net/doc/" TARGET="_top"></A><A HREF="http://www.clamav.net/doc/"></A></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=3><SPAN STYLE="font-style: normal">
+text file. See the </SPAN></FONT></FONT></CODE><CODE CLASS="western"><A HREF="http://www.clamav.net/doc/"></A><A HREF="http://www.clamav.net/doc/"></A><A HREF="http://www.clamav.net/doc/" TARGET="_top"><FONT FACE="Arial, sans-serif"><FONT SIZE=3><SPAN STYLE="font-style: normal">ClamAV
+documentation</SPAN></FONT></FONT></A><A HREF="http://www.clamav.net/doc/"></A><A HREF="http://www.clamav.net/doc/"></A></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=3><SPAN STYLE="font-style: normal">
 for full details of what can be included. A simple freshclam
 configuration file would have the following lines (lines beginning
 with a # are comments):</SPAN></FONT></FONT></CODE></P>
@@ -106,18 +106,20 @@ Updates from a Local Server</FONT></FONT></CODE></H2>
 you have ClamWin running on several networked computers, you may wish
 to have a single computer downloading updates from the Internet, with
 the others getting updates over the local network. This can be done
-in one of three ways.</FONT></CODE></P>
-<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif">The
-first (and preferred) method requires a web server. This web server
-should have the main.cvd and daily.cvd files in the web root
-directory. It should be possible to download the files by pointing a
-web browser at </FONT></CODE><CODE CLASS="western"><FONT FACE="Courier New, monospace">http://YOURSERVERNAME/main.cvd</FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif">
-and </FONT></CODE><CODE CLASS="western"><FONT FACE="Courier New, monospace">http://YOURSERVERNAME/daily.cvd</FONT></CODE></P>
+in the following way:</FONT></CODE></P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif">Set
+up a web server that has the main.cvd and daily.cvd files in the web
+root directory.  It should be possible to download these files to the
+client pc's by pointing a webbrowser at
+<A HREF="http://YOURSERVERNAME/main.cvd">http://YOURSERVERNAME/main.cvd</A>
+and <A HREF="http://YOURSERVERNAME/daily.cvd">http://YOURSERVERNAME/daily.cvd</A>.
+</FONT></CODE>
+</P>
 <P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif">In
 ClamWin's </FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><B>Internet
 Updates</B></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif">
-configuration tab, enter the web server's IP address or domain name
-in the </FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><B>Download
+configuration tab on the clients, enter the web server's IP address
+or domain name in the </FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><B>Download
 Site</B></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: medium">
 text box. Do not include anything other than the IP address or domain
 name (eg </SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Courier New, monospace"><SPAN STYLE="font-weight: medium">192.168.1.1</SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: medium">
@@ -125,19 +127,22 @@ is correct, </SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Courier New, 
 is wrong). ClamWin will then query the local web server for updates,
 instead of a remote Internet server.</SPAN></FONT></CODE></P>
 <P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif">The
-second method is to set up a batch file or similar to copy the
-main.cvd and daily.cvd files from the server to the relevant location
-on the clients, over-writing the existing copies. Windows' Task
-Scheduler can be used to run this batch file as often as required.
-Disable ClamWin's </FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><B>Enable
-Automatic Virus Database Updates</B></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif">
-option, so that it does not query the remote Internet server for
-updates.</FONT></CODE></P>
-<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif">The
-third method is to set the Virus Database Folder in all copies of
-ClamWin to a shared folder (eg </FONT></CODE><CODE CLASS="western"><FONT FACE="Courier New, monospace">\\SERVER-NAME\SHARED-DRIVE\db</FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif">).
-Note that, in this case, only one copy of ClamWin (preferably the
-copy on the server) should be set up to get automatic updates.</FONT></CODE></P>
+files are available from <A HREF="http://www.clamav.net/">www.clamav.net</A>.
+ You can create a batch script that automatically downloads these
+files to the root of your webserver using a tool such as wget, like :</FONT></CODE></P>
+<P CLASS="western"><CODE CLASS="western">	wget
+http://%DB_MIRROR%/main.cvd -O &quot;%WEBROOT%\main.cvd&quot;</CODE></P>
+<P CLASS="monospace-western"><CODE CLASS="western">	</CODE><CODE CLASS="western">wget
+</CODE><CODE CLASS="western">http://%DB_MIRROR%/daily.cvd -O
+&quot;%WEBROOT%\daily.cvd&quot;</CODE></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif">Note
+that differential updates are currently impossible.  You would have
+to mirror database.clamav.net, which is not supported for private
+use.</FONT></CODE></P>
+<P CLASS="western"><BR><BR>
+</P>
 <H2 CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=4><B>Manually
 Updating the Virus Database</B></FONT></FONT></CODE></H2>
 <P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: medium">To
