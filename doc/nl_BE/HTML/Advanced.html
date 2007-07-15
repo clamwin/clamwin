@@ -6,7 +6,7 @@
 	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.2  (Win32)">
 	<META NAME="CREATED" CONTENT="20040426;21532900">
 	<META NAME="CHANGEDBY" CONTENT="Peter Budts">
-	<META NAME="CHANGED" CONTENT="20070708;14210100">
+	<META NAME="CHANGED" CONTENT="20070715;16590358">
 	<STYLE TYPE="text/css">
 	<!--
 		@page { size: 21.01cm 29.69cm; margin: 2cm }
@@ -117,48 +117,44 @@ u  freshclam uitvoeren met een opdracht zoals de volgende :</SPAN></FONT></CODE>
 --config-file=&quot;C:\Program Files\ClamWin\bin\freshclam.conf&quot;</CODE></P>
 <H2 CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=4>Updates
 afhalen van een lokale server</FONT></FONT></CODE></H2>
-<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">Wanneer
-u ClamWin heeft ge&iuml;nstalleerd op meerdere computers in uw
-netwerk, kan het wenselijk zijn de updates maar op &eacute;&eacute;n
-PC te laten downloaden van het internet, en de andere PC's de updates
-over het netwerk van daar op te halen.  Dit kan op drie manieren
-gebeuren.</SPAN></FONT></CODE></P>
-<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">De
-eerste (en meest aangewezen) manier maakt gebruik van een web server.
- Op deze web server moet de bestanden main.cvd en daily.cvd in de web
-root map te vinden zijn.  Het moet mogelijk zijn de bestanden te
-downloaden naar de andere PC's door in een web browser de adressen
-</SPAN></FONT></CODE><FONT COLOR="#000080"><U><A HREF="http://YOURSERVERNAME/main.cvd"></A><A HREF="http://YOURSERVERNAME/main.cvd"></A><A HREF="http://YOURSERVERNAME/main.cvd"><FONT FACE="Courier New, monospace"><SPAN LANG="nl-NL">http://YOURSERVERNAME/main.cvd</SPAN></FONT></A><A HREF="http://YOURSERVERNAME/main.cvd"></A><A HREF="http://YOURSERVERNAME/main.cvd"></A></U></FONT><CODE CLASS="western"><SPAN LANG="nl-NL">
-</SPAN></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">en
-</SPAN></FONT></CODE><FONT COLOR="#000080"><U><A HREF="http://YOURSERVERNAME/daily.cvd"></A><A HREF="http://YOURSERVERNAME/daily.cvd"></A><A HREF="http://YOURSERVERNAME/daily.cvd"><FONT FACE="Courier New, monospace"><SPAN LANG="nl-NL">http://YOURSERVERNAME/daily.cvd</SPAN></FONT></A><A HREF="http://YOURSERVERNAME/daily.cvd"></A><A HREF="http://YOURSERVERNAME/daily.cvd"></A></U></FONT><CODE CLASS="western"><SPAN LANG="nl-NL">
-in te geven.</SPAN></CODE></P>
-<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">In
-de configuratie pagina </SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL"><B>Internet
-Updates</B></SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">
-stelt u het IP adres of de domeinnaam van de web server in in het
-ingaveveld </SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL"><B>Download
-Site</B></SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">.
- Vul hier niets anders in dan het IP adres of de domein naam (dit wil
-zeggen </SPAN></FONT></CODE><CODE CLASS="western"><SPAN LANG="nl-NL">192.168.1.1</SPAN></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">
-is correct, </SPAN></FONT></CODE><CODE CLASS="western"><SPAN LANG="nl-NL">http://192.168.1.1/</SPAN></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">
-is fout). ClamWin zal dan toegang zoeken tot deze lokale web server
-om de updates op te halen in de plaats van een Internet server.</SPAN></FONT></CODE></P>
-<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">De
-tweede manier is via een batch bestand of iets dergelijks de
-bestanden main.cvd en daily.cvd van de server naar de relevante
-locaties op de clients te copi&euml;ren en daarbij de bestaande
-versies te overschrijven.  Via de Windows Takenplanner kunt u dit
-batch bestand dan zo vaak als nodig uitvoeren.  Schakel in dit geval
-de optie</SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL"><B>
-Automatic Virus Database Updates </B></SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">van
-ClamWin uit, zodat de Internet server niet wordt gecontacteerd voor
-updates.</SPAN></FONT></CODE></P>
-<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">Tenslotte
-kunt u ook via de instelling Virus Database Folder voor alle ClamWin
-installaties naar een gedeelde map in het netwerk verwijzen
-(bijvoorbeeld \\SERVER-NAME\SHARED-DRIVE\db). Let wel op : in dit
-geval moet maar &eacute;&eacute;n installatie van ClamWin (best die
-op de server) ingesteld worden om automatische updates op te halen.</SPAN></FONT></CODE></P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif">Als
+u ClamWin ge&iuml;nstalleerd hebt op meerdere computers in een
+netwerk is het misschien wenselijk om &eacute;&eacute;n computer de
+updates van het internet te laten afhalen, terwijl de andere
+computers de updates over het locale netwerk van deze server afhalen.
+Dit is mogelijk op de volgende manier:</FONT></CODE></P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif">Zet
+een web server op die de bestanden </FONT></CODE><CODE CLASS="western"><FONT FACE="Courier New, monospace">main.cvd</FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif">
+en </FONT></CODE><CODE CLASS="western"><FONT FACE="Courier New, monospace">daily.cvd</FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif">
+in zijn web root map heeft.  Het moet mogelijk zijn om deze bestanden
+naar de client computers te downloaden door via een webbrowser naar
+<A HREF="http://UWSERVER//main.cvd">http://UWSERVER//main.cvd</A> en
+<A HREF="http://UWSERVER/daily.cvd">http://UWSERVER/daily.cvd</A> te
+gaan.</FONT></CODE></P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif">In
+de ClamWin instellingen van de client computers op het tabblad
+Internet Updates geeft u het IP address of de domeinnaam van de web
+server in in het veld Download Site.  Geef niets meer in dan het IP
+adres of de domeinnaam (bijvoorbeeld 192.168.1.1.is correct, maar
+<A HREF="http://192.168.1.1/">http://192.168.1.1/</A> is fout). 
+ClamWin zal dan de lokale webserver benaderen voor updates, in de
+plaats van de internet server.</FONT></CODE></P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif">De
+bestanden zijn beschikbaar op <A HREF="http://www.clamav.net/">www.clamav.net</A>.
+U kan een batch script maken dat automatisch deze bestanden download
+naar de web root van uw server met een tooltje als wget, als volgt:</FONT></CODE></P>
+<P CLASS="western"><CODE CLASS="western">	wget
+http://%DB_MIRROR%/main.cvd -O &quot;%WEBROOT%\main.cvd&quot;</CODE></P>
+<P CLASS="monospace-western"><CODE CLASS="western">	wget
+</CODE><CODE CLASS="western">http://%DB_MIRROR%/daily.cvd -O
+&quot;%WEBROOT%\daily.cvd&quot;</CODE></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">Merk
+hierbij op dat differenti&euml;le updates momenteel niet mogelijk
+zijn.  Hiervoor zou u een mirror moeten opzetten van
+database.clamav.net, doch dit wordt momenteel niet ondersteund voor
+priv&eacute; gebruik.</SPAN></FONT></CODE></P>
 <H2 CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=4><B>Handmatig
 bijwerken van de Virus Database</B></FONT></FONT></CODE></H2>
 <P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL"><SPAN STYLE="font-weight: medium">Als
