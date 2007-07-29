@@ -1,0 +1,15 @@
+Thu, 6 June 2006
+	Changed the screenshots to the localised versions and compiled first .chm file
+
+Sun, 23 July 2006
+	Config.odt : Changed the sample for regular expressions
+	Changed the links (www.clamwin.com FAQ) to point to nl.clamwin.com
+
+Sun, 8 July 2007
+	Reviewed all chapters and updated to ClamWin 0.90.2.1
+
+
+Sun, 15 July 2007
+	Adapted Advanced chapter, the section about local database server, since
+	freshclam now uses differential updates and that would not be supported
+	on a local server.
