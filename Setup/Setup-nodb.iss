@@ -43,6 +43,7 @@ Source: ..\doc\nl_BE\manual_nl.chm; DestDir: {app}\bin; Components: Internationa
 ;Source: ..\doc\it_IT\manual_it.chm; DestDir: {app}\bin; Components: InternationalHelp\Italian; Flags: ignoreversion
 Source: ..\doc\en_UK\manual_en.pdf; DestDir: {app}\bin; Components: ClamWin; Flags: ignoreversion
 Source: ..\doc\fr_FR\manual_fr.pdf; DestDir: {app}\bin; Components: InternationalHelp\French; Flags: ignoreversion
+Source: ..\doc\nl_BE\manual_nl.pdf; DestDir: {app}\bin; Components: InternationalHelp\Dutch; Flags: ignoreversion
 Source: py2exe\dist\bin\img\Clam.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
 Source: py2exe\dist\bin\img\ClamAV.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
 Source: py2exe\dist\bin\img\netfarm.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
@@ -136,7 +137,10 @@ Name: {group}\Help\Printable Manual; Filename: {app}\bin\manual_en.pdf; Componen
 Name: {group}\Help\Online Help; Filename: {app}\bin\manual.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: ClamWin
 Name: {group}\Help\International\Dutch Help; Filename: {app}\bin\manual_nl.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: InternationalHelp\Dutch
 Name: {group}\Help\International\Russian Help; Filename: {app}\bin\manual_ru.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: InternationalHelp\Russian
-Name: {group}\Help\International\French Help; Filename: {app}\bin\manual_fr.pdf; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: InternationalHelp\French
+Name: {group}\Help\International\French Manual; Filename: {app}\bin\manual_fr.pdf; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: InternationalHelp\French
+Name: {group}\Help\International\French Help; Filename: {app}\bin\manual_fr.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: InternationalHelp\French
+Name: {group}\Help\International\Dutch Manual; Filename: {app}\bin\manual_nl.pdf; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: InternationalHelp\Dutch
+Name: {group}\Help\International\Dutch Help; Filename: {app}\bin\manual_nl.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: InternationalHelp\Dutch
 ;Name: {group}\Help\International\Japanese Help; Filename: {app}\bin\manual_jp.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: InternationalHelp\Japanese
 
 ;Name: {group}\Help\International\Italian Help; Filename: {app}\bin\manual_it.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: InternationalHelp\Italian

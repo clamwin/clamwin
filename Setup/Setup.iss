@@ -38,13 +38,8 @@ Source: py2exe\dist\bin\ClamTray.exe; DestDir: {app}\bin; Components: ClamWin; F
 Source: py2exe\dist\bin\ClamWin.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\doc\en_UK\manual_en.chm; DestDir: {app}\bin; Components: ClamWin; Flags: ignoreversion; DestName: manual.chm
 Source: ..\doc\ru_RU\manual_ru.chm; DestDir: {app}\bin; Components: InternationalHelp\Russian; Flags: ignoreversion
-<<<<<<< .mine
 ;Source: ..\doc\jp_JP\manual_jp.chm; DestDir: {app}\bin; Components: InternationalHelp\Japanese; Flags: ignoreversion
 Source: ..\doc\nl_BE\manual_nl.chm; DestDir: {app}\bin; Components: InternationalHelp\Dutch; Flags: ignoreversion
-=======
-Source: ..\doc\nl_BE\manual_nl.chm; DestDir: {app}\bin; Components: InternationalHelp\Dutch; Flags: ignoreversion
-Source: ..\doc\fr_FR\manual_fr.chm; DestDir: {app}\bin; Components: InternationalHelp\French; Flags: ignoreversion
->>>>>>> .r1425
 ;Source: ..\doc\it_IT\manual_it.chm; DestDir: {app}\bin; Components: InternationalHelp\Italian; Flags: ignoreversion
 Source: ..\doc\en_UK\manual_en.pdf; DestDir: {app}\bin; Components: ClamWin; Flags: ignoreversion
 Source: ..\doc\fr_FR\manual_fr.pdf; DestDir: {app}\bin; Components: InternationalHelp\French; Flags: ignoreversion
@@ -175,17 +170,10 @@ Name: ClamAV; Description: ClamAV Files; Flags: fixed; Types: full custom typica
 Name: ClamWin; Description: ClamWin Files; Flags: fixed; Types: full custom typical
 Name: ExplorerShell; Description: Integration with Windows Explorer; Types: full custom typical
 Name: OutlookAddin; Description: Integration with Microsoft Outlook; Types: full custom typical; Check: IsOutlookInstalled
-<<<<<<< .mine
 Name: InternationalHelp; Description: International Help Files; Types: full
 Name: InternationalHelp\Dutch; Description: Dutch Help Files; Types: full
 Name: InternationalHelp\Russian; Description: Russian Help Files; Types: full
 Name: InternationalHelp\French; Description: French Help Files; Types: full
-=======
-Name: InternationalHelp; Description: International Manual and Help File; Types: full
-Name: InternationalHelp\Russian; Description: Russian Help File; Types: full
-Name: InternationalHelp\French; Description: French Manual; Types: full
-Name: InternationalHelp\Dutch; Description: Dutch Manual and Help; Types: full
->>>>>>> .r1425
 ;Name: InternationalHelp\Japanese; Description: Japanese Help Files; Types: full
 ;Name: InternationalHelp\Italian; Description: Italian Help Files; Types: full
 ;Name: Sources; Description: Download Source Code; ExtraDiskSpaceRequired: 9437184; Types: full
