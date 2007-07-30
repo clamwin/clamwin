@@ -1,6 +1,0 @@
-;ExplorerShell.def : Declares the module parameters for the DLL.
-
-LIBRARY      ExpShell
-EXPORTS
-    DllCanUnloadNow             PRIVATE                  ;DLL unloading
-    DllGetClassObject           PRIVATE                  ;Component object model
