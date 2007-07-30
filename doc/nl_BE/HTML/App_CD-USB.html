@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE>ClamWin CD/USB - HowTo</TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.2  (Win32)">
+	<META NAME="CREATED" CONTENT="20050531;10214200">
+	<META NAME="CHANGEDBY" CONTENT="Peter Budts">
+	<META NAME="CHANGED" CONTENT="20070708;14184200">
+	<STYLE TYPE="text/css">
+	<!--
+		@page { size: 21.01cm 29.69cm; margin-left: 2cm; margin-right: 2.01cm; margin-top: 2.01cm; margin-bottom: 2.01cm }
+		P { color: #000000; font-family: "Arial", sans-serif; font-size: 12pt }
+		H1 { color: #000000; text-align: center }
+		H1.western { font-family: "Arial", sans-serif; font-size: 16pt }
+		H2 { color: #000000 }
+		H2.western { font-family: "Arial", sans-serif; font-size: 14pt; font-style: italic }
+		H2.cjk { font-family: "Arial Unicode MS" }
+		H2.ctl { font-family: "Tahoma" }
+		H3 { color: #000000 }
+		H3.western { font-family: "Albany", sans-serif }
+		H3.cjk { font-family: "HG Mincho Light J" }
+		H3.ctl { font-family: "Arial Unicode MS" }
+		PRE { color: #000000 }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-GB" TEXT="#000000" BGCOLOR="#ffffff" DIR="LTR">
+<H1 CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=5 STYLE="font-size: 16pt">Bijlage
+A : </FONT></FONT><SPAN LANG="nl-NL">ClamWin uitvoeren vanaf CD of
+USB drive</SPAN></H1>
+<H3 CLASS="western">Inleiding</H3>
+<P><SPAN LANG="nl-NL">Deze tutorial toont hoe u een CD of USB drive
+kan voorzien van een kopie van </SPAN><FONT COLOR="#000080"><U><A HREF="http://www.clamwin.com/"></A><A HREF="http://www.clamwin.com/"></A><A HREF="http://www.clamwin.com/"><SPAN LANG="nl-NL">ClamWin</SPAN></A><A HREF="http://www.clamwin.com/"></A><A HREF="http://www.clamwin.com/"></A></U></FONT><SPAN LANG="nl-NL">,
+zodat u een Windows PC kunt scannen op virussen zonder ClamWin op de
+PC te installeren.  Merk hierbij op dat de CD of USB drive niet
+bootable is, en dus enkel kan gebruikt worden op een werkend Windows
+systeem.</SPAN></P>
+<P LANG="nl-NL">Op de PC die gebruikt wordt om de CD of USB drive aan
+te maken moet ClamWin ge&iuml;nstalleerd zijn, en deze moet
+natuurlijk ook bestanden en mappen kunnen copi&euml;ren op CD of USB
+drive.</P>
+<H3 CLASS="western">De gemakkelijke manier: Portable ClamWin</H3>
+<P>Het makkelijkste kunt u de voor u gemaakt &ldquo;draagbare&rdquo;
+versie van ClamWin gebruiken, die u kan vinden op
+<A HREF="http://portableapps.com/apps/utilities/clamwin_portable"></A><A HREF="http://portableapps.com/apps/utilities/clamwin_portable"></A><A HREF="http://portableapps.com/apps/utilities/clamwin_portable">http://portableapps.com/apps/utilities/clamwin_portable</A><A HREF="http://portableapps.com/apps/utilities/clamwin_portable"></A><A HREF="http://portableapps.com/apps/utilities/clamwin_portable"></A>.
+ 
+</P>
+<P LANG="nl-NL">Let wel: de personen die deze Portable ClamWin
+onderhouden zijn niet verbonden met het ClamWin team, en daarom kan
+het team u niet altijd helpen wanneer u problemen met deze versie
+ondervindt.  Daarenboven kan het zijn dat ClamWin Portable &eacute;&eacute;n
+of meerdere versies achterloopt op de offici&euml;le ClamWin
+releases.</P>
+<H3 CLASS="western">Voorbereiding</H3>
+<P LANG="nl-NL">Begin met het installeren van de laatste beschikbare
+versie van ClamWin, en download ook de laatste virus database.  Zie
+de ClamWin manual voor de details over hoe u dit kunt doen.</P>
+<P LANG="nl-NL">Wanneer u een CD cre&euml;ert, zult u daarna niet
+meer de virus database op de CD kunnen vernieuwen zonder een nieuwe
+CD te maken.</P>
+<H3 CLASS="western">Copi&euml;er de mappen</H3>
+<P LANG="nl-NL">Cre&euml;er ergens een tijdelijke map op een
+makkelijke plaats op de harde schijf om de bestanden in op te slaan
+die naar de CD of USB drive moeten worden gekopieerd, bijvoorbeeld
+<FONT FACE="Courier New, monospace">C:\ClamWin-CD</FONT>.</P>
+<P LANG="nl-NL">In deze map cre&euml;ert u een map met de naam
+<FONT FACE="Courier New, monospace">ClamWin</FONT>.</P>
+<P><TT><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">Kopieer de
+inhoud van de ClamWin programmamap (standaard </SPAN></FONT></TT><FONT FACE="Courier New, monospace">c:\Program
+Files\clamwin</FONT><TT><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">)
+naar deze </SPAN></FONT></TT><TT><FONT FACE="Courier New, monospace"><SPAN LANG="nl-NL">ClamWin</SPAN></FONT></TT><TT><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">
+map.</SPAN></FONT></TT></P>
+<P>Create folders named <TT>log</TT>, <TT>db</TT> and <TT>quarantine</TT>
+in <TT>C:\ClamWin-CD\ClamWin</TT></P>
+<P LANG="nl-NL">Cre&euml;er tevens mappen met de namen <FONT FACE="Courier New, monospace">log</FONT>,
+<FONT FACE="Courier New, monospace">db</FONT> en <FONT FACE="Courier New, monospace">quarantine</FONT>
+in <FONT FACE="Courier New, monospace">c:\ClamWin-CD\ClamWin.</FONT></P>
+<P><SPAN LANG="nl-NL">Kopieer de ClamWin database bestanden (alle
+bestanden in de </SPAN><FONT FACE="Courier New, monospace"><SPAN LANG="nl-NL">db</SPAN></FONT><SPAN LANG="nl-NL">
+map) naar C:\ClamWin-CD\ClamWin\db.  In Windows 2000/Xp staat deze
+ClamWin database map standaard op </SPAN><FONT FACE="Courier New, monospace">c:\Documents
+and settings\USERNAME\.clamwin\db</FONT><SPAN LANG="nl-NL"> (USERNAME
+is daarbij uw login naam) of in </SPAN><FONT FACE="Courier New, monospace">c:\documents
+and settings\All Users\.clamwin\db</FONT><SPAN LANG="nl-NL">.</SPAN></P>
+<P><TT><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">Kopieer de
+volgende tekst naar een tekstbestand met de naam
+</SPAN></FONT></TT><TT><FONT FACE="Courier New, monospace"><SPAN LANG="nl-NL">C:\ClamWin-CD\ClamWin\bin\clamwin.conf</SPAN></FONT></TT><TT><FONT FACE="Arial, sans-serif"><SPAN LANG="nl-NL">:</SPAN></FONT></TT></P>
+<PRE>[Schedule]
+path = .\
+
+[ClamAV]
+clamscan = .\clamscan.exe
+enablembox = 0
+maxfiles = 500
+infectedonly = 0
+database = ..\db
+includepatterns = 
+scanole2 = 1
+excludepatterns = *.dbx|CLAMWIN_SEP|*.tbb|CLAMWIN_SEP|*.pst|CLAMWIN_SEP|*.dat|CLAMWIN_SEP|*.log|CLAMWIN_SEP|*.nsf|CLAMWIN_SEP|*.ntf|CLAMWIN_SEP|*.chm
+maxsize = 10
+scanarchives = 1
+priority = Low
+maxrecursion = 5
+maxlogsize = 1
+moveinfected = 0
+debug = 0
+logfile = ..\log\ClamScanLog.txt
+scanrecursive = 1
+freshclam = .\freshclam.exe
+quarantinedir = ..\quarantine 
+removeinfected = 0
+
+[UI]
+reportinfected = 1
+traynotify = 0
+standalone = 1
+
+[Updates]
+dbupdatelogfile = ..\log\ClamUpdateLog.txt
+enable = 1
+dbmirror = database.clamav.net
+updateonlogon = 0
+frequency = Daily
+weekday = 2
+time = 12:00:00
+
+[EmailAlerts]
+enable = 0
+from = clamwin@yourdomain
+to = admin@yourdomain
+smtppassword = 
+smtpuser = 
+smtphost = 
+smtpport = 25
+subject = ClamWin Virus Alert
+
+[Proxy]
+host = 
+password = 
+port = 3128
+user = 
+</PRE><P LANG="nl-NL">
+U zou nu de volgende mappen moeten hebben :</P>
+<PRE>C:\ClamWin-CD
+C:\ClamWin-CD\ClamWin\bin
+C:\ClamWin-CD\ClamWin\db
+C:\ClamWin-CD\ClamWin\lib
+C:\ClamWin-CD\ClamWin\quarantine</PRE><H3 CLASS="western">
+Kopi&euml;er de bestanden naar de CD/USB</H3>
+<P><SPAN LANG="nl-NL">U moet nu enkel de inhoud van de map
+</SPAN><FONT COLOR="#000080"><U><A HREF="/C:/clamwin-cd"></A><A HREF="/C:/clamwin-cd"></A><A HREF="/C:/clamwin-cd"><SPAN LANG="nl-NL">c:\clamwin-cd</SPAN></A><A HREF="/C:/clamwin-cd"></A><A HREF="/C:/clamwin-cd"></A></U></FONT><SPAN LANG="nl-NL">
+kopi&euml;ren naar de CD of USB drive.  Kopieer niet de map
+</SPAN><FONT COLOR="#000080"><U><A HREF="/C:/ClamWin-CD"></A><A HREF="/C:/ClamWin-CD"></A><A HREF="/C:/ClamWin-CD"><SPAN LANG="nl-NL">c:\ClamWin-CD</SPAN></A><A HREF="/C:/ClamWin-CD"></A><A HREF="/C:/ClamWin-CD"></A></U></FONT><SPAN LANG="nl-NL">
+zelf, maar enkel de inhoud.  Hoe dit precies moet gedaan worden hangt
+ervan af of u een CD of een USB drive gebruikt, en natuurlijk ook van
+welke software u gebruikt.</SPAN></P>
+<H2 CLASS="western">Gebruik van de CD/USB</H2>
+<P LANG="nl-NL">Om deze cd of USB drive te gebruiken plaatst u deze
+in de PC die moet worden gescand.  Voer ClamWin uit door te
+dubbelklikken op het bestand <FONT FACE="Courier New, monospace">ClamWin.exe</FONT>
+in de map <FONT FACE="Courier New, monospace">ClamWin\bin</FONT>.</P>
+<P LANG="nl-NL">ClamWin zou normaal moeten werken, maar heeft in
+geval van een CD (die u enkel kunt lezen en niet kunt schrijven) de
+volgende beperkingen :</P>
+<UL>
+	<LI><P LANG="nl-NL" STYLE="margin-bottom: 0cm">Bestanden worden niet
+	in quarantaine geplaatst</P>
+	<LI><P LANG="nl-NL" STYLE="margin-bottom: 0cm">Internet updates
+	zullen niet werken</P>
+	<LI><P LANG="nl-NL">De instellingen kunnen niet aangepast worden</P>
+</UL>
+<P LANG="nl-NL">Deze beperkingen zijn niet van toepassing op een USB
+drive waarop u lees- en schrijfrechten hebt.</P>
+</BODY>
+</HTML>

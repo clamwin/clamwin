@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.2  (Win32)">
+	<META NAME="CREATED" CONTENT="20040426;21532900">
+	<META NAME="CHANGEDBY" CONTENT="Dylan">
+	<META NAME="CHANGED" CONTENT="20070716;23345200">
+	<STYLE TYPE="text/css">
+	<!--
+		@page { size: 21.01cm 29.69cm; margin: 2cm }
+		P { margin-bottom: 0.21cm }
+		P.western { font-family: "Arial", sans-serif }
+		H1 { margin-bottom: 0.21cm; text-align: center }
+		H1.western { font-family: "Arial", sans-serif; font-size: 16pt }
+		H1.cjk { font-family: "Mincho"; font-size: 16pt }
+		H1.ctl { font-family: "Tahoma"; font-size: 16pt }
+		H2 { margin-bottom: 0.21cm }
+		H2.western { font-family: "Arial", sans-serif; font-size: 14pt; font-style: italic }
+		H2.cjk { font-family: "Mincho"; font-size: 14pt; font-style: italic }
+		H2.ctl { font-family: "Tahoma"; font-size: 14pt; font-style: italic }
+		P.monospace-western { margin-bottom: 0cm; font-family: "Courier New", monospace; font-size: 11pt; page-break-before: auto }
+		P.monospace-cjk { margin-bottom: 0cm; page-break-before: auto }
+		P.monospace-ctl { margin-bottom: 0cm; page-break-before: auto }
+		CODE.western { font-size: 11pt }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="fr-FR" DIR="LTR">
+<H1 CLASS="western">R&eacute;glages Avanc&eacute;s</H1>
+<P CLASS="western">Cette section contient des d&eacute;tails pour les
+utilisateurs avertis.</P>
+<H2 CLASS="western">Configurer automatiquement ClamWin pour de
+nouveaux utilisateurs Windows</H2>
+<P CLASS="western">Si une version du fichier clamwin.conf est dans le
+r&eacute;pertoire  des ex&eacute;cutables ClamWin (&quot;C:\Program
+Files\ClamWin\bin&quot; dans le cas d'une installation par d&eacute;faut),
+alors ce fichier de configuration sera utilis&eacute; par d&eacute;faut
+pour configurer ClamWin pour tout nouvel utilisateur.</P>
+<P CLASS="western">Si vous devez cr&eacute;er plusieurs nouveaux
+comptes d'utilisateurs ou si vous avez install&eacute; ClamWin sur un
+ordinateur qui contient plusieurs compte, il est recommand&eacute; de
+cr&eacute;er un fichier de configuration par d&eacute;faut et de le
+placer &agrave;  cette endroit.</P>
+<H2 CLASS="western">Lancer une Analyse Antivirale en Ligne de
+Commande</H2>
+<P CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=3>ClamWin
+peut &ecirc;tre lanc&eacute; en ligne de commande, &agrave; partir
+d'un script batch par exemple. Pour obtenir la liste compl&egrave;te
+des param&egrave;tres disponibles en ligne de commande, rendez-vous
+dans le r&eacute;pertoire contenant les fichiers ex&eacute;cutables
+(&quot;C:\Program Files\ClamWin\bin&quot; dans le cas d'une
+installation par d&eacute;faut) et entrez la commande</FONT></FONT></P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">clamscan.exe
+--help</FONT></FONT></CODE></P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=3><SPAN STYLE="font-weight: medium">Le
+r&eacute;pertoire des signatures des virus </SPAN></FONT></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=3><I><SPAN STYLE="font-weight: medium">doit
+</SPAN></I></FONT></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=3><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: medium">&ecirc;tre
+indiqu&eacute;, en utilisant le param&egrave;tre </SPAN></SPAN></FONT></FONT></CODE><CODE CLASS="western"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: medium">--database=FILE/DIR</SPAN></SPAN></FONT></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=3><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: medium">.
+Dans une installation par d&eacute;faut, la commande pour scanner le
+disque C: en entier est:</SPAN></SPAN></FONT></FONT></CODE></P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">clamscan.exe
+--database=&quot;C:\Program Files\ClamWin\db&quot; --recursive C:\</FONT></FONT></CODE></P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=3>Notez
+bien que l'utilisation du param&egrave;tre </FONT></FONT></CODE><CODE CLASS="western"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">--recursive</FONT></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=3>
+sert &agrave; s'assurer que les sous-r&eacute;pertoires soient
+analys&eacute;s.</FONT></FONT></CODE></P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=3>Quand
+ClamWin est lanc&eacute; en ligne de commande, une valeur sera
+retourn&eacute;e, indiquant si un virus a &eacute;t&eacute; trouv&eacute;
+ou non. Si aucun virus n'a &eacute;t&eacute; trouv&eacute;, la valeur
+retourn&eacute;e sera 0. Si un virus a &eacute;t&eacute; trouv&eacute;,
+la valeur sera 1. Tout autre valeur retourn&eacute;e indique une
+erreur.</FONT></FONT></CODE></P>
+<H2 CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=4>Mettre
+&agrave; Jour les Signatures des Virus en Ligne de Commande</FONT></FONT></CODE></H2>
+<P CLASS="western">ClamWin utilise <CODE CLASS="western">freshclam.exe</CODE>
+pour mettre &agrave; jour les signatures des virus. Comme pour le
+programme d'analyse <CODE CLASS="western">clamscan.exe</CODE>, ce
+programme peu &ecirc;tre lanc&eacute; en ligne de commande, &agrave;
+partir d'un script batch, etc. Pour obtenir la liste compl&egrave;te
+des param&egrave;tres disponibles en ligne de commande, rendez-vous
+dans le r&eacute;pertoire contenant les fichiers ex&eacute;cutables
+(&quot;C:\Program Files\ClamWin\bin&quot; <FONT FACE="Arial, sans-serif"><FONT SIZE=3>dans
+le cas d'une installation par d&eacute;faut</FONT></FONT>) <FONT FACE="Arial, sans-serif"><FONT SIZE=3>et
+entrez la commande</FONT></FONT></P>
+<P CLASS="western"><CODE CLASS="western"><FONT SIZE=2 STYLE="font-size: 11pt">freshclam.exe
+&ndash;help</FONT></CODE></P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=3>Le
+r&eacute;pertoire des signatures des virus ainsi que le fichier de
+configuration </FONT></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=3><I>doivent</I></FONT></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=3><SPAN STYLE="font-style: normal">
+&ecirc;tre indiqu&eacute;s. ClamWin g&eacute;n&egrave;re un fichier
+de configuration freshclam &agrave; la vol&eacute;e, donc vous devrez
+cr&eacute;er le votre. Le fichier de configuration est un fichier
+texte. Reportez-vous &agrave; la </SPAN></FONT></FONT></CODE><CODE CLASS="western"><A HREF="http://www.clamav.net/doc/"></A><A HREF="http://www.clamav.net/doc/" TARGET="_top"></A><A HREF="http://www.clamav.net/doc/"><FONT FACE="Arial, sans-serif"><FONT SIZE=3><SPAN STYLE="font-style: normal">Documentation
+de ClamAV</SPAN></FONT></FONT></A><A HREF="http://www.clamav.net/doc/" TARGET="_top"></A><A HREF="http://www.clamav.net/doc/"></A></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=3><SPAN STYLE="font-style: normal">
+pour plus de d&eacute;tails sur ce que vous pouvez inclure. Un
+fichier de configuration freshclam standard peut par exemple avoir
+les lignes suivantes (les lignes commen&ccedil;ant par un # sont des
+commentaires):</SPAN></FONT></FONT></CODE></P>
+<P CLASS="monospace-western"><CODE CLASS="western"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="font-style: normal">#
+URL du serveur o&ugrave; le programme doit t&eacute;l&eacute;charger
+les mises &agrave; jour des</SPAN></FONT></FONT></CODE></P>
+<P CLASS="monospace-western"><CODE CLASS="western"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="font-style: normal">#
+signatures des virus. Si cette option est dupliqu&eacute;e avec des
+valeurs</SPAN></FONT></FONT></CODE></P>
+<P CLASS="monospace-western"><CODE CLASS="western"><SPAN STYLE="font-style: normal">#
+diff&eacute;rentes; chacune sera essay&eacute;e dans l'ordre, jusqu'&agrave;
+ce qu'une</SPAN></CODE></P>
+<P CLASS="monospace-western"><CODE CLASS="western"><SPAN STYLE="font-style: normal">#</SPAN></CODE><CODE CLASS="western"><SPAN STYLE="font-style: normal">
+mise &agrave; jour soit t&eacute;l&eacute;charg&eacute;e avec succ&egrave;s.</SPAN></CODE></P>
+<P CLASS="monospace-western"><CODE CLASS="western"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="font-style: normal">DatabaseMirror
+database.clamav.net</SPAN></FONT></FONT></CODE></P>
+<P CLASS="monospace-western"><CODE CLASS="western"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="font-style: normal">#
+Nombre d'essais pour chaque miroir avant de passer au suivant</SPAN></FONT></FONT></CODE></P>
+<P CLASS="monospace-western"><CODE CLASS="western"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="font-style: normal">MaxAttempts
+3</SPAN></FONT></FONT></CODE></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=3>Une
+fois que le fichier de configuration de freshclam a &eacute;t&eacute;
+cr&eacute;e, freshclam peut &ecirc;tre lanc&eacute; par une ligne de
+commande analogue &agrave; celle ci-dessous:</FONT></FONT></CODE></P>
+<P CLASS="monospace-western"><CODE CLASS="western"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">freshclam
+--datadir=&quot;C:\Documents and Settings\All Users\.clamwin\db&quot;
+--config-file=&quot;C:\Program Files\ClamWin\bin\freshclam.conf&quot;</FONT></FONT></CODE></P>
+<H2 CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=4>Obtenir
+les Mises &agrave; Jour &agrave; partir d'un Serveur Local</FONT></FONT></CODE></H2>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif">Si
+vous avez install&eacute; ClamWin sur plusieurs ordinateurs en
+r&eacute;seau, vous pouvez souhaiter qu'un seul des ordinateurs ne
+t&eacute;l&eacute;charge les mises &agrave; jour &agrave; partir
+d'Internet, les autres se mettant &agrave; jour &agrave; partir du
+r&eacute;seau local. Ceci peut-&ecirc;tre fait de la mani&egrave;re
+suivante:</FONT></CODE></P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif">Vous
+devez mettre en place un serveur Web qui poss&egrave;de les fichiers
+main.cvd et daily.cvd dans le r&eacute;pertoire Web racine. Il
+devrait &ecirc;tre possible de t&eacute;l&eacute;charger les fichiers
+en pointant le navigateur Internet sur
+</FONT></CODE><CODE CLASS="western"><A HREF="http://LENOMDEVOTRESERVEUR/main.cvd"></A><A HREF="http://LENOMDEVOTRESERVEUR/main.cvd"></A><A HREF="http://LENOMDEVOTRESERVEUR/main.cvd"><FONT FACE="Arial, sans-serif">http://LENOMDEVOTRESERVEUR/main.cvd</FONT></A><A HREF="http://LENOMDEVOTRESERVEUR/main.cvd"></A><A HREF="http://LENOMDEVOTRESERVEUR/main.cvd"></A></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif">
+et </FONT></CODE><CODE CLASS="western"><A HREF="http://LENOMDEVOTRESERVEUR/daily.cvd"></A><A HREF="http://LENOMDEVOTRESERVEUR/daily.cvd"></A><A HREF="http://LENOMDEVOTRESERVEUR/daily.cvd"><FONT FACE="Arial, sans-serif">http://LENOMDEVOTRESERVEUR/daily.cvd</FONT></A><A HREF="http://LENOMDEVOTRESERVEUR/daily.cvd"></A><A HREF="http://LENOMDEVOTRESERVEUR/daily.cvd"></A></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif">.</FONT></CODE></P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif">Dans
+l'onglet </FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><B>Internet
+Updates</B></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif">
+de ClamWin install&eacute; sur les ordinateurs clients, entrez
+l'adresse IP ou le nom de domaine du serveur dans la boite de texte
+intitul&eacute;e </FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><B>Download
+Site</B></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: medium">.
+N'indiquez pas autre chose qu'une adresse IP ou un nom de domaine (ex
+</SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Courier New, monospace"><SPAN STYLE="font-weight: medium">192.168.1.1</SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: medium">
+est correcte, </SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Courier New, monospace"><SPAN STYLE="font-weight: medium">http://192.168.1.1/</SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: medium">
+est incorrecte). ClamWin sollicitera les mises &agrave; jour aupr&egrave;s
+du serveur Web local, au lieu de le faire aupr&egrave;s du serveur
+Internet distant.</SPAN></FONT></CODE></P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: medium">Les
+fichiers sont disponibles sur </SPAN></FONT></CODE><CODE CLASS="western"><A HREF="http://www.clamav.net/lang-pref/fr/"></A><A HREF="http://www.clamav.net/lang-pref/fr/"></A><A HREF="http://www.clamav.net/lang-pref/fr/"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: medium">www.clamav.net</SPAN></FONT></A><A HREF="http://www.clamav.net/lang-pref/fr/"></A><A HREF="http://www.clamav.net/lang-pref/fr/"></A></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: medium">.
+Vous pouvez cr&eacute;er un script batch pour t&eacute;l&eacute;charger
+automatiquement ces fichiers sur votre serveur Web &agrave; l'aide
+d'un outil tel que wget, comme ceci:</SPAN></FONT></CODE></P>
+<P CLASS="western"><CODE CLASS="western">	wget
+http://%DB_MIRROR%/main.cvd -O &quot;%WEBROOT%\main.cvd&quot;</CODE></P>
+<P CLASS="monospace-western"><CODE CLASS="western"><SPAN STYLE="font-weight: medium">	wget
+http://%DB_MIRROR%/daily.cvd -O &quot;%WEBROOT%\daily.cvd&quot;</SPAN></CODE></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: medium">Notez
+que les mises &agrave; jour diff&eacute;rentielles sont actuellement
+impossibles. Vous devriez poss&eacute;der un miroir de
+database.clamav.net, cela n'est pas pris en charge pour un usage
+priv&eacute;.</SPAN></FONT></CODE></P>
+<H2 CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=4><B>Mettre
+&agrave; Jour Manuellement les Signatures des Virus</B></FONT></FONT></CODE></H2>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: medium">Pour
+mettre &agrave; jour manuellement les signatures des virus,
+t&eacute;l&eacute;chargez les fichiers de d&eacute;finitions de virus
+</SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Courier New, monospace"><SPAN STYLE="font-weight: medium">main.cvd</SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: medium">
+et</SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Courier New, monospace"><SPAN STYLE="font-weight: medium">
+daily.cvd</SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="font-weight: medium">
+et copiez les dans le dossier de d&eacute;finitions de virus de
+ClamWin</SPAN></FONT></FONT></CODE><FONT FACE="Arial, sans-serif"><FONT SIZE=2 STYLE="font-size: 11pt">,
+en &eacute;crasant les fichiers existants. Les fichiers de
+d&eacute;finitions de virus peuvent &ecirc;tre t&eacute;l&eacute;charg&eacute;s
+&agrave; partir du site de ClamAV: </FONT></FONT><A HREF="http://www.clamav.net/lang-pref/fr/"></A><A HREF="http://www.clamav.net/lang-pref/fr/"></A><A HREF="http://www.clamav.net/lang-pref/fr/"><FONT FACE="Arial, sans-serif"><FONT SIZE=2 STYLE="font-size: 11pt">www.clamav.net</FONT></FONT></A><A HREF="http://www.clamav.net/lang-pref/fr/"></A><A HREF="http://www.clamav.net/lang-pref/fr/"></A></P>
+</BODY>
+</HTML>

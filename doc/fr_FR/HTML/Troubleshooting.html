@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.2  (Win32)">
+	<META NAME="CREATED" CONTENT="20040426;21532900">
+	<META NAME="CHANGEDBY" CONTENT="Peter Budts">
+	<META NAME="CHANGED" CONTENT="20070725;20085663">
+	<STYLE TYPE="text/css">
+	<!--
+		@page { size: 21.01cm 29.69cm; margin: 2cm }
+		P { margin-bottom: 0.21cm }
+		P.western { font-family: "Arial", sans-serif }
+		H1 { margin-bottom: 0.21cm; text-align: center }
+		H1.western { font-family: "Arial", sans-serif; font-size: 16pt }
+		H1.cjk { font-family: "Mincho"; font-size: 16pt }
+		H1.ctl { font-family: "Tahoma"; font-size: 16pt }
+		H4 { margin-bottom: 0.21cm }
+		H4.western { font-family: "Arial", sans-serif; font-size: 11pt; font-style: italic }
+		H4.cjk { font-family: "Mincho"; font-size: 11pt; font-style: italic }
+		H4.ctl { font-family: "Tahoma"; font-size: 11pt; font-style: italic }
+		P.monospace-western { font-family: "Courier New", monospace; font-size: 11pt; page-break-before: auto }
+		P.monospace-cjk { page-break-before: auto }
+		P.monospace-ctl { page-break-before: auto }
+		H2 { margin-bottom: 0.21cm }
+		H2.western { font-family: "Arial", sans-serif; font-size: 14pt; font-style: italic }
+		H2.cjk { font-family: "Mincho"; font-size: 14pt; font-style: italic }
+		H2.ctl { font-family: "Tahoma"; font-size: 14pt; font-style: italic }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="fr-FR" DIR="LTR">
+<H1 CLASS="western">D&eacute;pannage</H1>
+<H4 CLASS="western"><SPAN ID="Frame1" DIR="LTR" STYLE="float: left; width: 90%; height: 5.13cm; border: 1px solid #000000; padding: 0.15cm; background: #e6e6e6">
+	<H4 CLASS="western"><FONT COLOR="#000000">Ce chapitre d&eacute;crit
+	les solutions pour les probl&egrave;mes suivants:</FONT></H4>
+	<UL>
+		<UL>
+			<UL>
+				<UL>
+					<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Times New Roman, serif">Lors
+					de l'envoie une alerte E-mail d'essai, un message d'erreur
+					appara&icirc;t</FONT></P>
+					<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Times New Roman, serif">Les
+					clients E-mail qui stockent les messages dans un seul fichier</FONT></P>
+					<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Times New Roman, serif">Conflits
+					avec plusieurs versions d'ActivePython</FONT></P>
+					<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Times New Roman, serif">Outlook
+					2000 ne se restaure pas une fois minimis&eacute;</FONT></P>
+					<P CLASS="western" STYLE="margin-bottom: 0cm"></P>
+				</UL>
+			</UL>
+		</UL>
+	</UL>
+	<H4 CLASS="western"><FONT COLOR="#000000">Si le probl&egrave;me
+	rencontr&eacute; n'est pas r&eacute;solu ici, veuillez lire la FAQ
+	&agrave;: </FONT><A HREF="http://fr.clamwin.com/content/category/3/7/27/"></A><A HREF="http://fr.clamwin.com/content/category/3/7/27/"></A><A HREF="http://fr.clamwin.com/content/category/3/7/27/">http://fr.clamwin.com/content/category/3/7/27/</A><A HREF="http://fr.clamwin.com/content/category/3/7/27/"></A><A HREF="http://fr.clamwin.com/content/category/3/7/27/"></A></H4>
+</SPAN><BR CLEAR=LEFT>
+</H4>
+<H2 CLASS="western">Probl&egrave;me: Quand j'essaye d'envoyer une
+alerte E-mail d'essai, un message semblable &agrave; ceci appara&icirc;t:</H2>
+<P CLASS="monospace-western"><FONT COLOR="#000000">Could not send the
+email. Please ensure you are connected to the internet. Error: SMTP
+instance has no attribute 'sock'</FONT></P>
+<P CLASS="western"><FONT COLOR="#000000">ou</FONT></P>
+<P CLASS="monospace-western"><FONT COLOR="#000000">Could not send the
+email.  Please ensure you are connected to the internet. Error: SMTP
+AUTH extension not supported by server</FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><IMG SRC="Troubleshooting_html_m77fa874.png" NAME="Grafik1" ALIGN=LEFT WIDTH=458 HEIGHT=159 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<P CLASS="western"><FONT COLOR="#000000">Solution: La configuration
+du serveur SMTP est incorrecte. Notez que plusieurs FAI ne requi&egrave;rent
+pas de login et mot de passe pour le serveur SMTP. Essayer de les
+laisser vide.</FONT></P>
+<H4 CLASS="western"></H4>
+<H2 CLASS="western">Clients E-mail qui stockent les messages dans un
+seul fichier:</H2>
+<P CLASS="western">Certains clients d'e-mail clients (ex: <A HREF="http://www.ritlabs.com/en/products/thebat/"></A><A HREF="http://www.ritlabs.com/en/products/thebat/"></A><A HREF="http://www.ritlabs.com/en/products/thebat/">The
+Bat!</A><A HREF="http://www.ritlabs.com/en/products/thebat/"></A><A HREF="http://www.ritlabs.com/en/products/thebat/"></A>)
+stockent tous les messages dans un seul fichier. D'autres stockent
+chaque e-mail dans un fichier s&eacute;par&eacute;. Si ClamWin trouve
+un virus attach&eacute; &agrave; un e-mail, il consid&egrave;rera le
+fichier entier (c'est &agrave; dire, tous les e-mails du dit dossier)
+comme &eacute;tant infect&eacute;. Par cons&eacute;quent, le fichier
+entier sera enlev&eacute; ou mis en quarantaine. Vous pouvez
+souhaiter r&eacute;gler les filtres (voyez les instructions pour
+configurer ClamWin) de sorte que ces dossiers ne soient pas scann&eacute;s.</P>
+<P CLASS="western">Les utilisateurs de The Bat! Seront peut &ecirc;tre
+int&eacute;ress&eacute;s de savoir que Marco Pontello a &eacute;crit
+un plug-in qui permet &agrave; The Bat! D'utiliser ClamWin pour
+scanner des pi&egrave;ces jointes. Plus de d&eacute;tails sont
+disponibles <A HREF="http://mark0.net/plugins-tb-tbclamwin-e.html"></A><A HREF="http://mark0.net/plugins-tb-tbclamwin-e.html"></A><A HREF="http://mark0.net/plugins-tb-tbclamwin-e.html">sur
+le site Web de Marco</A><A HREF="http://mark0.net/plugins-tb-tbclamwin-e.html"></A><A HREF="http://mark0.net/plugins-tb-tbclamwin-e.html"></A>.</P>
+<H4 CLASS="western"></H4>
+<H2 CLASS="western">Conflicts avec ActivePython</H2>
+<P CLASS="western">Avoir Python d'install&eacute; ne devrait pas
+poser de probl&egrave;mes si vous avez Python 2.3 et Pywin32-201
+(<A HREF="http://sourceforge.net/projects/pywin32/"></A><A HREF="http://sourceforge.net/projects/pywin32/" NAME="Python Extensions for Windows"></A><A HREF="http://sourceforge.net/projects/pywin32/">http://sourceforge.net/projects/pywin32/</A><A HREF="http://sourceforge.net/projects/pywin32/" NAME="Python Extensions for Windows"></A><A HREF="http://sourceforge.net/projects/pywin32/"></A>)
+install&eacute;s sur votre syst&egrave;me. 
+</P>
+<P CLASS="western">Il semble que les versions du python d'ActiveState
+python qui viennent avec win32all-163 (maintenant pywin32) cr&eacute;ent
+un conflit de DLL. Ainsi si vous avez ActivePython 2.3, installez
+simplement pywin32 et cela devrait &ecirc;tre bon.</P>
+<H4 CLASS="western"></H4>
+<H2 CLASS="western">Outlook 2000 ne se restaure pas une fois minimis&eacute;</H2>
+<P CLASS="western">Lorsque ClamWin est install&eacute;, Outlook 2000
+peut ne pas se restaurer proprement apr&egrave;s avoir &eacute;t&eacute;
+minimis&eacute;. L'installation d'Office 2000 Service Release 1a
+(SR-1a) r&egrave;glera ce probl&egrave;me, de plus il est recommand&eacute;,
+car il  inclut des corrections de bogues et des corrections de
+failles. Tout les d&eacute;tails et les t&eacute;l&eacute;chargements
+sont disponibles &agrave;:
+<A HREF="http://www.microsoft.com/downloads/details.aspx?displaylang=fr&amp;FamilyID=af6c8d03-7633-45b4-ab96-795ee656f2a2"></A><A HREF="http://www.microsoft.com/downloads/details.aspx?displaylang=fr&amp;FamilyID=af6c8d03-7633-45b4-ab96-795ee656f2a2"></A><A HREF="http://www.microsoft.com/downloads/details.aspx?displaylang=fr&amp;FamilyID=af6c8d03-7633-45b4-ab96-795ee656f2a2"><FONT COLOR="#0000ff"><U>http://www.microsoft.com/downloads/details.aspx?displaylang=fr&amp;FamilyID=af6c8d03-7633-45b4-ab96-795ee656f2a2</U></FONT></A><A HREF="http://www.microsoft.com/downloads/details.aspx?displaylang=fr&amp;FamilyID=af6c8d03-7633-45b4-ab96-795ee656f2a2"></A><A HREF="http://www.microsoft.com/downloads/details.aspx?displaylang=fr&amp;FamilyID=af6c8d03-7633-45b4-ab96-795ee656f2a2"></A><FONT COLOR="#000000"><SPAN STYLE="text-decoration: none">
+ou </SPAN></FONT><A HREF="http://tinyurl.com/xsyx"></A><A HREF="http://tinyurl.com/xsyx"></A><A HREF="http://tinyurl.com/xsyx"><FONT COLOR="#0000ff"><U>http://tinyurl.com/xsyx</U></FONT></A><A HREF="http://tinyurl.com/xsyx"></A><A HREF="http://tinyurl.com/xsyx"></A></P>
+<H4 CLASS="western"></H4>
+</BODY>
+</HTML>
