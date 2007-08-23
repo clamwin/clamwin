@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.2  (Win32)">
+	<META NAME="CREATED" CONTENT="20040426;21532900">
+	<META NAME="CHANGEDBY" CONTENT="Peter Budts">
+	<META NAME="CHANGED" CONTENT="20070715;16385136">
+	<STYLE TYPE="text/css">
+	<!--
+		@page { size: 21.01cm 29.69cm; margin: 2cm }
+		P { margin-bottom: 0.21cm }
+		P.western { font-family: "Arial", sans-serif }
+		H1 { margin-bottom: 0.21cm; text-align: center }
+		H1.western { font-family: "Arial", sans-serif; font-size: 16pt }
+		H1.cjk { font-family: "Mincho"; font-size: 16pt }
+		H1.ctl { font-family: "Tahoma"; font-size: 16pt }
+		H2 { margin-bottom: 0.21cm }
+		H2.western { font-family: "Arial", sans-serif; font-size: 14pt; font-style: italic }
+		H2.cjk { font-family: "Mincho"; font-size: 14pt; font-style: italic }
+		H2.ctl { font-family: "Tahoma"; font-size: 14pt; font-style: italic }
+		P.monospace-western { margin-bottom: 0cm; font-family: "Courier New", monospace; font-size: 11pt; page-break-before: auto }
+		P.monospace-cjk { margin-bottom: 0cm; page-break-before: auto }
+		P.monospace-ctl { margin-bottom: 0cm; page-break-before: auto }
+		CODE.western { font-size: 11pt }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-GB" DIR="LTR">
+<H1 CLASS="western">Advanced Operation</H1>
+<P CLASS="western">This section has details for more advanced users.</P>
+<H2 CLASS="western">Modifying ClamWin's Default Configuration</H2>
+<P CLASS="western">If a copy of clamwin.conf is in the ClamWin
+executable files directory (&quot;C:\Program Files\ClamWin\bin&quot;
+on a default installation), then the first time a user runs ClamWin,
+it will use the contents of this file as the default configuration.</P>
+<P CLASS="western">If you are to set up several new user accounts on
+a computer, or if you have just installed ClamWin on a system with
+multiple users, it is recommended that you set up a default
+configuration and copy the clamwin.conf file to this location.</P>
+<H2 CLASS="western">Running a Virus Scan from the Command Line</H2>
+<P CLASS="western">ClamWin can be run from the command line, from a
+batch file for instance. For a full list of parameters, navigate to
+the directory containing the executable files (&quot;C:\Program
+Files\ClamWin\bin&quot; on a default installation) and run</P>
+<P CLASS="monospace-western"><CODE CLASS="western"><FONT SIZE=2 STYLE="font-size: 11pt">clamscan.exe
+--help</FONT></CODE></P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: medium">The
+database directory </SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><I><SPAN STYLE="font-weight: medium">must
+</SPAN></I></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: medium">be
+specified, using the </SPAN></SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Courier New, monospace"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: medium">--database=FILE/DIR</SPAN></SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: medium">
+parameter. In a default installation, the command to scan the entire
+</SPAN></SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Courier New, monospace"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: medium">C:</SPAN></SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-style: normal"><SPAN STYLE="font-weight: medium">
+drive would be:</SPAN></SPAN></FONT></CODE></P>
+<P CLASS="monospace-western"><CODE CLASS="western"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">clamscan.exe
+--database=&quot;C:\Program Files\ClamWin\db&quot; --recursive C:\</FONT></FONT></CODE></P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif">Note
+the use of the </FONT></CODE><CODE CLASS="western"><FONT FACE="Courier New, monospace">--recursive</FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif">
+parameter to ensure that sub-directories are scanned.</FONT></CODE></P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif">When
+run from the command line, a value will be returned, indicating
+whether or not a virus was detected. If no virus is found, the return
+value will be 0. If a virus is found, the return value is 1. Any
+other return value indicates an error.</FONT></CODE></P>
+<H2 CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=4>Updating
+the Virus Database from the Command Line</FONT></FONT></CODE></H2>
+<P CLASS="western">ClamWin uses <CODE CLASS="western">freshclam.exe</CODE>
+to update the virus database. As with the <CODE CLASS="western">clamscan.exe</CODE>
+scanning program, this can be run from a command line, batch file,
+etc. For a full list of parameters, navigate to the directory
+containing the executable files (&quot;C:\Program Files\ClamWin\bin&quot;
+on a default installation) and run</P>
+<P CLASS="monospace-western"><CODE CLASS="western"><FONT SIZE=2 STYLE="font-size: 11pt">freshclam.exe
+&ndash;help</FONT></CODE></P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=3>Both
+the database directory and the configuration file </FONT></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=3><I>must</I></FONT></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=3><SPAN STYLE="font-style: normal">
+be specified. ClamWin generates a freshclam configuration file on the
+fly, so you will have to create your own. The configuration file is a
+text file. See the </SPAN></FONT></FONT></CODE><CODE CLASS="western"><A HREF="http://www.clamav.net/doc/"></A><A HREF="http://www.clamav.net/doc/"></A><A HREF="http://www.clamav.net/doc/" TARGET="_top"><FONT FACE="Arial, sans-serif"><FONT SIZE=3><SPAN STYLE="font-style: normal">ClamAV
+documentation</SPAN></FONT></FONT></A><A HREF="http://www.clamav.net/doc/"></A><A HREF="http://www.clamav.net/doc/"></A></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=3><SPAN STYLE="font-style: normal">
+for full details of what can be included. A simple freshclam
+configuration file would have the following lines (lines beginning
+with a # are comments):</SPAN></FONT></FONT></CODE></P>
+<P CLASS="monospace-western"><CODE CLASS="western"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="font-style: normal">#
+URL of server where database updates are to be downloaded from<BR>#
+If this option is given multiple times, each will be tried in<BR>#
+the order given until an update is successfully downloaded</SPAN></FONT></FONT></CODE></P>
+<P CLASS="monospace-western"><CODE CLASS="western"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="font-style: normal">DatabaseMirror
+database.clamav.net</SPAN></FONT></FONT></CODE></P>
+<P CLASS="monospace-western"><CODE CLASS="western"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="font-style: normal">#
+Number of times to try each mirror before moving to the next one</SPAN></FONT></FONT></CODE></P>
+<P CLASS="monospace-western"><CODE CLASS="western"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="font-style: normal">MaxAttempts
+3</SPAN></FONT></FONT></CODE></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=3>Once
+a freshclam configuration file has been created, freshclam can be run
+with a command similar to the one below:</FONT></FONT></CODE></P>
+<P CLASS="monospace-western"><CODE CLASS="western"><FONT FACE="Courier New, monospace"><FONT SIZE=2 STYLE="font-size: 11pt">freshclam
+--datadir=&quot;C:\Documents and Settings\All Users\.clamwin\db&quot;
+--config-file=&quot;C:\Program Files\ClamWin\bin\freshclam.conf&quot;</FONT></FONT></CODE></P>
+<H2 CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=4>Getting
+Updates from a Local Server</FONT></FONT></CODE></H2>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif">If
+you have ClamWin running on several networked computers, you may wish
+to have a single computer downloading updates from the Internet, with
+the others getting updates over the local network. This can be done
+in the following way:</FONT></CODE></P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif">Set
+up a web server that has the main.cvd and daily.cvd files in the web
+root directory.  It should be possible to download these files to the
+client pc's by pointing a webbrowser at
+<A HREF="http://YOURSERVERNAME/main.cvd">http://YOURSERVERNAME/main.cvd</A>
+and <A HREF="http://YOURSERVERNAME/daily.cvd">http://YOURSERVERNAME/daily.cvd</A>.
+</FONT></CODE>
+</P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif">In
+ClamWin's </FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><B>Internet
+Updates</B></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif">
+configuration tab on the clients, enter the web server's IP address
+or domain name in the </FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><B>Download
+Site</B></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: medium">
+text box. Do not include anything other than the IP address or domain
+name (eg </SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Courier New, monospace"><SPAN STYLE="font-weight: medium">192.168.1.1</SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: medium">
+is correct, </SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Courier New, monospace"><SPAN STYLE="font-weight: medium">http://192.168.1.1/</SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: medium">
+is wrong). ClamWin will then query the local web server for updates,
+instead of a remote Internet server.</SPAN></FONT></CODE></P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif">The
+files are available from <A HREF="http://www.clamav.net/">www.clamav.net</A>.
+ You can create a batch script that automatically downloads these
+files to the root of your webserver using a tool such as wget, like :</FONT></CODE></P>
+<P CLASS="western"><CODE CLASS="western">	wget
+http://%DB_MIRROR%/main.cvd -O &quot;%WEBROOT%\main.cvd&quot;</CODE></P>
+<P CLASS="monospace-western"><CODE CLASS="western">	</CODE><CODE CLASS="western">wget
+</CODE><CODE CLASS="western">http://%DB_MIRROR%/daily.cvd -O
+&quot;%WEBROOT%\daily.cvd&quot;</CODE></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif">Note
+that differential updates are currently impossible.  You would have
+to mirror database.clamav.net, which is not supported for private
+use.</FONT></CODE></P>
+<P CLASS="western"><BR><BR>
+</P>
+<H2 CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=4><B>Manually
+Updating the Virus Database</B></FONT></FONT></CODE></H2>
+<P CLASS="western"><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: medium">To
+update the virus database manually, download the virus database files
+</SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Courier New, monospace"><SPAN STYLE="font-weight: medium">main.cvd</SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><SPAN STYLE="font-weight: medium">
+and</SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Courier New, monospace"><SPAN STYLE="font-weight: medium">
+daily.cvd</SPAN></FONT></CODE><CODE CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="font-weight: medium">
+</SPAN></FONT></FONT></CODE><FONT FACE="Arial, sans-serif"><FONT SIZE=2 STYLE="font-size: 11pt">and
+copy them to ClamWin's virus database folder, over-writing the
+existing files. The virus database files can be downloaded from
+ClamAV's home page at </FONT></FONT><A HREF="http://www.clamav.net/"></A><A HREF="http://www.clamav.net/"></A><A HREF="http://www.clamav.net/"><FONT FACE="Arial, sans-serif"><FONT SIZE=2 STYLE="font-size: 11pt">www.clamav.net</FONT></FONT></A><A HREF="http://www.clamav.net/"></A><A HREF="http://www.clamav.net/"></A></P>
+<P CLASS="western"><BR><BR>
+</P>
+</BODY>
+</HTML>
