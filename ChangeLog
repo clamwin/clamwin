@@ -1,4 +1,7 @@
-Version 0.90.1.1 - 25 July 2007
+Version 0.91.2 - 21 August 2007
+ - Updated ClamAV to 0.91.2
+
+Version 0.91.1 - 25 July 2007
  - Updated ClamAV to 0.91.1, which should improve archive 
    and packed executable scanning as well as improve 
    database loading times.
