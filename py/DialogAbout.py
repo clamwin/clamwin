@@ -33,11 +33,7 @@ import os, time, tempfile, locale
 import DialogUtils
 import Utils
 import version
-#from I18N import getClamString as _
 
-
-##def create(parent, config):
-##    return AboutDlg(parent, config)
 
 class AboutDlg(wx.Dialog):
     def __init__(self, parent, config=None):
@@ -237,6 +233,7 @@ class AboutDlg(wx.Dialog):
             updatedstr)
 
 if __name__ == '__main__':
+    
     app = wx.App()
     dlg = AboutDlg(None)
     dlg.ShowModal()

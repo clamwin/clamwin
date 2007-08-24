@@ -218,78 +218,51 @@ class PreferencesDlg(wx.Dialog):
         self.Center(wx.BOTH)
         self.Bind(wx.EVT_CHAR_HOOK, self.OnCharHook)
 
-        self.notebook = wx.Notebook(id=wxID_WXPREFERENCESDLGNOTEBOOK,
-              name='notebook', parent=self, pos=wx.Point(7, 7), size=wx.Size(398,
-              368), style=wx.NB_MULTILINE)
+        self.notebook = wx.Notebook(self,wx.ID_ANY,pos=wx.Point(7, 7), size=wx.Size(398,368), style=wx.NB_MULTILINE)
         self.notebook.SetAutoLayout(True)
-        self.notebook.SetToolTipString('')
 
-        self._panelOptions = wx.Panel(id=wxID_WXPREFERENCESDLG_PANELOPTIONS,
-              name='_panelOptions', parent=self.notebook, pos=wx.Point(0, 0),
+        self._panelOptions = wx.Panel(self.notebook,wx.ID_ANY, pos=wx.Point(0, 0),
               size=wx.Size(390, 274), style=wx.TAB_TRAVERSAL)
-        self._panelOptions.SetAutoLayout(False)
 
-        self._panelInternetUpdate = wx.Panel(id=wxID_WXPREFERENCESDLG_PANELINTERNETUPDATE,
-              name='_panelInternetUpdate', parent=self.notebook, pos=wx.Point(0,
-              0), size=wx.Size(390, 274), style=wx.TAB_TRAVERSAL)
-        self._panelInternetUpdate.SetAutoLayout(False)
+        self._panelInternetUpdate = wx.Panel(self.notebook,wx.ID_ANY,pos=wx.Point(0,0), size=wx.Size(390, 274), style=wx.TAB_TRAVERSAL)
 
-        self._panelProxy = wx.Panel(id=wxID_WXPREFERENCESDLG_PANELPROXY,
-              name='_panelProxy', parent=self.notebook, pos=wx.Point(0, 0),
+        self._panelProxy = wx.Panel(self.notebook,wx.ID_ANY,pos=wx.Point(0, 0),
               size=wx.Size(390, 274), style=wx.TAB_TRAVERSAL)
-        self._panelProxy.SetAutoLayout(False)
 
-        self._panelFiles = wx.Panel(id=wxID_WXPREFERENCESDLG_PANELFILES,
-              name='_panelFiles', parent=self.notebook, pos=wx.Point(0, 0),
+        self._panelFiles = wx.Panel(self.notebook,wx.ID_ANY,pos=wx.Point(0, 0),
               size=wx.Size(390, 254), style=wx.TAB_TRAVERSAL)
-        self._panelFiles.SetAutoLayout(False)
 
-        self._panelArchives = wx.Panel(id=wxID_WXPREFERENCESDLG_PANELARCHIVES,
-              name='_panelArchives', parent=self.notebook, pos=wx.Point(0, 0),
+        self._panelArchives = wx.Panel(self.notebook,wx.ID_ANY, pos=wx.Point(0, 0),
               size=wx.Size(390, 274), style=wx.TAB_TRAVERSAL)
-        self._panelArchives.SetAutoLayout(False)
 
-        self._panelReports = wx.Panel(id=wxID_WXPREFERENCESDLG_PANELREPORTS,
-              name='_panelReports', parent=self.notebook, pos=wx.Point(0, 0),
+        self._panelReports = wx.Panel(self.notebook,wx.ID_ANY,pos=wx.Point(0, 0),
               size=wx.Size(390, 274), style=wx.TAB_TRAVERSAL)
-        self._panelReports.SetAutoLayout(False)
 
-        self._panelEmailScanning = wx.Panel(id=wxID_WXPREFERENCESDLG_PANELEMAILSCANNING,
-              name='_panelEmailScanning', parent=self.notebook, pos=wx.Point(0,
+        self._panelEmailScanning = wx.Panel(self.notebook,wx.ID_ANY,pos=wx.Point(0,
               0), size=wx.Size(390, 274), style=wx.TAB_TRAVERSAL)
 
-        self._panelAdvanced = wx.Panel(id=wxID_WXPREFERENCESDLG_PANELADVANCED,
-              name='_panelAdvanced', parent=self.notebook, pos=wx.Point(0, 0),
+        self._panelAdvanced = wx.Panel(self.notebook,wx.ID_ANY,pos=wx.Point(0, 0),
               size=wx.Size(390, 274), style=wx.TAB_TRAVERSAL)
-        self._panelAdvanced.SetAutoLayout(False)
 
-        self.buttonOK = wx.Button(id=wxID_WXPREFERENCESDLGBUTTONOK, label=_('OK'),
-              name='buttonOK', parent=self, pos=wx.Point(128, 384),
-              size=wx.Size(72, 23), style=0)
+        self.buttonOK = wx.Button(self,wx.ID_OK, label=_('OK'), pos=wx.Point(128, 384),
+              size=wx.Size(72, 23))
         self.buttonOK.SetToolTipString(_('Closes the window and saves the changes'))
         self.buttonOK.SetDefault()
         self.Bind(wx.EVT_BUTTON, self.OnOK, self.buttonOK)
 
-        self.buttonCancel = wx.Button(id=wxID_WXPREFERENCESDLGBUTTONCANCEL,
-              label=_('Cancel'), name='buttonCancel', parent=self, pos=wx.Point(209,
-              384), size=wx.Size(75, 23), style=0)
+        self.buttonCancel = wx.Button(self,wx.ID_CANCEL,label=_('Cancel'), pos=wx.Point(209,384), size=wx.Size(75, 23))
         self.buttonCancel.SetToolTipString(_('Closes the window without saving the changes'))
         self.Bind(wx.EVT_BUTTON,self.OnCancel,self.buttonCancel)
 
-        self.staticTextProxyHost = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTPROXYHOST,
-              label=_('Proxy &Server:'), name='staticTextProxyHost',
-              parent=self._panelProxy, pos=wx.Point(6, 61), size=wx.Size(80, 15),
-              style=0)
 
-        self.textCtrlProxyHost = wx.TextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLPROXYHOST,
-              name='textCtrlProxyHost', parent=self._panelProxy, pos=wx.Point(91,
-              57), size=wx.Size(199, 21), style=0, value='')
+        #-----panel Proxy
+
+        self.staticTextProxyHost = wx.StaticText(self._panelProxy,wx.ID_ANY,label=_('Proxy &Server:'), pos=wx.Point(6, 61), size=wx.Size(80, 15))
+        
+        self.textCtrlProxyHost = wx.TextCtrl(self._panelProxy,wx.ID_ANY, pos=wx.Point(91,57), size=wx.Size(199, 21))
         self.textCtrlProxyHost.SetToolTipString(_('Proxy Server domain name or IP address'))
 
-        self.staticTextProxyPort = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTPROXYPORT,
-              label=_('P&ort:'), name='staticTextProxyPort',
-              parent=self._panelProxy, pos=wx.Point(296, 61), size=wx.Size(34,
-              15), style=0)
+        self.staticTextProxyPort = wx.StaticText(self._panelProxy,wx.ID_ANY, label=_('P&ort:'),pos=wx.Point(296, 61), size=wx.Size(34, 15))
 
         self.intCtrlProxyPort = ICtrl.IntCtrl(allow_long=False, allow_none=False,
               default_color=wx.BLACK, id=wxID_WXPREFERENCESDLGINTCTRLPROXYPORT,
@@ -299,42 +272,58 @@ class PreferencesDlg(wx.Dialog):
         self.intCtrlProxyPort.SetBounds((0, 65535))
         self.intCtrlProxyPort.SetToolTipString(_('Proxy Server port number (0-65535)'))
 
-        self.staticTextProxyUser = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTPROXYUSER,
-              label=_('&User Name:'), name='staticTextProxyUser',
-              parent=self._panelProxy, pos=wx.Point(6, 97), size=wx.Size(80, 15),
-              style=0)
+        self.staticTextProxyUser = wx.StaticText(self._panelProxy,wx.ID_ANY,
+              label=_('&User Name:'), pos=wx.Point(6, 97), size=wx.Size(80, 15))
 
-        self.textCtrlProxyUser = wx.TextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLPROXYUSER,
-              name='textCtrlProxyUser', parent=self._panelProxy, pos=wx.Point(91,
-              93), size=wx.Size(295, 21), style=0, value='')
+        self.textCtrlProxyUser = wx.TextCtrl(self._panelProxy,wx.ID_ANY,pos=wx.Point(91,93), size=wx.Size(295, 21))
         self.textCtrlProxyUser.SetToolTipString(_('Proxy Server Account Name (optional)'))
 
         self.staticTextProxyPassword = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTPROXYPASSWORD,
               label=_('&Password:'), name='staticTextProxyPassword',
-              parent=self._panelProxy, pos=wx.Point(6, 135), size=wx.Size(80, 15),
-              style=0)
+              parent=self._panelProxy, pos=wx.Point(6, 135), size=wx.Size(80, 15))
 
-        self.textCtrlProxyPassword = wx.TextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLPROXYPASSWORD,
-              name='textCtrlProxyPassword', parent=self._panelProxy,
-              pos=wx.Point(91, 131), size=wx.Size(295, 21), style=wx.TE_PASSWORD,
-              value='')
+        self.textCtrlProxyPassword = wx.TextCtrl(self._panelProxy,wx.ID_ANY,
+              pos=wx.Point(91, 131), size=wx.Size(295, 21), style=wx.TE_PASSWORD)
         self.textCtrlProxyPassword.SetToolTipString(_('Proxy Server account password (optional)'))
 
-        self.staticTextExplain = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTEXPLAIN,
+        self.staticTextExplain = wx.StaticText(self._panelProxy,wx.ID_ANY,
               label=_('Leave these fields blank if you do not connect via Proxy Server'),
-              name='staticTextExplain', parent=self._panelProxy, pos=wx.Point(6,
-              15), size=wx.Size(378, 27), style=0)
-        self.staticTextExplain.SetToolTipString('')
+              pos=wx.Point(6,15), size=wx.Size(378, 27))
+
+        #-----
+
+        #-----Panel Options
 
         self.staticBoxScanOptions = wx.StaticBox(id=wxID_WXPREFERENCESDLGSTATICBOXSCANOPTIONS,
               label=_('Scanning Options'), name='staticBoxScanOptions',
               parent=self._panelOptions, pos=wx.Point(6, 11), size=wx.Size(376,
               87), style=0)
 
-        self.checkBoxEnableAutoUpdate = wx.CheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXENABLEAUTOUPDATE,
+        self.staticTextLanguage = wx.StaticText(self._panelOptions,wx.ID_ANY,
+                label=_('&Language:'), pos=wx.Point(15,243), size=wx.Size(100, 13))
+
+        listLanguages = [WINDOWSUILANGUAGESTRING]
+        for i in AVAILABLE_LANGUAGES.itervalues():
+            listLanguages = listLanguages + [i]
+        self.choiceLanguage = wx.Choice(self._panelOptions,wx.ID_ANY,choices=listLanguages,
+            pos=wx.Point(100,243), size=wx.Size(200,21))
+        self.choiceLanguage.SetSelection(1)
+        self.choiceLanguage.SetToolTipString(_('Choose auto-detect or an available language'))
+        loc = I18N.getLocale()
+        self.choiceLanguage.SetStringSelection(WINDOWSUILANGUAGESTRING)
+        self.Bind(wx.EVT_CHOICE,self.OnChoiceLanguage,self.choiceLanguage)
+
+
+        self.staticTextLanguageRemark = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTLANGUAGEREMARK,
+                label=_('The language will change next time ClamWin is started'), name='staticTextLanguageRemark',
+                parent=self._panelOptions, pos=wx.Point(15,265), size=wx.Size(350, 13))
+        #-----
+
+        #-----Panel Internet Update
+
+        self.checkBoxEnableAutoUpdate = wx.CheckBox(self._panelInternetUpdate,wx.ID_ANY,
               label=_('&Enable Automatic Virus Database Updates'),
-              name='checkBoxEnableAutoUpdate', parent=self._panelInternetUpdate,
-              pos=wx.Point(6, 11), size=wx.Size(422, 20), style=0)
+              pos=wx.Point(6, 11), size=wx.Size(422, 20))
         self.checkBoxEnableAutoUpdate.SetToolTipString(_('Enable automatic virus database downloads '))
         self.Bind(wx.EVT_CHECKBOX,self.OnCheckBoxEnableAutoUpdate,self.checkBoxEnableAutoUpdate)
     
@@ -342,78 +331,43 @@ class PreferencesDlg(wx.Dialog):
         downloadSiteLabel = _('Download &Site :')
         if len(downloadSiteLabel) > 30:
             # Spread to two lines
-            self.staticText1 = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXT1,
-                  label=downloadSiteLabel, name='staticText1',
-                  parent=self._panelInternetUpdate, pos=wx.Point(24, 34),
-                  size=wx.Size(81, 26), style=0)
+            self.staticText1 = wx.StaticText(self._panelInternetUpdate,wx.ID_ANY,
+                  label=downloadSiteLabel, pos=wx.Point(24, 34),
+                  size=wx.Size(81, 26))
             
         else:
-            self.staticText1 = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXT1,
-                  label=downloadSiteLabel, name='staticText1',
-                  parent=self._panelInternetUpdate, pos=wx.Point(24, 43),
-                  size=wx.Size(81, 13), style=0)
+            self.staticText1 = wx.StaticText(self._panelInternetUpdate,wx.ID_ANY,
+                  label=downloadSiteLabel, pos=wx.Point(24, 43),
+                  size=wx.Size(81, 13))
 
-        self.textCtrlDBMirror = wx.TextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLDBMIRROR,
-              name='textCtrlDBMirror', parent=self._panelInternetUpdate,
-              pos=wx.Point(INTERNETUPDATE_INPUTXPOS, 37), size=wx.Size(180, 21), style=0, value='')
+        self.textCtrlDBMirror = wx.TextCtrl(self._panelInternetUpdate,wx.ID_ANY,
+              pos=wx.Point(INTERNETUPDATE_INPUTXPOS, 37), size=wx.Size(180, 21))
         self.textCtrlDBMirror.SetToolTipString(_('Specify Database Mirror Site here. Usually this is database.clamav.net'))
 
-        self.staticTextUpdateFrequency = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTUPDATEFREQUENCY,
-              label=_('&Update Frequency:'), name='staticTextUpdateFrequency',
-              parent=self._panelInternetUpdate, pos=wx.Point(23, 70),
-              size=wx.Size(128, 18), style=0)
-        self.staticTextUpdateFrequency.SetToolTipString('')
+        self.staticTextUpdateFrequency = wx.StaticText(self._panelInternetUpdate,wx.ID_ANY,
+              label=_('&Update Frequency:'), pos=wx.Point(23, 70))
 
-        self.choiceUpdateFrequency = wx.Choice(choices=[_('Hourly'), _('Daily'),
-              _('Workdays'), _('Weekly')],
-              id=wxID_WXPREFERENCESDLGCHOICEUPDATEFREQUENCY,
-              name='choiceUpdateFrequency', parent=self._panelInternetUpdate,
-              pos=wx.Point(INTERNETUPDATE_INPUTXPOS, 67), size=wx.Size(140, 21), style=0)
+
+        self.choiceUpdateFrequency = wx.Choice(self._panelInternetUpdate,wx.ID_ANY,choices=[_('Hourly'), _('Daily'),_('Workdays'), _('Weekly')],
+              pos=wx.Point(INTERNETUPDATE_INPUTXPOS, 67), size=wx.Size(140, 21))
         self.choiceUpdateFrequency.SetSelection(1)
         self.choiceUpdateFrequency.SetToolTipString(_('How often virus database is downloaded'))
         self.choiceUpdateFrequency.SetStringSelection(_('Daily'))
         self.Bind(wx.EVT_CHOICE,self.OnChoiceUpdateFrequency,self.choiceUpdateFrequency)
 
-        self.staticTextLanguage = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTLANGUAGE,
-                label=_('&Language:'), name='staticTextLanguage',
-                parent=self._panelOptions, pos=wx.Point(15,243), size=wx.Size(100, 13),
-                style=0)
-        self.staticTextLanguage.SetToolTipString('')
-        
-        listLanguages = [WINDOWSUILANGUAGESTRING]
-        for i in AVAILABLE_LANGUAGES.itervalues():
-            listLanguages = listLanguages + [i]
-        self.choiceLanguage = wx.Choice(choices=listLanguages,
-            id=wxID_WXPREFERENCESDLGCHOICELANGUAGE,
-            name='choiceLanguage', parent=self._panelOptions,
-            pos=wx.Point(100,243), size=wx.Size(200,21), style=0)
-        self.choiceLanguage.SetSelection(1)
-        self.choiceLanguage.SetToolTipString(_('Choose auto-detect or an available language'))
-        loc = I18N.getLocale()
-        self.choiceLanguage.SetStringSelection(WINDOWSUILANGUAGESTRING)
-        self.Bind(wx.EVT_CHOICE,self.OnChoiceLanguage,self.choiceLanguage)
+        #-----
 
-        self.staticTextLanguageRemark = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTLANGUAGEREMARK,
-                label=_('The language will change next time ClamWin is started'), name='staticTextLanguageRemark',
-                parent=self._panelOptions, pos=wx.Point(15,265), size=wx.Size(350, 13),
-                style=0)
-        self.staticTextLanguageRemark.SetToolTipString('')
-        
+        #-----Panel Files    
 
-        self.staticTextClamScan = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTCLAMSCAN,
-              label=_('&ClamScan Location:'), name='staticTextClamScan',
-              parent=self._panelFiles, pos=wx.Point(6, 15), size=wx.Size(354, 13),
-              style=0)
-        self.staticTextClamScan.SetToolTipString('')
+      
+        self.staticTextClamScan = wx.StaticText(self._panelFiles,wx.ID_ANY,
+              label=_('&ClamScan Location:'), pos=wx.Point(6, 15), size=wx.Size(354, 13))
 
-        self.textCtrlClamScan = wx.TextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLCLAMSCAN,
-              name='textCtrlClamScan', parent=self._panelFiles, pos=wx.Point(6,
-              33), size=wx.Size(356, 20), style=0, value='')
+        self.textCtrlClamScan = wx.TextCtrl(self._panelFiles,wx.ID_ANY, pos=wx.Point(6,33), size=wx.Size(356, 20))
         self.textCtrlClamScan.SetToolTipString(_('Specify location of clamscan'))
 
-        self.buttonBrowseClamScan = wx.Button(id=wxID_WXPREFERENCESDLGBUTTONBROWSECLAMSCAN,
-              label='...', name='buttonBrowseClamScan', parent=self._panelFiles,
-              pos=wx.Point(363, 34), size=wx.Size(20, 20), style=0)
+        self.buttonBrowseClamScan = wx.Button(self._panelFiles,wx.ID_ANY,label='...',
+              pos=wx.Point(363, 34), size=wx.Size(20, 20))
         self.buttonBrowseClamScan.SetToolTipString(_('Click to browse for clamscan'))
         self.Bind(wx.EVT_BUTTON,self.OnButtonBrowseClamScan,self.buttonBrowseClamScan)
 

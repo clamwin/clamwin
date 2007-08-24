@@ -97,19 +97,17 @@ def UpdateVirDB(parent, config, autoClose = False):
         # and causes 2 copies of the db being loaded
         try:
             dirname = os.path.join(os.path.join(dbdir, 'main.inc'))
-            if os.path.isdir(dirname) and \
-               os.path.isfile(os.path.join(dbdir, 'main.cvd')):
+            if os.path.isdir(dirname) and os.path.isfile(os.path.join(dbdir, 'main.cvd')):
                for root, dirs, files in os.walk(dirname, topdown=False):
                    for name in files:
                        os.remove(os.path.join(root, name))
                os.rmdir(dirname)
                
             dirname = os.path.join(os.path.join(dbdir, 'daily.inc'))
-            if os.path.isdir(dirname) and \
-               os.path.isfile(os.path.join(dbdir, 'daily.cvd')):
+            if os.path.isdir(dirname) and os.path.isfile(os.path.join(dbdir, 'daily.cvd')):
                for root, dirs, files in os.walk(dirname, topdown=False):
                    for name in files:
-        	       os.remove(os.path.join(root, name))
+                       os.remove(os.path.join(root, name))
                os.rmdir(dirname)
         except Exception, e:
             print "couldn't remove .inc folder. Error: %s" % str(e)                       
