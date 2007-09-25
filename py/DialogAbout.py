@@ -25,6 +25,10 @@
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 
+#For test only
+if __name__ == '__main__':
+    import I18N
+    I18N.install()
 
 import wx
 import wx.lib.hyperlink as hyperlink
@@ -233,7 +237,7 @@ class AboutDlg(wx.Dialog):
             updatedstr)
 
 if __name__ == '__main__':
-    
+
     app = wx.App()
     dlg = AboutDlg(None)
     dlg.ShowModal()

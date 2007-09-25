@@ -206,8 +206,6 @@ class PreferencesDlg(wx.Dialog):
         self._init_coll_imageListScheduler_Images(self.imageListScheduler)
 
     def _init_ctrls(self, prnt):
-        # generated method, don't edit
-
         INTERNETUPDATE_INPUTXPOS = 150
         wx.Dialog.__init__(self, id=wxID_WXPREFERENCESDLG, name='', parent=prnt,
               pos=wx.Point(604, 301), size=wx.Size(419, 391),
@@ -221,13 +219,17 @@ class PreferencesDlg(wx.Dialog):
         self.notebook = wx.Notebook(self,wx.ID_ANY,pos=wx.Point(7, 7), size=wx.Size(398,368), style=wx.NB_MULTILINE)
         self.notebook.SetAutoLayout(True)
 
-        self._panelOptions = wx.Panel(self.notebook,wx.ID_ANY, pos=wx.Point(0, 0),
-              size=wx.Size(390, 274), style=wx.TAB_TRAVERSAL)
+        self._panelOptions = wx.Panel(self.notebook,style=wx.TAB_TRAVERSAL)
 
-        self._panelInternetUpdate = wx.Panel(self.notebook,wx.ID_ANY,pos=wx.Point(0,0), size=wx.Size(390, 274), style=wx.TAB_TRAVERSAL)
+        self._panelFilters = wx.Panel(self.notebook, style=wx.TAB_TRAVERSAL)
 
-        self._panelProxy = wx.Panel(self.notebook,wx.ID_ANY,pos=wx.Point(0, 0),
-              size=wx.Size(390, 274), style=wx.TAB_TRAVERSAL)
+        self._panelInternetUpdate = wx.Panel(self.notebook, style=wx.TAB_TRAVERSAL)
+
+        self._panelProxy = wx.Panel(self.notebook, style=wx.TAB_TRAVERSAL)
+
+        self._panelScheduler = wx.Panel(self.notebook, style=wx.TAB_TRAVERSAL)
+
+        self._panelEmailAlerts = wx.Panel(self.notebook,style=wx.TAB_TRAVERSAL)
 
         self._panelFiles = wx.Panel(self.notebook,wx.ID_ANY,pos=wx.Point(0, 0),
               size=wx.Size(390, 254), style=wx.TAB_TRAVERSAL)
@@ -255,52 +257,60 @@ class PreferencesDlg(wx.Dialog):
         self.Bind(wx.EVT_BUTTON,self.OnCancel,self.buttonCancel)
 
 
-        #-----panel Proxy
-
-        self.staticTextProxyHost = wx.StaticText(self._panelProxy,wx.ID_ANY,label=_('Proxy &Server:'), pos=wx.Point(6, 61), size=wx.Size(80, 15))
         
-        self.textCtrlProxyHost = wx.TextCtrl(self._panelProxy,wx.ID_ANY, pos=wx.Point(91,57), size=wx.Size(199, 21))
-        self.textCtrlProxyHost.SetToolTipString(_('Proxy Server domain name or IP address'))
 
-        self.staticTextProxyPort = wx.StaticText(self._panelProxy,wx.ID_ANY, label=_('P&ort:'),pos=wx.Point(296, 61), size=wx.Size(34, 15))
+        #-----Panel Options (General)
 
-        self.intCtrlProxyPort = ICtrl.IntCtrl(allow_long=False, allow_none=False,
-              default_color=wx.BLACK, id=wxID_WXPREFERENCESDLGINTCTRLPROXYPORT,
-              limited=False, max=65535, min=0, name='intCtrlProxyPort',
-              oob_color=wx.RED, parent=self._panelProxy, pos=wx.Point(332, 57),
-              size=wx.Size(54, 21), style=0, value=3128)
-        self.intCtrlProxyPort.SetBounds((0, 65535))
-        self.intCtrlProxyPort.SetToolTipString(_('Proxy Server port number (0-65535)'))
+        self.staticBoxScanOptions = wx.StaticBox(self._panelOptions,wx.ID_ANY,_('Scanning Options'))
+        SBsizerSO = wx.StaticBoxSizer(self.staticBoxScanOptions,wx.VERTICAL)
 
-        self.staticTextProxyUser = wx.StaticText(self._panelProxy,wx.ID_ANY,
-              label=_('&User Name:'), pos=wx.Point(6, 97), size=wx.Size(80, 15))
+        self.checkBoxScanRecursive = wx.CheckBox(self._panelOptions,wx.ID_ANY,_('&Scan In Subdirectories'))
+        self.checkBoxScanRecursive.SetToolTipString(_('Select if you wish to scan in subdirectories recursively'))
+        SBsizerSO.Add(self.checkBoxScanRecursive,0,wx.LEFT,10)
 
-        self.textCtrlProxyUser = wx.TextCtrl(self._panelProxy,wx.ID_ANY,pos=wx.Point(91,93), size=wx.Size(295, 21))
-        self.textCtrlProxyUser.SetToolTipString(_('Proxy Server Account Name (optional)'))
+        self.checkBoxInfectedOnly = wx.CheckBox(self._panelOptions,wx.ID_ANY,_('&Display Infected Files Only'))
+        self.checkBoxInfectedOnly.SetToolTipString(_('Select if you wish to display infected files only in the scan progress window'))
+        SBsizerSO.Add(self.checkBoxInfectedOnly,0,wx.LEFT,10)
 
-        self.staticTextProxyPassword = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTPROXYPASSWORD,
-              label=_('&Password:'), name='staticTextProxyPassword',
-              parent=self._panelProxy, pos=wx.Point(6, 135), size=wx.Size(80, 15))
+        self.checkBoxShowProgress = wx.CheckBox(self._panelOptions,wx.ID_ANY,_('Display &File Scanned % Progress Indicator'))
+        self.checkBoxShowProgress.SetToolTipString(_('Select if you wish to display infected files only in the scan progress window'))
+        SBsizerSO.Add(self.checkBoxShowProgress,0,wx.LEFT,10)
 
-        self.textCtrlProxyPassword = wx.TextCtrl(self._panelProxy,wx.ID_ANY,
-              pos=wx.Point(91, 131), size=wx.Size(295, 21), style=wx.TE_PASSWORD)
-        self.textCtrlProxyPassword.SetToolTipString(_('Proxy Server account password (optional)'))
+        self.staticBoxInfected = wx.StaticBox(self._panelOptions,wx.ID_ANY,_('Infected Files'))
+        SBsizerIF = wx.StaticBoxSizer(self.staticBoxInfected,wx.VERTICAL)
+        
+        self.radioButtonReport = wx.RadioButton(self._panelOptions,wx.ID_ANY,_('&Report Only'))
+        self.Bind(wx.EVT_RADIOBUTTON,self.OnRadioInfected,self.radioButtonReport)
+        SBsizerIF.Add(self.radioButtonReport,0,wx.LEFT,10)
 
-        self.staticTextExplain = wx.StaticText(self._panelProxy,wx.ID_ANY,
-              label=_('Leave these fields blank if you do not connect via Proxy Server'),
-              pos=wx.Point(6,15), size=wx.Size(378, 27))
+        self.radioButtonRemoveInfected = wx.RadioButton(self._panelOptions,wx.ID_ANY,_('&Remove (Use Carefully)'))
+        self.Bind(wx.EVT_RADIOBUTTON,self.OnRadioInfected,self.radioButtonRemoveInfected)
+        SBsizerIF.Add(self.radioButtonRemoveInfected,0,wx.LEFT,10)
 
-        #-----
+        self.radioButtonQuarantine = wx.RadioButton(self._panelOptions,wx.ID_ANY,_('&Move To Quarantine Folder:'))
+        self.Bind(wx.EVT_RADIOBUTTON,self.OnRadioInfected,self.radioButtonQuarantine)
+        SBsizerIF.Add(self.radioButtonQuarantine,0,wx.LEFT,10)
 
-        #-----Panel Options
+        self.textCtrlQuarantine = wx.TextCtrl(self._panelOptions,wx.ID_ANY)
+        self.textCtrlQuarantine.SetToolTipString(_('Specify location for a quarantine folder'))
 
-        self.staticBoxScanOptions = wx.StaticBox(id=wxID_WXPREFERENCESDLGSTATICBOXSCANOPTIONS,
-              label=_('Scanning Options'), name='staticBoxScanOptions',
-              parent=self._panelOptions, pos=wx.Point(6, 11), size=wx.Size(376,
-              87), style=0)
+        self.buttonBrowseQuarantine = wx.Button(self._panelOptions,wx.ID_ANY,'...')
+        self.buttonBrowseQuarantine.SetToolTipString(_('Click to browse for a quarantine folder'))
+        self.Bind(wx.EVT_BUTTON,self.OnButtonBrowseQuarantine,self.buttonBrowseQuarantine)
+        
+        bsizer = wx.BoxSizer(wx.HORIZONTAL)
+        bsizer.Add(self.textCtrlQuarantine,1)
+        bsizer.Add(self.buttonBrowseQuarantine)
+        SBsizerIF.Add(bsizer,0,wx.EXPAND|wx.LEFT,10)
 
-        self.staticTextLanguage = wx.StaticText(self._panelOptions,wx.ID_ANY,
-                label=_('&Language:'), pos=wx.Point(15,243), size=wx.Size(100, 13))
+        self.checkBoxUnload = wx.CheckBox(self._panelOptions,wx.ID_ANY,_('&Unload Infected Programs from Computer Memory'))
+        self.checkBoxUnload.SetToolTipString( _('Select if you wish to unload infected programs from computer memory so they can be quarantined or removed'))
+        SBsizerIF.Add(self.checkBoxUnload,0,wx.LEFT,10)
+        
+        self.staticBoxLanguage = wx.StaticBox(self._panelOptions,wx.ID_ANY,_('Language Settings'))
+        SBsizerL = wx.StaticBoxSizer(self.staticBoxLanguage,wx.VERTICAL)
+
+        self.staticTextLanguage = wx.StaticText(self._panelOptions,wx.ID_ANY,_('&Language:'))
 
         listLanguages = [WINDOWSUILANGUAGESTRING]
         for i in AVAILABLE_LANGUAGES.itervalues():
@@ -313,49 +323,375 @@ class PreferencesDlg(wx.Dialog):
         self.choiceLanguage.SetStringSelection(WINDOWSUILANGUAGESTRING)
         self.Bind(wx.EVT_CHOICE,self.OnChoiceLanguage,self.choiceLanguage)
 
+        bsizer = wx.BoxSizer(wx.HORIZONTAL)
+        bsizer.Add(self.staticTextLanguage)
+        bsizer.Add(self.choiceLanguage)
+        SBsizerL.Add(bsizer,0,wx.LEFT,10)
+        
+        self.staticTextLanguageRemark = wx.StaticText(self._panelOptions,wx.ID_ANY,_('The language will change next time ClamWin is started'))
+        SBsizerL.Add(self.staticTextLanguageRemark,0,wx.LEFT,10)
 
-        self.staticTextLanguageRemark = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTLANGUAGEREMARK,
-                label=_('The language will change next time ClamWin is started'), name='staticTextLanguageRemark',
-                parent=self._panelOptions, pos=wx.Point(15,265), size=wx.Size(350, 13))
+        BSOptions = wx.BoxSizer(wx.VERTICAL)
+        BSOptions.Add(SBsizerSO,1,wx.EXPAND|wx.ALL,5)
+        BSOptions.Add(SBsizerIF,1,wx.EXPAND|wx.ALL,5)
+        BSOptions.Add(SBsizerL,0,wx.EXPAND|wx.ALL,5)
+
+        self._panelOptions.SetSizer(BSOptions)      
+
+        
         #-----
+        
+        #-------------Panel Filters
+
+        
+
+        bsizer = wx.BoxSizer(wx.VERTICAL)
+
+        self.staticTextFiltreDesc1 = wx.StaticText(self._panelFilters,wx.ID_ANY,_('Specify Filename Patterns to include and/or exclude in scanning'))
+        bsizer.Add(self.staticTextFiltreDesc1,0,wx.ALL,5)
+
+        self.staticText2 = wx.StaticText(self._panelFilters,wx.ID_ANY,_('(To specify a regular expression include your pattern within <...>)'))
+        bsizer.Add(self.staticText2,0,wx.ALL,5)
+
+        gsizer = wx.FlexGridSizer(2,2)
+        
+        self.staticTextFiltersExclude = wx.StaticText(self._panelFilters,wx.ID_ANY,_('&Exclude Matching Filenames:'))
+        gsizer.Add(self.staticTextFiltersExclude,1,wx.EXPAND)
+
+        self.staticTextFiltersInclude = wx.StaticText(self._panelFilters,wx.ID_ANY,_('&Scan Only Matching Filenames:'))
+        gsizer.Add(self.staticTextFiltersInclude,1,wx.EXPAND)
+
+        self.editableListBoxFiltersExclude = wx.gizmos.EditableListBox(self._panelFilters,wx.ID_ANY,_('Patterns'))
+        gsizer.Add(self.editableListBoxFiltersExclude,1,wx.EXPAND)
+
+        self.buttonUpFiltersExclude = self.editableListBoxFiltersExclude.GetUpButton()
+        self.buttonUpFiltersExclude.SetToolTipString(_('Move up'))
+
+        self.buttonDownFiltersExclude = self.editableListBoxFiltersExclude.GetDownButton()
+        self.buttonDownFiltersExclude.SetToolTipString(_('Move down'))
+
+        self.buttonNewFiltersExclude = self.editableListBoxFiltersExclude.GetNewButton()
+        self.buttonNewFiltersExclude.SetToolTipString(_('New item'))
+
+        self.buttonDelFiltersExclude = self.editableListBoxFiltersExclude.GetDelButton()
+        self.buttonDelFiltersExclude.SetToolTipString(_('Delete item'))
+
+        self.buttonEditFiltersExclude = self.editableListBoxFiltersExclude.GetEditButton()
+        self.buttonEditFiltersExclude.SetToolTipString(_('Edit item'))
+
+
+        self.editableListBoxFiltersInclude = wx.gizmos.EditableListBox(self._panelFilters,wx.ID_ANY,_('Patterns'))
+        gsizer.Add(self.editableListBoxFiltersInclude,1,wx.EXPAND)
+        
+        self.buttonUpFiltersInclude = self.editableListBoxFiltersInclude.GetUpButton()
+        self.buttonUpFiltersInclude.SetToolTipString(_('Move up'))
+
+        self.buttonDownFiltersInclude = self.editableListBoxFiltersInclude.GetDownButton()
+        self.buttonDownFiltersInclude.SetToolTipString(_('Move down'))
+
+        self.buttonNewFiltersInclude = self.editableListBoxFiltersInclude.GetNewButton()
+        self.buttonNewFiltersInclude.SetToolTipString(_('New item'))
+
+        self.buttonDelFiltersInclude = self.editableListBoxFiltersInclude.GetDelButton()
+        self.buttonDelFiltersInclude.SetToolTipString(_('Delete item'))
+
+        self.buttonEditFiltersInclude = self.editableListBoxFiltersInclude.GetEditButton()
+        self.buttonEditFiltersInclude.SetToolTipString(_('Edit item'))
+
+        gsizer.AddGrowableCol(0,1)
+        gsizer.AddGrowableCol(1,1)
+        gsizer.AddGrowableRow(1,1)
+    
+        bsizer.Add(gsizer,1,wx.EXPAND|wx.ALL,5)
+        
+        self._panelFilters.SetSizer(bsizer)
+
+        #-----------------
 
         #-----Panel Internet Update
 
-        self.checkBoxEnableAutoUpdate = wx.CheckBox(self._panelInternetUpdate,wx.ID_ANY,
-              label=_('&Enable Automatic Virus Database Updates'),
-              pos=wx.Point(6, 11), size=wx.Size(422, 20))
+        bsizer = wx.BoxSizer(wx.VERTICAL)
+
+        self.checkBoxEnableAutoUpdate = wx.CheckBox(self._panelInternetUpdate,wx.ID_ANY,_('&Enable Automatic Virus Database Updates'))
         self.checkBoxEnableAutoUpdate.SetToolTipString(_('Enable automatic virus database downloads '))
         self.Bind(wx.EVT_CHECKBOX,self.OnCheckBoxEnableAutoUpdate,self.checkBoxEnableAutoUpdate)
+        bsizer.Add(self.checkBoxEnableAutoUpdate,0,wx.ALL,5)
     
 
-        downloadSiteLabel = _('Download &Site :')
-        if len(downloadSiteLabel) > 30:
-            # Spread to two lines
-            self.staticText1 = wx.StaticText(self._panelInternetUpdate,wx.ID_ANY,
-                  label=downloadSiteLabel, pos=wx.Point(24, 34),
-                  size=wx.Size(81, 26))
-            
-        else:
-            self.staticText1 = wx.StaticText(self._panelInternetUpdate,wx.ID_ANY,
-                  label=downloadSiteLabel, pos=wx.Point(24, 43),
-                  size=wx.Size(81, 13))
+        gsizer = wx.FlexGridSizer(4,2)
+        self.staticText1 = wx.StaticText(self._panelInternetUpdate,wx.ID_ANY,_('Download &Site :'))
+        gsizer.Add(self.staticText1)   
 
-        self.textCtrlDBMirror = wx.TextCtrl(self._panelInternetUpdate,wx.ID_ANY,
-              pos=wx.Point(INTERNETUPDATE_INPUTXPOS, 37), size=wx.Size(180, 21))
+        self.textCtrlDBMirror = wx.TextCtrl(self._panelInternetUpdate)
         self.textCtrlDBMirror.SetToolTipString(_('Specify Database Mirror Site here. Usually this is database.clamav.net'))
+        gsizer.Add(self.textCtrlDBMirror,0,wx.EXPAND)
 
-        self.staticTextUpdateFrequency = wx.StaticText(self._panelInternetUpdate,wx.ID_ANY,
-              label=_('&Update Frequency:'), pos=wx.Point(23, 70))
+        self.staticTextUpdateFrequency = wx.StaticText(self._panelInternetUpdate,wx.ID_ANY,_('&Update Frequency:'))
+        gsizer.Add(self.staticTextUpdateFrequency)
 
-
-        self.choiceUpdateFrequency = wx.Choice(self._panelInternetUpdate,wx.ID_ANY,choices=[_('Hourly'), _('Daily'),_('Workdays'), _('Weekly')],
-              pos=wx.Point(INTERNETUPDATE_INPUTXPOS, 67), size=wx.Size(140, 21))
+        self.choiceUpdateFrequency = wx.Choice(self._panelInternetUpdate,wx.ID_ANY,choices=[_('Hourly'), _('Daily'),_('Workdays'), _('Weekly')])
         self.choiceUpdateFrequency.SetSelection(1)
         self.choiceUpdateFrequency.SetToolTipString(_('How often virus database is downloaded'))
         self.choiceUpdateFrequency.SetStringSelection(_('Daily'))
         self.Bind(wx.EVT_CHOICE,self.OnChoiceUpdateFrequency,self.choiceUpdateFrequency)
+        gsizer.Add(self.choiceUpdateFrequency)
+
+        self.staticTextUpdateTime = wx.StaticText(self._panelInternetUpdate,wx.ID_ANY,_('&Time:'))
+        gsizer.Add(self.staticTextUpdateTime)
+        
+        
+        hbsizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.timeUpdate = masked.TimeCtrl(self._panelInternetUpdate,wx.ID_ANY,fmt24hr=Utils.IsTime24(), useFixedWidthFont=False, display_seconds=True)
+        self.timeUpdate.SetToolTipString(_('When the download should be started'))
+        h = self.timeUpdate.GetSize().height
+        hbsizer.Add(self.timeUpdate)
+
+        self.spinButtonUpdateTime = wx.SpinButton(self._panelInternetUpdate,wx.ID_ANY,size=(-1,h),style=wx.SP_ARROW_KEYS | wx.SP_VERTICAL)
+        self.timeUpdate.BindSpinButton(self.spinButtonUpdateTime)
+        hbsizer.Add(self.spinButtonUpdateTime)
+        gsizer.Add(hbsizer)
+        
+
+        self.staticTextUpdateDay = wx.StaticText(self._panelInternetUpdate,wx.ID_ANY,_('&Day Of The Week:'))
+        gsizer.Add(self.staticTextUpdateDay)
+        
+        self.choiceUpdateDay = wx.Choice(self._panelInternetUpdate,wx.ID_ANY,choices=[_('Monday'), _('Tuesday'),_('Wednesday'), _('Thursday'), _('Friday'), _('Saturday'), _('Sunday')])
+        self.choiceUpdateDay.SetSelection(1)
+        self.choiceUpdateDay.SetToolTipString(_('When update frequency is weekly select day of the week for an update'))
+        self.choiceUpdateDay.SetStringSelection(_('Tuesday'))
+        gsizer.Add(self.choiceUpdateDay)
+
+        gsizer.AddGrowableCol(1,1)
+
+        bsizer.Add(gsizer,0,wx.EXPAND|wx.ALL,5)
+
+        self.checkBoxWarnDBOld = wx.CheckBox(self._panelInternetUpdate,wx.ID_ANY,_('&Warn if Virus database is Out of Date'))
+        self.checkBoxWarnDBOld.SetToolTipString(_('Will display a reminder if the virus database is older than 3 days'))
+        self.Bind(wx.EVT_CHECKBOX,self.OnCheckBoxWarnDBOld,self.checkBoxWarnDBOld)
+        bsizer.Add(self.checkBoxWarnDBOld,0,wx.ALL,5)
+
+        self.checkBoxUpdateLogon = wx.CheckBox(self._panelInternetUpdate,wx.ID_ANY,_('&Update Virus Database On Logon'))
+        self.checkBoxUpdateLogon.SetToolTipString(_('Select if you wish to update the virus databases just after you logged on'))
+        self.Bind(wx.EVT_CHECKBOX,self.OnCheckBoxEnableAutoUpdate,self.checkBoxUpdateLogon)
+        bsizer.Add(self.checkBoxUpdateLogon,0,wx.ALL,5)
+
+        self.checkBoxCheckVersion = wx.CheckBox(self._panelInternetUpdate,wx.ID_ANY,_('&Notify About New ClamWin Releases'))
+        self.checkBoxCheckVersion.SetToolTipString(_('Select if you wish to get a notification message when ClamWin Free Antivirus program has been updated'))
+        self.Bind(wx.EVT_CHECKBOX,self.OnCheckBoxCheckVersionCheckbox,self.checkBoxCheckVersion)
+        bsizer.Add(self.checkBoxCheckVersion,0,wx.ALL,5)
+
+        self.staticTextNoPersonal = wx.StaticText(self._panelInternetUpdate,wx.ID_ANY,_('(No personal information is transmitted during this check)'))
+        bsizer.Add(self.staticTextNoPersonal,0,wx.ALL,5)
+
+        self._panelInternetUpdate.SetSizer(bsizer)
 
         #-----
+
+        #-----panel Proxy
+
+        bsizer = wx.BoxSizer(wx.VERTICAL)
+
+        t = wx.StaticText(self._panelProxy,wx.ID_ANY,_('Leave these fields blank if you do not connect via Proxy Server'))
+        bsizer.Add(t,0,wx.ALL,5)
+
+        hbsizer = wx.BoxSizer(wx.HORIZONTAL)
+        
+        t = wx.StaticText(self._panelProxy,wx.ID_ANY,_('Proxy &Server:'))
+        hbsizer.Add(t)
+        
+        self.textCtrlProxyHost = wx.TextCtrl(self._panelProxy,wx.ID_ANY, size=wx.Size(199, -1))
+        self.textCtrlProxyHost.SetToolTipString(_('Proxy Server domain name or IP address'))
+        hbsizer.Add(self.textCtrlProxyHost)
+
+        hbsizer.Add((5,-1))
+
+        t = wx.StaticText(self._panelProxy,wx.ID_ANY, _('P&ort:'))
+        hbsizer.Add(t)
+
+        self.intCtrlProxyPort = ICtrl.IntCtrl(self._panelProxy,wx.ID_ANY,allow_long=False, allow_none=False,
+              default_color=wx.BLACK,limited=False, max=65535, min=0, oob_color=wx.RED,value=3128)
+        self.intCtrlProxyPort.SetBounds((0, 65535))
+        self.intCtrlProxyPort.SetToolTipString(_('Proxy Server port number (0-65535)'))
+        hbsizer.Add(self.intCtrlProxyPort,1)
+
+        bsizer.Add(hbsizer,0,wx.EXPAND|wx.ALL,5)
+
+        hbsizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        t = wx.StaticText(self._panelProxy,wx.ID_ANY,_('&User Name:'))
+        hbsizer.Add(t)
+
+        self.textCtrlProxyUser = wx.TextCtrl(self._panelProxy)
+        self.textCtrlProxyUser.SetToolTipString(_('Proxy Server Account Name (optional)'))
+        hbsizer.Add(self.textCtrlProxyUser,1)
+
+        bsizer.Add(hbsizer,0,wx.EXPAND|wx.ALL,5)
+
+        hbsizer = wx.BoxSizer(wx.HORIZONTAL)
+        t = wx.StaticText(self._panelProxy,wx.ID_ANY,_('&Password:'))
+        hbsizer.Add(t)
+
+        self.textCtrlProxyPassword = wx.TextCtrl(self._panelProxy,wx.ID_ANY,style=wx.TE_PASSWORD)
+        self.textCtrlProxyPassword.SetToolTipString(_('Proxy Server account password (optional)'))
+        hbsizer.Add(self.textCtrlProxyPassword,1)
+
+        bsizer.Add(hbsizer,0,wx.EXPAND|wx.ALL,5)
+
+        self._panelProxy.SetSizer(bsizer)
+       
+
+        #-----
+
+        #------- Panel Scheduler
+        
+        gsizer = wx.FlexGridSizer(2,2)
+
+        t = wx.StaticText(self._panelScheduler,wx.ID_ANY,_('Scheduled Scans:'))
+        gsizer.Add(t,0,wx.ALL,5)
+
+        gsizer.Add((0,0)) #add empty space
+
+        
+        self.listViewScheduledTasks = wx.ListView(self._panelScheduler,wx.ID_ANY,style=wx.LC_REPORT | wx.LC_SINGLE_SEL)
+        self.listViewScheduledTasks.SetToolTipString(_('List of Scheduled Scans'))
+        self.listViewScheduledTasks.SetImageList(self.imageListScheduler, wx.IMAGE_LIST_NORMAL)
+        self.listViewScheduledTasks.SetImageList(self.imageListScheduler, wx.IMAGE_LIST_SMALL)
+        self._init_coll_listViewScheduledTasks_Columns(self.listViewScheduledTasks)
+        self.Bind(wx.EVT_LIST_ITEM_SELECTED,self.OnScheduledTasksUpdate,self.listViewScheduledTasks)
+        self.Bind(wx.EVT_LIST_ITEM_DESELECTED,self.OnScheduledTasksUpdate,self.listViewScheduledTasks)
+        self.Bind(wx.EVT_LEFT_DCLICK,self.OnButtonEditScheduledScan,self.listViewScheduledTasks)
+        gsizer.Add(self.listViewScheduledTasks,0,wx.EXPAND|wx.ALL,5)
+
+        bsizer = wx.BoxSizer(wx.VERTICAL)
+
+        self.buttonTaskAdd = wx.Button(self._panelScheduler,wx.ID_ANY,_('&Add'))
+        self.Bind(wx.EVT_BUTTON,self.OnButtonAddScheduledScan,self.buttonTaskAdd)
+        bsizer.Add(self.buttonTaskAdd)
+
+        self.buttonTaskRemove = wx.Button(self._panelScheduler,wx.ID_ANY,_('&Remove'))
+        self.Bind(wx.EVT_BUTTON,self.OnButtonRemoveScheduledScan,self.buttonTaskRemove)
+        bsizer.Add(self.buttonTaskRemove)
+
+        self.buttonTaskEdit = wx.Button(self._panelScheduler,wx.ID_ANY,_('&Edit'))
+        self.Bind(wx.EVT_BUTTON,self.OnButtonEditScheduledScan,self.buttonTaskEdit)
+        bsizer.Add(self.buttonTaskEdit)
+
+        self.buttonTaskActivate = wx.Button(self._panelScheduler,wx.ID_ANY,_('A&ctivate'))
+        self.Bind(wx.EVT_BUTTON,self.OnButtonTaskActivate,self.buttonTaskActivate)
+        bsizer.Add(self.buttonTaskActivate)
+
+        self.buttonTaskDeactivate = wx.Button(self._panelScheduler,wx.ID_ANY,_('&Deactivate'))
+        self.Bind(wx.EVT_BUTTON,self.OnButtonTaskDeactivate,self.buttonTaskDeactivate)
+        bsizer.Add(self.buttonTaskDeactivate)
+
+        gsizer.Add(bsizer,0,wx.ALL,5)
+
+        gsizer.AddGrowableCol(0,1)
+        gsizer.AddGrowableRow(1,1)
+
+        self._panelScheduler.SetSizer(gsizer)
+
+
+        #-------------
+
+        #-------Panel Email Alerts
+
+
+        bsizer = wx.BoxSizer(wx.VERTICAL)
+
+        self.checkBoxSMTPEnable = wx.CheckBox(self._panelEmailAlerts,wx.ID_ANY,_('&Send Email Alert On Virus Detection'))
+        self.checkBoxSMTPEnable.SetToolTipString(_('Select if you wish to receive email alerts when ClamWin detects a virus'))
+        self.Bind(wx.EVT_CHECKBOX,self.OnCheckBoxSMTPEnable,self.checkBoxSMTPEnable)
+        bsizer.Add(self.checkBoxSMTPEnable)
+        
+        self.staticBoxSMTPConnection = wx.StaticBox(self._panelEmailAlerts,wx.ID_ANY,_('SMTP Connection Details'))
+        sbsizer = wx.StaticBoxSizer(self.staticBoxSMTPConnection,wx.VERTICAL)
+
+
+        hbsizer = wx.BoxSizer(wx.HORIZONTAL)
+        t = wx.StaticText(self._panelEmailAlerts,wx.ID_ANY,_('&Mail Server:'))
+        hbsizer.Add(t)
+
+        self.textCtrlSMTPHost = wx.TextCtrl(self._panelEmailAlerts)
+        self.textCtrlSMTPHost.SetToolTipString(_('SMTP Server domain name or IP address'))
+        hbsizer.Add(self.textCtrlSMTPHost)
+
+        t = wx.StaticText(self._panelEmailAlerts,wx.ID_ANY,_('P&ort:'))
+        hbsizer.Add(t)
+
+        self.intCtrlSMTPPort = ICtrl.IntCtrl(self._panelEmailAlerts,wx.ID_ANY,allow_long=False, allow_none=False,
+              default_color=wx.BLACK, limited=False, max=65535, min=0,
+              oob_color=wx.RED, value=25)
+        self.intCtrlSMTPPort.SetBounds((0, 65535))
+        self.intCtrlSMTPPort.SetToolTipString(_('Mail Server port number (0-65535)'))
+        hbsizer.Add(self.intCtrlSMTPPort)
+
+        sbsizer.Add(hbsizer)
+
+        hbsizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        t = wx.StaticText(self._panelEmailAlerts,wx.ID_ANY,_('&User Name:'))
+        hbsizer.Add(t)
+
+        self.textCtrlSMTPUser = wx.TextCtrl(self._panelEmailAlerts,wx.ID_ANY)
+        self.textCtrlSMTPUser.SetToolTipString(_('Mail Server Account Name (optional)'))
+        hbsizer.Add(self.textCtrlSMTPUser)
+        sbsizer.Add(hbsizer)
+
+
+        hbsizer = wx.BoxSizer(wx.HORIZONTAL)
+        t = wx.StaticText(self._panelEmailAlerts,wx.ID_ANY,_('&Password:'))
+        hbsizer.Add(t)
+
+        self.textCtrlSMTPPassword = wx.TextCtrl(self._panelEmailAlerts, style=wx.TE_PASSWORD)
+        self.textCtrlSMTPPassword.SetToolTipString(_('Mail Server account password (optional)'))
+        hbsizer.Add(self.textCtrlSMTPPassword)
+
+        sbsizer.Add(hbsizer)
+        bsizer.Add(sbsizer)
+
+
+        self.staticBoxEmailDetails = wx.StaticBox(self._panelEmailAlerts,wx.ID_ANY,_('Email Message Details'))
+        sbsizer = wx.StaticBoxSizer(self.staticBoxEmailDetails,wx.VERTICAL)
+
+        hbsizer = wx.BoxSizer(wx.HORIZONTAL)
+        t = wx.StaticText(self._panelEmailAlerts,wx.ID_ANY,_('&From:'))
+        hbsizer.Add(t)
+
+        self.textCtrlSMTPFrom = wx.TextCtrl(self._panelEmailAlerts)
+        self.textCtrlSMTPFrom.SetToolTipString(_('Specify an email address from which the notification will be sent.'))
+        hbsizer.Add(self.textCtrlSMTPFrom)
+        sbsizer.Add(hbsizer)
+
+        hbsizer = wx.BoxSizer(wx.HORIZONTAL)
+        t = wx.StaticText(self._panelEmailAlerts,wx.ID_ANY,_('&To:'))
+        hbsizer.Add(t)
+
+        self.textCtrlSMTPTo = wx.TextCtrl(self._panelEmailAlerts)
+        self.textCtrlSMTPTo.SetToolTipString(_('Specify an email address where the email alert will be delivered.  Separate multiple addresses with commas.'))
+        hbsizer.Add(self.textCtrlSMTPTo)
+        sbsizer.Add(hbsizer)
+
+        hbsizer = wx.BoxSizer(wx.HORIZONTAL)
+        t = wx.StaticText(self._panelEmailAlerts,wx.ID_ANY,_('Su&bject:'))
+        hbsizer.Add(t)
+
+        self.textCtrlSMTPSubject = wx.TextCtrl(self._panelEmailAlerts)
+        self.textCtrlSMTPSubject.SetToolTipString(_("Specify Recipient's email address where the email alert will be delivered"))
+        hbsizer.Add(self.textCtrlSMTPSubject)
+        sbsizer.Add(hbsizer)
+
+        bsizer.Add(sbsizer)
+
+        self.buttonSendTestEmail = wx.Button(self._panelEmailAlerts,wx.ID_ANY,_('Send &Test Email'))
+        self.buttonSendTestEmail.SetToolTipString(_('Click to send a test email message'))
+        self.Bind(wx.EVT_BUTTON,self.OnButtonSendTestEmail,self.buttonSendTestEmail)
+
+        bsizer.Add(self.buttonSendTestEmail)
+
+        self._panelEmailAlerts.SetSizer(bsizer)
+
+        #--------------
 
         #-----Panel Files    
 
@@ -371,70 +707,28 @@ class PreferencesDlg(wx.Dialog):
         self.buttonBrowseClamScan.SetToolTipString(_('Click to browse for clamscan'))
         self.Bind(wx.EVT_BUTTON,self.OnButtonBrowseClamScan,self.buttonBrowseClamScan)
 
-        self.staticTextFreshClam = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTFRESHCLAM,
-              label=_('&FreshClam Location:'), name='staticTextFreshClam',
-              parent=self._panelFiles, pos=wx.Point(6, 65), size=wx.Size(354, 13),
-              style=0)
-        self.staticTextFreshClam.SetToolTipString('')
+        self.staticTextFreshClam = wx.StaticText(self._panelFiles,wx.ID_ANY,_('&FreshClam Location:'), pos=wx.Point(6, 65), size=wx.Size(354, 13))
 
-        self.textCtrlFreshClam = wx.TextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLFRESHCLAM,
-              name='textCtrlFreshClam', parent=self._panelFiles, pos=wx.Point(6,
-              83), size=wx.Size(355, 20), style=0, value='')
+        self.textCtrlFreshClam = wx.TextCtrl(self._panelFiles,wx.ID_ANY, pos=wx.Point(6,83), size=wx.Size(355, 20))
         self.textCtrlFreshClam.SetToolTipString(_('Specify location of freshclam'))
 
-        self.buttonBrowseFreshClam = wx.Button(id=wxID_WXPREFERENCESDLGBUTTONBROWSEFRESHCLAM,
-              label='...', name='buttonBrowseFreshClam',
-              parent=self._panelFiles, pos=wx.Point(363, 83), size=wx.Size(20,
-              20), style=0)
+        self.buttonBrowseFreshClam = wx.Button(self._panelFiles,wx.ID_ANY,'...',pos=wx.Point(363, 83), size=wx.Size(20,20))
         self.buttonBrowseFreshClam.SetToolTipString(_('Click to browse for freshclam'))
         self.Bind(wx.EVT_BUTTON,self.OnButtonBrowseFreshClam,self.buttonBrowseFreshClam)
 
-        self.staticTextVirDB = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTVIRDB,
-              label=_('&Virus Database Folder:'), name='staticTextVirDB',
-              parent=self._panelFiles, pos=wx.Point(6, 115), size=wx.Size(354,
-              13), style=0)
-        self.staticTextVirDB.SetToolTipString('')
+        self.staticTextVirDB = wx.StaticText(self._panelFiles,wx.ID_ANY,_('&Virus Database Folder:'), pos=wx.Point(6, 115), size=wx.Size(354,13))
 
-        self.textCtrlVirDB = wx.TextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLVIRDB,
-              name='textCtrlVirDB', parent=self._panelFiles, pos=wx.Point(6,
-              133), size=wx.Size(355, 20), style=0, value='')
+        self.textCtrlVirDB = wx.TextCtrl(self._panelFiles,wx.ID_ANY, pos=wx.Point(6, 133), size=wx.Size(355, 20))
         self.textCtrlVirDB.SetToolTipString(_('Specify location of virus database files'))
 
-        self.buttonVirDB = wx.Button(id=wxID_WXPREFERENCESDLGBUTTONVIRDB,
-              label='...', name='buttonVirDB', parent=self._panelFiles,
-              pos=wx.Point(362, 133), size=wx.Size(20, 20), style=0)
+        self.buttonVirDB = wx.Button(self._panelFiles,wx.ID_ANY,'...',
+              pos=wx.Point(362, 133), size=wx.Size(20, 20))
         self.buttonVirDB.SetToolTipString(_('Click to browse for a virus database folder'))
         self.Bind(wx.EVT_BUTTON,self.OnButtonBrowseVirDB,self.buttonVirDB)
 
-        self.checkBoxScanRecursive = wx.CheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXSCANRECURSIVE,
-              label=_('&Scan In Subdirectories'), name='checkBoxScanRecursive',
-              parent=self._panelOptions, pos=wx.Point(15, 29), size=wx.Size(354,
-              18), style=0)
-        self.checkBoxScanRecursive.SetToolTipString(_('Select if you wish to scan in subdirectories recursively'))
-        self.checkBoxScanRecursive.SetValue(False)
+        #----------
 
-        self.staticTextUpdateTime = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTUPDATETIME,
-              label=_('&Time:'), name='staticTextUpdateTime',
-              parent=self._panelInternetUpdate, pos=wx.Point(23, 97),
-              size=wx.Size(33, 18), style=0)
-
-        self.staticTextUpdateDay = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTUPDATEDAY,
-              label=_('&Day Of The Week:'), name='staticTextUpdateDay',
-              parent=self._panelInternetUpdate, pos=wx.Point(23, 124),
-              size=wx.Size(96, 18), style=0)
-        self.staticTextUpdateDay.SetToolTipString('')
-
-        self.staticLineUpdateTimeCtrl = wx.StaticLine(id=wxID_WXPREFERENCESDLGSTATICLINEUPDATETIMECTRL,
-              name='staticLineUpdateTimeCtrl', parent=self._panelInternetUpdate,
-              pos=wx.Point(INTERNETUPDATE_INPUTXPOS, 94), size=wx.Size(74, 22), style=0)
-        self.staticLineUpdateTimeCtrl.Show(False)
-        self.staticLineUpdateTimeCtrl.SetToolTipString(_('When the download should be started'))
-
-        self.spinButtonUpdateTime = wx.SpinButton(id=wxID_WXPREFERENCESDLGSPINBUTTONUPDATETIME,
-              name='spinButtonUpdateTime', parent=self._panelInternetUpdate,
-              pos=wx.Point(INTERNETUPDATE_INPUTXPOS + 76, 94), size=wx.Size(16, 23),
-              style=wx.SP_ARROW_KEYS | wx.SP_VERTICAL)
-        self.spinButtonUpdateTime.SetToolTipString('')
+        #----------Panel Archives
 
         self.checkBoxScanArchives = wx.CheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXSCANARCHIVES,
               label=_('&Scan In Archives'), name='checkBoxScanArchives',
@@ -487,6 +781,10 @@ class PreferencesDlg(wx.Dialog):
               parent=self._panelArchives, pos=wx.Point(310, 118), size=wx.Size(82,
               16), style=0)
 
+        #-------------
+
+        #--------Panel Advanced
+
         self.checkBoxEnableMbox = wx.CheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXENABLEMBOX,
               label=_('&Treat Files As Mailboxes'), name='checkBoxEnableMbox',
               parent=self._panelAdvanced, pos=wx.Point(6, 11), size=wx.Size(384,
@@ -530,6 +828,10 @@ class PreferencesDlg(wx.Dialog):
         self.spinCtrlMaxLogSize.SetToolTipString(_('Select maximum size for the logfile'))
         self.spinCtrlMaxLogSize.SetValue(1)
 
+        #----------------
+
+        #------------Panel Reports
+
         self.staticTextLogFIle = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTLOGFILE,
               label=_('&Scan Report File:'), name='staticTextLogFIle',
               parent=self._panelReports, pos=wx.Point(6, 15), size=wx.Size(354,
@@ -566,231 +868,13 @@ class PreferencesDlg(wx.Dialog):
         self.buttonBrowseUpdateLog.SetToolTipString(_('Click to browse for a log file'))
         self.Bind(wx.EVT_BUTTON,self.OnButtonBrowseUpdateLog,self.buttonBrowseUpdateLog)
 
-        self._panelScheduler = wx.Panel(id=wxID_WXPREFERENCESDLG_PANELSCHEDULER,
-              name='_panelScheduler', parent=self.notebook, pos=wx.Point(0, 0),
-              size=wx.Size(390, 234), style=wx.TAB_TRAVERSAL)
-        self._panelScheduler.SetToolTipString('')
+        #------------
 
-        self.listViewScheduledTasks = wx.ListView(id=wxID_WXPREFERENCESDLGLISTVIEWSCHEDULEDTASKS,
-              name='listViewScheduledTasks', parent=self._panelScheduler,
-              pos=wx.Point(6, 34), size=wx.Size(298, 158),
-              style=wx.LC_REPORT | wx.LC_SINGLE_SEL)
-        self.listViewScheduledTasks.SetToolTipString(_('List of Scheduled Scans'))
-        self.listViewScheduledTasks.SetImageList(self.imageListScheduler,
-              wx.IMAGE_LIST_NORMAL)
-        self.listViewScheduledTasks.SetImageList(self.imageListScheduler,
-              wx.IMAGE_LIST_SMALL)
-        self._init_coll_listViewScheduledTasks_Columns(self.listViewScheduledTasks)
-        self.Bind(wx.EVT_LIST_ITEM_SELECTED,self.OnScheduledTasksUpdate,self.listViewScheduledTasks)
-        self.Bind(wx.EVT_LIST_ITEM_DESELECTED,self.OnScheduledTasksUpdate,self.listViewScheduledTasks)
-        self.Bind(wx.EVT_LEFT_DCLICK,self.OnButtonEditScheduledScan,self.listViewScheduledTasks)
 
-        self.staticTextScheduledTasks = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTSCHEDULEDTASKS,
-              label=_('Scheduled Scans:'), name='staticTextScheduledTasks',
-              parent=self._panelScheduler, pos=wx.Point(6, 14), size=wx.Size(154,
-              16), style=0)
-        self.staticTextScheduledTasks.SetToolTipString('')
 
-        self.buttonTaskAdd = wx.Button(id=wxID_WXPREFERENCESDLGBUTTONTASKADD,
-              label=_('&Add'), name='buttonTaskAdd', parent=self._panelScheduler,
-              pos=wx.Point(311, 34), size=wx.Size(75, 23), style=0)
-        self.Bind(wx.EVT_BUTTON,self.OnButtonAddScheduledScan,self.buttonTaskAdd)
 
-        self.buttonTaskRemove = wx.Button(id=wxID_WXPREFERENCESDLGBUTTONTASKREMOVE,
-              label=_('&Remove'), name='buttonTaskRemove',
-              parent=self._panelScheduler, pos=wx.Point(311, 67), size=wx.Size(75,
-              23), style=0)
-        self.Bind(wx.EVT_BUTTON,self.OnButtonRemoveScheduledScan,self.buttonTaskRemove)
 
-        self.buttonTaskEdit = wx.Button(id=wxID_WXPREFERENCESDLGBUTTONTASKEDIT,
-              label=_('&Edit'), name='buttonTaskEdit', parent=self._panelScheduler,
-              pos=wx.Point(311, 101), size=wx.Size(75, 23), style=0)
-        self.Bind(wx.EVT_BUTTON,self.OnButtonEditScheduledScan,self.buttonTaskEdit)
 
-        self.checkBoxInfectedOnly = wx.CheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXINFECTEDONLY,
-              label=_('&Display Infected Files Only'), name='checkBoxInfectedOnly',
-              parent=self._panelOptions, pos=wx.Point(15, 49), size=wx.Size(354,
-              18), style=0)
-        self.checkBoxInfectedOnly.SetValue(False)
-        self.checkBoxInfectedOnly.SetToolTipString(_('Select if you wish to display infected files only in the scan progress window'))
-
-        self.choiceUpdateDay = wx.Choice(choices=[_('Monday'), _('Tuesday'),
-              _('Wednesday'), _('Thursday'), _('Friday'), _('Saturday'), _('Sunday')],
-              id=wxID_WXPREFERENCESDLGCHOICEUPDATEDAY, name='choiceUpdateDay',
-              parent=self._panelInternetUpdate, pos=wx.Point(INTERNETUPDATE_INPUTXPOS, 121),
-              size=wx.Size(110, 21), style=0)
-        self.choiceUpdateDay.SetSelection(1)
-        self.choiceUpdateDay.SetToolTipString(_('When update frequency is weekly select day of the week for an update'))
-        self.choiceUpdateDay.SetStringSelection(_('Tuesday'))
-
-        self.checkBoxWarnDBOld = wx.CheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXWARNDBOLD,
-              label=_('&Warn if Virus database is Out of Date'),
-              name='checkBoxWarnDBOld', parent=self._panelInternetUpdate,
-              pos=wx.Point(6, 140), size=wx.Size(322, 20), style=0)
-        self.checkBoxWarnDBOld.SetToolTipString(_('Will display a reminder if the virus database is older than 3 days'))
-        self.checkBoxWarnDBOld.SetValue(False)
-        self.Bind(wx.EVT_CHECKBOX,self.OnCheckBoxWarnDBOld,self.checkBoxWarnDBOld)
-
-        self.staticBoxInfected = wx.StaticBox(id=wxID_WXPREFERENCESDLGSTATICBOXINFECTED,
-              label=_('Infected Files'), name='staticBoxInfected',
-              parent=self._panelOptions, pos=wx.Point(6, 100), size=wx.Size(376,
-              123), style=0)
-
-        self.staticBoxLanguage = wx.StaticBox(id=wxID_WXPREFERENCESDLGSTATICBOXLANGUAGE,
-            label=_('Language Settings'), name='staticBoxLanguage',
-            parent=self._panelOptions, pos=wx.Point(6, 225), size=wx.Size(376,
-            58), style=0)
-
-        self.radioButtonReport = wx.RadioButton(id=wxID_WXPREFERENCESDLGRADIOBUTTONREPORT,
-              label=_('&Report Only'), name='radioButtonReport',
-              parent=self._panelOptions, pos=wx.Point(15, 115), size=wx.Size(354,
-              18), style=0)
-        self.radioButtonReport.SetValue(False)
-        self.Bind(wx.EVT_RADIOBUTTON,self.OnRadioInfected,self.radioButtonReport)
-
-        self.radioButtonRemoveInfected = wx.RadioButton(id=wxID_WXPREFERENCESDLGRADIOBUTTONREMOVEINFECTED,
-              label=_('&Remove (Use Carefully)'), name='radioButtonRemoveInfected',
-              parent=self._panelOptions, pos=wx.Point(15, 133), size=wx.Size(354,
-              18), style=0)
-        self.radioButtonRemoveInfected.SetValue(False)
-        self.Bind(wx.EVT_RADIOBUTTON,self.OnRadioInfected,self.radioButtonRemoveInfected)
-
-        self.radioButtonQuarantine = wx.RadioButton(id=wxID_WXPREFERENCESDLGRADIOBUTTONQUARANTINE,
-              label=_('&Move To Quarantine Folder:'), name='radioButtonQuarantine',
-              parent=self._panelOptions, pos=wx.Point(15, 152), size=wx.Size(354,
-              18), style=0)
-        self.radioButtonQuarantine.SetValue(False)
-        self.Bind(wx.EVT_RADIOBUTTON,self.OnRadioInfected,self.radioButtonQuarantine)
-
-        self.textCtrlQuarantine = wx.TextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLQUARANTINE,
-              name='textCtrlQuarantine', parent=self._panelOptions,
-              pos=wx.Point(31, 175), size=wx.Size(319, 20), style=0, value='')
-        self.textCtrlQuarantine.SetToolTipString(_('Specify location for a quarantine folder'))
-
-        self.buttonBrowseQuarantine = wx.Button(id=wxID_WXPREFERENCESDLGBUTTONBROWSEQUARANTINE,
-              label='...', name='buttonBrowseQuarantine',
-              parent=self._panelOptions, pos=wx.Point(351, 175), size=wx.Size(20,
-              20), style=0)
-        self.buttonBrowseQuarantine.SetToolTipString(_('Click to browse for a quarantine folder'))
-        self.Bind(wx.EVT_BUTTON,self.OnButtonBrowseQuarantine,self.buttonBrowseQuarantine)
-
-        self._panelEmailAlerts = wx.Panel(id=wxID_WXPREFERENCESDLG_PANELEMAILALERTS,
-              name='_panelEmailAlerts', parent=self.notebook, pos=wx.Point(0, 0),
-              size=wx.Size(390, 290), style=wx.TAB_TRAVERSAL)
-        self._panelEmailAlerts.SetToolTipString('')
-
-        self.checkBoxSMTPEnable = wx.CheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXSMTPENABLE,
-              label=_('&Send Email Alert On Virus Detection'),
-              name='checkBoxSMTPEnable', parent=self._panelEmailAlerts,
-              pos=wx.Point(6, 11), size=wx.Size(362, 15), style=0)
-        self.checkBoxSMTPEnable.SetValue(False)
-        self.checkBoxSMTPEnable.SetToolTipString(_('Select if you wish to receive email alerts when ClamWin detects a virus'))
-        self.Bind(wx.EVT_CHECKBOX,self.OnCheckBoxSMTPEnable,self.checkBoxSMTPEnable)
-
-        self.staticBoxSMTPConnection = wx.StaticBox(id=wxID_WXPREFERENCESDLGSTATICBOXSMTPCONNECTION,
-              label=_('SMTP Connection Details'), name='staticBoxSMTPConnection',
-              parent=self._panelEmailAlerts, pos=wx.Point(16, 27),
-              size=wx.Size(368, 101), style=0)
-        self.staticBoxSMTPConnection.SetToolTipString('')
-
-        SMTPCONNECTION_STRETCH = 80
-
-        self.staticTextSMTPHost = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTSMTPHOST,
-              label=_('&Mail Server:'), name='staticTextSMTPHost',
-              parent=self._panelEmailAlerts, pos=wx.Point(24, 49),
-              size=wx.Size(71 + SMTPCONNECTION_STRETCH, 16), style=0)
-        self.staticTextSMTPHost.SetToolTipString('')
-
-        SMTPCONNECTION_XPOS = 124
-
-        self.textCtrlSMTPHost = wx.TextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLSMTPHOST,
-              name='textCtrlSMTPHost', parent=self._panelEmailAlerts,
-              pos=wx.Point(SMTPCONNECTION_XPOS, 46), size=wx.Size(296-SMTPCONNECTION_XPOS, 21), style=0, value='')
-        self.textCtrlSMTPHost.SetToolTipString(_('SMTP Server domain name or IP address'))
-
-        self.staticTextSMTPPort = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTSMTPPORT,
-              label=_('P&ort:'), name='staticTextSMTPPort',
-              parent=self._panelEmailAlerts, pos=wx.Point(300, 49),
-              size=wx.Size(31 + SMTPCONNECTION_STRETCH, 16), style=0)
-
-        self.intCtrlSMTPPort = ICtrl.IntCtrl(allow_long=False, allow_none=False,
-              default_color=wx.BLACK, id=wxID_WXPREFERENCESDLGINTCTRLSMTPPORT,
-              limited=False, max=65535, min=0, name='intCtrlSMTPPort',
-              oob_color=wx.RED, parent=self._panelEmailAlerts, pos=wx.Point(330,
-              46), size=wx.Size(47, 21), style=0, value=25)
-        self.intCtrlSMTPPort.SetBounds((0, 65535))
-        self.intCtrlSMTPPort.SetToolTipString(_('Mail Server port number (0-65535)'))
-
-        self.staticTextSMTPUserName = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTSMTPUSERNAME,
-              label=_('&User Name:'), name='staticTextSMTPUserName',
-              parent=self._panelEmailAlerts, pos=wx.Point(24, 72),
-              size=wx.Size(79 + SMTPCONNECTION_STRETCH, 16), style=0)
-        self.staticTextSMTPUserName.SetToolTipString('')
-
-        self.textCtrlSMTPUser = wx.TextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLSMTPUSER,
-              name='textCtrlSMTPUser', parent=self._panelEmailAlerts,
-              pos=wx.Point(SMTPCONNECTION_XPOS, 69), size=wx.Size(101, 21), style=0, value='')
-        self.textCtrlSMTPUser.SetToolTipString(_('Mail Server Account Name (optional)'))
-
-        self.staticTextSMTPPassword = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTSMTPPASSWORD,
-              label=_('&Password:'), name='staticTextSMTPPassword',
-              parent=self._panelEmailAlerts, pos=wx.Point(24, 95),
-              size=wx.Size(66 + SMTPCONNECTION_STRETCH, 16), style=0)
-        self.staticTextSMTPPassword.SetToolTipString('')
-
-        self.textCtrlSMTPPassword = wx.TextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLSMTPPASSWORD,
-              name='textCtrlSMTPPassword', parent=self._panelEmailAlerts,
-              pos=wx.Point(SMTPCONNECTION_XPOS, 92), size=wx.Size(101, 21), style=wx.TE_PASSWORD,
-              value='')
-        self.textCtrlSMTPPassword.SetToolTipString(_('Mail Server account password (optional)'))
-
-        EMAILALERTS_MAINYPOS = 142
-
-        self.staticBoxEmailDetails = wx.StaticBox(id=wxID_WXPREFERENCESDLGSTATICBOXEMAILDETAILS,
-              label=_('Email Message Details'), name='staticBoxEmailDetails',
-              parent=self._panelEmailAlerts, pos=wx.Point(16, EMAILALERTS_MAINYPOS),
-              size=wx.Size(368, 95), style=0)
-        self.staticBoxEmailDetails.SetToolTipString('')
-
-        self.staticTextSMTPFrom = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTSMTPFROM,
-              label=_('&From:'), name='staticTextSMTPFrom',
-              parent=self._panelEmailAlerts, pos=wx.Point(24, EMAILALERTS_MAINYPOS + 22),
-              size=wx.Size(63, 16), style=0)
-        self.staticTextSMTPFrom.SetToolTipString('')
-
-        self.textCtrlSMTPFrom = wx.TextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLSMTPFROM,
-              name='textCtrlSMTPFrom', parent=self._panelEmailAlerts,
-              pos=wx.Point(104, EMAILALERTS_MAINYPOS + 16), size=wx.Size(273, 21), style=0, value='')
-        self.textCtrlSMTPFrom.SetToolTipString(_('Specify an email address from which the notification will be sent.'))
-
-        self.staticTextSMTPTo = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTSMTPTO,
-              label=_('&To:'), name='staticTextSMTPTo',
-              parent=self._panelEmailAlerts, pos=wx.Point(24, EMAILALERTS_MAINYPOS + 46),
-              size=wx.Size(63, 16), style=0)
-        self.staticTextSMTPTo.SetToolTipString('')
-
-        self.textCtrlSMTPTo = wx.TextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLSMTPTO,
-              name='textCtrlSMTPTo', parent=self._panelEmailAlerts,
-              pos=wx.Point(104, EMAILALERTS_MAINYPOS + 41), size=wx.Size(273, 21), style=0, value='')
-        self.textCtrlSMTPTo.SetToolTipString(_('Specify an email address where the email alert will be delivered.  Separate multiple addresses with commas.'))
-
-        self.staticTextSMTPSubject = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTSMTPSUBJECT,
-              label=_('Su&bject:'), name='staticTextSMTPSubject',
-              parent=self._panelEmailAlerts, pos=wx.Point(24, EMAILALERTS_MAINYPOS + 69),
-              size=wx.Size(63, 16), style=0)
-        self.staticTextSMTPSubject.SetToolTipString('')
-
-        self.textCtrlSMTPSubject = wx.TextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLSMTPSUBJECT,
-              name='textCtrlSMTPSubject', parent=self._panelEmailAlerts,
-              pos=wx.Point(104, EMAILALERTS_MAINYPOS + 65), size=wx.Size(273, 21), style=0, value='')
-        self.textCtrlSMTPSubject.SetToolTipString(_("Specify Recipient's email address where the email alert will be delivered"))
-
-        self.buttonSendTestEmail = wx.Button(id=wxID_WXPREFERENCESDLGBUTTONSENDTESTEMAIL,
-              label=_('Send &Test Email'), name='buttonSendTestEmail',
-              parent=self._panelEmailAlerts, pos=wx.Point(120, EMAILALERTS_MAINYPOS + 103),
-              size=wx.Size(149, 23), style=0)
-        self.buttonSendTestEmail.SetToolTipString(_('Click to send a test email message'))
-        self.Bind(wx.EVT_BUTTON,self.OnButtonSendTestEmail,self.buttonSendTestEmail)
 
         self.checkBoxTrayNotify = wx.CheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXTRAYNOTIFY,
               label=_('&Display Pop-up Notification Messages In Taskbar '),
@@ -799,102 +883,13 @@ class PreferencesDlg(wx.Dialog):
         self.checkBoxTrayNotify.SetValue(False)
         self.checkBoxTrayNotify.SetToolTipString(_('Select if you wish to receive Tray notification pop-up messages'))
 
-        self._panelFilters = wx.Panel(id=wxID_WXPREFERENCESDLG_PANELFILTERS,
-              name='_panelFilters', parent=self.notebook, pos=wx.Point(0, 0),
-              size=wx.Size(390, 234), style=wx.TAB_TRAVERSAL)
+        
 
-        self.staticTextFiltreDesc1 = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTFILTREDESC1,
-              label=_('Specify Filename Patterns to include and/or exclude in scanning'),
-              name='staticTextFiltreDesc1', parent=self._panelFilters,
-              pos=wx.Point(6, 11), size=wx.Size(383, 32), style=0)
 
-        self.staticText2 = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXT2,
-              label=_('(To specify a regular expression include your pattern within <...>)'),
-              name='staticText2', parent=self._panelFilters, pos=wx.Point(6, 40),
-              size=wx.Size(382, 32), style=0)
 
-        self.staticTextFiltersExclude = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTFILTERSEXCLUDE,
-              label=_('&Exclude Matching Filenames:'),
-              name='staticTextFiltersExclude', parent=self._panelFilters,
-              pos=wx.Point(6, 68), size=wx.Size(184, 32), style=0)
+ 
 
-        self.editableListBoxFiltersExclude = wx.gizmos.EditableListBox(id=wxID_WXPREFERENCESDLGEDITABLELISTBOXFILTERSEXCLUDE,
-              label=_('Patterns'), name='editableListBoxFiltersExclude',
-              parent=self._panelFilters, pos=wx.Point(6, 99), size=wx.Size(182,
-              151))
 
-        self.buttonUpFiltersExclude = self.editableListBoxFiltersExclude.GetUpButton()
-        self.buttonUpFiltersExclude.SetToolTipString(_('Move up'))
-
-        self.buttonDownFiltersExclude = self.editableListBoxFiltersExclude.GetDownButton()
-        self.buttonDownFiltersExclude.SetToolTipString(_('Move down'))
-
-        self.buttonNewFiltersExclude = self.editableListBoxFiltersExclude.GetNewButton()
-        self.buttonNewFiltersExclude.SetToolTipString(_('New item'))
-
-        self.buttonDelFiltersExclude = self.editableListBoxFiltersExclude.GetDelButton()
-        self.buttonDelFiltersExclude.SetToolTipString(_('Delete item'))
-
-        self.buttonEditFiltersExclude = self.editableListBoxFiltersExclude.GetEditButton()
-        self.buttonEditFiltersExclude.SetToolTipString(_('Edit item'))
-
-        self.staticTextFiltersInclude = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTFILTERSINCLUDE,
-              label=_('&Scan Only Matching Filenames:'),
-              name='staticTextFiltersInclude', parent=self._panelFilters,
-              pos=wx.Point(202, 68), size=wx.Size(187, 32), style=0)
-
-        self.editableListBoxFiltersInclude = wx.gizmos.EditableListBox(id=wxID_WXPREFERENCESDLGEDITABLELISTBOXFILTERSINCLUDE,
-              label=_('Patterns'), name='editableListBoxFiltersInclude',
-              parent=self._panelFilters, pos=wx.Point(200, 99), size=wx.Size(184,
-              151))
-
-        self.buttonUpFiltersInclude = self.editableListBoxFiltersInclude.GetUpButton()
-        self.buttonUpFiltersInclude.SetToolTipString(_('Move up'))
-
-        self.buttonDownFiltersInclude = self.editableListBoxFiltersInclude.GetDownButton()
-        self.buttonDownFiltersInclude.SetToolTipString(_('Move down'))
-
-        self.buttonNewFiltersInclude = self.editableListBoxFiltersInclude.GetNewButton()
-        self.buttonNewFiltersInclude.SetToolTipString(_('New item'))
-
-        self.buttonDelFiltersInclude = self.editableListBoxFiltersInclude.GetDelButton()
-        self.buttonDelFiltersInclude.SetToolTipString(_('Delete item'))
-
-        self.buttonEditFiltersInclude = self.editableListBoxFiltersInclude.GetEditButton()
-        self.buttonEditFiltersInclude.SetToolTipString(_('Edit item'))
-
-        self.buttonTaskDeactivate = wx.Button(id=wxID_WXPREFERENCESDLGBUTTONTASKDEACTIVATE,
-              label=_('&Deactivate'), name='buttonTaskDeactivate',
-              parent=self._panelScheduler, pos=wx.Point(311, 169),
-              size=wx.Size(75, 23), style=0)
-        self.Bind(wx.EVT_BUTTON,self.OnButtonTaskDeactivate,self.buttonTaskDeactivate)
-
-        self.buttonTaskActivate = wx.Button(id=wxID_WXPREFERENCESDLGBUTTONTASKACTIVATE,
-              label=_('A&ctivate'), name='buttonTaskActivate',
-              parent=self._panelScheduler, pos=wx.Point(311, 135),
-              size=wx.Size(75, 23), style=0)
-        self.Bind(wx.EVT_BUTTON,self.OnButtonTaskActivate,self.buttonTaskActivate)
-
-        self.checkBoxUpdateLogon = wx.CheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXUPDATELOGON,
-              label=_('&Update Virus Database On Logon'),
-              name='checkBoxUpdateLogon', parent=self._panelInternetUpdate,
-              pos=wx.Point(6, 168), size=wx.Size(322, 20), style=0)
-        self.checkBoxUpdateLogon.SetToolTipString(_('Select if you wish to update the virus databases just after you logged on'))
-        self.checkBoxUpdateLogon.SetValue(False)
-        self.Bind(wx.EVT_CHECKBOX,self.OnCheckBoxEnableAutoUpdate,self.checkBoxUpdateLogon)
-
-        self.checkBoxCheckVersion = wx.CheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXCHECKVERSION,
-              label=_('&Notify About New ClamWin Releases'),
-              name='checkBoxCheckVersion', parent=self._panelInternetUpdate,
-              pos=wx.Point(6, 195), size=wx.Size(322, 20), style=0)
-        self.checkBoxCheckVersion.SetToolTipString(_('Select if you wish to get a notification message when ClamWin Free Antivirus program has been updated'))
-        self.checkBoxCheckVersion.SetValue(False)
-        self.Bind(wx.EVT_CHECKBOX,self.OnCheckBoxCheckVersionCheckbox,self.checkBoxCheckVersion)
-
-        self.staticTextNoPersonal = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTNOPERSONAL,
-              label=_('(No personal information is transmitted during this check)'),
-              name='staticTextNoPersonal', parent=self._panelInternetUpdate,
-              pos=wx.Point(27, 215), size=wx.Size(350, 13), style=0)
 
         self.staticTextMB2 = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTMB2,
               label=_('MegaBytes'), name='staticTextMB2',
@@ -914,20 +909,9 @@ class PreferencesDlg(wx.Dialog):
         self.choicePriority.SetStringSelection(_('Normal'))
         self.choicePriority.SetLabel('')
 
-        self.checkBoxShowProgress = wx.CheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXSHOWPROGRESS,
-              label=_('Display &File Scanned % Progress Indicator'),
-              name='checkBoxShowProgress', parent=self._panelOptions,
-              pos=wx.Point(15, 72), size=wx.Size(354, 18), style=0)
-        self.checkBoxShowProgress.SetValue(False)
-        self.checkBoxShowProgress.SetToolTipString(_('Select if you wish to display infected files only in the scan progress window'))
 
-        self.checkBoxUnload = wx.CheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXUNLOAD,
-              label=_('&Unload Infected Programs from Computer Memory'),
-              name='checkBoxUnload', parent=self._panelOptions, pos=wx.Point(15,
-              202), size=wx.Size(354, 17), style=0)
-        self.checkBoxUnload.SetValue(False)
-        self.checkBoxUnload.SetToolTipString( _('Select if you wish to unload infected programs from computer memory so they can be quarantined or removed'))
 
+ 
         self.staticBoxOutlookAddin = wx.StaticBox(id=wxID_WXPREFERENCESDLGSTATICBOXOUTLOOKADDIN,
               label=_('Microsoft Outlook'), name='staticBoxOutlookAddin',
               parent=self._panelEmailScanning, pos=wx.Point(6, 11),
@@ -1106,12 +1090,7 @@ class PreferencesDlg(wx.Dialog):
 
     def _InternetUpdatePageInit(self):
         locale.setlocale(locale.LC_ALL, 'C')
-        self.timeUpdate = masked.TimeCtrl(parent=self._panelInternetUpdate,
-         pos=self.staticLineUpdateTimeCtrl.GetPosition(),
-         size=self.staticLineUpdateTimeCtrl.GetSize(),  fmt24hr=Utils.IsTime24(),
-         spinButton=self.spinButtonUpdateTime,
-         useFixedWidthFont=False, display_seconds=True)
-        self.timeUpdate.SetToolTipString(self.staticLineUpdateTimeCtrl.GetToolTip().GetTip())
+        
         self.textCtrlDBMirror.SetValidator(MyValidator(config=self._config, section='Updates', value='DBMirror', canEmpty=False))
         self.checkBoxEnableAutoUpdate.SetValidator(MyValidator(config=self._config, section='Updates', value='Enable'))
         self.checkBoxCheckVersion.SetValidator(MyValidator(config=self._config, section='Updates', value='CheckVersion'))
