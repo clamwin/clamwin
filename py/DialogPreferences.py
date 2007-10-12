@@ -341,9 +341,7 @@ class PreferencesDlg(wx.Dialog):
         
         #-----
         
-        #-------------Panel Filters
-
-        
+        #-----Panel Filters
 
         bsizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -602,11 +600,10 @@ class PreferencesDlg(wx.Dialog):
         self.checkBoxSMTPEnable = wx.CheckBox(self._panelEmailAlerts,wx.ID_ANY,_('&Send Email Alert On Virus Detection'))
         self.checkBoxSMTPEnable.SetToolTipString(_('Select if you wish to receive email alerts when ClamWin detects a virus'))
         self.Bind(wx.EVT_CHECKBOX,self.OnCheckBoxSMTPEnable,self.checkBoxSMTPEnable)
-        bsizer.Add(self.checkBoxSMTPEnable)
+        bsizer.Add(self.checkBoxSMTPEnable,0,wx.ALL,5)
         
         self.staticBoxSMTPConnection = wx.StaticBox(self._panelEmailAlerts,wx.ID_ANY,_('SMTP Connection Details'))
         sbsizer = wx.StaticBoxSizer(self.staticBoxSMTPConnection,wx.VERTICAL)
-
 
         hbsizer = wx.BoxSizer(wx.HORIZONTAL)
         t = wx.StaticText(self._panelEmailAlerts,wx.ID_ANY,_('&Mail Server:'))
@@ -614,19 +611,21 @@ class PreferencesDlg(wx.Dialog):
 
         self.textCtrlSMTPHost = wx.TextCtrl(self._panelEmailAlerts)
         self.textCtrlSMTPHost.SetToolTipString(_('SMTP Server domain name or IP address'))
-        hbsizer.Add(self.textCtrlSMTPHost)
+        hbsizer.Add(self.textCtrlSMTPHost,1)
+
+        hbsizer.Add((5,-1)) #add spacer
 
         t = wx.StaticText(self._panelEmailAlerts,wx.ID_ANY,_('P&ort:'))
         hbsizer.Add(t)
 
         self.intCtrlSMTPPort = ICtrl.IntCtrl(self._panelEmailAlerts,wx.ID_ANY,allow_long=False, allow_none=False,
-              default_color=wx.BLACK, limited=False, max=65535, min=0,
-              oob_color=wx.RED, value=25)
+                                             default_color=wx.BLACK, limited=False, max=65535, min=0,
+                                             oob_color=wx.RED, value=25)
         self.intCtrlSMTPPort.SetBounds((0, 65535))
         self.intCtrlSMTPPort.SetToolTipString(_('Mail Server port number (0-65535)'))
         hbsizer.Add(self.intCtrlSMTPPort)
 
-        sbsizer.Add(hbsizer)
+        sbsizer.Add(hbsizer,0,wx.EXPAND)
 
         hbsizer = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -635,8 +634,8 @@ class PreferencesDlg(wx.Dialog):
 
         self.textCtrlSMTPUser = wx.TextCtrl(self._panelEmailAlerts,wx.ID_ANY)
         self.textCtrlSMTPUser.SetToolTipString(_('Mail Server Account Name (optional)'))
-        hbsizer.Add(self.textCtrlSMTPUser)
-        sbsizer.Add(hbsizer)
+        hbsizer.Add(self.textCtrlSMTPUser,1)
+        sbsizer.Add(hbsizer,0,wx.EXPAND)
 
 
         hbsizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -645,10 +644,10 @@ class PreferencesDlg(wx.Dialog):
 
         self.textCtrlSMTPPassword = wx.TextCtrl(self._panelEmailAlerts, style=wx.TE_PASSWORD)
         self.textCtrlSMTPPassword.SetToolTipString(_('Mail Server account password (optional)'))
-        hbsizer.Add(self.textCtrlSMTPPassword)
+        hbsizer.Add(self.textCtrlSMTPPassword,1)
 
-        sbsizer.Add(hbsizer)
-        bsizer.Add(sbsizer)
+        sbsizer.Add(hbsizer,0,wx.EXPAND)
+        bsizer.Add(sbsizer,0,wx.EXPAND | wx.ALL,5)
 
 
         self.staticBoxEmailDetails = wx.StaticBox(self._panelEmailAlerts,wx.ID_ANY,_('Email Message Details'))
@@ -660,8 +659,8 @@ class PreferencesDlg(wx.Dialog):
 
         self.textCtrlSMTPFrom = wx.TextCtrl(self._panelEmailAlerts)
         self.textCtrlSMTPFrom.SetToolTipString(_('Specify an email address from which the notification will be sent.'))
-        hbsizer.Add(self.textCtrlSMTPFrom)
-        sbsizer.Add(hbsizer)
+        hbsizer.Add(self.textCtrlSMTPFrom,1)
+        sbsizer.Add(hbsizer,0,wx.EXPAND)
 
         hbsizer = wx.BoxSizer(wx.HORIZONTAL)
         t = wx.StaticText(self._panelEmailAlerts,wx.ID_ANY,_('&To:'))
@@ -669,8 +668,8 @@ class PreferencesDlg(wx.Dialog):
 
         self.textCtrlSMTPTo = wx.TextCtrl(self._panelEmailAlerts)
         self.textCtrlSMTPTo.SetToolTipString(_('Specify an email address where the email alert will be delivered.  Separate multiple addresses with commas.'))
-        hbsizer.Add(self.textCtrlSMTPTo)
-        sbsizer.Add(hbsizer)
+        hbsizer.Add(self.textCtrlSMTPTo,1)
+        sbsizer.Add(hbsizer,0,wx.EXPAND)
 
         hbsizer = wx.BoxSizer(wx.HORIZONTAL)
         t = wx.StaticText(self._panelEmailAlerts,wx.ID_ANY,_('Su&bject:'))
@@ -678,262 +677,213 @@ class PreferencesDlg(wx.Dialog):
 
         self.textCtrlSMTPSubject = wx.TextCtrl(self._panelEmailAlerts)
         self.textCtrlSMTPSubject.SetToolTipString(_("Specify Recipient's email address where the email alert will be delivered"))
-        hbsizer.Add(self.textCtrlSMTPSubject)
-        sbsizer.Add(hbsizer)
+        hbsizer.Add(self.textCtrlSMTPSubject,1)
+        sbsizer.Add(hbsizer,0,wx.EXPAND)
 
-        bsizer.Add(sbsizer)
+        bsizer.Add(sbsizer,0,wx.EXPAND|wx.ALL,5)
 
         self.buttonSendTestEmail = wx.Button(self._panelEmailAlerts,wx.ID_ANY,_('Send &Test Email'))
         self.buttonSendTestEmail.SetToolTipString(_('Click to send a test email message'))
         self.Bind(wx.EVT_BUTTON,self.OnButtonSendTestEmail,self.buttonSendTestEmail)
 
-        bsizer.Add(self.buttonSendTestEmail)
+        bsizer.Add(self.buttonSendTestEmail,0,wx.ALL,5)
 
         self._panelEmailAlerts.SetSizer(bsizer)
 
         #--------------
 
-        #-----Panel Files    
 
-      
-        self.staticTextClamScan = wx.StaticText(self._panelFiles,wx.ID_ANY,
-              label=_('&ClamScan Location:'), pos=wx.Point(6, 15), size=wx.Size(354, 13))
-
-        self.textCtrlClamScan = wx.TextCtrl(self._panelFiles,wx.ID_ANY, pos=wx.Point(6,33), size=wx.Size(356, 20))
-        self.textCtrlClamScan.SetToolTipString(_('Specify location of clamscan'))
-
-        self.buttonBrowseClamScan = wx.Button(self._panelFiles,wx.ID_ANY,label='...',
-              pos=wx.Point(363, 34), size=wx.Size(20, 20))
-        self.buttonBrowseClamScan.SetToolTipString(_('Click to browse for clamscan'))
-        self.Bind(wx.EVT_BUTTON,self.OnButtonBrowseClamScan,self.buttonBrowseClamScan)
-
-        self.staticTextFreshClam = wx.StaticText(self._panelFiles,wx.ID_ANY,_('&FreshClam Location:'), pos=wx.Point(6, 65), size=wx.Size(354, 13))
-
-        self.textCtrlFreshClam = wx.TextCtrl(self._panelFiles,wx.ID_ANY, pos=wx.Point(6,83), size=wx.Size(355, 20))
-        self.textCtrlFreshClam.SetToolTipString(_('Specify location of freshclam'))
-
-        self.buttonBrowseFreshClam = wx.Button(self._panelFiles,wx.ID_ANY,'...',pos=wx.Point(363, 83), size=wx.Size(20,20))
-        self.buttonBrowseFreshClam.SetToolTipString(_('Click to browse for freshclam'))
-        self.Bind(wx.EVT_BUTTON,self.OnButtonBrowseFreshClam,self.buttonBrowseFreshClam)
-
-        self.staticTextVirDB = wx.StaticText(self._panelFiles,wx.ID_ANY,_('&Virus Database Folder:'), pos=wx.Point(6, 115), size=wx.Size(354,13))
-
-        self.textCtrlVirDB = wx.TextCtrl(self._panelFiles,wx.ID_ANY, pos=wx.Point(6, 133), size=wx.Size(355, 20))
-        self.textCtrlVirDB.SetToolTipString(_('Specify location of virus database files'))
-
-        self.buttonVirDB = wx.Button(self._panelFiles,wx.ID_ANY,'...',
-              pos=wx.Point(362, 133), size=wx.Size(20, 20))
-        self.buttonVirDB.SetToolTipString(_('Click to browse for a virus database folder'))
-        self.Bind(wx.EVT_BUTTON,self.OnButtonBrowseVirDB,self.buttonVirDB)
-
-        #----------
 
         #----------Panel Archives
 
-        self.checkBoxScanArchives = wx.CheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXSCANARCHIVES,
-              label=_('&Scan In Archives'), name='checkBoxScanArchives',
-              parent=self._panelArchives, pos=wx.Point(6, 15), size=wx.Size(322,
-              20), style=0)
+        sizer = wx.BoxSizer(wx.VERTICAL)
+
+        self.checkBoxScanArchives = wx.CheckBox(self._panelArchives,wx.ID_ANY,_('&Scan In Archives'))
         self.checkBoxScanArchives.SetValue(False)
         self.Bind(wx.EVT_CHECKBOX,self.OnCheckBoxScanArchives,self.checkBoxScanArchives)
+        sizer.Add(self.checkBoxScanArchives,0,wx.ALL,5)
 
-        self.staticTextMaxSize = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTMAXSIZE,
-              label=_('Do Not Scan Archives Larger Than'),
-              name='staticTextMaxSize', parent=self._panelArchives,
-              pos=wx.Point(24, 49), size=wx.Size(200, 15), style=0)
+        fgsizer = wx.FlexGridSizer(3,3,5,5)
+        self.staticTextMaxSize = wx.StaticText(self._panelArchives,wx.ID_ANY,_('Do Not Scan Archives Larger Than'))
+        fgsizer.Add(self.staticTextMaxSize)
+        self.spinCtrlArchiveSize = wx.SpinCtrl(self._panelArchives, initial=0, max=4096, min=1,style=wx.SP_ARROW_KEYS)
+        fgsizer.Add(self.spinCtrlArchiveSize)
+        self.staticTextMB1 = wx.StaticText(self._panelArchives,wx.ID_ANY,_('MegaBytes'))
+        fgsizer.Add(self.staticTextMB1)
+        self.staticTextLimitFiles = wx.StaticText(self._panelArchives,wx.ID_ANY,_('Do Not Extract More Than '))
+        fgsizer.Add(self.staticTextLimitFiles)
+        self.spinCtrlArchiveFiles = wx.SpinCtrl(self._panelArchives,wx.ID_ANY,initial=0, max=1073741824, min=1,style=wx.SP_ARROW_KEYS)
+        fgsizer.Add(self.spinCtrlArchiveFiles)
+        self.staticTextFiles = wx.StaticText(self._panelArchives,wx.ID_ANY,_('Files'))
+        fgsizer.Add(self.staticTextFiles)
+        self.staticTextRecursion = wx.StaticText(self._panelArchives,wx.ID_ANY,_('Do Not Extract More Than '))
+        fgsizer.Add(self.staticTextRecursion)
+        self.spinCtrlRecursion = wx.SpinCtrl(self._panelArchives,wx.ID_ANY,initial=0, max=999, min=1,style=wx.SP_ARROW_KEYS)
+        fgsizer.Add(self.spinCtrlRecursion)
+        self.staticTextSubArchives = wx.StaticText(self._panelArchives,wx.ID_ANY,_('Sub-Archives'))
+        fgsizer.Add(self.staticTextSubArchives)
 
-        self.spinCtrlArchiveSize = wx.SpinCtrl(id=wxID_WXPREFERENCESDLGSPINCTRLARCHIVESIZE,
-              initial=0, max=4096, min=1, name='spinCtrlArchiveSize',
-              parent=self._panelArchives, pos=wx.Point(229, 45), size=wx.Size(72,
-              21), style=wx.SP_ARROW_KEYS)
-
-        self.staticTextMB1 = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTMB1,
-              label=_('MegaBytes'), name='staticTextMB1',
-              parent=self._panelArchives, pos=wx.Point(310, 49), size=wx.Size(80,
-              16), style=0)
-
-        self.staticTextLimitFiles = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTLIMITFILES,
-              label=_('Do Not Extract More Than '), name='staticTextLimitFiles',
-              parent=self._panelArchives, pos=wx.Point(24, 82), size=wx.Size(200,
-              17), style=0)
-
-        self.spinCtrlArchiveFiles = wx.SpinCtrl(id=wxID_WXPREFERENCESDLGSPINCTRLARCHIVEFILES,
-              initial=0, max=1073741824, min=1, name='spinCtrlArchiveFiles',
-              parent=self._panelArchives, pos=wx.Point(229, 79), size=wx.Size(72,
-              21), style=wx.SP_ARROW_KEYS)
-
-        self.staticTextFiles = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTFILES,
-              label=_('Files'), name='staticTextFiles', parent=self._panelArchives,
-              pos=wx.Point(310, 82), size=wx.Size(80, 16), style=0)
-
-        self.staticTextRecursion = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTRECURSION,
-              label=_('Do Not Extract More Than '), name='staticTextRecursion',
-              parent=self._panelArchives, pos=wx.Point(24, 118), size=wx.Size(200,
-              19), style=0)
-
-        self.spinCtrlRecursion = wx.SpinCtrl(id=wxID_WXPREFERENCESDLGSPINCTRLRECURSION,
-              initial=0, max=999, min=1, name='spinCtrlRecursion',
-              parent=self._panelArchives, pos=wx.Point(229, 115), size=wx.Size(72,
-              21), style=wx.SP_ARROW_KEYS)
-
-        self.staticTextSubArchives = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTSUBARCHIVES,
-              label=_('Sub-Archives'), name='staticTextSubArchives',
-              parent=self._panelArchives, pos=wx.Point(310, 118), size=wx.Size(82,
-              16), style=0)
-
+        fgsizer.AddGrowableCol(0)
+        sizer.Add(fgsizer,1,wx.EXPAND|wx.ALL,5)
+        self._panelArchives.SetSizer(sizer)
+        
         #-------------
 
-        #--------Panel Advanced
+        #-----Panel Files    
 
-        self.checkBoxEnableMbox = wx.CheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXENABLEMBOX,
-              label=_('&Treat Files As Mailboxes'), name='checkBoxEnableMbox',
-              parent=self._panelAdvanced, pos=wx.Point(6, 11), size=wx.Size(384,
-              18), style=0)
-        self.checkBoxEnableMbox.SetToolTipString(_('Select if you wish to scan mailboxes'))
-        self.checkBoxEnableMbox.SetValue(False)
 
-        self.checkBoxEnableOLE2 = wx.CheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXENABLEOLE2,
-              label=_('&Extract Attachments and Macros from MS Office Documents'),
-              name='checkBoxEnableOLE2', parent=self._panelAdvanced,
-              pos=wx.Point(6, 37), size=wx.Size(381, 18), style=0)
-        self.checkBoxEnableOLE2.SetToolTipString(_('Select if you wish to scan OLE attachments and macros in MS Office Documents'))
-        self.checkBoxEnableOLE2.SetValue(False)
+        fgsizer = wx.FlexGridSizer(6,2)
+      
+        self.staticTextClamScan = wx.StaticText(self._panelFiles,wx.ID_ANY,_('&ClamScan Location:'))
+        fgsizer.Add(self.staticTextClamScan,0,wx.ALL,5)
+        fgsizer.Add((-1,-1)) #empty space
+        self.textCtrlClamScan = wx.TextCtrl(self._panelFiles,wx.ID_ANY)
+        self.textCtrlClamScan.SetToolTipString(_('Specify location of clamscan'))
+        fgsizer.Add(self.textCtrlClamScan,0,wx.EXPAND|wx.ALL,5)
+        self.buttonBrowseClamScan = wx.Button(self._panelFiles,wx.ID_ANY,'...', size=wx.Size(20, 20))
+        self.buttonBrowseClamScan.SetToolTipString(_('Click to browse for clamscan'))
+        self.Bind(wx.EVT_BUTTON,self.OnButtonBrowseClamScan,self.buttonBrowseClamScan)
+        fgsizer.Add(self.buttonBrowseClamScan,0,wx.ALL,5)
 
-        self.checkBoxScanExeOnly = wx.CheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXSCANEXEONLY,
-              label=_('Try to &Scan Executable Files Only'),
-              name='checkBoxScanExeOnly', parent=self._panelAdvanced,
-              pos=wx.Point(6, 55), size=wx.Size(381, 18), style=0)
-        self.checkBoxScanExeOnly.SetToolTipString(_('Select if you only wish to scan files that can run on MS Windows platform'))
-        self.checkBoxScanExeOnly.SetValue(False)
+        self.staticTextFreshClam = wx.StaticText(self._panelFiles,wx.ID_ANY,_('&FreshClam Location:'))
+        fgsizer.Add(self.staticTextFreshClam,0,wx.ALL,5)
+        fgsizer.Add((-1,-1)) #empty space
+        self.textCtrlFreshClam = wx.TextCtrl(self._panelFiles,wx.ID_ANY)
+        self.textCtrlFreshClam.SetToolTipString(_('Specify location of freshclam'))
+        fgsizer.Add(self.textCtrlFreshClam,0,wx.EXPAND|wx.ALL,5)
+        self.buttonBrowseFreshClam = wx.Button(self._panelFiles,wx.ID_ANY,'...', size=wx.Size(20,20))
+        self.buttonBrowseFreshClam.SetToolTipString(_('Click to browse for freshclam'))
+        self.Bind(wx.EVT_BUTTON,self.OnButtonBrowseFreshClam,self.buttonBrowseFreshClam)
+        fgsizer.Add(self.buttonBrowseFreshClam,0,wx.ALL,5)
 
-        self.staticTextAdditionalParams = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTADDITIONALPARAMS,
-              label=_('&Additional Clamscan Command Line Parameters:'),
-              name='staticTextAdditionalParams', parent=self._panelAdvanced,
-              pos=wx.Point(6, 79), size=wx.Size(378, 13), style=0)
+        self.staticTextVirDB = wx.StaticText(self._panelFiles,wx.ID_ANY,_('&Virus Database Folder:'))
+        fgsizer.Add(self.staticTextVirDB,0,wx.ALL,5)
+        fgsizer.Add((-1,-1)) #empty space
+        self.textCtrlVirDB = wx.TextCtrl(self._panelFiles,wx.ID_ANY)
+        self.textCtrlVirDB.SetToolTipString(_('Specify location of virus database files'))
+        fgsizer.Add(self.textCtrlVirDB,0,wx.EXPAND|wx.ALL,5)
+        self.buttonVirDB = wx.Button(self._panelFiles,wx.ID_ANY,'...', size=wx.Size(20, 20))
+        self.buttonVirDB.SetToolTipString(_('Click to browse for a virus database folder'))
+        self.Bind(wx.EVT_BUTTON,self.OnButtonBrowseVirDB,self.buttonVirDB)
+        fgsizer.Add(self.buttonVirDB,0,wx.ALL,5)
 
-        self.textCtrlAdditionalParams = wx.TextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLADDITIONALPARAMS,
-              name='textCtrlAdditionalParams', parent=self._panelAdvanced,
-              pos=wx.Point(6, 97), size=wx.Size(379, 21), style=0, value='')
-        self.textCtrlAdditionalParams.SetToolTipString(_('Specify any additional parameters for clamscan.exe'))
+        fgsizer.AddGrowableCol(0)
 
-        self.staticTextMaxLogSize = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTMAXLOGSIZE,
-              label=_('Limit Log File Size To:'), name='staticTextMaxLogSize',
-              parent=self._panelAdvanced, pos=wx.Point(6, 136), size=wx.Size(220,
-              17), style=0)
+        self._panelFiles.SetSizer(fgsizer)
+        
+        #----------
 
-        self.spinCtrlMaxLogSize = wx.SpinCtrl(id=wxID_WXPREFERENCESDLGSPINCTRLMAXLOGSIZE,
-              initial=0, max=4096, min=1, name='spinCtrlMaxLogSize',
-              parent=self._panelAdvanced, pos=wx.Point(6, 155), size=wx.Size(129,
-              21), style=wx.SP_ARROW_KEYS)
-        self.spinCtrlMaxLogSize.SetToolTipString(_('Select maximum size for the logfile'))
-        self.spinCtrlMaxLogSize.SetValue(1)
-
-        #----------------
+  
 
         #------------Panel Reports
 
-        self.staticTextLogFIle = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTLOGFILE,
-              label=_('&Scan Report File:'), name='staticTextLogFIle',
-              parent=self._panelReports, pos=wx.Point(6, 15), size=wx.Size(354,
-              19), style=0)
-        self.staticTextLogFIle.SetToolTipString('')
+        fgsizer = wx.FlexGridSizer(5,2)
 
-        self.textCtrlScanLogFile = wx.TextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLSCANLOGFILE,
-              name='textCtrlScanLogFile', parent=self._panelReports,
-              pos=wx.Point(6, 35), size=wx.Size(360, 20), style=0, value='')
+        self.staticTextLogFIle = wx.StaticText(self._panelReports,wx.ID_ANY,_('&Scan Report File:'))
+        fgsizer.Add(self.staticTextLogFIle,0,wx.ALL,5)
+        fgsizer.Add((-1,-1)) #empty space
+        self.textCtrlScanLogFile = wx.TextCtrl(self._panelReports,wx.ID_ANY)
         self.textCtrlScanLogFile.SetToolTipString(_('Specify location for a scan reports log file'))
-
-        self.buttonBrowseScanLog = wx.Button(id=wxID_WXPREFERENCESDLGBUTTONBROWSESCANLOG,
-              label='...', name='buttonBrowseScanLog',
-              parent=self._panelReports, pos=wx.Point(366, 35), size=wx.Size(20,
-              20), style=0)
+        fgsizer.Add(self.textCtrlScanLogFile,0,wx.EXPAND|wx.ALL,5)
+        self.buttonBrowseScanLog = wx.Button(self._panelReports,wx.ID_ANY,'...',size=wx.Size(20,20))
         self.buttonBrowseScanLog.SetToolTipString(_('Click to browse for a log file'))
         self.Bind(wx.EVT_BUTTON,self.OnButtonBrowseScanLog,self.buttonBrowseScanLog)
+        fgsizer.Add(self.buttonBrowseScanLog,0,wx.ALL,5)
 
-        self.staticTextDBUpdateLogFile = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTDBUPDATELOGFILE,
-              label=_('&Virus Database Update Report File:'),
-              name='staticTextDBUpdateLogFile', parent=self._panelReports,
-              pos=wx.Point(6, 66), size=wx.Size(354, 19), style=0)
-        self.staticTextDBUpdateLogFile.SetToolTipString('')
-
-        self.textCtrlUpdateLogFile = wx.TextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLUPDATELOGFILE,
-              name='textCtrlUpdateLogFile', parent=self._panelReports,
-              pos=wx.Point(6, 86), size=wx.Size(360, 20), style=0, value='')
+        self.staticTextDBUpdateLogFile = wx.StaticText(self._panelReports,wx.ID_ANY,_('&Virus Database Update Report File:'))
+        fgsizer.Add(self.staticTextDBUpdateLogFile,0,wx.ALL,5)
+        fgsizer.Add((-1,-1)) #empty space
+        self.textCtrlUpdateLogFile = wx.TextCtrl(self._panelReports,wx.ID_ANY)
         self.textCtrlUpdateLogFile.SetToolTipString(_('Specify location for a database updates log file'))
-
-        self.buttonBrowseUpdateLog = wx.Button(id=wxID_WXPREFERENCESDLGBUTTONBROWSEUPDATELOG,
-              label='...', name='buttonBrowseUpdateLog',
-              parent=self._panelReports, pos=wx.Point(366, 86), size=wx.Size(20,
-              20), style=0)
+        fgsizer.Add(self.textCtrlUpdateLogFile,0,wx.EXPAND|wx.ALL,5)
+        self.buttonBrowseUpdateLog = wx.Button(self._panelReports,wx.ID_ANY,'...', size=wx.Size(20, 20))
         self.buttonBrowseUpdateLog.SetToolTipString(_('Click to browse for a log file'))
         self.Bind(wx.EVT_BUTTON,self.OnButtonBrowseUpdateLog,self.buttonBrowseUpdateLog)
+        fgsizer.Add(self.buttonBrowseUpdateLog,0,wx.ALL,5)
+
+        self.checkBoxTrayNotify = wx.CheckBox(self._panelReports,wx.ID_ANY,_('&Display Pop-up Notification Messages In Taskbar '))
+        self.checkBoxTrayNotify.SetToolTipString(_('Select if you wish to receive Tray notification pop-up messages'))
+        fgsizer.Add(self.checkBoxTrayNotify,0,wx.ALL,5)
+
+        fgsizer.AddGrowableCol(0)
+
+        self._panelReports.SetSizer(fgsizer)
+
 
         #------------
 
 
+        #Panel EmailScanning
 
-
-
-
-
-        self.checkBoxTrayNotify = wx.CheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXTRAYNOTIFY,
-              label=_('&Display Pop-up Notification Messages In Taskbar '),
-              name='checkBoxTrayNotify', parent=self._panelReports,
-              pos=wx.Point(6, 123), size=wx.Size(354, 18), style=0)
-        self.checkBoxTrayNotify.SetValue(False)
-        self.checkBoxTrayNotify.SetToolTipString(_('Select if you wish to receive Tray notification pop-up messages'))
-
+        sizer = wx.BoxSizer()
         
-
-
-
- 
-
-
-
-        self.staticTextMB2 = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTMB2,
-              label=_('MegaBytes'), name='staticTextMB2',
-              parent=self._panelAdvanced, pos=wx.Point(144, 156), size=wx.Size(74,
-              16), style=0)
-
-        self.staticTextPriority = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTPRIORITY,
-              label=_('Scanner &Priority:'), name='staticTextPriority',
-              parent=self._panelAdvanced, pos=wx.Point(252, 136),
-              size=wx.Size(103, 17), style=0)
-
-        self.choicePriority = wx.Choice(choices=[_('Low'), _('Normal')],
-              id=wxID_WXPREFERENCESDLGCHOICEPRIORITY, name='choicePriority',
-              parent=self._panelAdvanced, pos=wx.Point(252, 155),
-              size=wx.Size(134, 21), style=0)
-        self.choicePriority.SetToolTipString(_('Specify the process priority for the virus scanner.'))
-        self.choicePriority.SetStringSelection(_('Normal'))
-        self.choicePriority.SetLabel('')
-
-
-
- 
-        self.staticBoxOutlookAddin = wx.StaticBox(id=wxID_WXPREFERENCESDLGSTATICBOXOUTLOOKADDIN,
-              label=_('Microsoft Outlook'), name='staticBoxOutlookAddin',
-              parent=self._panelEmailScanning, pos=wx.Point(6, 11),
-              size=wx.Size(376, 77), style=0)
-
-        self.checkBoxOutlookScanIncoming = wx.CheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXOUTLOOKSCANINCOMING,
-              label=_('Scan &Incoming Email Messages'),
-              name='checkBoxOutlookScanIncoming',
-              parent=self._panelEmailScanning, pos=wx.Point(15, 32),
-              size=wx.Size(354, 18), style=0)
-        self.checkBoxOutlookScanIncoming.SetValue(False)
+        self.staticBoxOutlookAddin = wx.StaticBox(self._panelEmailScanning,wx.ID_ANY,_('Microsoft Outlook'))
+        sbsizer = wx.StaticBoxSizer(self.staticBoxOutlookAddin,wx.VERTICAL)
+        
+        self.checkBoxOutlookScanIncoming = wx.CheckBox(self._panelEmailScanning,wx.ID_ANY,_('Scan &Incoming Email Messages'))
         self.checkBoxOutlookScanIncoming.SetToolTipString(_('Select if you wish to enable scanning of incoming email messages in MS Outlook'))
         self.Bind(wx.EVT_CHECKBOX,self.OnCheckBoxOutlookAddinEnabledCheckbox,self.checkBoxOutlookScanIncoming)
+        sbsizer.Add(self.checkBoxOutlookScanIncoming,0,wx.ALL,5)
 
-        self.checkBoxOutlookScanOutgoing = wx.CheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXOUTLOOKSCANOUTGOING,
-              label=_('Scan &Outgoing Email Messages'),
-              name='checkBoxOutlookScanOutgoing',
-              parent=self._panelEmailScanning, pos=wx.Point(15, 57),
-              size=wx.Size(354, 18), style=0)
-        self.checkBoxOutlookScanOutgoing.SetValue(False)
+        self.checkBoxOutlookScanOutgoing = wx.CheckBox(self._panelEmailScanning,wx.ID_ANY,_('Scan &Outgoing Email Messages'))
         self.checkBoxOutlookScanOutgoing.SetToolTipString(_('Select if you wish to enable scanning of outgoing email messages in MS Outlook'))
         self.Bind(wx.EVT_CHECKBOX,self.OnCheckBoxOutlookScanOutgoingCheckbox,self.checkBoxOutlookScanOutgoing)
+        sbsizer.Add(self.checkBoxOutlookScanOutgoing,0,wx.ALL,5)
+
+        sizer.Add(sbsizer,1,wx.ALL,5)
+    
+        self._panelEmailScanning.SetSizer(sizer)
+
+        #-------
+ 
+      #--------Panel Advanced
+
+        sizer = wx.BoxSizer(wx.VERTICAL)
+
+        self.checkBoxEnableMbox = wx.CheckBox(self._panelAdvanced,wx.ID_ANY,_('&Treat Files As Mailboxes'))
+        self.checkBoxEnableMbox.SetToolTipString(_('Select if you wish to scan mailboxes'))
+        sizer.Add(self.checkBoxEnableMbox,0,wx.ALL,5)
+        self.checkBoxEnableOLE2 = wx.CheckBox(self._panelAdvanced,wx.ID_ANY,_('&Extract Attachments and Macros from MS Office Documents'))
+        self.checkBoxEnableOLE2.SetToolTipString(_('Select if you wish to scan OLE attachments and macros in MS Office Documents'))
+        sizer.Add(self.checkBoxEnableOLE2,0,wx.ALL,5)
+        self.checkBoxScanExeOnly = wx.CheckBox(self._panelAdvanced,wx.ID_ANY,_('Try to &Scan Executable Files Only'))
+        self.checkBoxScanExeOnly.SetToolTipString(_('Select if you only wish to scan files that can run on MS Windows platform'))
+        sizer.Add(self.checkBoxScanExeOnly,0,wx.ALL,5)
+        self.staticTextAdditionalParams = wx.StaticText(self._panelAdvanced,wx.ID_ANY,_('&Additional Clamscan Command Line Parameters:'))
+        sizer.Add(self.staticTextAdditionalParams,0,wx.ALL,5)
+        self.textCtrlAdditionalParams = wx.TextCtrl(self._panelAdvanced,wx.ID_ANY)
+        self.textCtrlAdditionalParams.SetToolTipString(_('Specify any additional parameters for clamscan.exe'))
+        sizer.Add(self.textCtrlAdditionalParams,0,wx.EXPAND|wx.ALL,5)
+
+        gsizer = wx.GridSizer(2,3)
+        self.staticTextMaxLogSize = wx.StaticText(self._panelAdvanced,wx.ID_ANY,_('Limit Log File Size To:'))
+        gsizer.Add(self.staticTextMaxLogSize)
+        gsizer.Add((-1,-1))
+        self.staticTextPriority = wx.StaticText(self._panelAdvanced,wx.ID_ANY,_('Scanner &Priority:'))
+        gsizer.Add(self.staticTextPriority)
+        self.spinCtrlMaxLogSize = wx.SpinCtrl(self._panelAdvanced,wx.ID_ANY,initial=0, max=4096, min=1,style=wx.SP_ARROW_KEYS)
+        self.spinCtrlMaxLogSize.SetToolTipString(_('Select maximum size for the logfile'))
+        self.spinCtrlMaxLogSize.SetValue(1)
+        gsizer.Add(self.spinCtrlMaxLogSize)
+        self.staticTextMB2 = wx.StaticText(self._panelAdvanced,wx.ID_ANY,_('MegaBytes'))
+        gsizer.Add(self.staticTextMB2)
+        self.choicePriority = wx.Choice(self._panelAdvanced,wx.ID_ANY,choices=[_('Low'), _('Normal')])
+        self.choicePriority.SetToolTipString(_('Specify the process priority for the virus scanner.'))
+        self.choicePriority.SetStringSelection(_('Normal'))
+        gsizer.Add(self.choicePriority)
+
+        sizer.Add(gsizer,0,wx.ALL,5)
+
+        self._panelAdvanced.SetSizer(sizer)
+
+        #----------------
+
+
+
+
+
+ 
+
 
         self._init_coll_notebook_Pages(self.notebook)
 
