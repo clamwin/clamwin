@@ -31,7 +31,7 @@ class DialogScan(wx.Dialog):
     def __init__(self,parent):
         wx.Dialog.__init__(self,parent,wx.ID_ANY,_('ClamWin Scanner'),size=(400,300))
         self.Center(wx.BOTH)
-        self.SetBackgroundColour(wx.WHITE)
+        #self.SetBackgroundColour(wx.WHITE)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -57,19 +57,24 @@ class DialogScan(wx.Dialog):
 
         self.StatusTotal = wx.StaticText(self._panelStatus)
         status_sizer.Add(self.StatusTotal, 0, wx.TOP|wx.RIGHT|wx.LEFT,10)
-        #self.StatusInfected = hl.HyperLinkCtrl(self, wx.ID_ANY, _("Infected :"))
-        self.StatusInfected = wx.StaticText(self._panelStatus)
+        self.StatusInfected = hl.HyperLinkCtrl(self._panelStatus, wx.ID_ANY, _("Infected :"))
+        #self.StatusInfected = wx.StaticText(self._panelStatus)
         status_sizer.Add(self.StatusInfected, 0,wx.RIGHT|wx.LEFT,10)
-        #self.StatusInfected.AutoBrowse(False)
-        #self.StatusInfected.EnableRollover(True)
-        #self.StatusInfected.SetUnderlines(False, False, True)
-        #self.StatusErrors = hl.HyperLinkCtrl(self, wx.ID_ANY, _("Errors/Warnings :"))
-        self.StatusErrors = wx.StaticText(self._panelStatus)
+        self.StatusInfected.AutoBrowse(False)
+        self.StatusInfected.EnableRollover(True)
+        self.StatusInfected.SetUnderlines(False, False, True)
+        self.StatusInfected.SetColours("BLUE", "BLUE", "BLUE")
+        self.StatusInfected.SetToolTip(wx.ToolTip(_("Click here to see infected files")))
+        self.StatusInfected.UpdateLink()
+        self.StatusErrors = hl.HyperLinkCtrl(self._panelStatus, wx.ID_ANY, _("Errors/Warnings :"))
+        #self.StatusErrors = wx.StaticText(self._panelStatus)
         status_sizer.Add(self.StatusErrors, 0, wx.RIGHT|wx.LEFT,10)
-        #self.StatusErrors.AutoBrowse(False)
-        #self.StatusErrors.EnableRollover(True)
-        #self.StatusErrors.SetUnderlines(False, False, True)
-        #self.StatusErrors.UpdateLink()
+        self.StatusErrors.AutoBrowse(False)
+        self.StatusErrors.EnableRollover(True)
+        self.StatusErrors.SetUnderlines(False, False, True)
+        self.StatusErrors.SetColours("BLUE", "BLUE", "BLUE")
+        self.StatusErrors.SetToolTip(wx.ToolTip(_("Click here to see Errors and Warnings")))
+        self.StatusErrors.UpdateLink()
         self.StatusLast = wx.StaticText(self._panelStatus)
         status_sizer.Add(self.StatusLast,0,wx.RIGHT|wx.LEFT|wx.BOTTOM,10)
         self.Gauge = wx.Gauge(self._panelStatus,wx.ID_ANY,100) #100%
@@ -78,7 +83,9 @@ class DialogScan(wx.Dialog):
         status_sizer.Add(self.StatusTime,0,wx.RIGHT|wx.LEFT,10)
         self.StatusRestTime = wx.StaticText(self._panelStatus)
         status_sizer.Add(self.StatusRestTime,0,wx.RIGHT|wx.LEFT,10)
-        
+
+        self.StatusInfected.Bind(hl.EVT_HYPERLINK_LEFT, self.OnLinkInfected)
+        self.StatusErrors.Bind(hl.EVT_HYPERLINK_LEFT, self.OnLinkErrors)
 
         self._panelStatus.SetSizer(status_sizer)
 
@@ -89,29 +96,28 @@ class DialogScan(wx.Dialog):
 
         self._panelInfections.SetSizer(infections_sizer)
 
-
         #Panel Errors/Warnings
 
         errors_sizer = wx.BoxSizer(wx.VERTICAL)
 
         self._panelErrors.SetSizer(errors_sizer)
-
-
+        
         #Data
         self.Percent = 0
         self.CurrentScan = '' #current file
         self.Infected = [] #list of infected files
         self.Errors = [] #list of errors
-
-        
-
+    
         self.UpdateTimer = wx.Timer(self)
-
         self.Bind(wx.EVT_TIMER, self.OnUpdate, self.UpdateTimer)
-        
         self.UpdateTimer.Start(500) #update dialog every 200ms
-
         self._start_time = time.time()
+
+    def OnLinkInfected(self, event):
+        self.NB.SetSelection(1)
+
+    def OnLinkErrors(self, event):
+        self.NB.SetSelection(2)
 
     def OnUpdate(self, event):
         self.Gauge.SetValue(self.Percent)
