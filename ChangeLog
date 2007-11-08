@@ -1,3 +1,16 @@
+Version 0.91.2 - 21 August 2007
+ - Updated ClamAV to 0.91.2
+
+Version 0.91.1 - 25 July 2007
+ - Updated ClamAV to 0.91.1, which should improve archive 
+   and packed executable scanning as well as improve 
+   database loading times.
+ - Fixed duplicate database loading in certain cases
+
+Version 0.90.2.1  - 27 May 2007
+- Outlook Addin now uses pylibclamav instead of clamscan to improve speed of email opening
+- New upgrades system getting ready for incremental updates
+
 Version 0.90.1.1  - 12 March 2007
 - Added support for main.inc database folder
 - Added meaningful output to "cannot open file" messages

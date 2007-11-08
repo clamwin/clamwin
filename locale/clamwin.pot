@@ -1817,3 +1817,7 @@ msgstr ""
 
 msgid "Choose auto-detect or an available language"
 msgstr ""
+
+msgid "ClamWin Error occured whilst loading virus database: %s"
+msgstr ""
+

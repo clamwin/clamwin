@@ -82,13 +82,37 @@ def wxUpdateVirDB(parent, config, autoClose = False):
             os.remove(freshclam_conf)
         except Exception, e:
             print _("Couldn't remove file %s. Error: %s") % (freshclam_conf, str(e))        
+            
+        # @@@ Alch 20070723
+        # remove .inc folder if .cvd is already there
+        # happens sometinmes if users presses cancel 
+        # and causes 2 copies of the db being loaded
+        try:
+            dirname = os.path.join(os.path.join(dbdir, 'main.inc'))
+            if os.path.isdir(dirname) and \
+               os.path.isfile(os.path.join(dbdir, 'main.cvd')):
+               for root, dirs, files in os.walk(dirname, topdown=False):
+                   for name in files:
+                       os.remove(os.path.join(root, name))
+               os.rmdir(dirname)
+               
+            dirname = os.path.join(os.path.join(dbdir, 'daily.inc'))
+            if os.path.isdir(dirname) and \
+               os.path.isfile(os.path.join(dbdir, 'daily.cvd')):
+               for root, dirs, files in os.walk(dirname, topdown=False):
+                   for name in files:
+        	       os.remove(os.path.join(root, name))
+               os.rmdir(dirname)
+        except Exception, e:
+            print "couldn't remove .inc folder. Error: %s" % str(e)                       
+
         if exit_code == 1:
             try:
                 f = file(os.path.join(tempfile.gettempdir(), 'ClamWin_Upadte_Time'), 'w')
                 f.write(str(time.time()))
                 f.close()
             except IOError:
-                pass
+                pass       
         return exit_code
 
 def wxScan(parent, config, path, autoClose = False):

@@ -54,7 +54,7 @@ import py2exe
 
 py2exe_options = dict(
     packages = "encodings",
-    excludes = "win32ui,pywin,pywin.debugger", # pywin is a package, and still seems to be included.
+    excludes = "win32ui,pywin,pywin.debugger,mx,pywin.dialogs,pywin.dialogs.list", # pywin is a package, and still seems to be included.
     includes = "throb,dbhash", # AVI throb images
     dll_excludes = "dapi.dll,mapi32.dll",
     optimize = '02',

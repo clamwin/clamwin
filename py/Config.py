@@ -55,7 +55,7 @@ class Settings:
         [0, {'Enable': '1', 'Frequency': 'Daily', 'Time': '10:00:00',
             'WeekDay': '2', 'DBMirror': 'database.clamav.net',
             'DBUpdateLogFile': '', 'UpdateOnLogon': '0', 'WarnOutOfDate': '1',
-            'CheckVersion': '1', 'CheckVersionURL': 'http://clamwin.sourceforge.net/clamwin.ver'}],
+            'CheckVersion': '1', 'CheckVersionURL': 'http://clamwin.sourceforge.net/clamwinver.php'}],
         'EmailAlerts':
         [0, {'Enable': '0',
              'SMTPHost': '', 'SMTPPort': '25', 'SMTPUser':'',
@@ -71,6 +71,7 @@ class Settings:
         }
 
     def Read(self):
+        write = False
         try:
             conf = ConfigParser.ConfigParser()
             conf.read(self._filename)
@@ -88,8 +89,21 @@ class Settings:
         # for older version set display infected only to 1
         if self._settings['UI'][1]['Version'] == '':
             self._settings['ClamAV'][1]['InfectedOnly'] = '1'
+            write = True
 
-        self._settings['UI'][1]['Version'] = version.clamwin_version
+        # rewrite CheckVersionURL for earlier versions    
+        if self._settings['UI'][1]['Version'] < '0.90.2.1' and \
+           self._settings['Updates'][1]['CheckVersionURL'] == 'http://clamwin.sourceforge.net/clamwin.ver':
+            self._settings['Updates'][1]['CheckVersionURL'] = 'http://clamwin.sourceforge.net/clamwinver.php'
+            write = True
+
+        if self._settings['UI'][1]['Version'] < version.clamwin_version:
+            self._settings['UI'][1]['Version'] = version.clamwin_version
+            write = True
+            
+        if write:
+            print 'Config updated to version %s. Saving' % version.clamwin_version
+            self.Write()
         return True
 
     def Write(self):

@@ -693,6 +693,7 @@ def ReplaceClamAVWarnings(data):
 # returns tuple (version, url, changelog)
 # exception on error
 def GetOnlineVersion(config):
+     import version
      tmpfile = None
      url = config.Get('Updates', 'CheckVersionURL')
      try:
@@ -714,7 +715,7 @@ def GetOnlineVersion(config):
              proxy_support = urllib2.ProxyHandler({"http": proxy_url})
              opener = urllib2.build_opener(proxy_support, urllib2.HTTPHandler())
              urllib2.install_opener(opener)
-         f = urllib2.urlopen(url)
+         f = urllib2.urlopen(url + '?ver=%s' % version.clamwin_version)
          verinfo = f.read()
          #write to a temp file
          tmpfile = tempfile.mktemp()
@@ -839,7 +840,7 @@ if __name__ == '__main__':
     config_file = os.path.join(GetProfileDir(True),'ClamWin.conf')
     config = Config.Settings(config_file)
     b = config.Read()
-#    print GetOnlineVersion(config)
+    print GetOnlineVersion(config)
 #    print CheckDatabase(config)
     dbpath =  config.Get('ClamAV', 'Database')                
     daily = os.path.join(dbpath, 'daily.cvd')

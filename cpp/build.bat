@@ -1,4 +1,4 @@
-@echo off
+rem @echo off
 
 set LIBS=user32.lib advapi32.lib shell32.lib ole32.lib 
 set DEFINES=/D "WIN32" /D "_CRT_SECURE_NO_DEPRECATE" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "EXPLORERSHELL_EXPORTS"
@@ -9,6 +9,7 @@ call "%VCINSTALLDIR%\vcvarsall.bat" x86
 
 :: 32 bit unicode
 echo Building 32bit Release Unicode
+echo ----------------------------------------------
 mkdir Release_Unicode
 %MC% -u -U MessageTable.mc
 rc.exe /d "NDEBUG" /l 0x409 /fo".\Release_Unicode/MessageTable.res" .\MessageTable.rc

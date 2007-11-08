@@ -3,8 +3,8 @@
 
 [Setup]
 AppName={cm:ClamWinFreeAntivirus1}
-AppVerName={cm:ClamWinFreeAntivirus1} 0.90.1
-OutputBaseFilename=ClamWin-0.90.2-L10N-34
+AppVerName={cm:ClamWinFreeAntivirus1} 0.91.2
+OutputBaseFilename=ClamWin-0.91.2-L10N-35
 AppPublisher=budtse
 AppPublisherURL=http://www.clamwin.com/
 AppSupportURL=http://www.clamwin.com/
@@ -83,15 +83,17 @@ Source: ..\locale\es_ES.mo; DestDir: {app}\locale\es_ES\LC_MESSAGES; DestName: c
 
 
 ; on xp and greater VC80 CRT needs to be installed in Microsoft.VC80.CRT
-Source: Microsoft.VC80.CRT\Microsoft.VC80.CRT.manifest; DestDir: {app}\bin\Microsoft.VC80.CRT; Components: ClamAV; Check: IsXPOrLater
-Source: Microsoft.VC80.CRT\msvcm80.dll; DestDir: {app}\bin\Microsoft.VC80.CRT; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: IsXPOrLater
-Source: Microsoft.VC80.CRT\msvcr80.dll; DestDir: {app}\bin\Microsoft.VC80.CRT; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: IsXPOrLater
-Source: Microsoft.VC80.CRT\msvcp80.dll; DestDir: {app}\bin\Microsoft.VC80.CRT; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: IsXPOrLater
+Source: Dependencies\Microsoft.VC80.CRT\Microsoft.VC80.CRT.manifest; DestDir: {app}\bin\Microsoft.VC80.CRT; Components: ClamAV; Check: IsXPOrLater
+Source: Dependencies\Microsoft.VC80.CRT\msvcm80.dll; DestDir: {app}\bin\Microsoft.VC80.CRT; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: IsXPOrLater
+Source: Dependencies\Microsoft.VC80.CRT\msvcr80.dll; DestDir: {app}\bin\Microsoft.VC80.CRT; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: IsXPOrLater
+Source: Dependencies\Microsoft.VC80.CRT\msvcp80.dll; DestDir: {app}\bin\Microsoft.VC80.CRT; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: IsXPOrLater
 ; on 2000 and 98 VC80 CRT needs to be installed in the same dir; no manifest
-Source: Microsoft.VC80.CRT\msvcm80.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: not IsXPOrLater
-Source: Microsoft.VC80.CRT\msvcr80.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: not IsXPOrLater
-Source: Microsoft.VC80.CRT\msvcp80.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: not IsXPOrLater
+Source: Dependencies\Microsoft.VC80.CRT\msvcm80.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: not IsXPOrLater
+Source: Dependencies\Microsoft.VC80.CRT\msvcr80.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: not IsXPOrLater
+Source: Dependencies\Microsoft.VC80.CRT\msvcp80.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: not IsXPOrLater
 
+;pthread
+Source: Dependencies\pthread\pthreadVC2.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete
 
 ;Source: ..\clamav-stable\sigtool\sigtool.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
 ; TODO : Copy Unicode build in NT and ANSI in 9x
@@ -99,9 +101,13 @@ Source: ..\cpp\Release\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShe
 Source: ..\cpp\Release_Unicode\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete 32bit; Check: UsingWinNT
 ;Source: ..\cpp\Release_x64\ExpShell64.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete 64bit; Check: IsWin64
 
+
 Source: py2exe\dist\bin\WClose.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: py2exe\dist\bin\w9xpopen.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+;TODO: Source: Setupfiles\conagent.pif; DestDir: {app}\bin; Components: ClamWin; Flags: 32bit; Check: IsWin9x
+
 Source: py2exe\dist\bin\OlAddin.exe; DestDir: {app}\bin; Components: OutlookAddin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: py2exe\dist\lib\pyclamav.pyd; DestDir: {app}\lib; Components: OutlookAddin; Flags: restartreplace uninsrestartdelete
 ;Source: {%TEMP|{localappdata}}\clamwin-src.zip; DestDir: {app}\src; Components: Sources; Flags: external ignoreversion
 ;Source: {%TEMP|{localappdata}}\clamav-src.tar.gz; DestDir: {app}\src; Components: Sources; Flags: external ignoreversion
 ;Source: {%TEMP|{localappdata}}\cygwin-src.tar.bz2; DestDir: {app}\src; Components: Sources; Flags: external replacesameversion
@@ -134,7 +140,7 @@ Source: py2exe\dist\lib\win32process.pyd; DestDir: {app}\lib; Components: ClamWi
 Source: py2exe\dist\lib\win32trace.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 Source: py2exe\dist\lib\win32security.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 Source: py2exe\dist\lib\wxc.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
-Source: py2exe\dist\lib\wxmsw24h.dll; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\wxmsw24uh.dll; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 Source: py2exe\dist\lib\zlib.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 ;Source: py2exe\dist\lib\BalloonTip.pyd; DestDir: {app}\lib; Components: ClamWin; Check: IsWin9x; Flags: restartreplace uninsrestartdelete
 
@@ -150,7 +156,6 @@ Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuItemOnlineHelp}; Filename: {a
 Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuGroupHelpInternational}\Russian (Russian Help); Filename: {app}\doc\manual_ru.chm; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: LanguageSupport\Russian
 Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuGroupHelpInternational}\Français (French Manual); Filename: {app}\doc\manual_fr.pdf; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: LanguageSupport\French
 Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuGroupHelpInternational}\Nederlands (Dutch Help); Filename: {app}\doc\Manual_NL.chm; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: LanguageSupport\Dutch
-;Name: {group}\Help\International\Italian Help; Filename: {app}\bin\ItalianManual.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: LanguageSupport\Italian
 Name: {group}\Uninstall ClamWin Free Antivirus; Filename: {uninstallexe}
 [Run]
 ; NOTE: The following entry contains an English phrase ("Launch"). You are free to translate it into another language if required.
@@ -207,7 +212,7 @@ Name: custom; Description: {cm:CustomInstallation1}; Flags: iscustom
 [UninstallDelete]
 Name: {tmp}\ClamWin_Scheduler_Info; Type: files; Components: ClamWin
 Name: {tmp}\ClamWin_Upadte_Time; Type: files; Components: ClamWin
-Name: {app}\bin\ClamWin.conf; Type: files
+Name: {app}; Type: filesandordirs
 Name: {userappdata}\.clamwin; Type: filesandordirs
 Name: {code:CommonProfileDir}\.clamwin; Type: filesandordirs
 
@@ -219,11 +224,11 @@ Name: {code:CommonProfileDir}\.clamwin; Type: filesandordirs
 Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: ClamWin; ValueData: """{app}\bin\ClamTray.exe"" --logon"; Flags: uninsdeletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKLM; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKLM64; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers and IsWin64
-Root: HKLM; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 902; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
+Root: HKLM; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 9120; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKCU; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: ClamWin; ValueData: """{app}\bin\ClamTray.exe"" --logon"; Flags: uninsdeletevalue; Components: ClamWin; Check: not IsAllUsers
 Root: HKCU; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
 Root: HKCU64; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers and IsWin64
-Root: HKCU; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 902; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
+Root: HKCU; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 9120; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
 
 ; ExplorerShell entries
 Root: HKCR; Subkey: CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueData: {app}\bin\ExpShell.dll; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers
@@ -494,7 +499,7 @@ begin
 	else
 		AllUsers := IsAdminLoggedOn();
 
-	ThisVersion := 902;
+	ThisVersion := 9120;
 	value := 0;
 	if not RegQueryDWordValue(HKEY_CURRENT_USER, 'SOFTWARE\Clamwin', 'Version',  value) then begin
 		value := 0;

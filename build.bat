@@ -20,16 +20,21 @@ cd py\BalloonTip
 call build.bat
 if not "%ERRORLEVEL%"=="0" goto ERROR
 cd ..\..\
+rem build pyclamav
+cd ..\..\..\addons\pyclamav
+call build.cmd
+if not "%ERRORLEVEL%"="0" goto ERROR
+cd ..\..\clamwin
 rem build py2exe binaries
 cd setup\py2exe
 call %PYTHONDIR%\python setup_all.py
 if not "%ERRORLEVEL%"=="0" goto ERROR
 
 rem get the latest db files
-rem call %WGET_UTIL% http://%DB_MIRROR%/main.cvd -O "%THISDIR%\Setup\cvd\main.cvd"
-rem if not "%ERRORLEVEL%"=="0" goto ERROR
-rem call %WGET_UTIL% http://%DB_MIRROR%/daily.cvd -O "%THISDIR%\Setup\cvd\daily.cvd"
-rem if not "%ERRORLEVEL%"=="0" goto ERROR
+call %WGET_UTIL% http://%DB_MIRROR%/main.cvd -O "%THISDIR%\Setup\cvd\main.cvd"
+if not "%ERRORLEVEL%"=="0" goto ERROR
+call %WGET_UTIL% http://%DB_MIRROR%/daily.cvd -O "%THISDIR%\Setup\cvd\daily.cvd"
+if not "%ERRORLEVEL%"=="0" goto ERROR
 
 rem build setups
 call "%ISTOOLDIR%\ISTool.exe" -compile "%THISDIR%\Setup\Setup-nodb.iss"

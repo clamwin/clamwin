@@ -1,6 +1,8 @@
 @echo off
 set LIBS=odbc32.lib odbccp32.lib comctl32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib
-set DEFINES=/D"WINVER=0x0500" /D "WIN32" /D "_CRT_SECURE_NO_DEPRECATE" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "BALLOONTIP_EXPORTS" /I "%PYTHONDIR%\include"
+set DEFINES=/D "WINVER=0x0500" /D "WIN32" /D "_CRT_SECURE_NO_DEPRECATE" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "BALLOONTIP_EXPORTS"
+set INCLUDE=%INCLUDE%;"%PYTHONDIR%\include"
+
 
 call "%VCINSTALLDIR%\vcvarsall.bat" x86
 set LIB=%LIB%;%PYTHONDIR%\libs

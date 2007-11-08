@@ -82,7 +82,7 @@
 
 import SetUnicode
 import sys
-import os
+import os, errno
 import re
 import tempfile
 import warnings
@@ -133,6 +133,18 @@ import win32gui, win32con, win32clipboard # for button images!
 from win32com.mapi import mapi, mapiutil, mapitags
 import RedirectStd
 
+# import pyclamav here
+hLibClamAV = 0                             
+try:
+    hLibClamav = win32api.LoadLibrary(os.path.join(Utils.GetCurrentDir(False), "libclamav.dll"))
+except Exception, e:
+    print str(e), os.path.join(Utils.GetCurrentDir(False), "libclamav.dll")
+    
+try:
+    import pyclamav
+except Exception, e:
+    print str(e)
+
 _DEBUG=False
 
 def dbg_print(*args):
@@ -169,6 +181,7 @@ gencache.EnsureModule('{AC0714F2-3D04-11D1-AE7D-00A0C90F26F4}', 0, 1, 0,
 # ... and also for its _IDTExtensibility2 vtable interface.
 universal.RegisterInterfaces('{AC0714F2-3D04-11D1-AE7D-00A0C90F26F4}', 0, 1, 0,
                              ["_IDTExtensibility2"])
+                             
 
 try:
     from win32com.client import CastTo, WithEvents
@@ -210,7 +223,7 @@ def SetButtonImage(button, fname):
 
     if not os.path.isabs(fname):
         # images relative to the application path
-        fname = os.path.join(Utils.GetCurrentDir(False),"images", fname)
+        fname = os.path.join(Utils.GetCurrentDir(False),"img", fname)
         if not os.path.isfile(fname):
             print _("WARNING - Trying to use image '%s', but it doesn't exist") % (fname,)
             return None
@@ -239,77 +252,43 @@ def ScanFile(path, config, attname):
     try:
         if os.getenv('TMPDIR') is None:
             os.putenv('TMPDIR', tempfile.gettempdir())
+            
+        os.putenv('PATH', os.getenv('PATH') + ';' + Utils.GetCurrentDir(False))
+                        
     except Exception, e:
         print str(e)
-
+            
+    try:
+        pyclamav.setdbpath(config.Get('ClamAV', 'Database'))
+    except Exception, e:
+        raise ScanError(_('ClamWin Error occured whilst loading virus database: %s') % str(e))
+    
 
     logfile = os.path.split(path)[0]+"\\"+_('Virus Deleted by ClamWin.txt')
-    cmd = '--tempdir "%s"' % tempfile.gettempdir().rstrip('\\')
-
-    cmd = '--max-ratio=0 --stdout --database="%s" --log="%s" "%s"' % \
-            (config.Get('ClamAV', 'Database'), logfile, path)
-    cmd = '"%s" %s' % (config.Get('ClamAV', 'ClamScan'), cmd)
-
-    scanstatus = ''
     retcode = 1
-    proc = None
+    scanstatus = ''
     try:
-        proc = Process.ProcessOpen(cmd)
-        retcode = proc.wait()
-        # Translate log file
-        # translate self._logfile and copy the translation to self._logfile
-        logfileobj = file(logfile, "r")
-        lines = logfileobj.readlines()
-        logfileobj.close()
-        translatedlog = tempfile.mktemp()
-        print "using translated log [%s]" % translatedlog
-        I18N.setLocalePath()
-        translatedLines = wxDialogStatus.translateClamAVLines(lines)
-        translogobj = file(translatedlog, "w")
-        translogobj.writelines(translatedLines)
-        translogobj.close()
-        os.remove(logfile)
-        shutil.copyfile(translatedlog, logfile)
-        os.remove(translatedlog)
-        print "using logfile [%s]" % logfile
-        
-        dbg_print('scanning completed with %i' % retcode)  
-        # returns 100 if a damaged rar archive was found
-        if retcode >= 100 and retcode <= 106:
-            dbg_print('damaged archive - ignoring')
-            retcode = 0
+        retcode, scanstatus = pyclamav.scanfile(path)
     except Exception, e:
-        if proc is not None:
-            proc.close()
-        safe_remove(logfile)
-        print _("Registration complete.")
-        raise ScanError(_('An Error occurred whilst starting clamscan: %s') % str(e))
+        raise ScanError(_('An Error occurred whilst scanning:\n%s') % str(e))
 
-    if proc is not None:
-        proc.close()
+    if retcode >= 100 and retcode <= 106:
+        dbg_print('damaged archive - ignoring')
+        retcode = 0
+    
     if retcode == 0:
         virusFound = False
     # check the retrun Code
     elif retcode == 1:
-        virusFound = True
+        virusFound = True        
+        try:
+            file(logfile, 'w+t').write('ClamWin Free Antivirus report:\n\n%s virus has been found in the attached file %s!' % (scanstatus, attname))
+        except Exception, e:
+            raise ScanError('An Error occured whilst saving scan report: %s' % str(e))    
     else:
         # error, raise an exception
-        try:
-            error = file(logfile, 'rt').read()
-            safe_remove(logfile)
-        except Exception, e:
-            raise ScanError(_('An Error occurred reading clamscan report: %s') % str(e))
-        raise ScanError('An Error occured whilst scanning:\n%s' % error)
+        raise ScanError(_('An Error occurred whilst scanning:\n%s') % scanstatus)
         raise ScanError(_('An Error occurred whilst scanning:\n%s') % error)
-    # replace \n's with \r\n's
-    # so it can be shown in notepad
-    # also replace temp filename with real attachment name
-    try:
-        text = file(logfile, 'rt').read().replace('\n', '\r\n').replace(path, attname)
-        file(logfile, 'wt').write(text)
-    except Exception, e:
-        safe_remove(logfile)
-        raise ScanError(_('An Error occurred whilst converting clamscan report: %s') % str(e))    
     return (virusFound, logfile)
 
 # returns 0 if everything is okay, or number fo infected files
@@ -508,11 +487,21 @@ def safe_remove(path, removeLastDir = False):
             os.remove(path)
         else:
             os.rmdir(path)
+    except OSError, e:
+        if e.errno != errno.ENOENT:        
+            print _('Could not remove file: %s. Error: %s') % (path, str(e))
+    except Exception, e:
+        print _('Could not remove file: %s. Error: %s') % (path, str(e))
+
+    try:
         if removeLastDir:
             dir = os.path.split(path)[0]
-            if os.path.exists(dir):
+            if os.path.exists(dir):                
                 os.rmdir(dir)
-    except Exception, e:
+    except OSError, e:
+        if e.errno != errno.ENOENT:        
+            print _('Could not remove file: %s. Error: %s') % (path, str(e))
+    except Exception, e:       
         print _('Could not remove file: %s. Error: %s') % (path, str(e))
 
 class WaitCursor:
@@ -925,9 +914,10 @@ class OutlookAddin(ObjectsEvent):
             if config.Get('EmailScan', 'ScanOutgoing') == '1' or \
                 config.Get('EmailScan', 'ScanIncoming') == '1':
                 splash = os.path.join(Utils.GetCurrentDir(False), "img\\Splash.bmp")             
-                SplashScreen.ShowSplashScreen(splash, 5)
+                SplashScreen.ShowSplashScreen(splash, 5)                            
         except Exception, e:
             print _("An error occurred whilst displaying the splashscreen %s. Error: %s.") % (splash, str(e))
+            
         # Setup all our filters and hooks.  We used to do this in OnConnection,
         # but a number of 'strange' bugs were reported which I suspect would
         # go away if done during this later event - and this later place
@@ -959,6 +949,12 @@ class OutlookAddin(ObjectsEvent):
 
     def OnDisconnection(self, mode, custom):
         dbg_print('ClamWin - Disconnecting from Outlook')
+        try:
+            if hLibClamAV != 0:
+                win32api.FreeLibrary(hLibClamAV)
+        except Exception, e:
+            print str(e)
+             
         for handler in self.event_handlers:
             handler.Close()
         self.event_handlers = []
