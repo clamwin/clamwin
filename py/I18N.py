@@ -147,15 +147,16 @@ def getHelpFilePath():
         setLocale()
     clamBinPath = getClamBinPath()
     localeCode = gLocale
-    countryCode = gLocaled[:gLocale.find('_')]
-    helpPath = clamBinPath + "\\..\\doc\\manual_" + countryCode + ".chm"
+    languageCode = gLocale.split('_')[0];
+    print "languageCode = " + languageCode
+    helpPath = os.path.join(clamBinPath, "..", "doc", "manual_" + languageCode + ".chm")
     if not os.path.exists(helpPath):
-        helpPath = clamBinPath + "\\..\\doc\\manual_" + countryCode + ".pdf"
+        helpPath = os.path.join(clamBinPath, "..", "doc", "manual_" + languageCode + ".pdf")
         if not os.path.exists(helpPath):
-            helpPath = clamBinPath + "\\..\\doc\\manual_EN.chm"
+            helpPath = os.path.join(clamBinPath, "..", "doc", "manual_EN.chm")
             if not os.path.exists(helpPath):
-                helpPath = clamBinPath + "\\..\\doc\\manual_EN.pdf"
-        
+                helpPath = os.path.join(clamBinPath, "..", "doc", "manual_EN.pdf")
+    print 'helpPath = ' + helpPath
     return helpPath
 
 
