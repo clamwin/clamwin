@@ -143,8 +143,9 @@ def create(parent, config=None, switchToSchedule=False):
 ] = map(lambda _init_ctrls: wxNewId(), range(123))
 
 
-AVAILABLE_LANGUAGES = {'en_UK' : 'English',
+AVAILABLE_LANGUAGES = {'pt_BR' : 'Brazilian', 
                        'de_DE' : 'Deutsch',
+                       'en_UK' : 'English',
                        'es_ES' : 'Espanol',
                        'fr_FR' : 'Francais',
                        'hu_HU' : 'Hungarian',

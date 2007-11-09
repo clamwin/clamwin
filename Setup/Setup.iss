@@ -2,15 +2,15 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 [Setup]
-AppName={cm:ClamWinFreeAntivirus1}
-AppVerName={cm:ClamWinFreeAntivirus1} 0.91.2
+AppName={cm:ClamWinFreeAntivirus}
+AppVerName={cm:ClamWinFreeAntivirus} 0.91.2
 OutputBaseFilename=ClamWin-0.91.2-L10N-35
 AppPublisher=budtse
 AppPublisherURL=http://www.clamwin.com/
 AppSupportURL=http://www.clamwin.com/
 AppUpdatesURL=http://www.clamwin.com/
 DefaultDirName={code:BaseDir}\ClamWin
-DefaultGroupName={cm:ClamWinFreeAntivirus2}
+DefaultGroupName={cm:ClamWinFreeAntivirus}
 LicenseFile=SetupFiles\License.rtf
 AllowNoIcons=true
 MinVersion=4.1.1998,5.0.2195
@@ -26,6 +26,7 @@ SolidCompression=false
 WizardImageFile=Setupfiles\WizModernImage.bmp
 WizardSmallImageFile=Setupfiles\WizModernSmallImage.bmp
 [Languages]
+Name: pt_BR; MessagesFile: compiler:Languages\BrazilianPortuguese.isl
 Name: en_US; MessagesFile: compiler:Default.isl
 Name: ru_RU; MessagesFile: compiler:Languages\Russian.isl
 Name: nl_BE; MessagesFile: compiler:Languages\Dutch.isl
@@ -66,12 +67,15 @@ Source: ..\..\..\clamav-release\contrib\msvc\Release\libclamav.dll; DestDir: {ap
 Source: ..\doc\en_UK\manual_EN.pdf; DestDir: {app}\doc; Components: ClamWin; Flags: ignoreversion
 Source: ..\doc\en_UK\manual_en.chm; DestDir: {app}\doc; Components: ClamWin; Flags: ignoreversion; DestName: manual.chm
 
+;Source: ..\doc\pt_BR\Manual_pt.chm; DestDir: {app}\doc; Components: LanguageSupport\Brazilian; Flags: ignoreversion
+;Source: ..\doc\pt_BR\Manual_pt.pdf; DestDir: {app}\doc; Components: LanguageSupport\Brazilian; Flags: ignoreversion
 Source: ..\doc\nl_BE\Manual_NL.chm; DestDir: {app}\doc; Components: LanguageSupport\Dutch; Flags: ignoreversion
 Source: ..\doc\nl_BE\Manual_NL.pdf; DestDir: {app}\doc; Components: LanguageSupport\Dutch; Flags: ignoreversion
 Source: ..\doc\fr_FR\manual_fr.pdf; DestDir: {app}\doc; Components: LanguageSupport\French; Flags: ignoreversion
 Source: ..\doc\ru_RU\manual_ru.chm; DestDir: {app}\doc; Components: LanguageSupport\Russian; Flags: ignoreversion
 
 ; Copy the Gettext locale files
+Source: ..\locale\pt_BR.mo; DestDir: {app}\locale\pt_BR\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Brazilian; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\nl_BE.mo; DestDir: {app}\locale\nl_BE\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Dutch; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\fr_FR.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\French; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\de_DE.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\German; Flags: restartreplace uninsrestartdelete replacesameversion
@@ -149,13 +153,14 @@ Source: cvd\main.cvd; DestDir: {code:CommonProfileDir}\.clamwin\db; Components: 
 Source: cvd\daily.cvd; DestDir: {code:CommonProfileDir}\.clamwin\db; Components: ClamWin; Flags: ignoreversion comparetimestamp; Check: NoDailyInc
 
 [Icons]
-Name: {group}\{cm:StartMenuItemVirusScanner}; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: ClamWin
-Name: {code:DesktopDir}\{cm:ClamWinFreeAntivirus2}; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: ClamWin; Tasks: desktopicon
+Name: {group}\{cm:StartMenuItemVirusScanner}; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus}; Components: ClamWin
+Name: {code:DesktopDir}\{cm:ClamWinFreeAntivirus}; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus}; Components: ClamWin; Tasks: desktopicon
 Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuItemPrintableManual}; Filename: {app}\doc\manual.pdf; Components: ; WorkingDir: {app}\bin
-Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuItemOnlineHelp}; Filename: {app}\doc\manual.chm; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: ClamWin
-Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuGroupHelpInternational}\Russian (Russian Help); Filename: {app}\doc\manual_ru.chm; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: LanguageSupport\Russian
-Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuGroupHelpInternational}\Français (French Manual); Filename: {app}\doc\manual_fr.pdf; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: LanguageSupport\French
-Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuGroupHelpInternational}\Nederlands (Dutch Help); Filename: {app}\doc\Manual_NL.chm; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: LanguageSupport\Dutch
+Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuItemOnlineHelp}; Filename: {app}\doc\manual.chm; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus}; Components: ClamWin
+Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuGroupHelpInternational}\Russian (Russian Help); Filename: {app}\doc\manual_ru.chm; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus}; Components: LanguageSupport\Russian
+Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuGroupHelpInternational}\Français (French Manual); Filename: {app}\doc\manual_fr.pdf; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus}; Components: LanguageSupport\French
+Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuGroupHelpInternational}\Nederlands (Dutch Help); Filename: {app}\doc\Manual_NL.chm; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus}; Components: LanguageSupport\Dutch
+;Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuGroupHelpInternational}\Brazilian (Brazilian Help); Filename: {app}\doc\Manual_pt.chm; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus}; Components: LanguageSupport\Brazilian
 Name: {group}\Uninstall ClamWin Free Antivirus; Filename: {uninstallexe}
 [Run]
 ; NOTE: The following entry contains an English phrase ("Launch"). You are free to translate it into another language if required.

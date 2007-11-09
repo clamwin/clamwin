@@ -55,3 +55,55 @@ To Release a new build of the I18N Branch, follow these ordered steps :
 9. Upload the software package and the ChangeLog.
 
 10. Notify the mailing lists and the beta testing forum of the new build.
+
+
+ADDING A LANGUAGE
+*****************
+For the explanation here, we will use Brazilian Portuguese as an example.
+
+1. Open clamwin\cpp\MessageTable.mc in a UNICODE text editor.
+   Add a line for the language like 'LanguageNames=(Brazilian=0x416:MSG00416)'.
+   The code to be used (e.g. 0x416) can be found at 
+   http://msdn2.microsoft.com/en-us/library/ms872878.aspx
+   
+   Also add three lines to the list in this file like this:
+        Language=Brazilian
+        Examinar com ClamWin Free Antivirus
+        .
+
+   This should be enough to compile the string in the shell extension.
+
+2. Open clamwin\setup\Setup.iss (and Setup-nodb.iss) and add the following lines:
+
+    - Under [Languages] :
+        Name: pt_BR; MessagesFile: compiler:Languages\BrazilianPortuguese.isl
+    - Under [Files] :
+        Source: ..\locale\pt_BR.mo; DestDir: {app}\locale\pt_BR\LC_MESSAGES; 
+            DestName: clamwin.mo; Components: LanguageSupport\Brazilian; 
+            Flags: restartreplace uninsrestartdelete replacesameversion
+    - Under [Components] :
+            Name: LanguageSupport\Brazilian; Description: Portuguese (Brasil); Types: full
+    - Under [CustomMessages] :
+            #include "..\locale\pt_BR.iss"
+            
+    To add the manual/help file:
+    - Under [Files] :
+            Source: ..\doc\pt_BR\Manual_pt.chm; DestDir: {app}\doc; 
+                Components: LanguageSupport\Brazilian; Flags: ignoreversion
+            Source: ..\doc\pt_BR\Manual_pt.pdf; DestDir: {app}\doc; 
+                Components: LanguageSupport\Brazilian; Flags: ignoreversion
+    - Under [Icons] :
+            Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuGroupHelpInternational}\Brazilian (Brazilian Help); Filename: {app}\doc\Manual_pt.chm; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: LanguageSupport\Brazilian
+
+3. Open clamwin\py\wxDialogPreferences.py and add the language to the choice list:
+        AVAILABLE_LANGUAGES = {'pt_BR' : 'Brazilian', 
+                               'de_DE' : 'Deutsch',
+                               'en_UK' : 'English',
+                               'es_ES' : 'Espanol',
+                               'fr_FR' : 'Francais',
+                               'hu_HU' : 'Hungarian',
+                               'it_IT' : 'Italian',
+                               'nl_BE' : 'Nederlands',
+                               'pl_PL' : 'Polish',
+                               'ru_RU' : 'Russian'
+                               }

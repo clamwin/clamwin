@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-11-08 22:11+0100\n"
+"PO-Revision-Date: 2007-11-09 20:47+0100\n"
 "Last-Translator: budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: German <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -63,7 +63,7 @@ msgstr "&Aktualisieren"
 
 #: wxFrameMain.py:118
 msgid "ClamWin &Website"
-msgstr "http://de.clam&win.com"
+msgstr "Besuche die ClamWin Website"
 
 #: wxFrameMain.py:120
 msgid "Opens Frequently Asked Questions Page in the Web Browser"
@@ -277,7 +277,7 @@ msgstr "Details zur SMTP-Verbindung"
 
 #: wxDialogStatus.py:187
 msgid "http:\\\\www.clamav.net\\faq.html"
-msgstr "http://de.clamwin.com"
+msgstr "http:\\\\de.clamwin.com\\faq.html"
 
 #: wxDialogStatus.py:189
 msgid "http://www.clamwin.com/content/view/10/27/"
@@ -996,7 +996,7 @@ msgstr "An:"
 
 #: wxDialogPreferences.py:788
 msgid "Specify an email address where the email alert will be delivered.  Separate multiple addresses with commas."
-msgstr "Geben Sie eine E-Mail-Adresse an, an die die Benachrichtigung gesendet werden soll. Mehrere Adressen können durch Kommata getrennt angegeben werden."
+msgstr "Geben Sie eine E-Mail-Adresse an, an die die Benachrichtigung gesendet werden soll."
 
 #: wxDialogPreferences.py:791
 msgid "Su&bject:"
@@ -1436,7 +1436,7 @@ msgstr "ClamWin-Update"
 
 #: wxDialogCheckUpdate.py:60
 msgid "An update of ClamWin Free Antivirus has been released. Please click on Download button and download the latest version %s"
-msgstr "Eine neuere Version von ClamWin ist verfügbar. Klicken Sie bitte auf den Download-Knopf und laden Sie die neueste Version, %s, herunter."
+msgstr "Eine neuere Version von ClamWin ist verfügbar. Klicken Sie bitte auf den Download-Button und laden Sie die neueste Version, %s, herunter."
 
 #: wxDialogCheckUpdate.py:69
 msgid "After you download the latest version setup file simply run it and install over the existing version."

@@ -1,4 +1,4 @@
-uk_UA.LanguageName=Українська
+п»їuk_UA.LanguageName=Українська
 uk_UA.InitializeWizard1=Виберіть параметри установки
 uk_UA.InitializeWizard2=Для кого повинен бути встановлений цей додаток?
 uk_UA.InitializeWizard3=Виберіть, будь-ласка, чи цей додаток має бути доступних для усіх користувачів цього комп'ютера, чи тільки для вас.
@@ -33,8 +33,7 @@ uk_UA.ClamAVFiles1=Файли ClamAV
 uk_UA.ClamWinFiles1=Файли ClamWin
 uk_UA.IntegrationExplorer1=Інтеграція з Windows Explorer
 uk_UA.IntegrationOutlook1=Інтаграція з Microsoft Outlook
-uk_UA.ClamWinFreeAntivirus1=ClamWin Free Antivirus
-uk_UA.ClamWinFreeAntivirus2=ClamWin Antivirus
+uk_UA.ClamWinFreeAntivirus=ClamWin Free Antivirus
 uk_UA.LanguageSupport1=Підтримка мови
 uk_UA.StartMenuGroupHelp=Допомога
 uk_UA.StartMenuGroupHelpInternational=Інтернаціональні
