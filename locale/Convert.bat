@@ -16,5 +16,6 @@ msgfmt -o ru_RU.mo ru_RU.po
 msgfmt -o sv_SE.mo sv_SE.po 
 msgfmt -o tr_TR.mo tr_TR.po 
 msgfmt -o zh_CN.mo zh_CN.po 
+msgfmt -o uk_UA.mo uk_UA.po
 
 pause

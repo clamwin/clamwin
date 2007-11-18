@@ -17,14 +17,16 @@ Completed Languages
 - German                (0.90.2)
 - Hungarian             (0.90.1)
 - Italian               (0.90.2)
+- Polish                (0.90.2)
 - Russian               (0.90.1)
 - Spanish               (0.90.0)
-- Polish                (0.90.2)
+- Ukrainian             (0.90.2)
 
 History
 *******
 
 - Added Brazilian localization
+- Added Ukrainian localization
 - FIX: the helpfile was not shown when clicking on the help menu item
 - FIX: various language and style issues reported by Erkan_Yilmaz
 

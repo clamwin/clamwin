@@ -73,7 +73,10 @@ For the explanation here, we will use Brazilian Portuguese as an example.
 
    This should be enough to compile the string in the shell extension.
 
-2. Open clamwin\setup\Setup.iss (and Setup-nodb.iss) and add the following lines:
+2. In clamwin\locale\convert.bat
+   - Add the msgfmt command to convert the *.po file to the *.mo file
+
+3. Open clamwin\setup\Setup.iss (and Setup-nodb.iss) and add the following lines:
 
     - Under [Languages] :
         Name: pt_BR; MessagesFile: compiler:Languages\BrazilianPortuguese.isl
@@ -95,7 +98,7 @@ For the explanation here, we will use Brazilian Portuguese as an example.
     - Under [Icons] :
             Name: {group}\{cm:StartMenuGroupHelp}\{cm:StartMenuGroupHelpInternational}\Brazilian (Brazilian Help); Filename: {app}\doc\Manual_pt.chm; WorkingDir: {app}\bin; Comment: {cm:ClamWinFreeAntivirus2}; Components: LanguageSupport\Brazilian
 
-3. Open clamwin\py\wxDialogPreferences.py and add the language to the choice list:
+4. Open clamwin\py\wxDialogPreferences.py and add the language to the choice list:
         AVAILABLE_LANGUAGES = {'pt_BR' : 'Brazilian', 
                                'de_DE' : 'Deutsch',
                                'en_UK' : 'English',

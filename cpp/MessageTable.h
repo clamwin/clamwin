@@ -40,7 +40,7 @@
 //
 // MessageText:
 //
-//  (bg)Scan with Clamwin Free AV...
+//  Examinar com ClamWin Free AV...
 //
 #define S_SCANWITHCLAMWIN                ((DWORD)0x000001F5L)
 

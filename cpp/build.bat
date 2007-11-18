@@ -3,7 +3,7 @@ rem @echo off
 set LIBS=user32.lib advapi32.lib shell32.lib ole32.lib 
 set DEFINES=/D "WIN32" /D "_CRT_SECURE_NO_DEPRECATE" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "EXPLORERSHELL_EXPORTS"
 set UNICODE=/D "UNICODE" /D "_UNICODE"
-set MC="C:\Program Files\Microsoft Visual Studio .NET 2003\Common7\Tools\Bin\mc.exe"
+set MC="%MSSDKDIR%\Bin\mc.exe"
 
 call "%VCINSTALLDIR%\vcvarsall.bat" x86
 
@@ -11,7 +11,7 @@ call "%VCINSTALLDIR%\vcvarsall.bat" x86
 echo Building 32bit Release Unicode
 echo ----------------------------------------------
 mkdir Release_Unicode
-%MC% -u -U MessageTable.mc
+%MC% -U MessageTable.mc
 rc.exe /d "NDEBUG" /l 0x409 /fo".\Release_Unicode/MessageTable.res" .\MessageTable.rc
 if not "%ERRORLEVEL%"=="0" goto END
 rc.exe /d "NDEBUG" /l 0x409 /fo".\Release_Unicode/ExplorerShell.res" .\ExplorerShell.rc
@@ -27,7 +27,7 @@ echo.
 :: 32 bit ansi
 echo Building 32bit Release Ansi
 mkdir Release
-%MC% -u -A MessageTable.mc
+%MC% -A MessageTable.mc
 rc.exe /d "NDEBUG" /l 0x409 /fo".\Release/ExplorerShell.res" .\ExplorerShell.rc
 if not "%ERRORLEVEL%"=="0" goto END
 
@@ -47,6 +47,7 @@ goto END
 call "%VCINSTALLDIR%\vcvarsall.bat" x86_amd64
 echo Building 64bit Release Unicode
 mkdir Release_x64
+%MC% -U MessageTable.mc
 rc.exe /d "NDEBUG" /l 0x409 /fo".\Release_x64/ExplorerShell.res" .\ExplorerShell.rc
 if not "%ERRORLEVEL%"=="0" goto END
 cl /Wp64 /O1 %DEFINES% /O1 /FD /EHsc /MT /Fo".\Release_x64/" /Fd".\Release_x64/" /W3 /c /TP .\ShellExtImpl.cpp .\ShellExt.cpp

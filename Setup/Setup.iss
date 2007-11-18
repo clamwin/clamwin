@@ -16,6 +16,7 @@ AllowNoIcons=true
 MinVersion=4.1.1998,5.0.2195
 
 ShowLanguageDialog=yes
+ShowUndisplayableLanguages=yes
 LanguageDetectionMethod=locale
 OutputDir=Output
 OutputManifestFile=ClamwinL10N-Manifest.txt
@@ -37,6 +38,7 @@ Name: it_IT; MessagesFile: compiler:Languages\Italian.isl
 Name: es_ES; MessagesFile: compiler:Languages\Spanish.isl
 Name: cs_CZ; MessagesFile: compiler:Languages\Czech.isl
 Name: pl_PL; MessagesFile: compiler:Languages\Polish.isl
+Name: uk_UA; MessagesFile: ..\locale\Inno Setup\Ukrainian.isl
 
 [Files]
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
@@ -75,7 +77,7 @@ Source: ..\doc\fr_FR\manual_fr.pdf; DestDir: {app}\doc; Components: LanguageSupp
 Source: ..\doc\ru_RU\manual_ru.chm; DestDir: {app}\doc; Components: LanguageSupport\Russian; Flags: ignoreversion
 
 ; Copy the Gettext locale files
-Source: ..\locale\pt_BR.mo; DestDir: {app}\locale\pt_BR\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Brazilian; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\pt_BR.mo; DestDir: {app}\locale\pt_BR\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Brasilian; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\nl_BE.mo; DestDir: {app}\locale\nl_BE\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Dutch; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\fr_FR.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\French; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\de_DE.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\German; Flags: restartreplace uninsrestartdelete replacesameversion
@@ -84,7 +86,7 @@ Source: ..\locale\it_IT.mo; DestDir: {app}\locale\it_IT\LC_MESSAGES; DestName: c
 Source: ..\locale\pl_PL.mo; DestDir: {app}\locale\pl_PL\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Polish; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\ru_RU.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Russian; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\es_ES.mo; DestDir: {app}\locale\es_ES\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Spanish; Flags: restartreplace uninsrestartdelete replacesameversion
-
+Source: ..\locale\uk_UA.mo; DestDir: {app}\locale\uk_UA\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Ukrainian; Flags: restartreplace uninsrestartdelete replacesameversion
 
 ; on xp and greater VC80 CRT needs to be installed in Microsoft.VC80.CRT
 Source: Dependencies\Microsoft.VC80.CRT\Microsoft.VC80.CRT.manifest; DestDir: {app}\bin\Microsoft.VC80.CRT; Components: ClamAV; Check: IsXPOrLater
@@ -187,6 +189,7 @@ Name: ClamWin; Description: {cm:ClamWinFiles1}; Flags: fixed; Types: full custom
 Name: ExplorerShell; Description: {cm:IntegrationExplorer1}; Types: full custom
 Name: OutlookAddin; Description: {cm:IntegrationOutlook1}; Types: full; Check: IsOutlookInstalled
 Name: LanguageSupport; Description: {cm:LanguageSupport1}; Types: full
+Name: LanguageSupport\Brasilian; Description: Brasilian (Brazilian); Types: full
 Name: LanguageSupport\Dutch; Description: Nederlands (Dutch); Types: full
 Name: LanguageSupport\French; Description: Français (French); Types: full
 Name: LanguageSupport\German; Description: Deutsch (German); Types: full
@@ -195,6 +198,7 @@ Name: LanguageSupport\Italian; Description: Italiano (Italian); Types: full
 Name: LanguageSupport\Polish; Description: Polski (Polish); Types: full
 Name: LanguageSupport\Russian; Description: (Russian); Types: full
 Name: LanguageSupport\Spanish; Description: Español (Spanish); Types: full
+Name: LanguageSupport\Ukrainian; Description: Ukrainian; Types: full
 
 [INI]
 Filename: {app}\bin\ClamWin.conf; Section: ClamAV; Key: clamscan; String: {app}\bin\clamscan.exe; Check: IsIniValueEmpty(ExpandConstant('ClamAV*clamscan*{app}\bin\ClamWin.conf'))
@@ -311,6 +315,7 @@ Filename: {app}\bin\WClose.exe; WorkingDir: {app}\bin
 #include "..\locale\nl_BE.iss"
 #include "..\locale\pl_PL.iss"
 #include "..\locale\ru_RU.iss"
+#include "..\locale\uk_UA.iss"
 
 [Code]
 var

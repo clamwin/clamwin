@@ -152,7 +152,8 @@ AVAILABLE_LANGUAGES = {'pt_BR' : 'Brazilian',
                        'it_IT' : 'Italian',
                        'nl_BE' : 'Nederlands',
                        'pl_PL' : 'Polish',
-                       'ru_RU' : 'Russian'
+                       'ru_RU' : 'Russian',
+                       'uk_UA' : 'Ukrainian'
                        }
 
 WINDOWSUILANGUAGESTRING = _('Windows UI Language')
