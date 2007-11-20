@@ -27,17 +27,18 @@ SolidCompression=false
 WizardImageFile=Setupfiles\WizModernImage.bmp
 WizardSmallImageFile=Setupfiles\WizModernSmallImage.bmp
 [Languages]
-Name: pt_BR; MessagesFile: compiler:Languages\BrazilianPortuguese.isl
-Name: en_US; MessagesFile: compiler:Default.isl
-Name: ru_RU; MessagesFile: compiler:Languages\Russian.isl
-Name: nl_BE; MessagesFile: compiler:Languages\Dutch.isl
-Name: fr_FR; MessagesFile: compiler:Languages\French.isl
+Name: ar_AE; MessagesFile: compiler:Languages\Arabic.isl
+Name: cs_CZ; MessagesFile: compiler:Languages\Czech.isl
 Name: de_DE; MessagesFile: compiler:Languages\German.isl
+Name: en_US; MessagesFile: compiler:Default.isl
+Name: es_ES; MessagesFile: compiler:Languages\Spanish.isl
+Name: fr_FR; MessagesFile: compiler:Languages\French.isl
 Name: hu_HU; MessagesFile: compiler:Languages\Hungarian.isl
 Name: it_IT; MessagesFile: compiler:Languages\Italian.isl
-Name: es_ES; MessagesFile: compiler:Languages\Spanish.isl
-Name: cs_CZ; MessagesFile: compiler:Languages\Czech.isl
+Name: nl_BE; MessagesFile: compiler:Languages\Dutch.isl
 Name: pl_PL; MessagesFile: compiler:Languages\Polish.isl
+Name: pt_BR; MessagesFile: compiler:Languages\BrazilianPortuguese.isl
+Name: ru_RU; MessagesFile: compiler:Languages\Russian.isl
 Name: uk_UA; MessagesFile: ..\locale\Inno Setup\Ukrainian.isl
 
 [Files]
@@ -77,15 +78,16 @@ Source: ..\doc\fr_FR\manual_fr.pdf; DestDir: {app}\doc; Components: LanguageSupp
 Source: ..\doc\ru_RU\manual_ru.chm; DestDir: {app}\doc; Components: LanguageSupport\Russian; Flags: ignoreversion
 
 ; Copy the Gettext locale files
-Source: ..\locale\pt_BR.mo; DestDir: {app}\locale\pt_BR\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Brasilian; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\nl_BE.mo; DestDir: {app}\locale\nl_BE\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Dutch; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\fr_FR.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\French; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\ar_AE.mo; DestDir: {app}\locale\ar_AE\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Arabic; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\de_DE.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\German; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\es_ES.mo; DestDir: {app}\locale\es_ES\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Spanish; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\fr_FR.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\French; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\hu_HU.mo; DestDir: {app}\locale\hu_HU\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Hungarian; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\it_IT.mo; DestDir: {app}\locale\it_IT\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Italian; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\nl_BE.mo; DestDir: {app}\locale\nl_BE\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Dutch; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\pl_PL.mo; DestDir: {app}\locale\pl_PL\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Polish; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\pt_BR.mo; DestDir: {app}\locale\pt_BR\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Brasilian; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\ru_RU.mo; DestDir: {app}\locale\ru_RU\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Russian; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\es_ES.mo; DestDir: {app}\locale\es_ES\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Spanish; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\uk_UA.mo; DestDir: {app}\locale\uk_UA\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Ukrainian; Flags: restartreplace uninsrestartdelete replacesameversion
 
 ; on xp and greater VC80 CRT needs to be installed in Microsoft.VC80.CRT
@@ -189,7 +191,8 @@ Name: ClamWin; Description: {cm:ClamWinFiles1}; Flags: fixed; Types: full custom
 Name: ExplorerShell; Description: {cm:IntegrationExplorer1}; Types: full custom
 Name: OutlookAddin; Description: {cm:IntegrationOutlook1}; Types: full; Check: IsOutlookInstalled
 Name: LanguageSupport; Description: {cm:LanguageSupport1}; Types: full
-Name: LanguageSupport\Brasilian; Description: Brasilian (Brazilian); Types: full
+Name: LanguageSupport\Arabic; Description: Arabic; Types: full
+Name: LanguageSupport\Brasilian; Description: Brazilian; Types: full
 Name: LanguageSupport\Dutch; Description: Nederlands (Dutch); Types: full
 Name: LanguageSupport\French; Description: Français (French); Types: full
 Name: LanguageSupport\German; Description: Deutsch (German); Types: full
@@ -305,6 +308,7 @@ Filename: {app}\bin\WClose.exe; WorkingDir: {app}\bin
 [CustomMessages]
 ; Translated strings are in separate files in the locale directory,
 ; where they can be more easily managed.
+#include "..\locale\ar_AE.iss"
 #include "..\locale\cs_CZ.iss"
 #include "..\locale\en_US.iss"
 #include "..\locale\de_DE.iss"

@@ -1,5 +1,6 @@
-MessageIdTypedef=DWORD
+﻿MessageIdTypedef=DWORD
 
+LanguageNames=(ar_AE=0x3801:MSG03801)
 LanguageNames=(Brazilian=0x416:MSG00416)
 LanguageNames=(Bulgarian=0x402:MSG00402)
 LanguageNames=(Catalan=0x403:MSG00403)
@@ -25,6 +26,9 @@ LanguageNames=(Ukrainian=0x422:MSG00422)
 ;// S_XPELOADING 
 MessageId=501
 SymbolicName=S_SCANWITHCLAMWIN 
+Language=ar_AE
+البحث بالستخدام كلاموين فري انتي فايرس
+.
 Language=Brazilian
 Examinar com ClamWin Free AV...
 .
