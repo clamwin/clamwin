@@ -36,6 +36,7 @@ import os, sys
 import re
 import MsgBox
 import Utils
+import I18N
 from I18N import getClamString as _
 import wxDialogUtils
 import win32gui
@@ -187,20 +188,24 @@ def translateClamAVLines(lines):
     translatedLines = []
     doneDate = False
     regexPattern = re.compile("[0-9]+\.[0-9]+")
+
+    doneDate = false
     
     for line in lines:
         # all strings containing backslashes represent the current file being scanned,
         # so these don't need to be translated (performance boost)
         # An exception is "Downloading ... [\]"
         if (line.find('\\') < 0) or (line.find('Downloading') >= 0):
-            if not doneDate:
-                if line.find("Scan started:") >= 0 or line.find("ClamAV update process started at") >= 0:
-                    for sToReplace in lDateStrings:
-                        if line.find(sToReplace + ' ') >= 0:
-                            sToEncode = _(sToReplace).encode('utf-8')
-                            line = line.replace(sToReplace + ' ', sToEncode + ' ')
-                    doneDate = True
-
+            translateDate = (line.find("ClamAV update process started at") >= 0)
+            if translateDate:
+                print 'FOUND UPDATE STARTED'
+                for sToReplace in lDateStrings:
+                    if line.find(sToReplace + ' ') >= 0:
+                        sToEncode = _(sToReplace).encode('utf-8')
+                        line = line.replace(sToReplace + ' ', sToEncode + ' ')
+                doneDate = True
+                print 'Translated date line: "%s"' % line
+                    
             if len(line.split('.')) < 3:
                 if regexPattern.search(line):
                     decimalPoint = locale.localeconv()['decimal_point']
@@ -231,6 +236,68 @@ def create(parent, cmd, logfile, priority, bitmap_mask, notify_params=None):
  wxID_WXDIALOGSTATUSBUTTONSTOP, wxID_WXDIALOGSTATUSSTATICBITMAP1,
  wxID_WXDIALOGSTATUSTEXTCTRLSTATUS,
 ] = map(lambda _init_ctrls: wxNewId(), range(5))
+
+def ReformatLog(data, rtf):
+    data = Utils.ReplaceClamAVWarnings(data.replace('\r\n', '\n'))
+    # retrieve the pure report strings
+    compileString = '(.*)(-- summary --.*)(Infected files: \d*?\n)(.*)'
+    sToEncode1 = _("-- summary --").encode('utf-8')
+    sToEncode2 = _("Infected files:").encode('utf-8')
+    compileString = compileString.replace("-- summary --", sToEncode1)
+    compileString = compileString.replace("Infected files:", sToEncode2)
+    rex = re.compile(compileString, re.M|re.S)
+    r = rex.search(data)
+    # we have 2 different formats depending on what's happened in clamscan
+    # so cater for both
+    if r is None:
+        compileString = '(.*)(----------- SCAN SUMMARY -----------.*)(Infected files: \d*?\n)(.*)'
+        compileString = compileString.replace("SCAN SUMMARY", _("SCAN SUMMARY").encode('utf-8'))
+        compileString = compileString.replace("Infected files:", _("Infected files:").encode('utf-8'))
+        rex = re.compile(compileString, re.M|re.S)
+        r = rex.search(data)
+
+    if r is not None:
+        found = ''
+        other = ''
+        lines = r.group(1).splitlines()
+        # get all infections first
+        for line in lines:
+            if line.endswith('FOUND'):
+                if rtf:
+                    found += '\\cf1\\b %s\\cf0\\b0\n' % line.replace('\\', '\\\\')
+                else:
+                    found += line + '\n'
+            elif not line.endswith('OK'):
+                if rtf:
+                    other += line.replace('\\', '\\\\') + '\n'
+                else:
+                    other += line + '\n'
+
+        data = '%s%s' + r.group(2) + "%s" + r.group(4)
+        # line with number of infected files
+        infected = r.group(3)
+
+        # Removed for now because the Status window keeps showing \par indicators (budtse)
+        # TODO: Check this after wxPython upgrade !! 
+        #if rtf:
+        #    num = re.match('.*?(\d*?)$', infected)
+        #    if num is not None and int(num.group(1)) > 0:
+        #        # print in red
+        #        infected = '\\cf1\\b %s\\cf0\\b0\n' % infected
+        #    else:
+        #        # print in green
+        #        infected = '\\cf2\\b %s\\cf0\\b0\n' % infected
+        #    data = data.replace('\\', '\\\\')
+
+        data %= (other, found, infected)
+
+        # Removed for now because the Status window keeps showing \par indicators (budtse)
+        # TODO: Check this after wxPython upgrade !! 
+        #if rtf:
+        #    print 'rtf = true : replace \\n by \\\\par\\r\\n'
+        #    data = r'{\rtf1{\colortbl ;\red128\green0\blue0;;\red0\green128\blue0;}%s}' % data.replace('\n', '\\par\r\n')
+
+    return data
 
 class wxDialogStatus(wxDialog):
     def _init_ctrls(self, prnt):
@@ -318,7 +385,8 @@ class wxDialogStatus(wxDialog):
         self.textCtrlStatus.SetBackgroundColour(wxSystemSettings_GetColour(wxSYS_COLOUR_BTNFACE))
 
         try:
-            file(logfile, 'wt').write(_('\nScan Started %s') % time.ctime(time.time()))
+            print "SCAN LOG %s" % I18N.getDateTimeString()
+            file(logfile, 'wt').write(_('\nScan Started %s') % I18N.getDateTimeString())
         except:
             pass
         try:
@@ -487,7 +555,7 @@ class wxDialogStatus(wxDialog):
                 print 'OnThreadFinished: ' + _('Could not read from log file %s. Error: %s') % (self._logfile, str(e))
                 data = self.textCtrlStatus.GetLabel()
 
-        data = Utils.ReformatLog(data, win32api.GetVersionEx()[0] >= 5)
+        data = ReformatLog(data, win32api.GetVersionEx()[0] >= 5)
 
         if len(data.splitlines()) > 1:
             self.ThreadUpdateStatus(self, data, False)

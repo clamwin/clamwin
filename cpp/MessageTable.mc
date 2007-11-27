@@ -1,4 +1,4 @@
-﻿MessageIdTypedef=DWORD
+MessageIdTypedef=DWORD
 
 LanguageNames=(ar_AE=0x3801:MSG03801)
 LanguageNames=(Brazilian=0x416:MSG00416)

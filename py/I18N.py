@@ -25,6 +25,7 @@ import gettext, locale, os, sys, traceback
 import _winreg as wreg
 import locale
 import Utils
+import time
 
 gLocalePath = ""
 gLocale = ""
@@ -176,10 +177,28 @@ def findAndGetClamString(englishString):
     gettext.textdomain("clamwin")
     return gettext.gettext(englishString).decode("utf-8")
 
+def getDateTimeString():
+    tm = time.localtime()
+    fmt = getClamString('%a %d %b %Y %H:%M:%S')
+    global gLocalePath
+    global gLocale
+    locale.setlocale(locale.LC_ALL, '')
+    if gLocalePath == "":
+        setLocalePath()
+    if gLocale == "":
+        setLocale()
+
+    os.environ['LANGUAGE'] = gLocale
+    output = time.strftime(fmt, tm);
+    locale.setlocale(locale.LC_ALL, 'C')
+    print "DATETIME = '%s'" % output
+    return output
+
 # module test function
 if __name__ == '__main__':
     forceLocale("nl_BE")
     setLocalePath()
     print "LocalePath = [%s]" % gLocalePath
+    print "DateTime = [%s]" % getDateTimeString()
     setLocale()
 

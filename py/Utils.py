@@ -26,6 +26,7 @@ import os, sys, time, tempfile, shutil, locale
 import Config, ConfigParser
 import re, fnmatch, urllib2
 import _winreg
+from I18N import getClamString as _
 
 import win32api, win32con, win32gui, win32event, win32con, pywintypes
 from win32com.shell import shell, shellcon
@@ -75,6 +76,7 @@ def _ShowOwnBalloon(title, text, icon, hwnd, timeout):
         win32api.SendMessage(hExistingWnd, win32con.WM_CLOSE, 0, 0)
 
     #display balloon tooltip
+    print 'Showing balloontip text: "' + text + '"'
     BalloonTip.ShowBalloonTip(title, text, (rect[0], rect[1]), icon,
                             flags, hwnd, '', timeout)
 
@@ -118,6 +120,7 @@ def ShowBalloon(ret_code, balloon_info, hwnd = None, wait = False):
                     icon = win32con.IDI_ERROR
                 elif icon == win32gui.NIIF_NONE:
                     icon = 0
+                print '_ShowOwnBalloon ' + txt
                 _ShowOwnBalloon(title, txt, icon, hwnd, timeout)
                 if wait:
                     i = 0
@@ -126,6 +129,7 @@ def ShowBalloon(ret_code, balloon_info, hwnd = None, wait = False):
                         time.sleep(0.5)
                         i+=1
             else:
+                print 'Shell_NotifyIcon : ' + txt
                 nid = (hwnd, 0, win32gui.NIF_INFO, 0, 0, "", txt, timeout, title, icon)
                 win32gui.Shell_NotifyIcon(win32gui.NIM_MODIFY, nid)
         except Exception, e:
@@ -616,62 +620,6 @@ def SafeExpandEnvironmentStrings(s):
     return s
 
 
-
-def ReformatLog(data, rtf):
-    data = ReplaceClamAVWarnings(data.replace('\r\n', '\n'))
-    # retrieve the pure report strings
-    compileString = '(.*)(-- summary --.*)(Infected files: \d*?\n)(.*)'
-    sToEncode1 = _("-- summary --").encode('utf-8')
-    sToEncode2 = _("Infected files:").encode('utf-8')
-    compileString = compileString.replace("-- summary --", sToEncode1)
-    compileString = compileString.replace("Infected files:", sToEncode2)
-    rex = re.compile(compileString, re.M|re.S)
-    r = rex.search(data)
-    # we have 2 different formats depending on what's happened in clamscan
-    # so cater for both
-    if r is None:
-        compileString = translateClamAVLines('(.*)(----------- SCAN SUMMARY -----------.*)(Infected files: \d*?\n)(.*)')
-        sToEncode1 = _("SCAN SUMMARY").encode('utf-8')
-        sToEncode2 = _("Infected files:").encode('utf-8')
-        compileString = compileString.replace("SCAN SUMMARY", sToEncode1)
-        compileString = compileString.replace("Infected files:", sToEncode2)
-        rex = re.compile(compileString, re.M|re.S)
-        r = rex.search(data)
-
-    if r is not None:
-        found = ''
-        other = ''
-        lines = r.group(1).splitlines()
-        # get all infections first
-        for line in lines:
-            if line.endswith('FOUND'):
-                if rtf:
-                    found += '\\cf1\\b %s\\cf0\\b0\n' % line.replace('\\', '\\\\')
-                else:
-                    found += line + '\n'
-            elif not line.endswith('OK'):
-                if rtf:
-                    other += line.replace('\\', '\\\\') + '\n'
-                else:
-                    other += line + '\n'
-
-        data = '%s%s' + r.group(2) + "%s" + r.group(4)
-        # line with number of infected files
-        infected = r.group(3)
-        if rtf:
-            num = re.match('.*?(\d*?)$', infected)
-            if num is not None and int(num.group(1)) > 0:
-                # print in red
-                infected = '\\cf1\\b %s\\cf0\\b0\n' % infected
-            else:
-                # print in green
-                infected = '\\cf2\\b %s\\cf0\\b0\n' % infected
-            data = data.replace('\\', '\\\\')
-        data %= (other, found, infected)
-        if rtf:
-            data = r'{\rtf1{\colortbl ;\red128\green0\blue0;;\red0\green128\blue0;}%s}' % data.replace('\n', '\\par\r\n')
-    return data
-
 # removes clamav warnings
 def ReplaceClamAVWarnings(data):
     data = data.replace('Please check if ClamAV tools are linked against proper version of libclamav\n', '')
@@ -775,76 +723,7 @@ def IsOutlookInstalled():
         RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\11.0\\Outlook'))
 
 
-#def IsOutlookAddinEnabled():
-#    key = _winreg.HKEY_LOCAL_MACHINE
-#    subKey = ''
-#    enabled = False
-#    if (RegKeyExists(_winreg.HKEY_CURRENT_USER, 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin')):
-#        key = _winreg.HKEY_CURRENT_USER
-#        subKey = 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin'
-#    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin')):
-#        key = _winreg.HKEY_LOCAL_MACHINE
-#        subKey = 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin'
-#    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\9.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
-#        key = _winreg.HKEY_LOCAL_MACHINE
-#        subKey = 'Software\\Microsoft\\Office\\9.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
-#    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\10.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
-#        key = _winreg.HKEY_LOCAL_MACHINE
-#        subKey = 'Software\\Microsoft\\Office\\10.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
-#    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\11.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
-#        key = _winreg.HKEY_LOCAL_MACHINE
-#        subKey = 'Software\\Microsoft\\Office\\11.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
-#    if (subKey != ''):
-#        hKey = _winreg.OpenKey(key, subKey);
-#        enabled = int(_winreg.QueryValueEx(hKey, "LoadBehavior")[0])==3;
-#        _winreg.CloseKey(hKey)
-#    return enabled
-
-#def EnableOutlookAddin(enable):
-#    # Find the key and subkey to set
-#    key = _winreg.HKEY_LOCAL_MACHINE
-#    subKey = ''
-#    if (RegKeyExists(_winreg.HKEY_CURRENT_USER, 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin')):
-#        key = _winreg.HKEY_CURRENT_USER
-#        subKey = 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin'
-#    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin')):
-#        key = _winreg.HKEY_LOCAL_MACHINE
-#        subKey = 'Software\\Microsoft\\Office\\Outlook\\Addins\\ClamWin.OutlookAddin'
-#    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\9.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
-#        key = _winreg.HKEY_LOCAL_MACHINE
-#        subKey = 'Software\\Microsoft\\Office\\9.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
-#    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\10.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
-#        key = _winreg.HKEY_LOCAL_MACHINE
-#        subKey = 'Software\\Microsoft\\Office\\10.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
-#    if (RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\11.0\\Outlook\\Addins\\ClamWin.OutlookAddin')):
-#        key = _winreg.HKEY_LOCAL_MACHINE
-#        subKey = 'Software\\Microsoft\\Office\\11.0\\Outlook\\Addins\\ClamWin.OutlookAddin'
-#    print '   Subkey = ' + subKey
-#    if (subKey != ''):
-#        hKey = _winreg.OpenKey(key, subKey, 0,_winreg.KEY_WRITE);
-#        if enable:
-#            print '   Writing value to 3...'
-#            _winreg.SetValueEx(hKey, 'LoadBehavior', 0, _winreg.REG_DWORD, 3)
-#        else:
-#            print '   Writing value to 2...'
-#            _winreg.SetValueEx(hKey, 'LoadBehavior', 0, _winreg.REG_DWORD, 2)
-#        _winreg.CloseKey(hKey)
-
-
-
 if __name__ == '__main__':
-    #AppendLogFile('c:\\1.txt',  'C:\\MSDE2kLog.txt', 30000)
-    #currentDir = GetCurrentDir(True)
-    #os.chdir(currentDir)
-    #CreateProfile()
-    config_file = os.path.join(GetProfileDir(True),'ClamWin.conf')
-    config = Config.Settings(config_file)
-    b = config.Read()
-    print GetOnlineVersion(config)
-#    print CheckDatabase(config)
-    dbpath =  config.Get('ClamAV', 'Database')                
-    daily = os.path.join(dbpath, 'daily.cvd')
-    if not os.path.isfile(daily):
-        daily = os.path.join(os.path.join(dbpath, 'daily.inc'), 'daily.info')                   
-    print GetDBInfo(daily)
-
+    hwnd = win32gui.FindWindow('ClamWinTrayWindow', 'ClamWin')
+    print hwnd
+    _ShowOwnBalloon('TITLE', 'blablabla dlkjdf s ', win32con.IDI_INFORMATION, hwnd, 1000)

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.4\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-11-30 12:57+0100\n"
-"Last-Translator: Budtse <budtse@users.sourceforge.net>\n"
+"PO-Revision-Date: 2007-11-23 18:24+0100\n"
+"Last-Translator: budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: Localization <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -408,8 +408,8 @@ msgid ". Please check that you have write "
 msgstr ". Перевірте, чи є у Вас права на запис "
 
 #: wxDialogStatus.py:465
-msgid "в папку і чи є на диску достатньо місця."
-msgstr "в папку і чи є на диску достатньо місця."
+msgid "permissions to the folder and there is enough space on the disk."
+msgstr ""
 
 #: wxDialogStatus.py:533
 msgid "Could not read from log file %s. Error: %s"
@@ -668,8 +668,8 @@ msgid "Enable automatic virus database downloads "
 msgstr "Включити автоматичне завантаження бази вірусів "
 
 #: wxDialogPreferences.py:324
-msgid "Завантажити &Site :"
-msgstr "Завантажити &сайт:"
+msgid "Download &Site :"
+msgstr ""
 
 #: wxDialogPreferences.py:331
 msgid "Specify Database Mirror Site here. Usually this is database.clamav.net"
@@ -975,8 +975,8 @@ msgid "Email Message Details"
 msgstr "Текст Email-повідомлення"
 
 #: wxDialogPreferences.py:769
-msgid "&Від:"
-msgstr "&Від:"
+msgid "&From:"
+msgstr ""
 
 #: wxDialogPreferences.py:777
 msgid "Specify an email address from which the notification will be sent."
@@ -1013,7 +1013,7 @@ msgstr "Показати спливаюче вікно попереджень в
 #: wxDialogPreferences.py:815
 msgid "Select if you wish to receive Tray notification pop-up messages"
 msgstr "Відміть, якщо Ви хочете щоб вікно попереджень спливало у панелі завдань"
- 
+
 #: wxDialogPreferences.py:822
 msgid "Specify Filename Patterns to include and/or exclude in scanning"
 msgstr "Вкажіть шаблони імен файлів, які потрібно/не потрібно перевіряти"
@@ -1211,28 +1211,28 @@ msgstr "Помилка: Не можу поновити програму. Мож�
 
 #: wxDialogLogViewer.py:117
 #: wxDialogStatus.py:145
-msgid "Відомих вірусів:"
-msgstr "Відомих вірусів:"
+msgid "Known viruses:"
+msgstr ""
 
 #: wxDialogLogViewer.py:119
 #: wxDialogStatus.py:147
-msgid "Версія ядра:"
-msgstr "Версія ядра:"
+msgid "Engine version:"
+msgstr ""
 
 #: wxDialogLogViewer.py:121
 #: wxDialogStatus.py:149
-msgid "Перевірено папок:"
-msgstr "Перевірено папок:"
+msgid "Scanned directories:"
+msgstr ""
 
 #: wxDialogLogViewer.py:125
 #: wxDialogStatus.py:153
-msgid "Інфіковано файлів:"
-msgstr "Інфіковано файлів:"
+msgid "Infected files:"
+msgstr ""
 
 #: wxDialogLogViewer.py:127
 #: wxDialogStatus.py:155
-msgid "Дата первірки:"
-msgstr "Дата первірки:"
+msgid "Data scanned:"
+msgstr ""
 
 #: wxDialogLogViewer.py:80
 #: wxDialogPreferences.py:242
@@ -1713,7 +1713,6 @@ msgstr ""
 "Командна стрічка: %s\n"
 "Помилка: %s"
 
-
 #: ClamTray.py:433
 msgid "Error performing Scheduled Update."
 msgstr "Помилка під час запланованого поновлення."
@@ -1833,8 +1832,12 @@ msgstr "Попередження про застарілість бази вір
 msgid "Will display a reminder if the virus database is older than 3 days"
 msgstr "Показувати вікно що база вірусів старіша ніж 3 дні"
 
-msgid "\nScan Started %s"
-msgstr "\nПеревірка почалася %s"
+msgid ""
+"\n"
+"Scan Started %s"
+msgstr ""
+"\n"
+"Перевірка почалася %s"
 
 msgid "Virus signature database is older than 3 days and may not offer the latest protection. Would you like to update it now?"
 msgstr "База вірусів більше ніж 3 дні не поновлювалася. Ви хочете її поновити?"
@@ -1853,3 +1856,11 @@ msgstr "Мова буде змінена після перезапуску ClamW
 
 msgid "Choose auto-detect or an available language"
 msgstr "Виберіть авто-визначення або доступну мову"
+
+msgid "ClamWin Error occured whilst loading virus database: %s"
+msgstr ""
+
+# Definition of the local time format. See http://python.active-venture.com/lib/module-time.html for format identifiers.
+msgid "%a %d %b %Y %H:%M:%S"
+msgstr ""
+

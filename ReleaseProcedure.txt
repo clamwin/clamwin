@@ -76,10 +76,17 @@ For the explanation here, we will use Brazilian Portuguese as an example.
 2. In clamwin\locale\convert.bat
    - Add the msgfmt command to convert the *.po file to the *.mo file
 
-3. Open clamwin\setup\Setup.iss (and Setup-nodb.iss) and add the following lines:
+3. To Localize the license:
+   - Create a new file in clamwin\locale\GPL by copying License_en_US.rtf.
+   - Add a translated statement to the top that ONLY THE ENGLISH LICENSE
+     TEXT ÏS VALID, THE TRANSLATION IS FOR INFORMATION ONLY.
+   - Add the translation to the bottom.
+   
+4. Open clamwin\setup\Setup.iss (and Setup-nodb.iss) and add the following lines:
 
     - Under [Languages] :
-        Name: pt_BR; MessagesFile: compiler:Languages\BrazilianPortuguese.isl
+        Name: pt_BR; MessagesFile: compiler:Languages\BrazilianPortuguese.isl; LicenseFile: ..\locale\GPL\License_pt_BR.rtf
+        If no localized license is available, use en_US in stead.
     - Under [Files] :
         Source: ..\locale\pt_BR.mo; DestDir: {app}\locale\pt_BR\LC_MESSAGES; 
             DestName: clamwin.mo; Components: LanguageSupport\Brazilian; 
@@ -110,3 +117,6 @@ For the explanation here, we will use Brazilian Portuguese as an example.
                                'pl_PL' : 'Polish',
                                'ru_RU' : 'Russian'
                                }
+
+
+   

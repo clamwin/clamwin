@@ -40,7 +40,7 @@
 //
 // MessageText:
 //
-//  Examinar com ClamWin Free AV...
+//  البحث بالستخدام كلاموين فري انتي فايرس
 //
 #define S_SCANWITHCLAMWIN                ((DWORD)0x000001F5L)
 

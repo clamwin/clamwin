@@ -794,15 +794,15 @@ inline PWSTR StdCodeCvt(PWSTR pDst, PCWSTR pSrc, int nChars)
 // -----------------------------------------------------------------------------
 template<typename CT> inline int sslen(const CT* pT)
 {
-	return 0 == pT ? 0 : std::char_traits<CT>::length(pT);
+	return 0 == pT ? 0 : (int)std::char_traits<CT>::length(pT);
 }
 inline SS_NOTHROW int sslen(const std::string& s)
 {
-	return s.length();
+	return (int)s.length();
 }
 inline SS_NOTHROW int sslen(const std::wstring& s)
 {
-	return s.length();
+	return (int)s.length();
 }
 
 

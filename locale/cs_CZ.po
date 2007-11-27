@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-11-08 22:11+0100\n"
+"PO-Revision-Date: 2007-11-23 18:18+0100\n"
 "Last-Translator: budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: Czech <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -1861,4 +1861,8 @@ msgstr ""
 #, fuzzy
 msgid "ClamWin Error occured whilst loading virus database: %s"
 msgstr "Nastala chyba při aktualizaci UI sekce. %s"
+
+# Definition of the local time format. See http://python.active-venture.com/lib/module-time.html for format identifiers.
+msgid "%a %d %b %Y %H:%M:%S"
+msgstr ""
 

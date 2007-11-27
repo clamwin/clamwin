@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.4\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-11-11 00:19+0400\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2007-11-23 18:16+0100\n"
+"Last-Translator: budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: Localization <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -1016,7 +1016,7 @@ msgstr "اضغط اذا كنت تريد ان تجرب استلام النواف�
 
 #: wxDialogPreferences.py:822
 msgid "Specify Filename Patterns to include and/or exclude in scanning"
-msgstr "حدد مثال عن اسم الملف لوضعة\او عدم وضعة في البحث"
+msgstr "حدد مثال عن اسم الملف لوضعة\\او عدم وضعة في البحث"
 
 #: wxDialogPreferences.py:827
 msgid "(To specify a regular expression include your pattern within <...>)"
@@ -1861,4 +1861,8 @@ msgstr "اختر لغة موجوده أو اختر اوتوماتيكيا"
 
 msgid "ClamWin Error occured whilst loading virus database: %s"
 msgstr "خطأ في تحميل قائمة الفيروسات في كلاموين"
+
+# Definition of the local time format. See http://python.active-venture.com/lib/module-time.html for format identifiers.
+msgid "%a %d %b %Y %H:%M:%S"
+msgstr ""
 

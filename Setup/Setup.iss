@@ -11,7 +11,6 @@ AppSupportURL=http://www.clamwin.com/
 AppUpdatesURL=http://www.clamwin.com/
 DefaultDirName={code:BaseDir}\ClamWin
 DefaultGroupName={cm:ClamWinFreeAntivirus}
-LicenseFile=SetupFiles\License.rtf
 AllowNoIcons=true
 MinVersion=4.1.1998,5.0.2195
 
@@ -27,19 +26,19 @@ SolidCompression=false
 WizardImageFile=Setupfiles\WizModernImage.bmp
 WizardSmallImageFile=Setupfiles\WizModernSmallImage.bmp
 [Languages]
-Name: ar_AE; MessagesFile: compiler:Languages\Arabic.isl
-Name: cs_CZ; MessagesFile: compiler:Languages\Czech.isl
-Name: de_DE; MessagesFile: compiler:Languages\German.isl
-Name: en_US; MessagesFile: compiler:Default.isl
-Name: es_ES; MessagesFile: compiler:Languages\Spanish.isl
-Name: fr_FR; MessagesFile: compiler:Languages\French.isl
-Name: hu_HU; MessagesFile: compiler:Languages\Hungarian.isl
-Name: it_IT; MessagesFile: compiler:Languages\Italian.isl
-Name: nl_BE; MessagesFile: compiler:Languages\Dutch.isl
-Name: pl_PL; MessagesFile: compiler:Languages\Polish.isl
-Name: pt_BR; MessagesFile: compiler:Languages\BrazilianPortuguese.isl
-Name: ru_RU; MessagesFile: compiler:Languages\Russian.isl
-Name: uk_UA; MessagesFile: ..\locale\Inno Setup\Ukrainian.isl
+Name: ar_AE; MessagesFile: ..\locale\Inno Setup\Arabic.isl; LicenseFile: ..\locale\GPL\License_en_US.rtf
+Name: cs_CZ; MessagesFile: compiler:Languages\Czech.isl; LicenseFile: ..\locale\GPL\License_en_US.rtf
+Name: de_DE; MessagesFile: compiler:Languages\German.isl; LicenseFile: ..\locale\GPL\License_en_US.rtf
+Name: en_US; MessagesFile: compiler:Default.isl; LicenseFile: ..\locale\GPL\License_en_US.rtf
+Name: es_ES; MessagesFile: compiler:Languages\Spanish.isl; LicenseFile: ..\locale\GPL\License_en_US.rtf
+Name: fr_FR; MessagesFile: compiler:Languages\French.isl; LicenseFile: ..\locale\GPL\License_en_US.rtf
+Name: hu_HU; MessagesFile: compiler:Languages\Hungarian.isl; LicenseFile: ..\locale\GPL\License_en_US.rtf
+Name: it_IT; MessagesFile: compiler:Languages\Italian.isl; LicenseFile: ..\locale\GPL\License_en_US.rtf
+Name: nl_BE; MessagesFile: compiler:Languages\Dutch.isl; LicenseFile: ..\locale\GPL\License_nl_BE.rtf
+Name: pl_PL; MessagesFile: compiler:Languages\Polish.isl; LicenseFile: ..\locale\GPL\License_en_US.rtf
+Name: pt_BR; MessagesFile: compiler:Languages\BrazilianPortuguese.isl; LicenseFile: ..\locale\GPL\License_en_US.rtf
+Name: ru_RU; MessagesFile: compiler:Languages\Russian.isl; LicenseFile: ..\locale\GPL\License_en_US.rtf
+Name: uk_UA; MessagesFile: ..\locale\Inno Setup\Ukrainian.isl; LicenseFile: ..\locale\GPL\License_en_US.rtf
 
 [Files]
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
@@ -107,7 +106,7 @@ Source: Dependencies\pthread\pthreadVC2.dll; DestDir: {app}\bin; Components: Cla
 ; TODO : Copy Unicode build in NT and ANSI in 9x
 Source: ..\cpp\Release\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete 32bit; Check: IsWin9x
 Source: ..\cpp\Release_Unicode\ExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete 32bit; Check: UsingWinNT
-;Source: ..\cpp\Release_x64\ExpShell64.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete 64bit; Check: IsWin64
+Source: ..\cpp\Release_x64\ExpShell64.dll; DestDir: {app}\bin; Components: ExplorerShell; Flags: restartreplace uninsrestartdelete 64bit; Check: IsWin64
 
 
 Source: py2exe\dist\bin\WClose.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
@@ -150,7 +149,7 @@ Source: py2exe\dist\lib\win32security.pyd; DestDir: {app}\lib; Components: ClamW
 Source: py2exe\dist\lib\wxc.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 Source: py2exe\dist\lib\wxmsw24uh.dll; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 Source: py2exe\dist\lib\zlib.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
-;Source: py2exe\dist\lib\BalloonTip.pyd; DestDir: {app}\lib; Components: ClamWin; Check: IsWin9x; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\BalloonTip.pyd; DestDir: {app}\lib; Components: ClamWin; Check: IsWin9x; Flags: restartreplace uninsrestartdelete
 
 ; added main.cvd as per clamav team request
 Source: cvd\main.cvd; DestDir: {code:CommonProfileDir}\.clamwin\db; Components: ClamWin; Flags: ignoreversion comparetimestamp; Check: NoMainInc
