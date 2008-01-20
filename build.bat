@@ -34,20 +34,20 @@ call "%PYTHONDIR%\python" setup_all.py
 if not "%ERRORLEVEL%"=="0" goto ERROR
 
 rem recompress library with max compression
-cd dist\lib
-call "%SEVENZIP%" -aoa x clamwin.zip -olibrary\ 
-del clamwin.zip
-cd library
-call "%SEVENZIP%" a -tzip -mx9 ..\clamwin.zip -r
-cd ..
+rem cd dist\lib
+rem call "%SEVENZIP%" -aoa x clamwin.zip -olibrary\ 
+rem del clamwin.zip
+rem cd library
+rem call "%SEVENZIP%" a -tzip -mx9 ..\clamwin.zip -r
+rem cd ..
 rd library /s /q 
 
 rem upx all files now
-call "%UPX_UTIL%" -9 *.* 
-cd ..\bin
-call "%UPX_UTIL%" -9 *.* 
+rem call "%UPX_UTIL%" -9 *.* 
+rem cd ..\bin
+rem call "%UPX_UTIL%" -9 *.* 
 
-cd ..\..\..\..\
+rem cd ..\..\..\..\
 
 
 rem get the latest db files
