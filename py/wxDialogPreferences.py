@@ -46,6 +46,7 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLGBUTTONTASKDEACTIVATE, 
  wxID_WXPREFERENCESDLGBUTTONTASKEDIT, wxID_WXPREFERENCESDLGBUTTONTASKREMOVE, 
  wxID_WXPREFERENCESDLGBUTTONVIRDB, wxID_WXPREFERENCESDLGCHECKBOXCHECKVERSION, 
+ wxID_WXPREFERENCESDLGCHECKBOXDETECTPUA, 
  wxID_WXPREFERENCESDLGCHECKBOXENABLEAUTOUPDATE, 
  wxID_WXPREFERENCESDLGCHECKBOXENABLEMBOX, 
  wxID_WXPREFERENCESDLGCHECKBOXENABLEOLE2, 
@@ -134,7 +135,7 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLG_PANELINTERNETUPDATE, 
  wxID_WXPREFERENCESDLG_PANELOPTIONS, wxID_WXPREFERENCESDLG_PANELPROXY, 
  wxID_WXPREFERENCESDLG_PANELREPORTS, wxID_WXPREFERENCESDLG_PANELSCHEDULER, 
-] = map(lambda _init_ctrls: wxNewId(), range(119))
+] = map(lambda _init_ctrls: wxNewId(), range(120))
 
 class wxPreferencesDlg(wxDialog):
     def _init_coll_imageListScheduler_Images(self, parent):
@@ -187,18 +188,19 @@ class wxPreferencesDlg(wxDialog):
     def _init_ctrls(self, prnt):
         # generated method, don't edit
         wxDialog.__init__(self, id=wxID_WXPREFERENCESDLG, name='', parent=prnt,
-              pos=wxPoint(807, 447), size=wxSize(419, 395),
+              pos=wxPoint(1011, 447), size=wxSize(419, 395),
               style=wxDEFAULT_DIALOG_STYLE, title='ClamWin Preferences')
-        self._init_utils()
         self.SetClientSize(wxSize(411, 368))
         self.SetAutoLayout(False)
-        self.Center(wxBOTH)
+        self.Center(wxBOTH)        
+        self._init_utils()
         EVT_CHAR_HOOK(self, self.OnCharHook)
+        EVT_INIT_DIALOG(self, self.OnInitDialog)
 
         self.notebook = wxNotebook(id=wxID_WXPREFERENCESDLGNOTEBOOK,
               name='notebook', parent=self, pos=wxPoint(7, 7), size=wxSize(398,
               321), style=wxNB_MULTILINE)
-        self.notebook.SetAutoLayout(true)
+        self.notebook.SetAutoLayout(false)
         self.notebook.SetToolTipString('')
 
         self._panelOptions = wxPanel(id=wxID_WXPREFERENCESDLG_PANELOPTIONS,
@@ -491,31 +493,31 @@ class wxPreferencesDlg(wxDialog):
         self.checkBoxScanExeOnly = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXSCANEXEONLY,
               label='Try to &Scan Executable Files Only',
               name='checkBoxScanExeOnly', parent=self._panelAdvanced,
-              pos=wxPoint(6, 55), size=wxSize(381, 18), style=0)
+              pos=wxPoint(6, 54), size=wxSize(381, 18), style=0)
         self.checkBoxScanExeOnly.SetToolTipString('Select if you only wish to scan files that can run on MS Windows platform')
         self.checkBoxScanExeOnly.SetValue(False)
+
+        self.checkBoxDetectPUA = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXDETECTPUA,
+              label='&Detect Potentially Unwanted Applications',
+              name='checkBoxDetectPUA', parent=self._panelAdvanced,
+              pos=wxPoint(6, 76), size=wxSize(381, 18), style=0)
+        self.checkBoxDetectPUA.SetToolTipString('Select if you wish to detect Potentially Unwanted Applications such as keygens, cracks, etc')
+        self.checkBoxDetectPUA.SetValue(False)
 
         self.staticTextAdditionalParams = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTADDITIONALPARAMS,
               label='&Additional Clamscan Command Line Parameters:',
               name='staticTextAdditionalParams', parent=self._panelAdvanced,
-              pos=wxPoint(6, 79), size=wxSize(378, 13), style=0)
+              pos=wxPoint(6, 108), size=wxSize(378, 13), style=0)
 
         self.textCtrlAdditionalParams = wxTextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLADDITIONALPARAMS,
               name='textCtrlAdditionalParams', parent=self._panelAdvanced,
-              pos=wxPoint(6, 97), size=wxSize(379, 21), style=0, value='')
+              pos=wxPoint(6, 126), size=wxSize(379, 21), style=0, value='')
         self.textCtrlAdditionalParams.SetToolTipString('Specify any additional parameters for clamscan.exe')
 
         self.staticTextMaxLogSize = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTMAXLOGSIZE,
               label='Limit Log File Size To:', name='staticTextMaxLogSize',
-              parent=self._panelAdvanced, pos=wxPoint(6, 136), size=wxSize(170,
+              parent=self._panelAdvanced, pos=wxPoint(6, 165), size=wxSize(170,
               17), style=0)
-
-        self.spinCtrlMaxLogSize = wxSpinCtrl(id=wxID_WXPREFERENCESDLGSPINCTRLMAXLOGSIZE,
-              initial=0, max=4096, min=1, name='spinCtrlMaxLogSize',
-              parent=self._panelAdvanced, pos=wxPoint(6, 155), size=wxSize(129,
-              21), style=wxSP_ARROW_KEYS)
-        self.spinCtrlMaxLogSize.SetToolTipString('Select maximum size for the logfile')
-        self.spinCtrlMaxLogSize.SetValue(1)
 
         self.staticTextLogFIle = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTLOGFILE,
               label='&Scan Report File:', name='staticTextLogFIle',
@@ -880,23 +882,22 @@ class wxPreferencesDlg(wxDialog):
               wxID_WXPREFERENCESDLGCHECKBOXCHECKVERSION,
               self.OnCheckBoxCheckVersionCheckbox)
 
+        self.spinCtrlMaxLogSize = wxSpinCtrl(id=wxID_WXPREFERENCESDLGSPINCTRLMAXLOGSIZE,
+              initial=0, max=4096, min=1, name='spinCtrlMaxLogSize',
+              parent=self._panelAdvanced, pos=wxPoint(6, 184), size=wxSize(129,
+              21), style=wxSP_ARROW_KEYS)
+        self.spinCtrlMaxLogSize.SetToolTipString('Select maximum size for the logfile')
+        self.spinCtrlMaxLogSize.SetValue(1)
+
         self.staticTextMB2 = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTMB2,
               label='MegaBytes', name='staticTextMB2',
-              parent=self._panelAdvanced, pos=wxPoint(144, 156), size=wxSize(74,
+              parent=self._panelAdvanced, pos=wxPoint(144, 185), size=wxSize(74,
               16), style=0)
 
         self.staticTextPriority = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTPRIORITY,
               label='Scanner &Priority:', name='staticTextPriority',
-              parent=self._panelAdvanced, pos=wxPoint(252, 136),
+              parent=self._panelAdvanced, pos=wxPoint(252, 165),
               size=wxSize(103, 17), style=0)
-
-        self.choicePriority = wxChoice(choices=['Low', 'Normal'],
-              id=wxID_WXPREFERENCESDLGCHOICEPRIORITY, name='choicePriority',
-              parent=self._panelAdvanced, pos=wxPoint(252, 155),
-              size=wxSize(134, 21), style=0)
-        self.choicePriority.SetToolTipString('Specify the process priority for the virus scanner.')
-        self.choicePriority.SetStringSelection('Normal')
-        self.choicePriority.SetLabel('')
 
         self.checkBoxShowProgress = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXSHOWPROGRESS,
               label='Display &File Scanned % Progress Indicator',
@@ -944,6 +945,14 @@ class wxPreferencesDlg(wxDialog):
               name='staticTextNoPersonal', parent=self._panelInternetUpdate,
               pos=wxPoint(27, 219), size=wxSize(349, 21), style=0)
 
+        self.choicePriority = wxChoice(choices=['Low', 'Normal'],
+              id=wxID_WXPREFERENCESDLGCHOICEPRIORITY, name='choicePriority',
+              parent=self._panelAdvanced, pos=wxPoint(252, 184),
+              size=wxSize(134, 21), style=0)
+        self.choicePriority.SetToolTipString('Specify the process priority for the virus scanner.')
+        self.choicePriority.SetStringSelection('Normal')
+        self.choicePriority.SetLabel('')
+
         self._init_coll_notebook_Pages(self.notebook)
 
     def __init__(self, parent, config, switchToSchedule):
@@ -958,12 +967,6 @@ class wxPreferencesDlg(wxDialog):
         icons = wxIconBundle()
         icons.AddIconFromFile('img/FrameIcon.ico', wxBITMAP_TYPE_ICO)
         self.SetIcons(icons)
-
-        # wxWidgets notebook bug workaround
-        # http://sourceforge.net/tracker/index.php?func=detail&aid=645323&group_id=9863&atid=109863
-        s = self.notebook.GetSize();
-        self.notebook.SetSize(wxSize(s.GetWidth() - 1, s.GetHeight()));
-        self.notebook.SetSize(s);
 
 
         init_pages = [self._OptionsPageInit, self._FiltersPageInit, self._ScheduledScanPageInit,
@@ -999,7 +1002,22 @@ class wxPreferencesDlg(wxDialog):
 
         if switchToSchedule:
             self.notebook.SetSelection(4)
+            
+         # wxWidgets notebook bug workaround
+        # http://sourceforge.net/tracker/index.php?func=detail&aid=645323&group_id=9863&atid=109863
+        s = self.notebook.GetSize()
+        self.notebook.SetSize(wxSize(s.GetWidth() + 1, s.GetHeight() + 1))
+        self.notebook.SetSize(s)
+        self.notebook.Layout()
 
+            
+    def OnInitDialog(self, event):
+        # vista theme workaround
+        # otherwise contrls on the 
+        # first notebook page don't show
+        self.notebook.Update()
+        self.notebook.Refresh()
+                                        
 
     def OnCancel(self, event):
         self.EndModal(wxID_CANCEL)
@@ -1198,6 +1216,7 @@ class wxPreferencesDlg(wxDialog):
         self.checkBoxEnableMbox.SetValidator(MyValidator(config=self._config, section='ClamAV', value='EnableMbox'))
         self.checkBoxEnableOLE2.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ScanOle2'))
         self.checkBoxScanExeOnly.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ScanExeOnly'))
+        self.checkBoxDetectPUA.SetValidator(MyValidator(config=self._config, section='ClamAV', value='DetectPUA'))
         self.textCtrlAdditionalParams.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ClamScanParams', canEmpty=True))
 
     def _ListAddScheduledScan(self, sc, pos = -1):
@@ -1578,3 +1597,4 @@ class MyPatternValidator(MyBaseValidator):
         value = Config.REGEX_SEPARATOR.join(self.GetWindow().GetStrings())
         if self._config is not None:
             self._config.Set(self._section, self._value, value)
+
