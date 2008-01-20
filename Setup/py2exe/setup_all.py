@@ -30,6 +30,8 @@ sb_top_dir = os.path.abspath(os.path.dirname(os.path.join(__file__, "../../../..
 sys.path.append(sb_top_dir)
 sys.path.append(os.path.join(sb_top_dir,"py"))
 sys.path.append(os.path.join(sb_top_dir,"../addons/pyclamav/build/lib.win32-2.3"))
+sys.path.append(os.path.join(sb_top_dir,"../clamav-release/contrib/msvc/Release/Win32"))
+sys.path.append(os.path.join(sb_top_dir,"Setup/Dependencies/pthread"))
 
 import version
 
@@ -53,6 +55,35 @@ except ImportError:
 from distutils.core import setup
 import py2exe
 
+ver = version.clamwin_version
+while ver.count(".") < 3:
+    ver = ver + ".0"
+    
+manifest = """
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1"
+manifestVersion="1.0">
+<assemblyIdentity
+    version="%s"
+    processorArchitecture="x86"
+    name="Controls"
+    type="win32"
+/>
+<description>ClamWin Free Antivirus</description>
+<dependency>
+    <dependentAssembly>
+        <assemblyIdentity
+            type="win32"
+            name="Microsoft.Windows.Common-Controls"
+            version="6.0.0.0"
+            processorArchitecture="X86"
+            publicKeyToken="6595b64144ccf1df"
+            language="*"
+        />
+    </dependentAssembly>
+</dependency>
+</assembly>
+""" % ver
 
 py2exe_options = dict(
     packages = "encodings",
@@ -95,6 +126,7 @@ scanner = dict(
     icon_resources = [(1, "../../py/img/FrameIcon.ico")],
     script = os.path.join(sb_top_dir, "py", "ClamWin.py"),
     dest_base = "bin/ClamWin",
+    other_resources = [(24,1,manifest)],
 )
 
 tray = dict(
@@ -104,6 +136,7 @@ tray = dict(
     icon_resources = [(1, "../../py/img/FrameIcon.ico")],
     script = os.path.join(sb_top_dir, "py", "ClamTray.py"),
     dest_base = "bin/ClamTray",
+    other_resources = [(24,1,manifest)],
 )
 
 winclose = dict(
@@ -126,7 +159,7 @@ if len(sys.argv)==1 or \
     sys.argv.append("py2exe")
 
 setup(name="ClamWin Antivirus",
-      version=version.clamwin_version,
+      version=ver,
       description="ClamWin Antivirus",
       com_server=[outlook_addin],
       windows=[scanner, tray, winclose],
