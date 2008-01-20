@@ -82,25 +82,26 @@ def wxUpdateVirDB(parent, config, autoClose = False):
             print "couldn't remove file %s. Error: %s" % (freshclam_conf, str(e))
             
         # @@@ Alch 20070723
-        # remove .inc folder if .cvd is already there
+        # remove .cvd file if .inc folder is already there
         # happens sometinmes if users presses cancel 
         # and causes 2 copies of the db being loaded
         try:
-            dirname = os.path.join(os.path.join(dbdir, 'main.inc'))
-            if os.path.isdir(dirname) and \
-               os.path.isfile(os.path.join(dbdir, 'main.cvd')):
-               for root, dirs, files in os.walk(dirname, topdown=False):
-                   for name in files:
-                       os.remove(os.path.join(root, name))
-               os.rmdir(dirname)
+            cvdfile = os.path.join(dbdir, 'main.cvd')
+            if os.path.isdir(os.path.join(os.path.join(dbdir, 'main.inc'))) and \
+               os.path.isfile(cvdfile):
+               #for root, dirs, files in os.walk(dirname, topdown=False):
+               #    for name in files:
+               #        os.remove(os.path.join(root, name))
+               os.remove(cvdfile)
                
-            dirname = os.path.join(os.path.join(dbdir, 'daily.inc'))
-            if os.path.isdir(dirname) and \
-               os.path.isfile(os.path.join(dbdir, 'daily.cvd')):
-               for root, dirs, files in os.walk(dirname, topdown=False):
-                   for name in files:
-        	       os.remove(os.path.join(root, name))
-               os.rmdir(dirname)
+            cvdfile = os.path.join(dbdir, 'daily.cvd')
+            if os.path.isdir(os.path.join(os.path.join(dbdir, 'daily.inc'))) and \
+               os.path.isfile(cvdfile):
+               #for root, dirs, files in os.walk(dirname, topdown=False):
+               #    for name in files:
+               #        os.remove(os.path.join(root, name))
+               os.remove(cvdfile)
+               
         except Exception, e:
             print "couldn't remove .inc folder. Error: %s" % str(e)                       
 
@@ -164,9 +165,8 @@ def wxScan(parent, config, path, autoClose = False):
         # send email alert
         if config.Get('EmailAlerts', 'Enable') == '1':
             try:
-                # unix version returns 256 on virus detection
-                # strange but maybe it is cygwin the culprit?
-                if exit_code == 1 or exit_code ==256:
+                print 'Exit Code:', exit_code
+                if exit_code == 1:
                     msg = EmailAlert.ConfigVirusAlertMsg(config, (scanlog,))
                     msg.Send()
             except Exception, e:
