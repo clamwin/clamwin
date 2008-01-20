@@ -44,7 +44,7 @@ class Settings:
              'ScanArchives': '1', 'MaxSize': '10', 'MaxFiles': '500',
              'MaxRecursion': '5', 'LogFile': '', 'MaxLogSize': '1',
              'MoveInfected': '0', 'QuarantineDir': '',  'Debug': '0',
-             'ScanExeOnly': '1', 'ClamScanParams':'', 'Kill': '1',
+             'ScanExeOnly': '1', 'DetectPUA': 0, 'ClamScanParams':'', 'Kill': '1',
              'IncludePatterns': '',
              'ExcludePatterns': REGEX_SEPARATOR.join(('*.dbx','*.tbb','*.pst', '*.dat', '*.log', '*.evt', '*.nsf', '*.ntf', '*.chm')),}],
         'Proxy':
@@ -69,7 +69,7 @@ class Settings:
         [0, {'ScanIncoming': '1', 'ScanOutgoing': '1', }],
         }
 
-    def Read(self):
+    def Read(self, template = False):
         write = False
         try:
             conf = ConfigParser.ConfigParser()
@@ -85,6 +85,8 @@ class Settings:
                     self._settings[sect][1][name] = val
                 except ConfigParser.Error:
                     pass
+        if template:
+            return True
         # for older version set display infected only to 1
         if self._settings['UI'][1]['Version'] == '':
             self._settings['ClamAV'][1]['InfectedOnly'] = '1'
