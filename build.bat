@@ -2,6 +2,8 @@ rem @echo off
 set CYGWINDIR=d:\cygwin
 set THISDIR=l:\Projects\ClamWin\0.90\clamwin
 set ISTOOLDIR=C:\Program Files (x86)\ISTool
+set SEVENZIP=C:\Program Files\7-Zip\7z.exe
+set UPX_UTIL=C:\tools\upx.exe
 
 set VCINSTALLDIR=C:\Program Files (x86)\Microsoft Visual Studio 8\VC
 
@@ -21,13 +23,32 @@ call build.bat
 if not "%ERRORLEVEL%"=="0" goto ERROR
 rem build pyclamav
 cd ..\..\..\addons\pyclamav
-call build.cmd
+call build.cmd release
 if not "%ERRORLEVEL%"=="0" goto ERROR
 cd ..\..\clamwin
+
 rem build py2exe binaries
 cd setup\py2exe
-call %PYTHONDIR%\python setup_all.py
+rd dist /s /q 
+call "%PYTHONDIR%\python" setup_all.py
 if not "%ERRORLEVEL%"=="0" goto ERROR
+
+rem recompress library with max compression
+cd dist\lib
+call "%SEVENZIP%" -aoa x clamwin.zip -olibrary\ 
+del clamwin.zip
+cd library
+call "%SEVENZIP%" a -tzip -mx9 ..\clamwin.zip -r
+cd ..
+rd library /s /q 
+
+rem upx all files now
+call "%UPX_UTIL%" -9 *.* 
+cd ..\bin
+call "%UPX_UTIL%" -9 *.* 
+
+cd ..\..\..\..\
+
 
 rem get the latest db files
 call %WGET_UTIL% http://%DB_MIRROR%/main.cvd -O "%THISDIR%\Setup\cvd\main.cvd"
