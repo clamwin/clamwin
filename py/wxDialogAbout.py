@@ -123,7 +123,7 @@ class wxAboutDlg(wxDialog):
         self.staticTextAuthor1.SetToolTipString('')
 
         self.staticTextCopyright = wxStaticText(id=wxID_WXABOUTDLGSTATICTEXTCOPYRIGHT,
-              label='Copyright ClamWin Pty Ltd (c) 2004 - 2007',
+              label='Copyright ClamWin Pty Ltd (c) 2004 - 2008',
               name='staticTextCopyright', parent=self, pos=wxPoint(13, 208),
               size=wxSize(200, 13), style=0)
         self.staticTextCopyright.SetToolTipString('')
