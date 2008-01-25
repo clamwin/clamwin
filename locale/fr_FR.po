@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-01-23 19:53+0100\n"
-"Last-Translator: budtse <budtse@users.sourceforge.net>\n"
+"PO-Revision-Date: 2008-01-25 21:29+0100\n"
+"Last-Translator: Aïssi Dylan <aissi.dylan@free.fr>\n"
 "Language-Team: French <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1465,9 +1465,8 @@ msgid "Author: alch <alch@users.sourceforge.net>"
 msgstr "Auteur: alch <alch@users.sourceforge.net>"
 
 #: Copyright string in the About Dialog
-#, fuzzy
 msgid "Copyright ClamWin Pty Ltd (c) 2004 - 2008"
-msgstr "Copyright (c) 2004 - 2006"
+msgstr "Copyright ClamWin Pty Ltd (c) 2004 - 2008"
 
 #: wxDialogAbout.py:130
 msgid "This program is free software"
@@ -1870,9 +1869,9 @@ msgstr "%a %d %b %Y %H:%M:%S"
 
 # Checkbox option --detect-PUA in Advanced settings
 msgid "&Detect Potentially Unwanted Applications"
-msgstr ""
+msgstr "&Détecter les Applications Potentiellement Indésirables"
 
 # Tooltip for Checkbox option --detect-PUA in Advanced settings
 msgid "Select if you wish to detect Potentially Unwanted Applications such as keygens, cracks, etc"
-msgstr ""
+msgstr "Selectionnez si vous désirez détecter les Applications Potentiellement Indésirables, tels que les keygens, cracks, etc"
 
