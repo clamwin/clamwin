@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-11-23 18:20+0100\n"
+"PO-Revision-Date: 2008-01-23 19:58+0100\n"
 "Last-Translator: budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: ClamWin Free Antivirus <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -1465,9 +1465,9 @@ msgstr "Website:"
 msgid "Author: alch <alch@users.sourceforge.net>"
 msgstr "Autheur: alch <alch@users.sourceforge.net>"
 
-#: wxDialogAbout.py:125
-msgid "Copyright (c) 2004 - 2006"
-msgstr "Copyright (c) 2004 - 2006"
+#: Copyright string in the About Dialog
+msgid "Copyright ClamWin Pty Ltd (c) 2004 - 2008"
+msgstr "Copyright ClamWin Pty Ltd (c) 2004 - 2008"
 
 #: wxDialogAbout.py:130
 msgid "This program is free software"
@@ -1872,4 +1872,12 @@ msgstr "ClamWin fout bij het laden van de virus database: %s"
 # Definition of the local time format. See http://python.active-venture.com/lib/module-time.html for format identifiers.
 msgid "%a %d %b %Y %H:%M:%S"
 msgstr "%a %d %b %Y %H:%M:%S"
+
+# Checkbox option --detect-PUA in Advanced settings
+msgid "&Detect Potentially Unwanted Applications"
+msgstr "&Detectie Potentieel Ongewenste Applicaties"
+
+# Tooltip for Checkbox option --detect-PUA in Advanced settings
+msgid "Select if you wish to detect Potentially Unwanted Applications such as keygens, cracks, etc"
+msgstr "Vink aan als u Potentiëel Ongewenste Applicaties (PUA) zoals keygenerators, cracks, en dergelijke, wil detecteren"
 

@@ -174,7 +174,7 @@ def GetProfileDir(bUnicode):
         if sys.platform.startswith("win"):
             # read template config file
             conf = Config.Settings(os.path.join(GetCurrentDir(bUnicode), 'ClamWin.conf'))
-            if conf.Read() and conf.Get('UI', 'Standalone') == '1':
+            if conf.Read(template = True) and conf.Get('UI', 'Standalone') == '1':
                 profileDir = GetCurrentDir(bUnicode)
             else:
                 profileDir = shell.SHGetSpecialFolderPath(0, shellcon.CSIDL_APPDATA, True)
@@ -213,7 +213,7 @@ def CreateProfile():
 
     # read template config file
     conf = Config.Settings(os.path.join(curDir, 'ClamWin.conf'))
-    if not conf.Read():
+    if not conf.Read(template = True):
         return
 
     # check for standalone flag and exit (don't copy anything)
@@ -336,7 +336,7 @@ def GetScanCmd(config, path, scanlog, noprint = False):
     
     # 22 July 2006
     # added --keep-mbox to leave thunderbird files intact when removing or quarantining
-    cmd += ' --keep-mbox --stdout --database="%s" --log="%s"' % \
+    cmd += ' --keep-mbox --stdout --database="%s" --log="%s" --no-phishing-sigs --no-phishing-scan-urls' % \
             (config.Get('ClamAV', 'Database'), scanlog)
 
     if config.Get('ClamAV', 'Debug') == '1':
@@ -350,6 +350,8 @@ def GetScanCmd(config, path, scanlog, noprint = False):
         cmd += ' --no-ole2'
     if config.Get('ClamAV', 'ScanExeOnly') == '1':
         cmd += ' --skip-noexe'
+    if config.Get('ClamAV', 'DetectPUA') == '1':
+        cmd += ' --detect-pua'
     if config.Get('ClamAV', 'ClamScanParams') != '':
         cmd += ' ' + config.Get('ClamAV', 'ClamScanParams')
     if config.Get('ClamAV', 'InfectedOnly') == '1' or noprint:
@@ -456,14 +458,14 @@ def CleanupTemp(pid):
         if tmpdir.endswith(mask):
             try:
                 print 'removing temp dir', tmpdir
-                shutil.rmtree(os.path.join(root, tmpdir))
+                shutil.rmtree(os.path.join(root, tmpdir), true)
             except Exception, e:
                 print 'Could not remove %s. Error: %s' % (os.path.join(root, tmpdir), str(e))
     for tmpfile in files:
         if tmpfile.endswith(mask):
             try:
                 print 'removing temp file', tmpfile
-                shutil.rmtree(os.path.join(root, tmpfile))
+                os.remove(os.path.join(root, tmpfile))
             except Exception, e:
                 print 'Could not remove %s. Error: %s' % (os.path.join(root, tmpdir), str(e))
     

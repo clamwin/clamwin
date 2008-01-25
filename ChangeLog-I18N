@@ -12,9 +12,10 @@ See the full list here:
 Completed Languages
 *******************
 - Arabic                (0.91.2)
+- Bulgarian             (0.91.2)
 - Brazilian Portuguese  (0.90.2)
-- Dutch/Belgian Dutch   (0.91.2)
-- French                (0.90.2)
+- Dutch/Belgian Dutch   (0.92)
+- French                (0.91.2)
 - German                (0.90.2)
 - Hungarian             (0.90.1)
 - Italian               (0.90.2)
@@ -26,22 +27,23 @@ Completed Languages
 History
 *******
 
+Changes in ClamWin-0.92-L10N-36.exe:
+- Updated to ClamWin-0.92
 - Added Arabic localization
 - Added Brazilian localization
+- Added Bulgarian localization
 - Added Ukrainian localization
+- FIX: "Display infected files only" and "Scan in subdirectories" switched
+  places to match the official ClamWin version
+- FIX: the settings on the Preferences - General where not saved due to 
+  a bug validating the language setting
 - FIX: the helpfile was not shown when clicking on the help menu item
 - FIX: various language and style issues reported by Erkan_Yilmaz
 - FIX: Date-Time format can now be localized
-- FIX: 64-bit build is now available (not tested)
-- Localizable License file 
-  NOTE: To add a translation, start with the file 
-  clamwin\locale\GPL\License_en_US.rtf. 
-  ALWAYS KEEP THE ORIGINAL TEXT, AS THIS IS THE ONLY LEGALLY BINDING 
-  TEXT !!!! ADD A COMMENT AT THE TOP STATING THAT THE TRANSLATION IS
-  PROVIDED FOR INFORMATION ONLY AND THE ENGLISH TEXT IS VALID !!!
-  Then add the translated text at the bottom of the file, rename the
-  file and send it to budtse.
-
+- FIX: 64-bit build of Explorershell is now available (not tested though)
+- Localizable License file (see instructions on the wiki for how to 
+  translate)
+  
 Changes in Version ClamWin-0.91.2-L10N-35.exe :
 - Merged the changes up to ClamWin Free Antivirus release 0.90.2
 

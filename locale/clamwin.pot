@@ -1435,8 +1435,8 @@ msgstr ""
 msgid "Author: alch <alch@users.sourceforge.net>"
 msgstr ""
 
-#: wxDialogAbout.py:125
-msgid "Copyright (c) 2004 - 2006"
+#: Copyright string in the About Dialog
+msgid "Copyright ClamWin Pty Ltd (c) 2004 - 2008"
 msgstr ""
 
 #: wxDialogAbout.py:130
@@ -1825,3 +1825,10 @@ msgstr ""
 msgid "%a %d %b %Y %H:%M:%S"
 msgstr ""
 
+# Checkbox option --detect-PUA in Advanced settings
+msgid "&Detect Potentially Unwanted Applications"
+msgstr ""
+
+# Tooltip for Checkbox option --detect-PUA in Advanced settings
+msgid "Select if you wish to detect Potentially Unwanted Applications such as keygens, cracks, etc"
+msgstr ""

@@ -29,11 +29,11 @@ SymbolicName=S_SCANWITHCLAMWIN
 Language=ar_AE
 البحث بالستخدام كلاموين فري انتي فايرس
 .
+Language=Bulgarian
+Сканиране на ClamWin Free Antivirus...
+.
 Language=Brazilian
 Examinar com ClamWin Free AV...
-.
-Language=Bulgarian
-(bg)Scan with Clamwin Free AV...
 .
 Language=Catalan
 (ca)Scan with Clamwin Free AV...

@@ -549,13 +549,13 @@ class MainWindow:
         # send the notification alert if we need to
         if email_alert:
             try:
-                if process.wait() == 1:
+                if process.wait() == 1 and  not process.isKilled(): 
                     msg = EmailAlert.ConfigVirusAlertMsg(self._config, (appendlog,))
                     msg.Send()
             except Exception, e:
                 print _('Could not send email alert. Error: %s') % str(e)
-
-        if not process.isKilled() and balloon_info is not None:
+        print "Exit Code: ", process.wait()
+        if (not process.isKilled()) and (balloon_info is not None) and (process.wait() != 54):
             # show balloon
             self.ShowBalloon(process.wait(), balloon_info)
 

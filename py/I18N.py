@@ -87,6 +87,7 @@ def setLocalePath():
 """ Force the Locale in the registry to override Windows UI locale
 """
 def forceLocale(loc):
+    print "Forcing Locale to [%s]" % loc
     key = wreg.HKEY_CURRENT_USER
     subKey = 'SOFTWARE\\ClamWin'
     if Utils.RegKeyExists(key, subKey) == False:

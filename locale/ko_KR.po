@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-11-23 18:20+0100\n"
+"PO-Revision-Date: 2008-01-23 19:54+0100\n"
 "Last-Translator: budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: Korean <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -1546,9 +1546,9 @@ msgstr "웹사이트:"
 msgid "Author: alch <alch@users.sourceforge.net>"
 msgstr "저자: alch <alch@users.sourceforge.net>"
 
-#: wxDialogAbout.py:125
+#: Copyright string in the About Dialog
 #, fuzzy
-msgid "Copyright (c) 2004 - 2006"
+msgid "Copyright ClamWin Pty Ltd (c) 2004 - 2008"
 msgstr "Copyright (c) 2004 - 2005"
 
 #: wxDialogAbout.py:130
@@ -1997,5 +1997,13 @@ msgstr "UI Selection를 업데이트 하던 중, 에러가 발생 %s"
 
 # Definition of the local time format. See http://python.active-venture.com/lib/module-time.html for format identifiers.
 msgid "%a %d %b %Y %H:%M:%S"
+msgstr ""
+
+# Checkbox option --detect-PUA in Advanced settings
+msgid "&Detect Potentially Unwanted Applications"
+msgstr ""
+
+# Tooltip for Checkbox option --detect-PUA in Advanced settings
+msgid "Select if you wish to detect Potentially Unwanted Applications such as keygens, cracks, etc"
 msgstr ""
 

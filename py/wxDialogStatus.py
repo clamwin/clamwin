@@ -514,6 +514,8 @@ class wxDialogStatus(wxDialog):
 
         self._alreadyCalled = True
         
+        time.sleep(0.5)
+        
         Utils.CleanupTemp(self._proc.getpid())
         
         self.buttonSave.Enable(True)
@@ -522,9 +524,7 @@ class wxDialogStatus(wxDialog):
         self.buttonStop.SetLabel(_('&Close'))
 
         data = ''
-        if self._logfile is not None:
-            # new 22/07/07 added sleep becuase clamscan does not immediately release the handle
-            time.sleep(0.5)
+        if self._logfile is not None:           
             try:
                 # translate self._logfile and copy the translation to self._logfile
                 translatedlog = tempfile.mktemp()
@@ -576,8 +576,11 @@ class wxDialogStatus(wxDialog):
             self._returnCode = self._proc.wait(_WAIT_TIMEOUT)            
         except:            
             self._returnCode = -1
+        
+        if self._cancelled:
+            self._returnCode = 0
 
-        if (self._notify_params is not None) and (not self._cancelled):
+        if (self._notify_params is not None) and (not self._cancelled) and (self._returnCode != 54):
             Utils.ShowBalloon(self._returnCode, self._notify_params)
 
         # close the window automatically if requested
@@ -598,6 +601,8 @@ class wxDialogStatus(wxDialog):
             # and need to purge topmost line
             if lastPos + len(text) + _NEWLINE_LEN >= 30000:
                 ctrl.Clear()
+                self._previousStart = 0
+                lastPos = 0
             # detect progress message in the new text
             curtext = ctrl.GetRange(self._previousStart, lastPos)
             print_over = curtext.endswith(']\n') and \

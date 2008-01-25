@@ -61,6 +61,10 @@ ADDING A LANGUAGE
 *****************
 For the explanation here, we will use Brazilian Portuguese as an example.
 
+NOTE: all files need to be in UTF-8 format.  If they are in an other encoding,
+      they should be converted to UTF-8.  This can be done using iconv, e.g.:
+        iconv -f WINDOWS-1251 -t UTF-8 INPUTFILE > outputfile
+
 1. Open clamwin\cpp\MessageTable.mc in a UNICODE text editor.
    Add a line for the language like 'LanguageNames=(Brazilian=0x416:MSG00416)'.
    The code to be used (e.g. 0x416) can be found at 
