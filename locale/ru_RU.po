@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-01-23 19:56+0100\n"
-"Last-Translator: budtse <budtse@users.sourceforge.net>\n"
+"PO-Revision-Date: 2008-01-30 10:45+0300\n"
+"Last-Translator: Nikolay Parukhin <nik@sevpinro.ru>\n"
 "Language-Team: Russian <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -1466,9 +1466,8 @@ msgid "Author: alch <alch@users.sourceforge.net>"
 msgstr "Автор: alch <alch@users.sourceforge.net>"
 
 #: Copyright string in the About Dialog
-#, fuzzy
 msgid "Copyright ClamWin Pty Ltd (c) 2004 - 2008"
-msgstr "Copyright (c) 2004 - 2006"
+msgstr "Copyright ClamWin Pty Ltd (c) 2004 - 2008"
 
 #: wxDialogAbout.py:130
 msgid "This program is free software"
@@ -1849,35 +1848,35 @@ msgstr "База вирусных сигнатур не обновлялась �
 
 # wxDialogPreferences.py:
 msgid "Language Settings"
-msgstr ""
+msgstr "Настройки языка"
 
 msgid "&Language:"
-msgstr ""
+msgstr "&Язык:"
 
 # wxDialogPreferences.py:
 msgid "Windows UI Language"
-msgstr ""
+msgstr "Язык интерфейса Windows"
 
 # wxDialogPreferences.py:
 # Language setting box :
 msgid "The language will change next time ClamWin is started"
-msgstr ""
+msgstr "Язык будет изменён при следующем запуске ClamWin"
 
 msgid "Choose auto-detect or an available language"
-msgstr ""
+msgstr "Выберите автоопределение или доступный язык"
 
 msgid "ClamWin Error occured whilst loading virus database: %s"
-msgstr ""
+msgstr "Произошла ошибка в ClamWin при загрузке базы вирусов: %s"
 
 # Definition of the local time format. See http://python.active-venture.com/lib/module-time.html for format identifiers.
 msgid "%a %d %b %Y %H:%M:%S"
-msgstr ""
+msgstr "%a %d %b %Y %H:%M:%S"
 
 # Checkbox option --detect-PUA in Advanced settings
 msgid "&Detect Potentially Unwanted Applications"
-msgstr ""
+msgstr "&Обнаружение потенциально нежелательных приложений"
 
 # Tooltip for Checkbox option --detect-PUA in Advanced settings
 msgid "Select if you wish to detect Potentially Unwanted Applications such as keygens, cracks, etc"
-msgstr ""
+msgstr "Отметьте, если вы хотите обнаруживать потенциально нежелательные приложения, такие как генераторы ключей, крэки и т.п."
 
