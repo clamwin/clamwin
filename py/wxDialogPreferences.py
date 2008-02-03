@@ -144,7 +144,7 @@ def create(parent, config=None, switchToSchedule=False):
 ] = map(lambda _init_ctrls: wxNewId(), range(124))
 
 
-AVAILABLE_LANGUAGES = {'ar_AE' : 'Arabic',
+AVAILABLE_LANGUAGES = {'ar' : 'Arabic',
                        'bg_BG' : 'Bulgarian',
                        'pt_BR' : 'Brazilian', 
                        'de_DE' : 'Deutsch',

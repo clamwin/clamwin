@@ -151,7 +151,8 @@ def translateClamAVLines(lines):
             'Computer Memory Scan Completed',
             'Skipped non-executable files:',
             "ERROR: Can't download main.cvd",
-            "Your network may be down or none of the mirrors listed in freshclam.conf is working. Check http://www.clamav.net/support/mirror-problem for possible reasons."
+            'Your network may be down or none of the mirrors listed in freshclam.conf is working. Check http://www.clamav.net/support/mirror-problem for possible reasons.',
+            'Connecting via '
         ]
 
     lDateStrings = [

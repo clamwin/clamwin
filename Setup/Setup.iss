@@ -5,7 +5,7 @@
 [Setup]
 AppName={cm:ClamWinFreeAntivirus}
 AppVerName={cm:ClamWinFreeAntivirus} 0.92
-OutputBaseFilename=ClamWin-0.92-L10N-36
+OutputBaseFilename=ClamWin-0.92-L10N-38
 AppPublisher=budtse
 AppPublisherURL=http://www.clamwin.com/
 AppSupportURL=http://www.clamwin.com/
@@ -16,7 +16,7 @@ AllowNoIcons=true
 MinVersion=4.1.1998,5.0.2195
 
 ShowLanguageDialog=yes
-ShowUndisplayableLanguages=yes
+ShowUndisplayableLanguages=no
 LanguageDetectionMethod=locale
 OutputDir=Output
 OutputManifestFile=ClamwinL10N-Manifest.txt
@@ -27,8 +27,8 @@ SolidCompression=false
 WizardImageFile=Setupfiles\WizModernImage.bmp
 WizardSmallImageFile=Setupfiles\WizModernSmallImage.bmp
 [Languages]
-Name: ar_AE; MessagesFile: ..\locale\Inno Setup\Arabic.isl; LicenseFile: ..\locale\GPL\License_en_US.rtf
-Name: bg_BG; MessagesFile: ..\locale\Inno Setup\Bulgarian.isl; LicenseFile: ..\locale\GPL\License_en_US.rtf
+Name: ar; MessagesFile: ..\locale\Inno Setup\Arabic.isl; LicenseFile: ..\locale\GPL\License_ar.rtf
+Name: bg_BG; MessagesFile: ..\locale\Inno Setup\Bulgarian.isl; LicenseFile: ..\locale\GPL\License_bg_BG.rtf
 Name: cs_CZ; MessagesFile: compiler:Languages\Czech.isl; LicenseFile: ..\locale\GPL\License_en_US.rtf
 Name: de_DE; MessagesFile: compiler:Languages\German.isl; LicenseFile: ..\locale\GPL\License_en_US.rtf
 Name: en_US; MessagesFile: compiler:Default.isl; LicenseFile: ..\locale\GPL\License_en_US.rtf
@@ -81,8 +81,8 @@ Source: ..\doc\fr_FR\manual_fr.pdf; DestDir: {app}\doc; Components: LanguageSupp
 Source: ..\doc\ru_RU\manual_ru.chm; DestDir: {app}\doc; Components: LanguageSupport\Russian; Flags: ignoreversion
 
 ; Copy the Gettext locale files
-Source: ..\locale\ar_AE.mo; DestDir: {app}\locale\ar_AE\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Arabic; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: ..\locale\bg_BG.mo; DestDir: {app}\locale\bg_BE\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Bulgarian; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\ar.mo; DestDir: {app}\locale\ar\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Arabic; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\locale\bg_BG.mo; DestDir: {app}\locale\bg_BG\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Bulgarian; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\de_DE.mo; DestDir: {app}\locale\de_DE\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\German; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\es_ES.mo; DestDir: {app}\locale\es_ES\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\Spanish; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: ..\locale\fr_FR.mo; DestDir: {app}\locale\fr_FR\LC_MESSAGES; DestName: clamwin.mo; Components: LanguageSupport\French; Flags: restartreplace uninsrestartdelete replacesameversion
@@ -365,7 +365,7 @@ begin
 	end;
 	if not CheckForMutexes('ClamWinTrayMutex01') then
         exit;
-	if SuppressibleMsgBox(ExpandConstant('{cm:CloseClamWin1}') + #13 
+	if SuppressibleMsgBox(ExpandConstant('{cm:CloseClamWin1}') + #13
                     + ExpandConstant('{cm:CloseClamWin2}'),
 	              mbConfirmation, MB_YESNO, IDYES) = idYes then begin
 	    path := RemoveQuotes(path)+'\WClose.exe';

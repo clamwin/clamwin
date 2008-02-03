@@ -12,7 +12,7 @@ See the full list here:
 Completed Languages
 *******************
 - Arabic                (0.91.2)
-- Bulgarian             (0.91.2)
+- Bulgarian             (0.92)
 - Brazilian Portuguese  (0.90.2)
 - Dutch/Belgian Dutch   (0.92)
 - French                (0.92)
@@ -20,12 +20,22 @@ Completed Languages
 - Hungarian             (0.90.1)
 - Italian               (0.90.2)
 - Polish                (0.90.2)
-- Russian               (0.90.1)
+- Russian               (0.92)
 - Spanish               (0.90.0)
 - Ukrainian             (0.90.2)
 
 History
 *******
+
+Changes in ClamWin-0.92-L10N-38.exe:
+- Extra string to be translated when using a proxy for the update : 
+  "Connecting via "
+- Changed 'ar_AE' into 'ar': according to Osama Akkad there is no distinction.
+- Added license translations for ar and bg_BG.
+
+
+Changes in ClamWin-0.92-L10N-37.exe:
+- changed encoding of Bulgarian setup strings to have a working installer
 
 Changes in ClamWin-0.92-L10N-36.exe:
 - Updated to ClamWin-0.92

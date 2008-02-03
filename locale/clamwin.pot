@@ -1,4 +1,4 @@
-msgid ""
+﻿msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.4\n"
 "POT-Creation-Date: \n"
@@ -776,7 +776,7 @@ msgid "&Treat Files As Mailboxes"
 msgstr ""
 
 #: wxDialogPreferences.py:482
-msgid "Select if you wish to scan mailboxes"
+msgid "Select if you wish to have clamscan extract attachments from mailboxes and scan them"
 msgstr ""
 
 #: wxDialogPreferences.py:486
@@ -1831,4 +1831,8 @@ msgstr ""
 
 # Tooltip for Checkbox option --detect-PUA in Advanced settings
 msgid "Select if you wish to detect Potentially Unwanted Applications such as keygens, cracks, etc"
+msgstr ""
+
+# Translation of the Freshclam update log when using a proxy
+msgid "Connecting via "
 msgstr ""
