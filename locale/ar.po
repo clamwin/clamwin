@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.4\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-02-02 12:06+0300\n"
-"Last-Translator: Usama <ua@cec.sy>\n"
+"PO-Revision-Date: 2008-02-03 18:57+0100\n"
+"Last-Translator: budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: Localization <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -50,6 +50,7 @@ msgstr "مساعدة"
 
 # is free as in freedom
 # or free from no cost
+# >> as in freedom
 #: wxFrameMain.py:113
 #, fuzzy
 msgid "Displays ClamWin Free Antivirus Manual"
@@ -184,6 +185,7 @@ msgid "Checks for the Latest Version"
 msgstr "يتحقق من آخر إصدار"
 
 # Please explain this string
+# >> Debug message, don't bother translating
 #: wxFrameMain.py:354
 #, fuzzy
 msgid "An Error occurred while updating UI selection. %s"
@@ -211,6 +213,7 @@ msgid "ERROR: No servers could be reached. Giving up"
 msgstr "خطأ: لايمكن الوصول للمزودات. استسلام"
 
 # Please explain this string
+# >> Used in the translation of the freshclam logs, when a certain file cannot be downloaded and freshclam stops trying.
 #: wxDialogStatus.py:137
 #: wxDialogLogViewer.py:109
 #, fuzzy
@@ -242,18 +245,21 @@ msgid "is up to date"
 msgstr "محدّث"
 
 # Please explain this string
+# >> The number of signatures in the signature database
 #: wxDialogStatus.py:169
 #, fuzzy
 msgid "sigs:"
 msgstr "اشارة:"
 
 # Please explain this string
+# >> Functionality level of the scanning engine. New engine versions will have higher functionality levels.
 #: wxDialogStatus.py:171
 #, fuzzy
 msgid "f-level:"
 msgstr "مستوى-F:"
 
 # Please explain this string
+# >> The name of the developer that build the signature database used.
 #: wxDialogStatus.py:173
 #, fuzzy
 msgid "builder:"
@@ -292,12 +298,14 @@ msgid "http://www.clamwin.com/content/view/10/27/"
 msgstr "http://www.clamwin.com/content/view/10/27/"
 
 # Please explain this string
+# >> Used in translation of the clamscan log.  It means that you have set up infected files to be moved to quarantaine, but mailbox files are not moved.
 #: wxDialogStatus.py:191
 #, fuzzy
 msgid "Not moved"
 msgstr "لم تنقل"
 
 # Please explain this string
+# >> Used as translation of the clamscan log.  If you have set up filters in the preferences to exclude certain files, this string will be shown when such a file is processed.
 #: wxDialogStatus.py:193
 #, fuzzy
 msgid "File excluded"
@@ -404,6 +412,7 @@ msgid "S&ave Report"
 msgstr "حفظ التقرير"
 
 # what is the meaning of runner thread
+# >> The runner thread is the clamscan process that does the actual scanning.  When you press "Cancel" while doing a scan, and it cannot be stopped, this message is shown.
 #: wxDialogStatus.py:435
 #, fuzzy
 msgid "Unable to stop runner thread, terminating"
@@ -424,6 +433,7 @@ msgid "Could not save report to the file "
 msgstr "لا يمكن حفظ التقرير إلى الملف"
 
 # please explain this string
+# >> this is just a part of a string.  The full string is "Could not save report to the file 'xxx'. Please check that you have write permissions to the folder and there is enough space on the disk."
 #: wxDialogStatus.py:464
 #, fuzzy
 msgid ". Please check that you have write "
@@ -495,6 +505,8 @@ msgid "Scheduled Scan"
 msgstr "الفحوص المجدولة"
 
 # please explain this string
+# >> There is a scheduler in clamwin to let it scan folders on certain times without user intervention.
+# This string is used in the scheduler
 #: wxDialogScheduledScan.py:167
 #, fuzzy
 msgid "Schedule"
@@ -782,6 +794,7 @@ msgid "&Scan In Subdirectories"
 msgstr "إفحص في المجلدات الفرعية"
 
 # please explain this string
+# >> With this option turned of, clamwin would only scan the files that are in the root of the directory, not the files that are in sub-directories.
 #: wxDialogPreferences.py:412
 #, fuzzy
 msgid "Select if you wish to scan in subdirectories recursively"
@@ -817,12 +830,9 @@ msgstr "الأرشيفات-الفرعية"
 msgid "&Treat Files As Mailboxes"
 msgstr "عامل الملفات كرسائل بريدية"
 
-# I think there is a conflict with the explanation in the help file
-# please explain
 #: wxDialogPreferences.py:482
-#, fuzzy
-msgid "Select if you wish to scan mailboxes"
-msgstr "حدد إذا أردت الفحص كصناديق بريد "
+msgid "Select if you wish to have clamscan extract attachments from mailboxes and scan them"
+msgstr ""
 
 #: wxDialogPreferences.py:486
 msgid "&Extract Attachments and Macros from MS Office Documents"
@@ -1024,6 +1034,7 @@ msgid "Su&bject:"
 msgstr "الموضوع:"
 
 # this string is related to "subject" field why?
+# >> Tooltip in the preferences on the Email Alert tab, for the recipients address.  Don't know what you mean by "related to subject".
 #: wxDialogPreferences.py:799
 #, fuzzy
 msgid "Specify Recipient's email address where the email alert will be delivered"
@@ -1045,11 +1056,13 @@ msgstr "إعرض رسائل منبثقة تنبيهية في شريط المها
 msgid "Select if you wish to receive Tray notification pop-up messages"
 msgstr "حدد إذا أردت إستقبال رسائل منبثقة تنبيهية في زاوية الشاشة"
 
+# >> Poedit gives some format error on the translation of this string.  Please try translating it again.
 #: wxDialogPreferences.py:822
 msgid "Specify Filename Patterns to include and/or exclude in scanning"
-msgstr "خصص نماذج أسماء ملفات للتضمين و\او الإستثناء  في الفحص"
+msgstr ""
 
 # please explain this string
+# >> Label in the preferences, on the filter tab
 #: wxDialogPreferences.py:827
 #, fuzzy
 msgid "(To specify a regular expression include your pattern within <...>)"
@@ -1283,6 +1296,7 @@ msgid "Updated: %s"
 msgstr "محدّث: %s"
 
 # please explain this string
+# >> Shown in the About window for the clamscan version, when clamscan cannot be found.
 #: wxDialogAbout.py:214
 #, fuzzy
 msgid "Could not locate ClamScan executable"
@@ -1444,12 +1458,14 @@ msgid "List Of Changes in Version %s:"
 msgstr "قائمة التغييرات في الإصدار %s:"
 
 # Please explain this string
+# >> Debug message in the scheduler, when loading tasks from file
 #: wxDialogScheduledScan.py:119
 #, fuzzy
 msgid "Could not open persistent storage for scheduled scans. Error: %s"
 msgstr "لم يتمكن من فتح  تخزين للفحوص المجدولة. خطأ: %s"
 
 # Please explain this string
+# >> Debug message when tasks cannot be saved in the task scheduler.
 #: wxDialogScheduledScan.py:130
 #, fuzzy
 msgid "Could not save scheduled scans to persistent storage. Error: %s"
@@ -1477,6 +1493,7 @@ msgid "Version "
 msgstr "النسخة"
 
 # Please explain this string
+# >> Used in the About Window as static text.  Translation is not really usefull as it is replaced by the version.
 #: wxDialogAbout.py:79
 #, fuzzy
 msgid "ClamAV Version gets here"
@@ -1623,12 +1640,14 @@ msgid "Error connecting to Outlook!"
 msgstr "خطأ في الإتصال إلى Outlook!"
 
 # please explain this string
+# >> Used in the Outlook addin which shows a splash screen at startup.  (debug message only)
 #: OlAddin.py:918
 #, fuzzy
 msgid "An error occurred whilst displaying the splashscreen %s. Error: %s."
 msgstr "حدث خطأ أثناء عرض شاشة Splash  %s. خطأ: %s."
 
 # Please explain this string
+# >> Used in the Outlook plugin, when outlook is closed (just a debug message)
 #: OlAddin.py:955
 #, fuzzy
 msgid "Addin terminating: %d COM client and %d COM servers exist."
@@ -1647,6 +1666,7 @@ msgid "Registration Complete"
 msgstr "إكتمال التسجيل"
 
 # please explain this string
+# >> Used in a messagebox that warns you that a scheduled task cannot be stopped (you can stop running task manually using the tray icon menu)
 #: ClamTray.py:117
 #, fuzzy
 msgid "Unable to stop scheduled process, terminating"
@@ -1752,6 +1772,7 @@ msgid "An error occurred during Scheduled Virus Database Update. Please review t
 msgstr "حدث خطأ خلال تحديث مجدول لبيانات الفيروسات. يرجى مراجعة تقرير التحديث."
 
 # please explain this string
+# >> Used in the log file when a scheduled task (update or scan) cannot be started.
 #: ClamTray.py:418
 #, fuzzy
 msgid ""
@@ -1768,6 +1789,7 @@ msgid "Error performing Scheduled Update."
 msgstr "خطأ في أداء تحديث مجدول."
 
 # please explain this string
+# >> Used in the links to the ClamWin page. If no browser can be opened automatically, this text is shown in a message box.
 #: ClamTray.py:441
 #: wxDialogUtils.py:206
 #, fuzzy
@@ -1787,12 +1809,15 @@ msgid "An error occurred during scheduled scan. Please review the scan report."
 msgstr "حدث خطأ أثناء فحص مجدول. يرجى مراجعة تقرير الفحص."
 
 # Please explain this string
+# >> This string is used in the log files, when a scheduled task is started.
 #: ClamTray.py:530
 #, fuzzy
 msgid "Running Scheduled Task:\n"
 msgstr "تشغيل المهمة المجدولة:\n"
 
 # please explain this string
+# >> while a scheduled scan was running, some kind of error occurred, causing the scan to fail.
+# This string is used in the log files.
 #: ClamTray.py:532
 #, fuzzy
 msgid "An error occurred whilst running Running Scheduled Task "
