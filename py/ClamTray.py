@@ -128,7 +128,7 @@ class MainWindow:
                 # wait for completion
                 scheduler.join(2)
             except Exception, e:
-                print _('An error occurred whilst terminating scheduler thread. Error: %s') % str(e)
+                print 'An error occurred whilst terminating scheduler thread. Error: %s' % str(e)
         self._schedulers = []
 
     def _InitSchedulers(self, logon=False):
@@ -348,7 +348,7 @@ class MainWindow:
             try:
                 Utils.ShowBalloon(wparam, self._balloon_info, self.hwnd)
             except Exception, e:
-                print _('Could not display balloon tooltip. Error: %s') % str(e)
+                print 'Could not display balloon tooltip. Error: %s' % str(e)
 
     def OnExit(self):
         win32gui.DestroyWindow(self.hwnd)
@@ -414,7 +414,7 @@ class MainWindow:
                         balloon))
                     self._processes.append(proc)
                 except Process.ProcessError, e:
-                    print _('Unable to spawn scheduled process.\nCommand line: %s\nError: %s') % (cmd , str(e))
+                    print 'Unable to spawn scheduled process.\nCommand line: %s\nError: %s' % (cmd , str(e))
                     try:
                         os.remove(freshclam_conf)
                         os.remove(updatelog)
@@ -429,7 +429,7 @@ class MainWindow:
                     pass
                 os.remove(freshclam_conf)
             except Exception, e:
-                print _('Error performing Scheduled Update.'), str(e)
+                print 'Error performing Scheduled Update.', str(e)
                 os.remove(freshclam_conf)
 
     def _OpenWebPage(self, url):
@@ -553,7 +553,7 @@ class MainWindow:
                     msg = EmailAlert.ConfigVirusAlertMsg(self._config, (appendlog,))
                     msg.Send()
             except Exception, e:
-                print _('Could not send email alert. Error: %s') % str(e)
+                print 'Could not send email alert. Error: %s' % str(e)
         print "Exit Code: ", process.wait()
         if (not process.isKilled()) and (balloon_info is not None) and (process.wait() != 54):
             # show balloon
@@ -573,7 +573,7 @@ class MainWindow:
         try:
             os.remove(appendlog)
         except Exception, e:
-            print _('Could not remove file: %s. Error: %s') % (appendlog, str(e))
+            print 'Could not remove file: %s. Error: %s' % (appendlog, str(e))
             
         Utils.CleanupTemp(process.getpid())
 

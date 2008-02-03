@@ -377,7 +377,7 @@ class wxMainFrame(wxFrame):
                     hasdb = Utils.CheckDatabase(self._config)                    
                        
         except Exception, e:
-            print _('An Error occurred while updating UI selection. %s') % str(e)
+            print 'An Error occurred while updating UI selection. %s' % str(e)
 
     def OnScanButton(self, event):
         scanPath = ''

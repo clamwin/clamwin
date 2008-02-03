@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-01-23 19:54+0100\n"
+"PO-Revision-Date: 2008-02-03 19:37+0100\n"
 "Last-Translator: budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: Korean <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -184,11 +184,6 @@ msgstr ""
 #, fuzzy
 msgid "Checks for the Latest Version"
 msgstr "최신 버전을 찾습니다."
-
-#: wxFrameMain.py:354
-#, fuzzy
-msgid "An Error occurred while updating UI selection. %s"
-msgstr "UI Selection를 업데이트 하던 중, 에러가 발생 %s"
 
 #: wxFrameMain.py:387
 msgid "Could not open help file - %s not found."
@@ -833,8 +828,8 @@ msgstr "파일을 (&메)일 박스처럼 다루기"
 
 #: wxDialogPreferences.py:482
 #, fuzzy
-msgid "Select if you wish to scan mailboxes"
-msgstr "이 스케줄을 적용하려면, 선택 하십시오."
+msgid "Select if you wish to have clamscan extract attachments from mailboxes and scan them"
+msgstr "ms 오피스 도규먼트의 어태치먼트와 매크로 (&풀)기"
 
 #: wxDialogPreferences.py:486
 msgid "&Extract Attachments and Macros from MS Office Documents"
@@ -1161,10 +1156,6 @@ msgstr ""
 msgid "An error occurred whilst saving configuration file %s. Please check that you have write permission to the configuration file."
 msgstr "설정 파일 %s 저장 중 에러 발생. 설정 파일의 사용 권한을 확인 하십시오."
 
-#: wxDialogPreferences.py:1033
-msgid "Event Failed"
-msgstr "실패"
-
 #: wxDialogPreferences.py:1205
 #: wxDialogPreferences.py:1221
 #, fuzzy
@@ -1360,16 +1351,6 @@ msgstr "예약된 바이러스 데이터베이스 업데이트 중 에러 발생
 msgid "ClamWin Free Antivirus: Downloading Update..."
 msgstr "ClamWin Free 백신"
 
-#: wxDialogUtils.py:78
-#, fuzzy
-msgid "Unable to remove file %s. Error: %s"
-msgstr "로그 파일 %s을 읽을 수 없음. 에러: %s"
-
-#: wxDialogUtils.py:83
-#, fuzzy
-msgid "Couldn't remove file %s. Error: %s"
-msgstr "로그 파일 %s을 읽을 수 없음. 에러: %s"
-
 #: wxDialogUtils.py:115
 #, fuzzy
 msgid ""
@@ -1411,17 +1392,6 @@ msgstr "예약 검사 중 에러 발생. 치료 결과 리포트 참조."
 msgid "ClamWin Free Antivirus: Scanning..."
 msgstr "ClamWin Free 백신"
 
-#: wxDialogUtils.py:150
-#: ClamTray.py:555
-#, fuzzy
-msgid "Could not send email alert. Error: %s"
-msgstr "로그 파일 %s을 읽을 수 없음. 에러: %s"
-
-#: wxDialogUtils.py:157
-#, fuzzy
-msgid "Could not delete logfile : %s. Error: %s"
-msgstr "로그 파일 %s을 읽을 수 없음. 에러: %s"
-
 #: wxDialogUtils.py:179
 msgid "Log files are not properly configured. Please review ClamWin configuration"
 msgstr ""
@@ -1449,11 +1419,6 @@ msgstr "ClamWin Free 백신"
 msgid "&Download"
 msgstr "다운로드 (&사)이트"
 
-#: EmailAlert.py:82
-#, fuzzy
-msgid "Email alert to %s has been sent successfully."
-msgstr "테스트 이메일이 성공적으로 보내졌습니다."
-
 #: Config.py:63
 msgid "admin@yourdomain"
 msgstr ""
@@ -1467,11 +1432,6 @@ msgstr "ClamWin (&열)기"
 #, fuzzy
 msgid "ClamWin Virus Alert"
 msgstr "ClamWin 바이러스 검색기"
-
-#: EmailAlert.py:86
-#, fuzzy
-msgid "Could not send an email. Error: %s"
-msgstr "로그 파일 %s을 읽을 수 없음. 에러: %s"
 
 #: EmailAlert.py:95
 msgid ""
@@ -1487,15 +1447,6 @@ msgstr ""
 #: wxDialogCheckUpdate.py:76
 msgid "List Of Changes in Version %s:"
 msgstr ""
-
-#: wxDialogScheduledScan.py:119
-#, fuzzy
-msgid "Could not open persistent storage for scheduled scans. Error: %s"
-msgstr "로그 파일 %s을 읽을 수 없음. 에러: %s"
-
-#: wxDialogScheduledScan.py:130
-msgid "Could not save scheduled scans to persistent storage. Error: %s"
-msgstr "영속적 저장공간(퍼시스턴트 스토리지)에 예약 검사를 저장할 수 없음. 에러: %s"
 
 #: wxDialogCheckUpdate.py:54
 #, fuzzy
@@ -1567,30 +1518,13 @@ msgstr "Finndesign 홈페이지"
 msgid "Python Homepage"
 msgstr "Python 홈페이지"
 
-#: OlAddin.py:174
-msgid "You appear to be running a win32all version pre 151, which is pretty old"
-msgstr ""
-
-#: OlAddin.py:175
-msgid "I'm afraid it is time to upgrade"
-msgstr ""
-
 #: OlAddin.py:199
 #, fuzzy
 msgid "An error occurred in ClamWin Free Antivirus About Box.\n"
 msgstr "ClamWin 환경 설정 시작 중 에러 발생.\n"
 
-#: OlAddin.py:213
-msgid "WARNING - Trying to use image '%s', but it doesn't exist"
-msgstr ""
-
 #: OlAddin.py:248
 msgid "Virus Deleted by ClamWin.txt"
-msgstr ""
-
-#: OlAddin.py:275
-#: OlAddin.py:1031
-msgid "Registration complete."
 msgstr ""
 
 #: OlAddin.py:277
@@ -1645,12 +1579,6 @@ msgstr "예약 검사 중 바이러스 발견. 치료 결과 리포트 참조."
 msgid "An error occurred whilst scanning email message."
 msgstr "UI Selection를 업데이트 하던 중, 에러가 발생 %s"
 
-#: OlAddin.py:508
-#: ClamTray.py:563
-#, fuzzy
-msgid "Could not remove file: %s. Error: %s"
-msgstr "도움말을 열 수 없음 - %s 을 찾을 수 없음"
-
 #: OlAddin.py:580
 #, fuzzy
 msgid "&About ClamWin Free Antivirus"
@@ -1670,40 +1598,10 @@ msgstr ""
 msgid "ClamWin Free Antivirus!"
 msgstr "ClamWin Free 백신"
 
-#: OlAddin.py:905
-msgid "Error connecting to Outlook!"
-msgstr ""
-
-#: OlAddin.py:918
-#, fuzzy
-msgid "An error occurred whilst displaying the splashscreen %s. Error: %s."
-msgstr "UI Selection를 업데이트 하던 중, 에러가 발생 %s"
-
-#: OlAddin.py:955
-msgid "Addin terminating: %d COM client and %d COM servers exist."
-msgstr ""
-
-#: OlAddin.py:1007
-msgid "Registering (in HKEY_LOCAL_MACHINE)..."
-msgstr ""
-
-#: OlAddin.py:1010
-msgid "Registering (in HKEY_CURRENT_USER)..."
-msgstr ""
-
-#: OlAddin.py:1015
-msgid "Registration Complete"
-msgstr ""
-
 #: ClamTray.py:117
 #, fuzzy
 msgid "Unable to stop scheduled process, terminating"
 msgstr "러너 스래드를 중지 할수 없어 종료 함."
-
-#: ClamTray.py:131
-#, fuzzy
-msgid "An error occurred whilst terminating scheduler thread. Error: %s"
-msgstr "UI Selection를 업데이트 하던 중, 에러가 발생 %s"
 
 #: ClamTray.py:237
 msgid "&Configure Scheduler"
@@ -1773,11 +1671,6 @@ msgstr ""
 msgid "Could not launch ClamWin Scanner. Error: %s"
 msgstr "로그 파일 %s을 읽을 수 없음. 에러: %s"
 
-#: ClamTray.py:351
-#, fuzzy
-msgid "Could not display balloon tooltip. Error: %s"
-msgstr "로그 파일 %s을 읽을 수 없음. 에러: %s"
-
 #: ClamTray.py:362
 #, fuzzy
 msgid ""
@@ -1825,10 +1718,6 @@ msgstr ""
 "예약된 작업을 시작 할 수 없음.\n"
 "코맨드 라인(명령줄): %s\n"
 "에러: %s"
-
-#: ClamTray.py:433
-msgid "Error performing Scheduled Update."
-msgstr "예약된 업데이트 실행 중 에러 발생."
 
 #: ClamTray.py:441
 #: wxDialogUtils.py:206
@@ -2006,4 +1895,8 @@ msgstr ""
 # Tooltip for Checkbox option --detect-PUA in Advanced settings
 msgid "Select if you wish to detect Potentially Unwanted Applications such as keygens, cracks, etc"
 msgstr ""
+
+#, fuzzy
+msgid "Connecting via "
+msgstr "SMTP 연결 정보"
 

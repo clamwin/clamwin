@@ -76,12 +76,12 @@ def wxUpdateVirDB(parent, config, autoClose = False):
             os.remove(updatelog)
             print updatelog
         except Exception, e:
-            print _('Unable to remove file %s. Error: %s') % (updatelog, str(e))
+            print 'Unable to remove file %s. Error: %s' % (updatelog, str(e))
         dlg.Destroy()
         try:
             os.remove(freshclam_conf)
         except Exception, e:
-            print _("Couldn't remove file %s. Error: %s") % (freshclam_conf, str(e))        
+            print "Couldn't remove file %s. Error: %s" % (freshclam_conf, str(e))        
             
         # @@@ Alch 20070723
         # remove .cvd file if .inc folder is already there
@@ -172,14 +172,14 @@ def wxScan(parent, config, path, autoClose = False):
                     msg = EmailAlert.ConfigVirusAlertMsg(config, (scanlog,))
                     msg.Send()
             except Exception, e:
-                print _('Could not send email alert. Error: %s') % str(e)
+                print 'Could not send email alert. Error: %s' % str(e)
 
     finally:
         if os.path.exists(scanlog):
              try:
                  os.remove(scanlog)
              except IOError, e:
-                 print _('Could not delete logfile : %s. Error: %s') % (scanlog, str(e))                 
+                 print 'Could not delete logfile : %s. Error: %s' % (scanlog, str(e))                 
         dlg.Destroy()
         return exit_code
 

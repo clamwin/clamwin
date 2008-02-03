@@ -1164,7 +1164,7 @@ class wxPreferencesDlg(wxDialog):
                 except win32api.error, e:
                     if hEvent is not None:
                         win32api.CloseHandle(hEvent)
-                    print _("Event Failed"), str(e)
+                    print "Event Failed", str(e)
             return True
 
 

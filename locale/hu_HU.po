@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: clamwin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-01-23 19:53+0100\n"
+"PO-Revision-Date: 2008-02-03 19:37+0100\n"
 "Last-Translator: budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: Hungarian <clamwin-hungarian-bounces@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -183,10 +183,6 @@ msgstr ""
 #: wxFrameMain.py:115
 msgid "Checks for the Latest Version"
 msgstr "Újabb verzió keresése"
-
-#: wxFrameMain.py:354
-msgid "An Error occurred while updating UI selection. %s"
-msgstr "Hiba lépett fel az UI kiválasztás frissítése során: %s"
 
 #: wxFrameMain.py:387
 msgid "Could not open help file - %s not found."
@@ -797,8 +793,9 @@ msgid "&Treat Files As Mailboxes"
 msgstr "&Postafiókok ellenőrzése"
 
 #: wxDialogPreferences.py:482
-msgid "Select if you wish to scan mailboxes"
-msgstr "Válassza ki, ha a postafiókokat is ellenőrizni kívánja"
+#, fuzzy
+msgid "Select if you wish to have clamscan extract attachments from mailboxes and scan them"
+msgstr "Válassza ki, ha az OLE objektumokat és makrókat is ellenőrizni szeretne az MS Office dokumentumokban"
 
 #: wxDialogPreferences.py:486
 msgid "&Extract Attachments and Macros from MS Office Documents"
@@ -1114,10 +1111,6 @@ msgstr "Ellenőrzött &fájlok % állapotjelző megjelenítése"
 msgid "An error occurred whilst saving configuration file %s. Please check that you have write permission to the configuration file."
 msgstr "Hiba lépett fel a konfigurációs fájl mentése során: %s. Ellenőrizze, hogy rendelkezik-e írási jogosultsággal a konfigurációs fájlhoz."
 
-#: wxDialogPreferences.py:1033
-msgid "Event Failed"
-msgstr "Sikertelen esemény"
-
 #: wxDialogPreferences.py:1205
 #: wxDialogPreferences.py:1221
 msgid "Executable files (*.exe)|*.exe|All files (*.*)|*.*"
@@ -1299,14 +1292,6 @@ msgstr "Hiba lépett fel az vírusismereti adatbázis frissítése során. Tekin
 msgid "ClamWin Free Antivirus: Downloading Update..."
 msgstr "ClamWin Free Antivirus: Frissítés letöltése..."
 
-#: wxDialogUtils.py:78
-msgid "Unable to remove file %s. Error: %s"
-msgstr "Nem távolítható el a fájl: %s. Hiba: %s"
-
-#: wxDialogUtils.py:83
-msgid "Couldn't remove file %s. Error: %s"
-msgstr "Nem távolítható el a fájl: %s. Hiba: %s"
-
 #: wxDialogUtils.py:115
 msgid ""
 "\n"
@@ -1339,15 +1324,6 @@ msgstr "Hiba lépett fel az ellenőrzés során! Tekintse meg az ellenőrzési j
 msgid "ClamWin Free Antivirus: Scanning..."
 msgstr "ClamWin Free Antivirus: Ellenőrzés..."
 
-#: wxDialogUtils.py:150
-#: ClamTray.py:555
-msgid "Could not send email alert. Error: %s"
-msgstr "E-mail riasztás nem küldhető el. Hiba: %s"
-
-#: wxDialogUtils.py:157
-msgid "Could not delete logfile : %s. Error: %s"
-msgstr "Nem távolítható el a jelentésfájl: %s. Hiba: %s"
-
 #: wxDialogUtils.py:179
 msgid "Log files are not properly configured. Please review ClamWin configuration"
 msgstr "A jelentésfájlok nincsenek jól beállítva. Ellenőrizze a ClamWin beállításokat."
@@ -1377,10 +1353,6 @@ msgstr "Ellenőrzés ClamWin Free Antivirus programmal"
 msgid "&Download"
 msgstr "&Letöltés"
 
-#: EmailAlert.py:82
-msgid "Email alert to %s has been sent successfully."
-msgstr "E-mail riasztás a(z) %s címzettnek sikeresen elküldve."
-
 #: Config.py:63
 msgid "admin@yourdomain"
 msgstr "rendszergazda@domén"
@@ -1392,10 +1364,6 @@ msgstr "clamwin@domén"
 #: Config.py:64
 msgid "ClamWin Virus Alert"
 msgstr "ClamWin Vírus Riasztás"
-
-#: EmailAlert.py:86
-msgid "Could not send an email. Error: %s"
-msgstr "E-mail üzenet nem küldhető el. Hiba: %s"
 
 #: EmailAlert.py:95
 msgid ""
@@ -1414,14 +1382,6 @@ msgstr "&Ne keressen frissítéseket"
 #: wxDialogCheckUpdate.py:76
 msgid "List Of Changes in Version %s:"
 msgstr "Változások ebben a(z) %s verzióban:"
-
-#: wxDialogScheduledScan.py:119
-msgid "Could not open persistent storage for scheduled scans. Error: %s"
-msgstr "Nem nyitható meg állandó tároló az ütemezett feladatok számára. Hiba: %s"
-
-#: wxDialogScheduledScan.py:130
-msgid "Could not save scheduled scans to persistent storage. Error: %s"
-msgstr "Nem menthetők el az ütemezett feladatok az állandó tárolóba. Hiba: %s"
 
 #: wxDialogCheckUpdate.py:54
 msgid "ClamWin Update"
@@ -1490,30 +1450,13 @@ msgstr "Finndesign honlap"
 msgid "Python Homepage"
 msgstr "Python honlap"
 
-#: OlAddin.py:174
-msgid "You appear to be running a win32all version pre 151, which is pretty old"
-msgstr "A rendszerében található win32all verziója pre 151, ami igen elavult"
-
-#: OlAddin.py:175
-msgid "I'm afraid it is time to upgrade"
-msgstr "Legfőbb ideje frissíteni"
-
 #: OlAddin.py:199
 msgid "An error occurred in ClamWin Free Antivirus About Box.\n"
 msgstr "Hiba lépett fel a ClamWin Free Antivirus névjegy panelban.\n"
 
-#: OlAddin.py:213
-msgid "WARNING - Trying to use image '%s', but it doesn't exist"
-msgstr "FIGYELMEZTETÉS - A(z) '%s' kép nem létezik."
-
 #: OlAddin.py:248
 msgid "Virus Deleted by ClamWin.txt"
 msgstr "A vírus le lett törölve a ClamWin.txt által"
-
-#: OlAddin.py:275
-#: OlAddin.py:1031
-msgid "Registration complete."
-msgstr "Sikeresen regisztrálva."
 
 #: OlAddin.py:277
 msgid "An Error occurred whilst starting clamscan: %s"
@@ -1564,11 +1507,6 @@ msgstr "Vírus találat az e-mail üzenet csatolmányában! A csatolmány a jele
 msgid "An error occurred whilst scanning email message."
 msgstr "Hiba lépett fel az e-mail üzenet ellenőrzése közben."
 
-#: OlAddin.py:508
-#: ClamTray.py:563
-msgid "Could not remove file: %s. Error: %s"
-msgstr "Nem távolítható el a fájl: %s. Hiba: %s"
-
 #: OlAddin.py:580
 msgid "&About ClamWin Free Antivirus"
 msgstr "A ClamWin Free Antivirus &névjegye"
@@ -1585,37 +1523,9 @@ msgstr "ClamWin Free Antivirus nem tudja kicserélni a csatolmányt. Hiba: %s"
 msgid "ClamWin Free Antivirus!"
 msgstr "ClamWin Free Antivirus!"
 
-#: OlAddin.py:905
-msgid "Error connecting to Outlook!"
-msgstr "Hiba lépett fel az Outlook-hoz történő kapcsolódás során."
-
-#: OlAddin.py:918
-msgid "An error occurred whilst displaying the splashscreen %s. Error: %s."
-msgstr "Hiba lépett fel az indítóképernyő megjelenítése során %s. Hiba: %s."
-
-#: OlAddin.py:955
-msgid "Addin terminating: %d COM client and %d COM servers exist."
-msgstr "Kilépés a bővítményből: %d COM kliens és %d COM szerver már létezik."
-
-#: OlAddin.py:1007
-msgid "Registering (in HKEY_LOCAL_MACHINE)..."
-msgstr "Regisztrálás (HKEY_LOCAL_MACHINE)..."
-
-#: OlAddin.py:1010
-msgid "Registering (in HKEY_CURRENT_USER)..."
-msgstr "Regisztrálás (in HKEY_CURRENT_USER)..."
-
-#: OlAddin.py:1015
-msgid "Registration Complete"
-msgstr "Regisztrálás végrehajtva"
-
 #: ClamTray.py:117
 msgid "Unable to stop scheduled process, terminating"
 msgstr "Az ütemezett folyamat nem állítható le, kilépés"
-
-#: ClamTray.py:131
-msgid "An error occurred whilst terminating scheduler thread. Error: %s"
-msgstr "Hiba lépett fel az ütemező folyamat leállítása során. Hiba: %s"
 
 #: ClamTray.py:237
 msgid "&Configure Scheduler"
@@ -1674,10 +1584,6 @@ msgstr "http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=6
 msgid "Could not launch ClamWin Scanner. Error: %s"
 msgstr "A ClamWin Ellenőrző nem indítható el. Hiba: %s"
 
-#: ClamTray.py:351
-msgid "Could not display balloon tooltip. Error: %s"
-msgstr "A buboréksúgó nem jeleníthető meg. Hiba: %s"
-
 #: ClamTray.py:362
 msgid ""
 "An error occurred while displaying log file %s.\n"
@@ -1721,10 +1627,6 @@ msgstr ""
 "Az ütemezett folyamat nem indítható.\n"
 "Parancssor: %s\n"
 "Hiba: %s"
-
-#: ClamTray.py:433
-msgid "Error performing Scheduled Update."
-msgstr "Az ütemezett frissítés nem sikerült."
 
 #: ClamTray.py:441
 #: wxDialogUtils.py:206
@@ -1884,4 +1786,8 @@ msgstr ""
 # Tooltip for Checkbox option --detect-PUA in Advanced settings
 msgid "Select if you wish to detect Potentially Unwanted Applications such as keygens, cracks, etc"
 msgstr ""
+
+#, fuzzy
+msgid "Connecting via "
+msgstr "Kapcsolódva"
 

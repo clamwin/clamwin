@@ -187,8 +187,8 @@ try:
     from win32com.client import CastTo, WithEvents
 except ImportError:
     print "*" * 50
-    print _("You appear to be running a win32all version pre 151, which is pretty old")
-    print _("I'm afraid it is time to upgrade")
+    print "You appear to be running a win32all version pre 151, which is pretty old"
+    print "I'm afraid it is time to upgrade"
     raise
 # we seem to have all the COM support we need - let's rock!
 
@@ -225,7 +225,7 @@ def SetButtonImage(button, fname):
         # images relative to the application path
         fname = os.path.join(Utils.GetCurrentDir(False),"img", fname)
         if not os.path.isfile(fname):
-            print _("WARNING - Trying to use image '%s', but it doesn't exist") % (fname,)
+            print "WARNING - Trying to use image '%s', but it doesn't exist" % (fname,)
             return None
         handle = win32gui.LoadImage(0, fname, win32con.IMAGE_BITMAP, 0, 0, win32con.LR_DEFAULTSIZE | win32con.LR_LOADFROMFILE)
     win32clipboard.OpenClipboard()
@@ -489,9 +489,9 @@ def safe_remove(path, removeLastDir = False):
             os.rmdir(path)
     except OSError, e:
         if e.errno != errno.ENOENT:        
-            print _('Could not remove file: %s. Error: %s') % (path, str(e))
+            print 'Could not remove file: %s. Error: %s' % (path, str(e))
     except Exception, e:
-        print _('Could not remove file: %s. Error: %s') % (path, str(e))
+        print 'Could not remove file: %s. Error: %s' % (path, str(e))
 
     try:
         if removeLastDir:
@@ -500,9 +500,9 @@ def safe_remove(path, removeLastDir = False):
                 os.rmdir(dir)
     except OSError, e:
         if e.errno != errno.ENOENT:        
-            print _('Could not remove file: %s. Error: %s') % (path, str(e))
+            print 'Could not remove file: %s. Error: %s' % (path, str(e))
     except Exception, e:       
-        print _('Could not remove file: %s. Error: %s') % (path, str(e))
+        print 'Could not remove file: %s. Error: %s' % (path, str(e))
 
 class WaitCursor:
     def __init__(self):
@@ -895,10 +895,10 @@ class OutlookAddin(ObjectsEvent):
                 # bootstrap code that can't happen until startup is complete.
                 self.OnStartupComplete(None)
         except:
-            print _("Error connecting to Outlook!")
+            print "Error connecting to Outlook!"
             traceback.print_exc()
-            print _("There was an error initializing the ClamWin addin\r\n\r\n"\
-                "Please re-start Outlook and try again.")
+            print "There was an error initializing the ClamWin addin\r\n\r\n"\
+                "Please re-start Outlook and try again."
 
     def OnStartupComplete(self, custom):
         dbg_print('OutlookAddin:OnStartupComplete')
@@ -916,7 +916,7 @@ class OutlookAddin(ObjectsEvent):
                 splash = os.path.join(Utils.GetCurrentDir(False), "img\\Splash.bmp")             
                 SplashScreen.ShowSplashScreen(splash, 5)                            
         except Exception, e:
-            print _("An error occurred whilst displaying the splashscreen %s. Error: %s.") % (splash, str(e))
+            print "An error occurred whilst displaying the splashscreen %s. Error: %s." % (splash, str(e))
             
         # Setup all our filters and hooks.  We used to do this in OnConnection,
         # but a number of 'strange' bugs were reported which I suspect would
@@ -960,7 +960,7 @@ class OutlookAddin(ObjectsEvent):
         self.event_handlers = []
         self.application = None
 
-        print _("Addin terminating: %d COM client and %d COM servers exist.") \
+        print "Addin terminating: %d COM client and %d COM servers exist." \
               % (pythoncom._GetInterfaceCount(), pythoncom._GetGatewayCount())
         try:
             # will be available if "python_d addin.py" is used to
@@ -1012,15 +1012,15 @@ def DllInstall(bInstall, cmdline):
         rootkey = None
         if cmdline.lower().find('hkey_local_machine')>=0:
             rootkey = _winreg.HKEY_LOCAL_MACHINE
-            print _("Registering (in HKEY_LOCAL_MACHINE)...")
+            print "Registering (in HKEY_LOCAL_MACHINE)..."
         elif cmdline.lower().find('hkey_current_user')>=0:
             rootkey = _winreg.HKEY_CURRENT_USER
-            print _("Registering (in HKEY_CURRENT_USER)...")
+            print "Registering (in HKEY_CURRENT_USER)..."
         if rootkey is not None:
             # Don't catch exceptions here - if it fails, the Dll registration
             # must fail.
             _DoRegister(klass, _winreg.HKEY_LOCAL_MACHINE)
-            print _("Registration Complete")            
+            print "Registration Complete"           
 
 def DllRegisterServer():
     klass = OutlookAddin
@@ -1036,7 +1036,7 @@ def DllRegisterServer():
     except WindowsError:
         pass
     _DoRegister(klass, _winreg.HKEY_CURRENT_USER)
-    print _("Registration complete.")
+    print "Registration complete."
 
 def DllUnregisterServer():
     klass = OutlookAddin

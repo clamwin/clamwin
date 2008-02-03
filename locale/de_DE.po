@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-01-23 19:52+0100\n"
+"PO-Revision-Date: 2008-02-03 19:36+0100\n"
 "Last-Translator: budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: German <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -184,10 +184,6 @@ msgstr ""
 #: wxFrameMain.py:115
 msgid "Checks for the Latest Version"
 msgstr "Überprüft, ob Sie die aktuellste Version benutzen"
-
-#: wxFrameMain.py:354
-msgid "An Error occurred while updating UI selection. %s"
-msgstr "Ein Fehler ist bei der Aktualisierung der grafischen Benutzeroberfläche aufgetreten. %s"
 
 #: wxFrameMain.py:387
 msgid "Could not open help file - %s not found."
@@ -800,8 +796,9 @@ msgid "&Treat Files As Mailboxes"
 msgstr "&Dateien als Mailboxen behandeln"
 
 #: wxDialogPreferences.py:482
-msgid "Select if you wish to scan mailboxes"
-msgstr "Mailboxen scannen"
+#, fuzzy
+msgid "Select if you wish to have clamscan extract attachments from mailboxes and scan them"
+msgstr "OLE-Anhänge und Makros in MS Office-Dokumenten scannen"
 
 #: wxDialogPreferences.py:486
 msgid "&Extract Attachments and Macros from MS Office Documents"
@@ -1123,10 +1120,6 @@ msgstr "&Fortschrittsdialog für den Scan-Verlauf anzeigen"
 msgid "An error occurred whilst saving configuration file %s. Please check that you have write permission to the configuration file."
 msgstr "Während des Speicherns der Konfigurationsdatei %s ist ein Fehler aufgetreten. Bitte überprüfen Sie Ihre Schreibberechtigung auf die Konfigurationsdatei."
 
-#: wxDialogPreferences.py:1033
-msgid "Event Failed"
-msgstr "Ereignis fehlgeschlagen"
-
 #: wxDialogPreferences.py:1205
 #: wxDialogPreferences.py:1221
 msgid "Executable files (*.exe)|*.exe|All files (*.*)|*.*"
@@ -1308,14 +1301,6 @@ msgstr "Während der Aktualisierung der Viren-Datenbank ist ein Fehler aufgetret
 msgid "ClamWin Free Antivirus: Downloading Update..."
 msgstr "ClamWin Free Antivirus: Lade Aktualisierung herunter..."
 
-#: wxDialogUtils.py:78
-msgid "Unable to remove file %s. Error: %s"
-msgstr "Konnte Datei %s nicht entfernen. Fehler: %s"
-
-#: wxDialogUtils.py:83
-msgid "Couldn't remove file %s. Error: %s"
-msgstr "Konnte Datei %s nicht entfernen. Fehler: %s"
-
 #: wxDialogUtils.py:115
 msgid ""
 "\n"
@@ -1348,15 +1333,6 @@ msgstr "Während des Scans ist ein Fehler aufgetreten. Bitte überprüfen Sie de
 msgid "ClamWin Free Antivirus: Scanning..."
 msgstr "ClamWin Free Antivirus: Scanvorgang läuft..."
 
-#: wxDialogUtils.py:150
-#: ClamTray.py:555
-msgid "Could not send email alert. Error: %s"
-msgstr "Konnte keine E-Mail-Benachrichtigung senden. Fehler: %s"
-
-#: wxDialogUtils.py:157
-msgid "Could not delete logfile : %s. Error: %s"
-msgstr "Konnte die Log-Datei %s nicht löschen. Fhler: %s"
-
 #: wxDialogUtils.py:179
 msgid "Log files are not properly configured. Please review ClamWin configuration"
 msgstr "Log-Dateien sind nicht richtig konfiguriert. Bitte überprüfen Sie die Konfiguration."
@@ -1384,10 +1360,6 @@ msgstr "ClamWin Free Antivirus"
 msgid "&Download"
 msgstr "&Download"
 
-#: EmailAlert.py:82
-msgid "Email alert to %s has been sent successfully."
-msgstr "E-Mail-Benachrichtigung wurde erfolgreich an %s versendet."
-
 #: Config.py:63
 msgid "admin@yourdomain"
 msgstr "admin@IhreInternetAdresse"
@@ -1399,10 +1371,6 @@ msgstr "clamwin@yourdomain"
 #: Config.py:64
 msgid "ClamWin Virus Alert"
 msgstr "ClamWin Log-Viewer"
-
-#: EmailAlert.py:86
-msgid "Could not send an email. Error: %s"
-msgstr "E-Mail konnte nicht gesendet werden. Fehler: %s"
 
 #: EmailAlert.py:95
 msgid ""
@@ -1421,14 +1389,6 @@ msgstr "&Nicht mehr auf Updates überprüfen"
 #: wxDialogCheckUpdate.py:76
 msgid "List Of Changes in Version %s:"
 msgstr "Änderungen in Version %s:"
-
-#: wxDialogScheduledScan.py:119
-msgid "Could not open persistent storage for scheduled scans. Error: %s"
-msgstr "Konnte den Datenträger nicht öffnen, der laut Zeitplan auf Viren gescannt werden sollte. Fehler: %s"
-
-#: wxDialogScheduledScan.py:130
-msgid "Could not save scheduled scans to persistent storage. Error: %s"
-msgstr "Konnte die Zeitpläne nicht speichern. Fehler: %s"
 
 #: wxDialogCheckUpdate.py:54
 msgid "ClamWin Update"
@@ -1497,30 +1457,13 @@ msgstr "Homepage von Finndesign"
 msgid "Python Homepage"
 msgstr "Homepage von Python"
 
-#: OlAddin.py:174
-msgid "You appear to be running a win32all version pre 151, which is pretty old"
-msgstr "Sie benutzen offensichtlich die Version win32 pre 151, die schon sehr alt ist."
-
-#: OlAddin.py:175
-msgid "I'm afraid it is time to upgrade"
-msgstr "Es ist dringend Zeit für ein Upgrade."
-
 #: OlAddin.py:199
 msgid "An error occurred in ClamWin Free Antivirus About Box.\n"
 msgstr "Ein Fehler ist in ClamWin Free Antivirus (About Box) aufgetreten.\n"
 
-#: OlAddin.py:213
-msgid "WARNING - Trying to use image '%s', but it doesn't exist"
-msgstr "Warnung - Bild '%s' existiert nicht."
-
 #: OlAddin.py:248
 msgid "Virus Deleted by ClamWin.txt"
 msgstr "Virus gelöscht von ClamWin.txt"
-
-#: OlAddin.py:275
-#: OlAddin.py:1031
-msgid "Registration complete."
-msgstr "Registrierung vollständig."
 
 #: OlAddin.py:277
 msgid "An Error occurred whilst starting clamscan: %s"
@@ -1571,11 +1514,6 @@ msgstr "Ein Virus wurde in einem Anhang gefunden! Der Anhang wurde mit der Beric
 msgid "An error occurred whilst scanning email message."
 msgstr "Beim Scannen einer E-Mail ist ein Fehler aufgetreten."
 
-#: OlAddin.py:508
-#: ClamTray.py:563
-msgid "Could not remove file: %s. Error: %s"
-msgstr "Konnte die folgende Datei nicht entfernen: %s. Fehler: %s"
-
 #: OlAddin.py:580
 msgid "&About ClamWin Free Antivirus"
 msgstr "Zeigt Informationen über ClamWin"
@@ -1592,37 +1530,9 @@ msgstr "ClamWin Free Antivirus konnte einen Anhang nicht ersetzen. Fehler: %s"
 msgid "ClamWin Free Antivirus!"
 msgstr "ClamWin Free Antivirus!"
 
-#: OlAddin.py:905
-msgid "Error connecting to Outlook!"
-msgstr "Fehler beim Verbinden mit Outlook!"
-
-#: OlAddin.py:918
-msgid "An error occurred whilst displaying the splashscreen %s. Error: %s."
-msgstr "Fehler während der Anzeige des Splashscreens %s. Fehler: %s."
-
-#: OlAddin.py:955
-msgid "Addin terminating: %d COM client and %d COM servers exist."
-msgstr "Add-In beendet sich: es gibt %d COM Clients und %d COM Server."
-
-#: OlAddin.py:1007
-msgid "Registering (in HKEY_LOCAL_MACHINE)..."
-msgstr "Registriere (in HKEY_LOCAL_MACHINE)..."
-
-#: OlAddin.py:1010
-msgid "Registering (in HKEY_CURRENT_USER)..."
-msgstr "Registriere (in HKEY_CURRENT_USER)..."
-
-#: OlAddin.py:1015
-msgid "Registration Complete"
-msgstr "Registrierung vollständig"
-
 #: ClamTray.py:117
 msgid "Unable to stop scheduled process, terminating"
 msgstr "Kann geplanten Vorgang nicht beenden. Abbruch."
-
-#: ClamTray.py:131
-msgid "An error occurred whilst terminating scheduler thread. Error: %s"
-msgstr "Ein Fehler ist beim Beenden des Scheduler-Threads aufgetreten. Fehler: %s"
 
 #: ClamTray.py:237
 msgid "&Configure Scheduler"
@@ -1681,10 +1591,6 @@ msgstr "http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=6
 msgid "Could not launch ClamWin Scanner. Error: %s"
 msgstr "Konnte keine E-Mail-Benachrichtigung senden. Fehler: %s"
 
-#: ClamTray.py:351
-msgid "Could not display balloon tooltip. Error: %s"
-msgstr "Konnte Tooltip nicht anzeigen. Fehler: %s"
-
 #: ClamTray.py:362
 msgid ""
 "An error occurred while displaying log file %s.\n"
@@ -1728,10 +1634,6 @@ msgstr ""
 "Konnte geplanten Prozess nicht erstellen.\n"
 "Kommandozeile: %s\n"
 "Fehler: %s"
-
-#: ClamTray.py:433
-msgid "Error performing Scheduled Update."
-msgstr "Fehler beim Durchführen des geplanten Updates."
 
 #: ClamTray.py:441
 #: wxDialogUtils.py:206
@@ -1891,4 +1793,8 @@ msgstr ""
 # Tooltip for Checkbox option --detect-PUA in Advanced settings
 msgid "Select if you wish to detect Potentially Unwanted Applications such as keygens, cracks, etc"
 msgstr ""
+
+#, fuzzy
+msgid "Connecting via "
+msgstr "Details zur SMTP-Verbindung"
 

@@ -127,7 +127,7 @@ def LoadPersistentScheduledScans(filename):
             _shelve['ScheduledScans'] = scheduledScans
     except Exception, e:
         scheduledScans = []
-        print _('Could not open persistent storage for scheduled scans. Error: %s') % str(e)            
+        print 'Could not open persistent storage for scheduled scans. Error: %s' % str(e)            
 
     _convertDataFromEnglish(scheduledScans)
     return scheduledScans
@@ -139,7 +139,7 @@ def SavePersistentScheduledScans(filename, scheduledScans):
         _shelve['ScheduledScans'] = scheduledScans
         _shelve['version'] = 3
     except Exception, e:
-        print _('Could not save scheduled scans to persistent storage. Error: %s') % str(e)                
+        print 'Could not save scheduled scans to persistent storage. Error: %s' % str(e)                
 
 def create(parent, scanInfo):
     return wxDialogScheduledScan(parent, scanInfo)

@@ -76,11 +76,11 @@ class EmailMsg(MIMEMultipart):
                 s.sendmail(From, To, Body)
                 s.quit()
                 s.close()
-                print _('Email alert to %s has been sent successfully.') % To
+                print 'Email alert to %s has been sent successfully.' % To
                 return (True, '')
             except Exception, e:
                 error = str(e)
-                print _('Could not send an email. Error: %s') % error                                        
+                print 'Could not send an email. Error: %s' % error                                        
         return (False, error)
     _Send = staticmethod(_Send)
 
