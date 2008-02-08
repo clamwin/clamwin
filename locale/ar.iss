@@ -1,42 +1,42 @@
-ar_AE.LanguageName=วแฺัศํษ
-ar_AE.InitializeWizard1=อฯฯ ฮํวัวส วแสไีํศ
-ar_AE.InitializeWizard2=สไีํศ วแศัไวใฬ แรฬแ ใไฟ
-ar_AE.InitializeWizard3=อฯฯ วะว รัส ฬฺแ วแศัไวใฬ ใสวอว๐ แแใำสฮฯใํไ วแยฮัํไ แแฬๅวา รๆ แ฿ ÝÞุ.
-ar_AE.InitializeWizard4=รํ รอฯ ํำสฮฯใ ๅะว วแฬๅวา (฿แ วแใำสฮฯใํไ)
-ar_AE.InitializeWizard5=ÝÞุ แํ วไว (
-ar_AE.NoOutlookRunning1=ํฬศ ฺแํ฿ ลÛแวÞ outlook Þศแ รไ สสใ฿ไ ใไ สไีํศ ClamWin.
-ar_AE.NoOutlookRunning2=ํัฬ์ ลÛแวÞ ฬใํฺ ไๆวÝะ Outlook  (ศลำสฮฯวใ "ใแÝ->ฮัๆฬ ๆ สำฬํแ วแฮัๆฬ"
-ar_AE.NoOutlookRunning3=ละว สๆÝั) ๆ วึÛุ ลฺวฯษ วแใอวๆแษ, ลๆ ลึÛุ ลแÛวม แแฮัๆฬ ใไ วแสไีํศ.
-ar_AE.NoOutlookRunning4=ละว ศÞํส วแัำวแษ ศฺฯ ลÛแวÞ ฿แ ไๆวÝะ outlook , ัศใว สอสวฬ
-ar_AE.NoOutlookRunning5=ลแ์ สำฬํแ วแฮัๆฬ ใไ Windows ๆวแใอวๆแษ ใัษ วฮั์.
-ar_AE.NoOutlookRunning6=ฺใํแ สๆีํแ ศัํฯ outlook ใวาวแ ใิÛแว๐.
-ar_AE.NoOutlookRunning7=วะว วÛแÞส outlook อฯํหว๐,  ลไสูั ศึฺ หๆวไ หใ ลึÛุ ลฺวฯษ วแใอวๆแษ.
-ar_AE.NoOutlookRunning8=วะว ลำสใัส ๅะๅ วแัำวแษ Ýฺแํ฿ สำฬํแ วแฮัๆฬ ใไ Windows ๆวแใอวๆแษ ใฬฯฯว๐.
-ar_AE.CloseClamWin1=ฺหัฺแ์ ไำฮษ ำวศÞษ ใไ วแศัไวใฬ ใไี๘ศษ.
-ar_AE.CloseClamWin2=ๅแ สัํฯ ลÛแวÞ วแศัไวใฬ วแยไ? (ใÝึ๘แ)
-ar_AE.InitializeSetup1=ฺหั ฺแ์ ไำฮษ รอฯห ใไ วแศัไวใฬ ใไี๘ศษ.
-ar_AE.InitializeSetup2=ลไๅวม วแสไีํศ วแยไ.
-ar_AE.DeInitializeSetup1=ํัฬ์ ลฺวฯษ สิÛํแ วแอวำๆศ แล฿ใวแ ฺใแํษ สไีํศ ใึวฯ วแÝํัๆำวส ClamWin.
-ar_AE.RemoveSetup1=สใ วแฺหๆั ฺแ์ ไำฮษ ำวศÞษ แแศัไวใฬ ใไี๘ศษ ใำศÞว๐. วึÛุ ใๆวÝÞ แลาวแสๅว วแยไ.
-ar_AE.DownloadDB1=อใ๘แ ใแÝวส Þวฺฯษ ศํวไวส วแÝํัๆำวส. (แว สอฯฯ ละว ฿ไส ใสีแว ฺศั ใาๆฯ ๆ฿ํแ)
-ar_AE.DownloadDB2=สอใํแ ใแÝวส ศํวไวส วแÝํัๆำวส.
-ar_AE.DownloadDB3=สอใํแ
-ar_AE.CreateDesktop1= ลไิวม รํÞๆไษ ำุอ วแใ฿สศ
-ar_AE.CreateDesktop2=รํÞๆไวส ลึวÝํษ:
-ar_AE.TypicalInstallation1=สไีํศ ไใๆะฬํ
-ar_AE.CustomInstallation1= สไีํศ ใฮีี
-ar_AE.FullInstallation1=สไีํศ ฿วใแ
-ar_AE.ClamWinSourceCode1=วแใแÝ วแใีฯัํ แÜClamWin
-ar_AE.ClamAVSourceCode1=วแใแÝ วแใีฯัํ แÜClamAV
-ar_AE.DownloadSourceCode1=อใแ วแใแÝ วแใีฯัํ
-ar_AE.ClamAVFiles1=ใแÝวส ClamAV
-ar_AE.ClamWinFiles1=ใแÝวส ClamWin
-ar_AE.IntegrationExplorer1=วแสึใํํไ ใฺ Windows Explorer
-ar_AE.IntegrationOutlook1=วแสึใํํไ ใฺ Microsoft Outlook
-ar_AE.ClamWinFreeAntivirus1=ใึวฯ วแÝํัๆำวส วแใฬวไํ ClamWin
-ar_AE.LanguageSupport1=ฯฺใ วแแÛษ
-ar_AE.StartMenuGroupHelp=ใำวฺฯษ
-ar_AE.StartMenuGroupHelpInternational=ฺวแใํ
-ar_AE.StartMenuItemVirusScanner=Ýวอี วแÝํัๆำวส
-ar_AE.StartMenuItemPrintableManual= ฿สํ๘ศ Þวศแ แแุศวฺษ
-ar_AE.StartMenuItemOnlineHelp=ใำวฺฯษ วแลไสัไส
+๏ปฟar_AE.LanguageName=ุงูุนุฑุจูุฉ
+ar_AE.InitializeWizard1=ุญุฏุฏ ุฎูุงุฑุงุช ุงูุชูุตูุจ
+ar_AE.InitializeWizard2=ุชูุตูุจ ุงูุจุฑูุงู…ุฌ ูุฃุฌู ู…ูุ
+ar_AE.InitializeWizard3=ุญุฏุฏ ุงุฐุง ุฃุฑุช ุฌุนู ุงูุจุฑูุงู…ุฌ ู…ุชุงุญุงู ููู…ุณุชุฎุฏู…ูู ุงูุขุฎุฑูู ููุฌูุงุฒ ุฃู ูู ููุท.
+ar_AE.InitializeWizard4=ุฃู ุฃุญุฏ ูุณุชุฎุฏู… ูุฐุง ุงูุฌูุงุฒ (ูู ุงูู…ุณุชุฎุฏู…ูู)
+ar_AE.InitializeWizard5=ููุท ูู ุงูุง (
+ar_AE.NoOutlookRunning1=ูุฌุจ ุนููู ุฅุบูุงู outlook ูุจู ุฃู ุชุชู…ูู ู…ู ุชูุตูุจ ClamWin.
+ar_AE.NoOutlookRunning2=ูุฑุฌู ุฅุบูุงู ุฌู…ูุน ููุงูุฐ Outlook  (ุจุฅุณุชุฎุฏุงู… "ู…ูู->ุฎุฑูุฌ ู ุชุณุฌูู ุงูุฎุฑูุฌ"
+ar_AE.NoOutlookRunning3=ุฅุฐุง ุชููุฑ) ู ุงุถุบุท ุฅุนุงุฏุฉ ุงูู…ุญุงููุฉ, ุฅู ุฅุถุบุท ุฅูุบุงุก ููุฎุฑูุฌ ู…ู ุงูุชูุตูุจ.
+ar_AE.NoOutlookRunning4=ุฅุฐุง ุจููุช ุงูุฑุณุงูุฉ ุจุนุฏ ุฅุบูุงู ูู ููุงูุฐ outlook , ุฑุจู…ุง ุชุญุชุงุฌ
+ar_AE.NoOutlookRunning5=ุฅูู ุชุณุฌูู ุงูุฎุฑูุฌ ู…ู Windows ูุงูู…ุญุงููุฉ ู…ุฑุฉ ุงุฎุฑู.
+ar_AE.NoOutlookRunning6=ุนู…ูู ุชูุตูู ุจุฑูุฏ outlook ู…ุงุฒุงู ู…ุดุบูุงู.
+ar_AE.NoOutlookRunning7=ุงุฐุง ุงุบููุช outlook ุญุฏูุซุงู,  ุฅูุชุธุฑ ุจุถุน ุซูุงู ุซู… ุฅุถุบุท ุฅุนุงุฏุฉ ุงูู…ุญุงููุฉ.
+ar_AE.NoOutlookRunning8=ุงุฐุง ุฅุณุชู…ุฑุช ูุฐู ุงูุฑุณุงูุฉ ูุนููู ุชุณุฌูู ุงูุฎุฑูุฌ ู…ู Windows ูุงูู…ุญุงููุฉ ู…ุฌุฏุฏุงู.
+ar_AE.CloseClamWin1=ุนุซุฑุนูู ูุณุฎุฉ ุณุงุจูุฉ ู…ู ุงูุจุฑูุงู…ุฌ ู…ูุตู‘ุจุฉ.
+ar_AE.CloseClamWin2=ูู ุชุฑูุฏ ุฅุบูุงู ุงูุจุฑูุงู…ุฌ ุงูุขู? (ู…ูุถู‘ู)
+ar_AE.InitializeSetup1=ุนุซุฑ ุนูู ูุณุฎุฉ ุฃุญุฏุซ ู…ู ุงูุจุฑูุงู…ุฌ ู…ูุตู‘ุจุฉ.
+ar_AE.InitializeSetup2=ุฅููุงุก ุงูุชูุตูุจ ุงูุขู.
+ar_AE.DeInitializeSetup1=ูุฑุฌู ุฅุนุงุฏุฉ ุชุดุบูู ุงูุญุงุณูุจ ูุฅูู…ุงู ุนู…ููุฉ ุชูุตูุจ ู…ุถุงุฏ ุงูููุฑูุณุงุช ClamWin.
+ar_AE.RemoveSetup1=ุชู… ุงูุนุซูุฑ ุนูู ูุณุฎุฉ ุณุงุจูุฉ ููุจุฑูุงู…ุฌ ู…ูุตู‘ุจุฉ ู…ุณุจูุงู. ุงุถุบุท ู…ูุงูู ูุฅุฒุงูุชูุง ุงูุขู.
+ar_AE.DownloadDB1=ุญู…ู‘ู ู…ููุงุช ูุงุนุฏุฉ ุจูุงูุงุช ุงูููุฑูุณุงุช. (ูุง ุชุญุฏุฏ ุฅุฐุง ููุช ู…ุชุตูุง ุนุจุฑ ู…ุฒูุฏ ูููู)
+ar_AE.DownloadDB2=ุชุญู…ูู ู…ููุงุช ุจูุงูุงุช ุงูููุฑูุณุงุช.
+ar_AE.DownloadDB3=ุชุญู…ูู
+ar_AE.CreateDesktop1= ุฅูุดุงุก ุฃููููุฉ ุณุทุญ ุงูู…ูุชุจ
+ar_AE.CreateDesktop2=ุฃููููุงุช ุฅุถุงููุฉ:
+ar_AE.TypicalInstallation1=ุชูุตูุจ ูู…ูุฐุฌู
+ar_AE.CustomInstallation1= ุชูุตูุจ ู…ุฎุตุต
+ar_AE.FullInstallation1=ุชูุตูุจ ูุงู…ู
+ar_AE.ClamWinSourceCode1=ุงูู…ูู ุงูู…ุตุฏุฑู ูู€ClamWin
+ar_AE.ClamAVSourceCode1=ุงูู…ูู ุงูู…ุตุฏุฑู ูู€ClamAV
+ar_AE.DownloadSourceCode1=ุญู…ู ุงูู…ูู ุงูู…ุตุฏุฑู
+ar_AE.ClamAVFiles1=ู…ููุงุช ClamAV
+ar_AE.ClamWinFiles1=ู…ููุงุช ClamWin
+ar_AE.IntegrationExplorer1=ุงูุชุถู…ููู ู…ุน Windows Explorer
+ar_AE.IntegrationOutlook1=ุงูุชุถู…ููู ู…ุน Microsoft Outlook
+ar_AE.ClamWinFreeAntivirus1=ู…ุถุงุฏ ุงูููุฑูุณุงุช ุงูุญุฑ ClamWin
+ar_AE.LanguageSupport1=ุฏุนู… ุงููุบุฉ
+ar_AE.StartMenuGroupHelp=ู…ุณุงุนุฏุฉ
+ar_AE.StartMenuGroupHelpInternational=ุนุงูู…ู
+ar_AE.StartMenuItemVirusScanner=ูุงุญุต ุงูููุฑูุณุงุช
+ar_AE.StartMenuItemPrintableManual= ูุชูู‘ุจ ูุงุจู ููุทุจุงุนุฉ
+ar_AE.StartMenuItemOnlineHelp=ู…ุณุงุนุฏุฉ ุงูุฅูุชุฑูุช

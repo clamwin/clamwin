@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: clamwin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-02-03 19:37+0100\n"
+"PO-Revision-Date: 2008-02-08 19:36+0100\n"
 "Last-Translator: budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: Hungarian <clamwin-hungarian-bounces@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -793,9 +793,8 @@ msgid "&Treat Files As Mailboxes"
 msgstr "&Postafiókok ellenőrzése"
 
 #: wxDialogPreferences.py:482
-#, fuzzy
 msgid "Select if you wish to have clamscan extract attachments from mailboxes and scan them"
-msgstr "Válassza ki, ha az OLE objektumokat és makrókat is ellenőrizni szeretne az MS Office dokumentumokban"
+msgstr "Válassza ki, ha ellenőrizni szeretné a postafiókokban lévő levelek mellékletét is"
 
 #: wxDialogPreferences.py:486
 msgid "&Extract Attachments and Macros from MS Office Documents"
@@ -1430,9 +1429,8 @@ msgid "Author: alch <alch@users.sourceforge.net>"
 msgstr "Készítette: alch <alch@users.sourceforge.net>"
 
 #: Copyright string in the About Dialog
-#, fuzzy
 msgid "Copyright ClamWin Pty Ltd (c) 2004 - 2008"
-msgstr "Copyright (c) 2004 - 2006"
+msgstr "Copyright ClamWin Pty Ltd (c) 2004 - 2008"
 
 #: wxDialogAbout.py:130
 msgid "This program is free software"
@@ -1755,39 +1753,38 @@ msgstr "A vírusismereti adabázis több mint három napja nem került frissít�
 
 # wxDialogPreferences.py:
 msgid "Language Settings"
-msgstr ""
+msgstr "Nyelvi beállítások"
 
 msgid "&Language:"
-msgstr ""
+msgstr "&Nyelv:"
 
 # wxDialogPreferences.py:
 msgid "Windows UI Language"
-msgstr ""
+msgstr "Windows felhasználói felület nyelve"
 
 # wxDialogPreferences.py:
 # Language setting box :
 msgid "The language will change next time ClamWin is started"
-msgstr ""
+msgstr "A kiválasztott nyelv a ClamWin következő indításakor jut érvényre"
 
 msgid "Choose auto-detect or an available language"
-msgstr ""
+msgstr "Válassza ki az automatikus beállítást vagy egyet, az elérhető nyelvek közül"
 
 msgid "ClamWin Error occured whilst loading virus database: %s"
-msgstr ""
+msgstr "ClamWin hiba történt a következő vírusismereti adatbázis betöltése során: %s"
 
 # Definition of the local time format. See http://python.active-venture.com/lib/module-time.html for format identifiers.
 msgid "%a %d %b %Y %H:%M:%S"
-msgstr ""
+msgstr "%Y. %B %d. %a, %H:%M:%S"
 
 # Checkbox option --detect-PUA in Advanced settings
 msgid "&Detect Potentially Unwanted Applications"
-msgstr ""
+msgstr "&Nemkívánatos alkalmazások felkutatása"
 
 # Tooltip for Checkbox option --detect-PUA in Advanced settings
 msgid "Select if you wish to detect Potentially Unwanted Applications such as keygens, cracks, etc"
-msgstr ""
+msgstr "Válassza ki ezt a lehetőséget, ha meg kívánja keresni a nemkívánatos alkalmazásokat, úgy mint: sorozatszám-készítők, törések, stb."
 
-#, fuzzy
 msgid "Connecting via "
-msgstr "Kapcsolódva"
+msgstr "Kapcsolódás a következőn keresztül:"
 

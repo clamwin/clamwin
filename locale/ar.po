@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.4\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-02-03 19:35+0100\n"
-"Last-Translator: budtse <budtse@users.sourceforge.net>\n"
+"PO-Revision-Date: 2008-02-04 12:00+0300\n"
+"Last-Translator: Usama <ua@cec.sy>\n"
 "Language-Team: Localization <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -52,9 +52,8 @@ msgstr "مساعدة"
 # or free from no cost
 # >> as in freedom
 #: wxFrameMain.py:113
-#, fuzzy
 msgid "Displays ClamWin Free Antivirus Manual"
-msgstr "يعرض كتيّب مضاد الفيروسات المجاني ClamWin"
+msgstr "يعرض كتيّب مضاد الفيروسات الحر ClamWin"
 
 #: wxFrameMain.py:116
 msgid "&Check Latest Version"
@@ -166,7 +165,7 @@ msgstr "يفحص عن الفيروسات"
 #: wxDialogPreferences.py:1582
 #: wxDialogStatus.py:466
 msgid "ClamWin Free Antivirus"
-msgstr "مضاد الفيروسات المجاني ClamWin"
+msgstr "مضاد الفيروسات الحر ClamWin"
 
 #: wxFrameMain.py:239
 msgid "Status Bar"
@@ -183,6 +182,12 @@ msgstr ""
 #: wxFrameMain.py:115
 msgid "Checks for the Latest Version"
 msgstr "يتحقق من آخر إصدار"
+
+# Please explain this string
+# >> Debug message, don't bother translating
+#: wxFrameMain.py:354
+msgid "An Error occurred while updating UI selection. %s"
+msgstr "حدث خطأ عند تحديث UI واجهة المستخدم. %s"
 
 #: wxFrameMain.py:387
 msgid "Could not open help file - %s not found."
@@ -209,7 +214,6 @@ msgstr "خطأ: لايمكن الوصول للمزودات. استسلام"
 # >> Used in the translation of the freshclam logs, when a certain file cannot be downloaded and freshclam stops trying.
 #: wxDialogStatus.py:137
 #: wxDialogLogViewer.py:109
-#, fuzzy
 msgid "Giving up on"
 msgstr "الاستسلام عن"
 
@@ -240,21 +244,18 @@ msgstr "محدّث"
 # Please explain this string
 # >> The number of signatures in the signature database
 #: wxDialogStatus.py:169
-#, fuzzy
 msgid "sigs:"
-msgstr "اشارة:"
+msgstr "التواقيع:"
 
 # Please explain this string
 # >> Functionality level of the scanning engine. New engine versions will have higher functionality levels.
 #: wxDialogStatus.py:171
-#, fuzzy
 msgid "f-level:"
-msgstr "مستوى-F:"
+msgstr "مستوى-الفعالية:"
 
 # Please explain this string
 # >> The name of the developer that build the signature database used.
 #: wxDialogStatus.py:173
-#, fuzzy
 msgid "builder:"
 msgstr "بناء:"
 
@@ -293,16 +294,14 @@ msgstr "http://www.clamwin.com/content/view/10/27/"
 # Please explain this string
 # >> Used in translation of the clamscan log.  It means that you have set up infected files to be moved to quarantaine, but mailbox files are not moved.
 #: wxDialogStatus.py:191
-#, fuzzy
 msgid "Not moved"
-msgstr "لم تنقل"
+msgstr "لم ينقل"
 
 # Please explain this string
 # >> Used as translation of the clamscan log.  If you have set up filters in the preferences to exclude certain files, this string will be shown when such a file is processed.
 #: wxDialogStatus.py:193
-#, fuzzy
 msgid "File excluded"
-msgstr "تم استثناء الملف"
+msgstr "تم إستثناء الملف"
 
 #: wxDialogStatus.py:199
 msgid "Mon"
@@ -394,7 +393,7 @@ msgstr "فشل"
 
 #: wxDialogStatus.py:294
 msgid "ClamWin Free Antivirus Status"
-msgstr "حالة مضاد الفيروسات المجاني ClamWin "
+msgstr "حالة مضاد الفيروسات الحر ClamWin "
 
 #: wxDialogStatus.py:319
 msgid "&Stop"
@@ -407,9 +406,8 @@ msgstr "حفظ التقرير"
 # what is the meaning of runner thread
 # >> The runner thread is the clamscan process that does the actual scanning.  When you press "Cancel" while doing a scan, and it cannot be stopped, this message is shown.
 #: wxDialogStatus.py:435
-#, fuzzy
 msgid "Unable to stop runner thread, terminating"
-msgstr "غير قادر على وقف عملية, الإنهاء"
+msgstr "غير قادر على وقف عملية مشغلّة, الإنهاء"
 
 #: wxDialogStatus.py:453
 msgid "Report files (*.txt)|*.txt|All files (*.*)|*.*"
@@ -428,13 +426,12 @@ msgstr "لا يمكن حفظ التقرير إلى الملف"
 # please explain this string
 # >> this is just a part of a string.  The full string is "Could not save report to the file 'xxx'. Please check that you have write permissions to the folder and there is enough space on the disk."
 #: wxDialogStatus.py:464
-#, fuzzy
 msgid ". Please check that you have write "
-msgstr ".يرجى التأكد من الكتابة"
+msgstr ". الرجاء التحقق من أنك تملك إذناً بالكتابة"
 
 #: wxDialogStatus.py:465
 msgid "permissions to the folder and there is enough space on the disk."
-msgstr "إذن الوصول للمجلد مع وجود مساحة كافية على القرص."
+msgstr " إلى المجلد مع وجود مساحة كافية على القرص."
 
 #: wxDialogStatus.py:533
 msgid "Could not read from log file %s. Error: %s"
@@ -501,9 +498,8 @@ msgstr "الفحوص المجدولة"
 # >> There is a scheduler in clamwin to let it scan folders on certain times without user intervention.
 # This string is used in the scheduler
 #: wxDialogScheduledScan.py:167
-#, fuzzy
 msgid "Schedule"
-msgstr "جدول"
+msgstr "الجدولة"
 
 #: wxDialogScheduledScan.py:171
 msgid "Scanning &Frequency:"
@@ -789,7 +785,6 @@ msgstr "إفحص في المجلدات الفرعية"
 # please explain this string
 # >> With this option turned of, clamwin would only scan the files that are in the root of the directory, not the files that are in sub-directories.
 #: wxDialogPreferences.py:412
-#, fuzzy
 msgid "Select if you wish to scan in subdirectories recursively"
 msgstr "حدد إذا أرت الفحص في الدلائل الفرعية"
 
@@ -825,7 +820,7 @@ msgstr "عامل الملفات كرسائل بريدية"
 
 #: wxDialogPreferences.py:482
 msgid "Select if you wish to have clamscan extract attachments from mailboxes and scan them"
-msgstr ""
+msgstr "حدد إذا رغبت بقيام clamscan بإستخراج المرفقات من البريد و فحصها"
 
 #: wxDialogPreferences.py:486
 msgid "&Extract Attachments and Macros from MS Office Documents"
@@ -1052,14 +1047,13 @@ msgstr "حدد إذا أردت إستقبال رسائل منبثقة تنبيه
 # >> Poedit gives some format error on the translation of this string.  Please try translating it again.
 #: wxDialogPreferences.py:822
 msgid "Specify Filename Patterns to include and/or exclude in scanning"
-msgstr ""
+msgstr "خصص نماذج أسماء الملفات لتضمينها و/أو إستثنائها في الفحص"
 
 # please explain this string
 # >> Label in the preferences, on the filter tab
 #: wxDialogPreferences.py:827
-#, fuzzy
 msgid "(To specify a regular expression include your pattern within <...>)"
-msgstr "(لتحديد مثال عن نوع الملف ضع ماتريد بين <...>)"
+msgstr "(لتخصيص عبارة جبرية قياسية ضع نموذجك بين <...>)"
 
 #: wxDialogPreferences.py:832
 msgid "&Exclude Matching Filenames:"
@@ -1113,7 +1107,7 @@ msgstr "نبهني حول الإصدارات الجديدة لـCalmWin"
 
 #: wxDialogPreferences.py:901
 msgid "Select if you wish to get a notification message when ClamWin Free Antivirus program has been updated"
-msgstr "حدد إذا رغبت بتلقي تنبيه عندما يتم تحديث مضاد الفيروسات المجاني ClamWin"
+msgstr "حدد إذا رغبت بتلقي تنبيه عندما يتم تحديث مضاد الفيروسات الحر ClamWin"
 
 #: wxDialogPreferences.py:908
 msgid "(No personal information is transmitted during this check)"
@@ -1148,6 +1142,10 @@ msgstr "إعرض مؤشر تقدم بـ% للملفات المفحوصة "
 msgid "An error occurred whilst saving configuration file %s. Please check that you have write permission to the configuration file."
 msgstr "حدث خطأ عند حفظ ملف الإعدادات  %s. يرجى التحقق من أنك تملك إذن الكتابة إلى ملف الإعدادات."
 
+#: wxDialogPreferences.py:1033
+msgid "Event Failed"
+msgstr "فشل الحدث"
+
 #: wxDialogPreferences.py:1205
 #: wxDialogPreferences.py:1221
 msgid "Executable files (*.exe)|*.exe|All files (*.*)|*.*"
@@ -1175,7 +1173,7 @@ msgid ""
 "This is a test message sent during configuration of ClamWin Free Antivirus on the following computer: %s.\n"
 "Please do not be alarmed.\n"
 msgstr ""
-"رسالة الاختبار أرسلت خلال تهيئة مضاد الفيروسات المجانيClamWin على الحاسب التالي: %s.\n"
+"رسالة الاختبار أرسلت خلال تهيئة مضاد الفيروسات الحرClamWin على الحاسب التالي: %s.\n"
 "الرجاء عدم القلق.\n"
 
 #: wxDialogPreferences.py:1384
@@ -1287,7 +1285,6 @@ msgstr "محدّث: %s"
 # please explain this string
 # >> Shown in the About window for the clamscan version, when clamscan cannot be found.
 #: wxDialogAbout.py:214
-#, fuzzy
 msgid "Could not locate ClamScan executable"
 msgstr "لا يمكن إيجاد CalmScan التنفيذي"
 
@@ -1307,7 +1304,7 @@ msgstr "إغلاق"
 
 #: wxFrameMain.py:337
 msgid "ClamWin Free Antivirus is not configured. Would you like to configure it now?"
-msgstr "لم تتم تهيئة مضاد الفيروسات المجاني ClamWin. هل تريد تهيئته الآن؟"
+msgstr "لم تتم تهيئة مضاد الفيروسات الحر ClamWin. هل تريد تهيئته الآن؟"
 
 #: wxFrameMain.py:343
 msgid "You have not yet downloaded Virus Definitions Database. Would you like to download it now?"
@@ -1330,7 +1327,15 @@ msgstr "حدث خطأ خلال تحديث بيانات الفيروسات. ير�
 
 #: wxDialogUtils.py:65
 msgid "ClamWin Free Antivirus: Downloading Update..."
-msgstr "مضاد الفيروسات المجاني ClamWin: تحميل التحديثات..."
+msgstr "مضاد الفيروسات الحر ClamWin: تحميل التحديثات..."
+
+#: wxDialogUtils.py:78
+msgid "Unable to remove file %s. Error: %s"
+msgstr "غير قادر على إزالة الملف %s. خطأ: %s"
+
+#: wxDialogUtils.py:83
+msgid "Couldn't remove file %s. Error: %s"
+msgstr "لم يتمكن من إزالة الملف %s. خطأ: %s"
 
 #: wxDialogUtils.py:115
 msgid ""
@@ -1362,7 +1367,16 @@ msgstr "حدث خطأ خلال فحص الفيروسات. يرجى مراجعة 
 
 #: wxDialogUtils.py:133
 msgid "ClamWin Free Antivirus: Scanning..."
-msgstr "مضاد الفيروسات المجاني ClamWin: الفحص..."
+msgstr "مضاد الفيروسات الحر ClamWin: الفحص..."
+
+#: wxDialogUtils.py:150
+#: ClamTray.py:555
+msgid "Could not send email alert. Error: %s"
+msgstr "لم يتمكن من إرسال تنبيهات بريدية. خطأ: %s"
+
+#: wxDialogUtils.py:157
+msgid "Could not delete logfile : %s. Error: %s"
+msgstr "لم يتمكن من حذف ملف السجل : %s. خطأ: %s"
 
 #: wxDialogUtils.py:179
 msgid "Log files are not properly configured. Please review ClamWin configuration"
@@ -1391,6 +1405,10 @@ msgstr "إفحص بمضاد الفيروسات ClamWin"
 msgid "&Download"
 msgstr "تحميل"
 
+#: EmailAlert.py:82
+msgid "Email alert to %s has been sent successfully."
+msgstr "تحذير بريدي إلى %s قد ارسل بنجاح."
+
 #: Config.py:63
 msgid "admin@yourdomain"
 msgstr "admin@yourdomain"
@@ -1402,6 +1420,10 @@ msgstr "clamwin@yourdomain"
 #: Config.py:64
 msgid "ClamWin Virus Alert"
 msgstr "تحذير ClamWin من الفيروسات"
+
+#: EmailAlert.py:86
+msgid "Could not send an email. Error: %s"
+msgstr "لم يتمكن من إرسال الرسالة. خطأ: %s"
 
 #: EmailAlert.py:95
 msgid ""
@@ -1421,13 +1443,25 @@ msgstr "لا تتحق من وجود تحديثات في المستقبل"
 msgid "List Of Changes in Version %s:"
 msgstr "قائمة التغييرات في الإصدار %s:"
 
+# Please explain this string
+# >> Debug message in the scheduler, when loading tasks from file
+#: wxDialogScheduledScan.py:119
+msgid "Could not open persistent storage for scheduled scans. Error: %s"
+msgstr "لا يمكن فتح وحدة تخزين الفحوص المجدولة. خطأ: %s"
+
+# Please explain this string
+# >> Debug message when tasks cannot be saved in the task scheduler.
+#: wxDialogScheduledScan.py:130
+msgid "Could not save scheduled scans to persistent storage. Error: %s"
+msgstr "لم يتمكن من حفظ الفحوص المجدولة إلى مخزن دائم. خطأ: %s"
+
 #: wxDialogCheckUpdate.py:54
 msgid "ClamWin Update"
 msgstr "تحديث ClamWin"
 
 #: wxDialogCheckUpdate.py:60
 msgid "An update of ClamWin Free Antivirus has been released. Please click on Download button and download the latest version %s"
-msgstr "تم إصدار تحديث لمضاد الفيروسات المجاني ClamWin.إضغط زر تحميل وحمّل آخر نسخة %s"
+msgstr "تم إصدار تحديث لمضاد الفيروسات الحر ClamWin.إضغط زر تحميل وحمّل آخر نسخة %s"
 
 #: wxDialogCheckUpdate.py:69
 msgid "After you download the latest version setup file simply run it and install over the existing version."
@@ -1436,7 +1470,7 @@ msgstr "بعد تحميلك لآخر نسخة يقوم ملف الإعداد ب�
 #: wxDialogAbout.py:57
 #: wxDialogAbout.py:61
 msgid "About ClamWin Free Antivirus"
-msgstr "حول مضاد الفيروسات المجاني ClamWin"
+msgstr "حول مضاد الفيروسات الحر ClamWin"
 
 #: wxDialogAbout.py:72
 msgid "Version "
@@ -1445,7 +1479,6 @@ msgstr "النسخة"
 # Please explain this string
 # >> Used in the About Window as static text.  Translation is not really usefull as it is replaced by the version.
 #: wxDialogAbout.py:79
-#, fuzzy
 msgid "ClamAV Version gets here"
 msgstr "إصدارة ClamAV "
 
@@ -1456,7 +1489,7 @@ msgstr "يحمي من %i فيروس"
 #: wxDialogAbout.py:93
 #: wxDialogAbout.py:115
 msgid "ClamWin Free Antivirus Homepage"
-msgstr "الصفحة الرئيسة لمضاد الفيروسات المجاني ClamWin"
+msgstr "الصفحة الرئيسة لمضاد الفيروسات الحر ClamWin"
 
 #: wxDialogAbout.py:100
 msgid "Donate to ClamWin"
@@ -1490,13 +1523,30 @@ msgstr "الصفحة الرئيسية لـFinndesign"
 msgid "Python Homepage"
 msgstr "الصفحة الرئيسية لـPython"
 
+#: OlAddin.py:174
+msgid "You appear to be running a win32all version pre 151, which is pretty old"
+msgstr "يبدو أنك تشغّل إصداراتwin32all pre 151 القديمة إلى حد ما."
+
+#: OlAddin.py:175
+msgid "I'm afraid it is time to upgrade"
+msgstr "متأسف لكن يجب عليك التطوير"
+
 #: OlAddin.py:199
 msgid "An error occurred in ClamWin Free Antivirus About Box.\n"
-msgstr "حصل خطأ في نافذة حول مضاد الفيروسات المجاني ClamWinـ.\n"
+msgstr "حصل خطأ في نافذة حول مضاد الفيروسات الحر ClamWinـ.\n"
+
+#: OlAddin.py:213
+msgid "WARNING - Trying to use image '%s', but it doesn't exist"
+msgstr "تحذير - محاولة إستخدام الصورة '%s',لكنها غير موجودة"
 
 #: OlAddin.py:248
 msgid "Virus Deleted by ClamWin.txt"
 msgstr "الفيروسات المحذوفة بـ ClamWin.txt"
+
+#: OlAddin.py:275
+#: OlAddin.py:1031
+msgid "Registration complete."
+msgstr "تم التسجيل."
 
 #: OlAddin.py:277
 msgid "An Error occurred whilst starting clamscan: %s"
@@ -1528,12 +1578,12 @@ msgid ""
 "ClamWin Free Antivirus could not scan file%s\n"
 ".Error: %s"
 msgstr ""
-"مضاد الفيروسات المجاني ClamWin لم يتمكن من فحص الملف%s\n"
+"مضاد الفيروسات الحر ClamWin لم يتمكن من فحص الملف%s\n"
 ".خطأ: %s"
 
 #: OlAddin.py:470
 msgid "ClamWin Free Antivirus has detected a virus in the message attachments!"
-msgstr "إكتشف  مضاد الفيروسات المجاني ClamWin فيروساً في مرفقات الرسالة! "
+msgstr "إكتشف  مضاد الفيروسات الحر ClamWin فيروساً في مرفقات الرسالة! "
 
 #: OlAddin.py:471
 msgid "Virus Detected!"
@@ -1547,9 +1597,14 @@ msgstr "تم العثور على فيروس في مرفق الرسالة! تم �
 msgid "An error occurred whilst scanning email message."
 msgstr "حدث خطأ أثناء فحص الرسالة البريدية."
 
+#: OlAddin.py:508
+#: ClamTray.py:563
+msgid "Could not remove file: %s. Error: %s"
+msgstr "لم يتمكن من إزالة الملف: %s. خطأ: %s"
+
 #: OlAddin.py:580
 msgid "&About ClamWin Free Antivirus"
-msgstr "حول مضاد الفيروسات المجاني ClamWin"
+msgstr "حول مضاد الفيروسات الحر ClamWin"
 
 #: OlAddin.py:581
 msgid "Shows the ClamWin About Box"
@@ -1557,18 +1612,49 @@ msgstr "يعرض نافذة حول ClamWin"
 
 #: OlAddin.py:836
 msgid "ClamWin Free Antivirus could not replace an attachment. Error: %s"
-msgstr "لم يتمكن مضاد الفيروسات المجاني ClamWin من إستبدال المرفق. خطأ: %s"
+msgstr "لم يتمكن مضاد الفيروسات الحر ClamWin من إستبدال المرفق. خطأ: %s"
 
 #: OlAddin.py:837
 msgid "ClamWin Free Antivirus!"
-msgstr "مضاد الفيروسات المجاني ClamWin!"
+msgstr "مضاد الفيروسات الحر ClamWin!"
+
+#: OlAddin.py:905
+msgid "Error connecting to Outlook!"
+msgstr "خطأ في الإتصال إلى Outlook!"
+
+# please explain this string
+# >> Used in the Outlook addin which shows a splash screen at startup.  (debug message only)
+#: OlAddin.py:918
+msgid "An error occurred whilst displaying the splashscreen %s. Error: %s."
+msgstr "حدث خطأ أثناء عرض Splashscreen  %s. خطأ: %s."
+
+# Please explain this string
+# >> Used in the Outlook plugin, when outlook is closed (just a debug message)
+#: OlAddin.py:955
+msgid "Addin terminating: %d COM client and %d COM servers exist."
+msgstr "Addin terminating: %d COM client and %d COM servers exist."
+
+#: OlAddin.py:1007
+msgid "Registering (in HKEY_LOCAL_MACHINE)..."
+msgstr "التسجيل في (in HKEY_LOCAL_MACHINE)..."
+
+#: OlAddin.py:1010
+msgid "Registering (in HKEY_CURRENT_USER)..."
+msgstr "التسجيل في (in HKEY_CURRENT_USER)..."
+
+#: OlAddin.py:1015
+msgid "Registration Complete"
+msgstr "إكتمال التسجيل"
 
 # please explain this string
 # >> Used in a messagebox that warns you that a scheduled task cannot be stopped (you can stop running task manually using the tray icon menu)
 #: ClamTray.py:117
-#, fuzzy
 msgid "Unable to stop scheduled process, terminating"
 msgstr "غير قادر على وقف العملية المجدولة, الإنهاء"
+
+#: ClamTray.py:131
+msgid "An error occurred whilst terminating scheduler thread. Error: %s"
+msgstr "حدث خطأ أثناء إنهاء العملية المجدولة. خطأ: %s"
 
 #: ClamTray.py:237
 msgid "&Configure Scheduler"
@@ -1627,6 +1713,10 @@ msgstr "http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=6
 msgid "Could not launch ClamWin Scanner. Error: %s"
 msgstr "لم يتمكن من بدء فاحص ClamWin. خطأ: %s"
 
+#: ClamTray.py:351
+msgid "Could not display balloon tooltip. Error: %s"
+msgstr "لم يتمكن  من عرض فقاعة المعلومات. خطأ: %s"
+
 #: ClamTray.py:362
 msgid ""
 "An error occurred while displaying log file %s.\n"
@@ -1637,11 +1727,11 @@ msgstr ""
 
 #: ClamTray.py:373
 msgid "An error occurred while starting ClamWin Free Antivirus scanner.\n"
-msgstr "حدث خطأ أثناء بدء فاحص مضاد الفيروسات المجاني ClamWin.\n"
+msgstr "حدث خطأ أثناء بدء فاحص مضاد الفيروسات الحر ClamWin.\n"
 
 #: ClamTray.py:381
 msgid "An error occurred while starting ClamWin Free Antivirus Update.\n"
-msgstr "حدث خطأ أثناء بدء تحديث مضاد الفيروسات المجاني ClamWin.\n"
+msgstr "حدث خطأ أثناء بدء تحديث مضاد الفيروسات الحر ClamWin.\n"
 
 #: ClamTray.py:387
 msgid "Error"
@@ -1664,27 +1754,29 @@ msgstr "حدث خطأ خلال تحديث مجدول لبيانات الفيرو
 # please explain this string
 # >> Used in the log file when a scheduled task (update or scan) cannot be started.
 #: ClamTray.py:418
-#, fuzzy
 msgid ""
 "Unable to spawn scheduled process.\n"
 "Command line: %s\n"
 "Error: %s"
 msgstr ""
-"غير قادر على توليد العملية المجدولة.\n"
-"خط الاوامر: %s\n"
+"غير قادر على بدء العملية المجدولة.\n"
+"سطر الاوامر: %s\n"
 "خطأ: %s"
+
+#: ClamTray.py:433
+msgid "Error performing Scheduled Update."
+msgstr "خطأ في أداء تحديث مجدول."
 
 # please explain this string
 # >> Used in the links to the ClamWin page. If no browser can be opened automatically, this text is shown in a message box.
 #: ClamTray.py:441
 #: wxDialogUtils.py:206
-#, fuzzy
 msgid "Please point your browser at: %s"
-msgstr "يرجى الإشارة الى متصفحك عند: %s"
+msgstr "يرجى توجيه متصفحك إلى: %s"
 
 #: ClamTray.py:455
 msgid "An error occurred while starting ClamWin Free Antivirus Preferences.\n"
-msgstr "حدث خطأ أثناء بدء تفضيلات مضاد الفيروسات المجاني ClamWin.\n"
+msgstr "حدث خطأ أثناء بدء تفضيلات مضاد الفيروسات الحر ClamWin.\n"
 
 #: ClamTray.py:496
 msgid "Virus has been detected during scheduled scan! Please review the scan report."
@@ -1697,7 +1789,6 @@ msgstr "حدث خطأ أثناء فحص مجدول. يرجى مراجعة تقر
 # Please explain this string
 # >> This string is used in the log files, when a scheduled task is started.
 #: ClamTray.py:530
-#, fuzzy
 msgid "Running Scheduled Task:\n"
 msgstr "تشغيل المهمة المجدولة:\n"
 
@@ -1705,7 +1796,6 @@ msgstr "تشغيل المهمة المجدولة:\n"
 # >> while a scheduled scan was running, some kind of error occurred, causing the scan to fail.
 # This string is used in the log files.
 #: ClamTray.py:532
-#, fuzzy
 msgid "An error occurred whilst running Running Scheduled Task "
 msgstr "حدث خطأ أثناء تشغيل المهمة المجدولة"
 
@@ -1835,8 +1925,4 @@ msgstr "إكتشف التطبيقات المحتمل كونها غير مرغو�
 
 msgid "Select if you wish to detect Potentially Unwanted Applications such as keygens, cracks, etc"
 msgstr "حدد إذا أردت إكتشاف التطبيقات المحتمل كونها غير مرغوبة مثل keygens, cracks, إلخ"
-
-#, fuzzy
-msgid "Connecting via "
-msgstr "اتصال مع"
 

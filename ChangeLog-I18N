@@ -11,13 +11,13 @@ See the full list here:
 
 Completed Languages
 *******************
-- Arabic                (0.91.2)
+- Arabic                (0.92)
 - Bulgarian             (0.92)
 - Brazilian Portuguese  (0.90.2)
 - Dutch/Belgian Dutch   (0.92)
 - French                (0.92)
 - German                (0.90.2)
-- Hungarian             (0.90.1)
+- Hungarian             (0.92)
 - Italian               (0.90.2)
 - Polish                (0.90.2)
 - Russian               (0.92)
@@ -32,6 +32,10 @@ Changes in ClamWin-0.92-L10N-38.exe:
   "Connecting via "
 - Changed 'ar_AE' into 'ar': according to Osama Akkad there is no distinction.
 - Added license translations for ar and bg_BG.
+- Changed encodings of Arabic and Ukrainian translations for the Inno SEtup
+  Installer.
+- Removed a lot of translations of debug messages.  Translating these debug
+  messages is useless and a wast of resources and performance.
 
 
 Changes in ClamWin-0.92-L10N-37.exe:
