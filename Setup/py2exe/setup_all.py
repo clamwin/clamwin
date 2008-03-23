@@ -29,9 +29,9 @@ import sys, os, glob
 sb_top_dir = os.path.abspath(os.path.dirname(os.path.join(__file__, "../../../..")))
 sys.path.append(sb_top_dir)
 sys.path.append(os.path.join(sb_top_dir,"py"))
-sys.path.append(os.path.join(sb_top_dir,"../addons/pyclamav/build/lib.win32-2.3"))
+sys.path.append(os.path.join(sb_top_dir,"../addons/pyc/build/lib.win32-2.3"))
 sys.path.append(os.path.join(sb_top_dir,"../clamav-release/contrib/msvc/Release/Win32"))
-sys.path.append(os.path.join(sb_top_dir,"Setup/Dependencies/pthread"))
+#sys.path.append(os.path.join(sb_top_dir,"Setup/Dependencies/pthread"))
 
 import version
 

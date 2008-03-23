@@ -23,7 +23,7 @@
 
 #-----------------------------------------------------------------------------
 
-import os, sys, tempfile, time, re
+import os, sys, tempfile, time, re, shutil
 import wxDialogStatus, wxDialogPreferences, wxDialogAbout, wxDialogCheckUpdate
 import wxDialogLogViewer
 from wxPython.wx import wxBitmap, wxTextCtrl
@@ -85,22 +85,16 @@ def wxUpdateVirDB(parent, config, autoClose = False):
         # remove .cvd file if .inc folder is already there
         # happens sometinmes if users presses cancel 
         # and causes 2 copies of the db being loaded
+        # no longer the case >= 0.93
+        # second db is ignored
         try:
-            cvdfile = os.path.join(dbdir, 'main.cvd')
-            if os.path.isdir(os.path.join(os.path.join(dbdir, 'main.inc'))) and \
-               os.path.isfile(cvdfile):
-               #for root, dirs, files in os.walk(dirname, topdown=False):
-               #    for name in files:
-               #        os.remove(os.path.join(root, name))
-               os.remove(cvdfile)
+            incdir = os.path.join(os.path.join(dbdir, 'main.inc'))
+            if os.path.isdir(incdir):
+                shutil.rmtree(incdir)
                
-            cvdfile = os.path.join(dbdir, 'daily.cvd')
-            if os.path.isdir(os.path.join(os.path.join(dbdir, 'daily.inc'))) and \
-               os.path.isfile(cvdfile):
-               #for root, dirs, files in os.walk(dirname, topdown=False):
-               #    for name in files:
-               #        os.remove(os.path.join(root, name))
-               os.remove(cvdfile)
+            incdir = os.path.join(os.path.join(dbdir, 'daily.inc'))
+            if os.path.isdir(incdir):
+                shutil.rmtree(incdir)
                
         except Exception, e:
             print "couldn't remove .inc folder. Error: %s" % str(e)                       
@@ -231,7 +225,7 @@ def wxGoToInternetUrl(url):
         webbrowser.open(url)
 
 def wxCheckUpdate(parent, config):
-    if not config.Get('Updates', 'CheckVersion'):
+    if not config.Get('Updates', 'CheckVersion') or not Utils.IsOnline():
         return
     # if we have a window with such name don't show a second one
     try:

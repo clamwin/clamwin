@@ -31,8 +31,9 @@ import win32api, win32con, win32gui, win32event, win32con, pywintypes
 from win32com.shell import shell, shellcon
 if win32api.GetVersionEx()[3] != win32con.VER_PLATFORM_WIN32_WINDOWS:
     import win32security
-
-
+    
+from ctypes import *
+from ctypes.wintypes import DWORD
 
 EM_AUTOURLDETECT=1115
 EM_HIDESELECTION=1087
@@ -338,14 +339,13 @@ def GetScanCmd(config, path, scanlog, noprint = False):
     if config.Get('ClamAV', 'Debug') == '1':
         cmd += ' --debug'
     #this disables oversized zip checking
-    cmd += ' --max-ratio=0'
+    # no longer needed >= 0.93
+    #cmd += ' --max-ratio=0'
 
     if config.Get('ClamAV', 'EnableMbox') != '1':
         cmd += ' --no-mail'
     if config.Get('ClamAV', 'ScanOle2') != '1':
         cmd += ' --no-ole2'
-    if config.Get('ClamAV', 'ScanExeOnly') == '1':
-        cmd += ' --skip-noexe'
     if config.Get('ClamAV', 'DetectPUA') == '1':
         cmd += ' --detect-pua'
     if config.Get('ClamAV', 'ClamScanParams') != '':
@@ -353,12 +353,14 @@ def GetScanCmd(config, path, scanlog, noprint = False):
     if config.Get('ClamAV', 'InfectedOnly') == '1' or noprint:
         cmd += ' --infected'
     if config.Get('ClamAV', 'ScanArchives') == '1':
-        cmd += ' --max-files=%i --max-space=%i --max-recursion=%i' % \
+        cmd += ' --max-files=%i --max-scansize=%iM --max-recursion=%i' % \
             (int(config.Get('ClamAV', 'MaxFiles')),
-            int(config.Get('ClamAV', 'MaxSize'))*1024,
-            int(config.Get('ClamAV', 'MaxRecursion')))
+            int(config.Get('ClamAV', 'MaxScanSize')),
+            int(config.Get('ClamAV', 'MaxRecursion')))                
     else:
         cmd += ' --no-archive'
+        
+    cmd += ' --max-filesize=%iM' % int(config.Get('ClamAV', 'MaxFileSize'))
 
     if not noprint and config.Get('ClamAV', 'ShowProgress') == '1':
         cmd += ' --show-progress'
@@ -380,7 +382,8 @@ def GetScanCmd(config, path, scanlog, noprint = False):
         if config.Get('ClamAV', 'ScanRecursive') == '1':
             cmd += ' --recursive'            
         # add annoying registry files to exclude as they're locked by OS
-        cmd += GetExcludeSysLockedFiles()
+        # no longer needed >= 0.93
+        # cmd += GetExcludeSysLockedFiles()
 
         # FIX 8 August 2006
         # added root drive detection: os.path.splitdrive(path_element)[1]=='\\'
@@ -406,8 +409,7 @@ def GetScanCmd(config, path, scanlog, noprint = False):
                             # not a regular expression
                             # translate glob style to regex
                             pat = fnmatch.translate(pat)
-
-
+                            
                             # '?' and '*' in the glob pattern become '.' and '.*' in the RE, which
                             # IMHO is wrong -- '?' and '*' aren't supposed to match slash in Unix,
                             # and by extension they shouldn't match such "special characters" under
@@ -454,7 +456,7 @@ def CleanupTemp(pid):
         if tmpdir.endswith(mask):
             try:
                 print 'removing temp dir', tmpdir
-                shutil.rmtree(os.path.join(root, tmpdir), true)
+                shutil.rmtree(os.path.join(root, tmpdir), True)
             except Exception, e:
                 print 'Could not remove %s. Error: %s' % (os.path.join(root, tmpdir), str(e))
     for tmpfile in files:
@@ -750,9 +752,9 @@ def CheckDatabase(config):
     if path == '':
         return False
     return (os.path.isfile(os.path.join(path, 'main.cvd')) or \
-           os.path.isfile(os.path.join(os.path.join(path, 'main.inc'), 'main.info'))) and \
+           os.path.isfile(os.path.join(path, 'main.cld'))) and \
            (os.path.isfile(os.path.join(path, 'daily.cvd'))  or  \
-            os.path.isfile(os.path.join(os.path.join(path, 'daily.inc'), 'daily.info')))
+            os.path.isfile(os.path.join(path, 'daily.cld')))
 
             
 def RegKeyExists(key, subkey):
@@ -770,7 +772,20 @@ def IsOutlookInstalled():
         RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\9.0\\Outlook') or
         RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\10.0\\Outlook') or
         RegKeyExists(_winreg.HKEY_LOCAL_MACHINE, 'Software\\Microsoft\\Office\\11.0\\Outlook'))
-        
+
+
+def IsOnline():
+    try:
+        wininet = windll.wininet
+        flags = DWORD()
+        connected = wininet.InternetGetConnectedState(byref(flags), None)
+        print "Internet online: %i" % connected
+        return connected == 1
+    except Exception, e:
+        print "InternetGetConnectedState failed %s", str(e)
+    return False
+     
+                
 #def IsOutlookAddinEnabled():
 #    key = _winreg.HKEY_LOCAL_MACHINE
 #    subKey = ''
@@ -833,14 +848,15 @@ if __name__ == '__main__':
     #currentDir = GetCurrentDir(True)
     #os.chdir(currentDir)
     #CreateProfile()
-    config_file = os.path.join(GetProfileDir(True),'ClamWin.conf')
-    config = Config.Settings(config_file)
-    b = config.Read()
-    print GetOnlineVersion(config)
+    #config_file = os.path.join(GetProfileDir(True),'ClamWin.conf')
+    #config = Config.Settings(config_file)
+    #b = config.Read()
+    #print GetOnlineVersion(config)
 #    print CheckDatabase(config)
-    dbpath =  config.Get('ClamAV', 'Database')                
-    daily = os.path.join(dbpath, 'daily.cvd')
-    if not os.path.isfile(daily):
-        daily = os.path.join(os.path.join(dbpath, 'daily.inc'), 'daily.info')                   
-    print GetDBInfo(daily)
+    #dbpath =  config.Get('ClamAV', 'Database')                
+    #daily = os.path.join(dbpath, 'daily.cld')
+    #if not os.path.isfile(daily):
+    #    daily = os.path.join(dbpath, 'daily.cvd')                   
+    #print GetDBInfo(daily)
+    print IsOnline()
 

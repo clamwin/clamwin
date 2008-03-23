@@ -366,14 +366,14 @@ class wxMainFrame(wxFrame):
             # check if the db is current (not older than 3 days)                    
             if hasdb:
                 dbpath =  self._config.Get('ClamAV', 'Database')                
-                daily = os.path.join(dbpath, 'daily.cvd')
+                daily = os.path.join(dbpath, 'daily.cld')
                 if not os.path.isfile(daily):
-                    daily = os.path.join(os.path.join(dbpath, 'daily.inc'), 'daily.info')                   
+                    daily = os.path.join(dbpath, 'daily.cvd')                   
                 ver, numv, updated = Utils.GetDBInfo(daily)
                 
             # print updated, time.mktime(time.localtime()), time.mktime(time.localtime()) - updated
-            if hasdb and self._config.Get('Updates', 'WarnOutOfDate') == '1' and (time.mktime(time.localtime()) - updated > 86400*3):
-                if wxID_YES == MsgBox.MessageBox(None, 'ClamWin Free Antivirus', 'Virus signature database is older than 3 days and may not offer the latest protection. Would you like to update it now?', wxYES_NO | wxICON_QUESTION):
+            if hasdb and self._config.Get('Updates', 'WarnOutOfDate') == '1' and (time.mktime(time.localtime()) - updated > 86400*5):
+                if wxID_YES == MsgBox.MessageBox(None, 'ClamWin Free Antivirus', 'Virus signature database is older than 5 days and may not offer the latest protection. Would you like to update it now?', wxYES_NO | wxICON_QUESTION):
                     wxDialogUtils.wxUpdateVirDB(self, self._config)
                     hasdb = Utils.CheckDatabase(self._config)                    
                        

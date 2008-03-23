@@ -12,8 +12,14 @@ set PYTHONDIR=C:\python23
 
 set WGET_UTIL=c:\tools\wget.exe
 set DB_MIRROR=db.au.clamav.net
+
+rem build pyclamav
+cd ..\addons\pyc
+call build.cmd release
+if not "%ERRORLEVEL%"=="0" goto ERROR
+
 rem build ExplorerShell
-cd cpp
+cd %THISDIR%\cpp
 call build.bat
 if not "%ERRORLEVEL%"=="0" goto ERROR
 cd ..\
@@ -21,14 +27,9 @@ rem build BalloonTip.pyd
 cd py\BalloonTip
 call build.bat
 if not "%ERRORLEVEL%"=="0" goto ERROR
-rem build pyclamav
-cd ..\..\..\addons\pyclamav
-call build.cmd release
-if not "%ERRORLEVEL%"=="0" goto ERROR
-cd ..\..\clamwin
 
 rem build py2exe binaries
-cd setup\py2exe
+cd ..\..\setup\py2exe
 rd dist /s /q 
 call "%PYTHONDIR%\python" setup_all.py
 if not "%ERRORLEVEL%"=="0" goto ERROR

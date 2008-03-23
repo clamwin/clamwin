@@ -379,7 +379,7 @@ class MainWindow:
                 Utils.SpawnPyOrExe(os.path.join(Utils.GetCurrentDir(True), 'ClamWin'), *params)
             except Exception, e:
                 win32gui.MessageBox(self.hwnd, 'An error occured while starting ClamWin Free Antivirus Update.\n' + str(e), 'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONERROR)
-        else:
+        elif Utils.IsOnline():
             # update virus db silently
             freshclam_conf = Utils.SaveFreshClamConf(self._config)
             try:

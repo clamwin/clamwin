@@ -41,10 +41,10 @@ class Settings:
              'RemoveInfected': '0', 'ScanRecursive': '1',
              'InfectedOnly': '0', 'ShowProgress': '1',
              'Priority': 'Low', 'EnableMbox': '0', 'ScanOle2': '1',
-             'ScanArchives': '1', 'MaxSize': '10', 'MaxFiles': '500',
+             'ScanArchives': '1', 'MaxScanSize': '150', 'MaxFiles': '500', 'MaxFileSize': '100',
              'MaxRecursion': '5', 'LogFile': '', 'MaxLogSize': '1',
              'MoveInfected': '0', 'QuarantineDir': '',  'Debug': '0',
-             'ScanExeOnly': '1', 'DetectPUA': 0, 'ClamScanParams':'', 'Kill': '1',
+             'DetectPUA': '0', 'ClamScanParams':'', 'Kill': '1',
              'IncludePatterns': '',
              'ExcludePatterns': REGEX_SEPARATOR.join(('*.dbx','*.tbb','*.pst', '*.dat', '*.log', '*.evt', '*.nsf', '*.ntf', '*.chm')),}],
         'Proxy':

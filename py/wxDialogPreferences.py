@@ -54,7 +54,6 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLGCHECKBOXOUTLOOKSCANINCOMING, 
  wxID_WXPREFERENCESDLGCHECKBOXOUTLOOKSCANOUTGOING, 
  wxID_WXPREFERENCESDLGCHECKBOXSCANARCHIVES, 
- wxID_WXPREFERENCESDLGCHECKBOXSCANEXEONLY, 
  wxID_WXPREFERENCESDLGCHECKBOXSCANRECURSIVE, 
  wxID_WXPREFERENCESDLGCHECKBOXSHOWPROGRESS, 
  wxID_WXPREFERENCESDLGCHECKBOXSMTPENABLE, 
@@ -73,9 +72,10 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLGSPINBUTTONUPDATETIME, 
  wxID_WXPREFERENCESDLGSPINCTRLARCHIVEFILES, 
  wxID_WXPREFERENCESDLGSPINCTRLARCHIVESIZE, 
+ wxID_WXPREFERENCESDLGSPINCTRLMAXFILESIZE, 
  wxID_WXPREFERENCESDLGSPINCTRLMAXLOGSIZE, 
- wxID_WXPREFERENCESDLGSPINCTRLRECURSION, 
- wxID_WXPREFERENCESDLGSTATICBOXEMAILDETAILS, 
+ wxID_WXPREFERENCESDLGSPINCTRLRECURSION, wxID_WXPREFERENCESDLGSTATICBOX1, 
+ wxID_WXPREFERENCESDLGSTATICBOX2, wxID_WXPREFERENCESDLGSTATICBOXEMAILDETAILS, 
  wxID_WXPREFERENCESDLGSTATICBOXINFECTED, 
  wxID_WXPREFERENCESDLGSTATICBOXOUTLOOKADDIN, 
  wxID_WXPREFERENCESDLGSTATICBOXSCANOPTIONS, 
@@ -86,6 +86,8 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLGSTATICTEXTCLAMSCAN, 
  wxID_WXPREFERENCESDLGSTATICTEXTDBUPDATELOGFILE, 
  wxID_WXPREFERENCESDLGSTATICTEXTEXPLAIN, wxID_WXPREFERENCESDLGSTATICTEXTFILES, 
+ wxID_WXPREFERENCESDLGSTATICTEXTFILESIZE, 
+ wxID_WXPREFERENCESDLGSTATICTEXTFILESIZEMB, 
  wxID_WXPREFERENCESDLGSTATICTEXTFILTERSEXCLUDE, 
  wxID_WXPREFERENCESDLGSTATICTEXTFILTERSINCLUDE, 
  wxID_WXPREFERENCESDLGSTATICTEXTFILTREDESC1, 
@@ -135,7 +137,7 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLG_PANELINTERNETUPDATE, 
  wxID_WXPREFERENCESDLG_PANELOPTIONS, wxID_WXPREFERENCESDLG_PANELPROXY, 
  wxID_WXPREFERENCESDLG_PANELREPORTS, wxID_WXPREFERENCESDLG_PANELSCHEDULER, 
-] = map(lambda _init_ctrls: wxNewId(), range(120))
+] = map(lambda _init_ctrls: wxNewId(), range(124))
 
 class wxPreferencesDlg(wxDialog):
     def _init_coll_imageListScheduler_Images(self, parent):
@@ -160,7 +162,7 @@ class wxPreferencesDlg(wxDialog):
         parent.AddPage(imageId=-1, page=self._panelEmailAlerts, select=False,
               text='Email Alerts')
         parent.AddPage(imageId=-1, page=self._panelArchives, select=False,
-              text='Archives')
+              text='Limits')
         parent.AddPage(imageId=-1, page=self._panelFiles, select=False,
               text='File Locations')
         parent.AddPage(imageId=-1, page=self._panelReports, select=False,
@@ -190,10 +192,10 @@ class wxPreferencesDlg(wxDialog):
         wxDialog.__init__(self, id=wxID_WXPREFERENCESDLG, name='', parent=prnt,
               pos=wxPoint(1011, 447), size=wxSize(419, 395),
               style=wxDEFAULT_DIALOG_STYLE, title='ClamWin Preferences')
+        self._init_utils()
         self.SetClientSize(wxSize(411, 368))
         self.SetAutoLayout(False)
-        self.Center(wxBOTH)        
-        self._init_utils()
+        self.Center(wxBOTH)
         EVT_CHAR_HOOK(self, self.OnCharHook)
         EVT_INIT_DIALOG(self, self.OnInitDialog)
 
@@ -423,58 +425,58 @@ class wxPreferencesDlg(wxDialog):
               style=wxSP_ARROW_KEYS | wxSP_VERTICAL)
         self.spinButtonUpdateTime.SetToolTipString('')
 
+        self.spinCtrlMaxFileSize = wxSpinCtrl(id=wxID_WXPREFERENCESDLGSPINCTRLMAXFILESIZE,
+              initial=0, max=4096, min=1, name='spinCtrlMaxFileSize',
+              parent=self._panelArchives, pos=wxPoint(205, 29), size=wxSize(72,
+              21), style=wxSP_ARROW_KEYS)
+
+        self.staticTextFileSize = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTFILESIZE,
+              label='Do Not Scan Files Larger Than', name='staticTextFileSize',
+              parent=self._panelArchives, pos=wxPoint(24, 32), size=wxSize(166,
+              13), style=0)
+
+        self.staticBox1 = wxStaticBox(id=wxID_WXPREFERENCESDLGSTATICBOX1,
+              label='All Files', name='staticBox1', parent=self._panelArchives,
+              pos=wxPoint(6, 8), size=wxSize(377, 56), style=0)
+
+        self.staticTextFileSizeMB = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTFILESIZEMB,
+              label='MegaBytes', name='staticTextFileSizeMB',
+              parent=self._panelArchives, pos=wxPoint(293, 32), size=wxSize(80,
+              16), style=0)
+
+        self.staticBox2 = wxStaticBox(id=wxID_WXPREFERENCESDLGSTATICBOX2,
+              label='Archives', name='staticBox2', parent=self._panelArchives,
+              pos=wxPoint(6, 78), size=wxSize(377, 162), style=0)
+
         self.checkBoxScanArchives = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXSCANARCHIVES,
-              label='&Scan In Archives', name='checkBoxScanArchives',
-              parent=self._panelArchives, pos=wxPoint(6, 15), size=wxSize(322,
+              label='&Extract Files From Archives', name='checkBoxScanArchives',
+              parent=self._panelArchives, pos=wxPoint(14, 102), size=wxSize(322,
               20), style=0)
         self.checkBoxScanArchives.SetValue(False)
+        self.checkBoxScanArchives.SetToolTipString('Select if you wish to scan files conatined in archives (zip, rar, etc)')
         EVT_CHECKBOX(self.checkBoxScanArchives,
               wxID_WXPREFERENCESDLGCHECKBOXSCANARCHIVES,
               self.OnCheckBoxScanArchives)
 
         self.staticTextMaxSize = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTMAXSIZE,
-              label='Do Not Scan Archives Larger Than',
-              name='staticTextMaxSize', parent=self._panelArchives,
-              pos=wxPoint(24, 49), size=wxSize(200, 15), style=0)
+              label='Do Not Extract More Than ', name='staticTextMaxSize',
+              parent=self._panelArchives, pos=wxPoint(24, 136), size=wxSize(160,
+              13), style=0)
 
         self.spinCtrlArchiveSize = wxSpinCtrl(id=wxID_WXPREFERENCESDLGSPINCTRLARCHIVESIZE,
               initial=0, max=4096, min=1, name='spinCtrlArchiveSize',
-              parent=self._panelArchives, pos=wxPoint(229, 45), size=wxSize(72,
+              parent=self._panelArchives, pos=wxPoint(205, 134), size=wxSize(72,
               21), style=wxSP_ARROW_KEYS)
 
         self.staticTextMB1 = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTMB1,
               label='MegaBytes', name='staticTextMB1',
-              parent=self._panelArchives, pos=wxPoint(310, 49), size=wxSize(80,
+              parent=self._panelArchives, pos=wxPoint(293, 136), size=wxSize(80,
               16), style=0)
 
         self.staticTextLimitFiles = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTLIMITFILES,
               label='Do Not Extract More Than ', name='staticTextLimitFiles',
-              parent=self._panelArchives, pos=wxPoint(24, 82), size=wxSize(200,
+              parent=self._panelArchives, pos=wxPoint(24, 169), size=wxSize(168,
               17), style=0)
-
-        self.spinCtrlArchiveFiles = wxSpinCtrl(id=wxID_WXPREFERENCESDLGSPINCTRLARCHIVEFILES,
-              initial=0, max=1073741824, min=1, name='spinCtrlArchiveFiles',
-              parent=self._panelArchives, pos=wxPoint(229, 79), size=wxSize(72,
-              21), style=wxSP_ARROW_KEYS)
-
-        self.staticTextFiles = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTFILES,
-              label='Files', name='staticTextFiles', parent=self._panelArchives,
-              pos=wxPoint(310, 82), size=wxSize(80, 16), style=0)
-
-        self.staticTextRecursion = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTRECURSION,
-              label='Do Not Extract More Than ', name='staticTextRecursion',
-              parent=self._panelArchives, pos=wxPoint(24, 118), size=wxSize(200,
-              19), style=0)
-
-        self.spinCtrlRecursion = wxSpinCtrl(id=wxID_WXPREFERENCESDLGSPINCTRLRECURSION,
-              initial=0, max=999, min=1, name='spinCtrlRecursion',
-              parent=self._panelArchives, pos=wxPoint(229, 115), size=wxSize(72,
-              21), style=wxSP_ARROW_KEYS)
-
-        self.staticTextSubArchives = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTSUBARCHIVES,
-              label='Sub-Archives', name='staticTextSubArchives',
-              parent=self._panelArchives, pos=wxPoint(310, 118), size=wxSize(82,
-              16), style=0)
 
         self.checkBoxEnableMbox = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXENABLEMBOX,
               label='&Treat Files As Mailboxes', name='checkBoxEnableMbox',
@@ -490,17 +492,10 @@ class wxPreferencesDlg(wxDialog):
         self.checkBoxEnableOLE2.SetToolTipString('Select if you wish to scan OLE attachments and macros in MS Office Documents')
         self.checkBoxEnableOLE2.SetValue(False)
 
-        self.checkBoxScanExeOnly = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXSCANEXEONLY,
-              label='Try to &Scan Executable Files Only',
-              name='checkBoxScanExeOnly', parent=self._panelAdvanced,
-              pos=wxPoint(6, 54), size=wxSize(381, 18), style=0)
-        self.checkBoxScanExeOnly.SetToolTipString('Select if you only wish to scan files that can run on MS Windows platform')
-        self.checkBoxScanExeOnly.SetValue(False)
-
         self.checkBoxDetectPUA = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXDETECTPUA,
               label='&Detect Potentially Unwanted Applications',
               name='checkBoxDetectPUA', parent=self._panelAdvanced,
-              pos=wxPoint(6, 76), size=wxSize(381, 18), style=0)
+              pos=wxPoint(6, 56), size=wxSize(381, 18), style=0)
         self.checkBoxDetectPUA.SetToolTipString('Select if you wish to detect Potentially Unwanted Applications such as keygens, cracks, etc')
         self.checkBoxDetectPUA.SetValue(False)
 
@@ -640,7 +635,7 @@ class wxPreferencesDlg(wxDialog):
               label='&Warn if Virus database is Out of Date',
               name='checkBoxWarnDBOld', parent=self._panelInternetUpdate,
               pos=wxPoint(6, 143), size=wxSize(322, 20), style=0)
-        self.checkBoxWarnDBOld.SetToolTipString('Will display a reminder if the virus database is older than 3 days')
+        self.checkBoxWarnDBOld.SetToolTipString('Will display a reminder if the virus database is older than 5 days')
         self.checkBoxWarnDBOld.SetValue(False)
         EVT_CHECKBOX(self.checkBoxWarnDBOld,
               wxID_WXPREFERENCESDLGCHECKBOXWARNDBOLD, self.OnCheckBoxWarnDBOld)
@@ -953,6 +948,30 @@ class wxPreferencesDlg(wxDialog):
         self.choicePriority.SetStringSelection('Normal')
         self.choicePriority.SetLabel('')
 
+        self.spinCtrlArchiveFiles = wxSpinCtrl(id=wxID_WXPREFERENCESDLGSPINCTRLARCHIVEFILES,
+              initial=0, max=1073741824, min=1, name='spinCtrlArchiveFiles',
+              parent=self._panelArchives, pos=wxPoint(205, 166), size=wxSize(72,
+              21), style=wxSP_ARROW_KEYS)
+
+        self.staticTextFiles = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTFILES,
+              label='Files', name='staticTextFiles', parent=self._panelArchives,
+              pos=wxPoint(293, 169), size=wxSize(80, 16), style=0)
+
+        self.staticTextRecursion = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTRECURSION,
+              label='Do Not Extract More Than ', name='staticTextRecursion',
+              parent=self._panelArchives, pos=wxPoint(24, 205), size=wxSize(168,
+              19), style=0)
+
+        self.spinCtrlRecursion = wxSpinCtrl(id=wxID_WXPREFERENCESDLGSPINCTRLRECURSION,
+              initial=0, max=999, min=1, name='spinCtrlRecursion',
+              parent=self._panelArchives, pos=wxPoint(205, 202), size=wxSize(72,
+              21), style=wxSP_ARROW_KEYS)
+
+        self.staticTextSubArchives = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTSUBARCHIVES,
+              label='Sub-Archives', name='staticTextSubArchives',
+              parent=self._panelArchives, pos=wxPoint(293, 205), size=wxSize(82,
+              16), style=0)
+
         self._init_coll_notebook_Pages(self.notebook)
 
     def __init__(self, parent, config, switchToSchedule):
@@ -1192,8 +1211,9 @@ class wxPreferencesDlg(wxDialog):
         self.spinCtrlRecursion.Enable(enable)
 
     def _ArchivesPageInit(self):
+        self.spinCtrlMaxFileSize.SetValidator(MyValidator(self._config, section='ClamAV', value='MaxFileSize', canEmpty=False))
         self.checkBoxScanArchives.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ScanArchives'))
-        self.spinCtrlArchiveSize.SetValidator(MyValidator(self._config, section='ClamAV', value='MaxSize', canEmpty=False))
+        self.spinCtrlArchiveSize.SetValidator(MyValidator(self._config, section='ClamAV', value='MaxScanSize', canEmpty=False))
         self.spinCtrlArchiveFiles.SetValidator(MyValidator(self._config, section='ClamAV', value='MaxFiles', canEmpty=False))
         self.spinCtrlRecursion.SetValidator(MyValidator(self._config, section='ClamAV', value='MaxRecursion', canEmpty=False))
         self._EnableArchivesControls(True)
@@ -1214,8 +1234,7 @@ class wxPreferencesDlg(wxDialog):
         self.choicePriority.SetValidator(MyValidator(config=self._config, section='ClamAV', value='Priority'))
         self.spinCtrlMaxLogSize.SetValidator(MyValidator(self._config, section='ClamAV', value='MaxLogSize', canEmpty=False))
         self.checkBoxEnableMbox.SetValidator(MyValidator(config=self._config, section='ClamAV', value='EnableMbox'))
-        self.checkBoxEnableOLE2.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ScanOle2'))
-        self.checkBoxScanExeOnly.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ScanExeOnly'))
+        self.checkBoxEnableOLE2.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ScanOle2'))        
         self.checkBoxDetectPUA.SetValidator(MyValidator(config=self._config, section='ClamAV', value='DetectPUA'))
         self.textCtrlAdditionalParams.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ClamScanParams', canEmpty=True))
 

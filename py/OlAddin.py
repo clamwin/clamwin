@@ -137,12 +137,25 @@ try:
 except Exception, e:
     print str(e), os.path.join(Utils.GetCurrentDir(False), "libclamav.dll")
     
+hLibClamUnrar = 0                             
 try:
-    import pyclamav
+    hLibClamUnrar = win32api.LoadLibrary(os.path.join(Utils.GetCurrentDir(False), "libclamunrar.dll"))
+except Exception, e:
+    print str(e), os.path.join(Utils.GetCurrentDir(False), "libclamunrar.dll")
+    
+hLibClamUnrar_iface = 0                             
+try:
+    hLibClamUnrar_iface = win32api.LoadLibrary(os.path.join(Utils.GetCurrentDir(False), "libclamunrar_iface.dll"))
+except Exception, e:
+    print str(e), os.path.join(Utils.GetCurrentDir(False), "libclamunrar_iface.dll")
+
+    
+try:
+    import pyc
 except Exception, e:
     print str(e)
 
-_DEBUG=False
+_DEBUG=True
 
 def dbg_print(*args):
     if not _DEBUG:
@@ -250,42 +263,23 @@ def ScanFile(path, config, attname):
         if os.getenv('TMPDIR') is None:
             os.putenv('TMPDIR', tempfile.gettempdir())
             
-        os.putenv('PATH', os.getenv('PATH') + ';' + Utils.GetCurrentDir(False))
-                        
+        os.putenv('PATH', os.getenv('PATH') + ';' + Utils.GetCurrentDir(False))                        
     except Exception, e:
         print str(e)
-            
-    try:
-        pyclamav.setdbpath(config.Get('ClamAV', 'Database'))
-    except Exception, e:
-        raise ScanError('ClamWin Error occured whilst loading virus database: %s' % str(e))
-    
+                
 
     logfile = os.path.split(path)[0]+'\\Virus Deleted by ClamWin.txt'
-    retcode = 1
     scanstatus = ''
     try:
-        retcode, scanstatus = pyclamav.scanfile(path)
+        virusFound, virusName = pyc.scanFile(path)
     except Exception, e:
         raise ScanError('An Error occured whilst scanning: %s' % str(e))
-
-    if retcode >= 100 and retcode <= 106:
-        dbg_print('damaged archive - ignoring')
-        retcode = 0
     
-    if retcode == 0:
-        virusFound = False
-    # check the retrun Code
-    elif retcode == 1:
-        virusFound = True        
+    if virusFound:        
         try:
-            file(logfile, 'w+t').write('ClamWin Free Antivirus report:\n\n%s virus has been found in the attached file %s!' % (scanstatus, attname))
+            file(logfile, 'w+t').write('ClamWin Free Antivirus report:\n\n%s virus has been found in the attached file %s!' % (virusName, attname))
         except Exception, e:
             raise ScanError('An Error occured whilst saving scan report: %s' % str(e))    
-    else:
-        # error, raise an exception
-        raise ScanError('An Error occured whilst scanning:\n%s' % scanstatus)
-
     return (virusFound, logfile)
 
 # returns 0 if everything is okay, or number fo infected files
@@ -910,6 +904,16 @@ class OutlookAddin(ObjectsEvent):
 
             if config.Get('EmailScan', 'ScanOutgoing') == '1' or \
                 config.Get('EmailScan', 'ScanIncoming') == '1':
+           # load clamav db
+                try:
+                    pyc.setDBPath(config.Get('ClamAV', 'Database'))
+                    pyc.setDBTimer(pyc.SELFCHECK_ALWAYS)
+                    pyc.loadDB()        
+                except Exception, e:
+                    raise ScanError('ClamWin Error occured whilst loading virus database: %s' % str(e))
+                dbg_print('Database has been loaded from %s' % config.Get('ClamAV', 'Database'))
+
+                #show splashcreen
                 splash = os.path.join(Utils.GetCurrentDir(False), "img\\Splash.bmp")             
                 SplashScreen.ShowSplashScreen(splash, 5)                            
         except Exception, e:
@@ -949,6 +953,10 @@ class OutlookAddin(ObjectsEvent):
         try:
             if hLibClamAV != 0:
                 win32api.FreeLibrary(hLibClamAV)
+            if hLibClamUnrar != 0:
+                win32api.FreeLibrary(hLibClamUnrar)
+            if hLibClamUnrar_iface != 0:
+                win32api.FreeLibrary(hLibClamUnrar_iface)
         except Exception, e:
             print str(e)
              
