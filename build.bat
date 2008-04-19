@@ -16,6 +16,7 @@ set DB_MIRROR=db.au.clamav.net
 rem build pyclamav
 cd ..\addons\pyc
 call build.cmd release
+copy .\build\lib.win32-2.3\pyc.pyd "%THISDIR%\py"
 if not "%ERRORLEVEL%"=="0" goto ERROR
 
 rem build ExplorerShell
