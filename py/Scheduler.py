@@ -34,7 +34,7 @@ import threading
 class Scheduler(threading.Thread):
     # empty tuple for status_filenames parameter will reuslt in no checking
     # for missed schedules
-    def __init__(self, frequency, startTime, weekDay, action, argument=(),
+    def __init__(self, frequency, startTime, weekDay, runMissed, action, argument=(),
             status_filenames=(), loopDelay = 0.5):
         threading.Thread.__init__(self)
         self._filenames = status_filenames
@@ -44,7 +44,8 @@ class Scheduler(threading.Thread):
         self._frequency = frequency
         self._weekDay = weekDay
         self._startTime = startTime
-
+        self._runMissed = runMissed
+        
         self._action = action
         self._argument = argument
         self._lastRun = self._ReadLastRun()
@@ -95,17 +96,20 @@ class Scheduler(threading.Thread):
                 t = 0
                 continue
             # check that we have a float
-            if not isinstance(t, types.FloatType):
+            try:
+                t = float(t)
+            except ValueError:            
+                print 'time in %s is not float' % filename
                 t = 0
                 continue
-            if time.time() < float(t):
+            if time.time() < t:
                 # got time in future, ignore it
                 t = 0
                 continue
             else:
                 break
 
-        return float(t)
+        return t
 
     def _WriteLastRun(self):
         # save time when the task was run for future
@@ -178,7 +182,7 @@ class Scheduler(threading.Thread):
                 addTime = schedTime - tmp
 
         #don't return for missed schedule if frequency is workdays and it is weekend now
-        if self._frequency != 'Workdays' or time.localtime(t).tm_wday not in (5,6):
+        if self._runMissed and self._frequency != 'Workdays' or time.localtime(t).tm_wday not in (5,6):
             # check if we missed the scheduled run
             # and return now (+ 2 minutes) instead
             if  self._lastRun != 0 and self._AdjustDST(schedTime) - addTime > self._lastRun:
@@ -192,7 +196,7 @@ class Scheduler(threading.Thread):
                 return t
 
         schedTime = self._AdjustDST(schedTime)
-        print 'Scheduling task for: %s' % time.asctime(time.localtime(schedTime))
+        print 'Scheduling task %s  for: %s' % (self._argument, time.asctime(time.localtime(schedTime)))
         return schedTime + self._delay
 
 
