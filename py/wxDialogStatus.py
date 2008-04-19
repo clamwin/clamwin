@@ -368,7 +368,7 @@ class wxDialogStatus(wxDialog):
         if self._cancelled:
             self._returnCode = 0
 
-        if (self._notify_params is not None) and (not self._cancelled) and (self._returnCode != 54):
+        if (self._notify_params is not None) and (not self._cancelled) and (self._returnCode not in (54, 56)):
             Utils.ShowBalloon(self._returnCode, self._notify_params)
 
         # close the window automatically if requested
