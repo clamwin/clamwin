@@ -29,6 +29,30 @@ import RedirectStd
 from wxPython.wx import *
 import wxFrameMain, Utils, wxDialogUtils
 import Config
+import win32api
+
+# import pyclamav here
+#hLibClamAV = 0                             
+#try:
+#    hLibClamav = win32api.LoadLibrary(os.path.join(Utils.GetCurrentDir(False), "libclamav.dll"))
+#except Exception, e:
+#    print str(e), os.path.join(Utils.GetCurrentDir(False), "libclamav.dll")
+    
+#hLibClamUnrar = 0                             
+#try:
+#    hLibClamUnrar = win32api.LoadLibrary(os.path.join(Utils.GetCurrentDir(False), "libclamunrar.dll"))
+#except Exception, e:
+#    print str(e), os.path.join(Utils.GetCurrentDir(False), "libclamunrar.dll")
+    
+#hLibClamUnrar_iface = 0                             
+#try:
+#    hLibClamUnrar_iface = win32api.LoadLibrary(os.path.join(Utils.GetCurrentDir(False), "libclamunrar_iface.dll"))
+#except Exception, e:
+#    print str(e), os.path.join(Utils.GetCurrentDir(False), "libclamunrar_iface.dll")
+                                         
+sys.path.insert(0, Utils.GetCurrentDir(False))
+#print sys.path
+import pyc
 
 
 modules ={'ClamTray': [0, '', 'ClamTray.py'],
@@ -64,6 +88,8 @@ class BoaApp(wxApp):
     def OnInit(self):
         wxInitAllImageHandlers()
         if self.mode == 'scanner':
+            if pyc.isWow64():
+                self.DisablefsRedirect()
             self.exit_code = wxDialogUtils.wxScan(parent=None, config=self.config, path=self.path, autoClose=self.autoClose)
         elif self.mode == 'update':
             self.exit_code = wxDialogUtils.wxUpdateVirDB(parent=None, config=self.config, autoClose=self.autoClose)
@@ -78,11 +104,29 @@ class BoaApp(wxApp):
         elif self.mode == 'checkversion':
             wxDialogUtils.wxCheckUpdate(parent=None, config=self.config)
         else: #  mode == 'main'
+            if pyc.isWow64():
+                self.DisablefsRedirect()
             self.main = wxFrameMain.create(parent=None, config=self.config)
             self.main.Show()
             #workaround for running in wxProcess
             self.SetTopWindow(self.main)
         return True
+        
+    def DisablefsRedirect(self):
+        try:           
+            #load dlls that fail after fs redir is disabled
+            win32api.LoadLibrary(os.path.join(win32api.GetSystemDirectory(), "riched32.dll"))
+            win32api.LoadLibrary(os.path.join(win32api.GetSystemDirectory(), "shfolder.dll"))
+        except Exception, e:
+            print "Error disabling redirect on WOW64 %s" % str(e)
+
+        try:
+            #disable fs redir
+            pyc.fsRedirect(False)
+        except Exception, e:
+            print "Error disabling redirect on WOW64 %s" % str(e)
+
+
 
 
 def main(config=None, mode='main', autoClose=False, path='', config_file=None):
