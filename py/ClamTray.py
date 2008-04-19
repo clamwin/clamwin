@@ -27,7 +27,7 @@
 
 import SetUnicode
 import RedirectStd
-import sys, os, time, tempfile, locale, re, random
+import sys, os, time, tempfile, locale, re, random, types
 import win32api, win32gui, win32con, win32event
 import win32process, win32event
 import Scheduler
@@ -151,6 +151,7 @@ class MainWindow:
             scheduler = Scheduler.Scheduler('Once',
                             time.strftime('%H:%M:%S', start_time),
                             weekday,
+                            False,
                             win32gui.SendMessage, (self.hwnd, win32con.WM_COMMAND, self.MENU_UPDATE_DB, 1),
                             ('ClamWin_Scheduler_Info', 'ClamWin_Upadte_Time'))
             scheduler.start()
@@ -161,6 +162,7 @@ class MainWindow:
             scheduler = Scheduler.Scheduler(self._config.Get('Updates', 'Frequency'),
                             self._config.Get('Updates', 'Time'),
                             int(self._config.Get('Updates', 'WeekDay')),
+                            True,
                             win32gui.SendMessage, (self.hwnd, win32con.WM_COMMAND, self.MENU_UPDATE_DB, 1),
                             ('ClamWin_Scheduler_Info', 'ClamWin_Upadte_Time'))
             scheduler.start()
@@ -172,16 +174,35 @@ class MainWindow:
                 scheduler = Scheduler.Scheduler(scan.Frequency,
                             scan.Time,
                             int(scan.WeekDay),
+                            False,
                             self.ScanPath, (self, scan.Path, scan.Description, scan.ScanMemory))
                 scheduler.start()
                 self._schedulers.append(scheduler)
 
         # create scheduler thread for program version check
         if self._config.Get('Updates', 'CheckVersion') == '1':
+            checkvertime = None        
+            try:
+                f = file(os.path.join(tempfile.gettempdir(), 'ClamWin_CheckVer_Time'), 'r')
+                t = f.read()
+                f.close()
+                if time.time() >= float(t):
+                    checkvertime = time.strftime('%H:%M:%S', time.localtime(float(t)))
+            except Exception, e:
+                print 'An error occured whilst reading last scheduled run from %s. Error: %s' % ('ClamWin_CheckVer_Time', str(e))
+           
+            if checkvertime is None:
+                # 5 minutes to 1 hour after start
+                checkvertime = time.strftime('%H:%M:%S', time.localtime(time.time() + random.randint(300, 3600))) 
+                print "using random checkversion time %s" % checkvertime
+            
+            
+                
             curDir = Utils.GetCurrentDir(True)
             scheduler = Scheduler.Scheduler('Daily', # check once aday
-                            time.strftime('%H:%M:%S', time.localtime(time.time() + random.randint(300, 3600))), # 5 minutes to 1 hour after start
+                            checkvertime,
                             1, # unused
+                            True,
                             Utils.SpawnPyOrExe, (os.path.join(curDir, 'ClamWin'), ' --mode=checkversion'),
                             ('ClamWin_CheckVer_Info', 'ClamWin_CheckVer_Time'))
             scheduler.start()
@@ -379,58 +400,78 @@ class MainWindow:
                 Utils.SpawnPyOrExe(os.path.join(Utils.GetCurrentDir(True), 'ClamWin'), *params)
             except Exception, e:
                 win32gui.MessageBox(self.hwnd, 'An error occured while starting ClamWin Free Antivirus Update.\n' + str(e), 'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONERROR)
-        elif Utils.IsOnline():
-            # update virus db silently
-            freshclam_conf = Utils.SaveFreshClamConf(self._config)
-            try:
-                if not len(freshclam_conf):
-                    win32gui.MessageBox(self.hwnd, 'Unable to create freshclam configuration file. Please check there is enough space on the disk', 'Error', win32con.MB_OK | win32con.MB_ICONSTOP)
-                    return
-                # create database folder before downloading
-                dbdir = self._config.Get('ClamAV', 'Database')
-                if dbdir and not os.path.exists(dbdir):
+        else:
+            if Utils.IsOnline():
+                # update virus db silently
+                freshclam_conf = Utils.SaveFreshClamConf(self._config)
+                try:
+                    if not len(freshclam_conf):
+                        win32gui.MessageBox(self.hwnd, 'Unable to create freshclam configuration file. Please check there is enough space on the disk', 'Error', win32con.MB_OK | win32con.MB_ICONSTOP)
+                        return
+                    # create database folder before downloading
+                    dbdir = self._config.Get('ClamAV', 'Database')
+                    if dbdir and not os.path.exists(dbdir):
+                        try:
+                            os.makedirs(dbdir)
+                        except:
+                            pass
+                    updatelog = tempfile.mktemp()
+                    cmd = '--stdout --datadir="' + dbdir + '"' + \
+                            ' --config-file="%s" --log="%s"' % (freshclam_conf, updatelog)
+                    cmd = '"%s" %s' % (self._config.Get('ClamAV', 'FreshClam'), cmd)
                     try:
-                        os.makedirs(dbdir)
+                        if self._config.Get('UI', 'TrayNotify') == '1':
+                            balloon = (('Virus database has been updated.', 0,
+                                       win32gui.NIIF_INFO, 10000),
+                                       ('An error occured during Scheduled Virus Database Update. Please review the update report.', 1,
+                                       win32gui.NIIF_WARNING, 30000))
+                        else:
+                            balloon = None
+                        proc = self._SpawnProcess(cmd,
+                            'n',
+                            self.DBUpdateProcessFinished,
+                            (self._config.Get('ClamAV', 'Database'),
+                            self._config.Get('Updates', 'DBUpdateLogFile'),
+                            updatelog, False,
+                            balloon))
+                        self._processes.append(proc)
+                    except Process.ProcessError, e:
+                        print 'Unable to spawn scheduled process.\nCommand line: %s\nError: %s' % (cmd , str(e))
+                        try:
+                            os.remove(freshclam_conf)
+                            os.remove(updatelog)
+                        except:
+                            pass
+                        return
+                    # wait 2 seconds for the process to start, then delete
+                    # temp file
+                    try:
+                        proc.wait(2)
                     except:
                         pass
-                updatelog = tempfile.mktemp()
-                cmd = '--stdout --datadir="' + dbdir + '"' + \
-                        ' --config-file="%s" --log="%s"' % (freshclam_conf, updatelog)
-                cmd = '"%s" %s' % (self._config.Get('ClamAV', 'FreshClam'), cmd)
-                try:
-                    if self._config.Get('UI', 'TrayNotify') == '1':
-                        balloon = (('Virus database has been updated.', 0,
-                                   win32gui.NIIF_INFO, 10000),
-                                   ('An error occured during Scheduled Virus Database Update. Please review the update report.', 1,
-                                   win32gui.NIIF_WARNING, 30000))
-                    else:
-                        balloon = None
-                    proc = self._SpawnProcess(cmd,
-                        'n',
-                        self.DBUpdateProcessFinished,
-                        (self._config.Get('ClamAV', 'Database'),
-                        self._config.Get('Updates', 'DBUpdateLogFile'),
-                        updatelog, False,
-                        balloon))
-                    self._processes.append(proc)
-                except Process.ProcessError, e:
-                    print 'Unable to spawn scheduled process.\nCommand line: %s\nError: %s' % (cmd , str(e))
-                    try:
-                        os.remove(freshclam_conf)
-                        os.remove(updatelog)
-                    except:
-                        pass
-                    return
-                # wait 2 seconds for the process to start, then delete
-                # temp file
-                try:
-                    proc.wait(2)
-                except:
-                    pass
-                os.remove(freshclam_conf)
-            except Exception, e:
-                print 'Error performing Scheduled Update.', str(e)
-                os.remove(freshclam_conf)
+                    os.remove(freshclam_conf)
+                except Exception, e:
+                    print 'Error performing Scheduled Update.', str(e)
+                    os.remove(freshclam_conf)
+            else: # not onlime
+                #reschedule database update in 5 minutes
+                locale.setlocale(locale.LC_ALL, 'C')
+
+                start_time = time.localtime(time.time() + 300)
+                weekday = int(time.strftime('%w', start_time))
+                if weekday: weekday -= 1
+                else: weekday = 6
+
+                scheduler = Scheduler.Scheduler('Once',
+                                time.strftime('%H:%M:%S', start_time),
+                                weekday,
+                                False,
+                                win32gui.SendMessage, (self.hwnd, win32con.WM_COMMAND, self.MENU_UPDATE_DB, 1),
+                                ('ClamWin_Scheduler_Info', 'ClamWin_Upadte_Time'))
+                scheduler.start()
+                self._schedulers.append(scheduler)
+
+               
 
     def _OpenWebPage(self, url):
         try:
@@ -555,7 +596,7 @@ class MainWindow:
             except Exception, e:
                 print 'Could not send email alert. Error: %s' % str(e)
         print "Exit Code: ", process.wait()
-        if (not process.isKilled()) and (balloon_info is not None) and (process.wait() != 54):
+        if (not process.isKilled()) and (balloon_info is not None) and (process.wait() not in (54, 56)):
             # show balloon
             self.ShowBalloon(process.wait(), balloon_info)
 
