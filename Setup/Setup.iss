@@ -4,7 +4,7 @@
 
 [Setup]
 AppName=ClamWin Free Antivirus
-AppVerName=ClamWin Free Antivirus 0.93rc1
+AppVerName=ClamWin Free Antivirus 0.93
 AppPublisher=alch
 AppPublisherURL=http://www.clamwin.com/
 AppSupportURL=http://www.clamwin.com/
@@ -54,10 +54,10 @@ Source: py2exe\dist\bin\img\ScanMem.png; DestDir: {app}\bin\img; Components: Cla
 Source: py2exe\dist\bin\img\FrameIcon.ico; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
 Source: py2exe\dist\bin\img\TrayIcon.ico; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
 Source: py2exe\dist\bin\img\Title.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
-Source: py2exe\dist\bin\img\FD-logo.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
-Source: py2exe\dist\bin\img\PythonPowered.gif; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
+;Source: py2exe\dist\bin\img\FD-logo.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
+;Source: py2exe\dist\bin\img\PythonPowered.gif; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
 Source: py2exe\dist\bin\img\World.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
-Source: py2exe\dist\bin\img\Support.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
+;Source: py2exe\dist\bin\img\Support.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
 Source: py2exe\dist\bin\img\ListScan.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
 Source: py2exe\dist\bin\img\Splash.bmp; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
 Source: ..\..\clamav-release\contrib\msvc\Release\Win32\clamscan.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
@@ -92,7 +92,6 @@ Source: py2exe\dist\lib\w9xpopen.exe; DestDir: {app}\bin; Components: ClamWin; F
 Source: Setupfiles\conagent.pif; DestDir: {app}\bin; Components: ClamWin; Flags: 32bit; Check: IsWin9x
 
 Source: py2exe\dist\bin\OlAddin.exe; DestDir: {app}\bin; Components: OutlookAddin; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: py2exe\dist\lib\pyc.pyd; DestDir: {app}\lib; Components: OutlookAddin; Flags: restartreplace uninsrestartdelete
 ;Source: {%TEMP|{localappdata}}\clamwin-src.zip; DestDir: {app}\src; Components: Sources; Flags: external ignoreversion
 ;Source: {%TEMP|{localappdata}}\clamav-src.tar.gz; DestDir: {app}\src; Components: Sources; Flags: external ignoreversion
 ;Source: {%TEMP|{localappdata}}\cygwin-src.tar.bz2; DestDir: {app}\src; Components: Sources; Flags: external replacesameversion
@@ -128,11 +127,12 @@ Source: py2exe\dist\lib\win32security.pyd; DestDir: {app}\lib; Components: ClamW
 Source: py2exe\dist\lib\wxc.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 Source: py2exe\dist\lib\wxmsw24h.dll; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 Source: py2exe\dist\lib\zlib.pyd; DestDir: {app}\lib; Components: ClamWin; Flags: restartreplace uninsrestartdelete
+Source: py2exe\dist\lib\pyc.pyd; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 Source: py2exe\dist\lib\BalloonTip.pyd; DestDir: {app}\lib; Components: ClamWin; Check: IsWin9x; Flags: restartreplace uninsrestartdelete
 
 ; added main.cvd as per clamav team request
-Source: cvd\main.cvd; DestDir: {code:CommonProfileDir}\.clamwin\db; Components: ClamWin; Flags: ignoreversion comparetimestamp; Check: NoMainInc
-Source: cvd\daily.cvd; DestDir: {code:CommonProfileDir}\.clamwin\db; Components: ClamWin; Flags: ignoreversion comparetimestamp; Check: NoDailyInc
+Source: cvd\main.cvd; DestDir: {code:CommonProfileDir}\.clamwin\db; Components: ClamWin; Flags: ignoreversion comparetimestamp; Check: NoMainCld
+Source: cvd\daily.cvd; DestDir: {code:CommonProfileDir}\.clamwin\db; Components: ClamWin; Flags: ignoreversion comparetimestamp; Check: NoDailyCld
 
 [Icons]
 Name: {group}\Virus Scanner; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: ClamWin
@@ -214,11 +214,11 @@ Name: {code:CommonProfileDir}\.clamwin; Type: filesandordirs
 Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: ClamWin; ValueData: """{app}\bin\ClamTray.exe"" --logon"; Flags: uninsdeletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKLM; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKLM64; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers and IsWin64
-Root: HKLM; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 9291; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
+Root: HKLM; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 9300; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKCU; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: ClamWin; ValueData: """{app}\bin\ClamTray.exe"" --logon"; Flags: uninsdeletevalue; Components: ClamWin; Check: not IsAllUsers
 Root: HKCU; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
 Root: HKCU64; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers and IsWin64
-Root: HKCU; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 9291; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
+Root: HKCU; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 9300; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
 
 ; ExplorerShell entries
 Root: HKCR; Subkey: CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueData: {app}\bin\ExpShell.dll; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers
@@ -285,6 +285,14 @@ Name: desktopicon; Description: Create a &desktop icon; GroupDescription: Additi
 [UninstallRun]
 Filename: {app}\bin\WClose.exe; WorkingDir: {app}\bin
 
+; temporary cleanup in 0.93 only - remove in future
+[InstallDelete]
+Name: {app}\bin\pthreadVC2.dll; Type: files; Components: ClamAV
+Name: {app}\bin\img\Clam.png; Type: files; Components: ClamWin
+Name: {app}\bin\img\FD-logo.png; Type: files; Components: ClamWin
+Name: {app}\bin\img\PythonPowered.gif; Type: files; Components: ClamWin
+Name: {app}\bin\img\Support.png; Type: files; Components: ClamWin
+Name: {app}\lib\pyclamav.pyd; Type: files; Components: ClamWin
 
 #include "SHFileOperation.iss"
 
@@ -527,7 +535,7 @@ begin
 	else
 		AllUsers := IsAdminLoggedOn();
 
-	ThisVersion := 9291;
+	ThisVersion := 9300;
 	value := 0;
 	if not RegQueryDWordValue(HKEY_CURRENT_USER, 'SOFTWARE\Clamwin', 'Version',  value) then begin
 		value := 0;
@@ -689,16 +697,16 @@ begin
 	Result := (not IsWin9x()) and (not FileExists(Filename));
 end;
 
-function NoMainInc(): Boolean;
+function NoMainCld(): Boolean;
 var
 	Temp: String;
 begin
-	Result := not DirExists(CommonProfileDir(Temp) + '\.clamwin\db\main.inc')
+	Result := not FileExists(CommonProfileDir(Temp) + '\.clamwin\db\main.cld')
 end;
 
-function NoDailyInc(): Boolean;
+function NoDailyCld(): Boolean;
 var
 	Temp: String;
 begin
-	Result := not DirExists(CommonProfileDir(Temp) + '\.clamwin\db\daily.inc')
+	Result := not FileExists(CommonProfileDir(Temp) + '\.clamwin\db\daily.cld')
 end;
