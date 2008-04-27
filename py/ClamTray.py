@@ -660,10 +660,11 @@ class OutBuffer(Process.IOBuffer):
     def readlines(self):
         return
 
-    def _doClose(self):
-        self.notify(self._caller, self._proc, *self._params)
+    def _doClose(self):        
         if self._proc:
+            self.notify(self._caller, self._proc, *self._params)
             del self._proc
+            self._proc = None
         Process.IOBuffer._doClose(self)
 
     def AttachProcess(self, proc):
