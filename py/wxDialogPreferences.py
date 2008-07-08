@@ -53,6 +53,7 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLGCHECKBOXINFECTEDONLY, 
  wxID_WXPREFERENCESDLGCHECKBOXOUTLOOKSCANINCOMING, 
  wxID_WXPREFERENCESDLGCHECKBOXOUTLOOKSCANOUTGOING, 
+ wxID_WXPREFERENCESDLGCHECKBOXOUTLOOKSHOWSPLASH, 
  wxID_WXPREFERENCESDLGCHECKBOXSCANARCHIVES, 
  wxID_WXPREFERENCESDLGCHECKBOXSCANRECURSIVE, 
  wxID_WXPREFERENCESDLGCHECKBOXSHOWPROGRESS, 
@@ -137,7 +138,7 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLG_PANELINTERNETUPDATE, 
  wxID_WXPREFERENCESDLG_PANELOPTIONS, wxID_WXPREFERENCESDLG_PANELPROXY, 
  wxID_WXPREFERENCESDLG_PANELREPORTS, wxID_WXPREFERENCESDLG_PANELSCHEDULER, 
-] = map(lambda _init_ctrls: wxNewId(), range(124))
+] = map(lambda _init_ctrls: wxNewId(), range(125))
 
 class wxPreferencesDlg(wxDialog):
     def _init_coll_imageListScheduler_Images(self, parent):
@@ -911,10 +912,10 @@ class wxPreferencesDlg(wxDialog):
         self.staticBoxOutlookAddin = wxStaticBox(id=wxID_WXPREFERENCESDLGSTATICBOXOUTLOOKADDIN,
               label='Microsoft Outlook', name='staticBoxOutlookAddin',
               parent=self._panelEmailScanning, pos=wxPoint(6, 11),
-              size=wxSize(376, 77), style=0)
+              size=wxSize(376, 101), style=0)
 
         self.checkBoxOutlookScanIncoming = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXOUTLOOKSCANINCOMING,
-              label='&Scan &Incoming Email Messages',
+              label='Scan &Incoming Email Messages',
               name='checkBoxOutlookScanIncoming',
               parent=self._panelEmailScanning, pos=wxPoint(15, 32),
               size=wxSize(354, 18), style=0)
@@ -922,10 +923,10 @@ class wxPreferencesDlg(wxDialog):
         self.checkBoxOutlookScanIncoming.SetToolTipString('Select if you wish to enable scanning of incoming email messages in MS Outlook')
         EVT_CHECKBOX(self.checkBoxOutlookScanIncoming,
               wxID_WXPREFERENCESDLGCHECKBOXOUTLOOKSCANINCOMING,
-              self.OnCheckBoxOutlookAddinEnabledCheckbox)
+              self.OnCheckBoxOutlookScanIncomingCheckbox)
 
         self.checkBoxOutlookScanOutgoing = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXOUTLOOKSCANOUTGOING,
-              label='&Scan &Outgoing Email Messages',
+              label='Scan &Outgoing Email Messages',
               name='checkBoxOutlookScanOutgoing',
               parent=self._panelEmailScanning, pos=wxPoint(15, 57),
               size=wxSize(354, 18), style=0)
@@ -971,6 +972,16 @@ class wxPreferencesDlg(wxDialog):
               label='Sub-Archives', name='staticTextSubArchives',
               parent=self._panelArchives, pos=wxPoint(293, 205), size=wxSize(82,
               16), style=0)
+
+        self.checkBoxOutlookShowSplash = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXOUTLOOKSHOWSPLASH,
+              label='&Display Splash Screen on Startup',
+              name='checkBoxOutlookShowSplash', parent=self._panelEmailScanning,
+              pos=wxPoint(15, 83), size=wxSize(354, 18), style=0)
+        self.checkBoxOutlookShowSplash.SetValue(False)
+        self.checkBoxOutlookShowSplash.SetToolTipString('Select if you wish to display ClamWin Splash Screen when MS Outlook starts up')
+        EVT_CHECKBOX(self.checkBoxOutlookShowSplash,
+              wxID_WXPREFERENCESDLGCHECKBOXOUTLOOKSHOWSPLASH,
+              self.OnCheckBoxOutlookScanOutgoingCheckbox)
 
         self._init_coll_notebook_Pages(self.notebook)
 
@@ -1229,6 +1240,7 @@ class wxPreferencesDlg(wxDialog):
     def _EmailScanningPageInit(self):
         self.checkBoxOutlookScanIncoming.SetValidator(MyValidator(config=self._config, section='EmailScan', value='ScanIncoming'));
         self.checkBoxOutlookScanOutgoing.SetValidator(MyValidator(config=self._config, section='EmailScan', value='ScanOutgoing'));
+        self.checkBoxOutlookShowSplash.SetValidator(MyValidator(config=self._config, section='EmailScan', value='ShowSplash'));        
         
     def _AdvancedPageInit(self):
         self.choicePriority.SetValidator(MyValidator(config=self._config, section='ClamAV', value='Priority'))
@@ -1482,6 +1494,9 @@ class wxPreferencesDlg(wxDialog):
         event.Skip()
 
     def OnCheckBoxWarnDBOld(self, event):
+        event.Skip()
+
+    def OnCheckBoxOutlookScanIncomingCheckbox(self, event):
         event.Skip()
 
 class MyBaseValidator(wxPyValidator):

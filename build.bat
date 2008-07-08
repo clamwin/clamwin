@@ -20,17 +20,17 @@ copy .\build\lib.win32-2.3\pyc.pyd "%THISDIR%\py"
 if not "%ERRORLEVEL%"=="0" goto ERROR
 
 rem build ExplorerShell
-cd %THISDIR%\cpp
-call build.bat
-if not "%ERRORLEVEL%"=="0" goto ERROR
-cd ..\
+rem cd %THISDIR%\cpp
+rem call build.bat
+rem if not "%ERRORLEVEL%"=="0" goto ERROR
+rem cd ..\
 rem build BalloonTip.pyd
-cd py\BalloonTip
-call build.bat
-if not "%ERRORLEVEL%"=="0" goto ERROR
+rem cd py\BalloonTip
+rem call build.bat
+rem if not "%ERRORLEVEL%"=="0" goto ERROR
 
 rem build py2exe binaries
-cd ..\..\setup\py2exe
+cd %THISDIR%\setup\py2exe
 rd dist /s /q 
 call "%PYTHONDIR%\python" setup_all.py
 if not "%ERRORLEVEL%"=="0" goto ERROR
@@ -53,9 +53,9 @@ rem cd ..\..\..\..\
 
 
 rem get the latest db files
-call %WGET_UTIL% http://%DB_MIRROR%/main.cvd -O "%THISDIR%\Setup\cvd\main.cvd"
+rem call %WGET_UTIL% http://%DB_MIRROR%/main.cvd -O "%THISDIR%\Setup\cvd\main.cvd"
 if not "%ERRORLEVEL%"=="0" goto ERROR
-call %WGET_UTIL% http://%DB_MIRROR%/daily.cvd -O "%THISDIR%\Setup\cvd\daily.cvd"
+rem call %WGET_UTIL% http://%DB_MIRROR%/daily.cvd -O "%THISDIR%\Setup\cvd\daily.cvd"
 if not "%ERRORLEVEL%"=="0" goto ERROR
 
 rem build setups

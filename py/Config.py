@@ -66,7 +66,7 @@ class Settings:
         'Schedule':
         [0, {'Path': '', }],
         'EmailScan':
-        [0, {'ScanIncoming': '1', 'ScanOutgoing': '1', }],
+        [0, {'ScanIncoming': '1', 'ScanOutgoing': '1', 'ShowSplash': '1'}],
         }
 
     def Read(self, template = False):

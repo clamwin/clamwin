@@ -898,7 +898,8 @@ class OutlookAddin(ObjectsEvent):
 
                 #show splashcreen
                 splash = os.path.join(Utils.GetCurrentDir(False), "img\\Splash.bmp")             
-                SplashScreen.ShowSplashScreen(splash, 5)                            
+                if(config.Get('EmailScan', 'ShowSplash') == '1'):
+                    SplashScreen.ShowSplashScreen(splash, 5)                            
         except Exception, e:
             print "An error occured whilst displaying the spashscreen Error: %s." % str(e)
             
