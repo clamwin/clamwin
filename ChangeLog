@@ -1,0 +1,259 @@
+Version 0.91.2 - 21 August 2007
+ - Updated ClamAV to 0.91.2
+
+Version 0.91.1 - 25 July 2007
+ - Updated ClamAV to 0.91.1, which should improve archive 
+   and packed executable scanning as well as improve 
+   database loading times.
+ - Fixed duplicate database loading in certain cases
+
+Version 0.90.2.1  - 27 May 2007
+- Outlook Addin now uses pylibclamav instead of clamscan to improve speed of email opening
+- New upgrades system getting ready for incremental updates
+
+
+Version 0.90.1.1  - 12 March 2007
+- Added support for main.inc database folder
+- Added meaningful output to "cannot open file" messages
+
+Version 0.90.1  - 12 March 2007
+- Upgraded ClamAV to 0.90.1
+- Fixed relative path problem with database lock mechanism in freshclam
+- Supressed getfile and getpatch errors for intranet database updates
+- Added a warning if the database is older than 3 days
+- Minor bugfixes
+
+Version 0.90  - 26 February 2007
+- Upgraded ClamAV to 0.90
+- Added option to scan only MS Windows Executable files (detection is done by file content rather than extension)
+- Added "Email Scanning" tab to preferences with an option to disable scanning of incoming and/or outgoing emails in MS Outlook
+- Added "Technical Support" link to Help Menu
+
+Version 0.88.7 - 12 December 2006
+- Upgraded ClamAV to 0.88.7
+- fixed possible naming problem on ole2 temp files
+- fixed remove/moving of invalid filenames
+
+
+Version 0.88.6 - 29 November 2006
+- Optional unloading of infected programs before quarantining
+- Better temporary file management and cleanup
+
+
+
+Version 0.88.5 - 17 October 2006
+- Updated clamav to 0.88.5 (fixes possible security vulnerabilities)
+- Implemented "Memory Scanning" functionality as a standalone option or during a scheduled scan
+- Implemented RAR3 archive support from clamav-devel code
+- Implemented 7zip LZMA archive support and added
+- 7zip option for an external unpacker
+- Improved OLE, MSI and CAB archives scanning
+
+
+Version 0.88.4 - 8 August 2006
+ - Upgraded clamav to 0.88.4
+ - Fixed bug when filters where not applied when scanning a whole disk only
+ - Added Explorer context menu for 64-bit Windows
+
+
+Version 0.88.3.1 - 22 July 2006
+ - fixed crash with password proteced RAR archives
+ - added --keep-mbox parameter to leave Thunderbird mailbox files intact when
+   moving or removing infected files
+ - set user-agent in freshclam to ClamWin as requested by ClamAV team
+ - Filename filters are no longer applied if only files (no directories) are being scanned.
+   This is done to allow scanning an individual file regadless configured filters
+
+
+Version 0.88.3 - 9 July 2006
+ - Upgraded ClamAV to 0.88.3
+
+Version 0.88.2.3 - 6 May 2006
+ - Fixed an issue with not removing temporary files after scanning archives
+Version 0.88.2.2 - 6 May 2006
+ - Fixed temporary directory permissions problem for users
+   without write access to the root drive (c:\) when scanning
+   archives
+ - set "Detect Broken Executalbes" option Off due to large volume of
+   false positives
+
+Version 0.88.2.1 - 30 April 2006
+ - Upgraded ClamAV to 0.88.2
+ - Fixed external archivers bug
+ - Fixed high CPU usage issues in scheduler and scanner
+ - Fixed database update issues in Windows 98
+ - Added "show % scanned" option, switching off may reduce CPU usage
+
+Version 0.88.1 - 7 April 2006
+- Upgraded clamav to 0.88.1
+- Use clamav native win32 build instead of cygwin. Many thanks to
+  Gianluigi Tiesi <http://oss.netfarm.it>
+- changed python code not to use /cygdrive/c notation
+- progress display is different. Instead of scrolling lines clamwin
+  now prints % scanned and a rotating indicator for archives. Only
+  infected files and errors will remain in the list
+- added --detect-broken-executable (will treat files that don't have proper
+  windows executable ffile format as viruses)
+- added  an arbitrary clamscan parameter string to advanced tab
+- added update checker, which will display a notification if there is a new
+  clamwin release. It will check 5 minutes after start and then every 24 hours.
+  Update notifier can be disabled in Updates tab.
+- files with international characters in the filenames can now be scanned,
+  they were omitted before
+
+Version 0.88 - 10 January 2006
+- Upgraded clamav to 0.88
+
+Version 0.86.2 - 25 July 2005
+- Upgraded clamav to 0.86.2
+- upgraded cygwin to 1.5.18-1
+
+Version 0.86.1 - 24 June 1975
+ - Upgraded clamav to 0.86.1 - fixes possible crash when unpacking Microsoft CAB files
+
+Version 0.86 - 22 June 1975
+ - Upgraded clamav to 0.86
+ - ClamWin has got new graphics special thanks to FinnDesign.fi
+ - Added French pdf manual (thanks to Pierre Slamich)
+ - Upgraded to cygwin 1.5.17.1
+
+Version 0.85.1 - 25 May 2005
+ - Upgraded to clamav 0.85.1
+
+Version 0.85 - 12 May 2005
+ - Upgraded to clamav 0.85
+ - Added 'Check for Update' and 'ClamWin Website' to 'Help' Menu
+
+Version 0.84 - 9 May 2005
+ - Upgraded to clamav 0.84
+ - Upgraded to cygwin 1.5.16
+ - Upgraded to InnoSetup 5
+ - Updated the manual, added russian manual and help shortcuts in the start menu.
+
+Version 0.35 - 17 May 2004
+ - Added 60 seconds delay to 'Update DB at logon' option, so that firewall or other
+   networking software can start
+ - Renamed ExplorerShell.dll to ExpShell.dll to make it 8.3 filename, inorder to make
+   upgrades on 98/Me work.
+   Also renamed Tray.exe (and Tray.py) to clamTray.exe (ClamTray.py) just to make the
+   running executable more identifiable in the processes list.
+ - Fixed a possible bug with localised version of Windows and time formatting.
+ - Changed Default location after the fresh setup (not an upgrade) for Database, quarantine
+   and log folders (hopefully this is the last time):
+   on Windows NT/XP/2000 C:\Documents and Settings\All Users.WINNT\.clamwin\db
+   on Windows 98/ME c:\Windows\All Users\.clamwin\db
+   This is because Application Data folder is hidden in Windows 2000/XP/2003
+   and some users may have difficulties finding them.
+ - Previous changelog entry (0.34) incorrectly stated that Configuration and
+   Scheduler files are stored in Common Application Data.
+   Clamwin.conf and ScheduledScans files are separate for each user and stored in
+   User's Application Data directory (note that this folder is hidden in 2000/XP/2003):
+   on Windows NT/XP/2000 C:\Documents and Settings\%Username%\Application Data\.clamwin
+	on Windows 98/ME c:\Windows\Application Data\.clamwin.
+	When a user log's on to the computer for the first time after an administrator
+	installed ClamWin, this profile folder is created and Template files: Clamwin.conf
+	and SheduledScans; are copied from c:\program files\clamwin\bin to the profile
+	folder (see the location above). Subsequent upgrades do not change the existing
+	configuration files.
+ - Database, Log and Quarantine folders are created if they don't exist before the database
+   update or scan
+ - Added check for Clamwin version when upgrading and refuse to upgrade if a newer
+   version is already installed.
+
+Version 0.34 - 15 May 2004
+ - Fixed bug [ 948891 ] - single quote in the filename causes error when scanning from
+   Windows Explorer
+ - Fixed Bug in Outlook Addin reporting errors for password protected archives
+ - Added exclusion and inclusion filename patterns. Regular expressions are supported
+ - Clamscan will no longer overwrite files in quarantine, but append .000, .001...999
+   file extenssions
+ - Added 'Scheduler' menu to the Tray Icon for easy access running Scheduled Scans
+   manually. It also provides an option to configure Scan Scheduler and
+   Stop All Running Tasks
+ - Added Disable/Enable option to the Scheduled Scans. Disabled items will be
+   ignored when running Scheduler
+ - Added Description text to a Scheduled Scan to make in frendlier
+ - Added virus database version to the About Box
+ - Fixed Tray Icon Notification Tooltips in Windows 98/NT
+ - Added Tray Icon Notification Tooltip when scheduled scan is started
+ - Tray Icon Notification Tooltips are not displayed when scan or update is cancelled
+   any more
+ - Better Outlook detection code in the setup
+ - Number of changes to make it work with BartPE (http://www.nu2.nu/pebuilder/)
+ - Configuration and scheduler files are stored in User's Application Data directory:
+   on Windows NT/XP/2000 C:\Documents and Settings\%Username%\Application Data\.clamwin
+	on Windows 98/ME c:\Windows\Application Data\.clamwin
+ - Log files and virus database are now stored in Common Application Data directory:
+   on Windows NT/XP/2000 C:\Documents and Settings\All Users.WINNT\Application Data\.clamwin
+   on Windows 98/ME c:\Windows\All Users\Application Data\.clamwin
+   This fixes the bug when clamwin was installed by an administrator for all
+   users and configuration was not displayed for a non-admin user.
+   The config files are migrated form old location during an upgrade and all settings
+   are preserved.
+ - Fixed bugs with email alerts in GNOME unix version
+ - New Icons and animations, thanks to Sergey Pronin and Mia Kalenius
+   from Finndesign <http://www.finndesign.fi>
+
+29 April 2004
+Version 0.33
+ - Fixed Bug 944454 Authenticated SMTP connection failed with error:
+   [SMTP instance has no attribute 'sock']
+ - Fixed Outlook Addin Bug 944472 in Outlook 2003 pasted images produced an error
+   when sending an email message
+
+29 April 2004
+Version 0.32
+ - Implemented Email Alerts on virus detection
+ - Added optional tray notification messages for virus detection and database updates
+   Please note that Microsoft Internet Explorer 5.0 or higher is now required.
+ - removed 'Virus Found' dialog window (tray notifications look better, imho)
+ - Fixed bug 'Unable transfer data to window' when 'Preferences' dialog was openend
+   more than once from the main program
+ - Fixed bug 940304 in Outlook Addin that displayed an error for HTTP based accounts
+   (hotmail, msn, etc)
+
+26 April 2004
+Version 0.31 (very minor update)
+ - Fresh installations now use the time of installation as a time when to update the
+   database. This should reduce the simultaneous load on the database mirros in future
+ - Implemented a patch that expands system variables read from registry and clamwin.conf
+   (submitted by the author of http://oss.netfarm.it/winpe/)
+
+17 April 2004
+Version 0.3:
+ - Main Progarm - Added scanning scheduler
+ - Main Program, Explorer Menu - Added support for multiple files/folders selection
+ - Main Program, Explorer Menu - Added option to move files to quarantine folder
+ - Main Program, Tray Module - Added "Display Reports" functionality
+ - Main Progarm - Added "Display Infected Only" option that may slightly
+   increase  scanning speed
+ - Main Progarm - Added "Display Warning When Virus Is Detected" option
+ - Outlook Addin - fixed bug that prevented outgoing messages from being scanned
+ - Outlook Addin - re-opened messages will now be rescanned if the database was updated
+ - Explorer Menu - fixed UNC names scanning bug
+   (http://sourceforge.net/tracker/index.php?func=detail&aid=935570&group_id=105508&atid=641462)
+
+07 April 2004
+Version 0.22:
+ - !Main Scanner - fixed bug 930688 Archives were not properly scanned
+ - Outlook Addin fixed bug 930909 Outlook plugin could not check attachments with
+   non-ascii characters in the filename
+ - Database Updater - fixed  bug 930691 Animation was incorrect in the DB Updater
+ - Main Scanner - fixed bug 930478 Hidden folders were not shown in the UI
+ - ExplorerShell - Fixed a resource leak (registry handle) in ExplorerShell
+ - About Box - Added link to IconsTree in About Box
+
+05 April 2004
+Version 0.21:
+ - Moved Outlook Addin to Out-Of-Process Executable to avoid
+   conflicts with other python addins
+ - Bug fixes in Outlook Addin
+ - Added last virus database download time to the About Box
+
+02 April 2004
+Version 0.2:
+ - Added Outlook Addin
+ - Setup on Windows does not require admin privileges any more
+ - Added more settings for clamscan
+ - Minor bug fixes
+

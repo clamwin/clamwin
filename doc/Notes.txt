@@ -1,0 +1,12 @@
+Order of sections in PDF manual:
+
+cover.sxw
+intro.sxw
+install.sxw
+config.sxw
+usage.sxw
+advanced.sxw
+faq.sxw
+troubleshooting.sxw
+App_CD-USB.sxw
+licence.sxw

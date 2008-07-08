@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE>ClamWin CD/USB - HowTo</TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.2  (Win32)">
+	<META NAME="CREATED" CONTENT="20050531;10214200">
+	<META NAME="CHANGEDBY" CONTENT="Peter Budts">
+	<META NAME="CHANGED" CONTENT="20070708;14180900">
+	<STYLE TYPE="text/css">
+	<!--
+		@page { size: 21.01cm 29.69cm; margin-left: 2cm; margin-right: 2.01cm; margin-top: 2.01cm; margin-bottom: 2.01cm }
+		P { color: #000000; font-family: "Arial", sans-serif; font-size: 12pt }
+		H1 { color: #000000; text-align: center }
+		H1.western { font-family: "Arial", sans-serif; font-size: 16pt }
+		H2 { color: #000000 }
+		H2.western { font-family: "Arial", sans-serif; font-size: 14pt; font-style: italic }
+		H2.cjk { font-family: "Arial Unicode MS" }
+		H2.ctl { font-family: "Tahoma" }
+		H3 { color: #000000 }
+		H3.western { font-family: "Albany", sans-serif }
+		H3.cjk { font-family: "HG Mincho Light J" }
+		H3.ctl { font-family: "Arial Unicode MS" }
+		PRE { color: #000000 }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-GB" TEXT="#000000" BGCOLOR="#ffffff" DIR="LTR">
+<H1 CLASS="western"><FONT FACE="Arial, sans-serif"><FONT SIZE=5 STYLE="font-size: 16pt">Appendix
+A : </FONT></FONT>How to Run ClamWin from CD or USB</H1>
+<H3 CLASS="western">Introduction</H3>
+<P>This tutorial explains how to create a CD or USB key with <A HREF="http://www.clamwin.com/"></A><A HREF="http://www.clamwin.com/"></A><A HREF="http://www.clamwin.com/">ClamWin</A><A HREF="http://www.clamwin.com/"></A><A HREF="http://www.clamwin.com/"></A>,
+to allow a Windows PC to be scanned for viruses without having to
+install ClamWin. Note that the CD/USB key is <I>not</I> bootable, and
+so can only be used on a working Windows PC.</P>
+<P>The PC that is used to create the CD/USB will need to have ClamWin
+installed, and be able to copy files/folders to a CD or USB key.</P>
+<H3 CLASS="western">The easy way : Portable ClamWin</H3>
+<P>The easy way is to use the pre-built portable version of ClamWin,
+which can be found at
+<A HREF="http://portableapps.com/apps/utilities/clamwin_portable"></A><A HREF="http://portableapps.com/apps/utilities/clamwin_portable"></A><A HREF="http://portableapps.com/apps/utilities/clamwin_portable">http://portableapps.com/apps/utilities/clamwin_portable</A><A HREF="http://portableapps.com/apps/utilities/clamwin_portable"></A><A HREF="http://portableapps.com/apps/utilities/clamwin_portable"></A>.
+ 
+</P>
+<P>Note that the maintainers of this Portable ClamWin are not
+affiliated with the ClamWin team, so the team might not be able to
+answer all your questions regarding this version.  Also, ClamWin
+Portable might be some versions behind the official ClamWin release.</P>
+<H3 CLASS="western">Preparation</H3>
+<P>Start by installing the latest version of ClamWin, and download
+the latest virus definitions. See the ClamWin manual for full details
+on how to do this. 
+</P>
+<P>Note that, if you are going to create a CD, you will not be able
+to update the virus definitions without creating a new CD, since a CD
+is read-only.</P>
+<H3 CLASS="western">Copy Folders</H3>
+<P>Create a working folder in a convenient location to hold the files
+that are to be copied onto CD/USB, e.g. <TT>C:\ClamWin-CD</TT>.</P>
+<P>In the working folder, create a folder named <TT>ClamWin</TT>.</P>
+<P>Copy the contents of the ClamWin program folder into
+<TT>C:\ClamWin-CD\ClamWin</TT>. By default, the ClamWin program
+folder is installed to <TT>C:\Program Files\ClamWin</TT></P>
+<P>Create folders named <TT>log</TT>, <TT>db</TT> and <TT>quarantine</TT>
+in <TT>C:\ClamWin-CD\ClamWin.</TT></P>
+<P>Copy the ClamWin database files (all files in the <FONT FACE="Courier New, monospace">db</FONT>
+folder) into <TT>C:\ClamWin-CD\ClamWin\db</TT>. In Windows 2000/XP,
+the ClamWin database folder defaults to <TT>C:\Documents and
+Settings\USERNAME\.clamwin\db</TT>, where <TT>USERNAME</TT> is your
+login name (if it was installed for a single user) or <TT>C:\Documents
+and Settings\All Users\.clamwin\db</TT> (if it was installed for all
+users).</P>
+<P>Copy the following into a text file named
+<TT>C:\ClamWin-CD\ClamWin\bin\clamwin.conf</TT></P>
+<PRE>[Schedule]
+path = .\
+
+[ClamAV]
+clamscan = .\clamscan.exe
+enablembox = 0
+maxfiles = 500
+infectedonly = 0
+database = ..\db
+includepatterns = 
+scanole2 = 1
+excludepatterns = *.dbx|CLAMWIN_SEP|*.tbb|CLAMWIN_SEP|*.pst|CLAMWIN_SEP|*.dat|CLAMWIN_SEP|*.log|CLAMWIN_SEP|*.nsf|CLAMWIN_SEP|*.ntf|CLAMWIN_SEP|*.chm
+maxsize = 10
+scanarchives = 1
+priority = Low
+maxrecursion = 5
+maxlogsize = 1
+moveinfected = 0
+debug = 0
+logfile = ..\log\ClamScanLog.txt
+scanrecursive = 1
+freshclam = .\freshclam.exe
+quarantinedir = ..\quarantine 
+removeinfected = 0
+
+[UI]
+reportinfected = 1
+traynotify = 0
+standalone = 1
+
+[Updates]
+dbupdatelogfile = ..\log\ClamUpdateLog.txt
+enable = 1
+dbmirror = database.clamav.net
+updateonlogon = 0
+frequency = Daily
+weekday = 2
+time = 12:00:00
+
+[EmailAlerts]
+enable = 0
+from = clamwin@yourdomain
+to = admin@yourdomain
+smtppassword = 
+smtpuser = 
+smtphost = 
+smtpport = 25
+subject = ClamWin Virus Alert
+
+[Proxy]
+host = 
+password = 
+port = 3128
+user = </PRE><P>
+You should now have the following folders:</P>
+<PRE>C:\ClamWin-CD
+C:\ClamWin-CD\ClamWin\bin
+C:\ClamWin-CD\ClamWin\db
+C:\ClamWin-CD\ClamWin\lib
+C:\ClamWin-CD\ClamWin\log
+C:\ClamWin-CD\ClamWin\quarantine</PRE><H3 CLASS="western">
+Copy Files to CD/USB</H3>
+<P>Now you just need to copy the contents of <TT>C:\ClamWin-CD</TT>
+to a CD or USB key. Do not copy the <TT>C:\ClamWin-CD</TT> folder
+itself, only the contents. Exactly how this is done will depend on
+whether a CD or USB key is to be used, and what software is to be
+used.</P>
+<H2 CLASS="western">Using the CD/USB</H2>
+<P>To use it, insert the CD/USB into the PC to be scanned. Run
+ClamWin by double-clicking on the <TT>ClamWin.exe</TT> file in the
+<TT>ClamWin\bin</TT> folder.</P>
+<P>ClamWin should operate normally, but if run from CD or read-only
+USB drive, it will have the following restrictions: 
+</P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm">Files will not be quarantined</P>
+	<LI><P STYLE="margin-bottom: 0cm">Internet updates will not work</P>
+	<LI><P>Preferences cannot be changed</P>
+</UL>
+<P>These restrictions will not apply if it is run from a USB drive
+with read-write permissions.</P>
+<P><BR><BR>
+</P>
+</BODY>
+</HTML>
