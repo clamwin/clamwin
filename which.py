@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # Copyright (c) 2002-2003 ActiveState Corp.
 # Author: Trent Mick (TrentM@ActiveState.com)
+from __future__ import generators
 
 r"""Find the full path to commands.
 
@@ -67,7 +68,6 @@ _cmdlnUsage = """
 #   - add a "logging" interface for Python 2.3
 #
 
-from __future__ import generators
 import os
 import sys
 import getopt
