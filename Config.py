@@ -92,7 +92,7 @@ class Settings:
             self._settings['ClamAV'][1]['InfectedOnly'] = '1'
             write = True
 
-        # rewrite CheckVersionURL for earlier versions    
+        # rewrite CheckVersionURL for earlier versions
         if self._settings['UI'][1]['Version'] < '0.90.2.1' and \
            self._settings['Updates'][1]['CheckVersionURL'] == 'http://clamwin.sourceforge.net/clamwin.ver':
             self._settings['Updates'][1]['CheckVersionURL'] = 'http://clamwin.sourceforge.net/clamwinver.php'
@@ -101,7 +101,7 @@ class Settings:
         if self._settings['UI'][1]['Version'] < version.clamwin_version:
             self._settings['UI'][1]['Version'] = version.clamwin_version
             write = True
-            
+
         if write:
             print 'Config updated to version %s. Saving' % version.clamwin_version
             self.Write()
@@ -142,4 +142,3 @@ class Settings:
 
     def GetFilename(self):
         return self._filename
-    

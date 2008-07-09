@@ -78,10 +78,10 @@ def wxUpdateVirDB(parent, config, autoClose = False):
             os.remove(freshclam_conf)
         except Exception, e:
             print "couldn't remove file %s. Error: %s" % (freshclam_conf, str(e))
-            
+
         # @@@ Alch 20070723
         # remove .cvd file if .inc folder is already there
-        # happens sometinmes if users presses cancel 
+        # happens sometinmes if users presses cancel
         # and causes 2 copies of the db being loaded
         # no longer the case >= 0.93
         # second db is ignored
@@ -89,13 +89,13 @@ def wxUpdateVirDB(parent, config, autoClose = False):
             incdir = os.path.join(os.path.join(dbdir, 'main.inc'))
             if os.path.isdir(incdir):
                 shutil.rmtree(incdir)
-               
+
             incdir = os.path.join(os.path.join(dbdir, 'daily.inc'))
             if os.path.isdir(incdir):
                 shutil.rmtree(incdir)
-               
+
         except Exception, e:
-            print "couldn't remove .inc folder. Error: %s" % str(e)                       
+            print "couldn't remove .inc folder. Error: %s" % str(e)
 
         if exit_code == 1:
             try:
@@ -103,7 +103,7 @@ def wxUpdateVirDB(parent, config, autoClose = False):
                 f.write(str(time.time()))
                 f.close()
             except IOError:
-                pass       
+                pass
         return exit_code
 
 def wxScan(parent, config, path, autoClose = False):

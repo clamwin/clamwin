@@ -131,7 +131,7 @@ from win32com.mapi import mapi, mapiutil, mapitags
 import RedirectStd
 
 
-    
+
 try:
     sys.path.insert(0, Utils.GetCurrentDir(False))
     import pyc
@@ -174,7 +174,7 @@ gencache.EnsureModule('{AC0714F2-3D04-11D1-AE7D-00A0C90F26F4}', 0, 1, 0,
 # ... and also for its _IDTExtensibility2 vtable interface.
 universal.RegisterInterfaces('{AC0714F2-3D04-11D1-AE7D-00A0C90F26F4}', 0, 1, 0,
                              ["_IDTExtensibility2"])
-                             
+
 
 try:
     from win32com.client import CastTo, WithEvents
@@ -245,11 +245,11 @@ def ScanFile(path, config, attname):
     try:
         if os.getenv('TMPDIR') is None:
             os.putenv('TMPDIR', tempfile.gettempdir())
-            
-        os.putenv('PATH', os.getenv('PATH') + ';' + Utils.GetCurrentDir(False))                        
+
+        os.putenv('PATH', os.getenv('PATH') + ';' + Utils.GetCurrentDir(False))
     except Exception, e:
         print str(e)
-                
+
 
     logfile = os.path.split(path)[0]+'\\Virus Deleted by ClamWin.txt'
     scanstatus = ''
@@ -257,12 +257,12 @@ def ScanFile(path, config, attname):
         virusFound, virusName = pyc.scanFile(path)
     except Exception, e:
         raise ScanError('An Error occured whilst scanning: %s' % str(e))
-    
-    if virusFound:        
+
+    if virusFound:
         try:
             file(logfile, 'w+t').write('ClamWin Free Antivirus report:\n\n%s virus has been found in the attached file %s!' % (virusName, attname))
         except Exception, e:
-            raise ScanError('An Error occured whilst saving scan report: %s' % str(e))    
+            raise ScanError('An Error occured whilst saving scan report: %s' % str(e))
     return (virusFound, logfile)
 
 # returns 0 if everything is okay, or number fo infected files
@@ -279,10 +279,10 @@ def ScanMailItem(item, sending, added_attachments = None):
     config = Config.Settings(config_file)
     config.Read()
 
-    # scanning is disabled in the config    
+    # scanning is disabled in the config
     if sending:
         if config.Get('EmailScan', 'ScanOutgoing') != '1':
-            return 0    
+            return 0
     else:
         if config.Get('EmailScan', 'ScanIncoming') != '1':
             return 0
@@ -462,7 +462,7 @@ def safe_remove(path, removeLastDir = False):
         else:
             os.rmdir(path)
     except OSError, e:
-        if e.errno != errno.ENOENT:        
+        if e.errno != errno.ENOENT:
             print 'Could not remove file: %s. Error: %s' % (path, str(e))
     except Exception, e:
         print 'Could not remove file: %s. Error: %s' % (path, str(e))
@@ -470,12 +470,12 @@ def safe_remove(path, removeLastDir = False):
     try:
         if removeLastDir:
             dir = os.path.split(path)[0]
-            if os.path.exists(dir):                
+            if os.path.exists(dir):
                 os.rmdir(dir)
     except OSError, e:
-        if e.errno != errno.ENOENT:        
+        if e.errno != errno.ENOENT:
             print 'Could not remove file: %s. Error: %s' % (path, str(e))
-    except Exception, e:       
+    except Exception, e:
         print 'Could not remove file: %s. Error: %s' % (path, str(e))
 
 class WaitCursor:
@@ -876,7 +876,7 @@ class OutlookAddin(ObjectsEvent):
 
     def OnStartupComplete(self, custom):
         dbg_print('OutlookAddin:OnStartupComplete')
-        Utils.CreateProfile()        
+        Utils.CreateProfile()
         # display SplashScreen
         try:
             config_file = os.path.join(Utils.GetProfileDir(True),'ClamWin.conf')
@@ -891,18 +891,18 @@ class OutlookAddin(ObjectsEvent):
                 try:
                     pyc.setDBPath(config.Get('ClamAV', 'Database'))
                     pyc.setDBTimer(pyc.SELFCHECK_ALWAYS)
-                    pyc.loadDB()        
+                    pyc.loadDB()
                 except Exception, e:
                     raise ScanError('ClamWin Error occured whilst loading virus database: %s' % str(e))
                 dbg_print('Database has been loaded from %s' % config.Get('ClamAV', 'Database'))
 
                 #show splashcreen
-                splash = os.path.join(Utils.GetCurrentDir(False), "img\\Splash.bmp")             
+                splash = os.path.join(Utils.GetCurrentDir(False), "img\\Splash.bmp")
                 if(config.Get('EmailScan', 'ShowSplash') == '1'):
-                    SplashScreen.ShowSplashScreen(splash, 5)                            
+                    SplashScreen.ShowSplashScreen(splash, 5)
         except Exception, e:
             print "An error occured whilst displaying the spashscreen Error: %s." % str(e)
-            
+
         # Setup all our filters and hooks.  We used to do this in OnConnection,
         # but a number of 'strange' bugs were reported which I suspect would
         # go away if done during this later event - and this later place
@@ -943,7 +943,7 @@ class OutlookAddin(ObjectsEvent):
                 win32api.FreeLibrary(hLibClamUnrar_iface)
         except Exception, e:
             print str(e)
-             
+
         for handler in self.event_handlers:
             handler.Close()
         self.event_handlers = []

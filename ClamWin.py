@@ -31,7 +31,7 @@ import wxFrameMain, Utils, wxDialogUtils
 import Config
 import win32api
 import wx
-                                             
+
 sys.path.insert(0, Utils.GetCurrentDir(False))
 import pyc
 
@@ -91,9 +91,9 @@ class BoaApp(wx.App):
             #workaround for running in wxProcess
             self.SetTopWindow(self.main)
         return True
-        
+
     def DisablefsRedirect(self):
-        try:           
+        try:
             #load dlls that fail after fs redir is disabled
             win32api.LoadLibrary(os.path.join(win32api.GetSystemDirectory(), "riched32.dll"))
             win32api.LoadLibrary(os.path.join(win32api.GetSystemDirectory(), "shfolder.dll"))
