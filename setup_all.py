@@ -81,7 +81,7 @@ manifestVersion="1.0">
 py2exe_options = dict(
     packages = 'encodings',
     excludes = 'win32ui, pywin, pywin.debugger', # pywin is a package, and still seems to be included.
-    includes = 'throb, dbhash', # AVI throb images
+    includes = 'throb, dbhash, email.mime.text, email.mime.multipart, email.iterators', # AVI throb images
     dll_excludes = 'dapi.dll, mapi32.dll, msvcr80.dll',
     optimize = '02',
 )
@@ -128,7 +128,7 @@ if len(sys.argv) == 1 or \
 setup(name='ClamWin Antivirus',
       version=ver,
       description='ClamWin Antivirus',
-      windows=[scanner, tray, winclose],
+      console=[scanner, tray, winclose],
       data_files = image_files,
       options = {'py2exe' : py2exe_options},
       zipfile = 'lib/clamwin.zip',
