@@ -286,10 +286,10 @@ class wxDialogStatus(wx.Dialog):
                 try:
                     file(filename, "w").write(self.textCtrlStatus.GetLabel())
                 except:
-                    dlg = wxMessageDialog(self, 'Could not save report to the file ' + \
+                    dlg = wx.MessageDialog(self, 'Could not save report to the file ' + \
                                             filename + ". Please check that you have write "
                                             "permissions to the folder and there is enough space on the disk.",
-                      'ClamWin Free Antivirus', wxOK | wxICON_ERROR)
+                      'ClamWin Free Antivirus', wx.OK | wx.ICON_ERROR)
                     try:
                         dlg.ShowModal()
                     finally:
@@ -375,7 +375,7 @@ class wxDialogStatus(wx.Dialog):
         if self._autoClose and \
            (self._closeRetCode is None or self._closeRetCode == self._returnCode):
             time.sleep(0)
-            e = wx.CommandEvent(wx.EVT_COMMAND_BUTTON_CLICKED, self.buttonStop.GetId())
+            e = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, self.buttonStop.GetId())
             self.buttonStop.AddPendingEvent(e)
 
     def OnThreadUpdateStatus(self, event):

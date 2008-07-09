@@ -701,14 +701,6 @@ class MonitorConfig(threading.Thread):
             return
         self._terminate = True
 
-    def is_cancelled(self):
-        return self._cancelled
-
-    def get_returnCode(self):
-        return self._ret
-
-
-
 def main():
     # set C locale, otherwise python and wxpython complain
     locale.setlocale(locale.LC_ALL, 'C')

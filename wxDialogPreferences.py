@@ -1301,7 +1301,7 @@ class wxPreferencesDlg(wx.Dialog):
             dlg.Destroy()
 
     def OnButtonBrowseVirDB(self, event):
-        dlg = wxDirDialog(self)
+        dlg = wx.DirDialog(self)
         try:
             if dlg.ShowModal() == wx.ID_OK:
                 dir = dlg.GetPath()
@@ -1538,13 +1538,13 @@ class MyValidator(MyBaseValidator):
             text = ctrl.GetValue()
         if len(text) == 0:
             page = self.GetWindow().GetParent()
-            wxMessageBox("Value cannot be empty", "ClamWin Free Antivirus", style=wxICON_EXCLAMATION|wxOK)
+            wx.MessageBox("Value cannot be empty", "ClamWin Free Antivirus", style=wx.ICON_EXCLAMATION|wx.OK)
             ctrl.SetBackgroundColour("yellow")
             ctrl.SetFocus()
             ctrl.Refresh()
             return False
         else:
-            ctrl.SetBackgroundColour(wxSystemSettings_GetColour(wxSYS_COLOUR_WINDOW))
+            ctrl.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
             ctrl.Refresh()
             return True
 

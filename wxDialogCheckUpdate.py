@@ -60,7 +60,7 @@ class wxDialogUpdateChecker(wx.Dialog):
               label='An update of ClamWin Free Antivirus has been released. Please click on Download button and download the latest version %s',
               name='staticTextAnnounce', parent=self, pos=wx.Point(13, 8),
               size=wx.Size(296, 40), style=wx.ST_NO_AUTORESIZE)
-        self.staticTextAnnounce.SetForegroundColour(wxColour(170, 0, 0))
+        self.staticTextAnnounce.SetForegroundColour(wx.Colour(170, 0, 0))
         self.staticTextAnnounce.SetToolTipString('')
         self.staticTextAnnounce.SetFont(wx.Font(8, wx.SWISS, wx.NORMAL, wx.BOLD, False, 'MS Shell Dlg'))
 
@@ -93,7 +93,7 @@ class wxDialogUpdateChecker(wx.Dialog):
               wxID_WXDIALOGUPDATECHECKERCHECKBOXDONTCHECK,
               self.OnCheckBoxDontCheckCheckbox)
 
-        self.buttonDownload = wxButton(id=wxID_WXDIALOGUPDATECHECKERBUTTONDOWNLOAD,
+        self.buttonDownload = wx.Button(id=wxID_WXDIALOGUPDATECHECKERBUTTONDOWNLOAD,
               label='&Download', name='buttonDownload', parent=self,
               pos=wx.Point(143, 212), size=wx.Size(75, 23), style=0)
         self.buttonDownload.SetToolTipString('')
@@ -101,7 +101,7 @@ class wxDialogUpdateChecker(wx.Dialog):
         wx.EVT_BUTTON(self.buttonDownload,
               wxID_WXDIALOGUPDATECHECKERBUTTONDOWNLOAD, self.OnButtonDownload)
 
-        self.buttonClose = wxButton(id=wxID_WXDIALOGUPDATECHECKERBUTTONCLOSE,
+        self.buttonClose = wx.Button(id=wxID_WXDIALOGUPDATECHECKERBUTTONCLOSE,
               label='Close', name='buttonClose', parent=self, pos=wx.Point(230,
               212), size=wx.Size(75, 23), style=0)
         self.buttonClose.SetToolTipString('')
