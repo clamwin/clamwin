@@ -35,17 +35,17 @@ import wxDialogUtils, Utils, version
 def create(parent, config):
     return wxAboutDlg(parent, config)
 
-[wxID_WXABOUTDLG, wxID_WXABOUTDLGBUTTONOK, 
- wxID_WXABOUTDLGGENSTATICTEXTCLAMWINHOME2, wxID_WXABOUTDLGSTATICBITMAPCLAM, 
- wxID_WXABOUTDLGSTATICBITMAPCLAMAV, wxID_WXABOUTDLGSTATICBITMAPCLAMWIN, 
- wxID_WXABOUTDLGSTATICBITMAPNETFARM, wxID_WXABOUTDLGSTATICTEXT1, 
- wxID_WXABOUTDLGSTATICTEXT2, wxID_WXABOUTDLGSTATICTEXT3, 
- wxID_WXABOUTDLGSTATICTEXTAUTHOR1, wxID_WXABOUTDLGSTATICTEXTAUTHOR2, 
- wxID_WXABOUTDLGSTATICTEXTCLAMVER, wxID_WXABOUTDLGSTATICTEXTCLAMWINHOME, 
- wxID_WXABOUTDLGSTATICTEXTCOPYRIGHT, wxID_WXABOUTDLGSTATICTEXTDBUPDATED1, 
- wxID_WXABOUTDLGSTATICTEXTDBUPDATED2, wxID_WXABOUTDLGSTATICTEXTDBUPDATED3, 
- wxID_WXABOUTDLGSTATICTEXTFREESW, wxID_WXABOUTDLGSTATICTEXTSCANENGINE, 
- wxID_WXABOUTDLGSTATICTEXTWINCLAMVER, 
+[wxID_WXABOUTDLG, wxID_WXABOUTDLGBUTTONOK,
+ wxID_WXABOUTDLGGENSTATICTEXTCLAMWINHOME2, wxID_WXABOUTDLGSTATICBITMAPCLAM,
+ wxID_WXABOUTDLGSTATICBITMAPCLAMAV, wxID_WXABOUTDLGSTATICBITMAPCLAMWIN,
+ wxID_WXABOUTDLGSTATICBITMAPNETFARM, wxID_WXABOUTDLGSTATICTEXT1,
+ wxID_WXABOUTDLGSTATICTEXT2, wxID_WXABOUTDLGSTATICTEXT3,
+ wxID_WXABOUTDLGSTATICTEXTAUTHOR1, wxID_WXABOUTDLGSTATICTEXTAUTHOR2,
+ wxID_WXABOUTDLGSTATICTEXTCLAMVER, wxID_WXABOUTDLGSTATICTEXTCLAMWINHOME,
+ wxID_WXABOUTDLGSTATICTEXTCOPYRIGHT, wxID_WXABOUTDLGSTATICTEXTDBUPDATED1,
+ wxID_WXABOUTDLGSTATICTEXTDBUPDATED2, wxID_WXABOUTDLGSTATICTEXTDBUPDATED3,
+ wxID_WXABOUTDLGSTATICTEXTFREESW, wxID_WXABOUTDLGSTATICTEXTSCANENGINE,
+ wxID_WXABOUTDLGSTATICTEXTWINCLAMVER,
 ] = map(lambda _init_ctrls: wxNewId(), range(21))
 
 
@@ -209,7 +209,7 @@ class wxAboutDlg(wxDialog):
     def OnNetfarmHomepage(self, event):
         wxDialogUtils.wxGoToInternetUrl('http://oss.netfarm.it/clamav/')
 
-    
+
     def _SetClamVersion(self):
         if self.config is None:
             return
@@ -237,13 +237,13 @@ class wxAboutDlg(wxDialog):
             dbpath =  self.config.Get('ClamAV', 'Database')
             mainver, mainnumv = Utils.GetDBInfo(os.path.join(dbpath, 'main.cld'))[:2]
             if mainver is None:
-                mainver, mainnumv = Utils.GetDBInfo(os.path.join(dbpath, 'main.cvd'))[:2]                
+                mainver, mainnumv = Utils.GetDBInfo(os.path.join(dbpath, 'main.cvd'))[:2]
             if mainver is None:
                 raise Exception()
             dailyver, dailynumv, updated = Utils.GetDBInfo(os.path.join(dbpath, 'daily.cld'))
-            if dailyver is None:            
+            if dailyver is None:
                 dailyver, dailynumv, updated = Utils.GetDBInfo(os.path.join(dbpath, 'daily.cvd'))
-            if dailyver is None:                            
+            if dailyver is None:
                 raise Exception()
             else:
                 # set user's locale

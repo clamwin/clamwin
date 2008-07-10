@@ -32,24 +32,24 @@ import Config
 import win32api
 
 # import pyclamav here
-#hLibClamAV = 0                             
+#hLibClamAV = 0
 #try:
 #    hLibClamav = win32api.LoadLibrary(os.path.join(Utils.GetCurrentDir(False), "libclamav.dll"))
 #except Exception, e:
 #    print str(e), os.path.join(Utils.GetCurrentDir(False), "libclamav.dll")
-    
-#hLibClamUnrar = 0                             
+
+#hLibClamUnrar = 0
 #try:
 #    hLibClamUnrar = win32api.LoadLibrary(os.path.join(Utils.GetCurrentDir(False), "libclamunrar.dll"))
 #except Exception, e:
 #    print str(e), os.path.join(Utils.GetCurrentDir(False), "libclamunrar.dll")
-    
-#hLibClamUnrar_iface = 0                             
+
+#hLibClamUnrar_iface = 0
 #try:
 #    hLibClamUnrar_iface = win32api.LoadLibrary(os.path.join(Utils.GetCurrentDir(False), "libclamunrar_iface.dll"))
 #except Exception, e:
 #    print str(e), os.path.join(Utils.GetCurrentDir(False), "libclamunrar_iface.dll")
-                                         
+
 sys.path.insert(0, Utils.GetCurrentDir(False))
 #print sys.path
 import pyc
@@ -111,9 +111,9 @@ class BoaApp(wxApp):
             #workaround for running in wxProcess
             self.SetTopWindow(self.main)
         return True
-        
+
     def DisablefsRedirect(self):
-        try:           
+        try:
             #load dlls that fail after fs redir is disabled
             win32api.LoadLibrary(os.path.join(win32api.GetSystemDirectory(), "riched32.dll"))
             win32api.LoadLibrary(os.path.join(win32api.GetSystemDirectory(), "shfolder.dll"))

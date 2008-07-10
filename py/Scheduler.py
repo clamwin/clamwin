@@ -45,7 +45,7 @@ class Scheduler(threading.Thread):
         self._weekDay = weekDay
         self._startTime = startTime
         self._runMissed = runMissed
-        
+
         self._action = action
         self._argument = argument
         self._lastRun = self._ReadLastRun()
@@ -98,7 +98,7 @@ class Scheduler(threading.Thread):
             # check that we have a float
             try:
                 t = float(t)
-            except ValueError:            
+            except ValueError:
                 print 'time in %s is not float' % filename
                 t = 0
                 continue

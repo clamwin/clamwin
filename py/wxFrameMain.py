@@ -120,7 +120,7 @@ class wxMainFrame(wxFrame):
 
         parent.Append(helpString='Opens Frequently Asked Questions Page in the Web Browser',
               id=wxID_WXMAINFRAMEHELPFAQ, item='&FAQ', kind=wxITEM_NORMAL)
-              
+
         parent.AppendSeparator()
         parent.Append(helpString='Displays the About Box',
               id=wxID_WXMAINFRAMEHELPABOUT, item='&About', kind=wxITEM_NORMAL)
@@ -355,28 +355,28 @@ class wxMainFrame(wxFrame):
             if configured and not hasdb:
                 if wxID_YES == MsgBox.MessageBox(None, 'ClamWin Free Antivirus', 'You have not yet downloaded Virus Definitions Database. Would you like to download it now?', wxYES_NO | wxICON_QUESTION):
                     wxDialogUtils.wxUpdateVirDB(self, self._config)
-                    hasdb = Utils.CheckDatabase(self._config)                    
-            
+                    hasdb = Utils.CheckDatabase(self._config)
+
 
             self.buttonScan.Enable(configured and hasdb)
             self.toolBar.EnableTool(wxID_WXMAINFRAMETOOLBARTOOLS_INETUPDATE, configured)
             self.toolBar.EnableTool(wxID_WXMAINFRAMETOOLBARTOOLS_SCAN, configured and hasdb)
             self.toolBar.EnableTool(wxID_WXMAINFRAMETOOLBARTOOLS_SCANMEM, configured and hasdb)
-            
-            # check if the db is current (not older than 3 days)                    
+
+            # check if the db is current (not older than 3 days)
             if hasdb:
-                dbpath =  self._config.Get('ClamAV', 'Database')                
+                dbpath =  self._config.Get('ClamAV', 'Database')
                 daily = os.path.join(dbpath, 'daily.cld')
                 if not os.path.isfile(daily):
-                    daily = os.path.join(dbpath, 'daily.cvd')                   
+                    daily = os.path.join(dbpath, 'daily.cvd')
                 ver, numv, updated = Utils.GetDBInfo(daily)
-                
+
             # print updated, time.mktime(time.localtime()), time.mktime(time.localtime()) - updated
             if hasdb and self._config.Get('Updates', 'WarnOutOfDate') == '1' and (time.mktime(time.localtime()) - updated > 86400*5):
                 if wxID_YES == MsgBox.MessageBox(None, 'ClamWin Free Antivirus', 'Virus signature database is older than 5 days and may not offer the latest protection. Would you like to update it now?', wxYES_NO | wxICON_QUESTION):
                     wxDialogUtils.wxUpdateVirDB(self, self._config)
-                    hasdb = Utils.CheckDatabase(self._config)                    
-                       
+                    hasdb = Utils.CheckDatabase(self._config)
+
         except Exception, e:
             print 'An Error occured while updating UI selection. %s' % str(e)
 
@@ -419,7 +419,7 @@ class wxMainFrame(wxFrame):
 
     def OnHelpFAQ(self, event):
         wxDialogUtils.wxGoToInternetUrl('http://www.clamwin.com/content/category/3/7/27/')
-    
+
     def OnHelpSupport(self, event):
         wxDialogUtils.wxGoToInternetUrl('http://forums.clamwin.com/')
 

@@ -1835,7 +1835,7 @@ class ProcessProxy(Process):
             return self._processId
         else:
             return self._pid
-            
+
 
     def wait(self, timeout=None):
         """Wait for the started process to complete.

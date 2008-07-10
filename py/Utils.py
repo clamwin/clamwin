@@ -31,7 +31,7 @@ import win32api, win32con, win32gui, win32event, win32con, pywintypes
 from win32com.shell import shell, shellcon
 if win32api.GetVersionEx()[3] != win32con.VER_PLATFORM_WIN32_WINDOWS:
     import win32security
-    
+
 from ctypes import *
 from ctypes.wintypes import DWORD
 
@@ -330,7 +330,7 @@ def GetScanCmd(config, path, scanlog, noprint = False):
     # shared params between memory and file scanning
     cmd = '--tempdir "%s"' % tempfile.gettempdir().rstrip('\\')
 
-    
+
     # 22 July 2006
     # added --keep-mbox to leave thunderbird files intact when removing or quarantining
     cmd += ' --keep-mbox --stdout --database="%s" --log="%s" --no-phishing-sigs --no-phishing-scan-urls' % \
@@ -356,10 +356,10 @@ def GetScanCmd(config, path, scanlog, noprint = False):
         cmd += ' --max-files=%i --max-scansize=%iM --max-recursion=%i' % \
             (int(config.Get('ClamAV', 'MaxFiles')),
             int(config.Get('ClamAV', 'MaxScanSize')),
-            int(config.Get('ClamAV', 'MaxRecursion')))                
+            int(config.Get('ClamAV', 'MaxRecursion')))
     else:
         cmd += ' --no-archive'
-        
+
     cmd += ' --max-filesize=%iM' % int(config.Get('ClamAV', 'MaxFileSize'))
 
     if not noprint and config.Get('ClamAV', 'ShowProgress') == '1':
@@ -376,11 +376,11 @@ def GetScanCmd(config, path, scanlog, noprint = False):
             except:
                 pass
         cmd += ' --move="%s"' % quarantinedir
- 
+
     # file scan only params
     if path != None:
         if config.Get('ClamAV', 'ScanRecursive') == '1':
-            cmd += ' --recursive'            
+            cmd += ' --recursive'
         # add annoying registry files to exclude as they're locked by OS
         # no longer needed >= 0.93
         # cmd += GetExcludeSysLockedFiles()
@@ -409,7 +409,7 @@ def GetScanCmd(config, path, scanlog, noprint = False):
                             # not a regular expression
                             # translate glob style to regex
                             pat = fnmatch.translate(pat)
-                            
+
                             # '?' and '*' in the glob pattern become '.' and '.*' in the RE, which
                             # IMHO is wrong -- '?' and '*' aren't supposed to match slash in Unix,
                             # and by extension they shouldn't match such "special characters" under
@@ -426,19 +426,19 @@ def GetScanCmd(config, path, scanlog, noprint = False):
         # append \\ when we have a DRIVE letter path only otherwise CRT gets messd up argv in clamav
         # i.e C:\ will become C:\\
         path = re.sub('([A-Za-z]):("\\|$)', r'\1:\\\2', path)
-    else:   
+    else:
         path = "--memory"
-        
+
     # 21 November 2006
     # added --kill option to unload processes from mem
-    
+
     if config.Get('ClamAV', 'Kill') == '1':
-        cmd += ' --kill'        
+        cmd += ' --kill'
 
     cmd = '"%s" %s %s' % (config.Get('ClamAV', 'ClamScan'), cmd, path)
-    
+
     print 'clamscan.exe command line: ', cmd
-    
+
     return cmd
 
 
@@ -446,7 +446,7 @@ def CleanupTemp(pid):
     # we search for folders and files ending with 0x8pid.clamtmp
     # and then remove them
 
-    print 'Cleanup for process %08x' % pid    
+    print 'Cleanup for process %08x' % pid
     mask = '.%08x.clamtmp' % pid
     try:
         (root, dirs, files) = os.walk(tempfile.gettempdir()).next()
@@ -466,8 +466,8 @@ def CleanupTemp(pid):
                 os.remove(os.path.join(root, tmpfile))
             except Exception, e:
                 print 'Could not remove %s. Error: %s' % (os.path.join(root, tmpdir), str(e))
-    
-            
+
+
 def AppendLogFile(logfile, appendfile, maxsize):
     try:
         # create logs folder before appending
@@ -670,8 +670,8 @@ def ReformatLog(data, rtf):
 # removes clamav warnings
 def ReplaceClamAVWarnings(data):
     data = data.replace('Please check if ClamAV tools are linked against proper version of libclamav\n', '')
-    data = data.replace('WARNING: Your ClamAV installation is OUTDATED!\n', '')    
-    data = re.sub("DON'T PANIC! Read .*\n", '', data)    
+    data = data.replace('WARNING: Your ClamAV installation is OUTDATED!\n', '')
+    data = re.sub("DON'T PANIC! Read .*\n", '', data)
     data = re.sub('WARNING: Current functionality level = \d+, recommended = \d+\n', '', data)
     data = re.sub('WARNING: Local version: \d+\.??\d*?\.??\d*? Recommended version: \d+\.??\d*?\.??\d*?\n', '', data)
 
@@ -679,15 +679,15 @@ def ReplaceClamAVWarnings(data):
     data = data.replace('LibClamAV Warning: ********************************************************\n', '')
     data = data.replace('LibClamAV Warning: ***  This version of the ClamAV engine is outdated.  ***\n', '')
     data = re.sub("LibClamAV Warning: \*\*\* DON'T PANIC! .* \*\*\*\n", '', data)
-    
+
     # remove XXX: Excluded lines
     data = re.sub('.*\: Excluded\n', '', data)
-    
+
     # remove incremental db update warnings and errors
     data = re.sub('ERROR: getfile: .* not found on remote server \(IP: .*\)\n', '', data)
     data = re.sub('ERROR: getpatch: Can\'t download .* from .*\n', '', data)
     data = data.replace('WARNING: Incremental update failed, trying to download daily.cvd\n', '')
-    
+
     return data
 
 # returns tuple (version, url, changelog)
@@ -757,7 +757,7 @@ def CheckDatabase(config):
            (os.path.isfile(os.path.join(path, 'daily.cvd'))  or  \
             os.path.isfile(os.path.join(path, 'daily.cld')))
 
-            
+
 def RegKeyExists(key, subkey):
     # try to open the regkey
     try:
@@ -785,8 +785,8 @@ def IsOnline():
     except Exception, e:
         print "InternetGetConnectedState failed %s", str(e)
     return False
-     
-                
+
+
 #def IsOutlookAddinEnabled():
 #    key = _winreg.HKEY_LOCAL_MACHINE
 #    subKey = ''
@@ -854,10 +854,10 @@ if __name__ == '__main__':
     #b = config.Read()
     #print GetOnlineVersion(config)
 #    print CheckDatabase(config)
-    #dbpath =  config.Get('ClamAV', 'Database')                
+    #dbpath =  config.Get('ClamAV', 'Database')
     #daily = os.path.join(dbpath, 'daily.cld')
     #if not os.path.isfile(daily):
-    #    daily = os.path.join(dbpath, 'daily.cvd')                   
+    #    daily = os.path.join(dbpath, 'daily.cvd')
     #print GetDBInfo(daily)
     print IsOnline()
 

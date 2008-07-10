@@ -181,7 +181,7 @@ class MainWindow:
 
         # create scheduler thread for program version check
         if self._config.Get('Updates', 'CheckVersion') == '1':
-            checkvertime = None        
+            checkvertime = None
             try:
                 f = file(os.path.join(tempfile.gettempdir(), 'ClamWin_CheckVer_Time'), 'r')
                 t = f.read()
@@ -190,14 +190,14 @@ class MainWindow:
                     checkvertime = time.strftime('%H:%M:%S', time.localtime(float(t)))
             except Exception, e:
                 print 'An error occured whilst reading last scheduled run from %s. Error: %s' % ('ClamWin_CheckVer_Time', str(e))
-           
+
             if checkvertime is None:
                 # 5 minutes to 1 hour after start
-                checkvertime = time.strftime('%H:%M:%S', time.localtime(time.time() + random.randint(300, 3600))) 
+                checkvertime = time.strftime('%H:%M:%S', time.localtime(time.time() + random.randint(300, 3600)))
                 print "using random checkversion time %s" % checkvertime
-            
-            
-                
+
+
+
             curDir = Utils.GetCurrentDir(True)
             scheduler = Scheduler.Scheduler('Daily', # check once aday
                             checkvertime,
@@ -471,7 +471,7 @@ class MainWindow:
                 scheduler.start()
                 self._schedulers.append(scheduler)
 
-               
+
 
     def _OpenWebPage(self, url):
         try:
@@ -590,7 +590,7 @@ class MainWindow:
         # send the notification alert if we need to
         if email_alert:
             try:
-                if process.wait() == 1 and  not process.isKilled(): 
+                if process.wait() == 1 and  not process.isKilled():
                     msg = EmailAlert.ConfigVirusAlertMsg(self._config, (appendlog,))
                     msg.Send()
             except Exception, e:
@@ -615,7 +615,7 @@ class MainWindow:
             os.remove(appendlog)
         except Exception, e:
             print 'could not remove file: %s. Error: %s' % (appendlog, str(e))
-            
+
         Utils.CleanupTemp(process.getpid())
 
     ProcessFinished = staticmethod(ProcessFinished)
@@ -660,7 +660,7 @@ class OutBuffer(Process.IOBuffer):
     def readlines(self):
         return
 
-    def _doClose(self):        
+    def _doClose(self):
         if self._proc:
             self.notify(self._caller, self._proc, *self._params)
             del self._proc

@@ -317,18 +317,18 @@ class wxDialogStatus(wxDialog):
             return
 
         self._alreadyCalled = True
-        
+
         time.sleep(0.5)
-        
+
         Utils.CleanupTemp(self._proc.getpid())
-        
+
         self.buttonSave.Enable(True)
         self.throbber.Rest()
         self.buttonStop.SetFocus()
         self.buttonStop.SetLabel('&Close')
 
         data = ''
-        if self._logfile is not None:           
+        if self._logfile is not None:
             try:
                 # read last 30000 bytes form the log file
                 # as our edit control is incapable of displaying more
@@ -364,7 +364,7 @@ class wxDialogStatus(wxDialog):
             self._returnCode = self._proc.wait(_WAIT_TIMEOUT)
         except:
             self._returnCode = -1
-        
+
         if self._cancelled:
             self._returnCode = 0
 
