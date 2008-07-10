@@ -156,7 +156,6 @@ class wxDialogScheduledScan(wx.Dialog):
               'Weekly'], id=wxID_WXDIALOGSCHEDULEDSCANCHOICEFREQUENCY,
               name='choiceFrequency', parent=self, pos=wx.Point(171, 27),
               size=wx.Size(107, 21), style=0)
-        #self.choiceFrequency.SetColumns(2)
         self.choiceFrequency.SetToolTipString('How often the schedule is executed')
         self.choiceFrequency.SetStringSelection('Daily')
         wx.EVT_CHOICE(self.choiceFrequency,
@@ -187,7 +186,6 @@ class wxDialogScheduledScan(wx.Dialog):
               'Thursday', 'Friday', 'Saturday', 'Sunday'],
               id=wxID_WXDIALOGSCHEDULEDSCANCHOICEDAY, name='choiceDay',
               parent=self, pos=wx.Point(171, 82), size=wx.Size(107, 21), style=0)
-        #self.choiceDay.SetColumns(2)
         self.choiceDay.SetToolTipString('When schedule frequency is weekly select day of the week')
         self.choiceDay.SetStringSelection('Tuesday')
 
