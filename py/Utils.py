@@ -563,7 +563,10 @@ def GetDBInfo(filename):
         updatestr = updatestr[:sep]
         # set default C locale, as *.cvd timestring uses that
         loc = locale.setlocale(locale.LC_TIME, 'C')
-        update_tm = time.strptime(updatestr, '%d %b %Y %H-%M %Z')
+        try:
+            update_tm = time.strptime(updatestr, '%d %b %Y %H-%M %Z')
+        except:
+            update_tm = time.strptime(updatestr, '%d %b %Y %H-%M')
         # restore the locale
         locale.setlocale(locale.LC_TIME, loc)
         #get the final update time and add the UTC difference
@@ -571,7 +574,7 @@ def GetDBInfo(filename):
         return int(ver), int(numv), updated
     except Exception, e:
         print 'Unable to retrieve %s version. Error: %s' % (filename, str(e))
-        return None, None, None
+        return None, None, 0
 
 def GetHostName():
     hostname = ''
@@ -603,9 +606,7 @@ def GetHostName():
 
 def SpawnPyOrExe(filename, *params):
     if not hasattr(sys, 'frozen') and sys.platform.startswith('win'):
-        win32api.ShellExecute(0, 'open', 'pythonw.exe',
-                    filename + '.py ' + ' '.join(params),
-                    None, win32con.SW_SHOWNORMAL)
+        win32api.ShellExecute(0, 'open', filename + '.py', filename + '.py ' + ' '.join(params), None, win32con.SW_SHOWNORMAL)
     else:
         os.spawnl(os.P_NOWAIT, filename + '.exe', *params)
 
