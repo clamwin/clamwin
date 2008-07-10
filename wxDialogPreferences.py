@@ -1550,11 +1550,18 @@ class MyValidator(MyBaseValidator):
     def TransferToWindow(self):
         value = self._config.Get(self._section, self._value)
         ctrl = self.GetWindow()
-        if isinstance(ctrl, (wx.lib.intctrl.IntCtrl, wx.CheckBox, wx.RadioButton, wx.SpinCtrl)):
-            value = int(value)
-        else:
-            if not len(value):
-               value = ''
+
+        if isinstance(ctrl, (wx.lib.intctrl.IntCtrl, wx.SpinCtrl)):
+            try:
+                value = int(value)
+            except:
+                print 'Invalid Integer value for', ctrl.Name, 'control:', value
+                value = 0
+        elif isinstance(ctrl, (wx.CheckBox, wx.RadioButton)):
+            if value == 'True' or value == '1':
+                value = True
+            else:
+                value = False
 
         if(isinstance(ctrl, wx.Choice)):
             ctrl.SetStringSelection(value)
