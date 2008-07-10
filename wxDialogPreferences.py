@@ -1497,9 +1497,9 @@ class wxPreferencesDlg(wx.Dialog):
     def OnCheckBoxOutlookScanIncomingCheckbox(self, event):
         event.Skip()
 
-class MyBaseValidator(wx.Validator):
+class MyBaseValidator(wx.PyValidator):
      def __init__(self, config, section, value, canEmpty=True):
-         wx.Validator.__init__(self)
+         wx.PyValidator.__init__(self)
          self._config = config
          self._section = section
          self._value = value

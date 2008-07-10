@@ -301,9 +301,9 @@ class wxDialogScheduledScan(wx.Dialog):
         finally:
             dlg.Destroy()
 
-class MyValidator(wx.Validator):
+class MyValidator(wx.PyValidator):
     def __init__(self, scanInfo, propName, canEmpty=True):
-        wx.Validator.__init__(self)
+        wx.PyValidator.__init__(self)
         self._scanInfo = scanInfo
         self._propName = propName
         self._canEmpty = canEmpty
