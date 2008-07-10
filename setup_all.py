@@ -128,7 +128,7 @@ if len(sys.argv) == 1 or \
 setup(name='ClamWin Antivirus',
       version=ver,
       description='ClamWin Antivirus',
-      console=[scanner, tray, winclose],
+      windows=[scanner, tray, winclose],
       data_files = image_files,
       options = {'py2exe' : py2exe_options},
       zipfile = 'lib/clamwin.zip',
