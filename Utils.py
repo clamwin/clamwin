@@ -563,7 +563,10 @@ def GetDBInfo(filename):
         updatestr = updatestr[:sep]
         # set default C locale, as *.cvd timestring uses that
         loc = locale.setlocale(locale.LC_TIME, 'C')
-        update_tm = time.strptime(updatestr, '%d %b %Y %H-%M %Z')
+        try:
+            update_tm = time.strptime(updatestr, '%d %b %Y %H-%M %Z')
+        except:
+            update_tm = time.strptime(updatestr, '%d %b %Y %H-%M')
         # restore the locale
         locale.setlocale(locale.LC_TIME, loc)
         #get the final update time and add the UTC difference
