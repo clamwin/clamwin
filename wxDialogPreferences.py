@@ -627,7 +627,6 @@ class wxPreferencesDlg(wx.Dialog):
               parent=self._panelInternetUpdate, pos=wx.Point(126, 101),
               size=wx.Size(110, 21), style=0)
 
-        #self.choiceUpdateDay.SetColumns(2)
         self.choiceUpdateDay.SetToolTipString('When update frequency is weekly select day of the week for an update')
         self.choiceUpdateDay.SetStringSelection('Tuesday')
 
