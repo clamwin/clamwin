@@ -138,7 +138,7 @@ class wxDialogUpdateChecker(wx.Dialog):
         self.staticTextAnnounce.SetLabel(self.staticTextAnnounce.GetLabel() % version)
         self.staticTextChangelog.SetLabel(self.staticTextChangelog.GetLabel() % version)
 
-        self.checkBoxDontCheck.SetValue(not int(self._config.Get('Updates', 'CheckVersion')))
+        self.checkBoxDontCheck.SetValue(not self._config.Get('Updates', 'CheckVersion'))
 
 
     def OnCharHook(self, event):
@@ -153,13 +153,13 @@ class wxDialogUpdateChecker(wx.Dialog):
         event.Skip()
 
     def OnButtonClose(self, event):
-        self._config.Set('Updates', 'CheckVersion', int(not self.checkBoxDontCheck.GetValue()))
+        self._config.Set('Updates', 'CheckVersion', not self.checkBoxDontCheck.GetValue())
         self._config.Write()
         self.EndModal(wx.ID_OK)
         event.Skip()
 
     def OnButtonDownload(self, event):
-        self._config.Set('Updates', 'CheckVersion', int(not self.checkBoxDontCheck.GetValue()))
+        self._config.Set('Updates', 'CheckVersion', not self.checkBoxDontCheck.GetValue())
         self._config.Write()
         self.EndModal(wx.ID_OK)
         wxDialogUtils.wxGoToInternetUrl(self._url)

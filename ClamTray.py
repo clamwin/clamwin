@@ -140,7 +140,7 @@ class MainWindow:
                 os.path.join(Utils.GetScheduleShelvePath(self._config), 'ScheduledScans'))
 
         # create an update schedule to run now if 'Update on Logon' is selected
-        if logon and self._config.Get('Updates', 'UpdateOnLogon') == '1':
+        if logon and self._config.Get('Updates', 'UpdateOnLogon'):
             # set C locale, otherwise python and wxpython complain
             locale.setlocale(locale.LC_ALL, 'C')
 
@@ -158,10 +158,10 @@ class MainWindow:
             self._schedulers.append(scheduler)
 
         # create a scheduler thread for DB updates
-        if self._config.Get('Updates', 'Enable') == '1':
+        if self._config.Get('Updates', 'Enable'):
             scheduler = Scheduler.Scheduler(self._config.Get('Updates', 'Frequency'),
                             self._config.Get('Updates', 'Time'),
-                            int(self._config.Get('Updates', 'WeekDay')),
+                            self._config.Get('Updates', 'WeekDay'),
                             True,
                             win32gui.SendMessage, (self.hwnd, win32con.WM_COMMAND, self.MENU_UPDATE_DB, 1),
                             ('ClamWin_Scheduler_Info', 'ClamWin_Upadte_Time'))
@@ -180,7 +180,7 @@ class MainWindow:
                 self._schedulers.append(scheduler)
 
         # create scheduler thread for program version check
-        if self._config.Get('Updates', 'CheckVersion') == '1':
+        if self._config.Get('Updates', 'CheckVersion'):
             checkvertime = None
             try:
                 f = file(os.path.join(tempfile.gettempdir(), 'ClamWin_CheckVer_Time'), 'r')
@@ -420,7 +420,7 @@ class MainWindow:
                             ' --config-file="%s" --log="%s"' % (freshclam_conf, updatelog)
                     cmd = '"%s" %s' % (self._config.Get('ClamAV', 'FreshClam'), cmd)
                     try:
-                        if self._config.Get('UI', 'TrayNotify') == '1':
+                        if self._config.Get('UI', 'TrayNotify'):
                             balloon = (('Virus database has been updated.', 0,
                                        win32gui.NIIF_INFO, 10000),
                                        ('An error occured during Scheduled Virus Database Update. Please review the update report.', 1,
@@ -535,7 +535,7 @@ class MainWindow:
             cmd += " --memory"
             print cmd
         try:
-            if self._config.Get('UI', 'TrayNotify') == '1':
+            if self._config.Get('UI', 'TrayNotify'):
                 balloon = (('Virus has been detected during scheduled scan! Please review the scan report.', 1,
                           win32gui.NIIF_ERROR, 30000),
                           ('An error occured during scheduled scan. Please review the scan report.', 0,
@@ -557,7 +557,7 @@ class MainWindow:
                         self.ProcessFinished,
                         (self._config.Get('ClamAV', 'LogFile'),
                         scanlog,
-                        self._config.Get('EmailAlerts', 'Enable') == '1',
+                        self._config.Get('EmailAlerts', 'Enable'),
                         balloon
                         ))
             self._processes.append(proc)
@@ -569,7 +569,7 @@ class MainWindow:
             except:
                pass
             print str(e)
-        if self._config.Get('UI', 'TrayNotify') == '1':
+        if self._config.Get('UI', 'TrayNotify'):
             balloon_info = (('Running Scheduled Task:\n'+description, 0,
                             win32gui.NIIF_INFO, 10000),
                             ('An error occured whilst running Running Scheduled Task '+description, 1,
@@ -608,7 +608,7 @@ class MainWindow:
             pass
 
         time.sleep(1)
-        maxsize = int(self._config.Get('ClamAV', 'MaxLogSize'))*1048576
+        maxsize = self._config.Get('ClamAV', 'MaxLogSize')*1048576
         Utils.AppendLogFile(log, appendlog, maxsize)
 
         try:

@@ -370,7 +370,7 @@ class wxMainFrame(wx.Frame):
                 ver, numv, updated = Utils.GetDBInfo(daily)
 
             # print updated, time.mktime(time.localtime()), time.mktime(time.localtime()) - updated
-            if hasdb and self._config.Get('Updates', 'WarnOutOfDate') == '1' and (time.mktime(time.localtime()) - updated > 86400*5):
+            if hasdb and self._config.Get('Updates', 'WarnOutOfDate') and (time.mktime(time.localtime()) - updated > 86400*5):
                 if wx.ID_YES == MsgBox.MessageBox(None, 'ClamWin Free Antivirus', 'Virus signature database is older than 5 days and may not offer the latest protection. Would you like to update it now?', wx.YES_NO | wx.ICON_QUESTION):
                     wxDialogUtils.wxUpdateVirDB(self, self._config)
                     hasdb = Utils.CheckDatabase(self._config)

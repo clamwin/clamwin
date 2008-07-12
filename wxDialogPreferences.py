@@ -45,7 +45,6 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLGBUTTONTASKDEACTIVATE,
  wxID_WXPREFERENCESDLGBUTTONTASKEDIT, wxID_WXPREFERENCESDLGBUTTONTASKREMOVE,
  wxID_WXPREFERENCESDLGBUTTONVIRDB, wxID_WXPREFERENCESDLGCHECKBOXCHECKVERSION,
- wxID_WXPREFERENCESDLGCHECKBOXDETECTPUA,
  wxID_WXPREFERENCESDLGCHECKBOXENABLEAUTOUPDATE,
  wxID_WXPREFERENCESDLGCHECKBOXENABLEMBOX,
  wxID_WXPREFERENCESDLGCHECKBOXENABLEOLE2,
@@ -137,7 +136,7 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLG_PANELINTERNETUPDATE,
  wxID_WXPREFERENCESDLG_PANELOPTIONS, wxID_WXPREFERENCESDLG_PANELPROXY,
  wxID_WXPREFERENCESDLG_PANELREPORTS, wxID_WXPREFERENCESDLG_PANELSCHEDULER,
-] = map(lambda _init_ctrls: wx.NewId(), range(125))
+] = map(lambda _init_ctrls: wx.NewId(), range(124))
 
 class wxPreferencesDlg(wx.Dialog):
     def _init_coll_imageListScheduler_Images(self, parent):
@@ -490,13 +489,6 @@ class wxPreferencesDlg(wx.Dialog):
               pos=wx.Point(6, 33), size=wx.Size(381, 18), style=0)
         self.checkBoxEnableOLE2.SetToolTipString('Select if you wish to scan OLE attachments and macros in MS Office Documents')
         self.checkBoxEnableOLE2.SetValue(False)
-
-        self.checkBoxDetectPUA = wx.CheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXDETECTPUA,
-              label='&Detect Potentially Unwanted Applications',
-              name='checkBoxDetectPUA', parent=self._panelAdvanced,
-              pos=wx.Point(6, 56), size=wx.Size(381, 18), style=0)
-        self.checkBoxDetectPUA.SetToolTipString('Select if you wish to detect Potentially Unwanted Applications such as keygens, cracks, etc')
-        self.checkBoxDetectPUA.SetValue(False)
 
         self.staticTextAdditionalParams = wx.StaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTADDITIONALPARAMS,
               label='&Additional Clamscan Command Line Parameters:',
@@ -1007,7 +999,7 @@ class wxPreferencesDlg(wx.Dialog):
         # added check for self._config.Get('UI', 'Standalone')
         # to enable running the scanner only with no scheduler
         # needed in clamwin plugin to BartPE <http://oss.netfarm.it/winpe/>
-        if self._config.Get('UI', 'Standalone') == '1':
+        if self._config.Get('UI', 'Standalone'):
             init_pages.remove(self._EmailScanningPageInit)
             init_pages.remove(self._InternetUpdatePageInit)
             init_pages.remove(self._ScheduledScanPageInit)
@@ -1100,9 +1092,8 @@ class wxPreferencesDlg(wx.Dialog):
 
     def _EnableOptionsControls(self, init):
         if init:
-            self._config.Get('ClamAV', 'RemoveInfected') == '1'
-            enable = self._config.Get('ClamAV', 'MoveInfected') == '1' and \
-                        len(self._config.Get('ClamAV', 'QuarantineDir'))
+            #self._config.Get('ClamAV', 'RemoveInfected') == '1' # FIXME ????
+            enable = self._config.Get('ClamAV', 'MoveInfected') and len(self._config.Get('ClamAV', 'QuarantineDir'))
         else:
             enable = self.radioButtonQuarantine.GetValue()
 
@@ -1125,25 +1116,21 @@ class wxPreferencesDlg(wx.Dialog):
     def _FiltersPageInit(self):
         self.editableListBoxFiltersInclude.SetValidator(MyPatternValidator(config=self._config, section='ClamAV', value='IncludePatterns'))
         self.editableListBoxFiltersExclude.SetValidator(MyPatternValidator(config=self._config, section='ClamAV', value='ExcludePatterns'))
-        if sys.platform.startswith('win'):
-            wx.EVT_CHAR(self.editableListBoxFiltersInclude.GetListCtrl(),
-                  self.OnEditableListBoxChar)
-            wx.EVT_CHAR(self.editableListBoxFiltersExclude.GetListCtrl(),
-                  self.OnEditableListBoxChar)
+        wx.EVT_CHAR(self.editableListBoxFiltersInclude.GetListCtrl(), self.OnEditableListBoxChar)
+        wx.EVT_CHAR(self.editableListBoxFiltersExclude.GetListCtrl(), self.OnEditableListBoxChar)
 
     def _EnableInternetUpdateControls(self, init):
-        if sys.platform.startswith("win"):
-            if init:
-                enable = self._config.Get('Updates', 'Enable') == '1'
-                enableDay = enable and self._config.Get('Updates', 'Frequency') == 'Weekly'
-            else:
-                enable = self.checkBoxEnableAutoUpdate.IsChecked()
-                enableDay = enable and self.choiceUpdateFrequency.GetStringSelection() == 'Weekly'
-            self.textCtrlDBMirror.Enable(enable)
-            self.choiceUpdateDay.Enable(enableDay)
-            self.choiceUpdateFrequency.Enable(enable)
-            self.timeUpdate.Enable(enable)
-            self.spinButtonUpdateTime.Enable(enable)
+        if init:
+            enable = self._config.Get('Updates', 'Enable')
+            enableDay = enable and self._config.Get('Updates', 'Frequency') == 'Weekly'
+        else:
+            enable = self.checkBoxEnableAutoUpdate.IsChecked()
+            enableDay = enable and self.choiceUpdateFrequency.GetStringSelection() == 'Weekly'
+        self.textCtrlDBMirror.Enable(enable)
+        self.choiceUpdateDay.Enable(enableDay)
+        self.choiceUpdateFrequency.Enable(enable)
+        self.timeUpdate.Enable(enable)
+        self.spinButtonUpdateTime.Enable(enable)
 
     def _InternetUpdatePageInit(self):
         locale.setlocale(locale.LC_ALL, 'C')
@@ -1182,7 +1169,7 @@ class wxPreferencesDlg(wx.Dialog):
 
     def _EnableEmailAlertsControls(self, init):
         if init:
-            enable = self._config.Get('EmailAlerts', 'Enable') == '1'
+            enable = self._config.Get('EmailAlerts', 'Enable')
         else:
             enable = self.checkBoxSMTPEnable.IsChecked()
         self.textCtrlSMTPHost.Enable(enable)
@@ -1212,7 +1199,7 @@ class wxPreferencesDlg(wx.Dialog):
 
     def _EnableArchivesControls(self, init):
         if init:
-            enable = self._config.Get('ClamAV', 'ScanArchives') == '1'
+            enable = self._config.Get('ClamAV', 'ScanArchives')
         else:
             enable = self.checkBoxScanArchives.IsChecked()
         self.spinCtrlArchiveFiles.Enable(enable)
@@ -1230,7 +1217,7 @@ class wxPreferencesDlg(wx.Dialog):
     def _ReportsPageInit(self):
         self.textCtrlScanLogFile.SetValidator(MyValidator(config=self._config, section='ClamAV', value='LogFile', canEmpty=False))
         self.textCtrlUpdateLogFile.SetValidator(MyValidator(config=self._config, section='Updates', value='DBUpdateLogFile', canEmpty=False))
-        if sys.platform.startswith('win') and self._config.Get('UI', 'Standalone') != '1':
+        if sys.platform.startswith('win') and self._config.Get('UI', 'Standalone'):
             self.checkBoxTrayNotify.SetValidator(MyValidator(config=self._config, section='UI', value='TrayNotify'))
         else:
             self.checkBoxTrayNotify.Hide()
@@ -1245,7 +1232,6 @@ class wxPreferencesDlg(wx.Dialog):
         self.spinCtrlMaxLogSize.SetValidator(MyValidator(self._config, section='ClamAV', value='MaxLogSize', canEmpty=False))
         self.checkBoxEnableMbox.SetValidator(MyValidator(config=self._config, section='ClamAV', value='EnableMbox'))
         self.checkBoxEnableOLE2.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ScanOle2'))
-        self.checkBoxDetectPUA.SetValidator(MyValidator(config=self._config, section='ClamAV', value='DetectPUA'))
         self.textCtrlAdditionalParams.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ClamScanParams', canEmpty=True))
 
     def _ListAddScheduledScan(self, sc, pos = -1):
@@ -1514,15 +1500,13 @@ class MyBaseValidator(wx.PyValidator):
 class MyWeekDayValidator(MyBaseValidator):
      def TransferToWindow(self):
          value = self._config.Get(self._section, self._value)
-         if not len(value):
-             value = ''
          ctrl = self.GetWindow()
          ctrl.SetSelection(int(value))
 
      def TransferFromWindow(self):
          ctrl = self.GetWindow()
          value = ctrl.GetSelection()
-         self._config.Set(self._section, self._value, str(value))
+         self._config.Set(self._section, self._value, value)
 
 class MyValidator(MyBaseValidator):
     def Validate(self, win):
@@ -1531,11 +1515,7 @@ class MyValidator(MyBaseValidator):
             return True
         if isinstance(ctrl, (wx.Choice, wx.CheckBox, wx.RadioButton)) or self._canEmpty:
             return True
-        if isinstance(ctrl, (wx.lib.intctrl.IntCtrl, wx.SpinCtrl)):
-            text = str(ctrl.GetValue())
-        else:
-            text = ctrl.GetValue()
-        if len(text) == 0:
+        if not bool(ctrl.GetValue()):
             page = self.GetWindow().GetParent()
             wx.MessageBox("Value cannot be empty", "ClamWin Free Antivirus", style=wx.ICON_EXCLAMATION|wx.OK)
             ctrl.SetBackgroundColour("yellow")
@@ -1550,19 +1530,6 @@ class MyValidator(MyBaseValidator):
     def TransferToWindow(self):
         value = self._config.Get(self._section, self._value)
         ctrl = self.GetWindow()
-
-        if isinstance(ctrl, (wx.lib.intctrl.IntCtrl, wx.SpinCtrl)):
-            try:
-                value = int(value)
-            except:
-                print 'Invalid Integer value for', ctrl.Name, 'control:', value
-                value = 0
-        elif isinstance(ctrl, (wx.CheckBox, wx.RadioButton)):
-            if value == 'True' or value == '1':
-                value = True
-            else:
-                value = False
-
         if(isinstance(ctrl, wx.Choice)):
             ctrl.SetStringSelection(value)
         else:
@@ -1574,7 +1541,7 @@ class MyValidator(MyBaseValidator):
         if(isinstance(ctrl, wx.Choice)):
             value = ctrl.GetStringSelection()
         elif isinstance(ctrl, (wx.CheckBox, wx.RadioButton, wx.lib.intctrl.IntCtrl, wx.SpinCtrl)):
-            value = str(ctrl.GetValue())
+            value = ctrl.GetValue()
         elif isinstance(ctrl, wx.lib.masked.TimeCtrl):
             # set C locale, otherwise python and wxpython complain
             locale.setlocale(locale.LC_ALL, 'C')

@@ -315,12 +315,9 @@ class MyValidator(wx.PyValidator):
         ctrl = self.GetWindow()
         if isinstance(ctrl, (wx.Choice, wx.CheckBox)) or self._canEmpty:
             return True
-        if isinstance(ctrl, wx.SpinCtrl):
-            text = str(ctrl.GetValue())
-        else:
-            text = ctrl.GetValue()
+        text = ctrl.GetValue()
         invalid = False
-        if len(text) == 0:
+        if not bool(text):
             wx.MessageBox("Value cannot be empty", "ClamWin", style=wx.ICON_EXCLAMATION|wx.OK)
             invalid = True
         elif ctrl.GetName() == 'textCtrlFolder' and not os.path.exists(text):

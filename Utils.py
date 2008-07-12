@@ -346,8 +346,6 @@ def GetScanCmd(config, path, scanlog, noprint = False):
         cmd += ' --no-mail'
     if config.Get('ClamAV', 'ScanOle2') != '1':
         cmd += ' --no-ole2'
-    if config.Get('ClamAV', 'DetectPUA') == '1':
-        cmd += ' --detect-pua'
     if config.Get('ClamAV', 'ClamScanParams') != '':
         cmd += ' ' + config.Get('ClamAV', 'ClamScanParams')
     if config.Get('ClamAV', 'InfectedOnly') == '1' or noprint:

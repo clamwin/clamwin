@@ -24,121 +24,141 @@
 #-----------------------------------------------------------------------------
 import ConfigParser
 import Utils
-import version
-import binascii
-import sys
-if sys.platform.startswith("win"):
-    import win32api
+from copy import deepcopy
+from types import StringType, IntType, BooleanType  
+
+mapping = { 'get': StringType, 'getint': IntType, 'getboolean': BooleanType }
 
 REGEX_SEPARATOR="|CLAMWIN_SEP|"
 
 class Settings:
     def __init__(self, filename):
         self._filename = filename
-        self._settings = {
-        'ClamAV':
-        [0, {'ClamScan': '', 'FreshClam': '', 'Database': '',
-             'RemoveInfected': '0', 'ScanRecursive': '1',
-             'InfectedOnly': '0', 'ShowProgress': '1',
-             'Priority': 'Low', 'EnableMbox': '0', 'ScanOle2': '1',
-             'ScanArchives': '1', 'MaxScanSize': '150', 'MaxFiles': '500', 'MaxFileSize': '100',
-             'MaxRecursion': '5', 'LogFile': '', 'MaxLogSize': '1',
-             'MoveInfected': '0', 'QuarantineDir': '',  'Debug': '0',
-             'DetectPUA': '0', 'ClamScanParams':'', 'Kill': '1',
-             'IncludePatterns': '',
-             'ExcludePatterns': REGEX_SEPARATOR.join(('*.dbx','*.tbb','*.pst', '*.dat', '*.log', '*.evt', '*.nsf', '*.ntf', '*.chm')),}],
-        'Proxy':
-        [0, {'Host': '', 'Port': '3128', 'User':'',
-             'Password': ''}],
-        'Updates':
-        [0, {'Enable': '1', 'Frequency': 'Daily', 'Time': '10:00:00',
-            'WeekDay': '2', 'DBMirror': 'database.clamav.net',
-            'DBUpdateLogFile': '', 'UpdateOnLogon': '0', 'WarnOutOfDate': '1',
-            'CheckVersion': '1', 'CheckVersionURL': 'http://clamwin.sourceforge.net/clamwinver.php'}],
-        'EmailAlerts':
-        [0, {'Enable': '0',
-             'SMTPHost': '', 'SMTPPort': '25', 'SMTPUser':'',
-             'SMTPPassword': '',
-             'From': 'clamwin@yourdomain', 'To': 'admin@yourdomain',
-             'Subject': 'ClamWin Virus Alert'}],
-        'UI':
-        [0, {'TrayNotify': '1', 'ReportInfected': '1', 'Standalone': '0', 'Version': ''}],
-        'Schedule':
-        [0, {'Path': '', }],
-        'EmailScan':
-        [0, {'ScanIncoming': '1', 'ScanOutgoing': '1', 'ShowSplash': '1'}],
+        self._options = {
+            'clamav':
+            {
+                'clamscan'          : [ 'get', '' ],
+                'freshclam'         : [ 'get', '' ],
+                'database'          : [ 'get', '' ],
+                'removeinfected'    : [ 'getboolean', False ],
+                'scanrecursive'     : [ 'getboolean', True ],
+                'infectedonly'      : [ 'getboolean', False ],
+                'showprogress'      : [ 'getboolean', True ],
+                'priority'          : [ 'get', 'Low' ],
+                'enablembox'        : [ 'getboolean', False ],
+                'scanole2'          : [ 'getboolean',  True ],
+                'scanarchives'      : [ 'getboolean', True ],
+                'maxscansize'       : [ 'getint', 150 ],
+                'maxfiles'          : [ 'getint', 500 ],
+                'maxfilesize'       : [ 'getint', 100 ],
+                'maxrecursion'      : [ 'getint', 5 ],
+                'logfile'           : [ 'get', '' ],
+                'maxlogsize'        : [ 'getint', 1 ],
+                'moveinfected'      : [ 'getboolean', False ],
+                'quarantinedir'     : [ 'get', '' ],
+                'debug'             : [ 'getboolean', False ],
+                'clamscanparams'    : [ 'get', '' ],
+                'kill'              : [ 'getboolean', True ],
+                'includepatterns'   : [ 'get', '' ],
+                'excludepatterns'   : [ 'get', REGEX_SEPARATOR.join(('*.dbx','*.tbb','*.pst', '*.dat', '*.log', '*.evt', '*.nsf', '*.ntf', '*.chm')) ]
+            },
+            'proxy':
+            {
+                'host'              : [ 'get', '' ],
+                'port'              : [ 'getint', 3128 ],
+                'user'              : [ 'get', '' ],
+                'password'          : [ 'get', '' ]
+            },
+            'updates':
+            {
+                'enable'            : [ 'getboolean', True ],
+                'frequency'         : [ 'get', 'Daily' ],
+                'time'              : [ 'get', '10:00:00' ],
+                'weekday'           : [ 'getint', 2 ],
+                'dbmirror'          : [ 'get', 'database.clamav.net' ],
+                'dbupdatelogfile'   : [ 'get', '' ],
+                'updateonlogon'     : [ 'getboolean', False ],
+                'warnoutofdate'     : [ 'getboolean', True ],
+                'checkversion'      : [ 'getboolean', True ],
+                'checkversionurl'   : [ 'get', 'http://clamwin.sourceforge.net/clamwinver.php' ]
+            },
+            'emailalerts':
+            {    
+                'enable'            : [ 'getboolean', False ],
+                'smtphost'          : [ 'get', '' ],
+                'smtpport'          : [ 'getint', 25 ],
+                'smtpuser'          : [ 'get', '' ],
+                'smtppassword'      : [ 'get', '' ],
+                'from'              : [ 'get', 'clamwin@yourdomain' ],
+                'to'                : [ 'get', 'admin@yourdomain' ],
+                'subject'           : [ 'get', 'ClamWin Virus Alert' ]
+            },
+            'ui':
+            {
+                'traynotify'        : [ 'getboolean', True ],
+                'reportinfected'    : [ 'getboolean', True ],
+                'standalone'        : [ 'getboolean', False ],
+                'version'           : [ 'get', '']
+            },
+            'schedule':
+            {
+                'path'              : [ 'get', '' ]
+            },
+            'emailscan':
+            {
+                'scanincoming'      : [ 'getboolean', True ],
+                'scanoutgoing'      : [ 'getboolean', True ],
+                'showsplash'        : [ 'getboolean', False ],
+            }
         }
+        self._settings = deepcopy(self._options)
+
+    def Get(self, section, option, expand=True):
+        value = self._settings[section.lower()][option.lower()][1]
+        if expand and self._settings[section.lower()][option.lower()][0] == 'get':
+            return Utils.SafeExpandEnvironmentStrings(value)
+        return value
+
+    def Set(self, section, option, value):
+        if type(value) != mapping[self._options[section.lower()][option.lower()][0]]:
+            raise Exception, 'Invalid ' + str(type(value)) + ' for option [' + section + '] ' + option
+        self._settings[section.lower()][option.lower()][1] = value
 
     def Read(self, template = False):
-        write = False
         try:
             conf = ConfigParser.ConfigParser()
             conf.read(self._filename)
         except ConfigParser.Error:
             return False
-        for sect in self._settings:
-            for name in self._settings[sect][1]:
+        for section in conf.sections():
+            if section.lower() not in self._options.keys():
+                print 'Invalid config section', section
+                continue
+            for option in conf.options(section):
+                if option.lower() not in self._options[section.lower()].keys():
+                    print 'Invalid config option', option, 'in section', section
+                    continue
+                s, o = section.lower(), option.lower()
+                getter = getattr(conf, self._settings[s][o][0])
                 try:
-                    val = conf.get(section = sect, option = name)
-                    if self._settings[sect][0]: # is binary?
-                        val = binascii.a2b_hex(val)
-                    self._settings[sect][1][name] = val
-                except ConfigParser.Error:
-                    pass
-        if template:
-            return True
-        # for older version set display infected only to 1
-        if self._settings['UI'][1]['Version'] == '':
-            self._settings['ClamAV'][1]['InfectedOnly'] = '1'
-            write = True
-
-        # rewrite CheckVersionURL for earlier versions
-        if self._settings['UI'][1]['Version'] < '0.90.2.1' and \
-           self._settings['Updates'][1]['CheckVersionURL'] == 'http://clamwin.sourceforge.net/clamwin.ver':
-            self._settings['Updates'][1]['CheckVersionURL'] = 'http://clamwin.sourceforge.net/clamwinver.php'
-            write = True
-
-        if self._settings['UI'][1]['Version'] < version.clamwin_version:
-            self._settings['UI'][1]['Version'] = version.clamwin_version
-            write = True
-
-        if write:
-            print 'Config updated to version %s. Saving' % version.clamwin_version
-            self.Write()
+                    value = getter(section, o)
+                except:
+                    print 'Invalid value type for', o, 'in section', s
+                    value = self._settings[s][o][1]
+                self.Set(s, o, value)
         return True
 
     def Write(self):
-        try:
-            conf = ConfigParser.ConfigParser()
-            for sect in self._settings:
-                if not conf.has_section(sect):
-                    conf.add_section(sect)
-                    for name in self._settings[sect][1]:
-                        val = self._settings[sect][1][name]
-                        if self._settings[sect][0]: # is binary?
-                            val = binascii.b2a_hex(val)
-                        conf.set(sect, option = name, value = val)
-            conf.write(file(self._filename, 'w'))
-        except (ConfigParser.Error, IOError):
-            return False
+        conf = ConfigParser.ConfigParser()
+        for section in self._options.keys():
+            for option in self._options[section].keys():
+                value = self.Get(section, option, expand=False)
+                if value != self._options[section][option][1]:
+                    if not conf.has_section(section):
+                        conf.add_section(section)
+                    conf.set(section, option, value)
+        conf.write(file(self._filename, 'w'))
         return True
-
-
-    def Get(self, sect, name):
-        value = self._settings[sect][1][name]
-        if(value is None):
-            return ""
-        return Utils.SafeExpandEnvironmentStrings(value)
-
-
-    def Set(self, sect, name, val):
-        if val is None:
-            val = ''
-        if not self._settings.has_key(sect) or \
-            not self._settings[sect][1].has_key(name):
-            raise AttributeError('Internal Error. No such attribute: '+ sect + ': ' + name)
-        else:
-            self._settings[sect][1][name] = val
 
     def GetFilename(self):
         return self._filename
