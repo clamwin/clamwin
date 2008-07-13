@@ -145,7 +145,7 @@ def GetCurrentDir(bUnicode):
         conf = Config.Settings(os.path.join(currentDir, 'ClamWin.conf'))
 
         # not a standalone version
-        if not conf.Read() or conf.Get('UI', 'Standalone') != '1':
+        if not conf.Read() or not conf.Get('UI', 'Standalone'):
             try:
                 # try HKCU first and then HKLM keys
                 # (this is to enable non admin user to install and use clamwin)
@@ -171,7 +171,7 @@ def GetProfileDir(bUnicode):
         if sys.platform.startswith("win"):
             # read template config file
             conf = Config.Settings(os.path.join(GetCurrentDir(bUnicode), 'ClamWin.conf'))
-            if conf.Read(template = True) and conf.Get('UI', 'Standalone') == '1':
+            if conf.Read(template = True) and conf.Get('UI', 'Standalone'):
                 profileDir = GetCurrentDir(bUnicode)
             else:
                 profileDir = shell.SHGetSpecialFolderPath(0, shellcon.CSIDL_APPDATA, True)
@@ -214,7 +214,7 @@ def CreateProfile():
         return
 
     # check for standalone flag and exit (don't copy anything)
-    if conf.Get('UI', 'Standalone') == '1':
+    if conf.Get('UI', 'Standalone'):
         return
 
     # create profile dir
