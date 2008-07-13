@@ -1092,7 +1092,6 @@ class wxPreferencesDlg(wx.Dialog):
 
     def _EnableOptionsControls(self, init):
         if init:
-            #self._config.Get('ClamAV', 'RemoveInfected') == '1' # FIXME ????
             enable = self._config.Get('ClamAV', 'MoveInfected') and len(self._config.Get('ClamAV', 'QuarantineDir'))
         else:
             enable = self.radioButtonQuarantine.GetValue()
