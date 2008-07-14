@@ -1,5 +1,3 @@
-#Boa:Dialog:wxDialogUpdateChecker
-
 #-----------------------------------------------------------------------------
 # Name:        wxDialogCheckUpdate.py
 # Product:     ClamWin Free Antivirus
@@ -30,7 +28,6 @@ import os
 import wxDialogUtils
 import wx
 import wx.html
-
 
 def create(parent, config, version, url, changelog):
     return wxDialogUpdateChecker(parent, config, version, url, changelog)
@@ -89,30 +86,24 @@ class wxDialogUpdateChecker(wx.Dialog):
               size=wx.Size(288, 13), style=0)
         self.checkBoxDontCheck.SetValue(False)
         self.checkBoxDontCheck.SetToolTipString('')
-        wx.EVT_CHECKBOX(self.checkBoxDontCheck,
-              wxID_WXDIALOGUPDATECHECKERCHECKBOXDONTCHECK,
-              self.OnCheckBoxDontCheckCheckbox)
+        wx.EVT_CHECKBOX(self.checkBoxDontCheck, wxID_WXDIALOGUPDATECHECKERCHECKBOXDONTCHECK, self.OnCheckBoxDontCheckCheckbox)
 
         self.buttonDownload = wx.Button(id=wxID_WXDIALOGUPDATECHECKERBUTTONDOWNLOAD,
               label='&Download', name='buttonDownload', parent=self,
               pos=wx.Point(143, 212), size=wx.Size(75, 23), style=0)
         self.buttonDownload.SetToolTipString('')
         self.buttonDownload.SetDefault()
-        wx.EVT_BUTTON(self.buttonDownload,
-              wxID_WXDIALOGUPDATECHECKERBUTTONDOWNLOAD, self.OnButtonDownload)
+        wx.EVT_BUTTON(self.buttonDownload, wxID_WXDIALOGUPDATECHECKERBUTTONDOWNLOAD, self.OnButtonDownload)
 
         self.buttonClose = wx.Button(id=wxID_WXDIALOGUPDATECHECKERBUTTONCLOSE,
-              label='Close', name='buttonClose', parent=self, pos=wx.Point(230,
-              212), size=wx.Size(75, 23), style=0)
+              label='Close', name='buttonClose', parent=self, pos=wx.Point(230, 212), size=wx.Size(75, 23), style=0)
         self.buttonClose.SetToolTipString('')
-        wx.EVT_BUTTON(self.buttonClose, wxID_WXDIALOGUPDATECHECKERBUTTONCLOSE,
-              self.OnButtonClose)
+        wx.EVT_BUTTON(self.buttonClose, wxID_WXDIALOGUPDATECHECKERBUTTONCLOSE, self.OnButtonClose)
 
     def __init__(self, parent, config, version, url, changelog):
         self._init_ctrls(parent)
         self.html = wx.html.HtmlWindow(parent = self, id = -1, pos = self.staticLineHtml.GetPosition(),
                     size = self.staticLineHtml.GetSize(), style = wx.STATIC_BORDER)
-
 
         #move window above tray
         try:
@@ -126,7 +117,6 @@ class wxDialogUpdateChecker(wx.Dialog):
             print e
             self.Center(wx.BOTH)
 
-
         # set window icons
         icons = wx.IconBundle()
         icons.AddIconFromFile('img/FrameIcon.ico', wx.BITMAP_TYPE_ICO)
@@ -139,7 +129,6 @@ class wxDialogUpdateChecker(wx.Dialog):
         self.staticTextChangelog.SetLabel(self.staticTextChangelog.GetLabel() % version)
 
         self.checkBoxDontCheck.SetValue(not self._config.Get('Updates', 'CheckVersion'))
-
 
     def OnCharHook(self, event):
         if event.GetKeyCode() == wx.WXK_ESCAPE:
@@ -169,7 +158,6 @@ class wxDialogUpdateChecker(wx.Dialog):
         event.Skip()
 
 
-
 if __name__ == '__main__':
     import Utils, Config
     currentDir = Utils.GetCurrentDir(True)
@@ -190,5 +178,3 @@ if __name__ == '__main__':
 
     config.Write()
     app.MainLoop()
-
-

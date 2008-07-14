@@ -25,11 +25,11 @@
 import ConfigParser
 import Utils
 from copy import deepcopy
-from types import StringType, IntType, BooleanType  
+from types import StringType, IntType, BooleanType
 
 mapping = { 'get': StringType, 'getint': IntType, 'getboolean': BooleanType }
 
-REGEX_SEPARATOR="|CLAMWIN_SEP|"
+REGEX_SEPARATOR = "|CLAMWIN_SEP|"
 
 class Settings:
     def __init__(self, filename):
@@ -83,7 +83,7 @@ class Settings:
                 'checkversionurl'   : [ 'get', 'http://clamwin.sourceforge.net/clamwinver.php' ]
             },
             'emailalerts':
-            {    
+            {
                 'enable'            : [ 'getboolean', False ],
                 'smtphost'          : [ 'get', '' ],
                 'smtpport'          : [ 'getint', 25 ],

@@ -1,5 +1,3 @@
-#Boa:Dialog:wxAboutDlg
-
 #-----------------------------------------------------------------------------
 # Name:        wxDialogAbout.py
 # Product:     ClamWin Free Antivirus
@@ -24,7 +22,7 @@
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import Process
-import os, time, tempfile, locale
+import os, time, locale
 import wxDialogUtils, Utils, version
 
 import wx
@@ -187,7 +185,7 @@ class wxAboutDlg(wx.Dialog):
         self._SetDBInfo()
         self.SetDefaultItem(self.buttonOK)
         self.buttonOK.SetDefault()
-        self.staticTextClamVer.SetSize(wx.Size(255, 36));
+        self.staticTextClamVer.SetSize(wx.Size(255, 36))
 
     def OnOK(self, event):
         self.EndModal(wx.ID_OK)
@@ -205,7 +203,6 @@ class wxAboutDlg(wx.Dialog):
 
     def OnNetfarmHomepage(self, event):
         wxDialogUtils.wxGoToInternetUrl('http://oss.netfarm.it/clamav/')
-
 
     def _SetClamVersion(self):
         if self.config is None:

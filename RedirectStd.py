@@ -23,37 +23,35 @@
 
 #-----------------------------------------------------------------------------
 import sys, os
-if sys.platform.startswith("win"):
-    # fix the path env setting so that dlls are loaded from our lib folder
-    # rather than from system32, thsi way we eliminate python version conflicts
-    if hasattr(sys, "frozen"):
-        sys.path.insert(0,sys.prefix)
-    # If we are not running in a console, redirect all print statements to the
-    # win32traceutil collector.
-    # You can view output either from Pythonwin's "Tools->Trace Collector Debugging Tool",
-    # or simply run "win32traceutil.py" from a command prompt.
-    import win32api
-    try:
-        win32api.GetConsoleTitle()
-    except win32api.error:
-        # No console - if we are running from Python sources,
-        # redirect to win32traceutil, but if running from a binary
-        # install, redirect to a log file.
-        if hasattr(sys, "frozen"):
-            temp_dir = win32api.GetTempPath()
-            for i in range(3,0,-1):
-                try: os.unlink(os.path.join(temp_dir, "ClamWin%d.log" % (i+1)))
-                except os.error: pass
-                try:
-                    os.rename(
-                        os.path.join(temp_dir, "ClamWin%d.log" % i),
-                        os.path.join(temp_dir, "ClamWin%d.log" % (i+1))
-                        )
-                except os.error: pass
-            # Open this log, as unbuffered so crashes still get written.
-            sys.stdout = file(os.path.join(temp_dir,"ClamWin1.log"), "wt", 0)
-            sys.stderr = sys.stdout
-        else:
-            import win32traceutil
-else:
-    pass
+import win32api
+
+if hasattr(sys, 'frozen'):
+    sys.path.insert(0, sys.prefix)
+
+# If we are not running in a console, redirect all print statements to the
+# win32traceutil collector.
+# You can view output either from Pythonwin's "Tools->Trace Collector Debugging Tool",
+# or simply run "win32traceutil.py" from a command prompt.
+
+try:
+    win32api.GetConsoleTitle()
+except win32api.error:
+    # No console - if we are running from Python sources,
+    # redirect to win32traceutil, but if running from a binary
+    # install, redirect to a log file.
+    if hasattr(sys, 'frozen'):
+        temp_dir = win32api.GetTempPath()
+        for i in range(3, 0, -1):
+            try: os.unlink(os.path.join(temp_dir, 'ClamWin%d.log' % (i + 1)))
+            except os.error: pass
+            try:
+                os.rename(
+                    os.path.join(temp_dir, 'ClamWin%d.log' % i),
+                    os.path.join(temp_dir, 'ClamWin%d.log' % (i + 1))
+                    )
+            except os.error: pass
+        # Open this log, as unbuffered so crashes still get written.
+        sys.stdout = file(os.path.join(temp_dir, 'ClamWin1.log'), 'wt', 0)
+        sys.stderr = sys.stdout
+    else:
+        import win32traceutil

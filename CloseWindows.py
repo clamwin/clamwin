@@ -40,6 +40,6 @@ def CloseClamWin():
                     ('ClamWinTrayWindow', 'ClamWin'))
     win32gui.EnumWindows(CloseWindow, appWindows)
 
-if __name__=='__main__':
+if __name__ == '__main__':
     CloseClamWin()
     time.sleep(3.0)

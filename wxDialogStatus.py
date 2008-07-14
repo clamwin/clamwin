@@ -1,7 +1,3 @@
-#-----------------------------------------------------------------------------
-#Boa:Dialog:wxDialogStatus
-
-#-----------------------------------------------------------------------------
 # Name:        wxDialogStatus.py
 # Product:     ClamWin Free Antivirus
 #
@@ -26,7 +22,7 @@
 
 from threading import *
 from throb import throbImages
-import string
+import win32api, win32con, win32gui
 import time
 import tempfile
 import Process
@@ -35,23 +31,12 @@ import re
 import MsgBox
 import Utils
 import wxDialogUtils
-import win32gui
 import wx
 import wx.lib.throbber
 
+_WAIT_NOWAIT = 0
+_NEWLINE_LEN = 2
 _WAIT_TIMEOUT = 5
-if sys.platform.startswith("win"):
-    import win32event, win32api, winerror, win32con, win32gui
-    _KILL_SIGNAL = None
-    _WAIT_NOWAIT = 0
-    _NEWLINE_LEN=2
-else:
-    import signal, os
-    _KILL_SIGNAL = signal.SIGKILL
-    _WAIT_NOWAIT = os.WNOHANG
-    _NEWLINE_LEN=1
-
-
 
 class StatusUpdateBuffer(Process.IOBuffer):
     def __init__(self,  caller, update, notify):
@@ -79,8 +64,8 @@ class StatusUpdateBuffer(Process.IOBuffer):
 # and when status message needs updating
 # the handler updates buttons and status text
 THREADFINISHED = wx.NewEventType()
-def EVT_THREADFINISHED( window, function ):
-    window.Connect( -1, -1, THREADFINISHED, function )
+def EVT_THREADFINISHED(window, function):
+    window.Connect(-1, -1, THREADFINISHED, function)
 
 class ThreadFinishedEvent(wx.PyCommandEvent):
     eventType = THREADFINISHED
@@ -88,11 +73,11 @@ class ThreadFinishedEvent(wx.PyCommandEvent):
         wx.PyCommandEvent.__init__(self, self.eventType, windowID)
 
     def Clone( self ):
-        self.__class__( self.GetId() )
+        self.__class__(self.GetId())
 
 THREADUPDATESTATUS = wx.NewEventType()
-def EVT_THREADUPDATESTATUS( window, function ):
-    window.Connect( -1, -1, THREADUPDATESTATUS, function )
+def EVT_THREADUPDATESTATUS(window, function):
+    window.Connect(-1, -1, THREADUPDATESTATUS, function)
 
 class ThreadUpdateStatusEvent(wx.PyCommandEvent):
     eventType = THREADUPDATESTATUS
@@ -102,7 +87,7 @@ class ThreadUpdateStatusEvent(wx.PyCommandEvent):
         wx.PyCommandEvent.__init__(self, self.eventType, windowID)
 
     def Clone( self ):
-        self.__class__( self.GetId() )
+        self.__class__(self.GetId())
 
 def create(parent, cmd, logfile, priority, bitmap_mask, notify_params=None):
     return wxDialogStatus(parent, cmd, logfile, priority, bitmap_mask, notify_params)
@@ -146,17 +131,15 @@ class wxDialogStatus(wx.Dialog):
               328), size=wx.Size(85, 24), style=0)
         self.buttonStop.Enable(True)
         self.buttonStop.SetDefault()
-        wx.EVT_BUTTON(self.buttonStop, wxID_WXDIALOGSTATUSBUTTONSTOP,
-              self.OnButtonStop)
+        wx.EVT_BUTTON(self.buttonStop, wxID_WXDIALOGSTATUSBUTTONSTOP, self.OnButtonStop)
 
         self.buttonSave = wx.Button(id=wxID_WXDIALOGSTATUSBUTTONSAVE,
               label='S&ave Report', name='buttonSave', parent=self,
               pos=wx.Point(192, 328), size=wx.Size(86, 24), style=0)
         self.buttonSave.Enable(False)
-        wx.EVT_BUTTON(self.buttonSave, wxID_WXDIALOGSTATUSBUTTONSAVE,
-              self.OnButtonSave)
+        wx.EVT_BUTTON(self.buttonSave, wxID_WXDIALOGSTATUSBUTTONSAVE, self.OnButtonSave)
 
-    def __init__(self, parent, cmd, logfile, priority='n', bitmapMask="", notify_params=None):
+    def __init__(self, parent, cmd, logfile, priority='n', bitmapMask='', notify_params=None):
         self._autoClose = False
         self._closeRetCode = None
         self._cancelled = False
@@ -172,7 +155,6 @@ class wxDialogStatus(wx.Dialog):
 
         self._init_ctrls(parent)
 
-
         # bind thread notification events
         EVT_THREADFINISHED(self, self.OnThreadFinished)
         EVT_THREADUPDATESTATUS(self, self.OnThreadUpdateStatus)
@@ -187,7 +169,6 @@ class wxDialogStatus(wx.Dialog):
         self.throbber = wx.lib.throbber.Throbber(self, -1, images, frameDelay=0.1,
                   pos=self.staticBitmap1.GetPosition(), size=self.staticBitmap1.GetSize(),
                   style=self.staticBitmap1.GetWindowStyleFlag(), name='staticThrobber')
-
 
         # set window icons
         icons = wx.IconBundle()
@@ -215,11 +196,10 @@ class wxDialogStatus(wx.Dialog):
         self._autoClose = autoClose
         self._closeRetCode = closeRetCode
 
-
     def OnWxDialogStatusClose(self, event):
-         self.terminating = True
-         self._StopProcess()
-         event.Skip()
+        self.terminating = True
+        self._StopProcess()
+        event.Skip()
 
     def _IsProcessRunning(self, wait=False):
         if self._proc is None:
@@ -245,7 +225,7 @@ class wxDialogStatus(wx.Dialog):
             # still running - kill
             # terminate process and use KILL_SIGNAL to terminate gracefully
             # do not wait too long for the process to finish
-            self._proc.kill(sig=_KILL_SIGNAL)
+            self._proc.kill()
 
             #wait to finish
             if self._IsProcessRunning(True):
@@ -296,7 +276,6 @@ class wxDialogStatus(wx.Dialog):
                         dlg.Destroy()
         finally:
             dlg.Destroy()
-
 
     def ThreadFinished(owner):
         if owner.terminating:
@@ -351,14 +330,13 @@ class wxDialogStatus(wx.Dialog):
             self.ThreadUpdateStatus(self, data, False)
 
         if not self._cancelled:
-           self.ThreadUpdateStatus(self, "\n--------------------------------------\nCompleted\n--------------------------------------\n")
+            self.ThreadUpdateStatus(self, "\n--------------------------------------\nCompleted\n--------------------------------------\n")
         else:
-           self.ThreadUpdateStatus(self, "\n--------------------------------------\nCancelled\n--------------------------------------\n")
+            self.ThreadUpdateStatus(self, "\n--------------------------------------\nCancelled\n--------------------------------------\n")
 
         win32api.PostMessage(self.textCtrlStatus.GetHandle(), win32con.EM_SCROLLCARET, 0, 0)
         self.textCtrlStatus.SetInsertionPointEnd()
         self.textCtrlStatus.ShowPosition(self.textCtrlStatus.GetLastPosition())
-
 
         try:
             self._returnCode = self._proc.wait(_WAIT_TIMEOUT)
@@ -400,7 +378,7 @@ class wxDialogStatus(wx.Dialog):
                          not ctrl.GetRange(self._previousStart, lastPos).endswith('100%]\n'))
             if print_over:
                 # prevent form blinking text by disabling richedit selection here
-                win32api.SendMessage(ctrl.GetHandle(),Utils.EM_HIDESELECTION, 1, 0)
+                win32api.SendMessage(ctrl.GetHandle(), Utils.EM_HIDESELECTION, 1, 0)
                 # replace the text
                 ctrl.Replace(self._previousStart, ctrl.GetLastPosition(), text)
 
@@ -443,7 +421,7 @@ class wxDialogStatus(wx.Dialog):
         # start our process
         try:
             # check if the file exists first
-            executable = cmd.split('" ' ,1)[0].lstrip('"')
+            executable = cmd.split('" ' , 1)[0].lstrip('"')
             if not os.path.exists(executable):
                 raise Process.ProcessError('Could not start process.\n%s\nFile does not exist.' % executable)
             # create our stdout/stderr implementation that updates status window
@@ -473,4 +451,3 @@ class wxDialogStatus(wx.Dialog):
             url = self.textCtrlStatus.GetRange(event.GetURLStart(), event.GetURLEnd())
             wxDialogUtils.wxGoToInternetUrl(url)
         event.Skip()
-

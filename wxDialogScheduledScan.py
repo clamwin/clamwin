@@ -1,5 +1,3 @@
-#Boa:Dialog:wxDialogScheduledScan
-
 #-----------------------------------------------------------------------------
 # Name:        wxDialogScheduledScan.py
 # Product:     ClamWin Free Antivirus
@@ -64,7 +62,6 @@ class ScheduledScanInfo(list):
     def __getScanMemory(self): return self[6]
     def __setScanMemory(self, value): self[6] = value
     ScanMemory = property(__getScanMemory, __setScanMemory)
-
 
 def LoadPersistentScheduledScans(filename):
     try:
@@ -203,9 +200,7 @@ class wxDialogScheduledScan(wx.Dialog):
               label='...', name='buttonBrowseFolder', parent=self,
               pos=wx.Point(274, 183), size=wx.Size(20, 20), style=0)
         self.buttonBrowseFolder.SetToolTipString('Click to browse for a folder')
-        wx.EVT_BUTTON(self.buttonBrowseFolder,
-              wxID_WXDIALOGSCHEDULEDSCANBUTTONBROWSEFOLDER,
-              self.OnButtonBrowseFolder)
+        wx.EVT_BUTTON(self.buttonBrowseFolder, wxID_WXDIALOGSCHEDULEDSCANBUTTONBROWSEFOLDER, self.OnButtonBrowseFolder)
 
         self.staticTextDescription = wx.StaticText(id=wxID_WXDIALOGSCHEDULEDSCANSTATICTEXTDESCRIPTION,
               label='D&escription:', name='staticTextDescription', parent=self,
@@ -234,8 +229,7 @@ class wxDialogScheduledScan(wx.Dialog):
               label='Cancel', name='buttonCancel', parent=self, pos=wx.Point(163,
               258), size=wx.Size(75, 23), style=0)
         self.buttonCancel.SetToolTipString('Closes the dialog and discards the changes')
-        wx.EVT_BUTTON(self.buttonCancel, wxID_WXDIALOGSCHEDULEDSCANBUTTONCANCEL,
-              self.OnCancel)
+        wx.EVT_BUTTON(self.buttonCancel, wxID_WXDIALOGSCHEDULEDSCANBUTTONCANCEL, self.OnCancel)
 
         self.checkBoxScanMemory = wx.CheckBox(id=wxID_WXDIALOGSCHEDULEDSCANCHECKBOXSCANMEMORY,
               label='Scan &Programs Loaded in Computer Memory',
@@ -362,5 +356,3 @@ class MyValidator(wx.PyValidator):
             value = ctrl.GetValue()
         setattr(self._scanInfo, self._propName, value)
         return True
-
-

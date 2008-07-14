@@ -1,5 +1,3 @@
-#Boa:Dialog:wxDialogLogView
-
 #-----------------------------------------------------------------------------
 # Name:        wxDialogLogViewer.py
 # Product:     ClamWin Free Antivirus
@@ -28,6 +26,7 @@
 import os
 import sys
 import wx
+import win32api, win32con
 
 def create(parent, text, scroll_down = False):
     return wxDialogLogView(parent, text, scroll_down)
@@ -38,21 +37,14 @@ def create(parent, text, scroll_down = False):
 
 class wxDialogLogView(wx.Dialog):
     def _init_coll_flexGridSizer_Items(self, parent):
-        # generated method, don't edit
-
-        parent.AddWindow(self.textCtrl, 0, border=5,
-              flag=wx.TOP | wx.RIGHT | wx.LEFT | wx.GROW)
-        parent.AddWindow(self.buttonOK, 0, border=10,
-              flag=wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER)
+        parent.AddWindow(self.textCtrl, 0, border=5, flag=wx.TOP | wx.RIGHT | wx.LEFT | wx.GROW)
+        parent.AddWindow(self.buttonOK, 0, border=10, flag=wx.BOTTOM | wx.TOP | wx.ALIGN_CENTER)
 
     def _init_coll_flexGridSizer_Growables(self, parent):
-        # generated method, don't edit
-
         parent.AddGrowableRow(0)
         parent.AddGrowableCol(0)
 
     def _init_sizers(self):
-        # generated method, don't edit
         self.flexGridSizer = wx.FlexGridSizer(cols=1, hgap=0, rows=2, vgap=0)
 
         self._init_coll_flexGridSizer_Items(self.flexGridSizer)
@@ -61,7 +53,6 @@ class wxDialogLogView(wx.Dialog):
         self.SetSizer(self.flexGridSizer)
 
     def _init_ctrls(self, prnt):
-        # generated method, don't edit
         wx.Dialog.__init__(self, id=wxID_WXDIALOGLOGVIEW, name='wxDialogLogView',
               parent=prnt, pos=wx.Point(450, 251), size=wx.Size(566, 428),
               style=wx.RESIZE_BORDER | wx.DEFAULT_DIALOG_STYLE,
@@ -72,8 +63,8 @@ class wxDialogLogView(wx.Dialog):
         wx.EVT_INIT_DIALOG(self, self.OnInitDialog)
 
         self.textCtrl = wx.TextCtrl(id=wxID_WXDIALOGLOGVIEWTEXTCTRL,
-              name='textCtrl', parent=self, pos=wx.Point(5, 5), size=wx.Size(548,
-              353), style=wx.TE_RICH | wx.TE_MULTILINE | wx.TE_READONLY, value='')
+              name='textCtrl', parent=self, pos=wx.Point(5, 5), size=wx.Size(548, 353),
+              style=wx.TE_RICH | wx.TE_MULTILINE | wx.TE_READONLY, value='')
         self.textCtrl.SetToolTipString('')
         self.textCtrl.Center(wx.BOTH)
 
@@ -115,18 +106,11 @@ class wxDialogLogView(wx.Dialog):
         if self._scroll_down:
             # to scroll richedit down correctly we need to use EM_SCROLLCARET,
             # wxWidgets SetInsertionPoint and ShowPosition fail on win9x
-            if sys.platform.startswith('win'):
-                import win32api, win32con
-                win32api.PostMessage(self.textCtrl.GetHandle(), win32con.EM_SCROLLCARET, 0, 0)
-            else:
-                self.textCtrl.SetInsertionPointEnd()
-                self.textCtrl.ShowPosition(self.textCtrl.GetLastPosition())
+            win32api.PostMessage(self.textCtrl.GetHandle(), win32con.EM_SCROLLCARET, 0, 0)
         else:
             self.textCtrl.SetInsertionPoint(0)
             self.textCtrl.ShowPosition(0)
         event.Skip()
-
-
 
 if __name__ == '__main__':
     app = wx.App()
@@ -141,7 +125,7 @@ if __name__ == '__main__':
     Test Message Line\nTest Message Line
     Test Message Line\nTest Message Line
     Test Message Line\nTest Message Line
-    Test Me`ssage Line\nTest Message Line
+    Test Message Line\nTest Message Line
     Test Message Line\nTest Message Line
     Test Message Line\nTest Message Line
     Test Message Line\nTest Message Line
@@ -155,5 +139,3 @@ if __name__ == '__main__':
         dlg.Destroy()
 
     app.MainLoop()
-
-

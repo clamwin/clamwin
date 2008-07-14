@@ -131,14 +131,13 @@ from win32com.mapi import mapi, mapiutil, mapitags
 import RedirectStd
 
 
-
 try:
     sys.path.insert(0, Utils.GetCurrentDir(False))
     import pyc
 except Exception, e:
     print str(e)
 
-_DEBUG=True
+_DEBUG = True
 
 def dbg_print(*args):
     if not _DEBUG:
@@ -216,7 +215,7 @@ def SetButtonImage(button, fname):
 
     if not os.path.isabs(fname):
         # images relative to the application path
-        fname = os.path.join(Utils.GetCurrentDir(False),"img", fname)
+        fname = os.path.join(Utils.GetCurrentDir(False), "img", fname)
         if not os.path.isfile(fname):
             print "WARNING - Trying to use image '%s', but it doesn't exist" % (fname,)
             return None
@@ -575,7 +574,7 @@ class ExplorerWithEvents(ObjectWithEvents):
             try:
                 item = parent.Controls.Add(Type=control_type, Temporary=True)
             except pythoncom.com_error, e:
-                print "FAILED to add the toolbar item '%s' - %s" % (tag,e)
+                print "FAILED to add the toolbar item '%s' - %s" % (tag, e)
                 return
             if image_fname:
                 # Eeek - only available in derived class.
@@ -791,7 +790,7 @@ class MailItemWithEvents(ObjectWithEvents):
                 saved_attachments = []
 
                 try:
-                   self.Save()
+                    self.Save()
                 except pythoncom.com_error, e:
                     # read only message store (hotmail, etc
                     # ignore save errors

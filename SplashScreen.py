@@ -46,9 +46,8 @@ class Splash:
         self.hSplash = win32gui.LoadImage(self.hinst, bitmapPath, win32con.IMAGE_BITMAP,
                                           0, 0, win32con.LR_LOADFROMFILE | win32con.LR_DEFAULTSIZE)
 
-
     def _RegisterWndClass(self):
-        className = "PythonSplash"
+        className = 'PythonSplash'
         global g_registeredClass
         if not g_registeredClass:
             message_map = {}
@@ -60,18 +59,15 @@ class Splash:
             wc.hCursor = win32gui.LoadCursor( 0, win32con.IDC_ARROW )
             wc.hbrBackground = win32con.COLOR_WINDOW + 1
             wc.lpfnWndProc = message_map # could also specify a wndproc.
-            wc.cbWndExtra = win32con.DLGWINDOWEXTRA + struct.calcsize("Pi")
+            wc.cbWndExtra = win32con.DLGWINDOWEXTRA + struct.calcsize('Pi')
             classAtom = win32gui.RegisterClass(wc)
             g_registeredClass = 1
         return className
 
     def _GetDialogTemplate(self, dlgClassName):
         style = win32con.WS_POPUP
-
-        dlg = [ ["", (0, 0, 0, 0), style, None, (8, "MS Sans Serif"), None, dlgClassName], ]
-
-        dlg.append([130, "", IDC_BITMAP, (0, 0, 0, 0), win32con.WS_VISIBLE | win32con.WS_CHILD | win32con.SS_BITMAP])
-
+        dlg = [ ['', (0, 0, 0, 0), style, None, (8, 'MS Sans Serif'), None, dlgClassName], ]
+        dlg.append([130, '', IDC_BITMAP, (0, 0, 0, 0), win32con.WS_VISIBLE | win32con.WS_CHILD | win32con.SS_BITMAP])
         return dlg
 
     def CreateWindow(self):
@@ -108,7 +104,6 @@ class Splash:
         except:
             pass
 
-
     def Show(self):
         win32gui.ShowWindow(self.hwnd, win32con.SW_SHOW)
 
@@ -134,11 +129,10 @@ def ShowSplashScreen(filename, timeout):
     s.Show()
     Wait = ThreadFuture.Future(s.EndDialogAfter, timeout)
     Wait()
-
     s.EndDialogAfter(3)
-if __name__=='__main__':
+
+if __name__ == '__main__':
     #s = Splash("img\\Splash.bmp")
     #s.DoModal()
-
-    ShowSplashScreen("img\\Splash.bmp", 5)
+    ShowSplashScreen('img/Splash.bmp', 5)
     win32gui.PumpMessages()

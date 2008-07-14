@@ -104,7 +104,7 @@ class VirusAlertMsg(EmailMsg):
 
 
 class ConfigVirusAlertMsg(VirusAlertMsg):
-     def __init__(self, config, Reports=(), Body=None):
+    def __init__(self, config, Reports=(), Body=None):
         VirusAlertMsg.__init__(self, config.Get('EmailAlerts', 'From'),
                             config.Get('EmailAlerts', 'To'),
                             config.Get('EmailAlerts', 'Subject'),

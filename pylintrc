@@ -1,0 +1,14 @@
+[MASTER]
+profile=no
+ignore=.svn
+persistent=yes
+cache-size=500
+
+[MESSAGES CONTROL]
+disable-msg=C0103,C0111,C0301,W0613,W0702,R0902,R0912,W0704,W0703,W0212,R0915,C0321,W0614,W0141,W0622,W0201,R0201,R0904,C0302,W0221,W0612
+
+[REPORTS]
+output-format=text
+include-ids=no
+files-output=no
+reports=yes

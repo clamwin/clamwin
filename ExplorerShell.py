@@ -58,7 +58,7 @@ class ShellExtension:
             return 0
         num_files = shell.DragQueryFile(sm.data_handle, -1)
         msg = "Scan For Viruses With ClamWin"
-        if num_files>1:
+        if num_files > 1:
             # we aren't handling multiple files
             return 0
         else:
@@ -108,7 +108,7 @@ class ShellExtension:
                     currentDir = os.path.split(this_filename)[0]
             else:
                 currentDir = os.path.split(os.path.abspath(__file__))[0]
-        except NameError: # No __file__ attribute (in boa debugger)
+        except NameError:
             currentDir = os.path.split(os.path.abspath(sys.argv[0]))[0]
         os.chdir(currentDir)
 
@@ -154,7 +154,7 @@ def DllUnregisterServer():
             raise
     print ShellExtension._reg_desc_, "unregistration complete."
 
-if __name__=='__main__':
+if __name__ == '__main__':
     from win32com.server import register
     register.UseCommandLine(ShellExtension,
                    finalize_register = DllRegisterServer,

@@ -24,6 +24,7 @@
 #-----------------------------------------------------------------------------
 
 import os, sys, tempfile, time, re, shutil
+import win32gui
 import wxDialogStatus, wxDialogPreferences, wxDialogAbout, wxDialogCheckUpdate
 import wxDialogLogViewer
 import MsgBox, EmailAlert, Utils, version
@@ -45,11 +46,10 @@ def wxUpdateVirDB(parent, config, autoClose = False):
             pass
     cmd = '--stdout --datadir="' + dbdir + '"' + \
           ' --config-file="%s" --log="%s"' % (freshclam_conf, updatelog)
-    if config.Get('ClamAV', 'Debug') == '1':
+    if config.Get('ClamAV', 'Debug'):
         cmd += ' --debug'
     cmd = '"%s" %s' % (config.Get('ClamAV', 'FreshClam'), cmd)
-    if sys.platform.startswith('win') and config.Get('UI', 'TrayNotify') == '1':
-        import win32gui
+    if config.Get('UI', 'TrayNotify'):
         tray_notify_params = (('Virus Database has been updated.', 0,
                            win32gui.NIIF_INFO, 10000),
                            ('An error occured during Virus Database Update. Please review the update report.', 1,
@@ -64,7 +64,7 @@ def wxUpdateVirDB(parent, config, autoClose = False):
     try:
         dlg.ShowModal()
         exit_code = dlg.GetExitCode()
-        maxsize = int(config.Get('ClamAV', 'MaxLogSize'))*1048576
+        maxsize = config.Get('ClamAV', 'MaxLogSize') * 1048576
         logfile = config.Get('Updates', 'DBUpdateLogFile')
         Utils.AppendLogFile(logfile, updatelog, maxsize)
     finally:
@@ -118,8 +118,7 @@ def wxScan(parent, config, path, autoClose = False):
         #check if we have downloaded the virus database and bail out if not
     hasdb = Utils.CheckDatabase(config)
     if not hasdb:
-        if config.Get('UI', 'TrayNotify') == '1':
-            import win32gui
+        if config.Get('UI', 'TrayNotify'):
             tray_notify_params = (('Virus Definitions Database Not Found! Please download it now.', -1,
                     win32gui.NIIF_ERROR, 30000), None)
             # show balloon
@@ -131,14 +130,13 @@ def wxScan(parent, config, path, autoClose = False):
                 file(scanlog, 'wt').write('\n-----------------------------\n'
                     'Scan Started %s\nERROR: Virus Definitions Database Not Found! Please download it now.\n'
                     '-----------------------------' % time.asctime())
-                maxsize = int(config.Get('ClamAV', 'MaxLogSize'))*1048576
+                maxsize = config.Get('ClamAV', 'MaxLogSize') * 1048576
                 Utils.AppendLogFile(logfile, scanlog, maxsize)
                 os.remove(scanlog)
             return
 
 
-    if config.Get('UI', 'TrayNotify') == '1':
-        import win32gui
+    if config.Get('UI', 'TrayNotify'):
         tray_notify_params = (('Virus has been detected during scan! Please review the scan report.', 1,
                         win32gui.NIIF_ERROR, 30000),
                         ('An error occured during virus scan. Please review the scan report.', 0,
@@ -151,11 +149,11 @@ def wxScan(parent, config, path, autoClose = False):
     try:
         dlg.ShowModal()
         exit_code = dlg.GetExitCode()
-        maxsize = int(config.Get('ClamAV', 'MaxLogSize'))*1048576
+        maxsize = config.Get('ClamAV', 'MaxLogSize') * 1048576
         logfile = config.Get('ClamAV', 'LogFile')
         Utils.AppendLogFile(logfile, scanlog, maxsize)
         # send email alert
-        if config.Get('EmailAlerts', 'Enable') == '1':
+        if config.Get('EmailAlerts', 'Enable'):
             try:
                 print 'Exit Code:', exit_code
                 if exit_code == 1:
@@ -166,13 +164,12 @@ def wxScan(parent, config, path, autoClose = False):
 
     finally:
         if os.path.exists(scanlog):
-             try:
-                 os.remove(scanlog)
-             except IOError, e:
-                 print 'could not delete logfile : %s. Error: %s' % (scanlog, str(e))
+            try:
+                os.remove(scanlog)
+            except IOError, e:
+                print 'could not delete logfile : %s. Error: %s' % (scanlog, str(e))
         dlg.Destroy()
         return exit_code
-
 
 def wxConfigure(parent, config, switchToSchedule = False):
     dlg = wxDialogPreferences.create(parent, config, switchToSchedule)
@@ -189,30 +186,30 @@ def wxAbout(parent, config):
         dlg.Destroy()
 
 def wxShowLog(parent, logfile):
-        maxlogsize = 524288 #512 KB
-        if not len(logfile):
-            MsgBox.ErrorBox(parent, 'Log files are not properly configured. Please review ClamWin configuration')
-        try:
-            if not os.path.isfile(logfile):
-                text = ''
+    maxlogsize = 524288 # 512 KB
+    if not len(logfile):
+        MsgBox.ErrorBox(parent, 'Log files are not properly configured. Please review ClamWin configuration')
+    try:
+        if not os.path.isfile(logfile):
+            text = ''
+        else:
+            if os.stat(logfile).st_size > maxlogsize:
+                # read last 512 kbytes from the file
+                f = file(logfile, 'rt')
+                f.seek(-maxlogsize, 2)
+                text = f.read()
             else:
-                if os.stat(logfile).st_size > maxlogsize:
-                    # read last 512 kbytes from the file
-                    f = file(logfile, 'rt')
-                    f.seek(-maxlogsize, 2)
-                    text = f.read()
-                else:
-                    text = file(logfile, 'rt').read()
-        except Exception, e:
-            MsgBox.ErrorBox(parent, 'Unable to read from the log file. Error: %s' % str(e))
+                text = file(logfile, 'rt').read()
+    except Exception, e:
+        MsgBox.ErrorBox(parent, 'Unable to read from the log file. Error: %s' % str(e))
 
-        dlg = wxDialogLogViewer.create(parent, text, True)
-        try:
-            # change window title to include the file we are viewing
-            dlg.SetTitle(dlg.GetTitle() + ' - ' + os.path.split(logfile)[1])
-            dlg.ShowModal()
-        finally:
-            dlg.Destroy()
+    dlg = wxDialogLogViewer.create(parent, text, True)
+    try:
+        # change window title to include the file we are viewing
+        dlg.SetTitle(dlg.GetTitle() + ' - ' + os.path.split(logfile)[1])
+        dlg.ShowModal()
+    finally:
+        dlg.Destroy()
 
 def wxGoToInternetUrl(url):
     try:
@@ -227,7 +224,6 @@ def wxCheckUpdate(parent, config):
         return
     # if we have a window with such name don't show a second one
     try:
-        import win32gui
         hwnd = win32gui.FindWindow('#32770', 'ClamWin Update')
         if hwnd:
             return
@@ -239,8 +235,7 @@ def wxCheckUpdate(parent, config):
         if ver <= version.clamwin_version:
             return
     except Exception, e:
-        if config.Get('UI', 'TrayNotify') == '1':
-            import win32gui
+        if config.Get('UI', 'TrayNotify'):
             tray_notify_params = (('Unable to get online version. Most likely it\'s a temporary connectivity error and you don\'t have to do anything.\nIf you see this error often then allow clamwin.exe in your firewall and check proxy settings.\n(%s)' % str(e) , 0,
                         win32gui.NIIF_WARNING, 30000), None)
             Utils.ShowBalloon(0, tray_notify_params, None, True)

@@ -35,9 +35,9 @@ if win32api.GetVersionEx()[3] != win32con.VER_PLATFORM_WIN32_WINDOWS:
 from ctypes import *
 from ctypes.wintypes import DWORD
 
-EM_AUTOURLDETECT=1115
-EM_HIDESELECTION=1087
-CONFIG_EVENT='ClamWinConfigUpdateEvent01'
+EM_AUTOURLDETECT = 1115
+EM_HIDESELECTION = 1087
+CONFIG_EVENT = 'ClamWinConfigUpdateEvent01'
 _FRESHCLAM_CONF_GENERAL = """
 DNSDatabaseInfo current.cvd.clamav.net
 DatabaseMirror %s
@@ -45,7 +45,7 @@ MaxAttempts 3
 """
 _FRESHCLAM_CONF_PROXY = """
 HTTPProxyServer %s
-HTTPProxyPort %s
+HTTPProxyPort %d
 """
 _FRESHCLAM_CONF_PROXY_USER = """
 HTTPProxyUsername %s
@@ -76,64 +76,62 @@ def _ShowOwnBalloon(title, text, icon, hwnd, timeout):
         win32api.SendMessage(hExistingWnd, win32con.WM_CLOSE, 0, 0)
 
     #display balloon tooltip
-    BalloonTip.ShowBalloonTip(title, text, (rect[0], rect[1]), icon,
-                            flags, hwnd, '', timeout)
+    BalloonTip.ShowBalloonTip(title, text, (rect[0], rect[1]), icon, flags, hwnd, '', timeout)
 
 # balloon_info tuple contains 2 tuples for error and success notifications
 # each tuple has (HeaderMessage, Expected Retcode, ICON_ID, Timeout)
 def ShowBalloon(ret_code, balloon_info, hwnd = None, wait = False):
-    if sys.platform.startswith("win"):
-        # no hwnd supplied - find it
-        if hwnd is None:
-            try:
-                hwnd = win32gui.FindWindow('ClamWinTrayWindow', 'ClamWin')
-            except:
-                return
+    # no hwnd supplied - find it
+    if hwnd is None:
         try:
-            if balloon_info[0] is None:
-                tuple = balloon_info[1]
-            elif balloon_info[1] is None:
-                tuple = balloon_info[0]
-            elif ret_code == balloon_info[0][1]:
-                tuple = balloon_info[0]
-            elif ret_code != balloon_info[1][1]:
-                tuple = balloon_info[1]
-            else:
-                return
+            hwnd = win32gui.FindWindow('ClamWinTrayWindow', 'ClamWin')
+        except:
+            return
+    try:
+        if balloon_info[0] is None:
+            tuple = balloon_info[1]
+        elif balloon_info[1] is None:
+            tuple = balloon_info[0]
+        elif ret_code == balloon_info[0][1]:
+            tuple = balloon_info[0]
+        elif ret_code != balloon_info[1][1]:
+            tuple = balloon_info[1]
+        else:
+            return
 
-            title = 'ClamWin Free Antivirus'
-            txt = tuple[0]
-            icon = tuple[2]
-            timeout = tuple[3]
+        title = 'ClamWin Free Antivirus'
+        txt = tuple[0]
+        icon = tuple[2]
+        timeout = tuple[3]
 
-            # there is not balloon tips on windows 95/98/NT
-            # (windows ME with balloons implemented has version 4.9)
-            # need to display custom notification
-            version = win32api.GetVersionEx()
-            if version[0] == 4 and version[1] < 90:
-                if icon == win32gui.NIIF_INFO:
-                    icon = win32con.IDI_INFORMATION
-                elif icon == win32gui.NIIF_WARNING:
-                    icon = win32con.IDI_WARNING
-                elif icon == win32gui.NIIF_ERROR:
-                    icon = win32con.IDI_ERROR
-                elif icon == win32gui.NIIF_NONE:
-                    icon = 0
-                _ShowOwnBalloon(title, txt, icon, hwnd, timeout)
-                if wait:
-                    i = 0
-                    while i < timeout/500:
-                        win32gui.PumpWaitingMessages()
-                        time.sleep(0.5)
-                        i+=1
-            else:
-                nid = (hwnd, 0, win32gui.NIF_INFO, 0, 0, "", txt, timeout, title, icon)
-                win32gui.Shell_NotifyIcon(win32gui.NIM_MODIFY, nid)
-        except Exception, e:
-            print 'Could not display notification. Error: %s' % str(e)
+        # there is not balloon tips on windows 95/98/NT
+        # (windows ME with balloons implemented has version 4.9)
+        # need to display custom notification
+        version = win32api.GetVersionEx()
+        if version[0] == 4 and version[1] < 90:
+            if icon == win32gui.NIIF_INFO:
+                icon = win32con.IDI_INFORMATION
+            elif icon == win32gui.NIIF_WARNING:
+                icon = win32con.IDI_WARNING
+            elif icon == win32gui.NIIF_ERROR:
+                icon = win32con.IDI_ERROR
+            elif icon == win32gui.NIIF_NONE:
+                icon = 0
+            _ShowOwnBalloon(title, txt, icon, hwnd, timeout)
+            if wait:
+                i = 0
+                while i < timeout/500:
+                    win32gui.PumpWaitingMessages()
+                    time.sleep(0.5)
+                    i += 1
+        else:
+            nid = (hwnd, 0, win32gui.NIF_INFO, 0, 0, "", txt, timeout, title, icon)
+            win32gui.Shell_NotifyIcon(win32gui.NIM_MODIFY, nid)
+    except Exception, e:
+        print 'Could not display notification. Error: %s' % str(e)
 
 def GetCurrentDir(bUnicode):
-    if sys.platform.startswith("win") and hasattr(sys, "frozen"):
+    if hasattr(sys, "frozen"):
         # get current dir where the file was executed form
         if sys.frozen == "dll":
             this_filename = win32api.GetModuleFileName(sys.frozendllhandle)
@@ -159,28 +157,25 @@ def GetCurrentDir(bUnicode):
     else:
         try:
             currentDir = os.path.split(os.path.abspath(__file__))[0]
-        except NameError: # No __file__ attribute (in boa debugger)
+        except NameError:
             currentDir = os.path.split(os.path.abspath(sys.argv[0]))[0]
-    if bUnicode and sys.platform.startswith("win"):
+    if bUnicode:
         # change encoding to proper unicode
         currentDir = pywintypes.Unicode(currentDir)
     return currentDir
 
 def GetProfileDir(bUnicode):
     try:
-        if sys.platform.startswith("win"):
-            # read template config file
-            conf = Config.Settings(os.path.join(GetCurrentDir(bUnicode), 'ClamWin.conf'))
-            if conf.Read(template = True) and conf.Get('UI', 'Standalone'):
-                profileDir = GetCurrentDir(bUnicode)
-            else:
-                profileDir = shell.SHGetSpecialFolderPath(0, shellcon.CSIDL_APPDATA, True)
-                profileDir = os.path.join(profileDir, '.clamwin')
-                # change encoding to proper unicode
-                if bUnicode:
-                    profileDir = pywintypes.Unicode(profileDir)
+        # read template config file
+        conf = Config.Settings(os.path.join(GetCurrentDir(bUnicode), 'ClamWin.conf'))
+        if conf.Read(template = True) and conf.Get('UI', 'Standalone'):
+            profileDir = GetCurrentDir(bUnicode)
         else:
-            profileDir = os.path.join(os.path.expanduser('~'), '.clamwin')
+            profileDir = shell.SHGetSpecialFolderPath(0, shellcon.CSIDL_APPDATA, True)
+            profileDir = os.path.join(profileDir, '.clamwin')
+            # change encoding to proper unicode
+            if bUnicode:
+                profileDir = pywintypes.Unicode(profileDir)
     except Exception, e:
         print 'Could not get the profile folder. Error: %s' % str(e)
         profileDir = GetCurrentDir(bUnicode)
@@ -196,7 +191,6 @@ def CopyFile(src, dst, overwrite = False):
         except Exception, e:
             print 'Could not copy %s to %s. Error: %s' % (src, dst, str(e))
     return copied
-
 
 # since ver 0.34 config files are stored in user's home directory
 # but installer puts the template version to the program folder
@@ -242,9 +236,8 @@ def GetScheduleShelvePath(config):
     if not len(shelvePath):
         shelvePath = GetProfileDir(True)
     else:
-        if sys.platform.startswith("win"):
-            shelvePath = pywintypes.Unicode(shelvePath)
-            shelvePath = SafeExpandEnvironmentStrings(shelvePath)
+        shelvePath = pywintypes.Unicode(shelvePath)
+        shelvePath = SafeExpandEnvironmentStrings(shelvePath)
     return shelvePath
 
 # we want to be user-friendly and determine should
@@ -259,50 +252,36 @@ def IsTime24():
     # set C locale, otherwise python and wxpython complain
     locale.setlocale(locale.LC_ALL, 'C')
     t = time.localtime()
-    if sys.platform.startswith("win"):
-        import pywintypes
-        timestr = repr(pywintypes.Time(t))
-    else:
-        timestr = time.strftime('%X', t)
+    timestr = repr(pywintypes.Time(t))
     return not time.strftime('%p', t) in timestr
 
-
-# use secure mkstemp() in python 2.3 and less secure mktemp/open combination in 2.2
 def SafeTempFile():
     fd = -1
     name = ''
     try:
-        if sys.version_info[0] < 2 or sys.version_info[1] < 3:
-            name = tempfile.mktemp()
-            fd = os.open(name, os.O_WRONLY|os.O_CREAT)
-        else:
-            fd, name = tempfile.mkstemp(text=True)
+        fd, name = tempfile.mkstemp(text=True)
     except Exception, e:
         print 'cannot create temp file. Error: ' + str(e)
     return (fd, name)
 
 def SaveFreshClamConf(config):
-        data = _FRESHCLAM_CONF_GENERAL % config.Get('Updates', 'DBMirror')
-        if len(config.Get('Proxy', 'Host')):
-            data += _FRESHCLAM_CONF_PROXY % \
-                    (config.Get('Proxy', 'Host'), config.Get('Proxy', 'Port'))
-        if len(config.Get('Proxy', 'User')):
-            data += _FRESHCLAM_CONF_PROXY_USER % \
-                (config.Get('Proxy', 'User'), config.Get('Proxy', 'Password'))
+    data = _FRESHCLAM_CONF_GENERAL % config.Get('Updates', 'DBMirror')
+    if len(config.Get('Proxy', 'Host')):
+        data += _FRESHCLAM_CONF_PROXY % (config.Get('Proxy', 'Host'), config.Get('Proxy', 'Port'))
+    if len(config.Get('Proxy', 'User')):
+        data += _FRESHCLAM_CONF_PROXY_USER % (config.Get('Proxy', 'User'), config.Get('Proxy', 'Password'))
 
-        fd, name = SafeTempFile()
-        try:
-            os.write(fd, data)
-        finally:
-            if fd != -1:
-                os.close(fd)
-        return name
+    fd, name = SafeTempFile()
+    try:
+        os.write(fd, data)
+    finally:
+        if fd != -1:
+            os.close(fd)
+    return name
 
 def GetExcludeSysLockedFiles():
     configDir = os.path.join(win32api.GetSystemDirectory(), 'config')
-    regFiles = ('default', 'SAM', 'SECURITY',
-             'software', 'software.alt', 'system',
-             'system.alt')
+    regFiles = ('default', 'SAM', 'SECURITY', 'software', 'software.alt', 'system', 'system.alt')
     ret = ''
     for regFile in regFiles:
         ret += ' --exclude="%s"' % os.path.join(configDir, regFile).replace('\\', '\\\\')
@@ -318,7 +297,6 @@ def GetScanCmd(config, path, scanlog, noprint = False):
     # append \ to a DRIVE letter for regex matcher
     # i.e C: will become C:\
 
-
     # if path is None then we are scanning computer memory
     if path != None:
         path = re.sub('([A-Za-z]):("|$)', r'\1:\\\\\2', path)
@@ -330,42 +308,37 @@ def GetScanCmd(config, path, scanlog, noprint = False):
     # shared params between memory and file scanning
     cmd = '--tempdir "%s"' % tempfile.gettempdir().rstrip('\\')
 
-
     # 22 July 2006
     # added --keep-mbox to leave thunderbird files intact when removing or quarantining
     cmd += ' --keep-mbox --stdout --database="%s" --log="%s" --no-phishing-sigs --no-phishing-scan-urls' % \
             (config.Get('ClamAV', 'Database'), scanlog)
 
-    if config.Get('ClamAV', 'Debug') == '1':
+    if config.Get('ClamAV', 'Debug'):
         cmd += ' --debug'
-    #this disables oversized zip checking
-    # no longer needed >= 0.93
-    #cmd += ' --max-ratio=0'
-
-    if config.Get('ClamAV', 'EnableMbox') != '1':
+    if not config.Get('ClamAV', 'EnableMbox'):
         cmd += ' --no-mail'
-    if config.Get('ClamAV', 'ScanOle2') != '1':
+    if not config.Get('ClamAV', 'ScanOle2'):
         cmd += ' --no-ole2'
     if config.Get('ClamAV', 'ClamScanParams') != '':
         cmd += ' ' + config.Get('ClamAV', 'ClamScanParams')
-    if config.Get('ClamAV', 'InfectedOnly') == '1' or noprint:
+    if config.Get('ClamAV', 'InfectedOnly') or noprint:
         cmd += ' --infected'
-    if config.Get('ClamAV', 'ScanArchives') == '1':
+    if config.Get('ClamAV', 'ScanArchives'):
         cmd += ' --max-files=%i --max-scansize=%iM --max-recursion=%i' % \
-            (int(config.Get('ClamAV', 'MaxFiles')),
-            int(config.Get('ClamAV', 'MaxScanSize')),
-            int(config.Get('ClamAV', 'MaxRecursion')))
+            (config.Get('ClamAV', 'MaxFiles'),
+            config.Get('ClamAV', 'MaxScanSize'),
+            config.Get('ClamAV', 'MaxRecursion'))
     else:
         cmd += ' --no-archive'
 
-    cmd += ' --max-filesize=%iM' % int(config.Get('ClamAV', 'MaxFileSize'))
+    cmd += ' --max-filesize=%iM' % config.Get('ClamAV', 'MaxFileSize')
 
-    if not noprint and config.Get('ClamAV', 'ShowProgress') == '1':
+    if not noprint and config.Get('ClamAV', 'ShowProgress'):
         cmd += ' --show-progress'
 
-    if config.Get('ClamAV', 'RemoveInfected') == '1':
+    if config.Get('ClamAV', 'RemoveInfected'):
         cmd += ' --remove'
-    elif config.Get('ClamAV', 'MoveInfected') == '1':
+    elif config.Get('ClamAV', 'MoveInfected'):
         quarantinedir = config.Get('ClamAV', 'QuarantineDir')
         # create quarantine folder before scanning
         if quarantinedir and not os.path.exists(quarantinedir):
@@ -377,7 +350,7 @@ def GetScanCmd(config, path, scanlog, noprint = False):
 
     # file scan only params
     if path != None:
-        if config.Get('ClamAV', 'ScanRecursive') == '1':
+        if config.Get('ClamAV', 'ScanRecursive'):
             cmd += ' --recursive'
         # add annoying registry files to exclude as they're locked by OS
         # no longer needed >= 0.93
@@ -420,7 +393,6 @@ def GetScanCmd(config, path, scanlog, noprint = False):
 
                         cmd += ' %s="%s"' % (patterns[0], pat)
 
-
         # append \\ when we have a DRIVE letter path only otherwise CRT gets messd up argv in clamav
         # i.e C:\ will become C:\\
         path = re.sub('([A-Za-z]):("\\|$)', r'\1:\\\2', path)
@@ -430,7 +402,7 @@ def GetScanCmd(config, path, scanlog, noprint = False):
     # 21 November 2006
     # added --kill option to unload processes from mem
 
-    if config.Get('ClamAV', 'Kill') == '1':
+    if config.Get('ClamAV', 'Kill'):
         cmd += ' --kill'
 
     cmd = '"%s" %s %s' % (config.Get('ClamAV', 'ClamScan'), cmd, path)
@@ -465,7 +437,6 @@ def CleanupTemp(pid):
             except Exception, e:
                 print 'Could not remove %s. Error: %s' % (os.path.join(root, tmpdir), str(e))
 
-
 def AppendLogFile(logfile, appendfile, maxsize):
     try:
         # create logs folder before appending
@@ -476,23 +447,22 @@ def AppendLogFile(logfile, appendfile, maxsize):
 
         # we need to synchronise log file access here
         # to avoid race conditions
-        if sys.platform.startswith("win"):
-            name = 'ClamWinLogFileUpdate-' + os.path.split(logfile)[1]
-            try:
-                # try to acquire our logupdate mutex
-                hMutex = win32event.OpenMutex(win32con.SYNCHRONIZE, False, name)
-                # wait until it is released
-                win32event.WaitForSingleObject(hMutex, win32event.INFINITE)
-                win32api.CloseHandle(hMutex)
-            except win32api.error:
-                pass
-            # create and own the mutex now to prevent others from modifying the log file
-            # whilst we append to it
-            hMutex = None
-            try:
-                hMutex = win32event.CreateMutex(None, True, name)
-            except win32api.error, e:
-                print('Could not create mutex %s. Error: %s' % (name, str(e)))
+        name = 'ClamWinLogFileUpdate-' + os.path.split(logfile)[1]
+        try:
+            # try to acquire our logupdate mutex
+            hMutex = win32event.OpenMutex(win32con.SYNCHRONIZE, False, name)
+            # wait until it is released
+            win32event.WaitForSingleObject(hMutex, win32event.INFINITE)
+            win32api.CloseHandle(hMutex)
+        except win32api.error:
+            pass
+        # create and own the mutex now to prevent others from modifying the log file
+        # whilst we append to it
+        hMutex = None
+        try:
+            hMutex = win32event.CreateMutex(None, True, name)
+        except win32api.error, e:
+            print('Could not create mutex %s. Error: %s' % (name, str(e)))
 
         ftemp = file(appendfile, 'rt')
 
@@ -528,11 +498,10 @@ def AppendLogFile(logfile, appendfile, maxsize):
         print('Could not write to the log file %s. Error: %s' % (logfile, str(e)))
 
     # release our synchronisation mutex
-    if sys.platform.startswith("win") and hMutex is not None:
-        try:
-            win32event.ReleaseMutex(hMutex)
-        except win32api.error, e:
-            print('Could not release mutex %s Error: %s' % (name, str(e)))
+    try:
+        win32event.ReleaseMutex(hMutex)
+    except win32api.error, e:
+        print('Could not release mutex %s Error: %s' % (name, str(e)))
 
 def GetDBInfo(filename):
     try:
@@ -576,49 +545,37 @@ def GetDBInfo(filename):
 
 def GetHostName():
     hostname = ''
-    if sys.platform.startswith('win'):
-        # ignore errors retrieving domain name
+    # ignore errors retrieving domain name
+    try:
         try:
-            try:
-                # there is no win32api.GetDomainName()
-                # on 9x, therefore try: except: block
-                dom_name = win32api.GetDomainName()
-            except:
-                dom_name = None
-            comp_name = win32api.GetComputerName()
-            # on computers that are not members of domain
-            # GetDomainName returns computer name
-            # we don't want to duplicate it
-            hostname = comp_name
-            if (dom_name is not None) and (dom_name != comp_name):
-                    hostname = dom_name + '\\' + hostname
+            # there is no win32api.GetDomainName()
+            # on 9x, therefore try: except: block
+            dom_name = win32api.GetDomainName()
         except:
-            hostname = 'Unknown'
-    else:
-        import socket
-        try:
-            hostname = socket.gethostbyaddr(socket.gethostbyname(socket.gethostname()))[0]
-        except:
-            hostname = 'Unknown'
+            dom_name = None
+        comp_name = win32api.GetComputerName()
+        # on computers that are not members of domain
+        # GetDomainName returns computer name
+        # we don't want to duplicate it
+        hostname = comp_name
+        if (dom_name is not None) and (dom_name != comp_name):
+            hostname = dom_name + '\\' + hostname
+    except:
+        hostname = 'Unknown'
     return hostname
 
 def SpawnPyOrExe(filename, *params):
-    if not hasattr(sys, 'frozen') and sys.platform.startswith('win'):
+    if not hasattr(sys, 'frozen'):
         win32api.ShellExecute(0, 'open', filename + '.py', filename + '.py ' + ' '.join(params), None, win32con.SW_SHOWNORMAL)
     else:
         os.spawnl(os.P_NOWAIT, filename + '.exe', *params)
 
-
-
 def SafeExpandEnvironmentStrings(s):
-    if sys.platform.startswith('win'):
-        try:
-            s = win32api.ExpandEnvironmentStrings(s)
-        except Exception,e:
-            print "An Error occured in ExpandEnvironmentStrings: %s" % str(e)
+    try:
+        s = win32api.ExpandEnvironmentStrings(s)
+    except Exception, e:
+        print "An Error occured in ExpandEnvironmentStrings: %s" % str(e)
     return s
-
-
 
 def ReformatLog(data, rtf):
     data = ReplaceClamAVWarnings(data.replace('\r\n', '\n'))
@@ -691,60 +648,60 @@ def ReplaceClamAVWarnings(data):
 # returns tuple (version, url, changelog)
 # exception on error
 def GetOnlineVersion(config):
-     import version
-     tmpfile = None
-     url = config.Get('Updates', 'CheckVersionURL')
-     try:
-         # add proxy info
-         if config.Get('Proxy', 'Host') != '':
-             proxy_info = {
+    import version
+    tmpfile = None
+    url = config.Get('Updates', 'CheckVersionURL')
+    try:
+        # add proxy info
+        if config.Get('Proxy', 'Host') != '':
+            proxy_info = {
                  'user' : config.Get('Proxy', 'User'),
                  'pass' : config.Get('Proxy', 'Password'),
                  'host' : config.Get('Proxy', 'Host'),
                  'port' : config.Get('Proxy', 'Port')
                  }
-             if proxy_info['user'] != '':
-                 proxy_url = "http://%(user)s:%(pass)s@%(host)s:%(port)s"
-             else:
-                 proxy_url = "http://%(host)s:%(port)s"
+            if proxy_info['user'] != '':
+                proxy_url = "http://%(user)s:%(pass)s@%(host)s:%(port)d"
+            else:
+                proxy_url = "http://%(host)s:%(port)d"
 
-             proxy_url = proxy_url % proxy_info
+            proxy_url = proxy_url % proxy_info
 
-             proxy_support = urllib2.ProxyHandler({"http": proxy_url})
-             opener = urllib2.build_opener(proxy_support, urllib2.HTTPHandler())
-             urllib2.install_opener(opener)
-         f = urllib2.urlopen(url + '?ver=%s' % version.clamwin_version)
-         verinfo = f.read()
-         #write to a temp file
-         tmpfile = tempfile.mktemp()
-         file(tmpfile, 'wt').write(verinfo)
+            proxy_support = urllib2.ProxyHandler({"http": proxy_url})
+            opener = urllib2.build_opener(proxy_support, urllib2.HTTPHandler())
+            urllib2.install_opener(opener)
+        f = urllib2.urlopen(url + '?ver=%s' % version.clamwin_version)
+        verinfo = f.read()
+        #write to a temp file
+        tmpfile = tempfile.mktemp()
+        file(tmpfile, 'wt').write(verinfo)
 
-         # read ini file
-         conf = ConfigParser.ConfigParser()
-         conf.read(tmpfile)
-         os.unlink(tmpfile)
-         tmpfile = None
+        # read ini file
+        conf = ConfigParser.ConfigParser()
+        conf.read(tmpfile)
+        os.unlink(tmpfile)
+        tmpfile = None
 
-         # get our data
-         version = conf.get('VERSION', 'VER')
+        # get our data
+        version = conf.get('VERSION', 'VER')
 
-         if conf.has_option('CHANGELOG', 'HTML'):
-             changelog = conf.get('CHANGELOG', 'HTML')
-         elif conf.has_option('CHANGELOG', 'TEXT'):
-             changelog = conf.get('CHANGELOG', 'TEXT')
-         else:
-             changelog = None
-         changelog = changelog.replace('\\n', '\n')
+        if conf.has_option('CHANGELOG', 'HTML'):
+            changelog = conf.get('CHANGELOG', 'HTML')
+        elif conf.has_option('CHANGELOG', 'TEXT'):
+            changelog = conf.get('CHANGELOG', 'TEXT')
+        else:
+            changelog = None
+        changelog = changelog.replace('\\n', '\n')
 
-         url = conf.get('DOWNLOAD', 'WEB')
-     except Exception, e:
-         if tmpfile is not None:
-             try:
-                 os.unlink(tmpfile)
-             except:
-                 pass
-         raise e
-     return (version, url, changelog)
+        url = conf.get('DOWNLOAD', 'WEB')
+    except Exception, e:
+        if tmpfile is not None:
+            try:
+                os.unlink(tmpfile)
+            except:
+                pass
+        raise e
+    return (version, url, changelog)
 
 def CheckDatabase(config):
     path = config.Get('ClamAV', 'Database')
@@ -755,15 +712,14 @@ def CheckDatabase(config):
            (os.path.isfile(os.path.join(path, 'daily.cvd'))  or  \
             os.path.isfile(os.path.join(path, 'daily.cld')))
 
-
 def RegKeyExists(key, subkey):
     # try to open the regkey
     try:
-        hKey = _winreg.OpenKey(key, subkey);
-        _winreg.CloseKey(hKey);
-        return True;
+        hKey = _winreg.OpenKey(key, subkey)
+        _winreg.CloseKey(hKey)
+        return True
     except:
-        return False;
+        return False
 
 def IsOutlookInstalled():
     return (RegKeyExists(_winreg.HKEY_CURRENT_USER, 'Software\\Microsoft\\Office\\Outlook') or
@@ -785,4 +741,3 @@ def IsOnline():
 
 if __name__ == '__main__':
     print IsOnline()
-

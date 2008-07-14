@@ -1,7 +1,4 @@
 #-----------------------------------------------------------------------------
-#Boa:Frame:wxMainFrame
-
-#-----------------------------------------------------------------------------
 # Name:        wxFrameMain.py
 # Product:     ClamWin Free Antivirus
 #
@@ -56,36 +53,22 @@ def create(parent, config):
 
 class wxMainFrame(wx.Frame):
     def _init_coll_flexGridSizerPanel_Items(self, parent):
-        # generated method, don't edit
-
         parent.AddSpacer(8, 8, border=0, flag=0)
-        parent.AddWindow(self.static1, 0, border=5,
-              flag=wx.LEFT | wx.RIGHT | wx.BOTTOM | wx.ALIGN_LEFT)
-        parent.AddWindow(self.dirCtrlScan, 0, border=10,
-              flag=wx.LEFT | wx.RIGHT | wx.GROW)
+        parent.AddWindow(self.static1, 0, border=5, flag=wx.LEFT | wx.RIGHT | wx.BOTTOM | wx.ALIGN_LEFT)
+        parent.AddWindow(self.dirCtrlScan, 0, border=10, flag=wx.LEFT | wx.RIGHT | wx.GROW)
 
     def _init_coll_flexGridSizerPanel_Growables(self, parent):
-        # generated method, don't edit
-
         parent.AddGrowableRow(2)
         parent.AddGrowableCol(0)
 
     def _init_coll_gridSizerFrame_Items(self, parent):
-        # generated method, don't edit
-
         parent.AddWindow(self.panelFrame, 0, border=0, flag=wx.GROW)
 
     def _init_coll_gridSizerButtons_Items(self, parent):
-        # generated method, don't edit
-
-        parent.AddWindow(self.buttonScan, 0, border=10,
-              flag=wx.ALIGN_RIGHT | wx.ALL)
-        parent.AddWindow(self.buttonClose, 0, border=10,
-              flag=wx.ALIGN_LEFT | wx.ALL)
+        parent.AddWindow(self.buttonScan, 0, border=10, flag=wx.ALIGN_RIGHT | wx.ALL)
+        parent.AddWindow(self.buttonClose, 0, border=10, flag=wx.ALIGN_LEFT | wx.ALL)
 
     def _init_coll_Tools_Items(self, parent):
-        # generated method, don't edit
-
         parent.Append(wxID_WXMAINFRAMETOOLSPREFERENCES, help='Displays the configuration window',
               text='&Preferences',
               kind=wx.ITEM_NORMAL)
@@ -94,20 +77,15 @@ class wxMainFrame(wx.Frame):
         parent.AppendMenu(wxID_WXMAINFRAMETOOLSREPORTS, help='Displays ClamWin Log Files',
               text='&Display Reports',
               submenu=self.Reports)
-        wx.EVT_MENU(self, wxID_WXMAINFRAMETOOLSPREFERENCES,
-              self.OnToolsPreferences)
+        wx.EVT_MENU(self, wxID_WXMAINFRAMETOOLSPREFERENCES, self.OnToolsPreferences)
         wx.EVT_MENU(self, wxID_WXMAINFRAMETOOLSDBUPDATE, self.OnToolsUpdate)
 
     def _init_coll_menuBar_Menus(self, parent):
-        # generated method, don't edit
-
         parent.Append(menu=self.File, title='&File')
         parent.Append(menu=self.Tools, title='&Tools')
         parent.Append(menu=self.Help, title='&Help')
 
     def _init_coll_Help_Items(self, parent):
-        # generated method, don't edit
-
         parent.Append(wxID_WXMAINFRAMEHELPHELP, help='Displays ClamWin Free Antivirus Manual',
               text='&Help', kind=wx.ITEM_NORMAL)
         parent.Append(wxID_WXMAINFRAMEHELPSUPPORT, help='Opens Support Forum in the Web Browser',
@@ -131,8 +109,6 @@ class wxMainFrame(wx.Frame):
         wx.EVT_MENU(self, wxID_WXMAINFRAMEHELPFAQ, self.OnHelpFAQ)
 
     def _init_coll_Reports_Items(self, parent):
-        # generated method, don't edit
-
         parent.Append(wxID_WXMAINFRAMEREPORTSDATABASE, help='Displays Virus Database Update Log FIle',
               text='&Virus Database Update Report', kind=wx.ITEM_NORMAL)
         parent.Append(wxID_WXMAINFRAMEREPORTSSCAN, help='Displays Virus Scan Log File',
@@ -142,8 +118,6 @@ class wxMainFrame(wx.Frame):
         wx.EVT_MENU(self, wxID_WXMAINFRAMEREPORTSSCAN, self.OnViewScanLog)
 
     def _init_coll_File_Items(self, parent):
-        # generated method, don't edit
-
         parent.Append(wxID_WXMAINFRAMEFILESCAN, help='Scans Selected Files or Folders for Computer Viruses',
               text='&Scan Files', kind=wx.ITEM_NORMAL)
         parent.Append(wxID_WXMAINFRAMEFILESCANMEM, help='Scans Programs in Computer Memory for Viruses',
@@ -157,8 +131,6 @@ class wxMainFrame(wx.Frame):
         wx.EVT_MENU(self, wxID_WXMAINFRAMEFILEITEMS0, self.OnFileExit)
 
     def _init_coll_toolBar_Tools(self, parent):
-        # generated method, don't edit
-
         parent.DoAddTool(bitmap=wx.Bitmap('img/Control.png', wx.BITMAP_TYPE_PNG),
               bmpDisabled=wx.NullBitmap, id=wxID_WXMAINFRAMETOOLBARTOOLS_PREFS,
               kind=wx.ITEM_NORMAL, label='Preferences',
@@ -191,12 +163,8 @@ class wxMainFrame(wx.Frame):
         parent.Realize()
 
     def _init_sizers(self):
-        # generated method, don't edit
         self.gridSizerFrame = wx.GridSizer(cols=1, hgap=0, rows=1, vgap=0)
-
-        self.flexGridSizerPanel = wx.FlexGridSizer(cols=1, hgap=0, rows=4,
-              vgap=0)
-
+        self.flexGridSizerPanel = wx.FlexGridSizer(cols=1, hgap=0, rows=4, vgap=0)
         self.gridSizerButtons = wx.GridSizer(cols=2, hgap=0, rows=1, vgap=0)
 
         self._init_coll_gridSizerFrame_Items(self.gridSizerFrame)
@@ -208,15 +176,10 @@ class wxMainFrame(wx.Frame):
         self.panelFrame.SetSizer(self.flexGridSizerPanel)
 
     def _init_utils(self):
-        # generated method, don't edit
         self.menuBar = wx.MenuBar()
-
         self.File = wx.Menu(title='')
-
         self.Tools = wx.Menu(title='')
-
         self.Help = wx.Menu(title='')
-
         self.Reports = wx.Menu(title='')
 
         self._init_coll_menuBar_Menus(self.menuBar)
@@ -226,7 +189,6 @@ class wxMainFrame(wx.Frame):
         self._init_coll_Reports_Items(self.Reports)
 
     def _init_ctrls(self, prnt):
-        # generated method, don't edit
         wx.Frame.__init__(self, id=wxID_WXMAINFRAME, name='wxMainFrame',
               parent=prnt, pos=wx.Point(250, 143), size=wx.Size(568, 430),
               style=wx.DEFAULT_FRAME_STYLE, title='ClamWin Free Antivirus')
@@ -243,8 +205,7 @@ class wxMainFrame(wx.Frame):
         self.toolBar.SetToolBitmapSize(wx.Size(32, 32))
         self.SetToolBar(self.toolBar)
 
-        self.statusBar = wx.StatusBar(id=wxID_WXMAINFRAMESTATUSBAR,
-              name='statusBar', parent=self, style=0)
+        self.statusBar = wx.StatusBar(id=wxID_WXMAINFRAMESTATUSBAR, name='statusBar', parent=self, style=0)
         self.statusBar.SetSize(wx.Size(537, 20))
         self.statusBar.SetPosition(wx.Point(0, 218))
         self.statusBar.SetToolTipString('Status Bar')
@@ -269,23 +230,19 @@ class wxMainFrame(wx.Frame):
               name='buttonScan', parent=self.panelFrame, pos=wx.Point(-85, 10),
               size=wx.Size(75, 23), style=0)
         self.buttonScan.SetDefault()
-        wx.EVT_BUTTON(self.buttonScan, wxID_WXMAINFRAMEBUTTONSCAN,
-              self.OnScanButton)
+        wx.EVT_BUTTON(self.buttonScan, wxID_WXMAINFRAMEBUTTONSCAN, self.OnScanButton)
 
         self.buttonClose = wx.Button(id=wxID_WXMAINFRAMEBUTTONCLOSE,
               label='&Close', name='buttonClose', parent=self.panelFrame,
               pos=wx.Point(10, 10), size=wx.Size(75, 23), style=0)
-        wx.EVT_BUTTON(self.buttonClose, wxID_WXMAINFRAMEBUTTONCLOSE,
-              self.OnButtonClose)
+        wx.EVT_BUTTON(self.buttonClose, wxID_WXMAINFRAMEBUTTONCLOSE, self.OnButtonClose)
 
         self._init_coll_toolBar_Tools(self.toolBar)
-
         ##self._init_sizers()
 
     def __init__(self, parent, config):
         self._config = None
         self._config = config
-
         self._init_ctrls(parent)
 
         # select second in the directory tree (usually c:)
@@ -313,12 +270,7 @@ class wxMainFrame(wx.Frame):
         icons = wx.IconBundle()
         icons.AddIconFromFile('img/FrameIcon.ico', wx.BITMAP_TYPE_ICO)
         self.SetIcons(icons)
-
-        if not sys.platform.startswith('win'):
-            self.Help.Remove(wxID_WXMAINFRAMEHELPHELP)
-
         self._UpdateState()
-
 
     def OnFileExit(self, event):
         self.Close()
@@ -338,7 +290,6 @@ class wxMainFrame(wx.Frame):
         else:
             return True
 
-
     def _UpdateState(self):
         try:
             # disable Run Command button if the configuration is invalid
@@ -354,7 +305,6 @@ class wxMainFrame(wx.Frame):
                 if wx.ID_YES == MsgBox.MessageBox(None, 'ClamWin Free Antivirus', 'You have not yet downloaded Virus Definitions Database. Would you like to download it now?', wx.YES_NO | wx.ICON_QUESTION):
                     wxDialogUtils.wxUpdateVirDB(self, self._config)
                     hasdb = Utils.CheckDatabase(self._config)
-
 
             self.buttonScan.Enable(configured and hasdb)
             self.toolBar.EnableTool(wxID_WXMAINFRAMETOOLBARTOOLS_INETUPDATE, configured)
@@ -409,9 +359,7 @@ class wxMainFrame(wx.Frame):
                 MsgBox.ErrorBox(self, 'Could not open help file - %s not found.' % helpfile)
             else:
                 try:
-                    win32api.ShellExecute(self.GetHandle(), 'open',
-                        helpfile,
-                        None, curDir, win32con.SW_SHOWNORMAL)
+                    win32api.ShellExecute(self.GetHandle(), 'open', helpfile, None, curDir, win32con.SW_SHOWNORMAL)
                 except Exception, e:
                     MsgBox.ErrorBox(self, 'Could not open help file. Please ensure that you have Adobe Acrobat Reader installed.')
 
@@ -421,16 +369,14 @@ class wxMainFrame(wx.Frame):
     def OnHelpSupport(self, event):
         wxDialogUtils.wxGoToInternetUrl('http://forums.clamwin.com/')
 
-
     def OnHelpUpdate(self, event):
         wxDialogUtils.wxGoToInternetUrl('http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version='+version.clamwin_version)
-
 
     def OnHelpWebsite(self, event):
         wxDialogUtils.wxGoToInternetUrl('http://www.clamwin.com')
 
 class wxGenericDirCtrlEx(wx.GenericDirCtrl):
-    def __init__(self,*_args,**_kwargs):
+    def __init__(self, *_args, **_kwargs):
         try:
             if _kwargs['multiselect'] == True:
                 multiselect = True
@@ -489,6 +435,3 @@ class wxGenericDirCtrlEx(wx.GenericDirCtrl):
                 path = path.rstrip('\\/')
             multiPath.append(path)
         return multiPath
-
-
-
