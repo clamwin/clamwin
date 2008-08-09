@@ -110,128 +110,107 @@ def SavePersistentScheduledScans(filename, scheduledScans):
 def create(parent, scanInfo):
     return wxDialogScheduledScan(parent, scanInfo)
 
-[wxID_WXDIALOGSCHEDULEDSCAN, wxID_WXDIALOGSCHEDULEDSCANBUTTONBROWSEFOLDER,
- wxID_WXDIALOGSCHEDULEDSCANBUTTONCANCEL, wxID_WXDIALOGSCHEDULEDSCANBUTTONOK,
- wxID_WXDIALOGSCHEDULEDSCANCHECKBOXENABLED,
- wxID_WXDIALOGSCHEDULEDSCANCHECKBOXSCANMEMORY,
- wxID_WXDIALOGSCHEDULEDSCANCHOICEDAY,
- wxID_WXDIALOGSCHEDULEDSCANCHOICEFREQUENCY,
- wxID_WXDIALOGSCHEDULEDSCANSPINBUTTONTIME,
- wxID_WXDIALOGSCHEDULEDSCANSTATICBOX1,
- wxID_WXDIALOGSCHEDULEDSCANSTATICLINETIMECTRL,
- wxID_WXDIALOGSCHEDULEDSCANSTATICTEXTDAY,
- wxID_WXDIALOGSCHEDULEDSCANSTATICTEXTDESCRIPTION,
- wxID_WXDIALOGSCHEDULEDSCANSTATICTEXTFOLDER,
- wxID_WXDIALOGSCHEDULEDSCANSTATICTEXTFREQUENCY,
- wxID_WXDIALOGSCHEDULEDSCANSTATICTEXTTIME,
- wxID_WXDIALOGSCHEDULEDSCANTEXTCTRLDESCRIPTION,
- wxID_WXDIALOGSCHEDULEDSCANTEXTCTRLFOLDER,
-] = map(lambda _init_ctrls: wx.NewId(), range(18))
-
 class wxDialogScheduledScan(wx.Dialog):
     def _init_ctrls(self, prnt):
         # generated method, don't edit
-        wx.Dialog.__init__(self, id=wxID_WXDIALOGSCHEDULEDSCAN,
+        wx.Dialog.__init__(self,
               name='wxDialogScheduledScan', parent=prnt, pos=wx.Point(1065, 481),
               size=wx.Size(311, 318), style=wx.DEFAULT_DIALOG_STYLE,
               title='Scheduled Scan')
         self.SetClientSize(wx.Size(303, 291))
         self.SetToolTipString('')
         self.Center(wx.BOTH)
-        wx.EVT_CHAR_HOOK(self, self.OnCharHook)
+        self.Bind(wx.EVT_CHAR_HOOK, self.OnCharHook)
 
-        self.staticBox1 = wx.StaticBox(id=wxID_WXDIALOGSCHEDULEDSCANSTATICBOX1,
+        self.staticBox1 = wx.StaticBox(
               label='Schedule', name='staticBox1', parent=self, pos=wx.Point(11,
               8), size=wx.Size(282, 104), style=0)
 
-        self.staticTextFrequency = wx.StaticText(id=wxID_WXDIALOGSCHEDULEDSCANSTATICTEXTFREQUENCY,
+        self.staticTextFrequency = wx.StaticText(
               label='Scanning &Frequency:', name='staticTextFrequency',
               parent=self, pos=wx.Point(25, 30), size=wx.Size(131, 13), style=0)
         self.staticTextFrequency.SetToolTipString('')
 
-        self.choiceFrequency = wx.Choice(choices=['Hourly', 'Daily', 'Workdays',
-              'Weekly'], id=wxID_WXDIALOGSCHEDULEDSCANCHOICEFREQUENCY,
+        self.choiceFrequency = wx.Choice(choices=['Hourly', 'Daily', 'Workdays', 'Weekly'],
               name='choiceFrequency', parent=self, pos=wx.Point(171, 27),
               size=wx.Size(107, 21), style=0)
         self.choiceFrequency.SetToolTipString('How often the schedule is executed')
         self.choiceFrequency.SetStringSelection('Daily')
-        wx.EVT_CHOICE(self.choiceFrequency,
-              wxID_WXDIALOGSCHEDULEDSCANCHOICEFREQUENCY,
-              self.OnChoiceFrequency)
+        self.choiceFrequency.Bind(wx.EVT_CHOICE, self.OnChoiceFrequency)
 
-        self.staticTextTime = wx.StaticText(id=wxID_WXDIALOGSCHEDULEDSCANSTATICTEXTTIME,
+        self.staticTextTime = wx.StaticText(
               label='&Time:', name='staticTextTime', parent=self,
               pos=wx.Point(25, 56), size=wx.Size(121, 18), style=0)
 
-        self.staticLineTimeCtrl = wx.StaticLine(id=wxID_WXDIALOGSCHEDULEDSCANSTATICLINETIMECTRL,
+        self.staticLineTimeCtrl = wx.StaticLine(
               name='staticLineTimeCtrl', parent=self, pos=wx.Point(171, 54),
               size=wx.Size(90, 22), style=0)
         self.staticLineTimeCtrl.Show(False)
         self.staticLineTimeCtrl.SetToolTipString('When the schedule should be started')
 
-        self.spinButtonTime = wx.SpinButton(id=wxID_WXDIALOGSCHEDULEDSCANSPINBUTTONTIME,
+        self.spinButtonTime = wx.SpinButton(
               name='spinButtonTime', parent=self, pos=wx.Point(261, 53),
               size=wx.Size(16, 22), style=wx.SP_ARROW_KEYS | wx.SP_VERTICAL)
         self.spinButtonTime.SetToolTipString('')
 
-        self.staticTextDay = wx.StaticText(id=wxID_WXDIALOGSCHEDULEDSCANSTATICTEXTDAY,
+        self.staticTextDay = wx.StaticText(
               label='&Day Of The Week:', name='staticTextDay', parent=self,
               pos=wx.Point(25, 85), size=wx.Size(123, 18), style=0)
         self.staticTextDay.SetToolTipString('')
 
         self.choiceDay = wx.Choice(choices=['Monday', 'Tuesday', 'Wednesday',
               'Thursday', 'Friday', 'Saturday', 'Sunday'],
-              id=wxID_WXDIALOGSCHEDULEDSCANCHOICEDAY, name='choiceDay',
+              name='choiceDay',
               parent=self, pos=wx.Point(171, 82), size=wx.Size(107, 21), style=0)
         self.choiceDay.SetToolTipString('When schedule frequency is weekly select day of the week')
         self.choiceDay.SetStringSelection('Tuesday')
 
-        self.staticTextFolder = wx.StaticText(id=wxID_WXDIALOGSCHEDULEDSCANSTATICTEXTFOLDER,
+        self.staticTextFolder = wx.StaticText(
               label='&Scan Folder:', name='staticTextFolder', parent=self,
               pos=wx.Point(12, 165), size=wx.Size(78, 15), style=0)
         self.staticTextFolder.SetToolTipString('')
 
-        self.textCtrlFolder = wx.TextCtrl(id=wxID_WXDIALOGSCHEDULEDSCANTEXTCTRLFOLDER,
+        self.textCtrlFolder = wx.TextCtrl(
               name='textCtrlFolder', parent=self, pos=wx.Point(12, 183),
               size=wx.Size(260, 20), style=0, value='')
         self.textCtrlFolder.SetToolTipString('Specify a folder to be scanned')
 
-        self.buttonBrowseFolder = wx.Button(id=wxID_WXDIALOGSCHEDULEDSCANBUTTONBROWSEFOLDER,
+        self.buttonBrowseFolder = wx.Button(
               label='...', name='buttonBrowseFolder', parent=self,
               pos=wx.Point(274, 183), size=wx.Size(20, 20), style=0)
         self.buttonBrowseFolder.SetToolTipString('Click to browse for a folder')
-        wx.EVT_BUTTON(self.buttonBrowseFolder, wxID_WXDIALOGSCHEDULEDSCANBUTTONBROWSEFOLDER, self.OnButtonBrowseFolder)
+        self.buttonBrowseFolder.Bind(wx.EVT_BUTTON, self.OnButtonBrowseFolder)
 
-        self.staticTextDescription = wx.StaticText(id=wxID_WXDIALOGSCHEDULEDSCANSTATICTEXTDESCRIPTION,
+        self.staticTextDescription = wx.StaticText(
               label='D&escription:', name='staticTextDescription', parent=self,
               pos=wx.Point(12, 208), size=wx.Size(68, 16), style=0)
         self.staticTextDescription.SetToolTipString('')
 
-        self.textCtrlDescription = wx.TextCtrl(id=wxID_WXDIALOGSCHEDULEDSCANTEXTCTRLDESCRIPTION,
+        self.textCtrlDescription = wx.TextCtrl(
               name='textCtrlDescription', parent=self, pos=wx.Point(12, 226),
               size=wx.Size(282, 20), style=0, value='')
         self.textCtrlDescription.SetToolTipString('Specify a friendly description for the scheduled scan')
 
-        self.checkBoxEnabled = wx.CheckBox(id=wxID_WXDIALOGSCHEDULEDSCANCHECKBOXENABLED,
+        self.checkBoxEnabled = wx.CheckBox(
               label='&Activate This Schedule', name='checkBoxEnabled',
               parent=self, pos=wx.Point(11, 121), size=wx.Size(278, 15), style=0)
         self.checkBoxEnabled.SetValue(False)
         self.checkBoxEnabled.SetToolTipString('Select if you wish to enable this schedule')
 
-        self.buttonOK = wx.Button(id=wxID_WXDIALOGSCHEDULEDSCANBUTTONOK,
+        self.buttonOK = wx.Button(
               label='OK', name='buttonOK', parent=self, pos=wx.Point(76, 258),
               size=wx.Size(75, 23), style=0)
         self.buttonOK.SetDefault()
         self.buttonOK.SetToolTipString('Closes the dialog and applies the settings')
-        wx.EVT_BUTTON(self.buttonOK, wxID_WXDIALOGSCHEDULEDSCANBUTTONOK, self.OnOK)
+        self.buttonOK.Bind(wx.EVT_BUTTON, self.OnOK)
 
-        self.buttonCancel = wx.Button(id=wxID_WXDIALOGSCHEDULEDSCANBUTTONCANCEL,
+        self.buttonCancel = wx.Button(
               label='Cancel', name='buttonCancel', parent=self, pos=wx.Point(163,
               258), size=wx.Size(75, 23), style=0)
         self.buttonCancel.SetToolTipString('Closes the dialog and discards the changes')
-        wx.EVT_BUTTON(self.buttonCancel, wxID_WXDIALOGSCHEDULEDSCANBUTTONCANCEL, self.OnCancel)
+        self.buttonCancel.Bind(wx.EVT_BUTTON, self.OnCancel)
 
-        self.checkBoxScanMemory = wx.CheckBox(id=wxID_WXDIALOGSCHEDULEDSCANCHECKBOXSCANMEMORY,
+        self.checkBoxScanMemory = wx.CheckBox(
               label='Scan &Programs Loaded in Computer Memory',
               name='checkBoxScanMemory', parent=self, pos=wx.Point(11, 141),
               size=wx.Size(277, 18), style=0)

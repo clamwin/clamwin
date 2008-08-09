@@ -31,24 +31,10 @@ import wx.lib.hyperlink
 def create(parent, config):
     return wxAboutDlg(parent, config)
 
-[wxID_WXABOUTDLG, wxID_WXABOUTDLGBUTTONOK,
- wxID_WXABOUTDLGGENSTATICTEXTCLAMWINHOME2, wxID_WXABOUTDLGSTATICBITMAPCLAM,
- wxID_WXABOUTDLGSTATICBITMAPCLAMAV, wxID_WXABOUTDLGSTATICBITMAPCLAMWIN,
- wxID_WXABOUTDLGSTATICBITMAPNETFARM, wxID_WXABOUTDLGSTATICTEXT1,
- wxID_WXABOUTDLGSTATICTEXT2, wxID_WXABOUTDLGSTATICTEXT3,
- wxID_WXABOUTDLGSTATICTEXTAUTHOR1, wxID_WXABOUTDLGSTATICTEXTAUTHOR2,
- wxID_WXABOUTDLGSTATICTEXTCLAMVER, wxID_WXABOUTDLGSTATICTEXTCLAMWINHOME,
- wxID_WXABOUTDLGSTATICTEXTCOPYRIGHT, wxID_WXABOUTDLGSTATICTEXTDBUPDATED1,
- wxID_WXABOUTDLGSTATICTEXTDBUPDATED2, wxID_WXABOUTDLGSTATICTEXTDBUPDATED3,
- wxID_WXABOUTDLGSTATICTEXTFREESW, wxID_WXABOUTDLGSTATICTEXTSCANENGINE,
- wxID_WXABOUTDLGSTATICTEXTWINCLAMVER,
-] = map(lambda _init_ctrls: wx.NewId(), range(21))
-
-
 class wxAboutDlg(wx.Dialog):
     def _init_ctrls(self, prnt):
         # generated method, don't edit
-        wx.Dialog.__init__(self, id=wxID_WXABOUTDLG, name='wxAboutDlg',
+        wx.Dialog.__init__(self, name='wxAboutDlg',
               parent=prnt, pos=wx.Point(1012, 480), size=wx.Size(428, 344),
               style=wx.DEFAULT_DIALOG_STYLE,
               title='About ClamWin Free Antivirus')
@@ -57,123 +43,120 @@ class wxAboutDlg(wx.Dialog):
         self.SetAutoLayout(False)
         self.SetToolTipString('About ClamWin Free Antivirus')
         self.Center(wx.BOTH)
-        wx.EVT_CHAR_HOOK(self, self.OnCharHook)
+        self.Bind(wx.EVT_CHAR_HOOK, self.OnCharHook)
 
         self.staticBitmapClamWin = wx.StaticBitmap(bitmap=wx.Bitmap('img/Title.png',
-              wx.BITMAP_TYPE_PNG), id=wxID_WXABOUTDLGSTATICBITMAPCLAMWIN,
+              wx.BITMAP_TYPE_PNG),
               name='staticBitmapClamWin', parent=self, pos=wx.Point(6, 8),
               size=wx.Size(256, 40), style=0)
         self.staticBitmapClamWin.SetToolTipString('')
 
-        self.staticTextWinClamVer = wx.StaticText(id=wxID_WXABOUTDLGSTATICTEXTWINCLAMVER,
+        self.staticTextWinClamVer = wx.StaticText(
               label='Version ' + version.clamwin_version, name='staticTextWinClamVer', parent=self,
               pos=wx.Point(13, 48), size=wx.Size(52, 16), style=0)
         self.staticTextWinClamVer.SetFont(wx.Font(10, wx.SWISS, wx.NORMAL, wx.BOLD, False))
         self.staticTextWinClamVer.SetToolTipString('')
 
-        self.staticTextClamVer = wx.StaticText(id=wxID_WXABOUTDLGSTATICTEXTCLAMVER,
+        self.staticTextClamVer = wx.StaticText(
               label='ClamAV Version gets here', name='staticTextClamVer',
               parent=self, pos=wx.Point(16, 96), size=wx.Size(227, 15), style=0)
         self.staticTextClamVer.SetToolTipString('')
 
-        self.staticTextDBUpdated1 = wx.StaticText(id=wxID_WXABOUTDLGSTATICTEXTDBUPDATED1,
+        self.staticTextDBUpdated1 = wx.StaticText(
               label='Protecting from %i Viruses', name='staticTextDBUpdated1',
               parent=self, pos=wx.Point(16, 112), size=wx.Size(227, 15), style=0)
         self.staticTextDBUpdated1.SetToolTipString('')
 
-        self.staticBitmapClam = wx.StaticBitmap(bitmap=wx.Bitmap('img/clamwin.png',
-              wx.BITMAP_TYPE_PNG), id=wxID_WXABOUTDLGSTATICBITMAPCLAM,
+        self.staticBitmapClam = wx.StaticBitmap(bitmap=wx.Bitmap('img/clamwin.png', wx.BITMAP_TYPE_PNG),
               name='staticBitmapClam', parent=self, pos=wx.Point(249, 10),
               size=wx.Size(134, 122), style=0)
         self.staticBitmapClam.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
         self.staticBitmapClam.SetToolTipString('ClamWin Free Antivirus Homepage')
-        wx.EVT_LEFT_DOWN(self.staticBitmapClam, self.OnClamWinHomePage)
+        self.staticBitmapClam.Bind(wx.EVT_LEFT_DOWN, self.OnClamWinHomePage)
 
-        self.staticTextClamWinHome = wx.StaticText(id=wxID_WXABOUTDLGSTATICTEXTCLAMWINHOME,
+        self.staticTextClamWinHome = wx.StaticText(
               label='Website:', name='staticTextClamWinHome', parent=self,
               pos=wx.Point(13, 68), size=wx.Size(43, 15), style=0)
         self.staticTextClamWinHome.SetToolTipString('')
 
-        self.genStaticTextClamWinHome2 = wx.lib.hyperlink.HyperLinkCtrl(id=wxID_WXABOUTDLGGENSTATICTEXTCLAMWINHOME2,
+        self.genStaticTextClamWinHome2 = wx.lib.hyperlink.HyperLinkCtrl(
               label='http://www.clamwin.com', name='genStaticTextClamWinHome2',
               parent=self, pos=wx.Point(69, 68), size=wx.Size(131, 20),
               style=wx.TRANSPARENT_WINDOW)
         self.genStaticTextClamWinHome2.SetForegroundColour(wx.Colour(0, 0, 255))
         self.genStaticTextClamWinHome2.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
         self.genStaticTextClamWinHome2.SetToolTipString('ClamWin Free Antivirus Homepage')
-        wx.EVT_LEFT_DOWN(self.genStaticTextClamWinHome2, self.OnClamWinHomePage)
+        self.genStaticTextClamWinHome2.Bind(wx.EVT_LEFT_DOWN, self.OnClamWinHomePage)
 
-        self.staticTextAuthor1 = wx.StaticText(id=wxID_WXABOUTDLGSTATICTEXTAUTHOR1,
+        self.staticTextAuthor1 = wx.StaticText(
               label='Authors: alch <alch@users.sourceforge.net>',
               name='staticTextAuthor1', parent=self, pos=wx.Point(16, 168),
               size=wx.Size(210, 13), style=0)
         self.staticTextAuthor1.SetToolTipString('')
 
-        self.staticTextCopyright = wx.StaticText(id=wxID_WXABOUTDLGSTATICTEXTCOPYRIGHT,
+        self.staticTextCopyright = wx.StaticText(
               label='Copyright ClamWin Pty Ltd (c) 2004 - 2008',
               name='staticTextCopyright', parent=self, pos=wx.Point(16, 207),
               size=wx.Size(200, 13), style=0)
         self.staticTextCopyright.SetToolTipString('')
 
-        self.staticTextFreeSW = wx.StaticText(id=wxID_WXABOUTDLGSTATICTEXTFREESW,
+        self.staticTextFreeSW = wx.StaticText(
               label='This program is free software', name='staticTextFreeSW',
               parent=self, pos=wx.Point(275, 287), size=wx.Size(135, 13),
               style=0)
         self.staticTextFreeSW.SetToolTipString('')
 
-        self.buttonOK = wx.Button(id=wxID_WXABOUTDLGBUTTONOK, label='OK',
+        self.buttonOK = wx.Button(label='OK',
               name='buttonOK', parent=self, pos=wx.Point(15, 281),
               size=wx.Size(71, 24), style=0)
-        wx.EVT_BUTTON(self.buttonOK, wxID_WXABOUTDLGBUTTONOK, self.OnOK)
+        self.buttonOK.Bind(wx.EVT_BUTTON, self.OnOK)
 
-        self.staticTextDBUpdated2 = wx.StaticText(id=wxID_WXABOUTDLGSTATICTEXTDBUPDATED2,
+        self.staticTextDBUpdated2 = wx.StaticText(
               label='Virus DB Version: (main: %i; daily: %i)',
               name='staticTextDBUpdated2', parent=self, pos=wx.Point(16, 128),
               size=wx.Size(227, 15), style=0)
         self.staticTextDBUpdated2.SetToolTipString('')
 
-        self.staticTextDBUpdated3 = wx.StaticText(id=wxID_WXABOUTDLGSTATICTEXTDBUPDATED3,
+        self.staticTextDBUpdated3 = wx.StaticText(
               label='Updated: %s', name='staticTextDBUpdated3', parent=self,
               pos=wx.Point(16, 144), size=wx.Size(227, 16), style=0)
         self.staticTextDBUpdated3.SetToolTipString('')
 
-        self.staticTextAuthor2 = wx.StaticText(id=wxID_WXABOUTDLGSTATICTEXTAUTHOR2,
+        self.staticTextAuthor2 = wx.StaticText(
               label='Gianluigi Tiesi <sherpya@users.sourceforge.net>',
               name='staticTextAuthor2', parent=self, pos=wx.Point(16, 184),
               size=wx.Size(230, 13), style=0)
         self.staticTextAuthor2.SetToolTipString('')
 
-        self.staticBitmapNetfarm = wx.StaticBitmap(bitmap=wx.Bitmap('img/netfarm.png',
-              wx.BITMAP_TYPE_PNG), id=wxID_WXABOUTDLGSTATICBITMAPNETFARM,
+        self.staticBitmapNetfarm = wx.StaticBitmap(bitmap=wx.Bitmap('img/netfarm.png', wx.BITMAP_TYPE_PNG),
               name='staticBitmapNetfarm', parent=self, pos=wx.Point(251, 241),
               size=wx.Size(160, 33), style=0)
         self.staticBitmapNetfarm.SetToolTipString('Netfarm Homepage')
         self.staticBitmapNetfarm.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
-        wx.EVT_LEFT_DOWN(self.staticBitmapNetfarm, self.OnNetfarmHomepage)
+        self.staticBitmapNetfarm.Bind(wx.EVT_LEFT_DOWN, self.OnNetfarmHomepage)
 
-        self.staticBitmapClamAV = wx.StaticBitmap(bitmap=wx.Bitmap('img/ClamAV.png',
-              wx.BITMAP_TYPE_PNG), id=wxID_WXABOUTDLGSTATICBITMAPCLAMAV,
+        self.staticBitmapClamAV = wx.StaticBitmap(bitmap=wx.Bitmap('img/ClamAV.png', wx.BITMAP_TYPE_PNG),
               name='staticBitmapClamAV', parent=self, pos=wx.Point(286, 182),
               size=wx.Size(125, 34), style=0)
         self.staticBitmapClamAV.SetToolTipString('ClamAV Homepage')
         self.staticBitmapClamAV.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
-        wx.EVT_LEFT_DOWN(self.staticBitmapClamAV, self.OnClamAVHomePage)
+        self.staticBitmapClamAV.Bind(wx.EVT_LEFT_DOWN, self.OnClamAVHomePage)
 
-        self.staticTextScanEngine = wx.StaticText(id=wxID_WXABOUTDLGSTATICTEXTSCANENGINE,
+        self.staticTextScanEngine = wx.StaticText(
               label='Scanning Engine by:', name='staticTextScanEngine',
               parent=self, pos=wx.Point(313, 166), size=wx.Size(98, 13), style=0)
 
-        self.staticText1 = wx.StaticText(id=wxID_WXABOUTDLGSTATICTEXT1,
+        self.staticText1 = wx.StaticText(
               label='MS Windows Port by:', name='staticText1', parent=self,
               pos=wx.Point(309, 224), size=wx.Size(102, 13), style=0)
 
-        self.staticText2 = wx.StaticText(id=wxID_WXABOUTDLGSTATICTEXT2,
+        self.staticText2 = wx.StaticText(
               label='Portions Copyright SourceFire Inc. (ClamAV)',
               name='staticText2', parent=self, pos=wx.Point(16, 223),
               size=wx.Size(206, 13), style=0)
         self.staticText2.SetToolTipString('')
 
-        self.staticText3 = wx.StaticText(id=wxID_WXABOUTDLGSTATICTEXT3,
+        self.staticText3 = wx.StaticText(
               label='ClamWin  is not affiliated with ClamAV or SourceFire Inc.',
               name='staticText3', parent=self, pos=wx.Point(16, 243),
               size=wx.Size(190, 30), style=0)

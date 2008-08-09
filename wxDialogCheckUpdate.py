@@ -32,28 +32,19 @@ import wx.html
 def create(parent, config, version, url, changelog):
     return wxDialogUpdateChecker(parent, config, version, url, changelog)
 
-[wxID_WXDIALOGUPDATECHECKER, wxID_WXDIALOGUPDATECHECKERBUTTONCLOSE,
- wxID_WXDIALOGUPDATECHECKERBUTTONDOWNLOAD,
- wxID_WXDIALOGUPDATECHECKERCHECKBOXDONTCHECK,
- wxID_WXDIALOGUPDATECHECKERSTATICLINEHTML,
- wxID_WXDIALOGUPDATECHECKERSTATICTEXTANNOUNCE,
- wxID_WXDIALOGUPDATECHECKERSTATICTEXTCHANGELOG,
- wxID_WXDIALOGUPDATECHECKERSTATICTEXTINSTRUCTIONS,
-] = map(lambda _init_ctrls: wx.NewId(), range(8))
-
 class wxDialogUpdateChecker(wx.Dialog):
     def _init_ctrls(self, prnt):
         # generated method, don't edit
-        wx.Dialog.__init__(self, id=wxID_WXDIALOGUPDATECHECKER,
+        wx.Dialog.__init__(self,
               name='wxDialogUpdateChecker', parent=prnt, pos=wx.Point(229, 314),
               size=wx.Size(324, 272),
               style=wx.DEFAULT_DIALOG_STYLE|wx.STAY_ON_TOP|wx.MINIMIZE_BOX,
               title='ClamWin Update')
         self.SetClientSize(wx.Size(316, 245))
-        wx.EVT_CHAR_HOOK(self, self.OnCharHook)
-        wx.EVT_INIT_DIALOG(self, self.OnInitDialog)
+        self.Bind(wx.EVT_CHAR_HOOK, self.OnCharHook)
+        self.Bind(wx.EVT_INIT_DIALOG, self.OnInitDialog)
 
-        self.staticTextAnnounce = wx.StaticText(id=wxID_WXDIALOGUPDATECHECKERSTATICTEXTANNOUNCE,
+        self.staticTextAnnounce = wx.StaticText(
               label='An update of ClamWin Free Antivirus has been released. Please click on Download button and download the latest version %s',
               name='staticTextAnnounce', parent=self, pos=wx.Point(13, 8),
               size=wx.Size(296, 40), style=wx.ST_NO_AUTORESIZE)
@@ -61,44 +52,44 @@ class wxDialogUpdateChecker(wx.Dialog):
         self.staticTextAnnounce.SetToolTipString('')
         self.staticTextAnnounce.SetFont(wx.Font(8, wx.SWISS, wx.NORMAL, wx.BOLD, False, 'MS Shell Dlg'))
 
-        self.staticTextInstructions = wx.StaticText(id=wxID_WXDIALOGUPDATECHECKERSTATICTEXTINSTRUCTIONS,
+        self.staticTextInstructions = wx.StaticText(
               label='After you download the latest version setup file simply run it and install over the existing version.',
               name='staticTextInstructions', parent=self, pos=wx.Point(13, 50),
               size=wx.Size(296, 28), style=0)
         self.staticTextInstructions.SetForegroundColour(wx.Colour(0, 0, 0))
         self.staticTextInstructions.SetToolTipString('')
 
-        self.staticTextChangelog = wx.StaticText(id=wxID_WXDIALOGUPDATECHECKERSTATICTEXTCHANGELOG,
+        self.staticTextChangelog = wx.StaticText(
               label='List Of Changes in Version %s:',
               name='staticTextChangelog', parent=self, pos=wx.Point(13, 80),
               size=wx.Size(296, 13), style=wx.ST_NO_AUTORESIZE)
         self.staticTextChangelog.SetToolTipString('')
 
-        self.staticLineHtml = wx.StaticLine(id=wxID_WXDIALOGUPDATECHECKERSTATICLINEHTML,
+        self.staticLineHtml = wx.StaticLine(
               name='staticLineHtml', parent=self, pos=wx.Point(9, 96),
               size=wx.Size(296, 85), style=0)
         self.staticLineHtml.Show(False)
         self.staticLineHtml.SetToolTipString('')
 
-        self.checkBoxDontCheck = wx.CheckBox(id=wxID_WXDIALOGUPDATECHECKERCHECKBOXDONTCHECK,
+        self.checkBoxDontCheck = wx.CheckBox(
               label='&Do Not Check for Updates in Future',
               name='checkBoxDontCheck', parent=self, pos=wx.Point(16, 190),
               size=wx.Size(288, 13), style=0)
         self.checkBoxDontCheck.SetValue(False)
         self.checkBoxDontCheck.SetToolTipString('')
-        wx.EVT_CHECKBOX(self.checkBoxDontCheck, wxID_WXDIALOGUPDATECHECKERCHECKBOXDONTCHECK, self.OnCheckBoxDontCheckCheckbox)
+        self.checkBoxDontCheck.Bind(wx.EVT_CHECKBOX, self.OnCheckBoxDontCheckCheckbox)
 
-        self.buttonDownload = wx.Button(id=wxID_WXDIALOGUPDATECHECKERBUTTONDOWNLOAD,
+        self.buttonDownload = wx.Button(
               label='&Download', name='buttonDownload', parent=self,
               pos=wx.Point(143, 212), size=wx.Size(75, 23), style=0)
         self.buttonDownload.SetToolTipString('')
         self.buttonDownload.SetDefault()
-        wx.EVT_BUTTON(self.buttonDownload, wxID_WXDIALOGUPDATECHECKERBUTTONDOWNLOAD, self.OnButtonDownload)
+        self.buttonDownload.Bind(wx.EVT_BUTTON, self.OnButtonDownload)
 
-        self.buttonClose = wx.Button(id=wxID_WXDIALOGUPDATECHECKERBUTTONCLOSE,
+        self.buttonClose = wx.Button(
               label='Close', name='buttonClose', parent=self, pos=wx.Point(230, 212), size=wx.Size(75, 23), style=0)
         self.buttonClose.SetToolTipString('')
-        wx.EVT_BUTTON(self.buttonClose, wxID_WXDIALOGUPDATECHECKERBUTTONCLOSE, self.OnButtonClose)
+        self.buttonClose.Bind(wx.EVT_BUTTON, self.OnButtonClose)
 
     def __init__(self, parent, config, version, url, changelog):
         self._init_ctrls(parent)

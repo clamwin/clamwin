@@ -31,10 +31,6 @@ import win32api, win32con
 def create(parent, text, scroll_down = False):
     return wxDialogLogView(parent, text, scroll_down)
 
-[wxID_WXDIALOGLOGVIEW, wxID_WXDIALOGLOGVIEWBUTTONOK,
- wxID_WXDIALOGLOGVIEWTEXTCTRL,
-] = map(lambda _init_ctrls: wx.NewId(), range(3))
-
 class wxDialogLogView(wx.Dialog):
     def _init_coll_flexGridSizer_Items(self, parent):
         parent.AddWindow(self.textCtrl, 0, border=5, flag=wx.TOP | wx.RIGHT | wx.LEFT | wx.GROW)
@@ -53,27 +49,27 @@ class wxDialogLogView(wx.Dialog):
         self.SetSizer(self.flexGridSizer)
 
     def _init_ctrls(self, prnt):
-        wx.Dialog.__init__(self, id=wxID_WXDIALOGLOGVIEW, name='wxDialogLogView',
+        wx.Dialog.__init__(self, name='wxDialogLogView',
               parent=prnt, pos=wx.Point(450, 251), size=wx.Size(566, 428),
               style=wx.RESIZE_BORDER | wx.DEFAULT_DIALOG_STYLE,
               title='ClamWin Log Viewer')
         self.SetClientSize(wx.Size(558, 401))
         self.Center(wx.BOTH)
-        wx.EVT_CHAR_HOOK(self, self.OnCharHook)
-        wx.EVT_INIT_DIALOG(self, self.OnInitDialog)
+        self.Bind(wx.EVT_CHAR_HOOK, self.OnCharHook)
+        self.Bind(wx.EVT_INIT_DIALOG, self.OnInitDialog)
 
-        self.textCtrl = wx.TextCtrl(id=wxID_WXDIALOGLOGVIEWTEXTCTRL,
+        self.textCtrl = wx.TextCtrl(
               name='textCtrl', parent=self, pos=wx.Point(5, 5), size=wx.Size(548, 353),
               style=wx.TE_RICH | wx.TE_MULTILINE | wx.TE_READONLY, value='')
         self.textCtrl.SetToolTipString('')
         self.textCtrl.Center(wx.BOTH)
 
-        self.buttonOK = wx.Button(id=wxID_WXDIALOGLOGVIEWBUTTONOK, label='OK',
+        self.buttonOK = wx.Button(label='OK',
               name='buttonOK', parent=self, pos=wx.Point(241, 368),
               size=wx.Size(75, 23), style=0)
         self.buttonOK.SetToolTipString('')
         self.buttonOK.Center(wx.BOTH)
-        wx.EVT_BUTTON(self.buttonOK, wxID_WXDIALOGLOGVIEWBUTTONOK, self.OnOK)
+        self.buttonOK.Bind(wx.EVT_BUTTON, self.OnOK)
 
         self._init_sizers()
 

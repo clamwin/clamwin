@@ -92,23 +92,18 @@ class ThreadUpdateStatusEvent(wx.PyCommandEvent):
 def create(parent, cmd, logfile, priority, bitmap_mask, notify_params=None):
     return wxDialogStatus(parent, cmd, logfile, priority, bitmap_mask, notify_params)
 
-[wxID_WXDIALOGSTATUS, wxID_WXDIALOGSTATUSBUTTONSAVE,
- wxID_WXDIALOGSTATUSBUTTONSTOP, wxID_WXDIALOGSTATUSSTATICBITMAP1,
- wxID_WXDIALOGSTATUSTEXTCTRLSTATUS,
-] = map(lambda _init_ctrls: wx.NewId(), range(5))
-
 class wxDialogStatus(wx.Dialog):
     def _init_ctrls(self, prnt):
         # generated method, don't edit
-        wx.Dialog.__init__(self, id=wxID_WXDIALOGSTATUS, name='wxDialogStatus',
+        wx.Dialog.__init__(self, name='wxDialogStatus',
               parent=prnt, pos=wx.Point(449, 269), size=wx.Size(568, 392),
               style=wx.DEFAULT_DIALOG_STYLE, title='ClamWin Free Antivirus Status')
         self.SetClientSize(wx.Size(560, 365))
         self.SetAutoLayout(False)
         self.Center(wx.BOTH)
         self.SetToolTipString('')
-        wx.EVT_CLOSE(self, self.OnWxDialogStatusClose)
-        wx.EVT_INIT_DIALOG(self, self.OnInitDialog)
+        self.Bind(wx.EVT_CLOSE, self.OnWxDialogStatusClose)
+        self.Bind(wx.EVT_INIT_DIALOG, self.OnInitDialog)
 
         winstyle = wx.TAB_TRAVERSAL | wx.TE_RICH | wx.TE_MULTILINE | wx.TE_READONLY
         # enable wxTE_AUTO_URL on XP only
@@ -116,28 +111,24 @@ class wxDialogStatus(wx.Dialog):
         if win32api.GetVersionEx()[0] >= 5 and not self._scan:
             winstyle = winstyle | wx.TE_AUTO_URL
 
-        self.textCtrlStatus = wx.TextCtrl(id=wxID_WXDIALOGSTATUSTEXTCTRLSTATUS,
-              name='textCtrlStatus', parent=self, pos=wx.Point(89, 11),
+        self.textCtrlStatus = wx.TextCtrl(name='textCtrlStatus', parent=self, pos=wx.Point(89, 11),
               size=wx.Size(455, 300),
               style=winstyle, value='')
 
-        self.staticBitmap1 = wx.StaticBitmap(bitmap=wx.NullBitmap,
-              id=wxID_WXDIALOGSTATUSSTATICBITMAP1, name='staticBitmap1',
+        self.staticBitmap1 = wx.StaticBitmap(bitmap=wx.NullBitmap, name='staticBitmap1',
               parent=self, pos=wx.Point(16, 9), size=wx.Size(56, 300),
               style=wx.TRANSPARENT_WINDOW)
 
-        self.buttonStop = wx.Button(id=wxID_WXDIALOGSTATUSBUTTONSTOP,
-              label='&Stop', name='buttonStop', parent=self, pos=wx.Point(291,
-              328), size=wx.Size(85, 24), style=0)
+        self.buttonStop = wx.Button(label='&Stop', name='buttonStop', parent=self,
+                                    pos=wx.Point(291,328), size=wx.Size(85, 24), style=0)
         self.buttonStop.Enable(True)
         self.buttonStop.SetDefault()
-        wx.EVT_BUTTON(self.buttonStop, wxID_WXDIALOGSTATUSBUTTONSTOP, self.OnButtonStop)
+        self.buttonStop.Bind(wx.EVT_BUTTON, self.OnButtonStop)
 
-        self.buttonSave = wx.Button(id=wxID_WXDIALOGSTATUSBUTTONSAVE,
-              label='S&ave Report', name='buttonSave', parent=self,
-              pos=wx.Point(192, 328), size=wx.Size(86, 24), style=0)
+        self.buttonSave = wx.Button(label='S&ave Report', name='buttonSave', parent=self,
+                                    pos=wx.Point(192, 328), size=wx.Size(86, 24), style=0)
         self.buttonSave.Enable(False)
-        wx.EVT_BUTTON(self.buttonSave, wxID_WXDIALOGSTATUSBUTTONSAVE, self.OnButtonSave)
+        self.buttonSave.Bind(wx.EVT_BUTTON, self.OnButtonSave)
 
     def __init__(self, parent, cmd, logfile, priority='n', bitmapMask='', notify_params=None):
         self._autoClose = False
@@ -160,7 +151,7 @@ class wxDialogStatus(wx.Dialog):
         EVT_THREADUPDATESTATUS(self, self.OnThreadUpdateStatus)
 
         # add url click handler
-        wx.EVT_TEXT_URL(self, wxID_WXDIALOGSTATUSTEXTCTRLSTATUS, self.OnClickURL)
+        self.Bind(wx.EVT_TEXT_URL, self.OnClickURL)
 
         # initilaise our throbber (an awkward way to display animated images)
         images = [throbImages.catalog[i].getBitmap()
