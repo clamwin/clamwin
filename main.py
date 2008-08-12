@@ -45,11 +45,12 @@ class wxMainFrame(xrcwxMainFrame):
 
         sels = tree.GetSelections()
         for sel in sels:
-            path = ''
+            path = []
             while sel != root:
-                path = sep.join([tree.GetItemText(sel), path])
+                path.append(tree.GetItemText(sel))
                 sel = tree.GetItemParent(sel)
-            paths.append(path)
+            path.reverse()
+            paths.append(sep.join(path))
 
         return paths
 
