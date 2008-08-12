@@ -1,0 +1,230 @@
+<?xml version="1.0" ?>
+<resource>
+  <object class="wxFrame" name="wxMainFrame">
+    <size>568, 430</size>
+    <title>ClamWin Free Antivirus</title>
+    <centered>1</centered>
+    <help>ClamWin Free Antivirus</help>
+    <object class="wxMenuBar">
+      <object class="wxMenu" name="File">
+        <label>File</label>
+        <object class="wxMenuItem" name="Scan_Files">
+          <label>&amp;Scan Files</label>
+          <help>Scans Selected Files or Folders for Computer Viruses</help>
+          <XRCED>
+            <events>EVT_MENU</events>
+          </XRCED>
+        </object>
+        <object class="wxMenuItem" name="Scan_Memory">
+          <label>Scan &amp;Memory</label>
+          <help>Scans Programs in Computer Memory for Viruses</help>
+          <XRCED>
+            <events>EVT_MENU</events>
+          </XRCED>
+        </object>
+        <object class="separator"/>
+        <object class="wxMenuItem" name="Exit">
+          <label>E&amp;xit</label>
+          <help>Exits the application</help>
+          <XRCED>
+            <events>EVT_MENU</events>
+          </XRCED>
+        </object>
+      </object>
+      <object class="wxMenu" name="Tools">
+        <object class="wxMenuItem" name="Preferences">
+          <label>&amp;Preferences</label>
+          <help>Displays the configuration window</help>
+          <XRCED>
+            <events>EVT_MENU</events>
+          </XRCED>
+        </object>
+        <object class="wxMenuItem" name="Download_Virus_Database_Update">
+          <label>Download &amp;Virus Database Update</label>
+          <help>Downloads latest virus database from the Internet</help>
+          <XRCED>
+            <events>EVT_MENU</events>
+          </XRCED>
+        </object>
+        <object class="wxMenu" name="Display_Reports">
+          <object class="wxMenuItem" name="Virus_Database_Update_Report">
+            <label>&amp;Virus Database Update Report</label>
+            <help>Displays Virus Database Update Log FIle</help>
+            <XRCED>
+              <events>EVT_MENU</events>
+            </XRCED>
+          </object>
+          <object class="wxMenuItem" name="Scan_Report">
+            <label>&amp;Scan Report</label>
+            <help>Displays Virus Scan Log File</help>
+            <XRCED>
+              <events>EVT_MENU</events>
+            </XRCED>
+          </object>
+          <label>&amp;Display Reports</label>
+          <help>Displays ClamWin Log Files</help>
+        </object>
+        <label>Tools</label>
+      </object>
+      <object class="wxMenu" name="Help">
+        <label>Help</label>
+        <object class="wxMenuItem" name="Help">
+          <label>&amp;Help</label>
+          <help>Displays ClamWin Free Antivirus Manual</help>
+          <XRCED>
+            <events>EVT_MENU</events>
+          </XRCED>
+        </object>
+        <object class="wxMenuItem" name="Technical_Support">
+          <label>&amp;Technical Support</label>
+          <help>Opens Support Forum in the Web Browser</help>
+          <XRCED>
+            <events>EVT_MENU</events>
+          </XRCED>
+        </object>
+        <object class="wxMenuItem" name="Check_Latest_Version">
+          <label>&amp;Check Latest Version</label>
+          <help>Checks for the Latest Version</help>
+          <XRCED>
+            <events>EVT_MENU</events>
+          </XRCED>
+        </object>
+        <object class="wxMenuItem" name="ClamWin_Website">
+          <label>ClamWin &amp;Website</label>
+          <help>Opens ClamWin Free Antivirus Website</help>
+          <XRCED>
+            <events>EVT_MENU</events>
+          </XRCED>
+        </object>
+        <object class="wxMenuItem" name="FAQ">
+          <label>&amp;FAQ</label>
+          <help>Opens Frequently Asked Questions Page in the Web Browser</help>
+          <XRCED>
+            <events>EVT_MENU</events>
+          </XRCED>
+        </object>
+        <object class="separator"/>
+        <object class="wxMenuItem" name="About">
+          <label>&amp;About</label>
+          <help>Displays the About Box</help>
+          <XRCED>
+            <events>EVT_MENU</events>
+          </XRCED>
+        </object>
+      </object>
+    </object>
+    <object class="wxToolBar" name="toolBar">
+      <object class="tool" name="Preferences">
+        <bitmap>img/Control.png</bitmap>
+        <tooltip>Displays Preferences Window</tooltip>
+        <longhelp>Displays Preferences Window</longhelp>
+        <label>Preferences</label>
+        <XRCED>
+          <events>EVT_TOOL</events>
+        </XRCED>
+      </object>
+      <object class="tool" name="Update">
+        <bitmap>img/World.png</bitmap>
+        <tooltip>Starts Internet Update</tooltip>
+        <longhelp>Updates virus databases over the Internet</longhelp>
+        <label>Update</label>
+        <XRCED>
+          <events>EVT_TOOL</events>
+        </XRCED>
+      </object>
+      <object class="separator"/>
+      <object class="tool" name="Scan_Computer_Memory">
+        <bitmap>img/ScanMem.png</bitmap>
+        <tooltip>Scans Computer Memory for Viruses</tooltip>
+        <longhelp>Scans Programs Loaded in Computer Memory for Computer Viruses</longhelp>
+        <label>Scan Computer Memory</label>
+        <XRCED>
+          <events>EVT_TOOL</events>
+        </XRCED>
+      </object>
+      <object class="tool" name="Scan_Selected_Files">
+        <bitmap>img/Scan.png</bitmap>
+        <tooltip>Scans Selected Files For Viruses</tooltip>
+        <longhelp>Scans Selected Files or Folders for Computer Viruses</longhelp>
+        <label>Scan Selected Files</label>
+        <XRCED>
+          <events>EVT_TOOL</events>
+        </XRCED>
+      </object>
+      <bitmapsize>32, 32</bitmapsize>
+      <pos>0, 0</pos>
+      <size>560, 42</size>
+      <style>wxTB_FLAT|wxTB_HORIZONTAL</style>
+    </object>
+    <object class="wxStatusBar" name="statusBar"/>
+    <object class="wxGridSizer">
+      <object class="sizeritem">
+        <object class="wxPanel" name="panelFrame">
+          <object class="wxFlexGridSizer">
+            <object class="spacer">
+              <size>8, 8</size>
+            </object>
+            <object class="sizeritem">
+              <object class="wxStaticText">
+                <label>Select a folder or a file to scan\n(Hold Shift key to select multiple files or folders)</label>
+              </object>
+              <flag>wxLEFT | wxRIGHT | wxBOTTOM | wxALIGN_LEFT</flag>
+              <border>12</border>
+            </object>
+            <object class="sizeritem">
+              <object class="wxGenericDirCtrl" name="dirCtrlScan">
+                <size>540, 376</size>
+                <style>wxSUNKEN_BORDER|wxDIRCTRL_3D_INTERNAL|wxDIRCTRL_SELECT_FIRST</style>
+                <XRCED>
+                  <assign_var>1</assign_var>
+                </XRCED>
+              </object>
+              <flag>wxLEFT | wxRIGHT | wxGROW</flag>
+              <border>10</border>
+            </object>
+            <cols>1</cols>
+            <rows>4</rows>
+            <growablecols>0</growablecols>
+            <growablerows>2</growablerows>
+            <object class="sizeritem">
+              <object class="wxGridSizer">
+                <object class="sizeritem">
+                  <object class="wxButton" name="buttonScan">
+                    <size>76, 24</size>
+                    <label>&amp;Scan</label>
+                    <default>1</default>
+                    <XRCED>
+                      <events>EVT_BUTTON</events>
+                    </XRCED>
+                  </object>
+                  <flag>wxALIGN_RIGHT | wxALL</flag>
+                  <border>10</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxButton" name="buttonClose">
+                    <size>76, 24</size>
+                    <label>&amp;Close</label>
+                    <XRCED>
+                      <events>EVT_BUTTON</events>
+                    </XRCED>
+                  </object>
+                  <flag>wxALIGN_LEFT | wxALL</flag>
+                  <border>10</border>
+                </object>
+                <cols>2</cols>
+                <rows>1</rows>
+              </object>
+              <flag>wxGROW</flag>
+            </object>
+          </object>
+          <pos>0, 0</pos>
+          <size>560, 400</size>
+          <style>wxTAB_TRAVERSAL</style>
+        </object>
+        <flag>wxGROW</flag>
+      </object>
+      <cols>1</cols>
+      <rows>1</rows>
+    </object>
+  </object>
+</resource>

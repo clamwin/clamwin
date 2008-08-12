@@ -1,0 +1,77 @@
+<?xml version="1.0" ?>
+<resource>
+  <object class="wxDialog" name="wxDialogUpdateChecker">
+    <object class="wxStaticText" name="staticTextAnnounce">
+      <pos>13, 8</pos>
+      <size>296, 40</size>
+      <label>An update of ClamWin Free Antivirus has been released. Please click on Download button and download the latest version %s</label>
+      <fg>#AA0000</fg>
+      <font>
+        <size>10</size>
+        <style>normal</style>
+        <weight>bold</weight>
+        <underlined>0</underlined>
+        <family>swiss</family>
+        <face>ms shell dlg</face>
+        <encoding></encoding>
+      </font>
+      <XRCED>
+        <assign_var>1</assign_var>
+      </XRCED>
+    </object>
+    <object class="wxStaticText">
+      <pos>13, 50</pos>
+      <size>296, 28</size>
+      <label>After you download the latest version setup file simply run it and install over the existing version.</label>
+      <fg>#000000</fg>
+    </object>
+    <object class="wxStaticText" name="staticTextChangelog">
+      <pos>13, 80</pos>
+      <size>296, 13</size>
+      <label>List Of Changes in Version %s:</label>
+      <style>wxST_NO_AUTORESIZE</style>
+      <XRCED>
+        <assign_var>1</assign_var>
+      </XRCED>
+    </object>
+    <object class="wxStaticLine">
+      <pos>9, 96</pos>
+      <size>296, 85</size>
+      <hidden>1</hidden>
+    </object>
+    <object class="wxCheckBox" name="checkBoxDontCheck">
+      <pos>16, 190</pos>
+      <size>288, 13</size>
+      <label>&amp;Do Not Check for Updates in Future</label>
+      <XRCED>
+        <events>EVT_CHECKBOX</events>
+      </XRCED>
+    </object>
+    <object class="wxButton" name="buttonDownload">
+      <pos>143, 212</pos>
+      <size>75, 23</size>
+      <label>&amp;Download</label>
+      <default>1</default>
+      <XRCED>
+        <events>EVT_BUTTON</events>
+      </XRCED>
+    </object>
+    <object class="wxButton" name="buttonClose">
+      <pos>230, 212</pos>
+      <size>75, 23</size>
+      <label>Close</label>
+      <default>1</default>
+      <XRCED>
+        <events>EVT_BUTTON</events>
+      </XRCED>
+    </object>
+    <size>324, 272</size>
+    <title>ClamWin Update</title>
+    <centered>1</centered>
+    <icon>img\FrameIcon.ico</icon>
+    <style>wxDEFAULT_DIALOG_STYLE|wxSTAY_ON_TOP|wxMINIMIZE_BOX</style>
+    <XRCED>
+      <events>EVT_INIT_DIALOG|EVT_CHAR_HOOK</events>
+    </XRCED>
+  </object>
+</resource>
