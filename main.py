@@ -32,12 +32,12 @@ class wxMainFrame(xrcwxMainFrame):
 
         # options for dir tree
         self.dirCtrlScan.ShowHidden(True)
-        tree = self.dirCtrlScan.GetTreeCtrl() 
+        tree = self.dirCtrlScan.GetTreeCtrl()
         tree.SetWindowStyleFlag(tree.GetWindowStyleFlag() | wx.TR_MULTIPLE)
- 
+
         # About Dialog
         self.about = wxAboutDlg(self)
- 
+
     def GetSelections(self):
         tree = self.dirCtrlScan.GetTreeCtrl()
         root = tree.GetRootItem()
@@ -47,12 +47,12 @@ class wxMainFrame(xrcwxMainFrame):
         for sel in sels:
             path = ''
             while sel != root:
-                path = sep.join([tree.GetItemText(sel), path]) 
+                path = sep.join([tree.GetItemText(sel), path])
                 sel = tree.GetItemParent(sel)
             paths.append(path)
 
         return paths
- 
+
     def ScanFiles(self, evt):
         print 'ClamWin ScanFiles'
         for p in self.GetSelections():
