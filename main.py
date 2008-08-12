@@ -56,7 +56,7 @@ class wxMainFrame(xrcwxMainFrame):
     def ScanFiles(self, evt):
         print 'ClamWin ScanFiles'
         for p in self.GetSelections():
-            print p
+            print p.encode('latin1', 'replace')
 
     def ScanMemory(self, evt):
         print 'ClamWin ScanMemory'
