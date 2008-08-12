@@ -5,8 +5,10 @@ from xrcs import xrcwxMainFrame, xrcwxAboutDlg
 class wxAboutDlg(xrcwxAboutDlg):
     def __init__(self, parent):
         xrcwxAboutDlg.__init__(self, parent)
-        self.SetClientSize(wx.Size(420, 317))
+        self.SetClientSize(wx.Size(420, 316))
         self.SetAutoLayout(False)
+    def OnButton_buttonOK(self, evt):
+        self.Close()
 
 class wxMainFrame(xrcwxMainFrame):
     def __init__(self):

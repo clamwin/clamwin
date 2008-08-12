@@ -7,7 +7,7 @@
       <bitmap>img/Title.png</bitmap>
     </object>
     <object class="wxStaticText" name="staticNumericVersion">
-      <pos>13, 48</pos>
+      <pos>12, 48</pos>
       <size>52, 16</size>
       <label>Version 0.XX.Y</label>
       <font>
@@ -22,7 +22,7 @@
     </object>
     <object class="wxStaticText" name="staticVersion">
       <pos>16, 96</pos>
-      <size>227, 15</size>
+      <size>226, 16</size>
       <label>ClamAV Version gets here</label>
       <XRCED>
         <assign_var>1</assign_var>
@@ -30,14 +30,14 @@
     </object>
     <object class="wxStaticText" name="staticVirusNo">
       <pos>16, 112</pos>
-      <size>227, 15</size>
+      <size>228, 16</size>
       <label>Protecting from %i Viruses</label>
       <XRCED>
         <assign_var>1</assign_var>
       </XRCED>
     </object>
     <object class="wxStaticBitmap" name="ClamWinLogo">
-      <pos>249, 10</pos>
+      <pos>250, 10</pos>
       <size>134, 122</size>
       <bitmap>img/clamwin.png</bitmap>
       <tooltip>ClamWin Free Antivirus Homepage</tooltip>
@@ -46,13 +46,13 @@
       </XRCED>
     </object>
     <object class="wxStaticText">
-      <pos>13, 68</pos>
-      <size>43, 15</size>
+      <pos>12, 68</pos>
+      <size>44, 16</size>
       <label>Website:</label>
     </object>
     <object class="wxHyperlinkCtrl">
-      <pos>66, 65</pos>
-      <size>131, 20</size>
+      <pos>66, 66</pos>
+      <size>132, 20</size>
       <label>http://www.clamwin.com/</label>
       <url>http://www.clamwin.com/</url>
       <fg>#0000FF</fg>
@@ -63,22 +63,22 @@
     </object>
     <object class="wxStaticText">
       <pos>16, 168</pos>
-      <size>210, 13</size>
+      <size>210, 14</size>
       <label>Authors: alch &lt;alch@users.sourceforge.net&gt;</label>
     </object>
     <object class="wxStaticText">
-      <pos>16, 207</pos>
-      <size>220, 13</size>
+      <pos>16, 208</pos>
+      <size>220, 14</size>
       <label>Copyright ClamWin Pty Ltd (c) 2004 - 2008</label>
     </object>
     <object class="wxStaticText">
-      <pos>275, 287</pos>
-      <size>135, 13</size>
+      <pos>274, 288</pos>
+      <size>136, 14</size>
       <label>This program is free software</label>
     </object>
     <object class="wxButton" name="buttonOK">
-      <pos>15, 281</pos>
-      <size>71, 24</size>
+      <pos>16, 280</pos>
+      <size>72, 24</size>
       <label>OK</label>
       <XRCED>
         <events>EVT_BUTTON</events>
@@ -86,7 +86,7 @@
     </object>
     <object class="wxStaticText" name="staticDBVersions">
       <pos>16, 128</pos>
-      <size>227, 15</size>
+      <size>228, 16</size>
       <label>Virus DB Version: (main: %i; daily: %i)</label>
       <XRCED>
         <assign_var>1</assign_var>
@@ -94,7 +94,7 @@
     </object>
     <object class="wxStaticText" name="staticDBTimeStamp">
       <pos>16, 144</pos>
-      <size>227, 16</size>
+      <size>226, 16</size>
       <label>Updated: %s</label>
       <XRCED>
         <assign_var>1</assign_var>
@@ -102,11 +102,11 @@
     </object>
     <object class="wxStaticText">
       <pos>16, 184</pos>
-      <size>230, 13</size>
+      <size>230, 14</size>
       <label>Gianluigi Tiesi &lt;sherpya@users.sourceforge.net&gt;</label>
     </object>
     <object class="wxStaticBitmap" name="NetfarmLogo">
-      <pos>251, 241</pos>
+      <pos>252, 242</pos>
       <size>160, 33</size>
       <bitmap>img/netfarm.png</bitmap>
       <tooltip>Netfarm Homepage</tooltip>
@@ -124,22 +124,22 @@
       </XRCED>
     </object>
     <object class="wxStaticText">
-      <pos>313, 166</pos>
-      <size>98, 13</size>
+      <pos>312, 166</pos>
+      <size>98, 14</size>
       <label>Scanning Engine by:</label>
     </object>
     <object class="wxStaticText">
-      <pos>309, 224</pos>
-      <size>102, 13</size>
+      <pos>308, 224</pos>
+      <size>102, 14</size>
       <label>MS Windows Port by:</label>
     </object>
     <object class="wxStaticText">
-      <pos>16, 223</pos>
-      <size>206, 13</size>
+      <pos>16, 224</pos>
+      <size>206, 14</size>
       <label>Portions Copyright SourceFire Inc. (ClamAV)</label>
     </object>
     <object class="wxStaticText">
-      <pos>16, 243</pos>
+      <pos>16, 244</pos>
       <size>190, 30</size>
       <label>ClamWin  is not affiliated with ClamAV or SourceFire Inc.</label>
     </object>
