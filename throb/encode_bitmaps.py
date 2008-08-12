@@ -7,7 +7,7 @@ files...
 """
 
 import sys
-from wxPython.tools import img2py
+from wx.tools import img2py
 
 
 command_lines = [
