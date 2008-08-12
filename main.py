@@ -1,6 +1,12 @@
-import wx
+import win32api, win32gui
 from os.path import sep
-from xrcs import xrcwxMainFrame, xrcwxAboutDlg
+
+import wx
+import wx.lib.throbber
+
+from xrcs import xrcwxMainFrame, xrcwxAboutDlg, xrcwxDialogLogView
+from xrcs import xrcwxDialogStatus
+from throb import throbImages
 
 class wxAboutDlg(xrcwxAboutDlg):
     def __init__(self, parent):
@@ -9,6 +15,37 @@ class wxAboutDlg(xrcwxAboutDlg):
         self.SetAutoLayout(False)
     def OnButton_buttonOK(self, evt):
         self.Close()
+
+class wxDialogLogView(xrcwxDialogLogView):
+    def OnButton_buttonOK(self, evt):
+        self.EndModal(wx.ID_OK)
+    def OnChar_hook(self, evt):
+        if evt.GetKeyCode() == wx.WXK_ESCAPE:
+            self.EndModal(wx.ID_CANCEL)
+        else:
+            evt.Skip()
+
+class wxDialogStatus(xrcwxDialogStatus):
+    def OnInit_dialog(self, evt):
+        winstyle = wx.TAB_TRAVERSAL
+        if win32api.GetVersionEx()[0] >= 5:
+            winstyle = winstyle | wx.TE_AUTO_URL
+        self.SetWindowStyleFlag(self.GetWindowStyleFlag() | winstyle)
+        images = [throbImages.catalog[i].getBitmap()
+                  for i in throbImages.index
+                  if i.find('update') != -1]
+        self.throbber = wx.lib.throbber.Throbber(self, -1, images, frameDelay=0.1,
+                  pos=wx.Point(16, 8), size=wx.Size(56, 300),
+                  style=0, name='staticThrobber')
+        win32gui.SetForegroundWindow(self.GetHandle())
+        self.textCtrlStatus.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_BTNFACE))
+        self.throbber.Start()
+    def OnClose(self, evt):
+        evt.Skip()
+    def OnButton_buttonStop(self, evt):
+        self.throbber.Stop()
+    def OnButton_buttonSave(self, evt):
+        self.throbber.Start()
 
 class wxMainFrame(xrcwxMainFrame):
     def __init__(self):
@@ -37,8 +74,10 @@ class wxMainFrame(xrcwxMainFrame):
         tree = self.dirCtrlScan.GetTreeCtrl()
         tree.SetWindowStyleFlag(tree.GetWindowStyleFlag() | wx.TR_MULTIPLE)
 
-        # About Dialog
+        # Child dialogs
         self.about = wxAboutDlg(self)
+        self.logviewver = wxDialogLogView(self)
+        self.dialogstatus = wxDialogStatus(self)
 
     def GetSelections(self):
         tree = self.dirCtrlScan.GetTreeCtrl()
@@ -69,6 +108,9 @@ class wxMainFrame(xrcwxMainFrame):
 
     def OnMenu_Exit(self, evt):
         self.Close()
+
+    def OnTool_Update(self, evt):
+        self.dialogstatus.ShowModal()
 
 if __name__ == '__main__':
     app = wx.App(redirect=False)

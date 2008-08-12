@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<resource>
+  <object class="wxDialog" name="wxDialogLogView">
+    <size>566, 428</size>
+    <title>ClamWin Log Viewer</title>
+    <centered>1</centered>
+    <icon>img/FrameIcon.ico</icon>
+    <style>wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</style>
+    <XRCED>
+      <events>EVT_INIT_DIALOG|EVT_CHAR_HOOK</events>
+    </XRCED>
+    <object class="wxFlexGridSizer">
+      <cols>1</cols>
+      <rows>2</rows>
+      <growablecols>0</growablecols>
+      <growablerows>0</growablerows>
+      <object class="sizeritem">
+        <object class="wxTextCtrl" name="textCtrl">
+          <pos>5, 5</pos>
+          <size>548, 354</size>
+          <style>wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH</style>
+          <XRCED>
+            <assign_var>1</assign_var>
+          </XRCED>
+        </object>
+        <flag>wxTOP | wxRIGHT | wxLEFT | wxGROW</flag>
+        <border>5</border>
+      </object>
+      <object class="sizeritem">
+        <object class="wxButton" name="buttonOK">
+          <pos>242, 368</pos>
+          <size>74, 24</size>
+          <label>OK</label>
+          <XRCED>
+            <events>EVT_BUTTON</events>
+          </XRCED>
+        </object>
+        <flag>wxBOTTOM | wxTOP | wxALIGN_CENTER</flag>
+        <border>10</border>
+      </object>
+    </object>
+  </object>
+</resource>

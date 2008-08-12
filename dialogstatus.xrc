@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<resource>
+  <object class="wxDialog" name="wxDialogStatus">
+    <object class="wxTextCtrl" name="textCtrlStatus">
+      <pos>90, 12</pos>
+      <size>454, 300</size>
+      <style>wxTE_MULTILINE|wxTE_READONLY|wxTE_RICH</style>
+      <XRCED>
+        <assign_var>1</assign_var>
+      </XRCED>
+    </object>
+    
+    <object class="wxButton" name="buttonStop">
+      <pos>292,328</pos>
+      <size>86, 24</size>
+      <label>&amp;Stop</label>
+      <default>1</default>
+      <XRCED>
+        <events>EVT_BUTTON</events>
+      </XRCED>
+    </object>
+    <object class="wxButton" name="buttonSave">
+      <pos>192, 328</pos>
+      <size>86, 24</size>
+      <label>S&amp;ave Report</label>
+      <XRCED>
+        <events>EVT_BUTTON</events>
+      </XRCED>
+    </object>
+    <size>568, 392</size>
+    <title>ClamWin Free Antivirus Status</title>
+    <centered>1</centered>
+    <icon>img/FrameIcon.ico</icon>
+    <bg>wxSYS_COLOUR_BTNFACE</bg>
+    <style>wxDEFAULT_DIALOG_STYLE</style>
+    <XRCED>
+      <events>EVT_INIT_DIALOG|EVT_CLOSE</events>
+    </XRCED>
+  </object>
+</resource>
