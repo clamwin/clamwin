@@ -2,7 +2,7 @@ import win32api, win32gui
 from os.path import sep
 
 import wx
-import wx.lib.throbber
+from wx.lib.throbber import Throbber
 
 from xrcs import xrcwxMainFrame, xrcwxAboutDlg, xrcwxDialogLogView
 from xrcs import xrcwxDialogStatus
@@ -34,7 +34,7 @@ class wxDialogStatus(xrcwxDialogStatus):
         images = [throbImages.catalog[i].getBitmap()
                   for i in throbImages.index
                   if i.find('update') != -1]
-        self.throbber = wx.lib.throbber.Throbber(self, -1, images, frameDelay=0.1,
+        self.throbber = Throbber(self, -1, images, frameDelay=0.1,
                   pos=wx.Point(16, 8), size=wx.Size(56, 300),
                   style=0, name='staticThrobber')
         win32gui.SetForegroundWindow(self.GetHandle())
