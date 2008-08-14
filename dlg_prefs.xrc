@@ -329,14 +329,6 @@
       <size>398, 320</size>
       <style>wxNB_MULTILINE</style>
     </object>
-    <size>420, 396</size>
-    <title>ClamWin Preferences</title>
-    <centered>1</centered>
-    <icon>img/FrameIcon.ico</icon>
-    <style>wxDEFAULT_DIALOG_STYLE</style>
-    <XRCED>
-      <events>EVT_INIT_DIALOG|EVT_CHAR_HOOK</events>
-    </XRCED>
     <object class="wxButton" name="buttonOK">
       <pos>128, 338</pos>
       <size>72, 24</size>
@@ -356,5 +348,12 @@
         <events>EVT_BUTTON</events>
       </XRCED>
     </object>
+    <title>ClamWin Preferences</title>
+    <centered>1</centered>
+    <icon>img/FrameIcon.ico</icon>
+    <style>wxDEFAULT_DIALOG_STYLE</style>
+    <XRCED>
+      <events>EVT_INIT_DIALOG|EVT_CHAR_HOOK</events>
+    </XRCED>
   </object>
 </resource>
