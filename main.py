@@ -4,9 +4,11 @@ from os.path import sep
 import wx
 from wx.lib.throbber import Throbber
 from wx.lib.masked import TimeCtrl  
+from wx.tools.XRCed.plugins.xh_gizmos import EditableListBoxXmlHandler
 
 from xrcs import xrcwxMainFrame, xrcwxAboutDlg, xrcwxDialogLogView
 from xrcs import xrcwxDialogStatus, xrcwxPreferencesDlg
+from xrcs import get_resources
 from throb import throbImages
 
 from Utils import IsTime24
@@ -59,6 +61,7 @@ class wxDialogStatus(xrcwxDialogStatus):
 
 class wxPreferencesDlg(wxDlgCommon, xrcwxPreferencesDlg):
     def __init__(self, parent):
+        get_resources().AddHandler(EditableListBoxXmlHandler())
         xrcwxPreferencesDlg.__init__(self, parent)
         self.SetClientSize(wx.Size(412, 368))
         self.SetAutoLayout(False)

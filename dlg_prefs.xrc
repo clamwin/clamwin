@@ -100,8 +100,44 @@
       <object class="notebookpage">
         <object class="wxPanel" name="panelFilters">
           <style>wxTAB_TRAVERSAL</style>
+          <object class="wxStaticText">
+            <pos>6, 12</pos>
+            <size>384, 32</size>
+            <label>Specify Filename Patterns to include and/or exclude in scanning\n(To specify a regular expression include your pattern within &lt;...&gt;)</label>
+          </object>
+          <object class="wxStaticText">
+            <pos>6, 50</pos>
+            <size>184, 16</size>
+            <label>&amp;Exclude Matching Filenames:</label>
+          </object>
+          <object class="EditableListBox" name="lbExclude">
+            <pos>6, 70</pos>
+            <size>182, 172</size>
+            <label>Patterns</label>
+            <style>wxEL_ALLOW_NEW|wxEL_ALLOW_EDIT|wxEL_ALLOW_DELETE</style>
+            <XRCED>
+              <events>EVT_CHAR</events>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxStaticText">
+            <pos>202, 50</pos>
+            <size>184, 16</size>
+            <label>&amp;Scan Only Matching Filenames:</label>
+          </object>
+          <object class="EditableListBox" name="lnInclude">
+            <pos>200, 70</pos>
+            <size>182, 172</size>
+            <label>Patterns</label>
+            <style>wxEL_ALLOW_NEW|wxEL_ALLOW_EDIT|wxEL_ALLOW_DELETE</style>
+            <XRCED>
+              <events>EVT_CHAR</events>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
         </object>
         <label>Filters</label>
+        <selected>1</selected>
       </object>
       <object class="notebookpage">
         <object class="wxPanel" name="panelInternetUpdates">
