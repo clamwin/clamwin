@@ -527,6 +527,38 @@
       </object>
       <object class="notebookpage">
         <object class="wxPanel" name="panelEmailScanning">
+          <object class="wxStaticBox">
+            <pos>6, 12</pos>
+            <size>376, 102</size>
+            <label>Microsoft Outlook</label>
+          </object>
+          <object class="wxCheckBox" name="checkOutlookScanIncoming">
+            <pos>16, 32</pos>
+            <size>354, 18</size>
+            <label>Scan &amp;Incoming Email Messages</label>
+            <tooltip>Select if you wish to enable scanning of incoming email messages in MS Outlook</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxCheckBox" name="checkOutlookScanOutgoing">
+            <pos>16, 58</pos>
+            <size>354, 18</size>
+            <label>Scan &amp;Outgoing Email Messages</label>
+            <tooltip>Select if you wish to enable scanning of outgoing email messages in MS Outlook</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxCheckBox" name="checkOutlookShowSplash">
+            <pos>16, 84</pos>
+            <size>354, 18</size>
+            <label>&amp;Display Splash Screen on Startup</label>
+            <tooltip>Select if you wish to display ClamWin Splash Screen when MS Outlook starts up</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
           <style>wxTAB_TRAVERSAL</style>
         </object>
         <label>Email Scanning</label>
