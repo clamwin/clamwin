@@ -302,6 +302,103 @@
       </object>
       <object class="notebookpage">
         <object class="wxPanel" name="panelLimits">
+          <object class="wxStaticBox">
+            <pos>6, 8</pos>
+            <size>378, 56</size>
+            <label>All Files</label>
+          </object>
+          <object class="wxStaticText">
+            <pos>24, 32</pos>
+            <size>166, 14</size>
+            <label>Do Not Scan Files Larger Than</label>
+          </object>
+          <object class="wxSpinCtrl" name="spinMaxFileSize">
+            <pos>206, 32</pos>
+            <size>72, 22</size>
+            <value>0</value>
+            <min>1</min>
+            <max>2048</max>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxStaticText">
+            <pos>292, 32</pos>
+            <size>80, 16</size>
+            <label>MegaBytes</label>
+          </object>
+          <object class="wxStaticBox">
+            <pos>6, 78</pos>
+            <size>378, 162</size>
+            <label>Archives</label>
+          </object>
+          <object class="wxCheckBox" name="checkExtractArchives">
+            <pos>14, 102</pos>
+            <size>322, 20</size>
+            <label>&amp;Extract Files From Archives</label>
+            <tooltip>Select if you wish to scan files conatined in archives (zip, rar, etc)</tooltip>
+            <XRCED>
+              <events>EVT_CHECKBOX</events>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxStaticText">
+            <pos>24, 136</pos>
+            <size>160, 14</size>
+            <label>Do Not Extract More Than</label>
+          </object>
+          <object class="wxSpinCtrl" name="spinArchiveSize">
+            <pos>206, 136</pos>
+            <size>72, 22</size>
+            <value>1</value>
+            <min>1</min>
+            <max>2048</max>
+          </object>
+          <object class="wxStaticText">
+            <pos>292, 136</pos>
+            <size>80, 16</size>
+            <label>MegaBytes</label>
+          </object>
+          <object class="wxStaticText">
+            <pos>24, 168</pos>
+            <size>160, 14</size>
+            <label>Do Not Extract More Than</label>
+          </object>
+          <object class="wxSpinCtrl" name="spinArchiveFiles">
+            <pos>206, 168</pos>
+            <size>72, 22</size>
+            <value>0</value>
+            <min>0</min>
+            <max>1073741824</max>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxStaticText">
+            <pos>292, 168</pos>
+            <size>80, 16</size>
+            <label>Files</label>
+          </object>
+          <object class="wxStaticText">
+            <pos>24, 200</pos>
+            <size>160, 14</size>
+            <label>Do Not Extract More Than</label>
+          </object>
+          <object class="wxSpinCtrl" name="spinRecursion">
+            <pos>206, 200</pos>
+            <size>72, 22</size>
+            <value>0</value>
+            <min>1</min>
+            <max>999</max>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxStaticText">
+            <pos>292, 200</pos>
+            <size>80, 16</size>
+            <label>Sub-Archives</label>
+          </object>
           <style>wxTAB_TRAVERSAL</style>
         </object>
         <label>Limits</label>
