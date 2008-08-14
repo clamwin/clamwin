@@ -8,22 +8,29 @@ from xrcs import xrcwxMainFrame, xrcwxAboutDlg, xrcwxDialogLogView
 from xrcs import xrcwxDialogStatus, xrcwxPreferencesDlg
 from throb import throbImages
 
-class wxAboutDlg(xrcwxAboutDlg):
+## Common methods
+class wxDlgCommon:
+    def SafeClose(self):
+        if self.IsModal():
+            return self.EndModal(wx.ID_CANCEL)
+        else:
+            return self.Close()
+    def OnChar_hook(self, evt):
+        if evt.GetKeyCode() == wx.WXK_ESCAPE:
+            self.SafeClose()
+        else:
+            evt.Skip()    
+    def OnButton_buttonOK(self, evt):
+        self.SafeClose()
+
+class wxAboutDlg(wxDlgCommon, xrcwxAboutDlg):
     def __init__(self, parent):
         xrcwxAboutDlg.__init__(self, parent)
         self.SetClientSize(wx.Size(420, 316))
         self.SetAutoLayout(False)
-    def OnButton_buttonOK(self, evt):
-        self.Close()
 
-class wxDialogLogView(xrcwxDialogLogView):
-    def OnButton_buttonOK(self, evt):
-        self.EndModal(wx.ID_OK)
-    def OnChar_hook(self, evt):
-        if evt.GetKeyCode() == wx.WXK_ESCAPE:
-            self.EndModal(wx.ID_CANCEL)
-        else:
-            evt.Skip()
+class wxDialogLogView(wxDlgCommon, xrcwxDialogLogView):
+    pass
 
 class wxDialogStatus(xrcwxDialogStatus):
     def OnInit_dialog(self, evt):
@@ -47,7 +54,7 @@ class wxDialogStatus(xrcwxDialogStatus):
     def OnButton_buttonSave(self, evt):
         self.throbber.Start()
 
-class wxPreferencesDlg(xrcwxPreferencesDlg):
+class wxPreferencesDlg(wxDlgCommon, xrcwxPreferencesDlg):
     def __init__(self, parent):
         xrcwxPreferencesDlg.__init__(self, parent)
         self.SetClientSize(wx.Size(412, 368))
@@ -56,15 +63,10 @@ class wxPreferencesDlg(xrcwxPreferencesDlg):
         # wxWidgets notebook bug workaround
         # http://sourceforge.net/tracker/index.php?func=detail&aid=645323&group_id=9863&atid=109863
         self.notebook.SetSize(self.notebook.GetSize() + wx.Size(1, 1))
-    def OnButton_buttonOK(self, evt):
+    def OnButton_buttonOK(self, evt): # Placeholder override for wxDlgCommon method
         self.EndModal(wx.ID_OK)
     def OnButton_buttonCancel(self, evt):
         self.EndModal(wx.ID_CANCEL)
-    def OnChar_hook(self, evt):
-        if evt.GetKeyCode() == wx.WXK_ESCAPE:
-            self.EndModal(wx.ID_CANCEL)
-        else:
-            evt.Skip()
 
 class wxMainFrame(xrcwxMainFrame):
     def __init__(self):
