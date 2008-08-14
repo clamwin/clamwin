@@ -295,8 +295,7 @@
         <label>Scheduled Scans</label>
       </object>
       <object class="notebookpage">
-        <object class="wxPanel">
-          <style>wxTAB_TRAVERSAL</style>
+        <object class="wxPanel" name="panelEmailAlerts">
           <object class="wxCheckBox" name="checkSMTPEnable">
             <pos>6, 12</pos>
             <size>362, 16</size>
@@ -408,9 +407,9 @@
               <assign_var>1</assign_var>
             </XRCED>
           </object>
+          <style>wxTAB_TRAVERSAL</style>
         </object>
         <label>Email Alerts</label>
-        <selected>1</selected>
       </object>
       <object class="notebookpage">
         <object class="wxPanel" name="panelLimits">
