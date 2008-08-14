@@ -1,0 +1,360 @@
+<?xml version="1.0" ?>
+<resource>
+  <object class="wxDialog" name="wxPreferencesDlg">
+    <object class="wxNotebook" name="notebook">
+      <object class="notebookpage">
+        <object class="wxPanel" name="panelGeneral">
+          <style>wxTAB_TRAVERSAL</style>
+          <object class="wxStaticBox">
+            <pos>6, 12</pos>
+            <size>376, 90</size>
+            <label>Scanning Options</label>
+          </object>
+          <object class="wxCheckBox" name="checkInfectedOnly">
+            <pos>16, 32</pos>
+            <size>354, 18</size>
+            <label>&amp;Display Infected Files Only</label>
+            <tooltip>Select if you wish to display infected files only in the scan progress window</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxCheckBox" name="checkScanRecurse">
+            <pos>16, 54</pos>
+            <size>354, 18</size>
+            <label>Select if you wish to scan in subdirectories recursively</label>
+            <tooltip>Select if you wish to scan in subdirectories recursively</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxCheckBox" name="checkScanProgress">
+            <pos>16, 76</pos>
+            <size>360, 18</size>
+            <label>Display &amp;File Scanned % Progress Indicator</label>
+            <tooltip>Select if you wish to display infected files only in the scan progress window</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxStaticBox">
+            <pos>6, 108</pos>
+            <size>376, 132</size>
+            <label>Infected Files</label>
+          </object>
+          <object class="wxRadioButton" name="radioReportOnly">
+            <pos>16, 128</pos>
+            <size>354, 18</size>
+            <label>&amp;Report Only</label>
+            <XRCED>
+              <events>EVT_RADIOBUTTON</events>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxRadioButton" name="radioRemoveInfected">
+            <pos>16, 148</pos>
+            <size>354, 18</size>
+            <label>R&amp;emove (Use Carefully)</label>
+            <XRCED>
+              <events>EVT_RADIOBUTTON</events>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxRadioButton" name="radioQuarantine">
+            <pos>16, 168</pos>
+            <size>354, 18</size>
+            <label>&amp;Move To Quarantine Folder:</label>
+            <XRCED>
+              <events>EVT_RADIOBUTTON</events>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxTextCtrl" name="textQuarantineFolder">
+            <pos>32, 186</pos>
+            <size>320, 20</size>
+            <tooltip>Specify location for a quarantine folder</tooltip>
+            <enabled>0</enabled>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxButton" name="buttonBrowseQuarantine">
+            <pos>352, 186</pos>
+            <size>20, 20</size>
+            <label>...</label>
+            <XRCED>
+              <events>EVT_BUTTON</events>
+            </XRCED>
+          </object>
+          <object class="wxCheckBox" name="checkUnload">
+            <pos>16, 214</pos>
+            <size>354, 18</size>
+            <label>&amp;Unload Infected Programs from Computer Memory</label>
+            <tooltip>Select if you wish to unload infected programs from computer memory so they can be quarantined or removed</tooltip>
+          </object>
+        </object>
+        <label>General</label>
+        <selected>1</selected>
+      </object>
+      <object class="notebookpage">
+        <object class="wxPanel" name="panelFilters">
+          <style>wxTAB_TRAVERSAL</style>
+        </object>
+        <label>Filters</label>
+      </object>
+      <object class="notebookpage">
+        <object class="wxPanel" name="panelInternetUpdates">
+          <style>wxTAB_TRAVERSAL</style>
+          <object class="wxCheckBox" name="checkAutoUpdate">
+            <pos>6, 12</pos>
+            <size>322, 20</size>
+            <label>&amp;Enable Automatic Virus Database Updates</label>
+            <tooltip>Enable automatic virus database downloads</tooltip>
+            <XRCED>
+              <events>EVT_CHECKBOX</events>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxStaticText">
+            <pos>24, 44</pos>
+            <size>82, 14</size>
+            <label>Download &amp;Site :</label>
+          </object>
+          <object class="wxTextCtrl" name="textDBMirror">
+            <pos>126, 38</pos>
+            <size>244, 20</size>
+            <tooltip>Specify Database Mirror Site here. Usually this is database.clamav.net</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxStaticText">
+            <pos>24, 70</pos>
+            <size>98, 18</size>
+            <label>&amp;Update Frequency:</label>
+          </object>
+          <object class="wxChoice" name="choiceUpdateFrequency">
+            <pos>126, 68</pos>
+            <size>110, 20</size>
+            <content>
+              <item>Hourly</item>
+              <item>Daily</item>
+              <item>Workdays</item>
+              <item>Weekly</item>
+            </content>
+            <selection>1</selection>
+            <tooltip>How often virus database is downloaded</tooltip>
+            <XRCED>
+              <events>EVT_CHOICE</events>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxStaticText">
+            <pos>240, 70</pos>
+            <size>32, 18</size>
+            <label>&amp;Time:</label>
+          </object>
+          <object class="wxSpinButton" name="spinButtonUpdateTime">
+            <pos>354, 66</pos>
+            <size>16, 24</size>
+            <style>wxSP_VERTICAL|wxSP_ARROW_KEYS</style>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxStaticText">
+            <pos>24, 104</pos>
+            <size>96, 18</size>
+            <label>&amp;Day Of The Week:</label>
+          </object>
+          <object class="wxChoice" name="choiceUpdateDay">
+            <pos>126, 102</pos>
+            <size>110, 20</size>
+            <content>
+              <item>Monday</item>
+              <item>Tuesday</item>
+              <item>Wednesday</item>
+              <item>Thursday</item>
+              <item>Friday</item>
+              <item>Saturday</item>
+              <item>Sunday</item>
+            </content>
+            <selection>1</selection>
+            <tooltip>When update frequency is weekly select day of the week for an update</tooltip>
+            <enabled>0</enabled>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxCheckBox" name="checkWarnDBOutdated">
+            <pos>6, 144</pos>
+            <size>322, 20</size>
+            <label>&amp;Warn if Virus database is Out of Date</label>
+            <tooltip>Will display a reminder if the virus database is older than 5 days</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxCheckBox" name="checkUpdateLogon">
+            <pos>6, 172</pos>
+            <size>322, 20</size>
+            <label>&amp;Update Virus Database On Logon</label>
+            <tooltip>Select if you wish to update the virus databases just after you logged on</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxCheckBox" name="checkCheckVersion">
+            <pos>6, 198</pos>
+            <size>322, 20</size>
+            <label>&amp;Notify About New ClamWin Releases</label>
+            <tooltip>Select if you wish to get a notification message when ClamWin Free Antivirus program has been updated</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxStaticText">
+            <pos>24, 220</pos>
+            <size>340, 22</size>
+            <label>(No personal information is transmitted during this check)</label>
+          </object>
+        </object>
+        <label>Internet Updates</label>
+      </object>
+      <object class="notebookpage">
+        <object class="wxPanel" name="panelProxy">
+          <object class="wxStaticText">
+            <pos>6, 16</pos>
+            <size>378, 28</size>
+            <label>Leave these fields blank if you do not connect via Proxy Server</label>
+          </object>
+          <object class="wxStaticText">
+            <pos>6, 62</pos>
+            <size>80, 16</size>
+            <label>Proxy &amp;Server:</label>
+          </object>
+          <object class="wxTextCtrl" name="textProxyServer">
+            <pos>92, 56</pos>
+            <size>200, 22</size>
+            <tooltip>Proxy Server domain name or IP address</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxStaticText">
+            <pos>296, 60</pos>
+            <size>34, 16</size>
+            <label>P&amp;ort:</label>
+          </object>
+          <object class="wxTextCtrl" name="textProxyPort">
+            <pos>332, 56</pos>
+            <size>54, 22</size>
+            <value>3128</value>
+            <tooltip>Proxy Server port number (1-65534)</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxStaticText">
+            <pos>6, 98</pos>
+            <size>80, 16</size>
+            <label>&amp;User Name:</label>
+          </object>
+          <object class="wxTextCtrl" name="textProxyUser">
+            <pos>92, 92</pos>
+            <size>296, 22</size>
+            <tooltip>Proxy Server Account Name (optional)</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxStaticText">
+            <pos>6, 136</pos>
+            <size>80, 15</size>
+            <label>&amp;Password:</label>
+          </object>
+          <object class="wxTextCtrl" name="textProxyPassword">
+            <pos>92, 132</pos>
+            <size>296, 22</size>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <style>wxTAB_TRAVERSAL</style>
+        </object>
+        <label>Proxy</label>
+      </object>
+      <object class="notebookpage">
+        <object class="wxPanel" name="panelScheduledScans">
+          <style>wxTAB_TRAVERSAL</style>
+        </object>
+        <label>Scheduled Scans</label>
+      </object>
+      <object class="notebookpage">
+        <object class="wxPanel" name="panelEmailAlerts">
+          <style>wxTAB_TRAVERSAL</style>
+        </object>
+        <label>Email Alerts</label>
+      </object>
+      <object class="notebookpage">
+        <object class="wxPanel" name="panelLimits">
+          <style>wxTAB_TRAVERSAL</style>
+        </object>
+        <label>Limits</label>
+      </object>
+      <object class="notebookpage">
+        <object class="wxPanel" name="panelFileLocaltions">
+          <style>wxTAB_TRAVERSAL</style>
+        </object>
+        <label>File Locations</label>
+      </object>
+      <object class="notebookpage">
+        <object class="wxPanel" name="panelReports">
+          <style>wxTAB_TRAVERSAL</style>
+        </object>
+        <label>Reports</label>
+      </object>
+      <object class="notebookpage">
+        <object class="wxPanel" name="panelEmailScanning">
+          <style>wxTAB_TRAVERSAL</style>
+        </object>
+        <label>Email Scanning</label>
+      </object>
+      <object class="notebookpage">
+        <object class="wxPanel" name="panelAdvanced">
+          <style>wxTAB_TRAVERSAL</style>
+        </object>
+        <label>Advanced</label>
+      </object>
+      <size>398, 320</size>
+      <style>wxNB_MULTILINE</style>
+    </object>
+    <size>420, 396</size>
+    <title>ClamWin Preferences</title>
+    <centered>1</centered>
+    <icon>img/FrameIcon.ico</icon>
+    <style>wxDEFAULT_DIALOG_STYLE</style>
+    <XRCED>
+      <events>EVT_INIT_DIALOG|EVT_CHAR_HOOK</events>
+    </XRCED>
+    <object class="wxButton" name="buttonOK">
+      <pos>128, 338</pos>
+      <size>72, 24</size>
+      <label>OK</label>
+      <default>1</default>
+      <tooltip>Closes the window and saves the changes</tooltip>
+      <XRCED>
+        <events>EVT_BUTTON</events>
+      </XRCED>
+    </object>
+    <object class="wxButton" name="buttonCancel">
+      <pos>210, 338</pos>
+      <size>72, 24</size>
+      <label>Cancel</label>
+      <tooltip>Closes the window without saving the changes</tooltip>
+      <XRCED>
+        <events>EVT_BUTTON</events>
+      </XRCED>
+    </object>
+  </object>
+</resource>
