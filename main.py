@@ -70,6 +70,7 @@ class wxPreferencesDlg(wxDlgCommon, xrcwxPreferencesDlg):
         self.timeUpdate.SetToolTipString('When the download should be started')
         # wxWidgets notebook bug workaround
         # http://sourceforge.net/tracker/index.php?func=detail&aid=645323&group_id=9863&atid=109863
+        self.notebook.SetWindowStyleFlag(self.notebook.GetWindowStyleFlag() | wx.NB_MULTILINE)
         self.notebook.SetSize(self.notebook.GetSize() + wx.Size(1, 1))
     def OnButton_buttonOK(self, evt): # Placeholder override for wxDlgCommon method
         self.EndModal(wx.ID_OK)
