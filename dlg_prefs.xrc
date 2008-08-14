@@ -295,10 +295,122 @@
         <label>Scheduled Scans</label>
       </object>
       <object class="notebookpage">
-        <object class="wxPanel" name="panelEmailAlerts">
+        <object class="wxPanel">
           <style>wxTAB_TRAVERSAL</style>
+          <object class="wxCheckBox" name="checkSMTPEnable">
+            <pos>6, 12</pos>
+            <size>362, 16</size>
+            <label>&amp;Send Email Alert On Virus Detection</label>
+            <tooltip>Select if you wish to receive email alerts when ClamWin detects a virus</tooltip>
+            <XRCED>
+              <events>EVT_CHECKBOX</events>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxStaticBox">
+            <pos>16, 32</pos>
+            <size>368, 72</size>
+            <label>SMTP Connection Details</label>
+          </object>
+          <object class="wxStaticText">
+            <pos>24, 54</pos>
+            <size>72, 16</size>
+            <label>&amp;Mail Server:</label>
+          </object>
+          <object class="wxTextCtrl" name="textSMTPHost">
+            <pos>104, 50</pos>
+            <size>192, 22</size>
+            <tooltip>SMTP Server domain name or IP address</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxStaticText">
+            <pos>300, 54</pos>
+            <size>32, 16</size>
+            <label>P&amp;ort:</label>
+          </object>
+          <object class="wxTextCtrl" name="textSMTPPort">
+            <pos>332, 50</pos>
+            <size>46, 22</size>
+            <tooltip>Mail Server port number (1-65534)</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxStaticText">
+            <pos>24, 78</pos>
+            <size>80, 16</size>
+            <label>&amp;User Name:</label>
+          </object>
+          <object class="wxTextCtrl" name="textSMTPUser">
+            <pos>104, 76</pos>
+            <size>102, 22</size>
+            <tooltip>Mail Server Account Name (optional)</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxStaticText">
+            <pos>210, 78</pos>
+            <size>66, 16</size>
+            <label>&amp;Password:</label>
+          </object>
+          <object class="wxTextCtrl" name="textSMTPPassword">
+            <pos>276, 76</pos>
+            <size>102, 22</size>
+            <tooltip>Mail Server account password (optional)</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxStaticBox">
+            <pos>16, 114</pos>
+            <size>368, 96</size>
+            <label>Email Message Details</label>
+          </object>
+          <object class="wxStaticText">
+            <pos>24, 136</pos>
+            <size>64, 16</size>
+            <label>&amp;From:</label>
+          </object>
+          <object class="wxTextCtrl" name="textSMTPFrom">
+            <pos>104, 130</pos>
+            <size>274, 22</size>
+            <tooltip>Mail Server Account Name (optional)</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxStaticText">
+            <pos>24, 160</pos>
+            <size>64, 16</size>
+            <label>&amp;To:</label>
+          </object>
+          <object class="wxTextCtrl" name="textSMTPTo">
+            <pos>104, 154</pos>
+            <size>274, 22</size>
+            <tooltip>Mail Server Account Name (optional)</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxStaticText">
+            <pos>24, 184</pos>
+            <size>64, 16</size>
+            <label>Su&amp;bject:</label>
+          </object>
+          <object class="wxTextCtrl" name="textSMTPSubject">
+            <pos>104, 178</pos>
+            <size>274, 22</size>
+            <tooltip>Mail Server Account Name (optional)</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
         </object>
         <label>Email Alerts</label>
+        <selected>1</selected>
       </object>
       <object class="notebookpage">
         <object class="wxPanel" name="panelLimits">
@@ -565,6 +677,76 @@
       </object>
       <object class="notebookpage">
         <object class="wxPanel" name="panelAdvanced">
+          <object class="wxCheckBox" name="checkEnableMbox">
+            <pos>6, 12</pos>
+            <size>384, 18</size>
+            <label>&amp;Treat Files As Mailboxes</label>
+            <tooltip>Select if you wish to scan mailboxes</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxCheckBox" name="checkEnableOLE2">
+            <pos>6, 34</pos>
+            <size>384, 18</size>
+            <label>&amp;Extract Attachments and Macros from MS Office Documents</label>
+            <tooltip>Select if you wish to scan OLE attachments and macros in MS Office Documents</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxStaticText">
+            <pos>6, 108</pos>
+            <size>378, 14</size>
+            <label>&amp;Additional Clamscan Command Line Parameters:</label>
+          </object>
+          <object class="wxTextCtrl" name="textAdditionalParams">
+            <pos>6, 126</pos>
+            <size>380, 22</size>
+            <tooltip>Specify any additional parameters for clamscan</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxStaticText">
+            <pos>6, 166</pos>
+            <size>170, 18</size>
+            <label>Limit Log File Size To:</label>
+          </object>
+          <object class="wxSpinCtrl" name="spinMaxLogSize">
+            <pos>6, 184</pos>
+            <size>130, 22</size>
+            <value>1</value>
+            <min>1</min>
+            <max>2048</max>
+            <tooltip>Select maximum size for the logfile</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxStaticText">
+            <pos>144, 186</pos>
+            <size>74, 16</size>
+            <label>MegaBytes</label>
+          </object>
+          <object class="wxStaticText">
+            <pos>252, 166</pos>
+            <size>104, 18</size>
+            <label>Scanner &amp;Priority:</label>
+          </object>
+          <object class="wxChoice">
+            <pos>254, 184</pos>
+            <size>134, 22</size>
+            <content>
+              <item>Low</item>
+              <item>Normal</item>
+            </content>
+            <selection>0</selection>
+            <tooltip>Specify the process priority for the virus scanner</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
           <style>wxTAB_TRAVERSAL</style>
         </object>
         <label>Advanced</label>
