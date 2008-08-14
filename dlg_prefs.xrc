@@ -99,7 +99,6 @@
       </object>
       <object class="notebookpage">
         <object class="wxPanel" name="panelFilters">
-          <style>wxTAB_TRAVERSAL</style>
           <object class="wxStaticText">
             <pos>6, 12</pos>
             <size>384, 32</size>
@@ -135,9 +134,9 @@
               <assign_var>1</assign_var>
             </XRCED>
           </object>
+          <style>wxTAB_TRAVERSAL</style>
         </object>
         <label>Filters</label>
-        <selected>1</selected>
       </object>
       <object class="notebookpage">
         <object class="wxPanel" name="panelInternetUpdates">
@@ -326,7 +325,6 @@
       </object>
       <object class="notebookpage">
         <object class="wxPanel" name="panelScheduledScans">
-          <style>wxTAB_TRAVERSAL</style>
           <object class="wxStaticText">
             <pos>6, 14</pos>
             <size>154, 16</size>
@@ -372,9 +370,9 @@
               <events>EVT_BUTTON</events>
             </XRCED>
           </object>
+          <style>wxTAB_TRAVERSAL</style>
         </object>
         <label>Scheduled Scans</label>
-        <selected>1</selected>
       </object>
       <object class="notebookpage">
         <object class="wxPanel" name="panelEmailAlerts">
