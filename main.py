@@ -3,10 +3,13 @@ from os.path import sep
 
 import wx
 from wx.lib.throbber import Throbber
+from wx.lib.masked import TimeCtrl  
 
 from xrcs import xrcwxMainFrame, xrcwxAboutDlg, xrcwxDialogLogView
 from xrcs import xrcwxDialogStatus, xrcwxPreferencesDlg
 from throb import throbImages
+
+from Utils import IsTime24
 
 ## Common methods
 class wxDlgCommon:
@@ -60,6 +63,11 @@ class wxPreferencesDlg(wxDlgCommon, xrcwxPreferencesDlg):
         self.SetClientSize(wx.Size(412, 368))
         self.SetAutoLayout(False)
     def OnInit_dialog(self, evt):
+        self.timeUpdate = TimeCtrl(parent=self.panelInternetUpdates,
+                                   pos=wx.Point(278, 66), size=wx.Size(74, 22),
+                                   fmt24hr=IsTime24(), spinButton=self.spinButtonUpdateTime,
+                                   useFixedWidthFont=False, display_seconds=True)
+        self.timeUpdate.SetToolTipString('When the download should be started')
         # wxWidgets notebook bug workaround
         # http://sourceforge.net/tracker/index.php?func=detail&aid=645323&group_id=9863&atid=109863
         self.notebook.SetSize(self.notebook.GetSize() + wx.Size(1, 1))

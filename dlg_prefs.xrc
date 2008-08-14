@@ -105,7 +105,6 @@
       </object>
       <object class="notebookpage">
         <object class="wxPanel" name="panelInternetUpdates">
-          <style>wxTAB_TRAVERSAL</style>
           <object class="wxCheckBox" name="checkAutoUpdate">
             <pos>6, 12</pos>
             <size>322, 20</size>
@@ -219,6 +218,10 @@
             <size>340, 22</size>
             <label>(No personal information is transmitted during this check)</label>
           </object>
+          <style>wxTAB_TRAVERSAL</style>
+          <XRCED>
+            <assign_var>1</assign_var>
+          </XRCED>
         </object>
         <label>Internet Updates</label>
       </object>
@@ -328,7 +331,6 @@
         <label>Advanced</label>
       </object>
       <size>398, 320</size>
-      <style>wxNB_MULTILINE</style>
       <XRCED>
         <assign_var>1</assign_var>
       </XRCED>
