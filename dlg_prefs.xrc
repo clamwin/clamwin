@@ -4,7 +4,6 @@
     <object class="wxNotebook" name="notebook">
       <object class="notebookpage">
         <object class="wxPanel" name="panelGeneral">
-          <style>wxTAB_TRAVERSAL</style>
           <object class="wxStaticBox">
             <pos>6, 12</pos>
             <size>376, 90</size>
@@ -92,6 +91,8 @@
             <label>&amp;Unload Infected Programs from Computer Memory</label>
             <tooltip>Select if you wish to unload infected programs from computer memory so they can be quarantined or removed</tooltip>
           </object>
+          <size>390, 10</size>
+          <style>wxTAB_TRAVERSAL</style>
         </object>
         <label>General</label>
         <selected>1</selected>
@@ -328,6 +329,9 @@
       </object>
       <size>398, 320</size>
       <style>wxNB_MULTILINE</style>
+      <XRCED>
+        <assign_var>1</assign_var>
+      </XRCED>
     </object>
     <object class="wxButton" name="buttonOK">
       <pos>128, 338</pos>

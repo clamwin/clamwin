@@ -5,7 +5,7 @@ import wx
 from wx.lib.throbber import Throbber
 
 from xrcs import xrcwxMainFrame, xrcwxAboutDlg, xrcwxDialogLogView
-from xrcs import xrcwxDialogStatus
+from xrcs import xrcwxDialogStatus, xrcwxPreferencesDlg
 from throb import throbImages
 
 class wxAboutDlg(xrcwxAboutDlg):
@@ -47,6 +47,18 @@ class wxDialogStatus(xrcwxDialogStatus):
     def OnButton_buttonSave(self, evt):
         self.throbber.Start()
 
+class wxPreferencesDlg(xrcwxPreferencesDlg):
+    def __init__(self, parent):
+        xrcwxPreferencesDlg.__init__(self, parent)
+        self.SetClientSize(wx.Size(412, 368))
+        self.SetAutoLayout(False)
+    def OnInit_dialog(self, evt):
+        # wxWidgets notebook bug workaround
+        # http://sourceforge.net/tracker/index.php?func=detail&aid=645323&group_id=9863&atid=109863
+        self.notebook.SetSize(self.notebook.GetSize() + wx.Size(1, 1))
+    def OnButton_buttonOK(self, evt):
+        self.Close()
+
 class wxMainFrame(xrcwxMainFrame):
     def __init__(self):
         # Scan Files
@@ -78,6 +90,7 @@ class wxMainFrame(xrcwxMainFrame):
         self.about = wxAboutDlg(self)
         self.logviewver = wxDialogLogView(self)
         self.dialogstatus = wxDialogStatus(self)
+        self.preferencesdlg = wxPreferencesDlg(self)
 
     def GetSelections(self):
         tree = self.dirCtrlScan.GetTreeCtrl()
