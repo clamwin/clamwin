@@ -477,6 +477,50 @@
       </object>
       <object class="notebookpage">
         <object class="wxPanel" name="panelReports">
+          <object class="wxStaticText">
+            <pos>6, 16</pos>
+            <size>354, 20</size>
+            <label>&amp;Scan Report File:</label>
+          </object>
+          <object class="wxTextCtrl" name="textScanLog">
+            <pos>6, 36</pos>
+            <size>360, 20</size>
+            <tooltip>Specify location for a scan reports log file</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxButton" name="browseScanLog">
+            <pos>366, 36</pos>
+            <size>20, 20</size>
+            <label>...</label>
+            <tooltip>Click to browse for a log file</tooltip>
+            <XRCED>
+              <events>EVT_BUTTON</events>
+            </XRCED>
+          </object>
+          <object class="wxStaticText" name="browseUpdateLog">
+            <pos>6, 66</pos>
+            <size>354, 20</size>
+            <label>&amp;Virus Database Update Report File:</label>
+          </object>
+          <object class="wxTextCtrl" name="textUpdateLog">
+            <pos>6, 86</pos>
+            <size>360, 20</size>
+            <tooltip>Specify location for a database updates log file</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxButton" name="browseUpdateLog">
+            <pos>366, 86</pos>
+            <size>20, 20</size>
+            <label>...</label>
+            <tooltip>Click to browse for a log file</tooltip>
+            <XRCED>
+              <events>EVT_BUTTON</events>
+            </XRCED>
+          </object>
           <style>wxTAB_TRAVERSAL</style>
         </object>
         <label>Reports</label>
