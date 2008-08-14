@@ -405,6 +405,72 @@
       </object>
       <object class="notebookpage">
         <object class="wxPanel" name="panelFileLocaltions">
+          <object class="wxStaticText">
+            <pos>6, 16</pos>
+            <size>354, 14</size>
+            <label>&amp;ClamScan Location:</label>
+          </object>
+          <object class="wxTextCtrl" name="textClamScan">
+            <pos>6, 34</pos>
+            <size>356, 20</size>
+            <tooltip>Specify location of clamscan</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxButton" name="browseClamScan">
+            <pos>364, 34</pos>
+            <size>20, 20</size>
+            <label>...</label>
+            <tooltip>Click to browse for clamscan</tooltip>
+            <XRCED>
+              <events>EVT_BUTTON</events>
+            </XRCED>
+          </object>
+          <object class="wxStaticText">
+            <pos>6, 66</pos>
+            <size>354, 14</size>
+            <label>&amp;FreshClam Location:</label>
+          </object>
+          <object class="wxTextCtrl" name="textFreshClam">
+            <pos>6, 84</pos>
+            <size>356, 20</size>
+            <tooltip>Specify location of freshclam</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxButton" name="browseFreshClam">
+            <pos>364, 84</pos>
+            <size>20, 20</size>
+            <label>...</label>
+            <tooltip>Click to browse for freshclam</tooltip>
+            <XRCED>
+              <events>EVT_BUTTON</events>
+            </XRCED>
+          </object>
+          <object class="wxStaticText">
+            <pos>6, 116</pos>
+            <size>354, 14</size>
+            <label>&amp;Virus Database Folder:</label>
+          </object>
+          <object class="wxTextCtrl" name="textVirusDBPath">
+            <pos>6, 134</pos>
+            <size>356, 20</size>
+            <tooltip>Specify location of virus database files</tooltip>
+            <XRCED>
+              <assign_var>1</assign_var>
+            </XRCED>
+          </object>
+          <object class="wxButton" name="browseVirusDBPath">
+            <pos>364, 134</pos>
+            <size>20, 20</size>
+            <label>...</label>
+            <tooltip>Click to browse for clamscan</tooltip>
+            <XRCED>
+              <events>EVT_BUTTON</events>
+            </XRCED>
+          </object>
           <style>wxTAB_TRAVERSAL</style>
         </object>
         <label>File Locations</label>
