@@ -93,6 +93,9 @@
           </object>
           <size>390, 10</size>
           <style>wxTAB_TRAVERSAL</style>
+          <XRCED>
+            <assign_var>1</assign_var>
+          </XRCED>
         </object>
         <label>General</label>
         <selected>1</selected>
@@ -135,6 +138,9 @@
             </XRCED>
           </object>
           <style>wxTAB_TRAVERSAL</style>
+          <XRCED>
+            <assign_var>1</assign_var>
+          </XRCED>
         </object>
         <label>Filters</label>
       </object>
@@ -320,6 +326,9 @@
             </XRCED>
           </object>
           <style>wxTAB_TRAVERSAL</style>
+          <XRCED>
+            <assign_var>1</assign_var>
+          </XRCED>
         </object>
         <label>Proxy</label>
       </object>
@@ -371,6 +380,9 @@
             </XRCED>
           </object>
           <style>wxTAB_TRAVERSAL</style>
+          <XRCED>
+            <assign_var>1</assign_var>
+          </XRCED>
         </object>
         <label>Scheduled Scans</label>
       </object>
@@ -488,6 +500,9 @@
             </XRCED>
           </object>
           <style>wxTAB_TRAVERSAL</style>
+          <XRCED>
+            <assign_var>1</assign_var>
+          </XRCED>
         </object>
         <label>Email Alerts</label>
       </object>
@@ -591,6 +606,9 @@
             <label>Sub-Archives</label>
           </object>
           <style>wxTAB_TRAVERSAL</style>
+          <XRCED>
+            <assign_var>1</assign_var>
+          </XRCED>
         </object>
         <label>Limits</label>
       </object>
@@ -663,6 +681,9 @@
             </XRCED>
           </object>
           <style>wxTAB_TRAVERSAL</style>
+          <XRCED>
+            <assign_var>1</assign_var>
+          </XRCED>
         </object>
         <label>File Locations</label>
       </object>
@@ -713,6 +734,9 @@
             </XRCED>
           </object>
           <style>wxTAB_TRAVERSAL</style>
+          <XRCED>
+            <assign_var>1</assign_var>
+          </XRCED>
         </object>
         <label>Reports</label>
       </object>
@@ -751,6 +775,9 @@
             </XRCED>
           </object>
           <style>wxTAB_TRAVERSAL</style>
+          <XRCED>
+            <assign_var>1</assign_var>
+          </XRCED>
         </object>
         <label>Email Scanning</label>
       </object>
@@ -827,6 +854,9 @@
             </XRCED>
           </object>
           <style>wxTAB_TRAVERSAL</style>
+          <XRCED>
+            <assign_var>1</assign_var>
+          </XRCED>
         </object>
         <label>Advanced</label>
       </object>
