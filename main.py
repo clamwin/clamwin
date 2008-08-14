@@ -66,15 +66,43 @@ class wxPreferencesDlg(wxDlgCommon, xrcwxPreferencesDlg):
         self.SetClientSize(wx.Size(412, 368))
         self.SetAutoLayout(False)
     def OnInit_dialog(self, evt):
+        # Time Control
         self.timeUpdate = TimeCtrl(parent=self.panelInternetUpdates,
                                    pos=wx.Point(278, 66), size=wx.Size(74, 22),
                                    fmt24hr=IsTime24(), spinButton=self.spinButtonUpdateTime,
                                    useFixedWidthFont=False, display_seconds=True)
         self.timeUpdate.SetToolTipString('When the download should be started')
+
+        # Notebook
         # wxWidgets notebook bug workaround
         # http://sourceforge.net/tracker/index.php?func=detail&aid=645323&group_id=9863&atid=109863
         self.notebook.SetWindowStyleFlag(self.notebook.GetWindowStyleFlag() | wx.NB_MULTILINE)
         self.notebook.SetSize(self.notebook.GetSize() + wx.Size(1, 1))
+
+        # List View Control
+        self.imListScheduler = wx.ImageList(height=16, width=16)
+        self.imListScheduler.Add(bitmap=wx.Bitmap('img/ListScan.png', wx.BITMAP_TYPE_PNG),
+                                 mask=wx.NullBitmap)
+        self.lvScheduledTasks = wx.ListView(parent=self.panelScheduledScans,
+                                            pos=wx.Point(6, 42), size=wx.Size(298, 188),
+                                            style=wx.LC_REPORT | wx.LC_SINGLE_SEL)
+        self.lvScheduledTasks.SetToolTipString('List of Scheduled Scans')
+        self.lvScheduledTasks.SetImageList(self.imListScheduler, wx.IMAGE_LIST_NORMAL)
+        self.lvScheduledTasks.SetImageList(self.imListScheduler, wx.IMAGE_LIST_SMALL)
+
+        self.lvScheduledTasks.InsertColumn(col=0, format=wx.LIST_FORMAT_LEFT, heading='Description', width=-1)
+        self.lvScheduledTasks.InsertColumn(col=1, format=wx.LIST_FORMAT_LEFT, heading='Path', width=-1)
+        self.lvScheduledTasks.InsertColumn(col=2, format=wx.LIST_FORMAT_LEFT, heading='Frequency', width=-1)
+
+        col_count = self.lvScheduledTasks.GetColumnCount()
+        col_size = (self.lvScheduledTasks.GetSize()[0] / col_count) - 1
+        self.lvScheduledTasks.SetColumnWidth(0, col_size + 30)
+        self.lvScheduledTasks.SetColumnWidth(1, col_size + 5)
+        self.lvScheduledTasks.SetColumnWidth(2, col_size - 35)
+
+        self.lvScheduledTasks.Bind(wx.EVT_LIST_ITEM_SELECTED, None)
+        self.lvScheduledTasks.Bind(wx.EVT_LIST_ITEM_DESELECTED, None)
+        self.lvScheduledTasks.Bind(wx.EVT_LEFT_DCLICK, None)
     def OnButton_buttonOK(self, evt): # Placeholder override for wxDlgCommon method
         self.EndModal(wx.ID_OK)
     def OnButton_buttonCancel(self, evt):
