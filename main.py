@@ -57,21 +57,20 @@ class wxPreferencesDlg(xrcwxPreferencesDlg):
         # http://sourceforge.net/tracker/index.php?func=detail&aid=645323&group_id=9863&atid=109863
         self.notebook.SetSize(self.notebook.GetSize() + wx.Size(1, 1))
     def OnButton_buttonOK(self, evt):
-        self.Close()
+        self.EndModal(wx.ID_OK)
+    def OnButton_buttonCancel(self, evt):
+        self.EndModal(wx.ID_CANCEL)
+    def OnChar_hook(self, evt):
+        if evt.GetKeyCode() == wx.WXK_ESCAPE:
+            self.EndModal(wx.ID_CANCEL)
+        else:
+            evt.Skip()
 
 class wxMainFrame(xrcwxMainFrame):
     def __init__(self):
-        # Scan Files
-        self.OnMenu_Scan_Files = self.ScanFiles
-        self.OnTool_Scan_Selected_Files = self.ScanFiles
-        self.OnButton_buttonScan = self.ScanFiles
-
-        # Scan Memory
-        self.OnMenu_Scan_Memory = self.ScanMemory
-        self.OnTool_Scan_Computer_Memory = self.ScanMemory
-
-        # Close
-        self.OnButton_buttonClose = self.OnMenu_Exit
+        # Events mapping
+        self.OnButton_ScanFiles = self.OnTool_ScanFiles
+        self.OnButton_Close = self.OnMenu_Exit
 
         # Last one or it will override our method redirections
         xrcwxMainFrame.__init__(self, None)
@@ -108,12 +107,12 @@ class wxMainFrame(xrcwxMainFrame):
 
         return paths
 
-    def ScanFiles(self, evt):
+    def OnTool_ScanFiles(self, evt):
         print 'ClamWin ScanFiles'
         for p in self.GetSelections():
             print p.encode('latin1', 'replace')
 
-    def ScanMemory(self, evt):
+    def OnTool_ScanMemory(self, evt):
         print 'ClamWin ScanMemory'
 
     def OnMenu_About(self, evt):
@@ -124,6 +123,9 @@ class wxMainFrame(xrcwxMainFrame):
 
     def OnTool_Update(self, evt):
         self.dialogstatus.ShowModal()
+
+    def OnTool_Preferences(self, evt):
+        self.preferencesdlg.ShowModal()
 
 if __name__ == '__main__':
     app = wx.App(redirect=False)

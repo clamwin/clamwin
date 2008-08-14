@@ -8,14 +8,14 @@
     <object class="wxMenuBar">
       <object class="wxMenu" name="File">
         <label>File</label>
-        <object class="wxMenuItem" name="Scan_Files">
+        <object class="wxMenuItem" name="ScanFiles">
           <label>&amp;Scan Files</label>
           <help>Scans Selected Files or Folders for Computer Viruses</help>
           <XRCED>
             <events>EVT_MENU</events>
           </XRCED>
         </object>
-        <object class="wxMenuItem" name="Scan_Memory">
+        <object class="wxMenuItem" name="ScanMemory">
           <label>Scan &amp;Memory</label>
           <help>Scans Programs in Computer Memory for Viruses</help>
           <XRCED>
@@ -39,7 +39,7 @@
             <events>EVT_MENU</events>
           </XRCED>
         </object>
-        <object class="wxMenuItem" name="Download_Virus_Database_Update">
+        <object class="wxMenuItem" name="Update">
           <label>Download &amp;Virus Database Update</label>
           <help>Downloads latest virus database from the Internet</help>
           <XRCED>
@@ -133,7 +133,7 @@
         </XRCED>
       </object>
       <object class="separator"/>
-      <object class="tool" name="Scan_Computer_Memory">
+      <object class="tool" name="ScanMemory">
         <bitmap>img/ScanMem.png</bitmap>
         <tooltip>Scans Computer Memory for Viruses</tooltip>
         <longhelp>Scans Programs Loaded in Computer Memory for Computer Viruses</longhelp>
@@ -142,7 +142,7 @@
           <events>EVT_TOOL</events>
         </XRCED>
       </object>
-      <object class="tool" name="Scan_Selected_Files">
+      <object class="tool" name="ScanFiles">
         <bitmap>img/Scan.png</bitmap>
         <tooltip>Scans Selected Files For Viruses</tooltip>
         <longhelp>Scans Selected Files or Folders for Computer Viruses</longhelp>
@@ -189,7 +189,7 @@
             <object class="sizeritem">
               <object class="wxGridSizer">
                 <object class="sizeritem">
-                  <object class="wxButton" name="buttonScan">
+                  <object class="wxButton" name="ScanFiles">
                     <size>76, 24</size>
                     <label>&amp;Scan</label>
                     <default>1</default>
@@ -201,7 +201,7 @@
                   <border>10</border>
                 </object>
                 <object class="sizeritem">
-                  <object class="wxButton" name="buttonClose">
+                  <object class="wxButton" name="Close">
                     <size>76, 24</size>
                     <label>&amp;Close</label>
                     <XRCED>
