@@ -1,9 +1,11 @@
 import win32api, win32gui
+from win32file import FindFilesW
 from os.path import sep
+from socket import socket, AF_INET, SOCK_STREAM
 
 import wx
 from wx.lib.throbber import Throbber
-from wx.lib.masked import TimeCtrl  
+from wx.lib.masked import TimeCtrl
 from wx.tools.XRCed.plugins.xh_gizmos import EditableListBoxXmlHandler
 
 from xrcs import xrcwxMainFrame, xrcwxAboutDlg, xrcwxDialogLogView
@@ -24,7 +26,7 @@ class wxDlgCommon:
         if evt.GetKeyCode() == wx.WXK_ESCAPE:
             self.SafeClose()
         else:
-            evt.Skip()    
+            evt.Skip()
     def OnButton_buttonOK(self, evt):
         self.SafeClose()
 
@@ -149,10 +151,34 @@ class wxMainFrame(xrcwxMainFrame):
 
         return paths
 
+    def CanonicalizePath(self, path):
+        ifansi = path.encode('mbcs')
+        if ifansi.find('?') == -1: return ifansi
+
+        plist = path.split(sep)
+        p = [ plist[0] ] # drive letter or unc prefix
+
+        for i in range(1, len(plist)):
+            f = FindFilesW(sep.join(plist[:i+1]))[-1]
+            name = f[-2]
+            altname = f[-1]
+            if len(altname):
+                p.append(altname)
+            else:
+                p.append(name)
+
+        return sep.join(p).encode('mbcs')
+
     def OnTool_ScanFiles(self, evt):
         print 'ClamWin ScanFiles'
+        s = socket(AF_INET, SOCK_STREAM)
+        s.connect(('localhost', 3310))
+        s.send('SESSION\n')
         for p in self.GetSelections():
-            print p.encode('latin1', 'replace')
+            filename = self.CanonicalizePath(p)
+            print 'Scanning ' + filename
+            s.send('SCAN ' + filename + '\n')
+            print s.recv(1024)
 
     def OnTool_ScanMemory(self, evt):
         print 'ClamWin ScanMemory'
