@@ -8,9 +8,7 @@ from wx.lib.throbber import Throbber
 from wx.lib.masked import TimeCtrl
 from wx.tools.XRCed.plugins.xh_gizmos import EditableListBoxXmlHandler
 
-from xrcs import xrcwxMainFrame, xrcwxAboutDlg, xrcwxDialogLogView
-from xrcs import xrcwxDialogStatus, xrcwxPreferencesDlg
-from xrcs import get_resources
+from xrcs import *
 from throb import throbImages
 
 from Utils import IsTime24
@@ -173,12 +171,18 @@ class wxMainFrame(xrcwxMainFrame):
         print 'ClamWin ScanFiles'
         s = socket(AF_INET, SOCK_STREAM)
         s.connect(('localhost', 3310))
-        s.send('SESSION\n')
+        f = s.makefile('rw', 0)
         for p in self.GetSelections():
             filename = self.CanonicalizePath(p)
             print 'Scanning ' + filename
-            s.send('SCAN ' + filename + '\n')
-            print s.recv(1024)
+            f.write('CONTSCAN ' + filename + '\n')
+            f.flush()
+            while True:
+                res = f.readline()
+                if len(res) == 0: break
+                print res.strip()
+        f.close()
+        s.close()
 
     def OnTool_ScanMemory(self, evt):
         print 'ClamWin ScanMemory'
