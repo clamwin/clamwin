@@ -1,0 +1,136 @@
+<?xml version="1.0" ?>
+<resource>
+  <object class="wxDialog" name="wxDialogScheduledScan">
+    <object class="wxStaticBox">
+      <pos>12, 8</pos>
+      <size>282, 104</size>
+      <label>Schedule</label>
+    </object>
+    <object class="wxStaticText">
+      <pos>26, 30</pos>
+      <size>132, 14</size>
+      <label>Scanning &amp;Frequency:</label>
+    </object>
+    <object class="wxChoice" name="choiceFrequency">
+      <pos>172, 28</pos>
+      <size>108, 22</size>
+      <content>
+        <item>Hourly</item>
+        <item>Daily</item>
+        <item>Workdays</item>
+        <item>Weekly</item>
+      </content>
+      <selection>1</selection>
+      <tooltip>How often the schedule is executed</tooltip>
+      <XRCED>
+        <events>EVT_CHOICE</events>
+        <assign_var>1</assign_var>
+      </XRCED>
+    </object>
+    <object class="wxStaticText">
+      <pos>26, 56</pos>
+      <size>122, 18</size>
+      <label>&amp;Time:</label>
+    </object>
+    <object class="wxSpinButton" name="spinButtonTime">
+      <pos>262, 54</pos>
+      <size>16, 22</size>
+      <style>wxSP_VERTICAL</style>
+      <XRCED>
+        <assign_var>1</assign_var>
+      </XRCED>
+    </object>
+    <object class="wxStaticText">
+      <pos>26, 86</pos>
+      <size>122, 18</size>
+      <label>&amp;Day Of The Week:</label>
+    </object>
+    <object class="wxChoice" name="choiceDay">
+      <pos>172, 82</pos>
+      <size>108, 22</size>
+      <content>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+      </content>
+      <selection>1</selection>
+      <tooltip>When schedule frequency is weekly select day of the week</tooltip>
+      <XRCED>
+        <assign_var>1</assign_var>
+      </XRCED>
+    </object>
+    <object class="wxCheckBox" name="checkScheduleEnabled">
+      <pos>12, 122</pos>
+      <size>278, 16</size>
+      <label>&amp;Activate This Schedule</label>
+      <tooltip>Select if you wish to enable this schedule</tooltip>
+      <XRCED>
+        <assign_var>1</assign_var>
+      </XRCED>
+    </object>
+    <object class="wxCheckBox" name="checkScanMemory">
+      <pos>12, 142</pos>
+      <size>278, 18</size>
+      <label>Scan &amp;Programs Loaded in Computer Memory</label>
+      <tooltip>Select if you wish to include programs computer memory during every scan</tooltip>
+    </object>
+    <object class="wxStaticText">
+      <pos>12, 166</pos>
+      <size>78, 16</size>
+      <label>&amp;Scan Folder:</label>
+    </object>
+    <object class="wxTextCtrl" name="textScanFolder">
+      <pos>12, 184</pos>
+      <size>260, 20</size>
+      <tooltip>Specify a folder to be scanned</tooltip>
+    </object>
+    <object class="wxButton" name="buttonBrowseFolder">
+      <pos>274, 184</pos>
+      <size>20, 20</size>
+      <label>...</label>
+      <tooltip>Click to browse for a folder</tooltip>
+      <XRCED>
+        <events>EVT_BUTTON</events>
+      </XRCED>
+    </object>
+    <object class="wxStaticText">
+      <pos>12, 208</pos>
+      <size>68, 16</size>
+      <label>D&amp;escription:</label>
+    </object>
+    <object class="wxTextCtrl" name="textDescription">
+      <pos>12, 226</pos>
+      <size>282, 20</size>
+    </object>
+    <object class="wxButton" name="buttonOK">
+      <pos>76, 258</pos>
+      <size>76, 24</size>
+      <label>OK</label>
+      <default>1</default>
+      <tooltip>Closes the dialog and applies the settings</tooltip>
+      <XRCED>
+        <events>EVT_BUTTON</events>
+      </XRCED>
+    </object>
+    <object class="wxButton" name="buttonCancel">
+      <pos>166, 258</pos>
+      <size>76, 24</size>
+      <label>Cancel</label>
+      <tooltip>Closes the dialog and discards the changes</tooltip>
+      <XRCED>
+        <events>EVT_BUTTON</events>
+      </XRCED>
+    </object>
+    <size>312, 318</size>
+    <title>Scheduled Scan</title>
+    <centered>1</centered>
+    <style>wxDEFAULT_DIALOG_STYLE</style>
+    <XRCED>
+      <events>EVT_INIT_DIALOG|EVT_CHAR_HOOK</events>
+    </XRCED>
+  </object>
+</resource>

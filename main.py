@@ -59,12 +59,26 @@ class wxDialogStatus(xrcwxDialogStatus):
     def OnButton_buttonSave(self, evt):
         self.throbber.Start()
 
+class wxDialogScheduledScan(wxDlgCommon, xrcwxDialogScheduledScan):
+    def __init(self, parent):
+        xrcwxDialogScheduledScan.__init__(self, parent)
+        self.SetClientSize(wx.Size(304, 292))
+        self.SetAutoLayout(False)
+    def OnInit_dialog(self, evt):
+        self.timeCtrl = TimeCtrl(parent=self,
+                                 pos=wx.Point(172, 54), size=wx.Size(90, 22),
+                                 fmt24hr=IsTime24(),
+                                 spinButton=self.spinButtonTime,
+                                 useFixedWidthFont=False, display_seconds=True)
+        self.timeCtrl.SetToolTipString('When the schedule should be started')
+
 class wxPreferencesDlg(wxDlgCommon, xrcwxPreferencesDlg):
     def __init__(self, parent):
         get_resources().AddHandler(EditableListBoxXmlHandler())
         xrcwxPreferencesDlg.__init__(self, parent)
         self.SetClientSize(wx.Size(412, 368))
         self.SetAutoLayout(False)
+        self.dialogscheduledscan = wxDialogScheduledScan(self)
     def OnInit_dialog(self, evt):
         # Time Control
         self.timeUpdate = TimeCtrl(parent=self.panelInternetUpdates,
@@ -107,6 +121,8 @@ class wxPreferencesDlg(wxDlgCommon, xrcwxPreferencesDlg):
         self.EndModal(wx.ID_OK)
     def OnButton_buttonCancel(self, evt):
         self.EndModal(wx.ID_CANCEL)
+    def OnButton_buttonTaskAdd(self, evt):
+        self.dialogscheduledscan.ShowModal()
 
 class wxMainFrame(xrcwxMainFrame):
     def __init__(self):
