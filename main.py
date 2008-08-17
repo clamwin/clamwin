@@ -38,29 +38,51 @@ class wxDialogLogView(wxDlgCommon, xrcwxDialogLogView):
     pass
 
 class wxDialogStatus(xrcwxDialogStatus):
+    def __init__(self, parent):
+        xrcwxDialogStatus.__init__(self, parent)
+        imgs_update = []
+        imgs_scan = []
+        for i in throbImages.index:
+            if i.find('update') != -1:
+                imgs_update.append(throbImages.catalog[i].getBitmap())
+            else:
+                imgs_scan.append(throbImages.catalog[i].getBitmap())
+        self.throbberUpdate = Throbber(self, -1, imgs_update, frameDelay=0.1,
+                  pos=wx.Point(16, 8), size=wx.Size(56, 300),
+                  style=0)
+        self.throbberUpdate.Show(False)
+        self.throbberScan = Throbber(self, -1, imgs_scan, frameDelay=0.1,
+                  pos=wx.Point(16, 8), size=wx.Size(56, 300),
+                  style=0)
+        self.throbberScan.Show(False)
+        self.throbber = self.throbberScan
     def OnInit_dialog(self, evt):
         winstyle = wx.TAB_TRAVERSAL
         if win32api.GetVersionEx()[0] >= 5:
             winstyle = winstyle | wx.TE_AUTO_URL
         self.SetWindowStyleFlag(self.GetWindowStyleFlag() | winstyle)
-        images = [throbImages.catalog[i].getBitmap()
-                  for i in throbImages.index
-                  if i.find('update') != -1]
-        self.throbber = Throbber(self, -1, images, frameDelay=0.1,
-                  pos=wx.Point(16, 8), size=wx.Size(56, 300),
-                  style=0, name='staticThrobber')
         win32gui.SetForegroundWindow(self.GetHandle())
         self.textCtrlStatus.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_BTNFACE))
+        self.throbber.Show(True)
         self.throbber.Start()
+    def SetThrobber(self, t):
+        if t == 'update':
+            self.throbber = self.throbberUpdate
+            self.throbberScan.Show(False)
+        else:
+            self.throbber = self.throbberScan
+            self.throbberUpdate.Show(False)
     def OnClose(self, evt):
         evt.Skip()
     def OnButton_buttonStop(self, evt):
         self.throbber.Stop()
+        self.throbber.Show(False)
     def OnButton_buttonSave(self, evt):
+        self.throbber.Show(True)
         self.throbber.Start()
 
 class wxDialogScheduledScan(wxDlgCommon, xrcwxDialogScheduledScan):
-    def __init(self, parent):
+    def __init__(self, parent):
         xrcwxDialogScheduledScan.__init__(self, parent)
         self.SetClientSize(wx.Size(304, 292))
         self.SetAutoLayout(False)
@@ -210,6 +232,7 @@ class wxMainFrame(xrcwxMainFrame):
         self.Close()
 
     def OnTool_Update(self, evt):
+        self.dialogstatus.SetThrobber('scan')
         self.dialogstatus.ShowModal()
 
     def OnTool_Preferences(self, evt):
