@@ -13,6 +13,8 @@ from throb import throbImages
 
 from Utils import IsTime24
 
+import ThreadFuture
+
 ## Common methods
 class wxDlgCommon:
     def SafeClose(self):
@@ -40,6 +42,7 @@ class wxDialogLogView(wxDlgCommon, xrcwxDialogLogView):
 class wxDialogStatus(xrcwxDialogStatus):
     def __init__(self, parent):
         xrcwxDialogStatus.__init__(self, parent)
+        self.parent = parent
         imgs_update = []
         imgs_scan = []
         for i in throbImages.index:
@@ -56,6 +59,7 @@ class wxDialogStatus(xrcwxDialogStatus):
                   style=0)
         self.throbberScan.Show(False)
         self.throbber = self.throbberScan
+        self.mode = 'scan'
     def OnInit_dialog(self, evt):
         winstyle = wx.TAB_TRAVERSAL
         if win32api.GetVersionEx()[0] >= 5:
@@ -65,6 +69,8 @@ class wxDialogStatus(xrcwxDialogStatus):
         self.textCtrlStatus.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_BTNFACE))
         self.throbber.Show(True)
         self.throbber.Start()
+        if self.mode == 'scan':
+            ThreadFuture.Future(self.parent.ScanFiles)
     def SetThrobber(self, t):
         if t == 'update':
             self.throbber = self.throbberUpdate
@@ -206,21 +212,36 @@ class wxMainFrame(xrcwxMainFrame):
         return sep.join(p).encode('mbcs')
 
     def OnTool_ScanFiles(self, evt):
-        print 'ClamWin ScanFiles'
+        self.dialogstatus.Show()
+
+    def ServerConnection(self):
         s = socket(AF_INET, SOCK_STREAM)
         s.connect(('localhost', 3310))
         f = s.makefile('rw', 0)
+        s.close()
+        return f
+
+    def ScanFiles(self):
+        ctrl = self.dialogstatus.textCtrlStatus
+        ctrl.AppendText('Scanner started\n\n') # Without a message it hangs :(
+        f = self.ServerConnection()
         for p in self.GetSelections():
             filename = self.CanonicalizePath(p)
-            print 'Scanning ' + filename
+            ctrl.SetDefaultStyle(wx.TextAttr(colText=wx.Colour(0,0,0xff)))
+            ctrl.AppendText('Scanning ' + filename + '\n\n')
+            ctrl.SetDefaultStyle(wx.TextAttr(wx.NullColour))
             f.write('CONTSCAN ' + filename + '\n')
             f.flush()
             while True:
                 res = f.readline()
                 if len(res) == 0: break
-                print res.strip()
+                if res.find('FOUND') != -1:
+                    ctrl.SetDefaultStyle(wx.TextAttr(colText=wx.Colour(128,0,0)))                    
+                ctrl.AppendText(res)
+                ctrl.SetDefaultStyle(wx.TextAttr(wx.NullColour))
         f.close()
-        s.close()
+        self.dialogstatus.throbber.Stop()
+        ctrl.AppendText('\n--Done--\n')
 
     def OnTool_ScanMemory(self, evt):
         print 'ClamWin ScanMemory'
