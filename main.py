@@ -2,6 +2,8 @@ import win32api, win32gui
 from win32file import FindFilesW
 from os.path import sep
 from socket import socket, AF_INET, SOCK_STREAM
+from select import select
+from threading import Thread, currentThread
 
 import wx
 from wx.lib.throbber import Throbber
@@ -13,7 +15,70 @@ from throb import throbImages
 
 from Utils import IsTime24
 
-import ThreadFuture
+class ClamDConnection:
+    def __init__(self, addr=('localhost', 3310)):
+        self.__host, self.__port = addr
+        self.__buffer = ''
+        self.__abort = False
+        self.__connected = False
+
+    def connect(self):
+        self.__socket = socket(AF_INET, SOCK_STREAM)
+        self.__socket.setblocking(True)
+        self.__socket.connect((self.__host, self.__port))
+        self.__connected = True
+        self.__abort = False
+        print 'Connected', self.__socket
+
+    def close(self):
+        self.abort()
+        self.connected = False
+        self.__buffer = ''
+        self.__socket.close()
+
+    def abort(self):
+        self.__abort = True
+
+    def __del__(self):
+        try:
+            if self.__connected: self.__socket.close()
+        except:
+            pass
+
+    def sendcmd(self, cmd):
+        if not self.__connected:
+            print 'Error socket not connected!!!'
+            return
+        print 'SendCommand', self.__socket
+        self.__socket.send(cmd + '\n')
+
+    def getresult(self):
+        line = None
+        while not self.__abort:
+            p = select([self.__socket], [], [], 0.5)[0]
+            print '>  Polling', currentThread().getName(), self.__abort
+            if self.__abort:
+                print '>  Aborting', currentThread().getName()
+                self.close()
+                return ''
+            if len(p) == 0: continue # polling
+            try:
+                data = p[0].recv(1024)
+            except:
+                print 'Connection error - TODO stack trace'
+                break
+            if len(data) == 0: break
+            self.__buffer += data
+            pos = self.__buffer.find('\n')
+            if pos != -1:
+                line = self.__buffer[:pos]
+                self.__buffer = self.__buffer[pos+1:]
+                break
+        print '>  GetResult Done', currentThread().getName(), self.__abort
+        if line is None:
+            line = self.__buffer
+            self.__buffer = ''
+        return line
 
 ## Common methods
 class wxDlgCommon:
@@ -43,6 +108,7 @@ class wxDialogStatus(xrcwxDialogStatus):
     def __init__(self, parent):
         xrcwxDialogStatus.__init__(self, parent)
         self.parent = parent
+        self.runner = None
         imgs_update = []
         imgs_scan = []
         for i in throbImages.index:
@@ -70,7 +136,9 @@ class wxDialogStatus(xrcwxDialogStatus):
         self.throbber.Show(True)
         self.throbber.Start()
         if self.mode == 'scan':
-            ThreadFuture.Future(self.parent.ScanFiles)
+            self.parent.aborted = False
+            self.runner = Thread(target=self.parent.ScanFiles)
+            self.runner.start()
     def SetThrobber(self, t):
         if t == 'update':
             self.throbber = self.throbberUpdate
@@ -81,11 +149,18 @@ class wxDialogStatus(xrcwxDialogStatus):
     def OnClose(self, evt):
         evt.Skip()
     def OnButton_buttonStop(self, evt):
-        self.throbber.Stop()
-        self.throbber.Show(False)
+        if self.runner is not None and self.runner.isAlive():
+            self.parent.aborted = True
+            if self.parent.scanner is not None:
+                self.parent.scanner.abort()
+                print '> Join Thread', self.runner.getName()
+                self.runner.join()
+                print '> Done', self.runner.getName()
+            self.textCtrlStatus.AppendText('\n--Aborted--\n')
+        else:
+            self.Close()
     def OnButton_buttonSave(self, evt):
-        self.throbber.Show(True)
-        self.throbber.Start()
+        pass
 
 class wxDialogScheduledScan(wxDlgCommon, xrcwxDialogScheduledScan):
     def __init__(self, parent):
@@ -154,6 +229,10 @@ class wxPreferencesDlg(wxDlgCommon, xrcwxPreferencesDlg):
 
 class wxMainFrame(xrcwxMainFrame):
     def __init__(self):
+        self.selections = []
+        self.scanner = ClamDConnection()
+        self.aborted = False
+
         # Events mapping
         self.OnButton_ScanFiles = self.OnTool_ScanFiles
         self.OnButton_Close = self.OnMenu_Exit
@@ -180,7 +259,7 @@ class wxMainFrame(xrcwxMainFrame):
     def GetSelections(self):
         tree = self.dirCtrlScan.GetTreeCtrl()
         root = tree.GetRootItem()
-        paths = []
+        self.selections = []
 
         sels = tree.GetSelections()
         for sel in sels:
@@ -189,9 +268,7 @@ class wxMainFrame(xrcwxMainFrame):
                 path.append(tree.GetItemText(sel))
                 sel = tree.GetItemParent(sel)
             path.reverse()
-            paths.append(sep.join(path))
-
-        return paths
+            self.selections.append(sep.join(path))
 
     def CanonicalizePath(self, path):
         ifansi = path.encode('mbcs')
@@ -212,36 +289,34 @@ class wxMainFrame(xrcwxMainFrame):
         return sep.join(p).encode('mbcs')
 
     def OnTool_ScanFiles(self, evt):
+        self.GetSelections()
         self.dialogstatus.Show()
-
-    def ServerConnection(self):
-        s = socket(AF_INET, SOCK_STREAM)
-        s.connect(('localhost', 3310))
-        f = s.makefile('rw', 0)
-        s.close()
-        return f
 
     def ScanFiles(self):
         ctrl = self.dialogstatus.textCtrlStatus
+        ctrl.Clear()
         ctrl.AppendText('Scanner started\n\n') # Without a message it hangs :(
-        f = self.ServerConnection()
-        for p in self.GetSelections():
+        for p in self.selections:
             filename = self.CanonicalizePath(p)
             ctrl.SetDefaultStyle(wx.TextAttr(colText=wx.Colour(0,0,0xff)))
             ctrl.AppendText('Scanning ' + filename + '\n\n')
             ctrl.SetDefaultStyle(wx.TextAttr(wx.NullColour))
-            f.write('CONTSCAN ' + filename + '\n')
-            f.flush()
-            while True:
-                res = f.readline()
+            self.scanner.connect()
+            self.scanner.sendcmd('CONTSCAN ' + filename)
+            while not self.aborted:
+                res = self.scanner.getresult()
                 if len(res) == 0: break
                 if res.find('FOUND') != -1:
                     ctrl.SetDefaultStyle(wx.TextAttr(colText=wx.Colour(128,0,0)))                    
-                ctrl.AppendText(res)
+                ctrl.AppendText(res + '\n')
                 ctrl.SetDefaultStyle(wx.TextAttr(wx.NullColour))
-        f.close()
+            self.scanner.close()
+
         self.dialogstatus.throbber.Stop()
-        ctrl.AppendText('\n--Done--\n')
+        if not self.aborted: # appendtext will hang if aborted
+            ctrl.AppendText('\n--Done--\n')
+        else:
+            print '>  Aborted', currentThread().getName()
 
     def OnTool_ScanMemory(self, evt):
         print 'ClamWin ScanMemory'
@@ -264,3 +339,5 @@ if __name__ == '__main__':
     m = wxMainFrame()
     m.Show()
     app.MainLoop()
+
+
