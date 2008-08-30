@@ -225,34 +225,39 @@ def wxGoToInternetUrl(url):
         webbrowser.open(url)
 
 def wxCheckUpdate(parent, config):
-    if not config.Get('Updates', 'CheckVersion') or not Utils.IsOnline():
-        return
+    if not config.Get('Updates', 'CheckVersion'):
+        return True    
     # if we have a window with such name don't show a second one
     try:
         import win32gui
         hwnd = win32gui.FindWindow('#32770', 'ClamWin Update')
         if hwnd:
-            return
+            return True
     except:
         pass
 
     try:
-        ver, url, changelog = Utils.GetOnlineVersion(config)
+        ver, url, changelog = Utils.GetOnlineVersion(config)        
         if ver <= version.clamwin_version:
-            return
+            return True
     except Exception, e:
-        if config.Get('UI', 'TrayNotify') == '1':
-            import win32gui
-            tray_notify_params = (('Unable to get online version. Most likely it\'s a temporary connectivity error and you don\'t have to do anything.\nIf you see this error often then allow clamwin.exe in your firewall and check proxy settings.\n(%s)' % str(e) , 0,
-                        win32gui.NIIF_WARNING, 30000), None)
-            Utils.ShowBalloon(0, tray_notify_params, None, True)
-            return
+        #if config.Get('UI', 'TrayNotify') == '1':
+        #    import win32gui
+        #    tray_notify_params = (('Unable to get online version. Most likely it\'s a temporary connectivity error and you don\'t have to do anything.\nIf you see this error often then allow clamwin.exe in your firewall and check proxy settings.\n(%s)' % str(e) , 0,
+        #                win32gui.NIIF_WARNING, 30000), None)
+        #    Utils.ShowBalloon(0, tray_notify_params, None, True)
+            return False
 
     try:
         dlg = wxDialogCheckUpdate.create(parent, config, ver, url, changelog)
         dlg.ShowModal()
-    finally:
-        dlg.Destroy()
+    except Exception, e:
+        print('wxDialogCheckUpdate Error: %s' % str(e))
+        return False
+    
+    if dlg is not None:
+        dlg.Destroy()        
+    return True
 
 
 if __name__ == '__main__':

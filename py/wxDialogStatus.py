@@ -464,8 +464,11 @@ class wxDialogStatus(wxDialog):
         # we need to have our window drawn before that
         # to display transparent animation properly
         # therefore start it in OnInitDialog
-        self.throbber.Start()
-        win32gui.SetForegroundWindow(self.GetHandle())
+        try:
+            self.throbber.Start()
+            win32gui.SetForegroundWindow(self.GetHandle())
+        except:
+            pass
         event.Skip()
 
     def OnClickURL(self, event):

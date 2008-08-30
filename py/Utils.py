@@ -604,11 +604,18 @@ def GetHostName():
             hostname = 'Unknown'
     return hostname
 
-def SpawnPyOrExe(filename, *params):
-    if not hasattr(sys, 'frozen') and sys.platform.startswith('win'):
-        win32api.ShellExecute(0, 'open', filename + '.py', filename + '.py ' + ' '.join(params), None, win32con.SW_SHOWNORMAL)
+def SpawnPyOrExe(wait, filename, *params):
+    if wait:
+        flag = os.P_WAIT
     else:
-        os.spawnl(os.P_NOWAIT, filename + '.exe', *params)
+        flag = os.P_NOWAIT             
+    if not hasattr(sys, 'frozen'):
+        #win32api.ShellExecute(0, 'open', filename + '.py', filename + '.py ' + ' '.join(params), None, win32con.SW_SHOWNORMAL)                
+        ret = os.spawnl(flag, sys.executable, ' '  + filename + '.py ' + ' '.join(params))        
+    else:                
+        ret = os.spawnl(flag, filename + '.exe', *params)        
+    print "SpawnPyOrExe %s returned " % filename, ret
+    return ret
 
 
 
@@ -776,14 +783,24 @@ def IsOutlookInstalled():
 
 
 def IsOnline():
+    #try:
+    #    wininet = windll.wininet
+    #    flags = DWORD()
+    #    connected = wininet.InternetGetConnectedState(byref(flags), None)
+    #    print "Internet online: %i" % connected
+    #    return connected == 1
+    #except Exception, e:
+    #    print "InternetGetConnectedState failed %s", str(e)
+    
     try:
-        wininet = windll.wininet
-        flags = DWORD()
-        connected = wininet.InternetGetConnectedState(byref(flags), None)
-        print "Internet online: %i" % connected
-        return connected == 1
-    except Exception, e:
-        print "InternetGetConnectedState failed %s", str(e)
+        import socket
+        addrs = socket.gethostbyname_ex(socket.gethostname())[2]
+        for addr in addrs:
+            if addr[:3] not in('127', '169') and addr != '0.0.0.0':
+                print "Internet online: 1"
+                return True
+    except Exception, e: 
+        print 'gethostbyname_ex Error: %s' % str(e)
     return False
 
 

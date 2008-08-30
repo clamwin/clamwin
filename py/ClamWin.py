@@ -102,7 +102,9 @@ class BoaApp(wxApp):
         elif self.mode == 'viewlog':
             wxDialogUtils.wxShowLog(parent=None, logfile=self.path.strip('"'))
         elif self.mode == 'checkversion':
-            wxDialogUtils.wxCheckUpdate(parent=None, config=self.config)
+            if not wxDialogUtils.wxCheckUpdate(parent=None, config=self.config):
+                self.exit_code = 1
+                
         else: #  mode == 'main'
             if pyc.isWow64():
                 self.DisablefsRedirect()
