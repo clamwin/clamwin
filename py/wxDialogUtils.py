@@ -226,7 +226,7 @@ def wxGoToInternetUrl(url):
 
 def wxCheckUpdate(parent, config):
     if not config.Get('Updates', 'CheckVersion'):
-        return True    
+        return True
     # if we have a window with such name don't show a second one
     try:
         import win32gui
@@ -237,7 +237,7 @@ def wxCheckUpdate(parent, config):
         pass
 
     try:
-        ver, url, changelog = Utils.GetOnlineVersion(config)        
+        ver, url, changelog = Utils.GetOnlineVersion(config)
         if ver <= version.clamwin_version:
             return True
     except Exception, e:
@@ -254,9 +254,9 @@ def wxCheckUpdate(parent, config):
     except Exception, e:
         print('wxDialogCheckUpdate Error: %s' % str(e))
         return False
-    
+
     if dlg is not None:
-        dlg.Destroy()        
+        dlg.Destroy()
     return True
 
 
