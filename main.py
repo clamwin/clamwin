@@ -6,7 +6,7 @@ from select import select
 from threading import Thread, currentThread
 
 import wx
-from wx.lib.throbber import Throbber
+from Throbber import Throbber
 from wx.lib.masked import TimeCtrl
 from wx.tools.XRCed.plugins.xh_gizmos import EditableListBoxXmlHandler
 
@@ -139,6 +139,11 @@ class wxDialogStatus(xrcwxDialogStatus):
             self.parent.aborted = False
             self.runner = Thread(target=self.parent.ScanFiles)
             self.runner.start()
+
+    def SetMode(self, m):
+        self.SetThrobber(m)
+        self.mode = m
+
     def SetThrobber(self, t):
         if t == 'update':
             self.throbber = self.throbberUpdate
@@ -328,7 +333,7 @@ class wxMainFrame(xrcwxMainFrame):
         self.Close()
 
     def OnTool_Update(self, evt):
-        self.dialogstatus.SetThrobber('scan')
+        self.dialogstatus.SetMode('update')
         self.dialogstatus.ShowModal()
 
     def OnTool_Preferences(self, evt):

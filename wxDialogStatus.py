@@ -32,7 +32,8 @@ import MsgBox
 import Utils
 import wxDialogUtils
 import wx
-import wx.lib.throbber
+#import wx.lib.throbber
+from Throbber import Throbber
 
 _WAIT_NOWAIT = 0
 _NEWLINE_LEN = 2
@@ -157,7 +158,7 @@ class wxDialogStatus(wx.Dialog):
         images = [throbImages.catalog[i].getBitmap()
                   for i in throbImages.index
                   if i.find(bitmapMask) != -1]
-        self.throbber = wx.lib.throbber.Throbber(self, -1, images, frameDelay=0.1,
+        self.throbber = Throbber(self, -1, images, frameDelay=0.1,
                   pos=self.staticBitmap1.GetPosition(), size=self.staticBitmap1.GetSize(),
                   style=self.staticBitmap1.GetWindowStyleFlag(), name='staticThrobber')
 
