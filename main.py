@@ -307,7 +307,7 @@ class wxMainFrame(xrcwxMainFrame):
                 res = self.scanner.getresult()
                 if len(res) == 0: break
                 if res.find('FOUND') != -1:
-                    ctrl.SetDefaultStyle(wx.TextAttr(colText=wx.Colour(128,0,0)))                    
+                    ctrl.SetDefaultStyle(wx.TextAttr(colText=wx.Colour(128,0,0)))
                 ctrl.AppendText(res + '\n')
                 ctrl.SetDefaultStyle(wx.TextAttr(wx.NullColour))
             self.scanner.close()
