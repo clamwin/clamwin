@@ -108,7 +108,7 @@ class ShellExtension:
                     currentDir = os.path.split(this_filename)[0]
             else:
                 currentDir = os.path.split(os.path.abspath(__file__))[0]
-        except NameError:
+        except NameError: # No __file__ attribute (in boa debugger)
             currentDir = os.path.split(os.path.abspath(sys.argv[0]))[0]
         os.chdir(currentDir)
 

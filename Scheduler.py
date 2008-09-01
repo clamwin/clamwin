@@ -24,7 +24,7 @@
 #-----------------------------------------------------------------------------
 
 import os, tempfile
-import sched, time, locale
+import sched, time, locale, random
 import types
 import threading
 
@@ -32,7 +32,7 @@ class Scheduler(threading.Thread):
     # empty tuple for status_filenames parameter will reuslt in no checking
     # for missed schedules
     def __init__(self, frequency, startTime, weekDay, runMissed, action, argument=(),
-            status_filenames=(), loopDelay = 0.5):
+            status_filenames=(), loopDelay = 0.5, label = int(time.clock()*10000000) + random.randint(0,1000)):
         threading.Thread.__init__(self)
         self._filenames = status_filenames
         self._delay = 0.5
@@ -50,6 +50,12 @@ class Scheduler(threading.Thread):
         self._sched = sched.scheduler(time.time, self._DelayFunc)
         self._missedSchedule = False
         self._id = self._sched.enterabs(self._CalcNextRun(), 0, self._RunTask, ())
+        self._paused = False
+        self._label = label
+
+    def label(self):
+        return self._label
+
 
     def reset(self, frequency, startTime, weekDay, action, argument=(), loopDelay = 0.2):
         self._delay = 1.0
@@ -63,7 +69,7 @@ class Scheduler(threading.Thread):
         self._argument = argument
         self._lastRun = self._ReadLastRun()
         self._missedSchedule = False
-
+        self._paused = False
         # stop current thread
         self.stop()
         threading.Thread.__init__(self)
@@ -124,7 +130,7 @@ class Scheduler(threading.Thread):
 
     # returns time in seconds (as in time.time())
     # when next scheduled run occurs
-    def _CalcNextRun(self):
+    def _CalcNextRun(self, missedAlready = False):
         # calculate when the next task should run
         # depending on last run time, update frequency,
         # task start time and day of the week
@@ -176,7 +182,7 @@ class Scheduler(threading.Thread):
                 addTime = schedTime - tmp
 
         #don't return for missed schedule if frequency is workdays and it is weekend now
-        if self._runMissed and self._frequency != 'Workdays' or time.localtime(t).tm_wday not in (5, 6):
+        if self._runMissed and not missedAlready and self._frequency != 'Workdays' or time.localtime(t).tm_wday not in (5,6):
             # check if we missed the scheduled run
             # and return now (+ 2 minutes) instead
             if  self._lastRun != 0 and self._AdjustDST(schedTime) - addTime > self._lastRun:
@@ -202,15 +208,18 @@ class Scheduler(threading.Thread):
 
         t = time.time()
 
-        # execute the action
-        print 'running task on: %s. Frequency is: %s\n' % (time.strftime('%d-%m-%y %H:%M:%S', time.localtime(t)), self._frequency)
-        void = self._action(*self._argument)
-        self._lastRun = t
-        self._WriteLastRun()
+        if not self._paused:
+            # execute the action
+            print 'running task %s%s on: %s. Frequency is: %s\n' % (self._action, self._argument, time.strftime('%d-%m-%y %H:%M:%S', time.localtime(t)), self._frequency)
+            void = self._action(*self._argument)
+            self._lastRun = t
+            self._WriteLastRun()
+        else:
+            print 'schedule label %i is paused' % self._label
 
         # schedule next action
-        if self._frequency != 'Once' and not self._missedSchedule:
-            self._id = self._sched.enterabs(self._CalcNextRun(), 0, self._RunTask, ())
+        if self._frequency != 'Once':
+            self._id = self._sched.enterabs(self._CalcNextRun(self._missedSchedule), 0, self._RunTask, ())
 
     def _DelayFunc(self, delay):
         start = time.time()
@@ -219,7 +228,7 @@ class Scheduler(threading.Thread):
 
     def run(self):
         self._sched.run()
-        print 'Scheduler terminated'
+        print 'Scheduler %s(%s), frequency :%s terminated' % (self._action, self._argument, self._frequency)
 
     def stop(self):
         try:
@@ -227,6 +236,14 @@ class Scheduler(threading.Thread):
         except:
             pass
         self._cancelling = True
+
+    def pause(self):
+        print 'pausing scheduler label %i' % self._label
+        self._paused = True
+
+    def resume(self):
+        print 'resuming scheduler label %i' % self._label
+        self._paused = False
 
 if __name__ == '__main__':
     import sys

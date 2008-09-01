@@ -359,7 +359,9 @@ class wxMainFrame(wx.Frame):
                 MsgBox.ErrorBox(self, 'Could not open help file - %s not found.' % helpfile)
             else:
                 try:
-                    win32api.ShellExecute(self.GetHandle(), 'open', helpfile, None, curDir, win32con.SW_SHOWNORMAL)
+                    win32api.ShellExecute(self.GetHandle(), 'open',
+                        helpfile,
+                        None, curDir, win32con.SW_SHOWNORMAL)
                 except Exception, e:
                     MsgBox.ErrorBox(self, 'Could not open help file. Please ensure that you have Adobe Acrobat Reader installed.')
 

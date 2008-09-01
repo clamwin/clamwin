@@ -1087,13 +1087,16 @@ class Process:
                 log.warn("The win32api module does not have "\
                          "GenerateConsoleCtrlEvent(). This may mean that "\
                          "parts of this process group have NOT been killed.")
-            except win32api.error, ex:
-                if ex.args[0] not in (6, 87):
-                    # Ignore the following:
-                    #   api_error: (87, 'GenerateConsoleCtrlEvent', 'The parameter is incorrect.')
-                    #   api_error: (6, 'GenerateConsoleCtrlEvent', 'The handle is invalid.')
-                    # Get error 6 if there is no console.
-                    raise
+            #except win32api.error, ex:
+            #    if ex.args[0] not in (6, 87):
+            #        # Ignore the following:
+            #        #   api_error: (87, 'GenerateConsoleCtrlEvent', 'The parameter is incorrect.')
+            #        #   api_error: (6, 'GenerateConsoleCtrlEvent', 'The handle is invalid.')
+            #        # Get error 6 if there is no console.
+            #        raise
+            except:
+                log.warn("GenerateConsoleCtrlEvent() failed. This may mean that "\
+                         "parts of this process group have NOT been killed.")
 
             # Last resort: call TerminateProcess if it has not yet.
             retval = 0
@@ -1465,13 +1468,17 @@ class ProcessOpen(Process):
                 log.warn("The win32api module does not have "\
                          "GenerateConsoleCtrlEvent(). This may mean that "\
                          "parts of this process group have NOT been killed.")
-            except win32api.error, ex:
-                if ex.args[0] not in (6, 87):
-                    # Ignore the following:
-                    #   api_error: (87, 'GenerateConsoleCtrlEvent', 'The parameter is incorrect.')
-                    #   api_error: (6, 'GenerateConsoleCtrlEvent', 'The handle is invalid.')
-                    # Get error 6 if there is no console.
-                    raise
+            #except win32api.error, ex:
+            #    if ex.args[0] not in (6, 87):
+            #        # Ignore the following:
+            #        #   api_error: (87, 'GenerateConsoleCtrlEvent', 'The parameter is incorrect.')
+            #        #   api_error: (6, 'GenerateConsoleCtrlEvent', 'The handle is invalid.')
+            #        # Get error 6 if there is no console.
+            #        raise
+            except:
+                log.warn("GenerateConsoleCtrlEvent() failed. This may mean that "\
+                         "parts of this process group have NOT been killed.")
+
 
             # Last resort: call TerminateProcess if it has not yet.
             retval = 0
@@ -1930,13 +1937,17 @@ class ProcessProxy(Process):
                 log.warn("The win32api module does not have "\
                          "GenerateConsoleCtrlEvent(). This may mean that "\
                          "parts of this process group have NOT been killed.")
-            except win32api.error, ex:
-                if ex.args[0] not in (6, 87):
-                    # Ignore the following:
-                    #   api_error: (87, 'GenerateConsoleCtrlEvent', 'The parameter is incorrect.')
-                    #   api_error: (6, 'GenerateConsoleCtrlEvent', 'The handle is invalid.')
-                    # Get error 6 if there is no console.
-                    raise
+            #except win32api.error, ex:
+            #    if ex.args[0] not in (6, 87):
+            #        # Ignore the following:
+            #        #   api_error: (87, 'GenerateConsoleCtrlEvent', 'The parameter is incorrect.')
+            #        #   api_error: (6, 'GenerateConsoleCtrlEvent', 'The handle is invalid.')
+            #        # Get error 6 if there is no console.
+            #        raise
+            except:
+                log.warn("GenerateConsoleCtrlEvent() failed. This may mean that "\
+                         "parts of this process group have NOT been killed.")
+
 
             # Last resort: call TerminateProcess if it has not yet.
             retval = 0

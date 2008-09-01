@@ -46,6 +46,7 @@ class MainWindow:
     WM_TASKBAR_NOTIFY = win32con.WM_USER + 20
     WM_CONFIG_UPDATED = win32con.WM_USER + 21
     WM_SHOW_BALLOON = win32con.WM_USER + 22
+    WM_CHECK_VERSION=win32con.WM_USER + 23
 
     def __init__(self, config, logon):
         self._config = config
@@ -54,6 +55,11 @@ class MainWindow:
         self._processes = []
         self._balloon_info = None
         self._balloonThreadLock = threading.Lock()
+        self._checkversionattempts = 0
+        self._dbupdateattempts = 0
+        self._nomenu = False
+        self._reschedule_delay = 300
+        self._scheduleCount = 0
         msg_TaskbarRestart = win32gui.RegisterWindowMessage('TaskbarCreated')
         message_map = {
                 msg_TaskbarRestart: self.OnRestart,
@@ -61,7 +67,8 @@ class MainWindow:
                 win32con.WM_COMMAND: self.OnCommand,
                 MainWindow.WM_TASKBAR_NOTIFY: self.OnTaskbarNotify,
                 MainWindow.WM_CONFIG_UPDATED : self.OnConfigUpdated,
-                MainWindow.WM_SHOW_BALLOON : self.OnShowBalloon
+                MainWindow.WM_SHOW_BALLOON : self.OnShowBalloon,
+                MainWindow.WM_CHECK_VERSION: self.OnCheckVersion
         }
         # Register the Window class.
         wc = win32gui.WNDCLASS()
@@ -118,6 +125,16 @@ class MainWindow:
 
         self._processes = []
 
+    def _FindSchedule(self, label):
+        for scheduler in self._schedulers:
+            try:
+                if scheduler.label() == label:
+                    return scheduler
+            except Exception, e:
+                print 'An error occured whilst finding scheduler label: %i. %s' % (label, str(e))
+        return None
+
+
     def _TerminateSchedules(self):
         self._StopProcesses()
         for scheduler in self._schedulers:
@@ -128,6 +145,14 @@ class MainWindow:
             except Exception, e:
                 print 'An error occured whilst termintaing scheduler thread. Error: %s' % str(e)
         self._schedulers = []
+
+    def _CreateScheduleLabel(self):
+        # ensure we return no more that 32 bit signed integer otherwise SendMessage API method complains
+        if self._scheduleCount >= sys.maxint:
+            self._scheduleCount = 0
+
+        self._scheduleCount = self._scheduleCount + 1
+        return self._scheduleCount
 
     def _InitSchedulers(self, logon=False):
         # close all running schedules
@@ -151,18 +176,20 @@ class MainWindow:
                             weekday,
                             False,
                             win32gui.SendMessage, (self.hwnd, win32con.WM_COMMAND, self.MENU_UPDATE_DB, 1),
-                            ('ClamWin_Scheduler_Info', 'ClamWin_Upadte_Time'))
+                            ('ClamWin_Scheduler_Info', 'ClamWin_Update_Time'))
             scheduler.start()
             self._schedulers.append(scheduler)
 
         # create a scheduler thread for DB updates
         if self._config.Get('Updates', 'Enable'):
+            label = self._CreateScheduleLabel()
             scheduler = Scheduler.Scheduler(self._config.Get('Updates', 'Frequency'),
                             self._config.Get('Updates', 'Time'),
                             self._config.Get('Updates', 'WeekDay'),
                             True,
-                            win32gui.SendMessage, (self.hwnd, win32con.WM_COMMAND, self.MENU_UPDATE_DB, 1),
-                            ('ClamWin_Scheduler_Info', 'ClamWin_Upadte_Time'))
+                            win32gui.SendMessage, (self.hwnd, win32con.WM_COMMAND, self.MENU_UPDATE_DB, label),
+                            ('ClamWin_Scheduler_Info', 'ClamWin_Update_Time'),
+                            0.5, label)
             scheduler.start()
             self._schedulers.append(scheduler)
 
@@ -194,13 +221,14 @@ class MainWindow:
                 checkvertime = time.strftime('%H:%M:%S', time.localtime(time.time() + random.randint(300, 3600)))
                 print 'using random checkversion time %s' % checkvertime
 
+            label = self._CreateScheduleLabel()
             curDir = Utils.GetCurrentDir(True)
-            scheduler = Scheduler.Scheduler('Daily', # check once aday
+            scheduler = Scheduler.Scheduler('Daily', # check once a day
                             checkvertime,
                             1, # unused
                             True,
-                            Utils.SpawnPyOrExe, (os.path.join(curDir, 'ClamWin'), ' --mode=checkversion'),
-                            ('ClamWin_CheckVer_Info', 'ClamWin_CheckVer_Time'))
+                            win32gui.SendMessage, (self.hwnd, MainWindow.WM_CHECK_VERSION, 0, label),
+                            ('ClamWin_CheckVer_Info', 'ClamWin_CheckVer_Time'), 0.5, label)
             scheduler.start()
             self._schedulers.append(scheduler)
 
@@ -247,6 +275,17 @@ class MainWindow:
         elif lparam == win32con.WM_LBUTTONDBLCLK:
             self.OnCommand(hwnd, win32con.WM_COMMAND, self.MENU_OPEN_CLAM, 0)
         elif lparam == win32con.WM_RBUTTONUP:
+            if self._nomenu:
+                hwnd = win32gui.FindWindow('#32770', 'ClamWin Update')
+                if hwnd:
+                    try:
+                        win32gui.ShowWindow(hwnd, win32con.SW_SHOW)
+                        win32gui.SetForegroundWindow(hwnd)
+                        win32gui.SetFocus(hwnd)
+                    except Exception, e:
+                        print 'ShowWindow Error: %s' % str(e)
+                return 1
+
             # create scheduler menu
             scheduler_popup = win32gui.CreatePopupMenu()
             win32gui.AppendMenu(scheduler_popup, win32con.MF_STRING,
@@ -307,18 +346,23 @@ class MainWindow:
 
             pos = win32gui.GetCursorPos()
             # See http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winui/menus_0hdi.asp
-            win32gui.SetForegroundWindow(self.hwnd)
+            try:
+                win32gui.SetForegroundWindow(self.hwnd)
+            except:
+                pass
             try:
                 win32gui.SetMenuDefaultItem(menu, 0, 1)
             except NameError:
                 pass
 
             win32gui.TrackPopupMenu(menu, win32con.TPM_LEFTALIGN, pos[0], pos[1], 0, self.hwnd, None)
-            win32gui.PostMessage(self.hwnd, win32con.WM_NULL, 0, 0)
+            win32gui.SendMessage(self.hwnd, win32con.WM_NULL, 0, 0)
 
         return 1
 
     def OnCommand(self, hwnd, msg, wparam, lparam):
+        if self._nomenu:
+                return
         id = win32api.LOWORD(wparam)
         if id == self.MENU_OPEN_CLAM:
             self._ShowClamWin()
@@ -364,6 +408,57 @@ class MainWindow:
             except Exception, e:
                 print 'Could not display balloon tooltip. Error: %s' % str(e)
 
+    def OnCheckVersion(self, hwnd, msg, wparam, lparam):
+        current_sched = self._FindSchedule(lparam)
+
+        ok = False
+        online = Utils.IsOnline()
+
+        if online:
+            try:
+                curDir = Utils.GetCurrentDir(True)
+                params = (' --mode=checkversion', )
+                ok = Utils.SpawnPyOrExe(True, os.path.join(curDir, 'ClamWin'), *params) == 0
+            except Exception, e:
+                print 'checkversion error: %s' % str(e)
+
+        self._nomenu = False
+        if not ok:
+            if self._checkversionattempts < 9 or not online:
+                # reschedule version check in 3 minutes
+                locale.setlocale(locale.LC_ALL, 'C')
+
+                start_time = time.localtime(time.time() + self._reschedule_delay)
+                weekday = int(time.strftime('%w', start_time))
+                if weekday: weekday -= 1
+                else: weekday = 6
+                print 'rescheduling version check at %s' % time.strftime('%H:%M:%S', start_time)
+                rescheduled = Scheduler.Scheduler('Once',
+                                time.strftime('%H:%M:%S', start_time),
+                                weekday,
+                                False,
+                                win32gui.SendMessage, (self.hwnd, MainWindow.WM_CHECK_VERSION, 0, lparam),
+                                ('ClamWin_Scheduler_Info', 'ClamWin_Update_Time'))
+                if current_sched is not None:
+                    current_sched.pause()
+
+                rescheduled.start()
+                self._schedulers.append(rescheduled)
+                self._checkversionattempts = self._checkversionattempts + 1
+            else:
+                # show balloon
+                if self._config.Get('UI', 'TrayNotify'):
+                    tray_notify_params = (('Unable to get online version. Most likely it\'s a temporary connectivity error and you don\'t have to do anything.\nIf you see this error often then allow clamwin.exe in your firewall and check proxy settings.\n', 0,
+                                win32gui.NIIF_WARNING, 30000), None)
+                    Utils.ShowBalloon(0, tray_notify_params, None, True)
+                    self._checkversionattempts = 0
+                    if current_sched is not None:
+                        current_sched.resume()
+        else:
+            self._checkversionattempts = 0
+
+
+
     def OnExit(self):
         win32gui.DestroyWindow(self.hwnd)
 
@@ -371,7 +466,7 @@ class MainWindow:
         try:
             curDir = Utils.GetCurrentDir(True)
             params = (' --mode=viewlog',  '--path="%s"' % logfile)
-            Utils.SpawnPyOrExe(os.path.join(curDir, 'ClamWin'), *params)
+            Utils.SpawnPyOrExe(False, os.path.join(curDir, 'ClamWin'), *params)
         except Exception, e:
             win32gui.MessageBox(self.hwnd, 'An error occured while displaying log file %s.\nError: %s' % (logfile, str(e)),
                                  'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONERROR)
@@ -382,20 +477,19 @@ class MainWindow:
                 params = (' --mode=scanner',  ' --path=\"%s\"' % path)
             else:
                 params = (' --mode=main',)
-            Utils.SpawnPyOrExe(os.path.join(Utils.GetCurrentDir(True), 'ClamWin'), *params)
+            Utils.SpawnPyOrExe(False, os.path.join(Utils.GetCurrentDir(True), 'ClamWin'), *params)
         except Exception, e:
             win32gui.MessageBox(self.hwnd, 'An error occured while starting ClamWin Free Antivirus scanner.\n' + str(e), 'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONERROR)
 
-    def _UpdateDB(self, hide):
-        if not hide:
+    def _UpdateDB(self, schedule_label):
+        if not schedule_label:
             try:
-                params = (' --mode=update', ' --config_file="%s"' % self._config.GetFilename())
-                Utils.SpawnPyOrExe(os.path.join(Utils.GetCurrentDir(True), 'ClamWin'), *params)
+                params = (' --mode=update', ' --config_file="%s"' % self._config.GetFilename(),)
+                Utils.SpawnPyOrExe(False, os.path.join(Utils.GetCurrentDir(True), 'ClamWin'), *params)
             except Exception, e:
                 win32gui.MessageBox(self.hwnd, 'An error occured while starting ClamWin Free Antivirus Update.\n' + str(e), 'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONERROR)
-        else:
+        else: # update virus db silently
             if Utils.IsOnline():
-                # update virus db silently
                 freshclam_conf = Utils.SaveFreshClamConf(self._config)
                 try:
                     if not len(freshclam_conf):
@@ -426,7 +520,7 @@ class MainWindow:
                             (self._config.Get('ClamAV', 'Database'),
                             self._config.Get('Updates', 'DBUpdateLogFile'),
                             updatelog, False,
-                            balloon))
+                            balloon, schedule_label))
                         self._processes.append(proc)
                     except Process.ProcessError, e:
                         print 'Unable to spawn scheduled process.\nCommand line: %s\nError: %s' % (cmd , str(e))
@@ -446,23 +540,10 @@ class MainWindow:
                 except Exception, e:
                     print 'Error performing Scheduled Update.', str(e)
                     os.remove(freshclam_conf)
-            else: # not onlime
-                #reschedule database update in 5 minutes
-                locale.setlocale(locale.LC_ALL, 'C')
+            else:
+                self.RescheduleDBUpdate(schedule_label)
 
-                start_time = time.localtime(time.time() + 300)
-                weekday = int(time.strftime('%w', start_time))
-                if weekday: weekday -= 1
-                else: weekday = 6
 
-                scheduler = Scheduler.Scheduler('Once',
-                                time.strftime('%H:%M:%S', start_time),
-                                weekday,
-                                False,
-                                win32gui.SendMessage, (self.hwnd, win32con.WM_COMMAND, self.MENU_UPDATE_DB, 1),
-                                ('ClamWin_Scheduler_Info', 'ClamWin_Upadte_Time'))
-                scheduler.start()
-                self._schedulers.append(scheduler)
 
     def _OpenWebPage(self, url):
         try:
@@ -480,8 +561,8 @@ class MainWindow:
             else:
                 mode = 'configure'
             params = (' --mode=%s' % mode,
-                        ' --config_file="%s"' % self._config.GetFilename())
-            Utils.SpawnPyOrExe(os.path.join(curDir, 'ClamWin'), *params)
+                        ' --config_file="%s"' % self._config.GetFilename(),)
+            Utils.SpawnPyOrExe(False, os.path.join(curDir, 'ClamWin'), *params)
         except Exception, e:
             win32gui.MessageBox(self.hwnd, 'An error occured while starting ClamWin Free Antivirus Preferences.\n' + str(e), 'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONERROR)
 
@@ -569,11 +650,51 @@ class MainWindow:
     ScanPath = staticmethod(ScanPath)
 
     def NotifyConfig(hwnd):
-        win32api.PostMessage(hwnd, MainWindow.WM_CONFIG_UPDATED, 0, 0)
+        win32api.SendMessage(hwnd, MainWindow.WM_CONFIG_UPDATED, 0, 0)
     NotifyConfig = staticmethod(NotifyConfig)
 
-    def DBUpdateProcessFinished(self, process, dbpath, log, appendlog, email_alert, balloon_info):
-        self.ProcessFinished(self, process, log, appendlog, email_alert, balloon_info)
+    def RescheduleDBUpdate(self, schedule_label):
+        current_sched = self._FindSchedule(schedule_label)
+
+        # reschedule database update in 5 minutes
+        locale.setlocale(locale.LC_ALL, 'C')
+        start_time = time.localtime(time.time() + self._reschedule_delay)
+        weekday = int(time.strftime('%w', start_time))
+        if weekday: weekday -= 1
+        else: weekday = 6
+
+        print 'rescheduling db update attempt %i at %s' % (self._dbupdateattempts, time.strftime('%H:%M:%S', start_time))
+
+        rescheduled = Scheduler.Scheduler('Once',
+                                time.strftime('%H:%M:%S', start_time),
+                                weekday,
+                                False,
+                                win32gui.SendMessage, (self.hwnd, win32con.WM_COMMAND, self.MENU_UPDATE_DB, schedule_label),
+                                ('ClamWin_Scheduler_Info', 'ClamWin_Update_Time'))
+        if current_sched is not None:
+            current_sched.pause()
+        rescheduled.start()
+        self._schedulers.append(rescheduled)
+        self._dbupdateattempts = self._dbupdateattempts + 1
+
+
+    def DBUpdateProcessFinished(self, process, dbpath, log, appendlog, email_alert, balloon_info, schedule_label):
+        current_sched = self._FindSchedule(schedule_label)
+        if (not process.isKilled()) and (process.wait() not in (0, 1)):
+            if self._dbupdateattempts < 9:
+                self.ProcessFinished(self, process, log, appendlog, None, None)
+                self.RescheduleDBUpdate(schedule_label)
+            else:
+                print 'self._dbupdateattempts >= 9; displaying an error ballon, ', str(balloon_info)
+                if current_sched is not None:
+                    current_sched.resume()
+                self._dbupdateattempts = 0
+                self.ProcessFinished(self, process, log, appendlog, None, balloon_info)
+        else:
+            if current_sched is not None:
+                current_sched.resume()
+            self.ProcessFinished(self, process, log, appendlog, None, balloon_info)
+
     DBUpdateProcessFinished = staticmethod(DBUpdateProcessFinished)
 
     def ProcessFinished(self, process, log, appendlog, email_alert, balloon_info):
