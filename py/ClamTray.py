@@ -49,7 +49,7 @@ class MainWindow:
     WM_CONFIG_UPDATED=win32con.WM_USER+21
     WM_SHOW_BALLOON=win32con.WM_USER+22
     WM_CHECK_VERSION=win32con.WM_USER+23
-                                                                                               
+
     def __init__(self, config, logon):
         self._config = config
         self._schedulers = []
@@ -126,7 +126,7 @@ class MainWindow:
                 proc.close()
 
         self._processes = []
-        
+
     def _FindSchedule(self, label):
         for scheduler in self._schedulers:
             try:
@@ -135,7 +135,7 @@ class MainWindow:
             except Exception, e:
                 print 'An error occured whilst finding scheduler label: %i. %s' % (label, str(e))
         return None
-    
+
 
     def _TerminateSchedules(self):
         self._StopProcesses()
@@ -147,12 +147,12 @@ class MainWindow:
             except Exception, e:
                 print 'An error occured whilst termintaing scheduler thread. Error: %s' % str(e)
         self._schedulers = []
-        
+
     def _CreateScheduleLabel(self):
         # ensure we return no more that 32 bit signed integer otherwise SendMessage API method complains
         if self._scheduleCount >= sys.maxint:
-            self._scheduleCount = 0        
-            
+            self._scheduleCount = 0
+
         self._scheduleCount = self._scheduleCount + 1
         return self._scheduleCount
 
@@ -220,7 +220,7 @@ class MainWindow:
 
             if checkvertime is None:
                 # 5 minutes to 1 hour after start
-                checkvertime = time.strftime('%H:%M:%S', time.localtime(time.time() + random.randint(300, 3600)))                
+                checkvertime = time.strftime('%H:%M:%S', time.localtime(time.time() + random.randint(300, 3600)))
                 print "using random checkversion time %s" % checkvertime
 
 
@@ -229,7 +229,7 @@ class MainWindow:
             scheduler = Scheduler.Scheduler('Daily', # check once a day
                             checkvertime,
                             1, # unused
-                            True,                            
+                            True,
                             win32gui.SendMessage, (self.hwnd, MainWindow.WM_CHECK_VERSION, 0, label),
                             ('ClamWin_CheckVer_Info', 'ClamWin_CheckVer_Time'), 0.5, label)
             scheduler.start()
@@ -278,8 +278,8 @@ class MainWindow:
         elif lparam==win32con.WM_LBUTTONDBLCLK:
             self.OnCommand(hwnd, win32con.WM_COMMAND, self.MENU_OPEN_CLAM, 0)
         elif lparam==win32con.WM_RBUTTONUP:
-            if self._nomenu:                
-                hwnd = win32gui.FindWindow('#32770', 'ClamWin Update')                
+            if self._nomenu:
+                hwnd = win32gui.FindWindow('#32770', 'ClamWin Update')
                 if hwnd:
                     try:
                         win32gui.ShowWindow(hwnd, win32con.SW_SHOW)
@@ -288,7 +288,7 @@ class MainWindow:
                     except Exception, e:
                         print 'ShowWindow Error: %s' % str(e)
                 return 1
-            
+
             # create scheduler menu
             scheduler_popup = win32gui.CreatePopupMenu()
             win32gui.AppendMenu(scheduler_popup, win32con.MF_STRING,
@@ -413,27 +413,27 @@ class MainWindow:
             except Exception, e:
                 print 'Could not display balloon tooltip. Error: %s' % str(e)
 
-    def OnCheckVersion(self, hwnd, msg, wparam, lparam):                
+    def OnCheckVersion(self, hwnd, msg, wparam, lparam):
         current_sched = self._FindSchedule(lparam)
-            
+
         ok = False
-        online = Utils.IsOnline()           
-        
+        online = Utils.IsOnline()
+
         if online:
             try:
                 curDir = Utils.GetCurrentDir(True)
                 params = (' --mode=checkversion', )
-                ok = Utils.SpawnPyOrExe(True, os.path.join(curDir, 'ClamWin'), *params) == 0                 
+                ok = Utils.SpawnPyOrExe(True, os.path.join(curDir, 'ClamWin'), *params) == 0
             except Exception, e:
                 print 'checkversion error: %s' % str(e)
-                
+
         self._nomenu = False
         if not ok:
-            if self._checkversionattempts < 9 or not online: 
+            if self._checkversionattempts < 9 or not online:
                 # reschedule version check in 3 minutes
                 locale.setlocale(locale.LC_ALL, 'C')
-    
-                start_time = time.localtime(time.time() + self._reschedule_delay)                
+
+                start_time = time.localtime(time.time() + self._reschedule_delay)
                 weekday = int(time.strftime('%w', start_time))
                 if weekday: weekday -= 1
                 else: weekday = 6
@@ -446,7 +446,7 @@ class MainWindow:
                                 ('ClamWin_Scheduler_Info', 'ClamWin_Upadte_Time'))
                 if current_sched is not None:
                     current_sched.pause()
-                    
+
                 rescheduled.start()
                 self._schedulers.append(rescheduled)
                 self._checkversionattempts = self._checkversionattempts + 1
@@ -455,12 +455,12 @@ class MainWindow:
                 if self._config.Get('UI', 'TrayNotify') == '1':
                     tray_notify_params = (('Unable to get online version. Most likely it\'s a temporary connectivity error and you don\'t have to do anything.\nIf you see this error often then allow clamwin.exe in your firewall and check proxy settings.\n', 0,
                                 win32gui.NIIF_WARNING, 30000), None)
-                    Utils.ShowBalloon(0, tray_notify_params, None, True)        
+                    Utils.ShowBalloon(0, tray_notify_params, None, True)
                     self._checkversionattempts = 0
                     if current_sched is not None:
-                        current_sched.resume()                                    
+                        current_sched.resume()
         else:
-            self._checkversionattempts = 0 
+            self._checkversionattempts = 0
 
 
 
@@ -494,13 +494,13 @@ class MainWindow:
             except Exception, e:
                 win32gui.MessageBox(self.hwnd, 'An error occured while starting ClamWin Free Antivirus Update.\n' + str(e), 'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONERROR)
         else: # update virus db silently
-            if Utils.IsOnline():            
+            if Utils.IsOnline():
                 freshclam_conf = Utils.SaveFreshClamConf(self._config)
                 try:
                     if not len(freshclam_conf):
                         win32gui.MessageBox(self.hwnd, 'Unable to create freshclam configuration file. Please check there is enough space on the disk', 'Error', win32con.MB_OK | win32con.MB_ICONSTOP)
                         return
-                    
+
                     # create database folder before downloading
                     dbdir = self._config.Get('ClamAV', 'Database')
                     if dbdir and not os.path.exists(dbdir):
@@ -548,7 +548,7 @@ class MainWindow:
                     os.remove(freshclam_conf)
             else:
                 self.RescheduleDBUpdate(schedule_label)
-                                                                       
+
 
 
     def _OpenWebPage(self, url):
@@ -658,17 +658,17 @@ class MainWindow:
     def NotifyConfig(hwnd):
         win32api.SendMessage(hwnd, MainWindow.WM_CONFIG_UPDATED, 0, 0)
     NotifyConfig = staticmethod(NotifyConfig)
-    
+
     def RescheduleDBUpdate(self, schedule_label):
         current_sched = self._FindSchedule(schedule_label)
-        
+
         # reschedule database update in 5 minutes
         locale.setlocale(locale.LC_ALL, 'C')
         start_time = time.localtime(time.time() + self._reschedule_delay)
         weekday = int(time.strftime('%w', start_time))
         if weekday: weekday -= 1
         else: weekday = 6
-            
+
         print 'rescheduling db update attempt %i at %s' % (self._dbupdateattempts, time.strftime('%H:%M:%S', start_time))
 
         rescheduled = Scheduler.Scheduler('Once',
@@ -678,11 +678,11 @@ class MainWindow:
                                 win32gui.SendMessage, (self.hwnd, win32con.WM_COMMAND, self.MENU_UPDATE_DB, schedule_label),
                                 ('ClamWin_Scheduler_Info', 'ClamWin_Upadte_Time'))
         if current_sched is not None:
-            current_sched.pause()            
+            current_sched.pause()
         rescheduled.start()
         self._schedulers.append(rescheduled)
         self._dbupdateattempts = self._dbupdateattempts + 1
-           
+
 
     def DBUpdateProcessFinished(self, process, dbpath, log, appendlog, email_alert, balloon_info, schedule_label):
         current_sched = self._FindSchedule(schedule_label)
@@ -693,14 +693,14 @@ class MainWindow:
             else:
                 print 'self._dbupdateattempts >= 9; displaying an error ballon, ', str(balloon_info)
                 if current_sched is not None:
-                    current_sched.resume()            
+                    current_sched.resume()
                 self._dbupdateattempts = 0
                 self.ProcessFinished(self, process, log, appendlog, None, balloon_info)
         else:
             if current_sched is not None:
-                current_sched.resume()            
-            self.ProcessFinished(self, process, log, appendlog, None, balloon_info)                                                              
-             
+                current_sched.resume()
+            self.ProcessFinished(self, process, log, appendlog, None, balloon_info)
+
     DBUpdateProcessFinished = staticmethod(DBUpdateProcessFinished)
 
 

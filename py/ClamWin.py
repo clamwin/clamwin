@@ -104,7 +104,7 @@ class BoaApp(wxApp):
         elif self.mode == 'checkversion':
             if not wxDialogUtils.wxCheckUpdate(parent=None, config=self.config):
                 self.exit_code = 1
-                
+
         else: #  mode == 'main'
             if pyc.isWow64():
                 self.DisablefsRedirect()
