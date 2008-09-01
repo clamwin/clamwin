@@ -608,12 +608,12 @@ def SpawnPyOrExe(wait, filename, *params):
     if wait:
         flag = os.P_WAIT
     else:
-        flag = os.P_NOWAIT             
+        flag = os.P_NOWAIT
     if not hasattr(sys, 'frozen'):
-        #win32api.ShellExecute(0, 'open', filename + '.py', filename + '.py ' + ' '.join(params), None, win32con.SW_SHOWNORMAL)                
-        ret = os.spawnl(flag, sys.executable, ' '  + filename + '.py ' + ' '.join(params))        
-    else:                
-        ret = os.spawnl(flag, filename + '.exe', *params)        
+        #win32api.ShellExecute(0, 'open', filename + '.py', filename + '.py ' + ' '.join(params), None, win32con.SW_SHOWNORMAL)
+        ret = os.spawnl(flag, sys.executable, ' '  + filename + '.py ' + ' '.join(params))
+    else:
+        ret = os.spawnl(flag, filename + '.exe', *params)
     print "SpawnPyOrExe %s returned " % filename, ret
     return ret
 
@@ -791,7 +791,7 @@ def IsOnline():
     #    return connected == 1
     #except Exception, e:
     #    print "InternetGetConnectedState failed %s", str(e)
-    
+
     try:
         import socket
         addrs = socket.gethostbyname_ex(socket.gethostname())[2]
@@ -799,7 +799,7 @@ def IsOnline():
             if addr[:3] not in('127', '169') and addr != '0.0.0.0':
                 print "Internet online: 1"
                 return True
-    except Exception, e: 
+    except Exception, e:
         print 'gethostbyname_ex Error: %s' % str(e)
     return False
 
