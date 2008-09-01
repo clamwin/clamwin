@@ -61,6 +61,7 @@ class MainWindow:
         self._dbupdateattempts = 0
         self._nomenu = False
         self._reschedule_delay = 300
+        self._scheduleCount = 0
         msg_TaskbarRestart = win32gui.RegisterWindowMessage("TaskbarCreated");
         message_map = {
                 msg_TaskbarRestart: self.OnRestart,
@@ -146,6 +147,14 @@ class MainWindow:
             except Exception, e:
                 print 'An error occured whilst termintaing scheduler thread. Error: %s' % str(e)
         self._schedulers = []
+        
+    def _CreateScheduleLabel(self):
+        # ensure we return no more that 32 bit signed integer otherwise SendMessage API method complains
+        if self._scheduleCount >= sys.maxint:
+            self._scheduleCount = 0        
+            
+        self._scheduleCount = self._scheduleCount + 1
+        return self._scheduleCount
 
     def _InitSchedulers(self, logon=False):
         # close all running schedules
@@ -175,7 +184,7 @@ class MainWindow:
 
         # create a scheduler thread for DB updates
         if self._config.Get('Updates', 'Enable') == '1':
-            label = int(time.clock()*10000000) + random.randint(0,1000)
+            label = self._CreateScheduleLabel()
             scheduler = Scheduler.Scheduler(self._config.Get('Updates', 'Frequency'),
                             self._config.Get('Updates', 'Time'),
                             int(self._config.Get('Updates', 'WeekDay')),
@@ -215,7 +224,7 @@ class MainWindow:
                 print "using random checkversion time %s" % checkvertime
 
 
-            label = int(time.clock()*10000000) + random.randint(0,1000)
+            label = self._CreateScheduleLabel()
             curDir = Utils.GetCurrentDir(True)
             scheduler = Scheduler.Scheduler('Daily', # check once a day
                             checkvertime,
