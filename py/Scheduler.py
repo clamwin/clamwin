@@ -55,10 +55,10 @@ class Scheduler(threading.Thread):
         self._id = self._sched.enterabs(self._CalcNextRun(), 0, self._RunTask, ())
         self._paused = False
         self._label = label
-        
+
     def label(self):
         return self._label
-        
+
 
     def reset(self, frequency, startTime, weekDay, action, argument=(), loopDelay = 0.2):
         self._delay = 1.0
@@ -243,7 +243,7 @@ class Scheduler(threading.Thread):
         except:
            pass
         self._cancelling = True
-        
+
     def pause(self):
         print 'pausing scheduler label %i' % self._label
         self._paused = True
@@ -251,7 +251,7 @@ class Scheduler(threading.Thread):
     def resume(self):
         print 'resuming scheduler label %i' % self._label
         self._paused = False
-    
+
 if __name__ == '__main__':
     import sys
     def action():
