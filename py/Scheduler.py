@@ -51,10 +51,10 @@ class Scheduler(threading.Thread):
         self._lastRun = self._ReadLastRun()
 
         self._sched = sched.scheduler(time.time, self._DelayFunc)
-        self._missedSchedule = False
-        self._id = self._sched.enterabs(self._CalcNextRun(), 0, self._RunTask, ())
+        self._missedSchedule = False        
         self._paused = False
         self._label = label
+        self._id = self._sched.enterabs(self._CalcNextRun(), 0, self._RunTask, ())
 
     def label(self):
         return self._label
@@ -188,7 +188,8 @@ class Scheduler(threading.Thread):
                 addTime = schedTime - tmp
 
         #don't return for missed schedule if frequency is workdays and it is weekend now
-        if self._runMissed and not missedAlready and self._frequency != 'Workdays' or time.localtime(t).tm_wday not in (5,6):
+        if self._runMissed and not self._paused and not missedAlready and \
+           (self._frequency != 'Workdays' or time.localtime(t).tm_wday not in (5,6)):
             # check if we missed the scheduled run
             # and return now (+ 2 minutes) instead
             if  self._lastRun != 0 and self._AdjustDST(schedTime) - addTime > self._lastRun:
