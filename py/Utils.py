@@ -783,7 +783,6 @@ def IsOutlookInstalled():
 
 
 def IsOnline():
-    return False
     #try:
     #    wininet = windll.wininet
     #    flags = DWORD()
