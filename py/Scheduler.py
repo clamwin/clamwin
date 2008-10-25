@@ -188,11 +188,15 @@ class Scheduler(threading.Thread):
                 addTime = schedTime - tmp
 
         #don't return for missed schedule if frequency is workdays and it is weekend now
-        if self._runMissed and not self._paused and not missedAlready and \
+        if 1 or self._runMissed and not self._paused and not missedAlready and \
            (self._frequency != 'Workdays' or time.localtime(t).tm_wday not in (5,6)):
             # check if we missed the scheduled run
             # and return now (+ 2 minutes) instead
-            if  self._lastRun != 0 and self._AdjustDST(schedTime) - addTime > self._lastRun:
+            if  self._lastRun != 0 and schedTime - addTime > self._lastRun:
+                print "self._lastRun=", self._lastRun
+                print "schedTime=", schedTime
+                print "addTime=", addTime
+                print "schedTime - addTime > self._lastRun=", schedTime - addTime > self._lastRun
                 t = t + 120
                 print 'Schedule missed, returning: %s' % time.asctime(time.localtime(t))
                 try:
