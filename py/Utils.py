@@ -333,8 +333,19 @@ def GetScanCmd(config, path, scanlog, noprint = False):
 
     # 22 July 2006
     # added --keep-mbox to leave thunderbird files intact when removing or quarantining
-    cmd += ' --keep-mbox --stdout --database="%s" --log="%s" --no-phishing-sigs --no-phishing-scan-urls' % \
+    cmd += ' --keep-mbox --stdout --database="%s" --log="%s"' % \
             (config.Get('ClamAV', 'Database'), scanlog)
+
+    # 1 Nov 2008
+    # enable phishing through advanced params for GuitarBob                    
+    clamscanParams = config.Get('ClamAV', 'ClamScanParams')
+    if clamscanParams != '':
+        if clamscanParams.find('--enable-phishing') == -1:
+            cmd += ' --no-phishing-sigs --no-phishing-scan-urls'
+        else:
+            clamscanParams = clamscanParams.replace('--enable-phishing', '')
+        cmd += ' ' + clamscanParams
+        
 
     if config.Get('ClamAV', 'Debug') == '1':
         cmd += ' --debug'
@@ -348,8 +359,6 @@ def GetScanCmd(config, path, scanlog, noprint = False):
         cmd += ' --no-ole2'
     #if config.Get('ClamAV', 'DetectPUA') == '1':
     #    cmd += ' --detect-pua'
-    if config.Get('ClamAV', 'ClamScanParams') != '':
-        cmd += ' ' + config.Get('ClamAV', 'ClamScanParams')
     if config.Get('ClamAV', 'InfectedOnly') == '1' or noprint:
         cmd += ' --infected'
     if config.Get('ClamAV', 'ScanArchives') == '1':
