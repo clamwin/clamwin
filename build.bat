@@ -53,9 +53,9 @@ rem cd ..\..\..\..\
 
 
 rem get the latest db files
-rem call %WGET_UTIL% http://%DB_MIRROR%/main.cvd -O "%THISDIR%\Setup\cvd\main.cvd"
+call %WGET_UTIL% http://%DB_MIRROR%/main.cvd -N -O "%THISDIR%\Setup\cvd\main.cvd"
 if not "%ERRORLEVEL%"=="0" goto ERROR
-rem call %WGET_UTIL% http://%DB_MIRROR%/daily.cvd -O "%THISDIR%\Setup\cvd\daily.cvd"
+call %WGET_UTIL% http://%DB_MIRROR%/daily.cvd -N -O "%THISDIR%\Setup\cvd\daily.cvd"
 if not "%ERRORLEVEL%"=="0" goto ERROR
 
 rem build setups
