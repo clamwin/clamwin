@@ -1,0 +1,10 @@
+--- maskededit.py	Thu May  6 22:24:39 2004
++++ maskededit.py.new	Fri May  7 00:07:24 2004
+@@ -1659,6 +1659,7 @@
+             # gather rest of any autoformat parameters:
+             for param, value in masktags[self._autoformat].items():
+                 if param == 'mask': continue    # (must be present; already accounted for)
++                if param == 'formatcodes' and value: continue # preserve custom format codes (if present)
+                 constraint_kwargs[param] = value
+ 
+         elif autoformat and not autoformat in masktags.keys():
