@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.4\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-02-03 19:39+0100\n"
+"PO-Revision-Date: 2008-04-08 21:30+0100\n"
 "Last-Translator: budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: Localization <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -763,7 +763,7 @@ msgstr ""
 msgid "Files"
 msgstr ""
 
-#: wxDialogPreferences.py:474
+#: Preferences (Advanced)
 msgid "Sub-Archives"
 msgstr ""
 
@@ -1064,20 +1064,12 @@ msgstr ""
 msgid "Scanner &Priority:"
 msgstr ""
 
-#: wxDialogPreferences.py:922
-#: wxDialogPreferences.py:927
-#: wxDialogPreferences.py:1477
-#: wxDialogPreferences.py:1485
 msgid "Normal"
 msgstr ""
 
-#: wxDialogPreferences.py:922
-#: wxDialogPreferences.py:1475
-#: wxDialogPreferences.py:1483
 msgid "Low"
 msgstr ""
 
-#: wxDialogPreferences.py:926
 msgid "Specify the process priority for the virus scanner."
 msgstr ""
 
@@ -1738,5 +1730,37 @@ msgstr ""
 
 # Translation of the Freshclam update log when using a proxy
 msgid "Connecting via "
+msgstr ""
+
+# String for the about box
+msgid "Scanning Engine by:"
+msgstr ""
+
+# String for the about box
+msgid "MS Windows Port by:"
+msgstr ""
+
+# String for the about box
+msgid "Portions Copyright SourceFire Inc. (ClamAV)"
+msgstr ""
+
+# String for the about box
+msgid "ClamWin  is not affiliated with ClamAV or SourceFire Inc."
+msgstr ""
+
+# Preferences dialog (Archives)
+msgid "Limits"
+msgstr ""
+
+# Preferences dialog (Archives)
+msgid "Do Not Scan Files Larger Than"
+msgstr ""
+
+# Preferences dialog (Archives)
+msgid "All Files"
+msgstr ""
+
+# Preferences dialog (Archives)
+msgid "Select if you wish to scan files conatined in archives (zip, rar, etc)"
 msgstr ""
 

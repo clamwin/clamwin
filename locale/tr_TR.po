@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-02-03 19:39+0100\n"
+"PO-Revision-Date: 2008-04-08 21:29+0100\n"
 "Last-Translator: budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: Turkish <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -853,7 +853,7 @@ msgstr "Bundan Fazlasini Cikarma "
 msgid "Files"
 msgstr "Dosyalar"
 
-#: wxDialogPreferences.py:474
+#: Preferences (Advanced)
 #, fuzzy
 msgid "Sub-Archives"
 msgstr "Alt-Arsivler"
@@ -1218,22 +1218,14 @@ msgstr ""
 msgid "Scanner &Priority:"
 msgstr "Tarayici &Onceligi"
 
-#: wxDialogPreferences.py:922
-#: wxDialogPreferences.py:927
-#: wxDialogPreferences.py:1477
-#: wxDialogPreferences.py:1485
 #, fuzzy
 msgid "Normal"
 msgstr "Normal"
 
-#: wxDialogPreferences.py:922
-#: wxDialogPreferences.py:1475
-#: wxDialogPreferences.py:1483
 #, fuzzy
 msgid "Low"
 msgstr "Dusuk"
 
-#: wxDialogPreferences.py:926
 #, fuzzy
 msgid "Specify the process priority for the virus scanner."
 msgstr "Virus tarayici icin islem onceligini belirtin."
@@ -1979,4 +1971,36 @@ msgstr ""
 #, fuzzy
 msgid "Connecting via "
 msgstr "ile bağlantı"
+
+#, fuzzy
+msgid "Scanning Engine by:"
+msgstr "Tarama Secenekleri"
+
+# String for the about box
+msgid "MS Windows Port by:"
+msgstr ""
+
+# String for the about box
+msgid "Portions Copyright SourceFire Inc. (ClamAV)"
+msgstr ""
+
+# String for the about box
+msgid "ClamWin  is not affiliated with ClamAV or SourceFire Inc."
+msgstr ""
+
+# Preferences dialog (Archives)
+msgid "Limits"
+msgstr ""
+
+#, fuzzy
+msgid "Do Not Scan Files Larger Than"
+msgstr "Sundan Buyuk Arsivleri Tarama"
+
+#, fuzzy
+msgid "All Files"
+msgstr "Dosyalar"
+
+#, fuzzy
+msgid "Select if you wish to scan files conatined in archives (zip, rar, etc)"
+msgstr "Altklasorlerde tekrarli taramak icin secin"
 

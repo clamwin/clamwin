@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-02-03 19:36+0100\n"
+"PO-Revision-Date: 2008-04-08 21:34+0100\n"
 "Last-Translator: budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: German <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -787,7 +787,7 @@ msgstr "Nicht mehr extrahieren als"
 msgid "Files"
 msgstr "Dateien"
 
-#: wxDialogPreferences.py:474
+#: Preferences (Advanced)
 msgid "Sub-Archives"
 msgstr "Unter-Archive"
 
@@ -1095,20 +1095,12 @@ msgstr "(Es werden keine persönlichen Daten übermittelt)"
 msgid "Scanner &Priority:"
 msgstr "Scan-&Priorität:"
 
-#: wxDialogPreferences.py:922
-#: wxDialogPreferences.py:927
-#: wxDialogPreferences.py:1477
-#: wxDialogPreferences.py:1485
 msgid "Normal"
 msgstr "Normal"
 
-#: wxDialogPreferences.py:922
-#: wxDialogPreferences.py:1475
-#: wxDialogPreferences.py:1483
 msgid "Low"
 msgstr "Niedrig"
 
-#: wxDialogPreferences.py:926
 msgid "Specify the process priority for the virus scanner."
 msgstr "Wählen Sie die Priorität für den Scan-Prozess aus"
 
@@ -1797,4 +1789,36 @@ msgstr ""
 #, fuzzy
 msgid "Connecting via "
 msgstr "Details zur SMTP-Verbindung"
+
+#, fuzzy
+msgid "Scanning Engine by:"
+msgstr "Scan-Optionen"
+
+# String for the about box
+msgid "MS Windows Port by:"
+msgstr ""
+
+# String for the about box
+msgid "Portions Copyright SourceFire Inc. (ClamAV)"
+msgstr ""
+
+# String for the about box
+msgid "ClamWin  is not affiliated with ClamAV or SourceFire Inc."
+msgstr ""
+
+# Preferences dialog (Archives)
+msgid "Limits"
+msgstr ""
+
+#, fuzzy
+msgid "Do Not Scan Files Larger Than"
+msgstr "Daten größer als ... nicht scannen"
+
+#, fuzzy
+msgid "All Files"
+msgstr "Dateien"
+
+#, fuzzy
+msgid "Select if you wish to scan files conatined in archives (zip, rar, etc)"
+msgstr "Unterverzeichnisse rekursiv durchsuchen"
 

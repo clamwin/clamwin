@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.7\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-02-03 19:35+0100\n"
+"PO-Revision-Date: 2008-04-08 21:35+0100\n"
 "Last-Translator: budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: Bulgarian <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -784,7 +784,7 @@ msgstr "Да не извлича съдържащи повече от "
 msgid "Files"
 msgstr "файл(ове)"
 
-#: wxDialogPreferences.py:474
+#: Preferences (Advanced)
 msgid "Sub-Archives"
 msgstr "суб-архив(и)"
 
@@ -1086,20 +1086,12 @@ msgstr "(Персонална информация не се изпраща пр
 msgid "Scanner &Priority:"
 msgstr "Приоритет на скенера:"
 
-#: wxDialogPreferences.py:922
-#: wxDialogPreferences.py:927
-#: wxDialogPreferences.py:1477
-#: wxDialogPreferences.py:1485
 msgid "Normal"
 msgstr "Нормален"
 
-#: wxDialogPreferences.py:922
-#: wxDialogPreferences.py:1475
-#: wxDialogPreferences.py:1483
 msgid "Low"
 msgstr "Нисък"
 
-#: wxDialogPreferences.py:926
 msgid "Specify the process priority for the virus scanner."
 msgstr "Посочете приоритет на процеса на вирусния скенер."
 
@@ -1787,4 +1779,36 @@ msgstr "Отбележете ако желаете да открива поте�
 #, fuzzy
 msgid "Connecting via "
 msgstr "Свързване с"
+
+#, fuzzy
+msgid "Scanning Engine by:"
+msgstr "Настройки на сканиране"
+
+# String for the about box
+msgid "MS Windows Port by:"
+msgstr ""
+
+# String for the about box
+msgid "Portions Copyright SourceFire Inc. (ClamAV)"
+msgstr ""
+
+# String for the about box
+msgid "ClamWin  is not affiliated with ClamAV or SourceFire Inc."
+msgstr ""
+
+# Preferences dialog (Archives)
+msgid "Limits"
+msgstr ""
+
+#, fuzzy
+msgid "Do Not Scan Files Larger Than"
+msgstr "Да не сканира архиви по-големи от"
+
+#, fuzzy
+msgid "All Files"
+msgstr "файл(ове)"
+
+#, fuzzy
+msgid "Select if you wish to scan files conatined in archives (zip, rar, etc)"
+msgstr "Отбележете, ако желаете да сканирате подиректориите периодично"
 

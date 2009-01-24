@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: clamwin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-02-08 19:36+0100\n"
+"PO-Revision-Date: 2008-04-08 21:33+0100\n"
 "Last-Translator: budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: Hungarian <clamwin-hungarian-bounces@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -784,7 +784,7 @@ msgstr "Ne tömörítsen ki több mint"
 msgid "Files"
 msgstr "fájlt"
 
-#: wxDialogPreferences.py:474
+#: Preferences (Advanced)
 msgid "Sub-Archives"
 msgstr "al-tömörítvényt"
 
@@ -1085,20 +1085,12 @@ msgstr "(Személyes adatok nem kerülnek elküldésre az ellenőrzés során)"
 msgid "Scanner &Priority:"
 msgstr "&Prioritás:"
 
-#: wxDialogPreferences.py:922
-#: wxDialogPreferences.py:927
-#: wxDialogPreferences.py:1477
-#: wxDialogPreferences.py:1485
 msgid "Normal"
 msgstr "Normál"
 
-#: wxDialogPreferences.py:922
-#: wxDialogPreferences.py:1475
-#: wxDialogPreferences.py:1483
 msgid "Low"
 msgstr "Alacsony"
 
-#: wxDialogPreferences.py:926
 msgid "Specify the process priority for the virus scanner."
 msgstr "Adja meg a vírusellenőrző priorítását."
 
@@ -1787,4 +1779,36 @@ msgstr "Válassza ki ezt a lehetőséget, ha meg kívánja keresni a nemkívána
 
 msgid "Connecting via "
 msgstr "Kapcsolódás a következőn keresztül:"
+
+#, fuzzy
+msgid "Scanning Engine by:"
+msgstr "Ellenőrzési beállítások"
+
+# String for the about box
+msgid "MS Windows Port by:"
+msgstr ""
+
+# String for the about box
+msgid "Portions Copyright SourceFire Inc. (ClamAV)"
+msgstr ""
+
+# String for the about box
+msgid "ClamWin  is not affiliated with ClamAV or SourceFire Inc."
+msgstr ""
+
+# Preferences dialog (Archives)
+msgid "Limits"
+msgstr ""
+
+#, fuzzy
+msgid "Do Not Scan Files Larger Than"
+msgstr "Kihagyás, ha az nagyobb mint"
+
+#, fuzzy
+msgid "All Files"
+msgstr "fájlt"
+
+#, fuzzy
+msgid "Select if you wish to scan files conatined in archives (zip, rar, etc)"
+msgstr "Válassza ki, ha az almappákat is ellenőrizni szeretné"
 

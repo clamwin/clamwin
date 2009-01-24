@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-02-03 19:36+0100\n"
+"PO-Revision-Date: 2008-04-08 21:33+0100\n"
 "Last-Translator: budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: French <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -781,7 +781,7 @@ msgstr "Ne pas extraire plus de"
 msgid "Files"
 msgstr "Fichiers"
 
-#: wxDialogPreferences.py:474
+#: Preferences (Advanced)
 msgid "Sub-Archives"
 msgstr "Sous-Archives"
 
@@ -1083,20 +1083,12 @@ msgstr "(Aucune information personnelle n'est transmise lors de cette vérificat
 msgid "Scanner &Priority:"
 msgstr "&Priorité de l'Analyseur:"
 
-#: wxDialogPreferences.py:922
-#: wxDialogPreferences.py:927
-#: wxDialogPreferences.py:1477
-#: wxDialogPreferences.py:1485
 msgid "Normal"
 msgstr "Normale"
 
-#: wxDialogPreferences.py:922
-#: wxDialogPreferences.py:1475
-#: wxDialogPreferences.py:1483
 msgid "Low"
 msgstr "Faible"
 
-#: wxDialogPreferences.py:926
 msgid "Specify the process priority for the virus scanner."
 msgstr "Vous permet de déterminer la priorité du processus de l'analyseur antivirus."
 
@@ -1780,4 +1772,36 @@ msgstr "Selectionnez si vous désirez détecter les Applications Potentiellement
 #, fuzzy
 msgid "Connecting via "
 msgstr "Connexion avec"
+
+#, fuzzy
+msgid "Scanning Engine by:"
+msgstr "Options d'Analyse"
+
+# String for the about box
+msgid "MS Windows Port by:"
+msgstr ""
+
+# String for the about box
+msgid "Portions Copyright SourceFire Inc. (ClamAV)"
+msgstr ""
+
+# String for the about box
+msgid "ClamWin  is not affiliated with ClamAV or SourceFire Inc."
+msgstr ""
+
+# Preferences dialog (Archives)
+msgid "Limits"
+msgstr ""
+
+#, fuzzy
+msgid "Do Not Scan Files Larger Than"
+msgstr "Ne pas analyser les dossiers compressés plus gros que"
+
+#, fuzzy
+msgid "All Files"
+msgstr "Fichiers"
+
+#, fuzzy
+msgid "Select if you wish to scan files conatined in archives (zip, rar, etc)"
+msgstr "Sélectionner si vous désirez que ce soit récursif"
 

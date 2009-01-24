@@ -763,7 +763,7 @@ msgstr ""
 msgid "Files"
 msgstr ""
 
-#: wxDialogPreferences.py:474
+#: Preferences (Advanced)
 msgid "Sub-Archives"
 msgstr ""
 
@@ -1064,20 +1064,15 @@ msgstr ""
 msgid "Scanner &Priority:"
 msgstr ""
 
-#: wxDialogPreferences.py:922
-#: wxDialogPreferences.py:927
-#: wxDialogPreferences.py:1477
-#: wxDialogPreferences.py:1485
+# Preferences (Advanced)
 msgid "Normal"
 msgstr ""
 
-#: wxDialogPreferences.py:922
-#: wxDialogPreferences.py:1475
-#: wxDialogPreferences.py:1483
+# Preferences (Advanced)
 msgid "Low"
 msgstr ""
 
-#: wxDialogPreferences.py:926
+# Preferences (Advanced)
 msgid "Specify the process priority for the virus scanner."
 msgstr ""
 
@@ -1737,3 +1732,36 @@ msgstr ""
 # Translation of the Freshclam update log when using a proxy
 msgid "Connecting via "
 msgstr ""
+
+# String for the about box
+msgid "Scanning Engine by:"
+msgstr ""
+
+# String for the about box
+msgid "MS Windows Port by:"
+msgstr ""
+
+# String for the about box
+msgid "Portions Copyright SourceFire Inc. (ClamAV)"
+msgstr ""
+
+# String for the about box
+msgid "ClamWin  is not affiliated with ClamAV or SourceFire Inc."
+msgstr ""
+
+# Preferences dialog (Archives)
+msgid "Limits"
+msgstr ""
+
+# Preferences dialog (Archives)
+msgid "Do Not Scan Files Larger Than"
+msgstr ""
+
+# Preferences dialog (Archives)
+msgid "All Files"
+msgstr ""
+
+# Preferences dialog (Archives)
+msgid "Select if you wish to scan files conatined in archives (zip, rar, etc)"
+msgstr ""
+

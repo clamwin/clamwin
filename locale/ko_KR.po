@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClamWin Free Antivirus 0.88.6\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-02-03 19:37+0100\n"
+"PO-Revision-Date: 2008-04-08 21:33+0100\n"
 "Last-Translator: budtse <budtse@users.sourceforge.net>\n"
 "Language-Team: Korean <team@clamwin.com>\n"
 "MIME-Version: 1.0\n"
@@ -818,7 +818,7 @@ msgstr "xx 이상의 압축 파일은 풀지 않음"
 msgid "Files"
 msgstr "(&파)일"
 
-#: wxDialogPreferences.py:474
+#: Preferences (Advanced)
 msgid "Sub-Archives"
 msgstr "xx 이상의 서브 압축 파일은 풀지 않음"
 
@@ -1130,20 +1130,12 @@ msgstr ""
 msgid "Scanner &Priority:"
 msgstr "스캐너 (&우)선순위:"
 
-#: wxDialogPreferences.py:922
-#: wxDialogPreferences.py:927
-#: wxDialogPreferences.py:1477
-#: wxDialogPreferences.py:1485
 msgid "Normal"
 msgstr "정상"
 
-#: wxDialogPreferences.py:922
-#: wxDialogPreferences.py:1475
-#: wxDialogPreferences.py:1483
 msgid "Low"
 msgstr "낮음"
 
-#: wxDialogPreferences.py:926
 msgid "Specify the process priority for the virus scanner."
 msgstr "바이러스 스캐너의 프로세스 순위를 선택하십시오."
 
@@ -1899,4 +1891,36 @@ msgstr ""
 #, fuzzy
 msgid "Connecting via "
 msgstr "SMTP 연결 정보"
+
+#, fuzzy
+msgid "Scanning Engine by:"
+msgstr "검사 옵션"
+
+# String for the about box
+msgid "MS Windows Port by:"
+msgstr ""
+
+# String for the about box
+msgid "Portions Copyright SourceFire Inc. (ClamAV)"
+msgstr ""
+
+# String for the about box
+msgid "ClamWin  is not affiliated with ClamAV or SourceFire Inc."
+msgstr ""
+
+# Preferences dialog (Archives)
+msgid "Limits"
+msgstr ""
+
+#, fuzzy
+msgid "Do Not Scan Files Larger Than"
+msgstr "압축 파일이 xx MB 보다 큰 경우 검사에서 제외"
+
+#, fuzzy
+msgid "All Files"
+msgstr "(&파)일"
+
+#, fuzzy
+msgid "Select if you wish to scan files conatined in archives (zip, rar, etc)"
+msgstr "이 스케줄을 적용하려면, 선택 하십시오."
 
