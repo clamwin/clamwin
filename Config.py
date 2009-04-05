@@ -25,9 +25,9 @@
 import ConfigParser
 import Utils
 from copy import deepcopy
-from types import StringType, IntType, BooleanType
+from types import StringType, IntType, BooleanType, UnicodeType
 
-mapping = { 'get': StringType, 'getint': IntType, 'getboolean': BooleanType }
+mapping = { 'get': (StringType, UnicodeType), 'getint': (IntType, ), 'getboolean': (BooleanType,) }
 
 REGEX_SEPARATOR = "|CLAMWIN_SEP|"
 
@@ -120,7 +120,7 @@ class Settings:
         return value
 
     def Set(self, section, option, value):
-        if type(value) != mapping[self._options[section.lower()][option.lower()][0]]:
+        if type(value) not in mapping[self._options[section.lower()][option.lower()][0]]:
             raise Exception, 'Invalid ' + str(type(value)) + ' for option [' + section + '] ' + option
         self._settings[section.lower()][option.lower()][1] = value
 
