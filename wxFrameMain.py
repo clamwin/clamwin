@@ -238,11 +238,13 @@ class wxMainFrame(wx.Frame):
         wx.EVT_BUTTON(self.buttonClose, wxID_WXMAINFRAMEBUTTONCLOSE, self.OnButtonClose)
 
         self._init_coll_toolBar_Tools(self.toolBar)
+
         ##self._init_sizers()
 
     def __init__(self, parent, config):
         self._config = None
         self._config = config
+
         self._init_ctrls(parent)
 
         # select second in the directory tree (usually c:)
@@ -270,7 +272,13 @@ class wxMainFrame(wx.Frame):
         icons = wx.IconBundle()
         icons.AddIconFromFile('img/FrameIcon.ico', wx.BITMAP_TYPE_ICO)
         self.SetIcons(icons)
+
+        # FIXME: Sherpya port
+        #if not sys.platform.startswith('win'):
+        #    self.Help.Remove(wxID_WXMAINFRAMEHELPHELP)
+
         self._UpdateState()
+
 
     def OnFileExit(self, event):
         self.Close()
@@ -290,6 +298,7 @@ class wxMainFrame(wx.Frame):
         else:
             return True
 
+
     def _UpdateState(self):
         try:
             # disable Run Command button if the configuration is invalid
@@ -305,6 +314,7 @@ class wxMainFrame(wx.Frame):
                 if wx.ID_YES == MsgBox.MessageBox(None, 'ClamWin Free Antivirus', 'You have not yet downloaded Virus Definitions Database. Would you like to download it now?', wx.YES_NO | wx.ICON_QUESTION):
                     wxDialogUtils.wxUpdateVirDB(self, self._config)
                     hasdb = Utils.CheckDatabase(self._config)
+
 
             self.buttonScan.Enable(configured and hasdb)
             self.toolBar.EnableTool(wxID_WXMAINFRAMETOOLBARTOOLS_INETUPDATE, configured)
@@ -371,8 +381,10 @@ class wxMainFrame(wx.Frame):
     def OnHelpSupport(self, event):
         wxDialogUtils.wxGoToInternetUrl('http://forums.clamwin.com/')
 
+
     def OnHelpUpdate(self, event):
         wxDialogUtils.wxGoToInternetUrl('http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version='+version.clamwin_version)
+
 
     def OnHelpWebsite(self, event):
         wxDialogUtils.wxGoToInternetUrl('http://www.clamwin.com')
@@ -437,3 +449,6 @@ class wxGenericDirCtrlEx(wx.GenericDirCtrl):
                 path = path.rstrip('\\/')
             multiPath.append(path)
         return multiPath
+
+
+

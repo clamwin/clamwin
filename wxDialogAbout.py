@@ -187,6 +187,7 @@ class wxAboutDlg(wx.Dialog):
     def OnNetfarmHomepage(self, event):
         wxDialogUtils.wxGoToInternetUrl('http://oss.netfarm.it/clamav/')
 
+
     def _SetClamVersion(self):
         if self.config is None:
             return
@@ -240,3 +241,7 @@ class wxAboutDlg(wx.Dialog):
             (mainver, dailyver))
         self.staticTextDBUpdated3.SetLabel(self.staticTextDBUpdated3.GetLabel() % \
             updatedstr)
+
+
+
+

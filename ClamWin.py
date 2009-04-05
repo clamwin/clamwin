@@ -32,7 +32,8 @@ import wx
 sys.path.insert(0, Utils.GetCurrentDir(False))
 import pyc
 
-modules = {'ClamTray': [0, '', 'ClamTray.py'],
+
+modules ={'ClamTray': [0, '', 'ClamTray.py'],
  'CloseWindows': [0, '', 'CloseWindows.py'],
  'Config': [0, '', 'Config.py'],
  'EmailAlert': [0, '', 'EmailAlert.py'],
@@ -94,16 +95,19 @@ class ClamWinApp(wx.App):
     def DisablefsRedirect(self):
         try:
             #load dlls that fail after fs redir is disabled
-            win32api.LoadLibrary(os.path.join(win32api.GetSystemDirectory(), 'riched32.dll'))
-            win32api.LoadLibrary(os.path.join(win32api.GetSystemDirectory(), 'shfolder.dll'))
+            win32api.LoadLibrary(os.path.join(win32api.GetSystemDirectory(), "riched32.dll"))
+            win32api.LoadLibrary(os.path.join(win32api.GetSystemDirectory(), "shfolder.dll"))
         except Exception, e:
-            print 'Error disabling redirect on WOW64 %s' % str(e)
+            print "Error disabling redirect on WOW64 %s" % str(e)
 
         try:
             #disable fs redir
             pyc.fsRedirect(False)
         except Exception, e:
-            print 'Error disabling redirect on WOW64 %s' % str(e)
+            print "Error disabling redirect on WOW64 %s" % str(e)
+
+
+
 
 def main(config=None, mode='main', autoClose=False, path='', config_file=None):
     currentDir = Utils.GetCurrentDir(True)
@@ -123,8 +127,8 @@ def main(config=None, mode='main', autoClose=False, path='', config_file=None):
 
 if __name__ == '__main__':
     import codecs, encodings
-    print 'System Locale:', locale.getdefaultlocale()
-    print 'Default Encoding:', sys.getdefaultencoding()
+    print "System Locale:", locale.getdefaultlocale()
+    print "Default Encoding:", sys.getdefaultencoding()
 
     # set C locale, otherwise python and wxpython complain
     locale.setlocale(locale.LC_ALL, 'C')
@@ -142,6 +146,6 @@ if __name__ == '__main__':
         if arg.find('--config_file=') == 0:
             config_file = arg[len('--config_file='):]
 
-    print 'command line path: %s' % path.strip()
+    print "command line path: %s" % path.strip()
     exit_code = main(mode=mode, autoClose=close, path=path.strip(), config_file=config_file)
     sys.exit(exit_code)

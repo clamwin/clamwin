@@ -102,11 +102,18 @@ class wxDialogLogView(wx.Dialog):
         if self._scroll_down:
             # to scroll richedit down correctly we need to use EM_SCROLLCARET,
             # wxWidgets SetInsertionPoint and ShowPosition fail on win9x
-            win32api.PostMessage(self.textCtrl.GetHandle(), win32con.EM_SCROLLCARET, 0, 0)
+            if sys.platform.startswith('win'):
+                import win32api, win32con
+                win32api.PostMessage(self.textCtrl.GetHandle(), win32con.EM_SCROLLCARET, 0, 0)
+            else:
+                self.textCtrl.SetInsertionPointEnd()
+                self.textCtrl.ShowPosition(self.textCtrl.GetLastPosition())
         else:
             self.textCtrl.SetInsertionPoint(0)
             self.textCtrl.ShowPosition(0)
         event.Skip()
+
+
 
 if __name__ == '__main__':
     app = wx.App()
@@ -135,3 +142,5 @@ if __name__ == '__main__':
         dlg.Destroy()
 
     app.MainLoop()
+
+

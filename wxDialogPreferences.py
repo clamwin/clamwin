@@ -827,44 +827,47 @@ class wxPreferencesDlg(wx.Dialog):
 
 
     def _Apply(self):
-        pages = range(0, self.notebook.GetPageCount())
-        # rearrange pages in order to validate the current one first
-        for page in pages:
-            if self.notebook.GetSelection() == page:
-                tmp = pages[0]
-                pages[0] = pages[page]
-                pages[page] = tmp
+            pages = range(0, self.notebook.GetPageCount())
+            # rearrange pages in order to validate the current one first
+            for page in pages:
+                if self.notebook.GetSelection() == page:
+                    tmp = pages[0]
+                    pages[0] = pages[page]
+                    pages[page] = tmp
 
-        # validate and apply each page
-        for page in pages:
-            if not self.notebook.GetPage(page).Validate():
-                # activate the invalid page
-                self.notebook.SetSelection(page)
+            # validate and apply each page
+            for page in pages:
+                if not self.notebook.GetPage(page).Validate():
+                    # activate the invalid page
+                    self.notebook.SetSelection(page)
+                    return False
+                self.notebook.GetPage(page).TransferDataFromWindow()
+
+            # save config to properties file
+            if not self._config.Write():
+                MsgBox.ErrorBox(self, 'An error occured whilst saving configuration file %s. Please check that you have write permsiison to the configuratuion file.' % self._config.GetFilename())
                 return False
-            self.notebook.GetPage(page).TransferDataFromWindow()
 
-        # save config to properties file
-        if not self._config.Write():
-            MsgBox.ErrorBox(self, 'An error occured whilst saving configuration file %s. Please check that you have write permsiison to the configuratuion file.' % self._config.GetFilename())
-            return False
+            # raise the event so other programs can reload config
+            if sys.platform.startswith("win"):
+                # Save scheduled scans separately
+                wxDialogScheduledScan.SavePersistentScheduledScans(
+                    os.path.join(Utils.GetScheduleShelvePath(self._config), 'ScheduledScans'),
+                    self._scheduledScans)
 
-        # raise the event so other programs can reload config
-        # Save scheduled scans separately
-        wxDialogScheduledScan.SavePersistentScheduledScans(
-            os.path.join(Utils.GetScheduleShelvePath(self._config), 'ScheduledScans'),
-            self._scheduledScans)
+                import win32event, win32api
+                hEvent = None
+                try:
+                    hEvent = win32event.CreateEvent(None, True, False, Utils.CONFIG_EVENT);
+                    win32event.PulseEvent(hEvent)
+                    win32api.CloseHandle(hEvent)
+                except win32api.error, e:
+                    if hEvent is not None:
+                        win32api.CloseHandle(hEvent)
+                    print "Event Failed", str(e)
+            return True
 
-        import win32event, win32api
-        hEvent = None
-        try:
-            hEvent = win32event.CreateEvent(None, True, False, Utils.CONFIG_EVENT)
-            win32event.PulseEvent(hEvent)
-            win32api.CloseHandle(hEvent)
-        except win32api.error, e:
-            if hEvent is not None:
-                win32api.CloseHandle(hEvent)
-            print "Event Failed", str(e)
-        return True
+
 
     def _EnableOptionsControls(self, init):
         if init:
@@ -895,25 +898,26 @@ class wxPreferencesDlg(wx.Dialog):
         wx.EVT_CHAR(self.editableListBoxFiltersExclude.GetListCtrl(), self.OnEditableListBoxChar)
 
     def _EnableInternetUpdateControls(self, init):
-        if init:
-            enable = self._config.Get('Updates', 'Enable')
-            enableDay = enable and self._config.Get('Updates', 'Frequency') == 'Weekly'
-        else:
-            enable = self.checkBoxEnableAutoUpdate.IsChecked()
-            enableDay = enable and self.choiceUpdateFrequency.GetStringSelection() == 'Weekly'
-        self.textCtrlDBMirror.Enable(enable)
-        self.choiceUpdateDay.Enable(enableDay)
-        self.choiceUpdateFrequency.Enable(enable)
-        self.timeUpdate.Enable(enable)
-        self.spinButtonUpdateTime.Enable(enable)
+        if sys.platform.startswith("win"):
+            if init:
+                enable = self._config.Get('Updates', 'Enable')
+                enableDay = enable and self._config.Get('Updates', 'Frequency') == 'Weekly'
+            else:
+                enable = self.checkBoxEnableAutoUpdate.IsChecked()
+                enableDay = enable and self.choiceUpdateFrequency.GetStringSelection() == 'Weekly'
+            self.textCtrlDBMirror.Enable(enable)
+            self.choiceUpdateDay.Enable(enableDay)
+            self.choiceUpdateFrequency.Enable(enable)
+            self.timeUpdate.Enable(enable)
+            self.spinButtonUpdateTime.Enable(enable)
 
     def _InternetUpdatePageInit(self):
         locale.setlocale(locale.LC_ALL, 'C')
         self.timeUpdate = wx.lib.masked.TimeCtrl(parent=self._panelInternetUpdate,
-                                                 pos=self.staticLineUpdateTimeCtrl.GetPosition(),
-                                                 size=self.staticLineUpdateTimeCtrl.GetSize(),  fmt24hr=Utils.IsTime24(),
-                                                 spinButton=self.spinButtonUpdateTime,
-                                                 useFixedWidthFont=False, display_seconds=True)
+         pos=self.staticLineUpdateTimeCtrl.GetPosition(),
+         size=self.staticLineUpdateTimeCtrl.GetSize(),  fmt24hr=Utils.IsTime24(),
+         spinButton=self.spinButtonUpdateTime,
+         useFixedWidthFont=False, display_seconds=True)
         self.timeUpdate.SetToolTipString(self.staticLineUpdateTimeCtrl.GetToolTip().GetTip())
         #self.timeUpdate.BindSpinButton(self.spinButtonUpdateTime)
         self.textCtrlDBMirror.SetValidator(MyValidator(config=self._config, section='Updates', value='DBMirror', canEmpty=False))
@@ -940,7 +944,7 @@ class wxPreferencesDlg(wx.Dialog):
         self.listViewScheduledTasks.SetColumnWidth(1, col_size + 5)
         self.listViewScheduledTasks.SetColumnWidth(2, col_size - 35)
         for sc in self._scheduledScans:
-            self._ListAddScheduledScan(sc)
+           self._ListAddScheduledScan(sc)
 
     def _EnableEmailAlertsControls(self, init):
         if init:
@@ -992,15 +996,15 @@ class wxPreferencesDlg(wx.Dialog):
     def _ReportsPageInit(self):
         self.textCtrlScanLogFile.SetValidator(MyValidator(config=self._config, section='ClamAV', value='LogFile', canEmpty=False))
         self.textCtrlUpdateLogFile.SetValidator(MyValidator(config=self._config, section='Updates', value='DBUpdateLogFile', canEmpty=False))
-        if sys.platform.startswith('win') and self._config.Get('UI', 'Standalone'):
+        if sys.platform.startswith('win') and not self._config.Get('UI', 'Standalone'):
             self.checkBoxTrayNotify.SetValidator(MyValidator(config=self._config, section='UI', value='TrayNotify'))
         else:
             self.checkBoxTrayNotify.Hide()
 
     def _EmailScanningPageInit(self):
-        self.checkBoxOutlookScanIncoming.SetValidator(MyValidator(config=self._config, section='EmailScan', value='ScanIncoming'))
-        self.checkBoxOutlookScanOutgoing.SetValidator(MyValidator(config=self._config, section='EmailScan', value='ScanOutgoing'))
-        self.checkBoxOutlookShowSplash.SetValidator(MyValidator(config=self._config, section='EmailScan', value='ShowSplash'))
+        self.checkBoxOutlookScanIncoming.SetValidator(MyValidator(config=self._config, section='EmailScan', value='ScanIncoming'));
+        self.checkBoxOutlookScanOutgoing.SetValidator(MyValidator(config=self._config, section='EmailScan', value='ScanOutgoing'));
+        self.checkBoxOutlookShowSplash.SetValidator(MyValidator(config=self._config, section='EmailScan', value='ShowSplash'));
 
     def _AdvancedPageInit(self):
         self.choicePriority.SetValidator(MyValidator(config=self._config, section='ClamAV', value='Priority'))
@@ -1124,10 +1128,10 @@ class wxPreferencesDlg(wx.Dialog):
         dlg = wxDialogScheduledScan.wxDialogScheduledScan(self, sc)
         try:
             if dlg.ShowModal() == wx.ID_OK:
-                self._scheduledScans.append(sc)
-                self._ListAddScheduledScan(sc)
-                id = self.listViewScheduledTasks.GetItemCount() - 1
-                self.listViewScheduledTasks.Select(id)
+               self._scheduledScans.append(sc)
+               self._ListAddScheduledScan(sc)
+               id = self.listViewScheduledTasks.GetItemCount() - 1
+               self.listViewScheduledTasks.Select(id)
         finally:
             dlg.Destroy()
 
@@ -1258,28 +1262,27 @@ class wxPreferencesDlg(wx.Dialog):
     def OnCheckBoxOutlookScanIncomingCheckbox(self, event):
         event.Skip()
 
-
 class MyBaseValidator(wx.PyValidator):
-    def __init__(self, config, section, value, canEmpty=True):
-        wx.PyValidator.__init__(self)
-        self._config = config
-        self._section = section
-        self._value = value
-        self._canEmpty = canEmpty
+     def __init__(self, config, section, value, canEmpty=True):
+         wx.PyValidator.__init__(self)
+         self._config = config
+         self._section = section
+         self._value = value
+         self._canEmpty = canEmpty
 
-    def Clone(self):
-        return self.__class__(self._config, self._section, self._value, self._canEmpty)
+     def Clone(self):
+         return self.__class__(self._config, self._section, self._value, self._canEmpty)
 
-    def Validate(self, win):
-        return True
+     def Validate(self, win):
+         return True
 
 class MyWeekDayValidator(MyBaseValidator):
-    def TransferToWindow(self):
-        value = self._config.Get(self._section, self._value)
-        ctrl = self.GetWindow()
-        ctrl.SetSelection(int(value))
+     def TransferToWindow(self):
+         value = self._config.Get(self._section, self._value)
+         ctrl = self.GetWindow()
+         ctrl.SetSelection(int(value))
 
-    def TransferFromWindow(self):
+     def TransferFromWindow(self):
         ctrl = self.GetWindow()
         value = ctrl.GetSelection()
         self._config.Set(self._section, self._value, value)
@@ -1311,6 +1314,7 @@ class MyValidator(MyBaseValidator):
         else:
             ctrl.SetValue(value)
 
+
     def TransferFromWindow(self):
         ctrl = self.GetWindow()
         if(isinstance(ctrl, wx.Choice)):
@@ -1326,6 +1330,7 @@ class MyValidator(MyBaseValidator):
 
         if self._config is not None:
             self._config.Set(self._section, self._value, value)
+
 
 class MyFolderPromptCreateValidator(MyValidator):
     def Validate(self, win):
@@ -1377,3 +1382,4 @@ class MyPatternValidator(MyBaseValidator):
         value = Config.REGEX_SEPARATOR.join(self.GetWindow().GetStrings())
         if self._config is not None:
             self._config.Set(self._section, self._value, value)
+

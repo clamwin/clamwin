@@ -149,6 +149,7 @@ class wxDialogUpdateChecker(wx.Dialog):
         event.Skip()
 
 
+
 if __name__ == '__main__':
     import Utils, Config
     currentDir = Utils.GetCurrentDir(True)
@@ -169,3 +170,5 @@ if __name__ == '__main__':
 
     config.Write()
     app.MainLoop()
+
+

@@ -22,11 +22,14 @@
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #-----------------------------------------------------------------------------
+#!/usr/bin/env python
+
 
 import os, tempfile
 import sched, time, locale, random
 import types
 import threading
+
 
 class Scheduler(threading.Thread):
     # empty tuple for status_filenames parameter will reuslt in no checking
@@ -48,10 +51,10 @@ class Scheduler(threading.Thread):
         self._lastRun = self._ReadLastRun()
 
         self._sched = sched.scheduler(time.time, self._DelayFunc)
-        self._missedSchedule = False
-        self._id = self._sched.enterabs(self._CalcNextRun(), 0, self._RunTask, ())
+        self._missedSchedule = False        
         self._paused = False
         self._label = label
+        self._id = self._sched.enterabs(self._CalcNextRun(), 0, self._RunTask, ())
 
     def label(self):
         return self._label
@@ -74,14 +77,16 @@ class Scheduler(threading.Thread):
         self.stop()
         threading.Thread.__init__(self)
 
+
         # ensure it stopped
         i = 0
         while self.isAlive() and i < 50:
             time.sleep(0.1)
-            i += 1
+            i+=1
 
         # recreate scheduled event
         self._id = self._sched.enterabs(self._CalcNextRun(), 0, self._RunTask, ())
+
 
     def _ReadLastRun(self):
         # 0 signifies an error
@@ -169,6 +174,7 @@ class Scheduler(threading.Thread):
                 print "couldn't parse time, self._startTime = %s.\n Error: %s" % (self._startTime, str(e))
             addTime = 3600.0*24
 
+
         # go to next time interval if it is out
         tmp = schedTime
         while self._AdjustDST(schedTime) < t:
@@ -176,28 +182,33 @@ class Scheduler(threading.Thread):
 
         # move out of the weekend for workdays
         if self._frequency == 'Workdays':
-            while time.localtime(self._AdjustDST(schedTime)).tm_wday in (5, 6):
+            while time.localtime(self._AdjustDST(schedTime)).tm_wday in (5,6):
                 schedTime += addTime
             if tmp < schedTime:
                 addTime = schedTime - tmp
 
         #don't return for missed schedule if frequency is workdays and it is weekend now
-        if self._runMissed and not missedAlready and self._frequency != 'Workdays' or time.localtime(t).tm_wday not in (5,6):
+        if self._runMissed and not self._paused and not missedAlready and \
+           (self._frequency != 'Workdays' or time.localtime(t).tm_wday not in (5,6)):
             # check if we missed the scheduled run
             # and return now (+ 2 minutes) instead
-            if  self._lastRun != 0 and self._AdjustDST(schedTime) - addTime > self._lastRun:
+            if  self._lastRun != 0 and schedTime - addTime - 1 > self._lastRun:
+                print "self._lastRun=", self._lastRun
+                print "schedTime=", schedTime
+                print "addTime=", addTime
                 t = t + 120
                 print 'Schedule missed, returning: %s' % time.asctime(time.localtime(t))
                 try:
-                    print 'LastRun: %s' % time.asctime(time.localtime(self._lastRun))
+                      print 'LastRun: %s' % time.asctime(time.localtime(self._lastRun))
                 except:
-                    pass
+                      pass
                 self._missedSchedule = True
                 return t
 
         schedTime = self._AdjustDST(schedTime)
         print 'Scheduling task %s  for: %s' % (self._argument, time.asctime(time.localtime(schedTime)))
         return schedTime + self._delay
+
 
     def _RunTask(self):
         # get current time
@@ -232,9 +243,9 @@ class Scheduler(threading.Thread):
 
     def stop(self):
         try:
-            self._sched.cancel(self._id)
+           self._sched.cancel(self._id)
         except:
-            pass
+           pass
         self._cancelling = True
 
     def pause(self):
@@ -257,3 +268,5 @@ if __name__ == '__main__':
     s.stop()
     s.join(1)
     print 'completed'
+
+

@@ -63,6 +63,7 @@ class ScheduledScanInfo(list):
     def __setScanMemory(self, value): self[6] = value
     ScanMemory = property(__getScanMemory, __setScanMemory)
 
+
 def LoadPersistentScheduledScans(filename):
     try:
         _shelve = shelve.open(filename)
@@ -335,3 +336,5 @@ class MyValidator(wx.PyValidator):
             value = ctrl.GetValue()
         setattr(self._scanInfo, self._propName, value)
         return True
+
+

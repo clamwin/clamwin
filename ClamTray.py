@@ -28,7 +28,8 @@
 import SetUnicode
 import RedirectStd
 import sys, os, time, tempfile, locale, re, random, types
-import win32api, win32gui, win32con, win32event, win32process
+import win32api, win32gui, win32con, win32event
+import win32process, win32event
 import Scheduler
 import Config
 import Process
@@ -37,16 +38,17 @@ import threading
 import Utils, wxDialogScheduledScan
 import version
 
+
 class MainWindow:
     MENU_OPEN_CLAM, MENU_UPDATE_DB, MENU_CHECK_UPDATE, MENU_CLAMWIN_WEB, MENU_CONFIGURE, MENU_SHOWSCANLOG, \
         MENU_SHOWUPDATELOG, MENU_EXIT, MENU_CONFIGURESCHEDULER,\
         MENU_TERMINATESCHEDULE, MENU_RUNSCHEDULE = range(1023, 1023 + 11)
 
-    ACTIVE_MUTEX = 'ClamWinTrayMutex01'
-    WM_TASKBAR_NOTIFY = win32con.WM_USER + 20
-    WM_CONFIG_UPDATED = win32con.WM_USER + 21
-    WM_SHOW_BALLOON = win32con.WM_USER + 22
-    WM_CHECK_VERSION=win32con.WM_USER + 23
+    ACTIVE_MUTEX='ClamWinTrayMutex01'
+    WM_TASKBAR_NOTIFY=win32con.WM_USER+20
+    WM_CONFIG_UPDATED=win32con.WM_USER+21
+    WM_SHOW_BALLOON=win32con.WM_USER+22
+    WM_CHECK_VERSION=win32con.WM_USER+23
 
     def __init__(self, config, logon):
         self._config = config
@@ -60,7 +62,7 @@ class MainWindow:
         self._nomenu = False
         self._reschedule_delay = 300
         self._scheduleCount = 0
-        msg_TaskbarRestart = win32gui.RegisterWindowMessage('TaskbarCreated')
+        msg_TaskbarRestart = win32gui.RegisterWindowMessage("TaskbarCreated");
         message_map = {
                 msg_TaskbarRestart: self.OnRestart,
                 win32con.WM_DESTROY: self.OnDestroy,
@@ -68,20 +70,20 @@ class MainWindow:
                 MainWindow.WM_TASKBAR_NOTIFY: self.OnTaskbarNotify,
                 MainWindow.WM_CONFIG_UPDATED : self.OnConfigUpdated,
                 MainWindow.WM_SHOW_BALLOON : self.OnShowBalloon,
-                MainWindow.WM_CHECK_VERSION: self.OnCheckVersion
+                MainWindow.WM_CHECK_VERSION: self.OnCheckVersion,
         }
         # Register the Window class.
         wc = win32gui.WNDCLASS()
         hinst = wc.hInstance = win32api.GetModuleHandle(None)
-        wc.lpszClassName = 'ClamWinTrayWindow'
-        wc.style = win32con.CS_VREDRAW | win32con.CS_HREDRAW
-        wc.hCursor = win32gui.LoadCursor(0, win32con.IDC_ARROW)
+        wc.lpszClassName = "ClamWinTrayWindow"
+        wc.style = win32con.CS_VREDRAW | win32con.CS_HREDRAW;
+        wc.hCursor = win32gui.LoadCursor( 0, win32con.IDC_ARROW )
         wc.hbrBackground = win32con.COLOR_WINDOW
         wc.lpfnWndProc = message_map # could also specify a wndproc.
         classAtom = win32gui.RegisterClass(wc)
         # Create the Window.
         style = win32con.WS_OVERLAPPED | win32con.WS_SYSMENU
-        self.hwnd = win32gui.CreateWindow(classAtom, 'ClamWin', style, \
+        self.hwnd = win32gui.CreateWindow( classAtom, "ClamWin", style, \
                 0, 0, win32con.CW_USEDEFAULT, win32con.CW_USEDEFAULT, \
                 0, 0, hinst, None)
         win32gui.UpdateWindow(self.hwnd)
@@ -219,7 +221,8 @@ class MainWindow:
             if checkvertime is None:
                 # 5 minutes to 1 hour after start
                 checkvertime = time.strftime('%H:%M:%S', time.localtime(time.time() + random.randint(300, 3600)))
-                print 'using random checkversion time %s' % checkvertime
+                print "using random checkversion time %s" % checkvertime
+
 
             label = self._CreateScheduleLabel()
             curDir = Utils.GetCurrentDir(True)
@@ -243,10 +246,10 @@ class MainWindow:
     def _DoCreateIcons(self):
         # Try and find a custom icon
         hinst =  win32api.GetModuleHandle(None)
-        iconPathName = os.path.abspath(os.path.join(os.path.split(sys.executable)[0], 'img/TrayIcon.ico'))
+        iconPathName = os.path.abspath(os.path.join(os.path.split(sys.executable)[0],"img/TrayIcon.ico"))
         if not os.path.isfile(iconPathName):
             # Look in the current folder tree.
-            iconPathName = 'img/TrayIcon.ico'
+            iconPathName = "img/TrayIcon.ico"
         if os.path.isfile(iconPathName):
             icon_flags = win32con.LR_LOADFROMFILE | win32con.LR_DEFAULTSIZE
             hicon = win32gui.LoadImage(hinst, iconPathName, win32con.IMAGE_ICON, 0, 0, icon_flags)
@@ -254,7 +257,7 @@ class MainWindow:
             hicon = win32gui.LoadIcon(0, win32con.IDI_APPLICATION)
 
         flags = win32gui.NIF_ICON | win32gui.NIF_MESSAGE | win32gui.NIF_TIP
-        nid = (self.hwnd, 0, flags, MainWindow.WM_TASKBAR_NOTIFY, hicon, 'ClamWin Free Antivirus')
+        nid = (self.hwnd, 0, flags, MainWindow.WM_TASKBAR_NOTIFY, hicon, "ClamWin Free Antivirus")
         win32gui.Shell_NotifyIcon(win32gui.NIM_ADD, nid)
 
     def OnRestart(self, hwnd, msg, wparam, lparam):
@@ -270,11 +273,11 @@ class MainWindow:
         win32gui.PostQuitMessage(0)
 
     def OnTaskbarNotify(self, hwnd, msg, wparam, lparam):
-        if lparam == win32con.WM_LBUTTONUP:
+        if lparam==win32con.WM_LBUTTONUP:
             pass
-        elif lparam == win32con.WM_LBUTTONDBLCLK:
+        elif lparam==win32con.WM_LBUTTONDBLCLK:
             self.OnCommand(hwnd, win32con.WM_COMMAND, self.MENU_OPEN_CLAM, 0)
-        elif lparam == win32con.WM_RBUTTONUP:
+        elif lparam==win32con.WM_RBUTTONUP:
             if self._nomenu:
                 hwnd = win32gui.FindWindow('#32770', 'ClamWin Update')
                 if hwnd:
@@ -289,7 +292,7 @@ class MainWindow:
             # create scheduler menu
             scheduler_popup = win32gui.CreatePopupMenu()
             win32gui.AppendMenu(scheduler_popup, win32con.MF_STRING,
-                self.MENU_CONFIGURESCHEDULER, '&Configure Scheduler')
+                self.MENU_CONFIGURESCHEDULER, "&Configure Scheduler")
 
             if not self._processes:
                 flags = win32con.MF_GRAYED
@@ -300,19 +303,20 @@ class MainWindow:
             tasks_popup = win32gui.CreatePopupMenu()
             i = 0
             for scan in self._scheduledScans:
-                win32gui.AppendMenu(tasks_popup, win32con.MF_STRING, self.MENU_RUNSCHEDULE + i, scan.Description)
-                i += 1
+                win32gui.AppendMenu(tasks_popup, win32con.MF_STRING,
+                    self.MENU_RUNSCHEDULE + i, scan.Description)
+                i+=1
             if not i:
                 flags2 = win32con.MF_GRAYED
             else:
                 flags2 = 0
             win32gui.InsertMenu(scheduler_popup, self.MENU_CONFIGURESCHEDULER,
                             win32con.MF_BYCOMMAND | win32con.MF_POPUP | flags2,
-                            tasks_popup, '&Run Scheduled Scan')
+                            tasks_popup, "&Run Scheduled Scan")
 
             win32gui.InsertMenu(scheduler_popup, flags,
                                 win32con.MF_BYCOMMAND | win32con.MF_STRING | flags,
-                                self.MENU_TERMINATESCHEDULE, '&Stop All Running Tasks Now')
+                                self.MENU_TERMINATESCHEDULE, "&Stop All Running Tasks Now")
 
             # create reports menu
             reports_popup = win32gui.CreatePopupMenu()
@@ -320,29 +324,29 @@ class MainWindow:
                 flags = win32con.MF_GRAYED
             else:
                 flags = 0
-            win32gui.InsertMenu(reports_popup, 0,
+            win32gui.InsertMenu( reports_popup, 0,
                                 win32con.MF_BYCOMMAND | win32con.MF_STRING | flags,
-                                self.MENU_SHOWSCANLOG, '&Virus Scan Report')
+                                self.MENU_SHOWSCANLOG, "&Virus Scan Report")
             if not len(self._config.Get('Updates', 'DBUpdateLogFile')):
                 flags = win32con.MF_GRAYED
             else:
                 flags = 0
-            win32gui.InsertMenu(reports_popup, self.MENU_SHOWSCANLOG,
+            win32gui.InsertMenu( reports_popup, self.MENU_SHOWSCANLOG,
                                 win32con.MF_BYCOMMAND | win32con.MF_STRING | flags,
-                                self.MENU_SHOWUPDATELOG, '&Virus Database Update Report')
+                                self.MENU_SHOWUPDATELOG, "&Virus Database Update Report")
 
             # create main menu
             menu = win32gui.CreatePopupMenu()
-            win32gui.AppendMenu(menu, win32con.MF_STRING, self.MENU_OPEN_CLAM, '&Open ClamWin')
-            win32gui.AppendMenu(menu, win32con.MF_STRING, self.MENU_UPDATE_DB, '&Download Virus Database Update')
-            win32gui.AppendMenu(menu, win32con.MF_STRING, self.MENU_CONFIGURE, '&Configure ClamWin')
-            win32gui.AppendMenu(menu, win32con.MF_POPUP, scheduler_popup, '&Scheduler')
-            win32gui.AppendMenu(menu, win32con.MF_POPUP, reports_popup, 'Display &Reports')
-            win32gui.AppendMenu(menu, win32con.MF_SEPARATOR, 0, '')
-            win32gui.AppendMenu(menu, win32con.MF_STRING, self.MENU_CHECK_UPDATE, 'Check &Latest Version')
-            win32gui.AppendMenu(menu, win32con.MF_STRING, self.MENU_CLAMWIN_WEB, '&Visit ClamWin Website')
-            win32gui.AppendMenu(menu, win32con.MF_SEPARATOR, 0, '')
-            win32gui.AppendMenu(menu, win32con.MF_STRING, self.MENU_EXIT, '&Exit')
+            win32gui.AppendMenu( menu, win32con.MF_STRING, self.MENU_OPEN_CLAM, "&Open ClamWin")
+            win32gui.AppendMenu( menu, win32con.MF_STRING, self.MENU_UPDATE_DB, "&Download Virus Database Update")
+            win32gui.AppendMenu( menu, win32con.MF_STRING, self.MENU_CONFIGURE, "&Configure ClamWin")
+            win32gui.AppendMenu( menu, win32con.MF_POPUP, scheduler_popup, "&Scheduler")
+            win32gui.AppendMenu( menu, win32con.MF_POPUP, reports_popup, "Display &Reports")
+            win32gui.AppendMenu( menu, win32con.MF_SEPARATOR, 0, "" )
+            win32gui.AppendMenu( menu, win32con.MF_STRING, self.MENU_CHECK_UPDATE, "Check &Latest Version")
+            win32gui.AppendMenu( menu, win32con.MF_STRING, self.MENU_CLAMWIN_WEB, "&Visit ClamWin Website")
+            win32gui.AppendMenu( menu, win32con.MF_SEPARATOR, 0, "" )
+            win32gui.AppendMenu( menu, win32con.MF_STRING, self.MENU_EXIT, "&Exit" )
 
             pos = win32gui.GetCursorPos()
             # See http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winui/menus_0hdi.asp
@@ -369,7 +373,7 @@ class MainWindow:
         elif id == self.MENU_UPDATE_DB:
             self._UpdateDB(lparam)
         elif id == self.MENU_CHECK_UPDATE:
-            self._OpenWebPage('http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version=' + version.clamwin_version)
+            self._OpenWebPage('http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version='+version.clamwin_version)
         elif id == self.MENU_CLAMWIN_WEB:
             self._OpenWebPage('http://www.clamwin.com')
         elif id == self.MENU_CONFIGURE:
@@ -387,15 +391,16 @@ class MainWindow:
             self._InitSchedulers()
         elif (id >= self.MENU_RUNSCHEDULE) and \
             (id < self.MENU_RUNSCHEDULE + len(self._scheduledScans)):
-            try:
-                path = self._scheduledScans[id - self.MENU_RUNSCHEDULE].Path
-                if path[len(path)-1] == '\\':
-                    path = path[:len(path)-1]
-                self._ShowClamWin(path)
-            except Exception, e:
-                win32gui.MessageBox(self.hwnd,
-                        'Could not launch ClamWin Scanner. Error: %s' % str(e),
-                        'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONERROR)
+                try:
+                    path = self._scheduledScans[id - self.MENU_RUNSCHEDULE].Path
+                    if path[len(path)-1] == '\\':
+                        path = path[:len(path)-1]
+                    self._ShowClamWin(path)
+                except Exception, e:
+                    win32gui.MessageBox(self.hwnd,
+                            'Could not launch ClamWin Scanner. Error: %s' % str(e),
+                            'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONERROR)
+
 
     def OnConfigUpdated(self, hwnd, msg, wparam, lparam):
         self._config.Read()
@@ -432,7 +437,7 @@ class MainWindow:
                 weekday = int(time.strftime('%w', start_time))
                 if weekday: weekday -= 1
                 else: weekday = 6
-                print 'rescheduling version check at %s' % time.strftime('%H:%M:%S', start_time)
+                print "rescheduling version check at %s" % time.strftime('%H:%M:%S', start_time)
                 rescheduled = Scheduler.Scheduler('Once',
                                 time.strftime('%H:%M:%S', start_time),
                                 weekday,
@@ -495,6 +500,7 @@ class MainWindow:
                     if not len(freshclam_conf):
                         win32gui.MessageBox(self.hwnd, 'Unable to create freshclam configuration file. Please check there is enough space on the disk', 'Error', win32con.MB_OK | win32con.MB_ICONSTOP)
                         return
+
                     # create database folder before downloading
                     dbdir = self._config.Get('ClamAV', 'Database')
                     if dbdir and not os.path.exists(dbdir):
@@ -584,7 +590,7 @@ class MainWindow:
         # start our process
         try:
             # check if the file exists first
-            executable = cmd.split('" ' , 1)[0].lstrip('"')
+            executable = cmd.split('" ' ,1)[0].lstrip('"')
             if not os.path.exists(executable):
                 raise Process.ProcessError('Could not start process.\n%s\nFile does not exist.' % executable)
             out = OutBuffer(self, finished_func, finished_params)
@@ -604,7 +610,7 @@ class MainWindow:
         path = '"%s"' % path.rstrip('\\').strip('"')
         cmd = Utils.GetScanCmd(self._config, path, scanlog, True)
         if scanMemory:
-            cmd += ' --memory'
+            cmd += " --memory"
             print cmd
         try:
             if self._config.Get('UI', 'TrayNotify'):
@@ -637,9 +643,9 @@ class MainWindow:
         except Process.ProcessError, e:
             result = -1
             try:
-                os.remove(scanlog)
+               os.remove(scanlog)
             except:
-                pass
+               pass
             print str(e)
         if self._config.Get('UI', 'TrayNotify'):
             balloon_info = (('Running Scheduled Task:\n'+description, 0,
@@ -697,6 +703,7 @@ class MainWindow:
 
     DBUpdateProcessFinished = staticmethod(DBUpdateProcessFinished)
 
+
     def ProcessFinished(self, process, log, appendlog, email_alert, balloon_info):
         # send the notification alert if we need to
         if email_alert:
@@ -706,7 +713,7 @@ class MainWindow:
                     msg.Send()
             except Exception, e:
                 print 'Could not send email alert. Error: %s' % str(e)
-        print 'Exit Code: ', process.wait()
+        print "Exit Code: ", process.wait()
         if (not process.isKilled()) and (balloon_info is not None) and (process.wait() not in (54, 56)):
             # show balloon
             self.ShowBalloon(process.wait(), balloon_info)
@@ -715,11 +722,11 @@ class MainWindow:
         try:
             self._processes.remove(process)
         except ValueError:
-            # ignore 'not in list' errors
+            # ignore "not in list" errors
             pass
 
         time.sleep(1)
-        maxsize = self._config.Get('ClamAV', 'MaxLogSize') * 1048576
+        maxsize = int(self._config.Get('ClamAV', 'MaxLogSize'))*1048576
         Utils.AppendLogFile(log, appendlog, maxsize)
 
         try:
@@ -743,6 +750,7 @@ class MainWindow:
         finally:
             self._balloon_info = None
             self._balloonThreadLock.release()
+
 
 # stdout buffer used by ProcessProxy to notify main thread
 # when execution is complete
@@ -780,6 +788,8 @@ class OutBuffer(Process.IOBuffer):
     def AttachProcess(self, proc):
         self._proc = proc
 
+
+
 # this thread monitors changes to config files
 #  and notifies tray to reload if a change occurs
 class MonitorConfig(threading.Thread):
@@ -795,12 +805,12 @@ class MonitorConfig(threading.Thread):
     def run(self):
         self._terminate = False
         try:
-            hEvent = win32event.CreateEvent(None, True, False, Utils.CONFIG_EVENT)
+           hEvent = win32event.CreateEvent(None, True, False, Utils.CONFIG_EVENT)
         except win32api.error:
             return
 
         while not self._terminate:
-            wait = win32event.WaitForSingleObject(hEvent, 1000)
+            wait = win32event.WaitForSingleObject(hEvent, 1000);
             if wait != win32event.WAIT_TIMEOUT:
                 self.notify(*self.args)
 
@@ -808,6 +818,7 @@ class MonitorConfig(threading.Thread):
         if not self.isAlive():
             return
         self._terminate = True
+
 
 def main():
     # set C locale, otherwise python and wxpython complain
@@ -849,8 +860,8 @@ def main():
     for arg in sys.argv[1:]:
         if arg == '--logon':
             logon = True
-    w = MainWindow(config, logon)
+    w=MainWindow(config, logon)
     win32gui.PumpMessages()
 
-if __name__ == '__main__':
+if __name__=='__main__':
     main()
