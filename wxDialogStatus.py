@@ -400,7 +400,7 @@ class wxDialogStatus(wx.Dialog):
             if text.endswith(' FOUND\n'):
                 ctrl.SetStyle(lastPos, ctrl.GetLastPosition() - 1,
                     wx.TextAttr(colText = wx.Colour(128,0,0),
-                        font = wx.Font(0, wx.DEFAULT, wx.NORMAL, wx.BOLD, False)))
+                        font = wx.Font(8, wx.DEFAULT, wx.NORMAL, wx.BOLD, False)))
         else:
             ctrl.Clear()
             ctrl.SetDefaultStyle(wx.TextAttr(wx.NullColour))
