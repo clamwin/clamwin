@@ -285,19 +285,19 @@ class wxDialogStatus(wx.Dialog):
             dlg.Destroy()
 
 
+    @staticmethod
     def ThreadFinished(owner):
         if owner.terminating:
             return
         event = ThreadFinishedEvent(owner.GetId())
         owner.GetEventHandler().AddPendingEvent(event)
-    ThreadFinished = staticmethod(ThreadFinished)
 
+    @staticmethod
     def ThreadUpdateStatus(owner, text, append=True):
         if owner.terminating:
             return
         event = ThreadUpdateStatusEvent(owner.GetId(), text, append)
         owner.GetEventHandler().AddPendingEvent(event)
-    ThreadUpdateStatus = staticmethod(ThreadUpdateStatus)
 
     def OnThreadFinished(self, event):
         if self._alreadyCalled:
