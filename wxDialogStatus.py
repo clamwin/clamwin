@@ -119,7 +119,7 @@ class wxDialogStatus(wx.Dialog):
         self.Bind(wx.EVT_CLOSE, self.OnWxDialogStatusClose)
         self.Bind(wx.EVT_INIT_DIALOG, self.OnInitDialog)
 
-        winstyle = wx.TAB_TRAVERSAL | wx.TE_RICH | wx.TE_MULTILINE | wx.TE_READONLY
+        winstyle = wx.TAB_TRAVERSAL | wx.TE_RICH2 | wx.TE_MULTILINE | wx.TE_READONLY
         # enable wxTE_AUTO_URL on XP only
         # 98 produces some weird scrolling behaviour
         if win32api.GetVersionEx()[0] >= 5 and not self._scan:
