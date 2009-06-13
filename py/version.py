@@ -1,1 +1,1 @@
-clamwin_version='0.94.1'
+clamwin_version='0.95.2'

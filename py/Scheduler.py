@@ -156,9 +156,16 @@ class Scheduler(threading.Thread):
         elif self._frequency in ('Weekly', 'Once'):
             try:
                 lt = time.localtime(t)
+                # Y2009 fix
+                # http://forums.clamwin.com/viewtopic.php?t=1988&postdays=0&postorder=asc&start=60
+                yday = lt.tm_yday - lt.tm_wday + self._weekDay
+                if yday < 1:
+                    yday = yday + 7
                 # use  weekday and HH:MM:SS part of starttime
-                schedTime = time.mktime(time.strptime(str(lt.tm_yday - lt.tm_wday + self._weekDay) + \
+                schedTime = time.mktime(time.strptime(str(yday) + \
                             time.strftime(' %Y ', lt) + self._startTime, '%j %Y %H:%M:%S'))
+                print 'schedTime: ', time.strptime(str(lt.tm_yday - lt.tm_wday + self._weekDay) + \
+                            time.strftime(' %Y ', lt) + self._startTime, '%j %Y %H:%M:%S')
             except ValueError, e:
                 print "couldn't parse time, self._startTime = %s. self._weekDay = %i\n Error: %s" % (self._startTime, self._weekDay, str(e))
                 self._missedSchedule = True

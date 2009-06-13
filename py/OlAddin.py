@@ -202,7 +202,7 @@ class ButtonEvent:
 def HelpAbout():
     try:
         curDir = Utils.GetCurrentDir(True)
-        Utils.SpawnPyOrExe(os.path.join(curDir, 'ClamWin'), ' --mode=about')
+        Utils.SpawnPyOrExe(True, os.path.join(curDir, 'ClamWin'), ' --mode=about')
     except Exception, e:
         win32gui.MessageBox(GetWindow(), 'An error occured in ClamWin Free Antivirus About Box.\n' + str(e), 'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONERROR)
 
