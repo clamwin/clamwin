@@ -1,0 +1,35 @@
+Mon, July 10 2005
+	Added regular expression syntax note to the configuration section
+	
+Thu, 23 Jun 2005
+	Install - Added paragraph about international help files
+
+Thu, 25 Aug 2005
+	Updated instructions for running from CD/USB
+	Minor change to intro
+	Updated usage - new screenshots and instructions for new system tray icon menu options
+	FAQ: Mentioned Appendix A in "Can I run ClamWin without installing it?"
+	FAQ: Reworded the "How often is the virus database updated?" question
+
+Mon, 12 Sep 2005
+	Future documentation updates will be HTML (.chm) only
+	Config: Removed default list of exclude filters
+	Started moving from OOo-generated HTML to hand-written HTML/CSS
+
+Mon, 24 Oct 2005
+	Added clamwin-docs.css
+
+Sun,  7 May 2006
+	Cover - Changed (c) : "2004 - 2005" into "2004-2006", and added ClamWin version info.
+	Intro - Added the automatic release notification to the features
+	Install - Added the dialog to install "Only for me" / "Anyone who uses..."
+	Config - Updated the screenshots and added all new features
+
+Sun, 8 July 2007
+	Reviewed all chapters and updated to ClamWin 0.90.2.1 (Erkan)
+
+
+Sun, 15 July 2007
+	Adapted Advanced chapter, the section about local database server, since
+	freshclam now uses differential updates and that would not be supported
+	on a local server.
