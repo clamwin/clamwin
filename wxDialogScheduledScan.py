@@ -25,7 +25,7 @@
 
 import os, sys, time, locale
 import Utils
-import shelve
+from bsddb3 import dbshelve as shelve
 import wx
 import wx.lib.masked
 
