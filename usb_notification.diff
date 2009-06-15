@@ -1,0 +1,107 @@
+--- ClamTray.py	2008-09-01 15:00:08 +0200
++++ /c/Work/WorkSpace/clamwin/ClamTray.py	2009-04-06 09:15:17 +0200
+@@ -38,6 +38,42 @@
+ import Utils, wxDialogScheduledScan
+ import version
+ 
++import ctypes, GUID
++from ctypes import c_long, c_int, wintypes
++RegisterDeviceNotification = ctypes.windll.user32.RegisterDeviceNotificationA
++RegisterDeviceNotification.restype = wintypes.HANDLE
++RegisterDeviceNotification.argtypes = [wintypes.HANDLE, wintypes.c_void_p, wintypes.DWORD]
++
++UnregisterDeviceNotification = ctypes.windll.user32.UnregisterDeviceNotification
++UnregisterDeviceNotification.restype = wintypes.BOOL
++UnregisterDeviceNotification.argtypes = [wintypes.HANDLE]
++
++DBT_DEVTYP_DEVICEINTERFACE = 0x00000005
++DBT_DEVTYP_VOLUME          = 0x00000002
++DBT_DEVICEREMOVECOMPLETE   = 0x8004  # device is gone
++DBT_DEVICEARRIVAL          = 0x8000  # system detected a new device
++
++DBTF_MEDIA = 0x0001
++DBTF_NET   = 0x0002
++
++class DEV_BROADCAST_DEVICEINTERFACE(ctypes.Structure):
++    _fields_ = [("dbcc_size", ctypes.c_ulong),
++                ("dbcc_devicetype", ctypes.c_ulong),
++                ("dbcc_reserved", ctypes.c_ulong),
++                ("dbcc_classguid", GUID.GUID),
++                ("dbcc_name", ctypes.c_wchar * 256)]
++
++class DEV_BROADCAST_HDR(ctypes.Structure):
++    _fields_ = [("dbch_size", wintypes.DWORD),
++                ("dbch_devicetype", wintypes.DWORD),
++                ("dbch_reserved", wintypes.DWORD)]
++
++class DEV_BROADCAST_VOLUME(ctypes.Structure):
++    _fields_ = [("dbcv_size", wintypes.DWORD),
++                ("dbcv_devicetype", wintypes.DWORD),
++                ("dbcv_reserved", wintypes.DWORD),
++                ("dbcv_unitmask", wintypes.DWORD),
++                ("dbcv_flags", wintypes.WORD)]
+ 
+ class MainWindow:
+     MENU_OPEN_CLAM, MENU_UPDATE_DB, MENU_CHECK_UPDATE, MENU_CLAMWIN_WEB, MENU_CONFIGURE, MENU_SHOWSCANLOG, \
+@@ -67,6 +103,7 @@
+                 msg_TaskbarRestart: self.OnRestart,
+                 win32con.WM_DESTROY: self.OnDestroy,
+                 win32con.WM_COMMAND: self.OnCommand,
++                win32con.WM_DEVICECHANGE: self.OnDeviceChange,
+                 MainWindow.WM_TASKBAR_NOTIFY: self.OnTaskbarNotify,
+                 MainWindow.WM_CONFIG_UPDATED : self.OnConfigUpdated,
+                 MainWindow.WM_SHOW_BALLOON : self.OnShowBalloon,
+@@ -88,6 +125,16 @@
+                 0, 0, hinst, None)
+         win32gui.UpdateWindow(self.hwnd)
+ 
++        devIF = DEV_BROADCAST_DEVICEINTERFACE()
++        devIF.dbcc_size = ctypes.sizeof(DEV_BROADCAST_DEVICEINTERFACE)
++        devIF.dbcc_devicetype = DBT_DEVTYP_DEVICEINTERFACE
++        devIF.dbcc_classguid = GUID.GUID('{3c5e1462-5695-4e18-876b-f3f3d08aaf18}')
++        self._devHandler = RegisterDeviceNotification(self.hwnd, ctypes.byref(devIF), 0)
++        if self._devHandler:
++            print 'Device Notification Handler installed'
++        else:
++            print 'Problem registering Device Notification Handler'
++
+         # create mutex to prevent further instances
+         self._hActiveMutex = win32event.CreateMutex(None, True, self.ACTIVE_MUTEX)
+         self._DoCreateIcons()
+@@ -364,6 +411,24 @@
+ 
+         return 1
+ 
++    def OnDeviceChange(self, hwnd, msg, wparam, lparam):
++        if wparam == DBT_DEVICEARRIVAL:
++            what = "Device Arrival"
++        elif wparam == DBT_DEVICEREMOVECOMPLETE:
++            what = "Device Removed"
++
++        if lparam:
++            dbh = DEV_BROADCAST_HDR.from_address(lparam)
++            if dbh.dbch_devicetype == DBT_DEVTYP_VOLUME:
++                volume = DEV_BROADCAST_VOLUME.from_address(lparam)
++                devmask = []
++                value = volume.dbcv_unitmask
++                for i in range(32):
++                    if value & 0x1:
++                        devmask.append(chr(65 + i))
++                    value = value >> 1
++                print '%s - devices: %s' % (what, ','.join(devmask))
++
+     def OnCommand(self, hwnd, msg, wparam, lparam):
+         if self._nomenu:
+                 return
+@@ -465,6 +530,11 @@
+ 
+ 
+     def OnExit(self):
++        if self._devHandler:
++            if UnregisterDeviceNotification(self._devHandler):
++                print 'Device Notification Handler unregistered'
++            else:
++                print 'Error unregistering Device Notification Handler'
+         win32gui.DestroyWindow(self.hwnd)
+ 
+     def _ShowLog(self, logfile):
