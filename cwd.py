@@ -3,7 +3,7 @@
 #
 # Simple Clone of Clamd using pyc extension
 #
-# Copyright (C) 2008 Gianluigi Tiesi <sherpya@netfarm.it>
+# Copyright (C) 2008-2009 Gianluigi Tiesi <sherpya@netfarm.it>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by the
@@ -149,7 +149,7 @@ class CwdHandler(async_chat):
             stream.close()
             return
 
-        f, filename = mkstemp(dir=self.server.config['TemporaryDirectory'])
+        f, filename = mkstemp()
         start = time()
         ok = True
         bytes = 0
@@ -214,14 +214,12 @@ class CwdHandler(async_chat):
 class CwConfig:
     def __init__(self):
         self.config = {}
-        for opt in self.options.keys():
-            self[opt] = self.options[opt][1]
 
     def __setitem__(self, name, value):
-        self.config[name] = value
+        self.options[name][self.VALUE] = value
 
     def __getitem__(self, name):
-        return self.config[name]
+        return self.options[name][self.VALUE]
 
     def qstr(value):
         if value[0] == '"' and value[-1] == '"':
@@ -256,80 +254,49 @@ class CwConfig:
         else:
             raise Exception, 'Bad Modifier'
 
-    ignore = [ 'LogFile', 'LogFileUnlock', 'LogFileMaxSize',
-        'LogTime', 'LogClean', 'LogSyslog', 'LogFacility',
-        'LogVerbose', 'PidFile',
-        'LocalSocket', 'FixStaleSocket',
-        'StreamMinPort', 'StreamMaxPort',
-        'MaxThreads', 'IdleTimeout', 'FollowDirectorySymlinks',
-        'FollowFileSymlinks', 'VirusEvent',
-        'User', 'AllowSupplementaryGroups', 'ExitOnOOM',
-        'Foreground', 'DetectPUA',
-        'AlgorithmicDetection', 'MailFollowURLs',
-        'PhishingSignatures', 'PhishingScanURLs',
-        'PhishingAlwaysBlockSSLMismatch', 'PhishingAlwaysBlockCloak',
-        'ArchiveLimitMemoryUsage', 'ArchiveBlockEncrypted' ]
-
+    OWNER, NAME, VALIDATOR, VALUE = range(4)
     options = {
-        'DatabaseDirectory'         : [ qstr, None ],
-        'TemporaryDirectory'        : [ qstr, None ],
-        'LeaveTemporaryFiles'       : [ boolean, False],
-        'TCPSocket'                 : [ int, 3310 ],
-        'TCPAddr'                   : [ nqstr, 'localhost' ],
-        'MaxConnectionQueueLength'  : [ int, 5 ],
-        'StreamMaxLength'           : [ size_t, 100 * 1024 * 1024 ], # MB
-        'ReadTimeout'               : [ int, 300 ], # seconds
-        'MaxDirectoryRecursion'     : [ int, 15 ],
-        'SelfCheck'                 : [ int, 3600 ], # seconds
-        'Debug'                     : [ boolean, False ],
-        'ScanPE'                    : [ boolean, True ],
-        'ScanELF'                   : [ boolean, True ],
-        'DetectBrokenExecutables'   : [ boolean, False ],
-        'ScanOLE2'                  : [ boolean, True ],
-        'ScanPDF'                   : [ boolean, False ],
-        'ScanMail'                  : [ boolean, True ],
-        'ScanHTML'                  : [ boolean, True ],
-        'ScanArchive'               : [ boolean, True ],
-        'MaxScanSize'               : [ size_t, 150 * 1024 * 1024 ], # MB
-        'MaxFileSize'               : [ size_t, 100 * 1024 * 1024 ], # MB
-        'MaxRecursion'              : [ int, 16 ],
-        'MaxFiles'                  : [ int, 15000 ]
-    }
+        'MaxScanSize'               : [ 'engine', 'max-scansize', size_t, 150 * 1024 * 1024 ], # MB
+        'MaxFileSize'               : [ 'engine', 'max-filesize', size_t, 100 * 1024 * 1024 ], # MB
+        'MaxRecursion'              : [ 'engine', 'max-recursion', int, 16 ],
+        'MaxFiles'                  : [ 'engine', 'max-files', int, 15000 ],
+        #'TemporaryDirectory'        : [ 'engine', 'tempdir', qstr, None ],
+        'LeaveTemporaryFiles'       : [ 'engine', 'leave-temps', boolean, False ],
 
-    opt_pyopts = {
-        'archive'       : 'ScanArchive',
-        'mail'          : 'ScanMail',
-        'ole2'          : 'ScanOLE2',
-        'html'          : 'ScanHTML',
-        'pe'            : 'ScanPE',
-        'blockbroken'   : 'DetectBrokenExecutables',
-        'elf'           : 'ScanELF',
-        'pdf'           : 'ScanPDF'
-    }
+        'ScanPE'                    : [ 'scan', 'pe', boolean, True ],
+        'ScanELF'                   : [ 'scan', 'elf', boolean, True ],
+        'DetectBrokenExecutables'   : [ 'scan', 'blockbroken', boolean, False ],
+        'ScanOLE2'                  : [ 'scan', 'ole2', boolean, True ],
+        'ScanPDF'                   : [ 'scan', 'pdf', boolean, False ],
+        'ScanMail'                  : [ 'scan', 'mail', boolean, True ],
+        'ScanHTML'                  : [ 'scan', 'html', boolean, True ],
+        'ScanArchive'               : [ 'scan', 'archive', boolean, True ],
 
-    opt_pylimits = {
-        'maxscansize'   : 'MaxScanSize',
-        'maxfilesize'   : 'MaxFileSize',
-        'maxreclevel'   : 'MaxRecursion',
-        'maxfiles'      : 'MaxFiles'
+        'SelfCheck'                 : [ 'cwd', None, int, 3600 ], # seconds
+        'Debug'                     : [ 'cwd', None, boolean, False ],
+        'DatabaseDirectory'         : [ 'cwd', None, qstr, None ],
+        'TCPSocket'                 : [ 'cwd', None, int, 3310 ],
+        'TCPAddr'                   : [ 'cwd', None, nqstr, 'localhost' ],
+        'MaxConnectionQueueLength'  : [ 'cwd', None, int, 5 ],
+        'StreamMaxLength'           : [ 'cwd', None, size_t, 100 * 1024 * 1024 ], # MB
+        'ReadTimeout'               : [ 'cwd', None, int, 300 ] # seconds
     }
 
     def engage(self):
-        for opt in self.opt_pyopts.keys():
-            cwdopt = self.opt_pyopts[opt]
-            pyc.setOption(opt, self[cwdopt])
-
-        limits = self.opt_pylimits.copy()
-        for lim in limits.keys():
-            cwdlim = self.opt_pylimits[lim]
-            limits[lim] = self[cwdlim]
-        pyc.setLimits(limits)
-
         if self['DatabaseDirectory'] is not None:
             pyc.setDBPath(self['DatabaseDirectory'])
-
-        pyc.setTempdir(self['TemporaryDirectory'], self['LeaveTemporaryFiles'])
+        if self['Debug']:
+            pyc.setDebug()
         pyc.setDBTimer(self['SelfCheck'])
+
+        for option in self.options.keys():
+            (owner, name, _, value) = self.options[option]
+            if owner == 'engine':
+                print 'Setting engine', name, value
+                pyc.setEngineOption(name, value)
+            elif owner == 'scan':
+                print 'Setting scan', name, value
+                pyc.setScanOption(name, value)
 
     def load(self, filename):
         f = open(filename)
@@ -341,17 +308,15 @@ class CwConfig:
                 f.close()
                 raise Exception, 'You should edit the default config and remove Example keyword'
             option, value = line.split(' ', 1)
-            if option in self.ignore: continue
-            if not self.options.has_key(option):
-                print 'Ignoring Unknown option', option
-                continue
-            try:
-                value = self.options[option][0](value)
-            except Exception, e:
-                print e.message, 'for option', option
-                f.close()
-                raise Exception, 'Invalid configuration'
-            self[option] = value
+
+            if option in self.options:
+                try:
+                    value = self.options[option][self.VALIDATOR](value)
+                    self.options[option][self.VALUE] = value
+                except Exception, e:
+                    print e.message, 'for option', option
+                    f.close()
+                    raise Exception, 'Invalid configuration'
         f.close()
 
 class CwServer(dispatcher):
