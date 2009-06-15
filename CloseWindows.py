@@ -23,23 +23,45 @@
 
 #-----------------------------------------------------------------------------
 import SetUnicode
-import win32gui, win32con, win32api
+import win32gui, win32con, win32api, win32process
 import time
 import RedirectStd
 
-def CloseWindow(hwnd, appWindows):
+def Close(hwnd, appWindows):
     if(win32gui.GetClassName(hwnd), win32gui.GetWindowText(hwnd)) in appWindows:
+    
+        # get process handle
+        t, p = win32process.GetWindowThreadProcessId(hwnd)
+        
+        # try to close it with WM_CLOSE
+	print 'sending WM_CLOSE to the process ', p
         win32gui.PostMessage(hwnd, win32con.WM_CLOSE, 0, 0)
+        # wait for the process to exit gracefully
+        time.sleep(5.0)
+        # kill it forcefully if it did not exit
+        try:
+            handle = win32api.OpenProcess(win32con.PROCESS_TERMINATE, 0, p)
+            if handle:
+                print 'terminating prosess forcefully ', p
+                win32api.TerminateProcess(handle,0)
+                win32api.CloseHandle(handle)
+        except:
+           pass
+           
     return True
 
 
-def CloseClamWin():
-    appWindows = (('wxWindowClass', 'ClamWin Free Antivirus'),
+
+def CloseClamWinWindows():
+    appWindows = (('ClamWinTrayWindow', 'ClamWin'),
+                    ('wxWindowClass', 'ClamWin Free Antivirus'),
                     ('#32770', 'ClamWin Internet Update Status'),
-                    ('#32770', 'ClamWin Preferences'),
-                    ('ClamWinTrayWindow', 'ClamWin'))
-    win32gui.EnumWindows(CloseWindow, appWindows)
+                    ('#32770', 'ClamWin Preferences'))
+    win32gui.EnumWindows(Close, appWindows)
+    
+
+
 
 if __name__=='__main__':
-    CloseClamWin()
-    time.sleep(3.0)
+    CloseClamWinWindows()
+        

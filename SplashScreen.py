@@ -137,7 +137,7 @@ def ShowSplashScreen(filename, timeout):
 
     s.EndDialogAfter(3)
 if __name__=='__main__':
-    #s = Splash("img\\Splash.bmp")
+    #s = Splash("img/Splash.bmp")
     #s.DoModal()
     ShowSplashScreen("img/Splash.bmp", 5)
     win32gui.PumpMessages()
