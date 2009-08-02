@@ -332,7 +332,7 @@ class wxDialogStatus(wx.Dialog):
                 print 'OnThreadFinished: Could not read from log file %s. Error: %s' % (self._logfile, str(e))
                 data = self.textCtrlStatus.GetLabel()
 
-        data = Utils.ReformatLog(data, win32api.GetVersionEx()[0] >= 5)
+        data = Utils.ReformatLog(data, False) #, win32api.GetVersionEx()[0] >= 5)
 
         if len(data.splitlines()) > 1:
             self.ThreadUpdateStatus(self, data, False)
