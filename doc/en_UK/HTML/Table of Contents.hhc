@@ -30,6 +30,10 @@
 			<param name="Local" value="usage.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="How to Uninstall">
+			<param name="Local" value="uninstall.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Advanced Operations">
 			<param name="Local" value="advanced.html">
 			</OBJECT>

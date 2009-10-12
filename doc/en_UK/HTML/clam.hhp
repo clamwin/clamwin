@@ -3,7 +3,7 @@ Compatibility=1.1 or later
 Compiled file=..\manual_EN.chm
 Contents file=Table of Contents.hhc
 Default topic=cover.html
-Display compile progress=No
+Display compile progress=Yes
 Full-text search=Yes
 Language=0x809 English (United Kingdom)
 
@@ -19,6 +19,7 @@ licence.html
 troubleshooting.html
 usage.html
 App_CD-USB.html
+uninstall.html
 
 [INFOTYPES]
 
