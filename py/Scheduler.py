@@ -156,16 +156,21 @@ class Scheduler(threading.Thread):
         elif self._frequency in ('Weekly', 'Once'):
             try:
                 lt = time.localtime(t)
-                # Y2009 fix
+                # Y2009 and Y2010 fix
                 # http://forums.clamwin.com/viewtopic.php?t=1988&postdays=0&postorder=asc&start=60
+                year = lt.tm_year
                 yday = lt.tm_yday - lt.tm_wday + self._weekDay
+                if yday > 365:
+                    yday = yday - 365                    
+                    year = year + 1
                 if yday < 1:
-                    yday = yday + 7
+                    yday = yday + 7                                
+             
+                    
                 # use  weekday and HH:MM:SS part of starttime
-                schedTime = time.mktime(time.strptime(str(yday) + \
-                            time.strftime(' %Y ', lt) + self._startTime, '%j %Y %H:%M:%S'))
-                print 'schedTime: ', time.strptime(str(lt.tm_yday - lt.tm_wday + self._weekDay) + \
-                            time.strftime(' %Y ', lt) + self._startTime, '%j %Y %H:%M:%S')
+                schedTime = time.mktime(time.strptime(str(yday) + ' ' + str(year) + ' ' + \
+                            self._startTime, '%j %Y %H:%M:%S'))
+                print 'weekly/once schedTime: ',time.asctime(time.localtime(schedTime))  
             except ValueError, e:
                 print "couldn't parse time, self._startTime = %s. self._weekDay = %i\n Error: %s" % (self._startTime, self._weekDay, str(e))
                 self._missedSchedule = True
@@ -180,7 +185,6 @@ class Scheduler(threading.Thread):
                 schedTime = t + 120
                 print "couldn't parse time, self._startTime = %s.\n Error: %s" % (self._startTime, str(e))
             addTime = 3600.0*24
-
 
         # go to next time interval if it is out
         tmp = schedTime
@@ -225,15 +229,21 @@ class Scheduler(threading.Thread):
         locale.setlocale(locale.LC_ALL, 'C')
 
         t = time.time()
+        
+        action = 'action=%s%s; when= %s' % \
+                 (self._action, self._argument, time.strftime('%d-%m-%y %H:%M:%S', time.localtime(t)))
 
-        if not self._paused:
-            # execute the action
-            print 'running task %s%s on: %s. Frequency is: %s\n' % (self._action, self._argument, time.strftime('%d-%m-%y %H:%M:%S', time.localtime(t)), self._frequency)
-            void = self._action(*self._argument)
-            self._lastRun = t
-            self._WriteLastRun()
+        if self._missedSchedule and not self._runMissed:
+            print 'not running missed schedule label %s' % action
         else:
-            print 'schedule label %i is paused' % self._label
+            if not self._paused:
+                # execute the action
+                print 'running task %s. Frequency is: %s\n' % (action, self._frequency)
+                void = self._action(*self._argument)
+                self._lastRun = t
+                self._WriteLastRun()
+            else:
+                print 'schedule label %i is paused' % self._label
 
         # schedule next action
         if self._frequency != 'Once':
