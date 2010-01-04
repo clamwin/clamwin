@@ -97,6 +97,13 @@ class Settings:
            self._settings['Updates'][1]['CheckVersionURL'] == 'http://clamwin.sourceforge.net/clamwin.ver':
             self._settings['Updates'][1]['CheckVersionURL'] = 'http://clamwin.sourceforge.net/clamwinver.php'
             write = True
+            
+        # change MAxRecursion setting
+        if self._settings['UI'][1]['Version'] < '0.95.3' and \
+           self._settings['ClamAV'][1]['MaxRecursion'] == '5':
+            self._settings['ClamAV'][1]['MaxRecursion'] = '50'
+            write = True
+
 
         if self._settings['UI'][1]['Version'] < version.clamwin_version:
             self._settings['UI'][1]['Version'] = version.clamwin_version
