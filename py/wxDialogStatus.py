@@ -96,9 +96,10 @@ def EVT_THREADUPDATESTATUS( window, function ):
 
 class ThreadUpdateStatusEvent(wxPyCommandEvent):
     eventType = THREADUPDATESTATUS
-    def __init__(self, windowID, text, append):
+    def __init__(self, windowID, text, append, std_err=False):
         self.text = text
         self.append = append
+        self.std_err = std_err
         wxPyCommandEvent.__init__(self, self.eventType, windowID)
 
     def Clone( self ):
@@ -311,6 +312,14 @@ class wxDialogStatus(wxDialog):
         event = ThreadUpdateStatusEvent(owner.GetId(), text, append)
         owner.GetEventHandler().AddPendingEvent(event)
     ThreadUpdateStatus = staticmethod(ThreadUpdateStatus)
+    
+    def ThreadUpdateStatusErr(owner, text, append=True):
+        if owner.terminating:
+            return
+        event = ThreadUpdateStatusEvent(owner.GetId(), text, append, True)
+        owner.GetEventHandler().AddPendingEvent(event)
+    ThreadUpdateStatusErr = staticmethod(ThreadUpdateStatusErr)
+
 
     def OnThreadFinished(self, event):
         if self._alreadyCalled:
@@ -384,6 +393,9 @@ class wxDialogStatus(wxDialog):
         text = event.text
         #if not self._scan:
         text = Utils.ReplaceClamAVWarnings(text)
+        if event.std_err:
+            file(self._logfile, 'w').write(text)
+            
         if event.append == True:
             # Check if we reached 30000 characters
             # and need to purge topmost line
@@ -449,7 +461,7 @@ class wxDialogStatus(wxDialog):
             # create our stdout/stderr implementation that updates status window
             self._alreadyCalled = False
             self._out = StatusUpdateBuffer(self, self.ThreadUpdateStatus, self.ThreadFinished)
-            self._err = StatusUpdateBuffer(self, self.ThreadUpdateStatus, None)
+            self._err = StatusUpdateBuffer(self, self.ThreadUpdateStatusErr, None)
             self._proc = Process.ProcessProxy(cmd, stdout=self._out, stderr=self._err, priority=priority)
             self._proc.wait(_WAIT_NOWAIT)
         except Exception, e:
