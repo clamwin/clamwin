@@ -57,6 +57,8 @@ call %WGET_UTIL% http://%DB_MIRROR%/main.cvd -N -O "%THISDIR%\Setup\cvd\main.cvd
 if not "%ERRORLEVEL%"=="0" goto ERROR
 call %WGET_UTIL% http://%DB_MIRROR%/daily.cvd -N -O "%THISDIR%\Setup\cvd\daily.cvd"
 if not "%ERRORLEVEL%"=="0" goto ERROR
+call %WGET_UTIL% http://%DB_MIRROR%/daily.cvd -N -O "%THISDIR%\Setup\cvd\bytecodec.cvd"
+if not "%ERRORLEVEL%"=="0" goto ERROR
 
 rem build setups
 call "%ISTOOLDIR%\ISTool.exe" -compile "%THISDIR%\Setup\Setup-nodb.iss"
