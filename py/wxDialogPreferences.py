@@ -47,7 +47,6 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLGBUTTONTASKEDIT, wxID_WXPREFERENCESDLGBUTTONTASKREMOVE, 
  wxID_WXPREFERENCESDLGBUTTONVIRDB, wxID_WXPREFERENCESDLGCHECKBOXCHECKVERSION, 
  wxID_WXPREFERENCESDLGCHECKBOXENABLEAUTOUPDATE, 
- wxID_WXPREFERENCESDLGCHECKBOXENABLEMBOX, 
  wxID_WXPREFERENCESDLGCHECKBOXENABLEOLE2, 
  wxID_WXPREFERENCESDLGCHECKBOXINFECTEDONLY, 
  wxID_WXPREFERENCESDLGCHECKBOXOUTLOOKSCANINCOMING, 
@@ -137,7 +136,7 @@ def create(parent, config=None, switchToSchedule=False):
  wxID_WXPREFERENCESDLG_PANELINTERNETUPDATE, 
  wxID_WXPREFERENCESDLG_PANELOPTIONS, wxID_WXPREFERENCESDLG_PANELPROXY, 
  wxID_WXPREFERENCESDLG_PANELREPORTS, wxID_WXPREFERENCESDLG_PANELSCHEDULER, 
-] = map(lambda _init_ctrls: wxNewId(), range(124))
+] = map(lambda _init_ctrls: wxNewId(), range(123))
 
 class wxPreferencesDlg(wxDialog):
     def _init_coll_imageListScheduler_Images(self, parent):
@@ -190,7 +189,7 @@ class wxPreferencesDlg(wxDialog):
     def _init_ctrls(self, prnt):
         # generated method, don't edit
         wxDialog.__init__(self, id=wxID_WXPREFERENCESDLG, name='', parent=prnt,
-              pos=wxPoint(1011, 447), size=wxSize(419, 395),
+              pos=wxPoint(896, 398), size=wxSize(419, 395),
               style=wxDEFAULT_DIALOG_STYLE, title='ClamWin Preferences')
         self._init_utils()
         self.SetClientSize(wxSize(411, 368))
@@ -478,33 +477,26 @@ class wxPreferencesDlg(wxDialog):
               parent=self._panelArchives, pos=wxPoint(24, 169), size=wxSize(168,
               17), style=0)
 
-        self.checkBoxEnableMbox = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXENABLEMBOX,
-              label='&Treat Files As Mailboxes', name='checkBoxEnableMbox',
-              parent=self._panelAdvanced, pos=wxPoint(6, 11), size=wxSize(384,
-              18), style=0)
-        self.checkBoxEnableMbox.SetToolTipString('Select if you wish to scan mailboxes')
-        self.checkBoxEnableMbox.SetValue(False)
-
         self.checkBoxEnableOLE2 = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXENABLEOLE2,
               label='&Extract Attachments and Macros from MS Office Documents',
               name='checkBoxEnableOLE2', parent=self._panelAdvanced,
-              pos=wxPoint(6, 33), size=wxSize(381, 18), style=0)
+              pos=wxPoint(6, 15), size=wxSize(381, 18), style=0)
         self.checkBoxEnableOLE2.SetToolTipString('Select if you wish to scan OLE attachments and macros in MS Office Documents')
         self.checkBoxEnableOLE2.SetValue(False)
 
         self.staticTextAdditionalParams = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTADDITIONALPARAMS,
               label='&Additional Clamscan Command Line Parameters:',
               name='staticTextAdditionalParams', parent=self._panelAdvanced,
-              pos=wxPoint(6, 61), size=wxSize(378, 13), style=0)
+              pos=wxPoint(6, 42), size=wxSize(378, 13), style=0)
 
         self.textCtrlAdditionalParams = wxTextCtrl(id=wxID_WXPREFERENCESDLGTEXTCTRLADDITIONALPARAMS,
               name='textCtrlAdditionalParams', parent=self._panelAdvanced,
-              pos=wxPoint(6, 79), size=wxSize(379, 21), style=0, value='')
+              pos=wxPoint(6, 60), size=wxSize(379, 21), style=0, value='')
         self.textCtrlAdditionalParams.SetToolTipString('Specify any additional parameters for clamscan.exe')
 
         self.staticTextMaxLogSize = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTMAXLOGSIZE,
               label='Limit Log File Size To:', name='staticTextMaxLogSize',
-              parent=self._panelAdvanced, pos=wxPoint(6, 118), size=wxSize(170,
+              parent=self._panelAdvanced, pos=wxPoint(6, 99), size=wxSize(170,
               17), style=0)
 
         self.staticTextLogFIle = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTLOGFILE,
@@ -872,20 +864,20 @@ class wxPreferencesDlg(wxDialog):
 
         self.spinCtrlMaxLogSize = wxSpinCtrl(id=wxID_WXPREFERENCESDLGSPINCTRLMAXLOGSIZE,
               initial=0, max=4096, min=1, name='spinCtrlMaxLogSize',
-              parent=self._panelAdvanced, pos=wxPoint(6, 137), size=wxSize(129,
+              parent=self._panelAdvanced, pos=wxPoint(6, 118), size=wxSize(129,
               21), style=wxSP_ARROW_KEYS)
         self.spinCtrlMaxLogSize.SetToolTipString('Select maximum size for the logfile')
         self.spinCtrlMaxLogSize.SetValue(1)
 
         self.staticTextMB2 = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTMB2,
               label='MegaBytes', name='staticTextMB2',
-              parent=self._panelAdvanced, pos=wxPoint(144, 138), size=wxSize(74,
+              parent=self._panelAdvanced, pos=wxPoint(144, 126), size=wxSize(74,
               16), style=0)
 
         self.staticTextPriority = wxStaticText(id=wxID_WXPREFERENCESDLGSTATICTEXTPRIORITY,
               label='Scanner &Priority:', name='staticTextPriority',
-              parent=self._panelAdvanced, pos=wxPoint(252, 118),
-              size=wxSize(103, 17), style=0)
+              parent=self._panelAdvanced, pos=wxPoint(252, 99), size=wxSize(103,
+              17), style=0)
 
         self.checkBoxShowProgress = wxCheckBox(id=wxID_WXPREFERENCESDLGCHECKBOXSHOWPROGRESS,
               label='Display &File Scanned % Progress Indicator',
@@ -935,7 +927,7 @@ class wxPreferencesDlg(wxDialog):
 
         self.choicePriority = wxChoice(choices=['Low', 'Normal'],
               id=wxID_WXPREFERENCESDLGCHOICEPRIORITY, name='choicePriority',
-              parent=self._panelAdvanced, pos=wxPoint(252, 137),
+              parent=self._panelAdvanced, pos=wxPoint(252, 118),
               size=wxSize(134, 21), style=0)
         self.choicePriority.SetToolTipString('Specify the process priority for the virus scanner.')
         self.choicePriority.SetStringSelection('Normal')
@@ -1237,7 +1229,7 @@ class wxPreferencesDlg(wxDialog):
     def _AdvancedPageInit(self):
         self.choicePriority.SetValidator(MyValidator(config=self._config, section='ClamAV', value='Priority'))
         self.spinCtrlMaxLogSize.SetValidator(MyValidator(self._config, section='ClamAV', value='MaxLogSize', canEmpty=False))
-        self.checkBoxEnableMbox.SetValidator(MyValidator(config=self._config, section='ClamAV', value='EnableMbox'))
+        #self.checkBoxEnableMbox.SetValidator(MyValidator(config=self._config, section='ClamAV', value='EnableMbox'))
         self.checkBoxEnableOLE2.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ScanOle2'))
         #self.checkBoxDetectPUA.SetValidator(MyValidator(config=self._config, section='ClamAV', value='DetectPUA'))
         self.textCtrlAdditionalParams.SetValidator(MyValidator(config=self._config, section='ClamAV', value='ClamScanParams', canEmpty=True))
