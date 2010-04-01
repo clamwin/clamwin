@@ -44,7 +44,7 @@ class Settings:
              'ScanArchives': '1', 'MaxScanSize': '150', 'MaxFiles': '500', 'MaxFileSize': '100',
              'MaxRecursion': '5', 'LogFile': '', 'MaxLogSize': '1',
              'MoveInfected': '0', 'QuarantineDir': '',  'Debug': '0',
-             'ClamScanParams':'', 'Kill': '1',
+             'ClamScanParams':'', 'Kill': '1', 'FreshClamParams':'',
              'IncludePatterns': '',
              'ExcludePatterns': REGEX_SEPARATOR.join(('*.dbx','*.tbb','*.pst', '*.dat', '*.log', '*.evt', '*.nsf', '*.ntf', '*.chm')),}],
         'Proxy':
