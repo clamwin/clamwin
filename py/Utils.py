@@ -289,6 +289,11 @@ def SaveFreshClamConf(config):
         if len(config.Get('Proxy', 'User')):
             data += _FRESHCLAM_CONF_PROXY_USER % \
                 (config.Get('Proxy', 'User'), config.Get('Proxy', 'Password'))
+                
+        if len(config.Get('ClamAV', 'FreshClamParams')):
+            data += '\n' + config.Get('ClamAV', 'FreshClamParams')
+            
+        print 'freshclam.conf:\n', data
 
         fd, name = SafeTempFile()
         try:
@@ -352,9 +357,7 @@ def GetScanCmd(config, path, scanlog, noprint = False):
     #this disables oversized zip checking
     # no longer needed >= 0.93
     #cmd += ' --max-ratio=0'
-
-    if config.Get('ClamAV', 'EnableMbox') != '1':
-        cmd += ' --no-mail'
+    
     if config.Get('ClamAV', 'ScanOle2') != '1':
         cmd += ' --no-ole2'
     #if config.Get('ClamAV', 'DetectPUA') == '1':
