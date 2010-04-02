@@ -170,6 +170,7 @@ class wxDialogStatus(wxDialog):
         self._scan = (bitmapMask != 'update')
         self._previousStart = 0
         self._alreadyCalled = False
+        self._err_text = ""
 
         self._init_ctrls(parent)
 
@@ -316,6 +317,7 @@ class wxDialogStatus(wxDialog):
     def ThreadUpdateStatusErr(owner, text, append=True):
         if owner.terminating:
             return
+
         event = ThreadUpdateStatusEvent(owner.GetId(), text, append, True)
         owner.GetEventHandler().AddPendingEvent(event)
     ThreadUpdateStatusErr = staticmethod(ThreadUpdateStatusErr)
@@ -335,8 +337,14 @@ class wxDialogStatus(wxDialog):
         self.throbber.Rest()
         self.buttonStop.SetFocus()
         self.buttonStop.SetLabel('&Close')
+        
+        if self._scan:
+            self.SetTitle("ClamWin Free Antivirus: Scan Complete")
+        else:
+            self.SetTitle("ClamWin Free Antivirus: Download Complete")
+        
 
-        data = ''
+        data = ""
         if self._logfile is not None:
             try:
                 # read last 30000 bytes form the log file
@@ -349,15 +357,28 @@ class wxDialogStatus(wxDialog):
                     flog.seek(-maxsize, 2)
                 else:
                     flog.seek(0, 0)
-                data = flog.read()
+                truncate_pos = flog.tell()
+                data = data + flog.read()
+                flog.close()
+                flog = file(self._logfile, 'a+')
+                flog.truncate(truncate_pos)
+                
             except Exception, e:
                 print 'OnThreadFinished: Could not read from log file %s. Error: %s' % (self._logfile, str(e))
                 data = self.textCtrlStatus.GetLabel()
 
-        data = Utils.ReformatLog(data, win32api.GetVersionEx()[0] >= 5)
+        rtfdata = Utils.ReformatLog(data, win32api.GetVersionEx()[0] >= 5, self._err_text)
+        
+        if self._logfile is not None:
+            try:
+                flog = file(self._logfile, 'a')
+                flog.write(Utils.ReformatLog(data, False, self._err_text))
+            except Exception, e:
+                print 'OnThreadFinished: Could not write to log file %s. Error: %s' % (self._logfile, str(e))
+                                                   
 
         if len(data.splitlines()) > 1:
-            self.ThreadUpdateStatus(self, data, False)
+            self.ThreadUpdateStatus(self, rtfdata, False)
 
         if not self._cancelled:
            self.ThreadUpdateStatus(self, "\n--------------------------------------\nCompleted\n--------------------------------------\n")
@@ -365,6 +386,7 @@ class wxDialogStatus(wxDialog):
            self.ThreadUpdateStatus(self, "\n--------------------------------------\nCancelled\n--------------------------------------\n")
 
         win32api.PostMessage(self.textCtrlStatus.GetHandle(), win32con.EM_SCROLLCARET, 0, 0)
+        
         self.textCtrlStatus.SetInsertionPointEnd()
         self.textCtrlStatus.ShowPosition(self.textCtrlStatus.GetLastPosition())
 
@@ -394,7 +416,7 @@ class wxDialogStatus(wxDialog):
         #if not self._scan:
         text = Utils.ReplaceClamAVWarnings(text)
         if event.std_err:
-            file(self._logfile, 'w').write(text)
+            self._err_text = self._err_text + text
             
         if event.append == True:
             # Check if we reached 30000 characters
@@ -422,10 +444,17 @@ class wxDialogStatus(wxDialog):
                 if text != '\n':
                     ctrl.AppendText(text)
             # highlight FOUND entries in red
+            # FP entries in BLUE
             if text.endswith(' FOUND\n'):
+                if event.std_err:
+                    col = wxColour(0,0,255)
+                else:
+                    col = wxColour(128,0,0)
+                
                 ctrl.SetStyle(lastPos, ctrl.GetLastPosition() - 1,
-                    wxTextAttr(colText = wxColour(128,0,0),
-                        font = wxFont(0, wxDEFAULT, wxNORMAL, wxBOLD, False)))
+                        wxTextAttr(colText = col,
+                        font = wxFont(0, wxDEFAULT, wxNORMAL, wxBOLD, False)))                                     
+                
         else:
             ctrl.Clear()
             ctrl.SetDefaultStyle(wxTextAttr(wxNullColour))
@@ -486,6 +515,9 @@ class wxDialogStatus(wxDialog):
     def OnClickURL(self, event):
         if event.GetMouseEvent().LeftIsDown():
             url = self.textCtrlStatus.GetRange(event.GetURLStart(), event.GetURLEnd())
-            wxDialogUtils.wxGoToInternetUrl(url)
+            try:
+                wxDialogUtils.wxGoToInternetUrl(url)
+            except:
+                pass
         event.Skip()
 

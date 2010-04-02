@@ -641,7 +641,7 @@ def SafeExpandEnvironmentStrings(s):
 
 
 
-def ReformatLog(data, rtf):
+def ReformatLog(data, rtf, err_text):
     data = ReplaceClamAVWarnings(data.replace('\r\n', '\n'))
     # retrieve the pure report strings
     rex = re.compile('(.*)(-- summary --.*)(Infected files: \d*?\n)(.*)', re.M|re.S)
@@ -652,6 +652,7 @@ def ReformatLog(data, rtf):
         rex = re.compile('(.*)(----------- SCAN SUMMARY -----------.*)(Infected files: \d*?\n)(.*)', re.M|re.S)
         r = rex.search(data)
 
+    fp = False
     if r is not None:
         found = ''
         other = ''
@@ -663,6 +664,7 @@ def ReformatLog(data, rtf):
                     found += '\\cf1\\b %s\\cf0\\b0\n' % line.replace('\\', '\\\\')
                 else:
                     found += line + '\n'
+
             elif not line.endswith('OK'):
                 if rtf:
                     other += line.replace('\\', '\\\\') + '\n'
@@ -682,8 +684,33 @@ def ReformatLog(data, rtf):
                 infected = '\\cf2\\b %s\\cf0\\b0\n' % infected
             data = data.replace('\\', '\\\\')
         data %= (other, found, infected)
+        data += "\n"
+        lines = err_text.split("\n")
+        for line in lines:
+            if line.endswith('FALSE POSITIVE FOUND'):
+                if not fp: # first FP in the list - print header
+                    data += "The following files are Digitally Signed by Microsoft and have been incorrectly detected as viruses:\n"
+                    #if rtf:
+                    #    data += "\\cf3\\b %s\\cf0\\b0" % hdr                    
+                        
+                fp = True
+                if rtf:
+                    data += '\\cf3\\b %s\\cf0\\b0\n' % line.replace('\\', '\\\\')
+                else:
+                    data += line + '\n'
+            else:
+                data += line + '\n'
+          
+        if fp:            
+            if rtf:
+                data += "Please do not be alarmed and help us by submitting the files identified above " +\
+                        "as \\cf3\\b FALSE POSITIVE \\cf0\\b0 at http://www.clamav.net/sendvirus/\n"
+            else:
+                data += "Please do not be alarmed and help us by submitting the files identified above " +\
+                        "as FALSE POSITIVE at http://www.clamav.net/sendvirus/\n"                   
+            
         if rtf:
-            data = r'{\rtf1{\colortbl ;\red128\green0\blue0;;\red0\green128\blue0;}%s}' % data.replace('\n', '\\par\r\n')
+            data = r'{\rtf1{\colortbl ;\red128\green0\blue0;;\red0\green128\blue0;;\red0\green0\blue255;}%s}' % data.replace('\n', '\\par\r\n')
     return data
 
 # removes clamav warnings
