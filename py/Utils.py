@@ -698,8 +698,8 @@ def ReformatLog(data, rtf, err_text):
                     data += '\\cf3\\b %s\\cf0\\b0\n' % line.replace('\\', '\\\\')
                 else:
                     data += line + '\n'
-            else:
-                data += line + '\n'
+            #else:
+            #    data += line + '\n'
           
         if fp:            
             if rtf:

@@ -417,6 +417,9 @@ class wxDialogStatus(wxDialog):
         text = Utils.ReplaceClamAVWarnings(text)
         if event.std_err:
             self._err_text = self._err_text + text
+            # print only FP from stderr and ignore the rest
+            if not text.endswith('FALSE POSITIVE FOUND\n'):
+                return
             
         if event.append == True:
             # Check if we reached 30000 characters
