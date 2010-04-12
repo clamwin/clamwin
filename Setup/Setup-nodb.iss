@@ -138,7 +138,7 @@ Source: py2exe\dist\lib\BalloonTip.pyd; DestDir: {app}\lib; Components: ClamWin;
 ; added main.cvd as per clamav team request
 Source: cvd\main.cvd; DestDir: {code:CommonProfileDir}\.clamwin\db; Components: ClamWin; Flags: ignoreversion comparetimestamp; Check: NoMainCld
 Source: cvd\daily.cvd; DestDir: {code:CommonProfileDir}\.clamwin\db; Components: ClamWin; Flags: ignoreversion comparetimestamp; Check: NoDailyCld
-Source: cvd\bytecodec.cvd; DestDir: {code:CommonProfileDir}\.clamwin\db; Components: ClamWin; Flags: ignoreversion comparetimestamp; Check: NoBytecodecCld
+Source: cvd\bytecode.cvd; DestDir: {code:CommonProfileDir}\.clamwin\db; Components: ClamWin; Flags: ignoreversion comparetimestamp; Check: NoBytecodeCld
 #ENDIF
 
 [Icons]
@@ -734,11 +734,11 @@ begin
 	Result := not FileExists(CommonProfileDir(Temp) + '\.clamwin\db\daily.cld')
 end;
 
-function NoBytecodecCld(): Boolean;
+function NoBytecodeCld(): Boolean;
 var
 	Temp: String;
 begin
-	Result := not FileExists(CommonProfileDir(Temp) + '\.clamwin\db\bytecodec.cld')
+	Result := not FileExists(CommonProfileDir(Temp) + '\.clamwin\db\bytecode.cld')
 end;
 
 function GetIExplorerVersion(): String;
