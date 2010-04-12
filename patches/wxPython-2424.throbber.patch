@@ -1,0 +1,71 @@
+--- throbber.py	Fri Jul 18 17:59:00 2003
++++ throbber.py.new	Sat May  8 01:19:13 2004
+@@ -52,10 +52,14 @@
+                  frameWidth = 0,  # width of each frame (only necessary for composite image)
+                  label = None,    # optional text to be displayed
+                  overlay = None,  # optional image to overlay on animation
+-                 reverse = 0,     # reverse direction at end of animation
++                 reverse = 0,     # reverse direction at end of animation                 
+                  style = 0,       # window style
++                 useParentBackground = False, # shall parent background be used
++                                  # when drawing transparent bitmap 
+                  name = "throbber"):
+         wx.Panel.__init__(self, parent, id, pos, size, style, name)
++        self.useParentBackground = useParentBackground
++        self.savedBackground = None
+         self.name = name
+         self.label = label
+         self.running = (1 != 1)
+@@ -133,8 +137,39 @@
+         event.Skip()
+ 
+ 
+-    def Draw(self, dc):
+-        dc.DrawBitmap(self.submaps[self.sequence[self.current]], 0, 0, True)
++    def SaveBackground(self):
++        self.savedBackground = wx.EmptyBitmap(self.width, self.height)
++        memDC = wx.MemoryDC()
++        memDC.SelectObject(self.savedBackground)
++        try:
++            parent = self.GetParent()
++        except:
++            parent = None
++
++        if self.useParentBackground and (parent is not None):          
++            dc = wx.ClientDC(parent);
++            pt = wx.Point(0, 0);
++            screenPt = self.ClientToScreen(pt);
++            parentPt = parent.ScreenToClient(screenPt);
++            memDC.Blit(0, 0, self.width, self.height, dc, parentPt.x, parentPt.y);
++        else:
++            dc = wx.ClientDC(self)
++            memDC.Blit(0, 0, self.width, self.height, dc, 0, 0);    
++            
++        memDC.SelectObject(wx.NullBitmap);
++
++        
++    def Draw(self, dc):           
++        if self.savedBackground is None:
++            self.SaveBackground()            
++        bmp = wx.EmptyBitmap(self.width,self.height)   
++        memDC = wx.MemoryDC()
++        memDC.SelectObject(bmp)
++        memDC.DrawBitmap(self.savedBackground, 0, 0)
++        memDC.DrawBitmap(self.submaps[self.sequence[self.current]], 0, 0, True)
++        memDC.SelectObject(wx.NullBitmap)
++           
++        dc.DrawBitmap(bmp, 0, 0, False)
+         if self.overlay and self.showOverlay:
+             dc.DrawBitmap(self.overlay, self.overlayX, self.overlayY, True)
+         if self.label and self.showLabel:
+@@ -193,8 +228,9 @@
+     def Start(self):
+         """Start the animation"""
+         if not self.running:
++            self.SaveBackground()
+             self.running = not self.running
+-            self.timer.Start(self.frameDelay * 1000)
++            self.timer.Start(int(self.frameDelay * 1000))
+ 
+ 
+     def Stop(self):

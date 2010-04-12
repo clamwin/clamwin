@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.2  (Win32)">
+	<META NAME="CREATED" CONTENT="20040426;21532900">
+	<META NAME="CHANGEDBY" CONTENT="Peter Budts">
+	<META NAME="CHANGED" CONTENT="20070708;17403300">
+	<STYLE TYPE="text/css">
+	<!--
+		@page { size: 21.01cm 29.69cm; margin: 2cm }
+		P { margin-bottom: 0.21cm }
+		P.western { font-family: "Arial", sans-serif }
+		H1 { margin-bottom: 0.21cm; text-align: center }
+		H1.western { font-family: "Arial", sans-serif; font-size: 16pt }
+		H1.cjk { font-family: "Mincho"; font-size: 16pt }
+		H1.ctl { font-family: "Tahoma"; font-size: 16pt }
+		H4 { margin-bottom: 0.21cm }
+		H4.western { font-family: "Arial", sans-serif; font-size: 11pt; font-style: italic }
+		H4.cjk { font-family: "Mincho"; font-size: 11pt; font-style: italic }
+		H4.ctl { font-family: "Tahoma"; font-size: 11pt; font-style: italic }
+		P.monospace-western { font-family: "Courier New", monospace; font-size: 11pt; page-break-before: auto }
+		P.monospace-cjk { page-break-before: auto }
+		P.monospace-ctl { page-break-before: auto }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-GB" DIR="LTR">
+<H1 CLASS="western">Troubleshooting</H1>
+<H4 CLASS="western"><SPAN ID="Frame1" DIR="LTR" STYLE="float: left; width: 90%; height: 5.13cm; border: 1px solid #000000; padding: 0.15cm; background: #e6e6e6">
+	<H4 CLASS="western"><FONT COLOR="#000000">This chapter describes
+	solutions to the following issues:</FONT></H4>
+	<UL>
+		<UL>
+			<UL>
+				<UL>
+					<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Times New Roman, serif">When
+					trying to send a test e-mail alert, a message similar to the
+					following appears</FONT></P>
+					<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Times New Roman, serif">E-mail
+					clients that store messages in a single file</FONT></P>
+					<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Times New Roman, serif">Conflicts
+					with some versions of ActivePython</FONT></P>
+					<LI><P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Times New Roman, serif">Outlook
+					2000 does not restore when minimised</FONT></P>
+				</UL>
+			</UL>
+		</UL>
+	</UL>
+	<H4 CLASS="western"><FONT COLOR="#000000"><FONT COLOR="#000000">If
+	your desired topic is not included here, please see the FAQ located
+	at: </FONT><A HREF="http://www.clamwin.com/content/category/3/7/27/"></A><A HREF="http://www.clamwin.com/content/category/3/7/27/"></A><A HREF="http://www.clamwin.com/content/category/3/7/27/">http://www.clamwin.com/content/category/3/7/27/</A><A HREF="http://www.clamwin.com/content/category/3/7/27/"></A><A HREF="http://www.clamwin.com/content/category/3/7/27/"></A></FONT></H4>
+</SPAN><BR CLEAR=LEFT>
+</H4>
+<H4 CLASS="western"><FONT COLOR="#000000">Problem: When trying to
+send a test e-mail alert, a message similar to the following appears</FONT></H4>
+<P CLASS="monospace-western"><FONT COLOR="#000000">Could not send the
+email. Please ensure you are connected to the internet. Error: SMTP
+instance has no attribute 'sock'</FONT></P>
+<P CLASS="western"><FONT COLOR="#000000">or</FONT></P>
+<P CLASS="monospace-western"><FONT COLOR="#000000">Could not send the
+email.  Please ensure you are connected to the internet. Error: SMTP
+AUTH extension not supported by server</FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><IMG SRC="troubleshooting_html_m77fa874.png" NAME="Grafik1" ALIGN=LEFT WIDTH=458 HEIGHT=159 BORDER=0><BR CLEAR=LEFT><BR><BR>
+</P>
+<P CLASS="western"><FONT COLOR="#000000">Solution: The SMTP server
+settings are wrong. Note that many ISP's do not require a user name &amp;
+password for the SMTP server. Try leaving these settings blank.</FONT></P>
+<H4 CLASS="western"></H4>
+<H4 CLASS="western">E-mail clients that store messages in a single
+file</H4>
+<P CLASS="western">Some e-mail clients (<SPAN LANG="en-GB">e.g.</SPAN>
+<A HREF="http://www.ritlabs.com/en/products/thebat/"></A><A HREF="http://www.ritlabs.com/en/products/thebat/"></A><A HREF="http://www.ritlabs.com/en/products/thebat/">The
+Bat!</A><A HREF="http://www.ritlabs.com/en/products/thebat/"></A><A HREF="http://www.ritlabs.com/en/products/thebat/"></A>)
+store all messages in a single file. Others store each e-mail as a
+<SPAN LANG="en-GB">separate</SPAN> file. If ClamWin finds a virus
+attached to an e-mail, it will consider the entire file (<SPAN LANG="en-GB">i.e.</SPAN>
+all the e-mails in that file) to be infected. Therefore, the entire
+file will be removed or moved to quarantine. You may wish to set the
+Filters (see the instructions on configuring ClamWin) so that these
+files are not scanned.</P>
+<P CLASS="western">Users of The Bat! may be interested to know that
+Marco Pontello has written a plug-in that allows The Bat! to use
+ClamWin to scan attachments. More details are available at <A HREF="http://mark0.net/plugins-tb-tbclamwin-e.html"></A><A HREF="http://mark0.net/plugins-tb-tbclamwin-e.html"></A><A HREF="http://mark0.net/plugins-tb-tbclamwin-e.html">Marco's
+web site</A><A HREF="http://mark0.net/plugins-tb-tbclamwin-e.html"></A><A HREF="http://mark0.net/plugins-tb-tbclamwin-e.html"></A>.</P>
+<H4 CLASS="western"></H4>
+<H4 CLASS="western">Conflicts with ActivePython</H4>
+<P CLASS="western">Having python installed should not be a problem if
+you have python 2.3 and pywin32-201
+(<A HREF="http://sourceforge.net/projects/pywin32/" NAME="Python Extensions for Windows"></A><A HREF="http://sourceforge.net/projects/pywin32/"></A><A HREF="http://sourceforge.net/projects/pywin32/">http://sourceforge.net/projects/pywin32/</A><A HREF="http://sourceforge.net/projects/pywin32/"></A><A HREF="http://sourceforge.net/projects/pywin32/" NAME="Python Extensions for Windows"></A>)
+installed. 
+</P>
+<P CLASS="western">It seems that versions of ActiveState python that
+come with win32all-163 (now pywin32) create a DLL conflict. So if you
+have ActivePython 2.3, just install pywin32 and it should be fine.</P>
+<H4 CLASS="western"></H4>
+<H4 CLASS="western">Outlook 2000 does not restore when minimised</H4>
+<P CLASS="western">When ClamWin is installed, Outlook 2000 may not
+restore properly from being minimized. Installing Office 2000 Service
+Release 1a (SR-1a) will fix this problem, and is generally
+recommended, as it includes a number of bug fixes and security fixes.
+Full details and downloads are available at
+<A HREF="http://www.microsoft.com/downloads/details.aspx?FamilyID=AF6C8D03-7633-45B4-AB96-795EE656F2A2&amp;displaylang=EN"></A><A HREF="http://www.microsoft.com/downloads/details.aspx?FamilyID=AF6C8D03-7633-45B4-AB96-795EE656F2A2&amp;displaylang=EN"></A><A HREF="http://www.microsoft.com/downloads/details.aspx?FamilyID=AF6C8D03-7633-45B4-AB96-795EE656F2A2&amp;displaylang=EN"><FONT COLOR="#0000ff"><U>http://www.microsoft.com/downloads/details.aspx?FamilyID=AF6C8D03-7633-45B4-AB96-795EE656F2A2&amp;displaylang=EN</U></FONT></A><A HREF="http://www.microsoft.com/downloads/details.aspx?FamilyID=AF6C8D03-7633-45B4-AB96-795EE656F2A2&amp;displaylang=EN"></A><A HREF="http://www.microsoft.com/downloads/details.aspx?FamilyID=AF6C8D03-7633-45B4-AB96-795EE656F2A2&amp;displaylang=EN"></A><FONT COLOR="#000000"><SPAN STYLE="text-decoration: none">
+or</SPAN></FONT></P>
+<P CLASS="western"><A HREF="http://tinyurl.com/xsyx"><FONT COLOR="#0000ff"><U>http://tinyurl.com/xsyx</U></FONT></A></P>
+<H4 CLASS="western"></H4>
+</BODY>
+</HTML>

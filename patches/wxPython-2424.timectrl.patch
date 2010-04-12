@@ -1,0 +1,102 @@
+--- timectrl.py	Fri Sep 26 04:29:28 2003
++++ timectrl.py.new	Sat May  8 02:09:57 2004
+@@ -28,7 +28,7 @@
+ #   persist.  Because "today" can be a day for which an hour can "not exist"
+ #   or be counted twice (1 day each per year, for DST adjustments), the date
+ #   portion of all wxDateTimes used/returned have their date portion set to
+-#   Jan 1, 1970 (the "epoch.")
++#   Jan 1, 1971 (the "epoch.")
+ #
+ 
+ """<html><body>
+@@ -127,7 +127,7 @@
+ <DT><B>GetWxDateTime(value=None)</B>
+ <DD>When called without arguments, retrieves the value of the control, and applies
+ it to the wxDateTimeFromHMS() constructor, and returns the resulting value.
+-The date portion will always be set to Jan 1, 1970. This form is the same
++The date portion will always be set to Jan 1, 1971. This form is the same
+ as GetValue(as_wxDateTime=True).  GetWxDateTime can also be called with any of the
+ other valid time formats settable with SetValue, to regularize it to a single
+ wxDateTime form.  The function will raise ValueError on an unconvertable argument.
+@@ -135,7 +135,7 @@
+ <DT><B>GetMxDateTime()</B>
+ <DD>Retrieves the value of the control and applies it to the DateTime.Time()
+ constructor,and returns the resulting value.  (The date portion will always be
+-set to Jan 1, 1970.) (Same as GetValue(as_wxDateTime=True); provided for backward
++set to Jan 1, 1971.) (Same as GetValue(as_wxDateTime=True); provided for backward
+ compatibility with previous release.)
+ <BR>
+ <BR>
+@@ -365,9 +365,6 @@
+         # dynamically without affecting individual field constraint validation
+         maskededit_kwargs['retainFieldValidation'] = True
+ 
+-        # allow control over font selection:
+-        maskededit_kwargs['useFixedWidthFont'] = self.__useFixedWidthFont
+-
+         # allow for explicit size specification:
+         if size != wxDefaultSize:
+             # override (and remove) "autofit" autoformat code in standard time formats:
+@@ -476,7 +473,7 @@
+             if as_wxDateTime:
+                 pass
+             elif as_mxDateTime:
+-                value = DateTime.DateTime(1970, 1, 1, value.GetHour(), value.GetMinute(), value.GetSecond())
++                value = DateTime.DateTime(1971, 1, 1, value.GetHour(), value.GetMinute(), value.GetSecond())
+             elif as_wxTimeSpan:
+                 value = wxTimeSpan(value.GetHour(), value.GetMinute(), value.GetSecond())
+             elif as_mxDateTimeDelta:
+@@ -502,7 +499,7 @@
+             wxTimeSpan
+             mxDateTime
+             mxDateTimeDelta
+-        and converts it to a wxDateTime that always has Jan 1, 1970 as its date
++        and converts it to a wxDateTime that always has Jan 1, 1971 as its date
+         portion, so that range comparisons around values can work using
+         wxDateTime's built-in comparison function.  If a value is not
+         provided to convert, the string value of the control will be used.
+@@ -524,7 +521,7 @@
+         if type(value) == types.StringType:
+ 
+             # Construct constant wxDateTime, then try to parse the string:
+-            wxdt = wxDateTimeFromDMY(1, 0, 1970)
++            wxdt = wxDateTimeFromDMY(1, 0, 1971)
+             dbg('attempting conversion')
+             value = value.strip()    # (parser doesn't like leading spaces)
+             checkTime    = wxdt.ParseTime(value)
+@@ -557,7 +554,7 @@
+                 dbg(indent=0, suspend=0)
+                 raise ValueError(error)
+ 
+-            wxdt = wxDateTimeFromDMY(1, 0, 1970)
++            wxdt = wxDateTimeFromDMY(1, 0, 1971)
+             wxdt.SetHour(hour)
+             wxdt.SetMinute(minute)
+             wxdt.SetSecond(second)
+@@ -582,7 +579,7 @@
+             # mx' DateTime.Parser.TimeFromString() doesn't handle AM/PM:
+             wxdt = self.GetWxDateTime(value)
+             hour, minute, second = wxdt.GetHour(), wxdt.GetMinute(), wxdt.GetSecond()
+-            t = DateTime.DateTime(1970,1,1) + DateTimeDelta(0, hour, minute, second)
++            t = DateTime.DateTime(1971,1,1) + DateTimeDelta(0, hour, minute, second)
+         return t
+ 
+ 
+@@ -850,7 +847,7 @@
+         min = self.GetMin()
+         max = self.GetMax()
+ 
+-        midnight = wxDateTimeFromDMY(1, 0, 1970)
++        midnight = wxDateTimeFromDMY(1, 0, 1971)
+         if min <= max:   # they don't span midnight
+             ret = min <= value <= max
+ 
+@@ -1040,7 +1037,7 @@
+             # adjusting this field is trickier, as its value can affect the
+             # am/pm setting.  So, we use wxDateTime to generate a new value for us:
+             # (Use a fixed date not subject to DST variations:)
+-            converter = wxDateTimeFromDMY(1, 0, 1970)
++            converter = wxDateTimeFromDMY(1, 0, 1971)
+             dbg('text: "%s"' % text)
+             converter.ParseTime(text.strip())
+             currenthour = converter.GetHour()
