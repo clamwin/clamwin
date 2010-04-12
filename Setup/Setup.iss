@@ -138,7 +138,7 @@ Source: py2exe\dist\lib\BalloonTip.pyd; DestDir: {app}\lib; Components: ClamWin;
 ; added main.cvd as per clamav team request
 Source: cvd\main.cvd; DestDir: {code:CommonProfileDir}\.clamwin\db; Components: ClamWin; Flags: ignoreversion comparetimestamp; Check: NoMainCld
 Source: cvd\daily.cvd; DestDir: {code:CommonProfileDir}\.clamwin\db; Components: ClamWin; Flags: ignoreversion comparetimestamp; Check: NoDailyCld
-Source: cvd\bytecodec.cvd; DestDir: {code:CommonProfileDir}\.clamwin\db; Components: ClamWin; Flags: ignoreversion comparetimestamp; Check: NoBytecodecCld
+Source: cvd\bytecode.cvd; DestDir: {code:CommonProfileDir}\.clamwin\db; Components: ClamWin; Flags: ignoreversion comparetimestamp; Check: NoBytecodeCld
 #ENDIF
 
 [Icons]
@@ -210,6 +210,11 @@ Filename: {app}\bin\ClamWin.conf; Section: Updates; Key: time; String: {code:Cur
 Name: typical; Description: Typical Installation
 Name: custom; Description: Custom Installation; Flags: iscustom
 Name: full; Description: Full Installation
+
+[InstallDelete]
+Name: {code:CommonProfileDir}\.clamwin\db\main.cld; Type: files; Check: IsDeleteCld
+Name: {code:CommonProfileDir}\.clamwin\db\daily.cld; Type: files; Check: IsDeleteCld
+
 [UninstallDelete]
 Name: {tmp}\ClamWin_Scheduler_Info; Type: files; Components: ClamWin
 Name: {tmp}\ClamWin_Upadte_Time; Type: files; Components: ClamWin
@@ -511,7 +516,14 @@ begin
 end;
 
 
-
+// we need to remove cld's if previous version was <0.96 as they are malformed (text mode vs binary since 0.96)
+function IsDeleteCld(): Boolean;
+begin
+	if PreviousVersion < 9600 then
+		Result := True
+	else
+	    Result := False
+end;
 
 
 function IsWin9x(): Boolean;
@@ -722,11 +734,11 @@ begin
 	Result := not FileExists(CommonProfileDir(Temp) + '\.clamwin\db\daily.cld')
 end;
 
-function NoBytecodecCld(): Boolean;
+function NoBytecodeCld(): Boolean;
 var
 	Temp: String;
 begin
-	Result := not FileExists(CommonProfileDir(Temp) + '\.clamwin\db\bytecodec.cld')
+	Result := not FileExists(CommonProfileDir(Temp) + '\.clamwin\db\bytecode.cld')
 end;
 
 function GetIExplorerVersion(): String;

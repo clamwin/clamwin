@@ -210,6 +210,11 @@ Filename: {app}\bin\ClamWin.conf; Section: Updates; Key: time; String: {code:Cur
 Name: typical; Description: Typical Installation
 Name: custom; Description: Custom Installation; Flags: iscustom
 Name: full; Description: Full Installation
+
+[InstallDelete]
+Name: {code:CommonProfileDir}\.clamwin\db\main.cld; Type: files; Check: IsDeleteCld
+Name: {code:CommonProfileDir}\.clamwin\db\daily.cld; Type: files; Check: IsDeleteCld
+
 [UninstallDelete]
 Name: {tmp}\ClamWin_Scheduler_Info; Type: files; Components: ClamWin
 Name: {tmp}\ClamWin_Upadte_Time; Type: files; Components: ClamWin
@@ -511,7 +516,14 @@ begin
 end;
 
 
-
+// we need to remove cld's if previous version was <0.96 as they are malformed (text mode vs binary since 0.96)
+function IsDeleteCld(): Boolean;
+begin
+	if PreviousVersion < 9600 then
+		Result := True
+	else
+	    Result := False
+end;
 
 
 function IsWin9x(): Boolean;

@@ -57,7 +57,7 @@ call %WGET_UTIL% http://%DB_MIRROR%/main.cvd -N -O "%THISDIR%\Setup\cvd\main.cvd
 if not "%ERRORLEVEL%"=="0" goto ERROR
 call %WGET_UTIL% http://%DB_MIRROR%/daily.cvd -N -O "%THISDIR%\Setup\cvd\daily.cvd"
 if not "%ERRORLEVEL%"=="0" goto ERROR
-call %WGET_UTIL% http://%DB_MIRROR%/daily.cvd -N -O "%THISDIR%\Setup\cvd\bytecodec.cvd"
+call %WGET_UTIL% http://%DB_MIRROR%/bytecode.cvd -N -O "%THISDIR%\Setup\cvd\bytecode.cvd"
 if not "%ERRORLEVEL%"=="0" goto ERROR
 
 rem build setups
