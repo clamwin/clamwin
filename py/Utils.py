@@ -715,6 +715,7 @@ def ReformatLog(data, rtf, err_text):
 
 # removes clamav warnings
 def ReplaceClamAVWarnings(data):
+    data = data.replace('\\\\?\\', '')
     data = data.replace('Please check if ClamAV tools are linked against proper version of libclamav\n', '')
     data = data.replace('WARNING: Your ClamAV installation is OUTDATED!\n', '')
     data = re.sub("DON'T PANIC! Read .*\n", '', data)

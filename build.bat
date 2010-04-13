@@ -16,6 +16,7 @@ set DB_MIRROR=db.au.clamav.net
 rem build pyclamav
 cd ..\addons\pyc
 call build.cmd release
+if not "%ERRORLEVEL%"=="0" goto ERROR
 copy .\build\lib.win32-2.3\pyc.pyd "%THISDIR%\py"
 if not "%ERRORLEVEL%"=="0" goto ERROR
 
@@ -61,13 +62,21 @@ call %WGET_UTIL% http://%DB_MIRROR%/bytecode.cvd -N -O "%THISDIR%\Setup\cvd\byte
 if not "%ERRORLEVEL%"=="0" goto ERROR
 
 rem build setups
-call "%ISTOOLDIR%\ISTool.exe" -compile "%THISDIR%\Setup\Setup-nodb.iss"
+call "%ISTOOLDIR%\ISTool.exe" -compile "%THISDIR%\Setup\Setup-notb.iss"
+if not "%ERRORLEVEL%"=="0" goto ERROR
+rem move nodb setup to -nodb file
+del "%THISDIR%\Setup\Output\Setup-notb.exe"
+move "%THISDIR%\Setup\Output\Setup.exe" "%THISDIR%\Setup\Output\Setup-notb.exe"
 if not "%ERRORLEVEL%"=="0" goto ERROR
 
+
+call "%ISTOOLDIR%\ISTool.exe" -compile "%THISDIR%\Setup\Setup-nodb.iss"
+if not "%ERRORLEVEL%"=="0" goto ERROR
 rem move nodb setup to -nodb file
 del "%THISDIR%\Setup\Output\Setup-nodb.exe"
 move "%THISDIR%\Setup\Output\Setup.exe" "%THISDIR%\Setup\Output\Setup-nodb.exe"
 if not "%ERRORLEVEL%"=="0" goto ERROR
+
 
 call "%ISTOOLDIR%\ISTool.exe" -compile "%THISDIR%\Setup\Setup.iss"
 if not "%ERRORLEVEL%"=="0" goto ERROR
