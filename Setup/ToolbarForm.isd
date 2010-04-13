@@ -1,0 +1,177 @@
+[Code]
+var
+ chkInstallToolbar: TCheckBox;
+ chkDefaultSearch: TCheckBox;
+ chkDefaultSearchChecked: Boolean;
+procedure onclick_lblPrivacyPolicyHyperlink(Sender: TObject);
+ var ErrorCode: Integer;
+begin
+ ShellExec('open', 'http://about.ask.com/en/docs/about/privacy.shtml', '', '', SW_SHOW, ewNoWait, ErrorCode);
+end;
+procedure onclick_lblTermsOfUseHyperlink(Sender: TObject);
+var ErrorCode: Integer;
+begin
+ ShellExec('open', 'http://about.ask.com/en/docs/about/ask_eula.shtml', '', '', SW_SHOW, ewNoWait, ErrorCode);
+end;
+
+
+
+procedure onclick_chkInstallToolbar(Sender: TObject);
+begin
+ if (chkInstallToolbar.State = cbUnchecked) then begin
+   chkDefaultSearchChecked := chkDefaultSearch.Checked
+   chkDefaultSearch.Checked := False
+   chkDefaultSearch.Enabled := False
+ end else begin
+   chkDefaultSearch.Checked := chkDefaultSearchChecked
+   chkDefaultSearch.Enabled := True
+ end;
+end;
+
+
+function ToolbarForm_CreatePage(PreviousPageId: Integer): Integer;
+var
+ Page: TWizardPage;
+ lblToolbarHeadline: TLabel;
+ lblToolbarFeature1: TLabel;
+ lblToolbarFeature2: TLabel;
+ lblToolbarFeature3: TLabel;
+ yoffs1 : LongInt;
+ imgToolbar: TBitmapImage;
+ lblToolbarInfo: TLabel;
+ lblToolbarPrivacy: TLabel;
+ lblTermsOfUseHyperlink: TLabel;
+ lblPrivacyPolicyHyperlink: TLabel;
+begin
+ Page := CreateCustomPage(PreviousPageId, 'Ask Toolbar', 'Install the Ask Toolbar for Internet Explorer and Firefox');
+ yoffs1 := 0;
+ lblToolbarHeadline := TLabel.Create(Page);
+ with lblToolbarHeadline do
+ begin
+  Parent := Page.Surface;
+  Left := ScaleX(0);
+  Top := ScaleY(yoffs1);
+  Width := ScaleX(100);
+  Height := ScaleY(15);
+  Font.Color := -16777208;
+  Font.Height := ScaleY(-11);
+  Font.Name := 'Tahoma';
+  Font.Style := [fsBold];
+  Caption := 'The Ask Toolbar makes Web browsing more convenient';
+ end;
+ lblToolbarFeature1 := TLabel.Create(Page);
+ with lblToolbarFeature1 do
+ begin
+  Parent := Page.Surface;
+  Left := ScaleX(0);
+  Top := ScaleY(yoffs1 + 18);
+  Width := ScaleX(100);
+  Height := ScaleY(15);
+  Caption := ' * ' + 'Search the Web anytime';
+ end;
+ lblToolbarFeature2 := TLabel.Create(Page);
+ with lblToolbarFeature2 do
+ begin
+  Parent := Page.Surface;
+  Left := ScaleX(0);
+  Top := ScaleY(yoffs1 + 36);
+  Width := ScaleX(100);
+  Height := ScaleY(15);
+  Caption := ' * ' + 'Keep up to date on news, weather, and sports';
+ end;
+ lblToolbarFeature3 := TLabel.Create(Page);
+ with lblToolbarFeature3 do
+ begin
+  Parent := Page.Surface;
+  Left := ScaleX(0);
+  Top := ScaleY(yoffs1 + 54);
+  Width := ScaleX(100);
+  Height := ScaleY(15);
+  Caption := ' * ' + 'Use convenient tools to enhance your browsing';
+ end;
+ imgToolbar := TBitmapImage.Create(Page);
+ with imgToolbar do
+ begin
+  Parent := Page.Surface;
+  ExtractTemporaryFile('Toolbar.bmp');
+  Bitmap.LoadFromFile(ExpandConstant('{tmp}')+'\Toolbar.bmp');
+  Left := ScaleX(0);
+  Top := ScaleY(yoffs1 + 82);
+  Width := ScaleX(320);
+  Height := ScaleY(25);
+  AutoSize := True;
+ end;
+ chkInstallToolbar := TCheckBox.Create(Page);
+ with chkInstallToolbar do
+ begin
+  Parent := Page.Surface;
+  Caption := 'Install the Ask Toolbar';
+  Left := ScaleX(0);
+  Top := ScaleY(yoffs1 + 124);
+  Width := ScaleX(418);
+  Height := ScaleY(17);
+  Checked := True;
+  State := cbChecked;
+  Onclick := @onclick_chkInstallToolbar;
+ end;
+ chkDefaultSearch := TCheckBox.Create(Page);
+ with chkDefaultSearch do
+ begin
+  Parent := Page.Surface;
+  Caption := 'Make Ask my browser default search provider';
+  Left := ScaleX(0);
+  Top := ScaleY(yoffs1 + 144);
+  Width := ScaleX(418);
+  Height := ScaleY(17);
+  Checked := True;
+  State := cbChecked;
+ end;
+ chkDefaultSearchChecked := True;
+
+ lblToolbarPrivacy := TLabel.Create(Page);
+ with lblToolbarPrivacy do
+ begin
+  Parent := Page.Surface;
+  Left := ScaleX(0);
+  Top := ScaleY(yoffs1 + 190);
+  Width := ScaleX(397);
+  Height := ScaleY(39);
+  AutoSize := False;
+  WordWrap := True;
+  Font.Color := -16777208;
+  Font.Height := ScaleY(-11);
+  Font.Name := 'Tahoma';
+  Font.Style := [fsBold];
+  Caption := 'By installing the Ask Toolbar you agree to the End User License Agreement and the Privacy Policy.';
+ end;
+ lblTermsOfUseHyperlink := TLabel.Create(Page);
+ with lblTermsOfUseHyperlink do
+ begin
+  Parent := Page.Surface;
+  Left := ScaleX(0);
+  Top := ScaleY(yoffs1 + 220);
+  Width := ScaleX(180);
+  Height := ScaleY(13);
+  Font.Color := 16711680;
+  Font.Style := [fsUnderline];
+  Caption := 'End User License Agreement';
+  Cursor := crHand;
+  Onclick := @onclick_lblTermsOfUseHyperlink;
+ end;
+ lblPrivacyPolicyHyperlink := TLabel.Create(Page);
+ with lblPrivacyPolicyHyperlink do
+ begin
+  Parent := Page.Surface;
+  Left := ScaleX(200);
+  Top := ScaleY(yoffs1 + 220);
+  Width := ScaleX(180);
+  Height := ScaleY(13);
+  Font.Color := 16711680;
+  Font.Style := [fsUnderline];
+  Caption := 'Privacy Policy';
+  Cursor := crHand;
+  Onclick := @onclick_lblPrivacyPolicyHyperlink;
+ end;
+
+ Result := Page.ID;
+end;

@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
+<OBJECT type="text/site properties">
+	<param name="ImageType" value="Folder">
+</OBJECT>
+<UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Manual">
+		<param name="Local" value="cover.html">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Introduction">
+			<param name="Local" value="intro.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Installation Instructions">
+			<param name="Local" value="install.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Configuration">
+			<param name="Local" value="config.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Usage">
+			<param name="Local" value="usage.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="How to Uninstall">
+			<param name="Local" value="uninstall.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Advanced Operations">
+			<param name="Local" value="advanced.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="FAQ: Frequently Asked Questions">
+			<param name="Local" value="faq.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Troubleshooting">
+			<param name="Local" value="troubleshooting.html">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Appendices">
+		<param name="Local" value="App_CD-USB.html">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Appendix A : How to Run ClamWin from CD or USB">
+			<param name="Local" value="App_CD-USB.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Appendix B : Licence">
+			<param name="Local" value="licence.html">
+			</OBJECT>
+	</UL>
+</UL>
+</BODY></HTML>

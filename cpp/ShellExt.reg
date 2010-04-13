@@ -1,0 +1,13 @@
+REGEDIT4
+
+[HKEY_CLASSES_ROOT\CLSID\{65713842-C410-4f44-8383-BFE01A398C90}]
+   @="ClamWin Shell Extension"
+[HKEY_CLASSES_ROOT\CLSID\{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32]
+   @="L:\\Projects\\ClamWin\\sources\\c++\\Build\\ExplorerShell.dll"
+     "ThreadingModel"="Apartment"
+
+[HKEY_CLASSES_ROOT\*\shellex\ContextMenuHandlers\ClamWin]
+   @="{65713842-C410-4f44-8383-BFE01A398C90}"
+
+[HKEY_CLASSES_ROOT\Folder\shellex\ContextMenuHandlers\ClamWin]
+   @="{65713842-C410-4f44-8383-BFE01A398C90}"
