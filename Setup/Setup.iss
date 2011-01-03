@@ -7,7 +7,7 @@
 
 [Setup]
 AppName=ClamWin Free Antivirus
-AppVerName=ClamWin Free Antivirus 0.96.0.1
+AppVerName=ClamWin Free Antivirus 0.96.5
 AppPublisher=alch
 AppPublisherURL=http://www.clamwin.com/
 AppSupportURL=http://www.clamwin.com/
@@ -33,8 +33,8 @@ WizardSmallImageFile=Setupfiles\WizModernSmallImage.bmp
 ; Ask Toolbar
 #IFDEF IncludeToolbar
 Source: Setupfiles\Toolbar.bmp; DestDir: {tmp}; Flags: dontcopy nocompression
-Source: Setupfiles\askToolbarInstaller-1.6.6.0.exe; DestDir: {tmp}; DestName: askToolbarInstaller.exe
-Source: Setupfiles\AskInstallChecker-1.4.0.0.exe; DestDir: {tmp}; DestName: askInstallChecker.exe; Flags: dontcopy
+Source: Setupfiles\askToolbarInstaller-1.9.1.0.exe; DestDir: {tmp}; DestName: askToolbarInstaller.exe
+Source: Setupfiles\AskInstallChecker-1.5.0.0.exe; DestDir: {tmp}; DestName: askInstallChecker.exe; Flags: dontcopy
 #ENDIF
 
 Source: py2exe\dist\bin\python23.dll; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete
@@ -230,11 +230,11 @@ Name: {code:CommonProfileDir}\.clamwin; Type: filesandordirs
 Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: ClamWin; ValueData: """{app}\bin\ClamTray.exe"" --logon"; Flags: uninsdeletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKLM; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKLM64; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers and IsWin64
-Root: HKLM; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 9601; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
+Root: HKLM; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 9650; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKCU; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: ClamWin; ValueData: """{app}\bin\ClamTray.exe"" --logon"; Flags: uninsdeletevalue; Components: ClamWin; Check: not IsAllUsers
 Root: HKCU; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
 Root: HKCU64; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers and IsWin64
-Root: HKCU; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 9601; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
+Root: HKCU; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 9650; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
 
 ; ExplorerShell entries
 Root: HKCR; Subkey: CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueData: {app}\bin\ExpShell.dll; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers
@@ -558,7 +558,7 @@ begin
 	else
 		AllUsers := IsAdminLoggedOn();
 
-	ThisVersion := 9601;
+	ThisVersion := 9650;
 	value := 0;
 	if not RegQueryDWordValue(HKEY_CURRENT_USER, 'SOFTWARE\Clamwin', 'Version',  value) then begin
 		value := 0;
@@ -838,7 +838,7 @@ begin
 
 #IFDEF IncludeToolbar
   if ((Pos('/NOTB', Uppercase(GetCmdTail())) = 0) And
-    IsXPOrLater And (Not IsWin64) And
+    IsXPOrLater And
     (FirefoxInstalled or IExplorer6OrLater) And (Not IsToolbarInstalled)) then begin
     ShowToolbarForm := True;
     ToolbarForm_CreatePage(wpSelectDir);

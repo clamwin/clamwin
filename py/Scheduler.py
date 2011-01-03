@@ -151,20 +151,20 @@ class Scheduler(threading.Thread):
             except ValueError, e:
                 print "couldn't parse time, self._startTime = %s.\n Error: %s" % (self._startTime, str(e))
                 self._missedSchedule = True
-                schedTime = t + 120
+                schedTime = t + 3600
             addTime = 3600.0
         elif self._frequency in ('Weekly', 'Once'):
             try:
                 lt = time.localtime(t)
-                # Y2009 and Y2010 fix
+                # Y2009 and Y2010 fix (dtimestamp was wron so the binary did not update until 2011, doh)
                 # http://forums.clamwin.com/viewtopic.php?t=1988&postdays=0&postorder=asc&start=60
                 year = lt.tm_year
                 yday = lt.tm_yday - lt.tm_wday + self._weekDay
                 if yday > 365:
                     yday = yday - 365                    
                     year = year + 1
-                if yday < 1:
-                    yday = yday + 7                                
+                while yday < 1:
+                    yday += 7                                
              
                     
                 # use  weekday and HH:MM:SS part of starttime
@@ -174,7 +174,7 @@ class Scheduler(threading.Thread):
             except ValueError, e:
                 print "couldn't parse time, self._startTime = %s. self._weekDay = %i\n Error: %s" % (self._startTime, self._weekDay, str(e))
                 self._missedSchedule = True
-                schedTime = t + 120
+                schedTime = t + 86400*7
             addTime = 3600.0*24*7
         else: #'Daily' or 'Workdays' is default
             try:
@@ -182,7 +182,7 @@ class Scheduler(threading.Thread):
                 schedTime = time.mktime(time.strptime(time.strftime('%d-%m-%Y ') + self._startTime,'%d-%m-%Y %H:%M:%S'))
             except ValueError, e:
                 self._missedSchedule = True
-                schedTime = t + 120
+                schedTime = t + 86400
                 print "couldn't parse time, self._startTime = %s.\n Error: %s" % (self._startTime, str(e))
             addTime = 3600.0*24
 

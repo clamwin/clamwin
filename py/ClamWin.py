@@ -124,7 +124,7 @@ class BoaApp(wxApp):
 
         try:
             #disable fs redir
-            pyc.fsRedirect(False)
+            pyc.disableFsRedir()
         except Exception, e:
             print "Error disabling redirect on WOW64 %s" % str(e)
 

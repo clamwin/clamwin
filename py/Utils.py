@@ -689,7 +689,7 @@ def ReformatLog(data, rtf, err_text):
         for line in lines:
             if line.endswith('FALSE POSITIVE FOUND'):
                 if not fp: # first FP in the list - print header
-                    data += "The following files are Digitally Signed by Microsoft and have been incorrectly detected as viruses:\n"
+                    data += "The following files are Digitally Signed by Microsoft Corporation and may have been incorrectly detected as viruses:\n"
                     #if rtf:
                     #    data += "\\cf3\\b %s\\cf0\\b0" % hdr                    
                         
