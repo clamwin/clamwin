@@ -38,6 +38,7 @@ import MsgBox
 import Utils
 import wxDialogUtils
 import win32gui
+import platform
 
 _WAIT_TIMEOUT = 5
 if sys.platform.startswith("win"):
@@ -333,7 +334,8 @@ class wxDialogStatus(wxDialog):
 
         Utils.CleanupTemp(self._proc.getpid())
 
-        self.buttonSave.Enable(True)
+        if(platform.win32_ver()[1] < '6.1') or (not Utils.IsWow64()):
+		    self.buttonSave.Enable(True)
         self.throbber.Rest()
         self.buttonStop.SetFocus()
         self.buttonStop.SetLabel('&Close')

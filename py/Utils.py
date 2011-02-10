@@ -843,6 +843,12 @@ def IsOnline():
         print 'gethostbyname_ex Error: %s' % str(e)
     return False
 
+def IsWow64():
+    try:
+        Reg = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,"SOFTWARE\\Wow6432Node")
+        return True
+    except:
+        return False
 
 #def IsOutlookAddinEnabled():
 #    key = _winreg.HKEY_LOCAL_MACHINE
@@ -917,4 +923,5 @@ if __name__ == '__main__':
     #    daily = os.path.join(dbpath, 'daily.cvd')
     #print GetDBInfo(daily)
     print IsOnline()
+    print "IsWow64=", IsWow64()
 

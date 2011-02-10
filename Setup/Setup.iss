@@ -7,7 +7,7 @@
 
 [Setup]
 AppName=ClamWin Free Antivirus
-AppVerName=ClamWin Free Antivirus 0.96.5
+AppVerName=ClamWin Free Antivirus 0.97
 AppPublisher=alch
 AppPublisherURL=http://www.clamwin.com/
 AppSupportURL=http://www.clamwin.com/
@@ -94,7 +94,7 @@ Source: ..\cpp\Release_x64\ExpShell64.dll; DestDir: {app}\bin; Components: Explo
 Source: py2exe\dist\bin\WClose.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: py2exe\dist\lib\w9xpopen.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: Setupfiles\conagent.pif; DestDir: {app}\bin; Components: ClamWin; Flags: 32bit; Check: IsWin9x
-Source: ..\QRecover\Release\QRecover.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\QRecover\Release\QRecover.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion; Check: IsXPOrLater
 
 Source: py2exe\dist\bin\OlAddin.exe; DestDir: {app}\bin; Components: OutlookAddin; Flags: restartreplace uninsrestartdelete replacesameversion
 
@@ -146,7 +146,7 @@ Source: cvd\bytecode.cvd; DestDir: {code:CommonProfileDir}\.clamwin\db; Componen
 
 [Icons]
 Name: {group}\Virus Scanner; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: ClamWin
-Name: {group}\Quarantine Browser; Filename: {app}\bin\QRecover.exe; WorkingDir: {app}\bin; Comment: Quarantine Browser; Components: ClamWin
+Name: {group}\Quarantine Browser; Filename: {app}\bin\QRecover.exe; WorkingDir: {app}\bin; Comment: Quarantine Browser; Components: ClamWin; Check: IsXPOrLater
 Name: {code:DesktopDir}\ClamWin Antivirus; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: ClamWin; Tasks: desktopicon
 Name: {group}\Help\Printable Manual; Filename: {app}\bin\manual_en.pdf; Components: ; WorkingDir: {app}\bin
 Name: {group}\Help\Online Help; Filename: {app}\bin\manual.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: ClamWin
@@ -234,11 +234,11 @@ Name: {code:CommonProfileDir}\.clamwin; Type: filesandordirs
 Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: ClamWin; ValueData: """{app}\bin\ClamTray.exe"" --logon"; Flags: uninsdeletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKLM; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKLM64; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers and IsWin64
-Root: HKLM; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 9650; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
+Root: HKLM; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 9700; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKCU; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: ClamWin; ValueData: """{app}\bin\ClamTray.exe"" --logon"; Flags: uninsdeletevalue; Components: ClamWin; Check: not IsAllUsers
 Root: HKCU; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
 Root: HKCU64; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers and IsWin64
-Root: HKCU; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 9650; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
+Root: HKCU; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 9700; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
 
 ; ExplorerShell entries
 Root: HKCR; Subkey: CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueData: {app}\bin\ExpShell.dll; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers
@@ -562,7 +562,7 @@ begin
 	else
 		AllUsers := IsAdminLoggedOn();
 
-	ThisVersion := 9650;
+	ThisVersion := 9700;
 	value := 0;
 	if not RegQueryDWordValue(HKEY_CURRENT_USER, 'SOFTWARE\Clamwin', 'Version',  value) then begin
 		value := 0;
