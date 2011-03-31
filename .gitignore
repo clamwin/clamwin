@@ -1,0 +1,4 @@
+*.pyc
+Release
+Release_Unicode
+Release_x64
