@@ -94,7 +94,7 @@ Source: ..\cpp\Release_x64\ExpShell64.dll; DestDir: {app}\bin; Components: Explo
 Source: py2exe\dist\bin\WClose.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: py2exe\dist\lib\w9xpopen.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: Setupfiles\conagent.pif; DestDir: {app}\bin; Components: ClamWin; Flags: 32bit; Check: IsWin9x
-Source: ..\QRecover\Release\QRecover.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion; Check: IsXPOrLater
+Source: ..\QRecover\Release\QRecover.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion; Check: Is2KOrLater
 
 Source: py2exe\dist\bin\OlAddin.exe; DestDir: {app}\bin; Components: OutlookAddin; Flags: restartreplace uninsrestartdelete replacesameversion
 
@@ -146,7 +146,7 @@ Source: cvd\bytecode.cvd; DestDir: {code:CommonProfileDir}\.clamwin\db; Componen
 
 [Icons]
 Name: {group}\Virus Scanner; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: ClamWin
-Name: {group}\Quarantine Browser; Filename: {app}\bin\QRecover.exe; WorkingDir: {app}\bin; Comment: Quarantine Browser; Components: ClamWin; Check: IsXPOrLater
+Name: {group}\Quarantine Browser; Filename: {app}\bin\QRecover.exe; WorkingDir: {app}\bin; Comment: Quarantine Browser; Components: ClamWin; Check: Is2KOrLater
 Name: {code:DesktopDir}\ClamWin Antivirus; Filename: {app}\bin\ClamWin.exe; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: ClamWin; Tasks: desktopicon
 Name: {group}\Help\Printable Manual; Filename: {app}\bin\manual_en.pdf; Components: ; WorkingDir: {app}\bin
 Name: {group}\Help\Online Help; Filename: {app}\bin\manual.chm; WorkingDir: {app}\bin; Comment: ClamWin Antivirus; Components: ClamWin
@@ -538,6 +538,12 @@ end;
 function IsXPOrLater(): Boolean;
 begin
 	Result:= (GetWindowsVersion() >= $05010000);
+end;
+
+
+function Is2KOrLater(): Boolean;
+begin
+	Result:= (GetWindowsVersion() >= $05000000);
 end;
 
 

@@ -1,0 +1,75 @@
+Index: py/ClamTray.py
+===================================================================
+--- py/ClamTray.py	(revision 2315)
++++ py/ClamTray.py	(working copy)
+@@ -701,14 +701,6 @@
+             return
+         self._terminate = True
+ 
+-    def is_cancelled(self):
+-        return self._cancelled
+-
+-    def get_returnCode(self):
+-        return self._ret
+-
+-
+-
+ def main():
+     # set C locale, otherwise python and wxpython complain
+     locale.setlocale(locale.LC_ALL, 'C')
+Index: py/Utils.py
+===================================================================
+--- py/Utils.py	(revision 2315)
++++ py/Utils.py	(working copy)
+@@ -563,7 +563,10 @@
+         updatestr = updatestr[:sep]
+         # set default C locale, as *.cvd timestring uses that
+         loc = locale.setlocale(locale.LC_TIME, 'C')
+-        update_tm = time.strptime(updatestr, '%d %b %Y %H-%M %Z')
++        try:
++            update_tm = time.strptime(updatestr, '%d %b %Y %H-%M %Z')
++        except:
++            update_tm = time.strptime(updatestr, '%d %b %Y %H-%M')
+         # restore the locale
+         locale.setlocale(locale.LC_TIME, loc)
+         #get the final update time and add the UTC difference
+@@ -571,7 +574,7 @@
+         return int(ver), int(numv), updated
+     except Exception, e:
+         print 'Unable to retrieve %s version. Error: %s' % (filename, str(e))
+-        return None, None, None
++        return None, None, 0
+ 
+ def GetHostName():
+     hostname = ''
+@@ -603,9 +606,7 @@
+ 
+ def SpawnPyOrExe(filename, *params):
+     if not hasattr(sys, 'frozen') and sys.platform.startswith('win'):
+-        win32api.ShellExecute(0, 'open', 'pythonw.exe',
+-                    filename + '.py ' + ' '.join(params),
+-                    None, win32con.SW_SHOWNORMAL)
++        win32api.ShellExecute(0, 'open', filename + '.py', filename + '.py ' + ' '.join(params), None, win32con.SW_SHOWNORMAL)
+     else:
+         os.spawnl(os.P_NOWAIT, filename + '.exe', *params)
+ 
+Index: py/which.py
+===================================================================
+--- py/which.py	(revision 2315)
++++ py/which.py	(working copy)
+@@ -1,6 +1,7 @@
+ #!/usr/bin/env python
+ # Copyright (c) 2002-2003 ActiveState Corp.
+ # Author: Trent Mick (TrentM@ActiveState.com)
++from __future__ import generators
+ 
+ r"""Find the full path to commands.
+ 
+@@ -67,7 +68,6 @@
+ #   - add a "logging" interface for Python 2.3
+ #
+ 
+-from __future__ import generators
+ import os
+ import sys
+ import getopt

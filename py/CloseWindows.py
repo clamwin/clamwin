@@ -24,7 +24,8 @@
 #-----------------------------------------------------------------------------
 import SetUnicode
 import win32gui, win32con, win32api, win32process
-import time
+from win32com.shell import shell, shellcon
+import os, time
 import RedirectStd
 
 def Close(hwnd, appWindows):
@@ -51,6 +52,31 @@ def Close(hwnd, appWindows):
     return True
 
 
+def RemoveShortcuts(hwnd, setupWindows):
+    try:
+        if(win32gui.GetClassName(hwnd), win32gui.GetWindowText(hwnd)) in setupWindows:    
+        # delete leftover ClamWin shortcuts CSIDL_COMMON_PROGRAMS and CSIDL_PROGRAMS
+        # C:\Documents and Settings\All Users\Start Menu\Programs\ClamWin Antivirus		
+            s = shell.SHGetSpecialFolderPath(0, shellcon.CSIDL_COMMON_PROGRAMS, True)
+            s = os.path.join(s, 'ClamWin Antivirus')
+            s = os.path.join(s, 'Quarantine Browser.lnk')			            
+            try:
+                os.remove(s)
+            except:
+                pass
+            s = shell.SHGetSpecialFolderPath(0, shellcon.CSIDL_PROGRAMS, True)
+            s = os.path.join(s, 'ClamWin Antivirus')
+            s = os.path.join(s, 'Quarantine Browser.lnk')			            
+            try:
+                os.remove(s)
+            except:
+                pass
+                
+    except Exception, e:
+        print 'RemoveShortcuts exception', str(e)		
+    return True
+
+
 
 def CloseClamWinWindows():
     appWindows = (('ClamWinTrayWindow', 'ClamWin'),
@@ -58,10 +84,19 @@ def CloseClamWinWindows():
                     ('#32770', 'ClamWin Internet Update Status'),
                     ('#32770', 'ClamWin Preferences'))
     win32gui.EnumWindows(Close, appWindows)
+
+def Cleanup():
+    setupWindows = (('TUninstProgressForm', 'ClamWin Free Antivirus Uninstall'),)
+    win32gui.EnumWindows(RemoveShortcuts, setupWindows)
+		
+    
     
 
 
 
-if __name__=='__main__':
+if __name__=='__main__':    
     CloseClamWinWindows()
+    Cleanup()
+    
+    
         

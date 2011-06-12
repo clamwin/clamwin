@@ -2,3 +2,9 @@
 Release
 Release_Unicode
 Release_x64
+
+py/.metadata
+*.pyd
+*.dll
+pyo
+Setup
