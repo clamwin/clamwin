@@ -434,9 +434,11 @@ class wxDialogStatus(wxDialog):
             #print_over = re.search('\[( {0,2}\d{1,3}\%)?[|/\-\\\*]?\]',
             #    ctrl.GetRange(self._previousStart, lastPos)) is not None
             curtext = ctrl.GetRange(self._previousStart, lastPos)
-            print_over = curtext.endswith(']\n') and \
-                         (self._scan or \
-                         not ctrl.GetRange(self._previousStart, lastPos).endswith('100%]\n'))
+            
+            print_over = (self._scan and (len(curtext) > 1 and curtext[-2]) in ('|','/','-','\\')) or  curtext.endswith(']\n')
+                         #((curtext.endswith(']\n') or curtext.endswith(']\r')) and \
+                         #(self._scan or \
+                         #not ctrl.GetRange(self._previousStart, lastPos).endswith('100%]\n')))
             if print_over:
                 # prevent form blinking text by disabling richedit selection here
                 win32api.SendMessage(ctrl.GetHandle(),Utils.EM_HIDESELECTION, 1, 0)

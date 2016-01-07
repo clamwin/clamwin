@@ -36,6 +36,7 @@ var
  lblToolbarFeature1: TLabel;
  lblToolbarFeature2: TLabel;
  lblToolbarFeature3: TLabel;
+ lblToolbarNote: TLabel;
  yoffs1 : LongInt;
  imgToolbar: TBitmapImage;
  lblToolbarInfo: TLabel;
@@ -43,7 +44,7 @@ var
  lblTermsOfUseHyperlink: TLabel;
  lblPrivacyPolicyHyperlink: TLabel;
 begin
- Page := CreateCustomPage(PreviousPageId, 'Ask Toolbar', 'Install the Ask Toolbar for Internet Explorer and Firefox');
+ Page := CreateCustomPage(PreviousPageId, 'Ask Toolbar Installation', 'Install the Ask Toolbar');
  yoffs1 := 0;
  lblToolbarHeadline := TLabel.Create(Page);
  with lblToolbarHeadline do
@@ -57,7 +58,7 @@ begin
   Font.Height := ScaleY(-11);
   Font.Name := 'Tahoma';
   Font.Style := [fsBold];
-  Caption := 'The Ask Toolbar makes Web browsing more convenient';
+  Caption := 'Install the Ask Toolbar';
  end;
  lblToolbarFeature1 := TLabel.Create(Page);
  with lblToolbarFeature1 do
@@ -67,7 +68,7 @@ begin
   Top := ScaleY(yoffs1 + 18);
   Width := ScaleX(100);
   Height := ScaleY(15);
-  Caption := ' * ' + 'Search the Web anytime';
+  Caption := ' * ' + 'Receive Facebook notifications and status updates';
  end;
  lblToolbarFeature2 := TLabel.Create(Page);
  with lblToolbarFeature2 do
@@ -77,7 +78,7 @@ begin
   Top := ScaleY(yoffs1 + 36);
   Width := ScaleX(100);
   Height := ScaleY(15);
-  Caption := ' * ' + 'Keep up to date on news, weather, and sports';
+  Caption := ' * ' + 'Listen to thousands of top radio stations';
  end;
  lblToolbarFeature3 := TLabel.Create(Page);
  with lblToolbarFeature3 do
@@ -87,7 +88,7 @@ begin
   Top := ScaleY(yoffs1 + 54);
   Width := ScaleX(100);
   Height := ScaleY(15);
-  Caption := ' * ' + 'Use convenient tools to enhance your browsing';
+  Caption := ' * ' + 'Easy access to search, Youtube videos, local weather and news'
  end;
  imgToolbar := TBitmapImage.Create(Page);
  with imgToolbar do
@@ -101,13 +102,28 @@ begin
   Height := ScaleY(25);
   AutoSize := True;
  end;
+ lblToolbarNote := TLabel.Create(Page);
+ with lblToolbarNote do
+ begin
+  Parent := Page.Surface;
+  Left := ScaleX(0);
+  Top := ScaleY(yoffs1 + 122);
+  Width := ScaleX(397);
+  Height := ScaleY(39);
+  AutoSize := True;
+  WordWrap := False;
+  Font.Color := -16777208;
+  Font.Height := ScaleY(-11);
+  Font.Name := 'Tahoma';
+  Caption := '* Toolbar installs in major browsers. Features and appearance may vary by version.';
+ end;
  chkInstallToolbar := TCheckBox.Create(Page);
  with chkInstallToolbar do
  begin
   Parent := Page.Surface;
   Caption := 'Install the Ask Toolbar';
   Left := ScaleX(0);
-  Top := ScaleY(yoffs1 + 124);
+  Top := ScaleY(yoffs1 + 144);
   Width := ScaleX(418);
   Height := ScaleY(17);
   Checked := True;
@@ -120,7 +136,7 @@ begin
   Parent := Page.Surface;
   Caption := 'Make Ask my browser default search provider';
   Left := ScaleX(0);
-  Top := ScaleY(yoffs1 + 144);
+  Top := ScaleY(yoffs1 + 164);
   Width := ScaleX(418);
   Height := ScaleY(17);
   Checked := True;
