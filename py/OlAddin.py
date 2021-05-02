@@ -250,11 +250,20 @@ def ScanFile(path, config, attname):
         os.putenv('PATH', os.getenv('PATH') + ';' + Utils.GetCurrentDir(False))
     except Exception, e:
         print str(e)
-
+    
 
     logfile = os.path.split(path)[0]+'\\Virus Deleted by ClamWin.txt'
     scanstatus = ''
-    try:        
+    try:     
+        #check if the database is loaded and 
+        if _clamav_scanner.signo.value == 0:            
+            if config.Get('UI', 'TrayNotify') == '1':           
+                import win32gui               
+                tray_notify_params = (('Please wait while ClamWin for Outlook loads the virus database (it can take a few minutes but is only needed once per session).',
+                0, win32gui.NIIF_INFO, 30000), None)                    
+                # show balloon
+                Utils.ShowBalloon(-1, tray_notify_params)     
+                
         virusFound, virusName = _clamav_scanner.scanFile(path)        
     except Exception, e:
         raise ScanError('An Error occured whilst scanning: %s' % str(e))
@@ -885,22 +894,21 @@ class OutlookAddin(ObjectsEvent):
             if not os.path.isfile(config_file):
                 config_file = 'ClamWin.conf'
             config = Config.Settings(config_file)
-            config.Read()
-
-            #show splashcreen
-            splash = os.path.join(Utils.GetCurrentDir(False), "img\\Splash.bmp")
-            if(config.Get('EmailScan', 'ShowSplash') == '1'):
-                SplashScreen.ShowSplashScreen(splash, 5)
-                
+            config.Read()            
+            
             if config.Get('EmailScan', 'ScanOutgoing') == '1' or \
                 config.Get('EmailScan', 'ScanIncoming') == '1':
                # load clamav scanner
                 try:
-                    _clamav_scanner = clamav.Scanner(dbpath = config.Get('ClamAV', 'Database'), autoreload = True)                    
-                    _clamav_scanner.checkAndLoadDB()                    
+                    _clamav_scanner = clamav.Scanner(dbpath = config.Get('ClamAV', 'Database'), autoreload = True)                                        
                 except Exception, e:
                     raise ScanError('ClamWin Error occured whilst loading virus database: %s' % str(e))
-                dbg_print('Database has been loaded from %s' % config.Get('ClamAV', 'Database'))                
+                dbg_print('Database has been loaded from %s' % config.Get('ClamAV', 'Database'))      
+
+            #show splashcreen
+            splash = os.path.join(Utils.GetCurrentDir(False), "img\\Splash.bmp")
+            if(config.Get('EmailScan', 'ShowSplash') == '1'):
+                SplashScreen.ShowSplashScreen(splash, 5)                
         except Exception, e:
             print "An error occured whilst displaying the spashscreen Error: %s." % str(e)
 
