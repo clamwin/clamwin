@@ -55,7 +55,7 @@ except ImportError:
 from distutils.core import setup
 import py2exe
 
-ver = version.clamwin_version
+ver = version.clamwin_version.replace('0:', '')
 while ver.count(".") < 3:
     ver = ver + ".0"
     

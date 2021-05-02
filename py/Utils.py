@@ -454,16 +454,31 @@ def GetScanCmd(config, path, scanlog, noprint = False):
     return cmd
 
 
-def CleanupTemp(pid):
+def CleanupTemp(pid, dbdir=""):
     # we search for folders and files ending with 0x8pid.clamtmp
     # and then remove them
 
     print 'Cleanup for process %08x' % pid
+    
+    if dbdir <> "":
+        print 'removing databsase temp folders\n', 
+        try:
+            (dbroot, dbdirs, dbfiles) = os.walk(dbdir).next()
+            for tmpdbdir in dbdirs:
+                if tmpdbdir.startswith("tmp."):
+                    print 'removing temp database dir', tmpdbdir
+                    try:
+                        shutil.rmtree(os.path.join(dbroot, tmpdbdir), True)
+                    except Exception, e:
+                        print 'Could not remove %s. Error: %s' % (os.path.join(dbroot, tmpdbdir), str(e))
+        except:
+            pass
+            
     mask = '.%08x.clamtmp' % pid
     try:
         (root, dirs, files) = os.walk(tempfile.gettempdir()).next()
     except:
-        return
+        return    
     for tmpdir in dirs:
         if tmpdir.endswith(mask):
             try:

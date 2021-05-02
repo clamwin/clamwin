@@ -52,7 +52,7 @@ import win32api
 
 sys.path.insert(0, Utils.GetCurrentDir(False))
 #print sys.path
-import pyc
+import clamav
 
 
 modules ={'ClamTray': [0, '', 'ClamTray.py'],
@@ -88,7 +88,7 @@ class BoaApp(wxApp):
     def OnInit(self):
         wxInitAllImageHandlers()
         if self.mode == 'scanner':
-            if pyc.isWow64():
+            if clamav.isWow64():
                 self.DisablefsRedirect()
             self.exit_code = wxDialogUtils.wxScan(parent=None, config=self.config, path=self.path, autoClose=self.autoClose)
         elif self.mode == 'update':
@@ -106,7 +106,7 @@ class BoaApp(wxApp):
                 self.exit_code = 1
 
         else: #  mode == 'main'
-            if pyc.isWow64():
+            if clamav.isWow64():
                 self.DisablefsRedirect()
             self.main = wxFrameMain.create(parent=None, config=self.config)
             self.main.Show()
@@ -124,7 +124,7 @@ class BoaApp(wxApp):
 
         try:
             #disable fs redir
-            pyc.disableFsRedir()
+            clamav.disableFsRedir()
         except Exception, e:
             print "Error disabling redirect on WOW64 %s" % str(e)
 

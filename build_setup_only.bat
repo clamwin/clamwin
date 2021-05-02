@@ -1,6 +1,6 @@
 rem @echo off
 set CYGWINDIR=d:\cygwin
-set THISDIR=l:\Projects\ClamWin\0.90\clamwin
+set THISDIR=l:\Projects\ClamWin\src\clamwin
 set ISTOOLDIR=C:\Program Files (x86)\ISTool
 set SEVENZIP=C:\Program Files\7-Zip\7z.exe
 set UPX_UTIL=C:\tools\upx.exe

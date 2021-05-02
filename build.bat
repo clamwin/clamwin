@@ -1,6 +1,6 @@
 rem @echo off
 set CYGWINDIR=d:\cygwin
-set THISDIR=l:\Projects\ClamWin\0.90\clamwin
+set THISDIR=l:\Projects\ClamWin\src\clamwin
 set ISTOOLDIR=C:\Program Files (x86)\ISTool
 set SEVENZIP=C:\Program Files\7-Zip\7z.exe
 set UPX_UTIL=C:\tools\upx.exe
@@ -14,18 +14,18 @@ set WGET_UTIL=c:\tools\wget.exe
 set DB_MIRROR=db.au.clamav.net
 
 rem build pyclamav
-cd ..\addons\pyc
-del /F /Q build\lib.win32-2.3\*
-rmdir  build\lib.win32-2.3
-del /F /Q build\temp.win32-2.3\Release\*
-rmdir build\temp.win32-2.3\Release
-rmdir build\temp.win32-2.3
-rmdir build
+rem cd ..\pyc
+rem del /F /Q build\lib.win32-2.3\*
+rem rmdir  build\lib.win32-2.3
+rem del /F /Q build\temp.win32-2.3\Release\*
+rem rmdir build\temp.win32-2.3\Release
+rem rmdir build\temp.win32-2.3
+rem rmdir build
 
-call build.cmd release
-if not "%ERRORLEVEL%"=="0" goto ERROR
-copy .\build\lib.win32-2.3\pyc.pyd "%THISDIR%\py"
-if not "%ERRORLEVEL%"=="0" goto ERROR
+rem call build.cmd release
+rem if not "%ERRORLEVEL%"=="0" goto ERROR
+rem copy .\build\lib.win32-2.3\pyc.pyd "%THISDIR%\py"
+rem if not "%ERRORLEVEL%"=="0" goto ERROR
 
 rem build ExplorerShell
 rem cd %THISDIR%\cpp
@@ -61,12 +61,12 @@ rem cd ..\..\..\..\
 
 
 rem get the latest db files
-call %WGET_UTIL% http://%DB_MIRROR%/main.cvd -N -O "%THISDIR%\Setup\cvd\main.cvd"
-if not "%ERRORLEVEL%"=="0" goto ERROR
-call %WGET_UTIL% http://%DB_MIRROR%/daily.cvd -N -O "%THISDIR%\Setup\cvd\daily.cvd"
-if not "%ERRORLEVEL%"=="0" goto ERROR
-call %WGET_UTIL% http://%DB_MIRROR%/bytecode.cvd -N -O "%THISDIR%\Setup\cvd\bytecode.cvd"
-if not "%ERRORLEVEL%"=="0" goto ERROR
+rem call %WGET_UTIL% http://%DB_MIRROR%/main.cvd -N -O "%THISDIR%\Setup\cvd\main.cvd"
+rem if not "%ERRORLEVEL%"=="0" goto ERROR
+rem call %WGET_UTIL% http://%DB_MIRROR%/daily.cvd -N -O "%THISDIR%\Setup\cvd\daily.cvd"
+rem if not "%ERRORLEVEL%"=="0" goto ERROR
+rem call %WGET_UTIL% http://%DB_MIRROR%/bytecode.cvd -N -O "%THISDIR%\Setup\cvd\bytecode.cvd"
+rem if not "%ERRORLEVEL%"=="0" goto ERROR
 
 
 call "%ISTOOLDIR%\ISTool.exe" -compile "%THISDIR%\Setup\Setup-nodb.iss"

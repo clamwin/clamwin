@@ -60,14 +60,22 @@ class StatusUpdateBuffer(Process.IOBuffer):
         self._caller = caller
         self.update = update
         self.notify = notify
+        self._timestamp = 0
 
     def _doWrite(self, s):
         if self.update is not None:
+
             # sometimes there is more than one line in the buffer
             # so we need to call update method for every new line
             lines = s.replace('\r', '\n').splitlines(True)
-            for line in lines:
-                self.update(self._caller, line)
+            if lines[len(lines)-1].startswith('Time: '):
+               now = time.time()
+               if(now - self._timestamp > 0.1):
+                  self.update(self._caller, lines[len(lines)-1])
+                  self._timestamp = now
+            else:
+               for line in lines:
+                  self.update(self._caller, line)
             # do not call original implementation
             # Process.IOBuffer._doWrite(self, s)
 
@@ -77,7 +85,7 @@ class StatusUpdateBuffer(Process.IOBuffer):
         Process.IOBuffer._doClose(self)
 
 # custom command events sent from worker thread when it finishes
-# and when status message needs updating
+# and when status message needs updatings
 # the handler updates buttons and status text
 THREADFINISHED = wxNewEventType()
 def EVT_THREADFINISHED( window, function ):
@@ -172,6 +180,8 @@ class wxDialogStatus(wxDialog):
         self._previousStart = 0
         self._alreadyCalled = False
         self._err_text = ""
+        self._dbdir = ""
+        
 
         self._init_ctrls(parent)
 
@@ -198,8 +208,12 @@ class wxDialogStatus(wxDialog):
         self.SetIcons(icons)
 
         # change colour of read-only controls (gray)
-        self.textCtrlStatus.SetBackgroundColour(wxSystemSettings_GetColour(wxSYS_COLOUR_BTNFACE))
-
+        self.textCtrlStatus.SetBackgroundColour(wxSystemSettings_GetColour(wxSYS_COLOUR_BTNFACE))        
+        if not self._scan:
+             obj = re.match( r'.*--datadir=\"(.*)\" --config-file', cmd)
+             if obj:                
+                self._dbdir = obj.group(1)
+            
         # spawn and monitor our process
         # clamav stopped writing start time of the scan to the log file
         try:
@@ -332,7 +346,7 @@ class wxDialogStatus(wxDialog):
 
         time.sleep(0.5)
 
-        Utils.CleanupTemp(self._proc.getpid())
+        Utils.CleanupTemp(self._proc.getpid(), self._dbdir)
 
         if(platform.win32_ver()[1] < '6.1') or (not Utils.IsWow64()):
 		    self.buttonSave.Enable(True)
@@ -435,10 +449,11 @@ class wxDialogStatus(wxDialog):
             #    ctrl.GetRange(self._previousStart, lastPos)) is not None
             curtext = ctrl.GetRange(self._previousStart, lastPos)
             
-            print_over = (self._scan and (len(curtext) > 1 and curtext[-2]) in ('|','/','-','\\')) or  curtext.endswith(']\n')
+            #print_over = (self._scan and (len(curtext) > 1 and curtext[-2]) in ('|','/','-','\\')) or  curtext.endswith(']\n')
                          #((curtext.endswith(']\n') or curtext.endswith(']\r')) and \
                          #(self._scan or \
                          #not ctrl.GetRange(self._previousStart, lastPos).endswith('100%]\n')))
+            print_over = (self._scan and (len(curtext) > 1 and curtext[-2]) in ('|','/','-','\\')) or curtext.endswith(']\n') or curtext.startswith('Time: ')
             if print_over:
                 # prevent form blinking text by disabling richedit selection here
                 win32api.SendMessage(ctrl.GetHandle(),Utils.EM_HIDESELECTION, 1, 0)

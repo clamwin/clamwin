@@ -70,7 +70,7 @@ class wxAboutDlg(wxDialog):
         self.staticBitmapClamWin.SetToolTipString('')
 
         self.staticTextWinClamVer = wxStaticText(id=wxID_WXABOUTDLGSTATICTEXTWINCLAMVER,
-              label='Version ' + version.clamwin_version, name='staticTextWinClamVer', parent=self,
+              label='Version ' + version.clamwin_version.replace('0:', ''), name='staticTextWinClamVer', parent=self,
               pos=wxPoint(13, 48), size=wxSize(52, 16), style=0)
         self.staticTextWinClamVer.SetFont(wxFont(10, wxSWISS, wxNORMAL, wxBOLD,
               False))
@@ -115,7 +115,7 @@ class wxAboutDlg(wxDialog):
         self.staticTextAuthor1.SetToolTipString('')
 
         self.staticTextCopyright = wxStaticText(id=wxID_WXABOUTDLGSTATICTEXTCOPYRIGHT,
-              label='Copyright ClamWin Pty Ltd (c) 2004 - 2008',
+              label='Copyright ClamWin Pty Ltd (c) 2004 - 2021',
               name='staticTextCopyright', parent=self, pos=wxPoint(16, 207),
               size=wxSize(200, 13), style=0)
         self.staticTextCopyright.SetToolTipString('')
@@ -173,13 +173,13 @@ class wxAboutDlg(wxDialog):
               pos=wxPoint(309, 224), size=wxSize(102, 13), style=0)
 
         self.staticText2 = wxStaticText(id=wxID_WXABOUTDLGSTATICTEXT2,
-              label='Portions Copyright SourceFire Inc. (ClamAV)',
+              label='Portions Copyright Cisco Inc. (ClamAV)',
               name='staticText2', parent=self, pos=wxPoint(16, 223),
               size=wxSize(206, 13), style=0)
         self.staticText2.SetToolTipString('')
 
         self.staticText3 = wxStaticText(id=wxID_WXABOUTDLGSTATICTEXT3,
-              label='ClamWin  is not affiliated with ClamAV or SourceFire Inc.',
+              label='ClamWin  is not affiliated with ClamAV or Cisco Inc.',
               name='staticText3', parent=self, pos=wxPoint(16, 243),
               size=wxSize(190, 30), style=0)
 

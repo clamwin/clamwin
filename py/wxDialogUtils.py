@@ -45,7 +45,7 @@ def wxUpdateVirDB(parent, config, autoClose = False):
             os.makedirs(dbdir)
         except:
             pass
-    cmd = '--stdout --datadir="' + dbdir + '"' + \
+    cmd = '--show-progress --stdout --datadir="' + dbdir + '"' + \
           ' --config-file="%s" --log="%s"' % (freshclam_conf, updatelog)
     if config.Get('ClamAV', 'Debug') == '1':
         cmd += ' --debug'
@@ -238,6 +238,7 @@ def wxCheckUpdate(parent, config):
 
     try:
         ver, url, changelog = Utils.GetOnlineVersion(config)
+        print ver, url, changelog, version.clamwin_version
         if ver <= version.clamwin_version:
             return True
     except Exception, e:
@@ -268,5 +269,6 @@ if __name__ == '__main__':
     b = config.Read()
     app = wxPython.wx.wxPySimpleApp()
     #wxScan(None, config, 'c:/1Test')
-    wxCheckUpdate(None, config)
+    wxUpdateVirDB(None, config)
+    
     app.MainLoop()
