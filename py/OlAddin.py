@@ -900,17 +900,20 @@ class OutlookAddin(ObjectsEvent):
                 config.Get('EmailScan', 'ScanIncoming') == '1':
                # load clamav scanner
                 try:
-                    _clamav_scanner = clamav.Scanner(dbpath = config.Get('ClamAV', 'Database'), autoreload = True)                                        
-                except Exception, e:
+                    import tempfile
+                    _clamav_scanner = clamav.Scanner(dbpath = config.Get('ClamAV', 'Database'), autoreload = True)     
+                    _clamav_scanner.setEngineOption(clamav.CL_ENGINE_TMPDIR, tempfile.gettempdir())                    
+                except Exception, e:                    
                     raise ScanError('ClamWin Error occured whilst loading virus database: %s' % str(e))
                 dbg_print('Database has been loaded from %s' % config.Get('ClamAV', 'Database'))      
 
             #show splashcreen
             splash = os.path.join(Utils.GetCurrentDir(False), "img\\Splash.bmp")
-            if(config.Get('EmailScan', 'ShowSplash') == '1'):
+            if(config.Get('EmailScan', 'ShowSplash') == '1'):                
                 SplashScreen.ShowSplashScreen(splash, 5)                
         except Exception, e:
-            print "An error occured whilst displaying the spashscreen Error: %s." % str(e)
+            win32gui.MessageBox(GetWindow(), 'An error occured whilst Loading ClamWin. Error: %s.' % str(e), 'ClamWin Free Antivirus', win32con.MB_OK | win32con.MB_ICONERROR)
+            print "An error occured whilst Loading ClamWin. Error: %s." % str(e)
 
         # Setup all our filters and hooks.  We used to do this in OnConnection,
         # but a number of 'strange' bugs were reported which I suspect would
