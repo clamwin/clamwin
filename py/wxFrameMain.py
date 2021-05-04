@@ -425,7 +425,7 @@ class wxMainFrame(wxFrame):
 
 
     def OnHelpUpdate(self, event):
-        wxDialogUtils.wxGoToInternetUrl('http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version='+version.clamwin_version)
+        wxDialogUtils.wxGoToInternetUrl('http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version='+version.clamwin_version.replace('0:', ''))
 
 
     def OnHelpWebsite(self, event):

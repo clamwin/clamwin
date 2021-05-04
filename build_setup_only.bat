@@ -15,12 +15,12 @@ set DB_MIRROR=db.au.clamav.net
 
 
 rem get the latest db files
-call %WGET_UTIL% http://%DB_MIRROR%/main.cvd -N -O "%THISDIR%\Setup\cvd\main.cvd"
-if not "%ERRORLEVEL%"=="0" goto ERROR
-call %WGET_UTIL% http://%DB_MIRROR%/daily.cvd -N -O "%THISDIR%\Setup\cvd\daily.cvd"
-if not "%ERRORLEVEL%"=="0" goto ERROR
-call %WGET_UTIL% http://%DB_MIRROR%/bytecode.cvd -N -O "%THISDIR%\Setup\cvd\bytecode.cvd"
-if not "%ERRORLEVEL%"=="0" goto ERROR
+rem call %WGET_UTIL% http://%DB_MIRROR%/main.cvd -N -O "%THISDIR%\Setup\cvd\main.cvd"
+rem if not "%ERRORLEVEL%"=="0" goto ERROR
+rem call %WGET_UTIL% http://%DB_MIRROR%/daily.cvd -N -O "%THISDIR%\Setup\cvd\daily.cvd"
+rem if not "%ERRORLEVEL%"=="0" goto ERROR
+rem call %WGET_UTIL% http://%DB_MIRROR%/bytecode.cvd -N -O "%THISDIR%\Setup\cvd\bytecode.cvd"
+rem if not "%ERRORLEVEL%"=="0" goto ERROR
 
 rem build setups
 call "%ISTOOLDIR%\ISTool.exe" -compile "%THISDIR%\Setup\Setup-nodb.iss"

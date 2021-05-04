@@ -136,8 +136,8 @@ class wxDialogUpdateChecker(wxDialog):
         self._url = url
         self._config = config
         self.html.AppendToPage(changelog)
-        self.staticTextAnnounce.SetLabel(self.staticTextAnnounce.GetLabel() % version)
-        self.staticTextChangelog.SetLabel(self.staticTextChangelog.GetLabel() % version)
+        self.staticTextAnnounce.SetLabel(self.staticTextAnnounce.GetLabel() % version.replace('0:', ''))
+        self.staticTextChangelog.SetLabel(self.staticTextChangelog.GetLabel() % version.replace('0:', ''))
 
         self.checkBoxDontCheck.SetValue(not int(self._config.Get('Updates', 'CheckVersion')))
 

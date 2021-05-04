@@ -7,7 +7,7 @@
 
 [Setup]
 AppName=ClamWin Free Antivirus
-AppVerName=ClamWin Free Antivirus 0.99.4
+AppVerName=ClamWin Free Antivirus 0.103.2
 AppPublisher=alch
 AppPublisherURL=http://www.clamwin.com/
 AppSupportURL=http://www.clamwin.com/
@@ -40,6 +40,8 @@ Source: Setupfiles\AskInstallChecker-1.5.0.0.exe; DestDir: {tmp}; DestName: askI
 Source: py2exe\dist\bin\python23.dll; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete
 Source: py2exe\dist\bin\ClamTray.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: py2exe\dist\bin\ClamWin.exe; DestDir: {app}\bin; Components: ClamWin; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: Dependencies\unicows\opencow.dll; DestDir: {app}\bin; DestName: unicows.dll; Components: ClamWin; Flags: restartreplace uninsrestartdelete; Check: IsWin9x
+Source: Dependencies\unicows\opencow.dll; DestDir: {app}\bin; DestName: unicows.dll; Components: ClamWin; Flags: restartreplace uninsrestartdelete; Check: IsWin9x
 Source: ..\doc\en_UK\manual_en.chm; DestDir: {app}\bin; Components: ClamWin; Flags: ignoreversion; DestName: manual.chm
 ;Source: ..\doc\ru_RU\manual_ru.chm; DestDir: {app}\bin; Components: InternationalHelp\Russian; Flags: ignoreversion
 ;Source: ..\doc\jp_JP\manual_jp.chm; DestDir: {app}\bin; Components: InternationalHelp\Japanese; Flags: ignoreversion
@@ -63,24 +65,25 @@ Source: py2exe\dist\bin\img\World.png; DestDir: {app}\bin\img; Components: ClamW
 ;Source: py2exe\dist\bin\img\Support.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
 Source: py2exe\dist\bin\img\ListScan.png; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
 Source: py2exe\dist\bin\img\Splash.bmp; DestDir: {app}\bin\img; Components: ClamWin; Flags: ignoreversion
-Source: clamav-x86\clamscan.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: clamav-x86\freshclam.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: clamav-x86\sigtool.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: clamav-x86\libclamav.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: clamav-x86\libclamav_llvm.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion; Check: UsingWinNT
-Source: clamav-x86\libclamunrar.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: clamav-x86\libclamunrar_iface.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
-Source: clamav-x86\libfreshclam.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\..\clamav-x86\clamscan.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\..\clamav-x86\freshclam.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\..\clamav-x86\sigtool.exe; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\..\clamav-x86\libclamav.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\..\clamav-x86\libclamav_llvm.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion; Check: UsingWinNT
+Source: ..\..\clamav-x86\libclamunrar.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\..\clamav-x86\libclamunrar_iface.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: ..\..\clamav-x86\libfreshclam.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete replacesameversion
+
 
 ; on xp and greater VC80 CRT needs to be installed in Microsoft.VC80.CRT
-Source: Dependencies\Microsoft.VC80.CRT\Microsoft.VC80.CRT.manifest; DestDir: {app}\bin\Microsoft.VC80.CRT; Components: ClamAV; Check: IsXPOrLater
-Source: Dependencies\Microsoft.VC80.CRT\msvcm80.dll; DestDir: {app}\bin\Microsoft.VC80.CRT; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: IsXPOrLater
-Source: Dependencies\Microsoft.VC80.CRT\msvcr80.dll; DestDir: {app}\bin\Microsoft.VC80.CRT; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: IsXPOrLater
-Source: Dependencies\Microsoft.VC80.CRT\msvcp80.dll; DestDir: {app}\bin\Microsoft.VC80.CRT; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: IsXPOrLater
+;Source: Dependencies\Microsoft.VC80.CRT\Microsoft.VC80.CRT.manifest; DestDir: {app}\bin\Microsoft.VC80.CRT; Components: ClamAV; Check: IsXPOrLater
+;Source: Dependencies\Microsoft.VC80.CRT\msvcm80.dll; DestDir: {app}\bin\Microsoft.VC80.CRT; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: IsXPOrLater
+;Source: Dependencies\Microsoft.VC80.CRT\msvcr80.dll; DestDir: {app}\bin\Microsoft.VC80.CRT; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: IsXPOrLater
+;Source: Dependencies\Microsoft.VC80.CRT\msvcp80.dll; DestDir: {app}\bin\Microsoft.VC80.CRT; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: IsXPOrLater
 ; on 2000 and 98 VC80 CRT needs to be installed in the same dir; no manifest
-Source: Dependencies\Microsoft.VC80.CRT\msvcm80.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: not IsXPOrLater
-Source: Dependencies\Microsoft.VC80.CRT\msvcr80.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: not IsXPOrLater
-Source: Dependencies\Microsoft.VC80.CRT\msvcp80.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: not IsXPOrLater
+;Source: Dependencies\Microsoft.VC80.CRT\msvcm80.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: not IsXPOrLater
+;Source: Dependencies\Microsoft.VC80.CRT\msvcr80.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: not IsXPOrLater
+;Source: Dependencies\Microsoft.VC80.CRT\msvcp80.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete; Check: not IsXPOrLater
 
 ;pthread
 ;Source: Dependencies\pthread\pthreadVC2.dll; DestDir: {app}\bin; Components: ClamAV; Flags: restartreplace uninsrestartdelete
@@ -218,8 +221,14 @@ Name: custom; Description: Custom Installation; Flags: iscustom
 Name: full; Description: Full Installation
 
 [InstallDelete]
-Name: {code:CommonProfileDir}\.clamwin\db\main.cld; Type: files; Check: IsDeleteCld
-Name: {code:CommonProfileDir}\.clamwin\db\daily.cld; Type: files; Check: IsDeleteCld
+Name: {code:CommonProfileDir}\.clamwin\db\main.cvd; Type: files; Check: IsDeleteCvd
+Name: {code:CommonProfileDir}\.clamwin\db\daily.cvd; Type: files; Check: IsDeleteCvd
+Name: {code:CommonProfileDir}\.clamwin\db\bytecode.cvd; Type: files; Check: IsDeleteCvd
+Name: {app}\bin\Microsoft.VC80.CRT; Type: filesandordirs; Check: not IsXPOrLater
+Name: {app}\bin\msvcm80.dll; Type: files; Check: IsXPOrLater
+Name: {app}\bin\msvcr80.dll; Type: files; Check: IsXPOrLater
+Name: {app}\bin\msvcp80.dll; Type: files; Check: IsXPOrLater
+
 
 [UninstallDelete]
 Name: {tmp}\ClamWin_Scheduler_Info; Type: files; Components: ClamWin
@@ -236,11 +245,11 @@ Name: {code:CommonProfileDir}\.clamwin; Type: filesandordirs
 Root: HKLM; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: ClamWin; ValueData: """{app}\bin\ClamTray.exe"" --logon"; Flags: uninsdeletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKLM; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKLM64; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers and IsWin64
-Root: HKLM; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 9940; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
+Root: HKLM; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 10032; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKCU; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: ClamWin; ValueData: """{app}\bin\ClamTray.exe"" --logon"; Flags: uninsdeletevalue; Components: ClamWin; Check: not IsAllUsers
 Root: HKCU; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
 Root: HKCU64; Subkey: Software\ClamWin; ValueType: string; ValueName: Path; ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers and IsWin64
-Root: HKCU; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 9940; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
+Root: HKCU; Subkey: Software\ClamWin; ValueType: dword; ValueName: Version; ValueData: 10032; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
 
 ; ExplorerShell entries
 Root: HKCR; Subkey: CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueData: {app}\bin\ExpShell.dll; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers
@@ -514,6 +523,7 @@ end;
 
 function IsOutlookInstalled() : Boolean;
 begin
+
     Result := RegKeyExists( HKCU, 'Software\Microsoft\Office\Outlook') or
 			RegKeyExists( HKLM, 'Software\Microsoft\Office\Outlook') or
 			RegKeyExists( HKLM, 'Software\Microsoft\Office\9.0\Outlook') or
@@ -522,10 +532,10 @@ begin
 end;
 
 
-// we need to remove cld's if previous version was <0.96 as they are malformed (text mode vs binary since 0.96)
-function IsDeleteCld(): Boolean;
+// we need to remove cld's if previous version was < 0.103.2 - new format
+function IsDeleteCvd(): Boolean;
 begin
-	if PreviousVersion < 9601 then
+	if PreviousVersion < 10032 then
 		Result := True
 	else
 	    Result := False
@@ -570,7 +580,7 @@ begin
 	else
 		AllUsers := IsAdminLoggedOn();
 
-	ThisVersion := 9940;
+	ThisVersion := 10032;
 	value := 0;
 	if not RegQueryDWordValue(HKEY_CURRENT_USER, 'SOFTWARE\Clamwin', 'Version',  value) then begin
 		value := 0;

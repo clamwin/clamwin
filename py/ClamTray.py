@@ -373,7 +373,7 @@ class MainWindow:
         elif id == self.MENU_UPDATE_DB:
             self._UpdateDB(lparam)
         elif id == self.MENU_CHECK_UPDATE:
-            self._OpenWebPage('http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version='+version.clamwin_version)
+            self._OpenWebPage('http://www.clamwin.com/index.php?option=content&task=view&id=40&Itemid=60&version='+version.clamwin_version.replace('0:', ''))
         elif id == self.MENU_CLAMWIN_WEB:
             self._OpenWebPage('http://www.clamwin.com')
         elif id == self.MENU_CONFIGURE:

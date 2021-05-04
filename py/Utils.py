@@ -777,6 +777,7 @@ def GetOnlineVersion(config):
              proxy_support = urllib2.ProxyHandler({"http": proxy_url})
              opener = urllib2.build_opener(proxy_support, urllib2.HTTPHandler())
              urllib2.install_opener(opener)
+         print "Checking version online: %s" % url
          f = urllib2.urlopen(url + '?ver=%s' % version.clamwin_version)
          verinfo = f.read()
          #write to a temp file
