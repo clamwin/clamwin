@@ -110,6 +110,11 @@ add_executable(clamwin_test
 add_dependencies(clamwin cw_gui_build_version)
 add_dependencies(clamwin_test cw_gui_build_version)
 
+if(MINGW)
+    target_link_options(clamwin PRIVATE -static-libstdc++ -static-libgcc)
+    target_link_options(clamwin_test PRIVATE -static-libstdc++ -static-libgcc)
+endif()
+
 if(MSVC)
     target_sources(clamwin PRIVATE ${CMAKE_SOURCE_DIR}/resources/compatibility.manifest)
     target_link_options(clamwin PRIVATE "/MANIFEST:NO")
