@@ -60,6 +60,10 @@ if(CLAMWIN_SHELLEXT_UNICODE STREQUAL "ON")
     target_compile_definitions(clamwin_shell_extension PRIVATE UNICODE _UNICODE)
 endif()
 
+if(MINGW)
+    target_link_options(clamwin_shell_extension PRIVATE -static-libstdc++ -static-libgcc)
+endif()
+
 target_link_libraries(clamwin_shell_extension PRIVATE
     shell32
     ole32
