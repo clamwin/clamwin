@@ -146,6 +146,7 @@ target_link_libraries(clamwin PRIVATE
 
 target_link_libraries(clamwin_test PRIVATE
     shlwapi
+    wininet
 )
 
 add_custom_target(clamwin_check
