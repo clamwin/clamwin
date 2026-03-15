@@ -61,7 +61,10 @@ if(CLAMWIN_SHELLEXT_UNICODE STREQUAL "ON")
 endif()
 
 if(MINGW)
-    target_link_options(clamwin_shell_extension PRIVATE -static-libstdc++ -static-libgcc)
+    target_link_options(clamwin_shell_extension PRIVATE
+        -static-libstdc++ -static-libgcc
+        -Wl,--enable-stdcall-fixup
+    )
 endif()
 
 target_link_libraries(clamwin_shell_extension PRIVATE

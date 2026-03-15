@@ -1,4 +1,4 @@
 LIBRARY ExpShell
 EXPORTS
-    DllCanUnloadNow
-    DllGetClassObject
+    DllCanUnloadNow     PRIVATE
+    DllGetClassObject   PRIVATE
