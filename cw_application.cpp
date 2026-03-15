@@ -995,21 +995,14 @@ void CWApplication::showReportsMenu()
     if (!hReportsMenu)
         return;
 
-    MENUINFO mi;
-    memset(&mi, 0, sizeof(mi));
-    mi.cbSize = sizeof(mi);
-    mi.fMask = MIM_STYLE;
-    mi.dwStyle = MNS_NOCHECK;
-    SetMenuInfo(hReportsMenu, &mi);
-
     AppendMenuA(hReportsMenu,
-                MF_OWNERDRAW | (hasScanReport ? 0 : MF_GRAYED),
+                MF_STRING | (hasScanReport ? 0 : MF_GRAYED),
                 IDM_TRAY_SCANREPORT,
-                (LPCSTR)s_reportScanText);
+                "&Virus Scan Report");
     AppendMenuA(hReportsMenu,
-                MF_OWNERDRAW | (hasUpdateReport ? 0 : MF_GRAYED),
+                MF_STRING | (hasUpdateReport ? 0 : MF_GRAYED),
                 IDM_TRAY_UPDATEREPORT,
-                (LPCSTR)s_reportUpdateText);
+                "Virus &Database Update Report");
 
     POINT pt;
     GetCursorPos(&pt);

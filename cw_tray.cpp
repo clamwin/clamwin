@@ -36,6 +36,20 @@ static const WCHAR* s_trayPreferences = L"&Preferences";
 static const WCHAR* s_trayScheduledScans = L"Scheduled S&cans";
 static const WCHAR* s_trayAbout = L"&About";
 static const WCHAR* s_trayExit = L"E&xit";
+
+/* ANSI equivalents used by the standard (non-dark) menu fallback.
+ * Win9x does not support AppendMenuW, so we use AppendMenuA here. */
+static const char* s_trayOpenA            = "&Open ClamWin";
+static const char* s_trayScanFilesA       = "Scan &Files...";
+static const char* s_trayScanMemoryA      = "Scan &Memory";
+static const char* s_trayUpdateDatabaseA  = "&Update Database";
+static const char* s_trayDisplayReportsA  = "Display &Reports";
+static const char* s_trayVirusScanReportA = "&Virus Scan Report";
+static const char* s_trayVirusDbUpdateReportA = "Virus &Database Update Report";
+static const char* s_trayPreferencesA     = "&Preferences";
+static const char* s_trayScheduledScansA  = "Scheduled S&cans";
+static const char* s_trayAboutA           = "&About";
+static const char* s_trayExitA            = "E&xit";
 static const char* s_trayCustomMenuClass = "ClamWinDarkTrayMenu";
 
 struct CWTrayPopupItemDef
@@ -772,35 +786,28 @@ void CWTray::showContextMenu(bool enableScanReport, bool enableUpdateReport)
         return;
     }
 
-    MENUINFO mi;
-    memset(&mi, 0, sizeof(mi));
-    mi.cbSize = sizeof(mi);
-    mi.fMask = MIM_STYLE;
-    mi.dwStyle = MNS_NOCHECK;
-    SetMenuInfo(hMenu, &mi);
-    SetMenuInfo(hReportsMenu, &mi);
 
-    AppendMenuA(hMenu, MF_OWNERDRAW, IDM_TRAY_OPEN, (LPCSTR)s_trayOpen);
-    AppendMenuA(hMenu, MF_OWNERDRAW | MF_DISABLED, 60001, (LPCSTR)s_traySep);
-    AppendMenuA(hMenu, MF_OWNERDRAW, IDM_TRAY_SCAN,    (LPCSTR)s_trayScanFiles);
-    AppendMenuA(hMenu, MF_OWNERDRAW, IDM_TRAY_SCANMEM, (LPCSTR)s_trayScanMemory);
-    AppendMenuA(hMenu, MF_OWNERDRAW, IDM_TRAY_UPDATE,  (LPCSTR)s_trayUpdateDatabase);
-    AppendMenuA(hMenu, MF_OWNERDRAW | MF_DISABLED, 60002, (LPCSTR)s_traySep);
+    AppendMenuA(hMenu, MF_STRING,                                         IDM_TRAY_OPEN,       s_trayOpenA);
+    AppendMenuA(hMenu, MF_SEPARATOR,                                      0,                   NULL);
+    AppendMenuA(hMenu, MF_STRING,                                         IDM_TRAY_SCAN,       s_trayScanFilesA);
+    AppendMenuA(hMenu, MF_STRING,                                         IDM_TRAY_SCANMEM,    s_trayScanMemoryA);
+    AppendMenuA(hMenu, MF_STRING,                                         IDM_TRAY_UPDATE,     s_trayUpdateDatabaseA);
+    AppendMenuA(hMenu, MF_SEPARATOR,                                      0,                   NULL);
     AppendMenuA(hReportsMenu,
-                MF_OWNERDRAW | (enableScanReport ? 0 : MF_GRAYED),
+                MF_STRING | (enableScanReport ? 0 : MF_GRAYED),
                 IDM_TRAY_SCANREPORT,
-                (LPCSTR)s_trayVirusScanReport);
+                s_trayVirusScanReportA);
     AppendMenuA(hReportsMenu,
-                MF_OWNERDRAW | (enableUpdateReport ? 0 : MF_GRAYED),
+                MF_STRING | (enableUpdateReport ? 0 : MF_GRAYED),
                 IDM_TRAY_UPDATEREPORT,
-                (LPCSTR)s_trayVirusDbUpdateReport);
-    AppendMenuA(hMenu, MF_POPUP | MF_OWNERDRAW, (UINT_PTR)hReportsMenu, (LPCSTR)s_trayDisplayReports);
-    AppendMenuA(hMenu, MF_OWNERDRAW | MF_DISABLED, 60003, (LPCSTR)s_traySep);
-    AppendMenuA(hMenu, MF_OWNERDRAW, IDM_TRAY_PREFS,    (LPCSTR)s_trayPreferences);
-    AppendMenuA(hMenu, MF_OWNERDRAW, IDM_TRAY_SCHEDULE, (LPCSTR)s_trayScheduledScans);
-    AppendMenuA(hMenu, MF_OWNERDRAW, IDM_TRAY_ABOUT,    (LPCSTR)s_trayAbout);
-    AppendMenuA(hMenu, MF_OWNERDRAW | MF_DISABLED, 60004, (LPCSTR)s_traySep);
-    AppendMenuA(hMenu, MF_OWNERDRAW, IDM_TRAY_EXIT, (LPCSTR)s_trayExit);
+                s_trayVirusDbUpdateReportA);
+    AppendMenuA(hMenu, MF_POPUP,         (UINT_PTR)hReportsMenu,           s_trayDisplayReportsA);
+    AppendMenuA(hMenu, MF_SEPARATOR,                                      0,                   NULL);
+    AppendMenuA(hMenu, MF_STRING,                                         IDM_TRAY_PREFS,      s_trayPreferencesA);
+    AppendMenuA(hMenu, MF_STRING,                                         IDM_TRAY_SCHEDULE,   s_trayScheduledScansA);
+    AppendMenuA(hMenu, MF_STRING,                                         IDM_TRAY_ABOUT,      s_trayAboutA);
+    AppendMenuA(hMenu, MF_SEPARATOR,                                      0,                   NULL);
+    AppendMenuA(hMenu, MF_STRING,                                         IDM_TRAY_EXIT,       s_trayExitA);
 
     SetMenuDefaultItem(hMenu, IDM_TRAY_OPEN, FALSE);
 
