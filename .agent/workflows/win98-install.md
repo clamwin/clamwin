@@ -8,7 +8,7 @@ description: Windows 98 VM install and ISO transfer workflow for x86 ClamWin/Cla
 - Archive reference: https://archive.org/details/win98vb
 
 ## Build Outputs To Package
-Expected x86 outputs from `clamav-win32/build-x86-mingw-win98/`:
+Expected x86 outputs from the [clamav-win32](https://github.com/clamwin/clamav-win32) `build-x86-mingw-win98/` directory:
 - `clamwin.exe`
 - `clamscan.exe`
 - `freshclam.exe`

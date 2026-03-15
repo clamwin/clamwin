@@ -38,7 +38,7 @@ $env:PATH = "C:\msys64\mingw64\bin;C:\Program Files\CMake\bin;" + $env:PATH; Pus
 ```
 
 ## Reconfigure For Full ClamAV Engine Build
-Use this when building scanner/engine targets (`clamscan`, `clamd`, `freshclam`, `sigtool`) in `clamav-win32`.
+Use this when building scanner/engine targets (`clamscan`, `clamd`, `freshclam`, `sigtool`) in the [clamav-win32](https://github.com/clamwin/clamav-win32) repository.
 
 ```powershell
 $env:PATH = "C:\msys64\mingw64\bin;C:\Program Files\CMake\bin;" + $env:PATH
@@ -85,7 +85,7 @@ $env:PATH = "C:\msys64\mingw64\bin;C:\Program Files\CMake\bin;" + $env:PATH; Rem
 - Always read the last few lines of terminal output if it fails to see the actual error
 - The GUI target is `clamwin`, the test target is `clamwin_test`
 - The `clamwin_test` target uses **stubs** for libclamav functions (defined in `stubs_clamav.c`) to avoid linking against the full engine and its Rust dependencies during unit testing.
-- Working directory for cmake must be `clamav-win32\`
+- Working directory for cmake must be the repository root
 - Executable output: `build-gui\clamwin.exe`
 
 ## Win98 VM Notes

@@ -5,7 +5,7 @@ description: ClamWin GUI coding standards and project conventions
 # ClamWin GUI Coding Standards
 
 ## Project Overview
-This project is a **native C++ class-based Win32 API rewrite** of the ClamWin GUI. The old GUI was Python/wxPython. The original C translation was further refactored into a clean C++ Object-Oriented architecture. The new GUI lives in `clamav-win32/src/clamwin-gui-cpp/` and integrates into the clamav-win32 CMake build system.
+This project is a **native C++ class-based Win32 API rewrite** of the ClamWin GUI. The old GUI was Python/wxPython. The original C translation was further refactored into a clean C++ Object-Oriented architecture. This is a standalone repository with its own CMake build system. It spawns command-line ClamAV tools from the separate [clamav-win32](https://github.com/clamwin/clamav-win32) repository at runtime.
 
 ## Key Constraints
 - **OS Compatibility**: Must compile and run on Windows 98 (with `WINVER 0x0410` masks) through Windows 11.
@@ -15,31 +15,30 @@ This project is a **native C++ class-based Win32 API rewrite** of the ClamWin GU
 
 ## Source Layout
 ```
-clamav-win32/
-├── src/clamwin-gui-cpp/
-│   ├── cwdefs.h               # Platform headers & Windows Versioning
-│   ├── clamwin_gui.h          # Shared project constants / IDs
-│   ├── cw_main.cpp            # WinMain entry point
-│   ├── cw_application.cpp     # Singleton application lifecycle & tray
-│   ├── cw_window.cpp          # Base generic Win32 window class
-│   ├── cw_dialog.cpp          # Base dialog wrapper class
-│   ├── cw_dashboard.cpp       # Main dashboard layout
-│   ├── cw_scan_dialog.cpp     # Scanner and updater UI flow
-│   ├── cw_config.cpp          # Config (INI) reader/writer
-│   ├── cw_process.cpp         # Subprocess piping/management (RAII)
-│   ├── cw_tray.cpp            # Notification area icon lifecycle
-│   ├── cw_scheduler.cpp       # Time-triggered jobs
-│   ├── cw_utils.cpp           # Helpers / DB queries
-│   ├── cw_prefs_dialog.cpp    # Preferences tabs layout
-│   ├── cw_schedule_dialog.cpp # Schedule configuration layouts
-│   ├── cw_about_dialog.cpp    # App about box display
-│   ├── cw_logview_dialog.cpp  # Dialog for reading log outputs
-│   ├── resources/
-│   │   ├── clamwin.rc         # Resource script
-│   │   ├── clamwin.manifest   # App manifest (visual styles, DPI, UAC)
-│   │   └── clamwin.ico        # Main icon
-├── cmake/
-│   └── clamwin_gui.cmake      # C++ UI CMake rules
+clamwin/
+├── CMakeLists.txt             # Top-level CMake build
+├── cwdefs.h                   # Platform headers & Windows Versioning
+├── cw_gui_shared.h            # Shared project constants / IDs
+├── cw_main.cpp                # WinMain entry point
+├── cw_application.cpp         # Singleton application lifecycle & tray
+├── cw_window.cpp              # Base generic Win32 window class
+├── cw_dialog.cpp              # Base dialog wrapper class
+├── cw_dashboard.cpp           # Main dashboard layout
+├── cw_scan_dialog.cpp         # Scanner and updater UI flow
+├── cw_config.cpp              # Config (INI) reader/writer
+├── cw_process.cpp             # Subprocess piping/management (RAII)
+├── cw_tray.cpp                # Notification area icon lifecycle
+├── cw_scheduler.cpp           # Time-triggered jobs
+├── cw_utils.cpp               # Helpers / DB queries
+├── cw_prefs_dialog.cpp        # Preferences tabs layout
+├── cw_schedule_dialog.cpp     # Schedule configuration layouts
+├── cw_about_dialog.cpp        # App about box display
+├── cw_logview_dialog.cpp      # Dialog for reading log outputs
+├── resources/                 # RC script, manifest, icons
+├── shell-extension/           # Explorer context-menu DLL
+├── tests/                     # doctest-based test suite
+├── tools/                     # Build/test helper scripts
+└── setup/                     # Inno Setup installer scripts
 ```
 
 ## Naming Conventions
@@ -65,7 +64,7 @@ clamav-win32/
 The config file format is tightly backward-compatible with the original Python `ClamWin.conf`. Our `CWConfig` class maps legacy file formatting to internal properties.
 
 ## Critical Rules
-1. **Always refer to the legacy wxPython codebase** (`clamwin/py/`) when implementing features for the new GUI to maintain exact functional parity. 
+1. **Always refer to the legacy wxPython codebase** (in the [clamav-win32](https://github.com/clamwin/clamav-win32) repo under `clamwin/py/`) when implementing features for the new GUI to maintain exact functional parity.
 2. **Build and verify** after every significant change using the `/build` workflow. Address both syntax and linker outputs cleanly across components.
 3. **No Dynamic Dependencies**: Because we target legacy deployment, all code should compile into a singular light Executable.
 4. **Adhere to the OOP Architecture**: When migrating legacy logic, wrap resources cleanly with constructor and destructor behaviors.

@@ -1,8 +1,8 @@
-# Copilot Instructions — ClamWin Uplift Project
+# Copilot Instructions — ClamWin GUI
 
 ## Project Overview
 
-This workspace converts the legacy **ClamWin** antivirus GUI from Python/wxPython to a **native C++ Win32 application** with a Google Drive-inspired visual design. The new GUI lives in `clamav-win32/src/clamwin-gui-cpp/` and builds with CMake + MinGW.
+This is the **ClamWin** antivirus GUI — a **native C++ Win32 application** with a Google Drive-inspired visual design, rewritten from the legacy Python/wxPython codebase. This is a standalone repository; the ClamAV engine and command-line tools are built separately from [clamav-win32](https://github.com/clamwin/clamav-win32).
 
 The application does **not** link against libclamav. It spawns `clamscan.exe` and `freshclam.exe` as child processes and captures their output.
 
@@ -30,7 +30,7 @@ The application does **not** link against libclamav. It spawns `clamscan.exe` an
 ### Key Files
 
 - Entry point: `cw_main.cpp` → `CWApplication::run()`
-- CMake target: `cmake/clamwin_gui.cmake` (target name: `clamwin`)
+- CMake: `CMakeLists.txt` (target name: `clamwin`)
 - Shared defs: `cw_gui_shared.h` (resource IDs, message constants, shared GUI types)
 - Platform defs: `cwdefs.h` (`_WIN32_WINNT 0x0410`)
 - DPI helper: `cw_dpi.h` (`CW_Scale()`)
@@ -64,24 +64,19 @@ Build GUI:
 Push-Location .\build-gui; mingw32-make clamwin 2>&1 | Select-Object -Last 20; Pop-Location
 ```
 
-Build full staged setup and ISO:
-```powershell
-Stop-Process -Name clamwin -ErrorAction SilentlyContinue; Start-Sleep -Milliseconds 400; Set-Location C:/Users/alexc/source/repos/clamwin-uplift/clamav-win32; powershell -ExecutionPolicy Bypass -File ./src/clamwin-gui-cpp/tools/build-setup.ps1 -GenerateIso
-```
-
 Build tests:
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\tools\test-gui.ps1
+.\test-gui.ps1
 ```
 
 Run real-tool smoke tests:
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\tools\test-gui.ps1 -RealTools
+.\test-gui.ps1 -RealTools
 ```
 
 Run stricter gated FreshClam probes:
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\tools\test-gui.ps1 -RealTools -FreshclamUpdate -FreshclamNegative
+.\test-gui.ps1 -RealTools -FreshclamUpdate -FreshclamNegative
 ```
 
 ### Stopping the running instance
@@ -95,7 +90,7 @@ Stop-Process -Name "clamwin" -ErrorAction SilentlyContinue; Start-Sleep -Millise
 ```
 
 ### Working Directory
-All cmake/make commands run from `clamav-win32/`.
+All cmake/make commands run from the repository root.
 
 ## Coding Standards
 
@@ -167,7 +162,7 @@ The theme system detects Windows light/dark mode via registry (`AppsUseLightThem
 
 ## Legacy Reference
 
-The original Python GUI is at `clamwin/py/`. When implementing new features:
+The original Python GUI is in the [clamav-win32](https://github.com/clamwin/clamav-win32) repo at `clamwin/py/`. When implementing new features:
 1. **Always cross-reference** the equivalent Python class for functional parity
 2. Key mappings:
    - `wxDialogPreferences.py` → `CWPrefsDialog`
@@ -199,12 +194,12 @@ The original Python GUI is at `clamwin/py/`. When implementing new features:
 
 ## Testing
 
-- Test framework: doctest (vendored in `clamav-win32/3rdparty/doctest/`)
-- Test executable: `clamwin_gui_test.exe`
-- Tests go in `src/clamwin-gui-cpp/tests/`
-- Default test command: `powershell -ExecutionPolicy Bypass -File .\tools\test-gui.ps1`
-- Real-tool smoke command: `powershell -ExecutionPolicy Bypass -File .\tools\test-gui.ps1 -RealTools`
-- Build-only target: `mingw32-make clamwin_gui_test`
+- Test framework: doctest (vendored in `3rdparty/doctest/`)
+- Test executable: `clamwin_test.exe`
+- Tests go in `tests/`
+- Default test command: `.\test-gui.ps1`
+- Real-tool smoke command: `.\test-gui.ps1 -RealTools`
+- Build-only target: `mingw32-make clamwin_test`
 
 ## Important Reminders
 
