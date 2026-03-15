@@ -14,6 +14,47 @@
 #include <richedit.h>
 #include <stdio.h>
 
+/* Dynamic loading of flat-scrollbar API (flatsb.dll / comctl32) */
+typedef BOOL (WINAPI *pfnInitializeFlatSB)(HWND);
+typedef HRESULT (WINAPI *pfnUninitializeFlatSB)(HWND);
+typedef BOOL (WINAPI *pfnFlatSB_SetScrollProp)(HWND, UINT, INT_PTR, BOOL);
+
+static pfnInitializeFlatSB     pInitializeFlatSB;
+static pfnUninitializeFlatSB   pUninitializeFlatSB;
+static pfnFlatSB_SetScrollProp pFlatSB_SetScrollProp;
+
+static bool loadFlatSBApi()
+{
+    static int state = 0; /* 0 = not tried, 1 = loaded, -1 = failed */
+    if (state)
+        return state > 0;
+
+    HMODULE hmod = LoadLibraryA("flatsb.dll");
+    if (!hmod)
+        hmod = LoadLibraryA("comctl32.dll");
+    if (!hmod)
+    {
+        state = -1;
+        return false;
+    }
+
+    pInitializeFlatSB     = (pfnInitializeFlatSB)GetProcAddress(hmod, "InitializeFlatSB");
+    pUninitializeFlatSB   = (pfnUninitializeFlatSB)GetProcAddress(hmod, "UninitializeFlatSB");
+    pFlatSB_SetScrollProp = (pfnFlatSB_SetScrollProp)GetProcAddress(hmod, "FlatSB_SetScrollProp");
+
+    if (!pInitializeFlatSB || !pUninitializeFlatSB || !pFlatSB_SetScrollProp)
+    {
+        pInitializeFlatSB = NULL;
+        pUninitializeFlatSB = NULL;
+        pFlatSB_SetScrollProp = NULL;
+        state = -1;
+        return false;
+    }
+
+    state = 1;
+    return true;
+}
+
 static const int CW_LOGVIEW_ID_VSCROLL = 6101;
 static const int CW_LOGVIEW_ID_HSCROLL = 6102;
 static const UINT_PTR CW_LOGVIEW_SCROLL_TIMER_ID = 6103;
@@ -108,13 +149,16 @@ static bool tryApplyDarkFlatScrollbars(HWND hwndEdit, CWTheme* theme)
     if (!hwndEdit || !theme || !theme->isDark())
         return false;
 
-    if (!InitializeFlatSB(hwndEdit))
+    if (!loadFlatSBApi())
         return false;
 
-    FlatSB_SetScrollProp(hwndEdit, WSB_PROP_VSTYLE, FSB_FLAT_MODE, TRUE);
-    FlatSB_SetScrollProp(hwndEdit, WSB_PROP_HSTYLE, FSB_FLAT_MODE, TRUE);
-    FlatSB_SetScrollProp(hwndEdit, WSB_PROP_VBKGCOLOR, (INT_PTR)theme->colorSurface(), TRUE);
-    FlatSB_SetScrollProp(hwndEdit, WSB_PROP_HBKGCOLOR, (INT_PTR)theme->colorSurface(), TRUE);
+    if (!pInitializeFlatSB(hwndEdit))
+        return false;
+
+    pFlatSB_SetScrollProp(hwndEdit, WSB_PROP_VSTYLE, FSB_FLAT_MODE, TRUE);
+    pFlatSB_SetScrollProp(hwndEdit, WSB_PROP_HSTYLE, FSB_FLAT_MODE, TRUE);
+    pFlatSB_SetScrollProp(hwndEdit, WSB_PROP_VBKGCOLOR, (INT_PTR)theme->colorSurface(), TRUE);
+    pFlatSB_SetScrollProp(hwndEdit, WSB_PROP_HBKGCOLOR, (INT_PTR)theme->colorSurface(), TRUE);
     return true;
 }
 
@@ -265,7 +309,8 @@ bool CWLogViewDialog::onCommand(int id, HWND src)
 
         if (m_flatScrollbarInit && m_hwndText)
         {
-            UninitializeFlatSB(m_hwndText);
+            if (pUninitializeFlatSB)
+                pUninitializeFlatSB(m_hwndText);
             m_flatScrollbarInit = false;
         }
         endDialog(id);
