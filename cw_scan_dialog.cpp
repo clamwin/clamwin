@@ -1103,9 +1103,10 @@ DWORD WINAPI CWScanDialog::updateWorker(LPVOID param)
 void CWScanDialog::startWorker()
 {
     m_stats.start_tick = GetTickCount();
+    DWORD tid = 0; /* Win98 requires a valid lpThreadId pointer, NULL is not accepted */
     m_hWorker = CreateThread(NULL, 0,
                               m_isUpdate ? updateWorker : scanWorker,
-                              this, 0, NULL);
+                              this, 0, &tid);
 }
 
 /* ─── onInit ─────────────────────────────────────────────────── */

@@ -181,7 +181,8 @@ bool CWProcess::start(const std::string& cmdline,
     m_ctx->userdata    = userdata;
     m_ctx->stopping    = 0;
 
-    m_hThread = CreateThread(NULL, 0, readerThread, m_ctx, 0, NULL);
+    DWORD tid = 0; /* Win98 requires a valid lpThreadId pointer, NULL is not accepted */
+    m_hThread = CreateThread(NULL, 0, readerThread, m_ctx, 0, &tid);
     if (!m_hThread)
     {
         TerminateProcess(m_ctx->hProcess, 1);

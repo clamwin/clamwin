@@ -115,7 +115,8 @@ void CWUpdateChecker::startCheck(HWND hwndTarget)
         return;   /* already in flight */
 
     m_hwndTarget = hwndTarget;
-    m_hThread = CreateThread(NULL, 0, threadProc, this, 0, NULL);
+    DWORD tid = 0; /* Win98 requires a valid lpThreadId pointer, NULL is not accepted */
+    m_hThread = CreateThread(NULL, 0, threadProc, this, 0, &tid);
 }
 
 DWORD WINAPI CWUpdateChecker::threadProc(LPVOID param)
