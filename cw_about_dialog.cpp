@@ -298,7 +298,7 @@ bool CWAboutDialog::onInit()
     y += CW_Scale(20);
     addLabel("Alex Cherney <alex@clamwin.com>", textX, y, contentW, CW_Scale(18), m_hFontNormal);
     y += CW_Scale(18);
-    addLabel("Gianluigi Tiesi <sherpya@netfarm.it>", textX, y, contentW, CW_Scale(18), m_hFontNormal);
+    addLabel("Gianluigi Tiesi <sherpya@gmail.com>", textX, y, contentW, CW_Scale(18), m_hFontNormal);
     y += CW_Scale(26); /* Increased */
 
     CreateWindowExA(0, "STATIC", NULL, WS_CHILD | WS_VISIBLE | SS_ETCHEDHORZ,
