@@ -145,7 +145,6 @@ target_link_libraries(clamwin PRIVATE
     comctl32
     shlwapi
     wininet
-    gdiplus
     version
 )
 

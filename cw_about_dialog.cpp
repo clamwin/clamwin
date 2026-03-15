@@ -13,9 +13,24 @@
 #include "cw_theme.h"
 #include <commctrl.h>
 #include <stdio.h>
-#include <gdiplus.h>
+#include <stdlib.h>
 #include <vector>
 #include <string>
+
+#define STBI_NO_STDIO
+#define STBI_ONLY_PNG
+#define STBI_NO_FAILURE_STRINGS
+#define STB_IMAGE_IMPLEMENTATION
+#include "3rdparty/stb/stb_image.h"
+
+#define STB_IMAGE_RESIZE_IMPLEMENTATION
+#include "3rdparty/stb/stb_image_resize2.h"
+
+struct CWPngImage
+{
+    unsigned char* pixels; /* RGBA, stbi-allocated */
+    int w, h;
+};
 
 #define IDC_LINK_WEB      4001
 #define IDC_LINK_CLAMAV   4002
@@ -24,7 +39,7 @@
 #define IDC_LOGO_CLAMAV   4102
 #define IDC_LOGO_NETFARM  4103
 
-/* ─── PNG resource loader via GDI+ ──────────────────────────── */
+/* ─── PNG resource loader via stb_image ─────────────────────── */
 
 void* CWAboutDialog::loadPngResource(int resourceId)
 {
@@ -38,28 +53,14 @@ void* CWAboutDialog::loadPngResource(int resourceId)
     DWORD size = SizeofResource(GetModuleHandleA(NULL), hRes);
     if (!data || size == 0) return NULL;
 
-    HGLOBAL hMem = GlobalAlloc(GMEM_MOVEABLE, size);
-    if (!hMem) return NULL;
+    int w, h, channels;
+    unsigned char* pixels = stbi_load_from_memory(data, (int)size, &w, &h, &channels, 4);
+    if (!pixels) return NULL;
 
-    void* pMem = GlobalLock(hMem);
-    memcpy(pMem, data, size);
-    GlobalUnlock(hMem);
-
-    IStream* pStream = NULL;
-    if (FAILED(CreateStreamOnHGlobal(hMem, TRUE, &pStream)))
-    {
-        GlobalFree(hMem);
-        return NULL;
-    }
-
-    Gdiplus::Image* img = Gdiplus::Image::FromStream(pStream);
-    pStream->Release();
-
-    if (img && img->GetLastStatus() != Gdiplus::Ok)
-    {
-        delete img;
-        return NULL;
-    }
+    CWPngImage* img = new CWPngImage;
+    img->pixels = pixels;
+    img->w = w;
+    img->h = h;
     return img;
 }
 
@@ -129,7 +130,13 @@ void CWAboutDialog::destroyFonts()
 void CWAboutDialog::destroyImages()
 {
     auto del = [](void*& ptr) {
-        if (ptr) { delete reinterpret_cast<Gdiplus::Image*>(ptr); ptr = NULL; }
+        if (ptr)
+        {
+            CWPngImage* img = static_cast<CWPngImage*>(ptr);
+            stbi_image_free(img->pixels);
+            delete img;
+            ptr = NULL;
+        }
     };
     del(m_pImgClamAV);
     del(m_pImgClamWin);
@@ -395,30 +402,75 @@ INT_PTR CWAboutDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
 
             if (ptrImg)
             {
-                Gdiplus::Image* img = reinterpret_cast<Gdiplus::Image*>(ptrImg);
-                Gdiplus::Graphics g(dis->hDC);
-                g.SetInterpolationMode(Gdiplus::InterpolationModeHighQualityBicubic);
-                g.SetSmoothingMode(Gdiplus::SmoothingModeHighQuality);
+                CWPngImage* img = static_cast<CWPngImage*>(ptrImg);
 
                 const int rcW = dis->rcItem.right - dis->rcItem.left;
                 const int rcH = dis->rcItem.bottom - dis->rcItem.top;
-                int drawW = img->GetWidth();
-                int drawH = img->GetHeight();
 
-                /* Auto-scale down if image is larger than control * 1.5 approx for DPI,
-                   but keeping it simple: just draw it scaled into the rect keeping aspect ratio */
-                float scaleX = (float)rcW / (float)drawW;
-                float scaleY = (float)rcH / (float)drawH;
-                float scale = (scaleX < scaleY) ? scaleX : scaleY;
-                if (scale > 1.0f) scale = 1.0f; // Don't scale up
+                float scaleX = (float)rcW / (float)img->w;
+                float scaleY = (float)rcH / (float)img->h;
+                float scale  = (scaleX < scaleY) ? scaleX : scaleY;
+                if (scale > 1.0f) scale = 1.0f;
 
-                drawW = (int)(drawW * scale);
-                drawH = (int)(drawH * scale);
+                int drawW = (int)(img->w * scale);
+                int drawH = (int)(img->h * scale);
+                if (drawW < 1) drawW = 1;
+                if (drawH < 1) drawH = 1;
 
                 int x = dis->rcItem.left + (rcW - drawW) / 2;
-                int y = dis->rcItem.top + (rcH - drawH) / 2;
+                int y = dis->rcItem.top  + (rcH - drawH) / 2;
 
-                g.DrawImage(img, x, y, drawW, drawH);
+                /* Resize to target dimensions with bicubic quality */
+                unsigned char* resized = (unsigned char*)malloc((size_t)drawW * drawH * 4);
+                if (resized)
+                {
+                    stbir_resize_uint8_linear(img->pixels, img->w, img->h, 0,
+                                              resized, drawW, drawH, 0,
+                                              STBIR_RGBA);
+
+                    /* Pre-composite RGBA against solid background — no AlphaBlend needed */
+                    int bgR = GetRValue(bg), bgG = GetGValue(bg), bgB = GetBValue(bg);
+
+                    BITMAPINFOHEADER bih;
+                    ZeroMemory(&bih, sizeof(bih));
+                    bih.biSize        = sizeof(bih);
+                    bih.biWidth       = drawW;
+                    bih.biHeight      = -drawH; /* top-down */
+                    bih.biPlanes      = 1;
+                    bih.biBitCount    = 32;
+                    bih.biCompression = BI_RGB;
+
+                    void* dibBits = NULL;
+                    HDC hdcMem = CreateCompatibleDC(dis->hDC);
+                    HBITMAP hBmp = CreateDIBSection(dis->hDC,
+                                                    (BITMAPINFO*)&bih,
+                                                    DIB_RGB_COLORS,
+                                                    &dibBits, NULL, 0);
+                    if (hBmp && dibBits)
+                    {
+                        unsigned char* dst = (unsigned char*)dibBits;
+                        const unsigned char* src = resized;
+                        const int npix = drawW * drawH;
+                        for (int i = 0; i < npix; ++i)
+                        {
+                            unsigned int a = src[3];
+                            unsigned int ia = 255 - a;
+                            dst[0] = (unsigned char)((src[2] * a + bgB * ia) / 255);
+                            dst[1] = (unsigned char)((src[1] * a + bgG * ia) / 255);
+                            dst[2] = (unsigned char)((src[0] * a + bgR * ia) / 255);
+                            dst[3] = 0;
+                            src += 4;
+                            dst += 4;
+                        }
+
+                        HGDIOBJ old = SelectObject(hdcMem, hBmp);
+                        BitBlt(dis->hDC, x, y, drawW, drawH, hdcMem, 0, 0, SRCCOPY);
+                        SelectObject(hdcMem, old);
+                        DeleteObject(hBmp);
+                    }
+                    if (hdcMem) DeleteDC(hdcMem);
+                    free(resized);
+                }
             }
             return TRUE;
         }
@@ -464,14 +516,6 @@ INT_PTR CWAboutDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
 /* ─── C Wrapper ─────────────────────────────────────────────── */
 void CW_AboutDialogRun(HWND hwndParent, CWConfig *cfg)
 {
-    Gdiplus::GdiplusStartupInput gdiplusStartupInput;
-    ULONG_PTR gdiplusToken;
-    Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
-
-    {
-        CWAboutDialog dlg(*cfg);
-        dlg.runModal(hwndParent, 520, 515);
-    }
-
-    Gdiplus::GdiplusShutdown(gdiplusToken);
+    CWAboutDialog dlg(*cfg);
+    dlg.runModal(hwndParent, 520, 515);
 }
