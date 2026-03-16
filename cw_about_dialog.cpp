@@ -39,6 +39,56 @@ struct CWPngImage
 #define IDC_LOGO_CLAMAV   4102
 #define IDC_LOGO_NETFARM  4103
 
+/* ─── Version info helpers ───────────────────────────────────── */
+
+static std::string getFileVersion(const std::string& filePath)
+{
+    DWORD dummy;
+    DWORD infoSize = GetFileVersionInfoSizeA(filePath.c_str(), &dummy);
+    if (infoSize == 0)
+        return "";
+
+    std::vector<BYTE> infoData(infoSize);
+    if (!GetFileVersionInfoA(filePath.c_str(), dummy, infoSize, infoData.data()))
+        return "";
+
+    struct LANGANDCODEPAGE {
+        WORD wLanguage;
+        WORD wCodePage;
+    } *lpTranslate;
+    UINT cbTranslate;
+
+    if (!VerQueryValueA(infoData.data(), "\\VarFileInfo\\Translation", (LPVOID*)&lpTranslate, &cbTranslate) || cbTranslate < sizeof(LANGANDCODEPAGE))
+        return "";
+
+    char subBlock[256];
+    snprintf(subBlock, sizeof(subBlock), "\\StringFileInfo\\%04x%04x\\FileVersion",
+             lpTranslate[0].wLanguage, lpTranslate[0].wCodePage);
+
+    char* lpBuffer = NULL;
+    UINT cbBufSize = 0;
+    if (!VerQueryValueA(infoData.data(), subBlock, (LPVOID*)&lpBuffer, &cbBufSize) || cbBufSize == 0)
+        return "";
+
+    /* Normalize "1,5,2,0" → "1.5.2" (first 3 components, dot-separated) */
+    std::string raw = lpBuffer;
+    std::string result;
+    int nparts = 0;
+    size_t start = 0;
+    for (size_t i = 0; i <= raw.size() && nparts < 3; ++i)
+    {
+        if (i == raw.size() || raw[i] == ',' || raw[i] == '.')
+        {
+            if (!result.empty()) result += '.';
+            while (start < i && raw[start] == ' ') ++start;
+            result += raw.substr(start, i - start);
+            start = i + 1;
+            ++nparts;
+        }
+    }
+    return result;
+}
+
 /* ─── PNG resource loader via stb_image ─────────────────────── */
 
 void* CWAboutDialog::loadPngResource(int resourceId)
@@ -211,38 +261,19 @@ bool CWAboutDialog::onInit()
     addLabel("ClamWin Free Antivirus", textX, y, contentW, CW_Scale(28), m_hFontTitle);
     y += CW_Scale(30);
 
-    /* Retrieve version from resources */
-    std::string versionStr = CLAMWIN_VERSION_STR;
+    /* Retrieve ClamWin version from resources */
     char exePath[MAX_PATH];
+    std::string exeDir;
+    std::string versionStr = CLAMWIN_VERSION_STR;
     if (GetModuleFileNameA(NULL, exePath, MAX_PATH))
     {
-        DWORD dummy;
-        DWORD infoSize = GetFileVersionInfoSizeA(exePath, &dummy);
-        if (infoSize > 0)
-        {
-            std::vector<BYTE> infoData(infoSize);
-            if (GetFileVersionInfoA(exePath, dummy, infoSize, infoData.data()))
-            {
-                struct LANGANDCODEPAGE {
-                    WORD wLanguage;
-                    WORD wCodePage;
-                } *lpTranslate;
-                UINT cbTranslate;
+        std::string ver = getFileVersion(exePath);
+        if (!ver.empty())
+            versionStr = ver;
 
-                if (VerQueryValueA(infoData.data(), "\\VarFileInfo\\Translation", (LPVOID*)&lpTranslate, &cbTranslate) && cbTranslate >= sizeof(LANGANDCODEPAGE))
-                {
-                    char subBlock[256];
-                    snprintf(subBlock, sizeof(subBlock), "\\StringFileInfo\\%04x%04x\\FileVersion", lpTranslate[0].wLanguage, lpTranslate[0].wCodePage);
-                    
-                    char* lpBuffer = NULL;
-                    UINT cbBufSize = 0;
-                    if (VerQueryValueA(infoData.data(), subBlock, (LPVOID*)&lpBuffer, &cbBufSize) && cbBufSize > 0)
-                    {
-                        versionStr = lpBuffer;
-                    }
-                }
-            }
-        }
+        char* lastSlash = strrchr(exePath, '\\');
+        if (lastSlash)
+            exeDir = std::string(exePath, lastSlash + 1);
     }
 
     std::string verLabel = "Version " + versionStr;
@@ -264,7 +295,15 @@ bool CWAboutDialog::onInit()
     int yClamAV = y;
     addLabel("Scanning Engine", textX, y, contentW, CW_Scale(20), m_hFontSection);
     y += CW_Scale(20);
-    addLabel("Powered by ClamAV, maintained by Cisco Talos", textX, y, contentW, CW_Scale(18), m_hFontNormal);
+    std::string clamavLabel = "Powered by ClamAV";
+    if (!exeDir.empty())
+    {
+        std::string clamavVer = getFileVersion(exeDir + "libclamav.dll");
+        if (!clamavVer.empty())
+            clamavLabel += " " + clamavVer;
+    }
+    clamavLabel += ", maintained by Cisco Talos";
+    addLabel(clamavLabel.c_str(), textX, y, contentW, CW_Scale(18), m_hFontNormal);
     y += CW_Scale(18);
     m_hwndLinkClamAV = addLink("https://www.clamav.net", textX, y, contentW, CW_Scale(18),
                                m_hFontLink, IDC_LINK_CLAMAV);
