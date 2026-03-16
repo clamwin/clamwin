@@ -7,27 +7,28 @@
  * The hour edit must NOT have ES_NUMBER so that "AM"/"PM" text is accepted.
  */
 #include <windows.h>
+#include <tchar.h>
 
-inline bool CW_ContainsNoCase(const char* haystack, const char* needle)
+inline bool CW_ContainsNoCase(const TCHAR* haystack, const TCHAR* needle)
 {
     if (!haystack || !needle || !*needle)
         return false;
 
-    int nlen = lstrlenA(needle);
+    int nlen = lstrlen(needle);
     if (nlen <= 0)
         return false;
 
-    for (const char* p = haystack; *p; ++p)
+    for (const TCHAR* p = haystack; *p; ++p)
     {
         int i = 0;
         while (i < nlen)
         {
-            char a = p[i];
-            char b = needle[i];
+            TCHAR a = p[i];
+            TCHAR b = needle[i];
             if (!a)
                 return false;
-            if (a >= 'A' && a <= 'Z') a = (char)(a - 'A' + 'a');
-            if (b >= 'A' && b <= 'Z') b = (char)(b - 'A' + 'a');
+            a = (TCHAR)_totlower((int)a);
+            b = (TCHAR)_totlower((int)b);
             if (a != b)
                 break;
             ++i;
@@ -43,42 +44,42 @@ inline bool CW_ContainsNoCase(const char* haystack, const char* needle)
 inline void CW_WriteHourToEdit(HWND edit, int hour24)
 {
     if (!edit) return;
-    char itime[4] = {0};
-    char am[32] = "AM";
-    char pm[32] = "PM";
-    GetLocaleInfoA(LOCALE_USER_DEFAULT, LOCALE_ITIME, itime, sizeof(itime));
-    GetLocaleInfoA(LOCALE_USER_DEFAULT, LOCALE_S1159, am, sizeof(am));
-    GetLocaleInfoA(LOCALE_USER_DEFAULT, LOCALE_S2359, pm, sizeof(pm));
-    char buf[16];
-    if (itime[0] == '1')                         /* 24-hour */
+    TCHAR itime[4] = {0};
+    TCHAR am[32] = TEXT("AM");
+    TCHAR pm[32] = TEXT("PM");
+    GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_ITIME, itime, _countof(itime));
+    GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_S1159, am, _countof(am));
+    GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_S2359, pm, _countof(pm));
+    TCHAR buf[16];
+    if (itime[0] == TEXT('1'))                         /* 24-hour */
     {
-        wsprintfA(buf, "%d", hour24);
+        wsprintf(buf, TEXT("%d"), hour24);
     }
     else                                          /* 12-hour */
     {
         int h12 = hour24 % 12;
         if (h12 == 0) h12 = 12;
-        wsprintfA(buf, "%d %s", h12, hour24 < 12 ? am : pm);
+        wsprintf(buf, TEXT("%d %s"), h12, hour24 < 12 ? am : pm);
     }
-    SetWindowTextA(edit, buf);
+    SetWindowText(edit, buf);
 }
 
 /* Read hour back.  Strips optional AM/PM; returns 24-hour value 0–23. */
 inline int CW_ReadHourFromEdit(HWND edit, int fallback)
 {
     if (!edit) return fallback;
-    char buf[32] = {0};
-    GetWindowTextA(edit, buf, sizeof(buf));
+    TCHAR buf[32] = {0};
+    GetWindowText(edit, buf, _countof(buf));
     if (!buf[0]) return fallback;
 
-    char am[32] = "AM";
-    char pm[32] = "PM";
-    GetLocaleInfoA(LOCALE_USER_DEFAULT, LOCALE_S1159, am, sizeof(am));
-    GetLocaleInfoA(LOCALE_USER_DEFAULT, LOCALE_S2359, pm, sizeof(pm));
+    TCHAR am[32] = TEXT("AM");
+    TCHAR pm[32] = TEXT("PM");
+    GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_S1159, am, _countof(am));
+    GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_S2359, pm, _countof(pm));
 
     bool isPM = CW_ContainsNoCase(buf, pm);
     bool isAM = CW_ContainsNoCase(buf, am);
-    int h = atoi(buf);
+    int h = _ttoi(buf);
     if (isPM && h != 12) h += 12;
     if (isAM && h == 12) h  = 0;
     if (h < 0)  h = 0;
@@ -90,7 +91,7 @@ inline int CW_ReadHourFromEdit(HWND edit, int fallback)
 inline void CW_WriteMinuteToEdit(HWND edit, int minute)
 {
     if (!edit) return;
-    char buf[8];
-    wsprintfA(buf, "%02d", minute);
-    SetWindowTextA(edit, buf);
+    TCHAR buf[8];
+    wsprintf(buf, TEXT("%02d"), minute);
+    SetWindowText(edit, buf);
 }

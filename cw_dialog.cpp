@@ -10,6 +10,7 @@
 #include "cw_mnemonic.h"
 #include "cw_theme.h"
 #include <string.h>
+#include <tchar.h>
 
 typedef HRESULT (WINAPI *CWSetWindowThemeFn)(HWND, LPCWSTR, LPCWSTR);
 typedef HRESULT (WINAPI *CWDwmSetWindowAttributeFn)(HWND, DWORD, LPCVOID, DWORD);
@@ -23,7 +24,7 @@ static CWDwmSetWindowAttributeFn getDwmSetWindowAttributeFn()
     if (!s_checked)
     {
         s_checked = true;
-        s_dwmapi = LoadLibraryA("dwmapi.dll");
+        s_dwmapi = LoadLibrary(TEXT("dwmapi.dll"));
         if (s_dwmapi)
             s_fn = reinterpret_cast<CWDwmSetWindowAttributeFn>(GetProcAddress(s_dwmapi, "DwmSetWindowAttribute"));
     }
@@ -39,27 +40,27 @@ static CWSetWindowThemeFn getSetWindowThemeFn()
     if (!s_checked)
     {
         s_checked = true;
-        s_uxtheme = LoadLibraryA("uxtheme.dll");
+        s_uxtheme = LoadLibrary(TEXT("uxtheme.dll"));
         if (s_uxtheme)
             s_fn = reinterpret_cast<CWSetWindowThemeFn>(GetProcAddress(s_uxtheme, "SetWindowTheme"));
     }
     return s_fn;
 }
 
-static bool isModernThemeClass(const char* className)
+static bool isModernThemeClass(const TCHAR* className)
 {
     if (!className || !className[0])
         return false;
 
-    if (lstrcmpiA(className, "Edit") == 0)
+    if (lstrcmpi(className, TEXT("Edit")) == 0)
         return true;
-    if (lstrcmpiA(className, "ListBox") == 0)
+    if (lstrcmpi(className, TEXT("ListBox")) == 0)
         return true;
-    if (lstrcmpiA(className, "ComboBox") == 0)
+    if (lstrcmpi(className, TEXT("ComboBox")) == 0)
         return true;
-    if (lstrcmpiA(className, "Button") == 0)
+    if (lstrcmpi(className, TEXT("Button")) == 0)
         return true;
-    if (strstr(className, "RICHEDIT") != NULL)
+    if (_tcsstr(className, TEXT("RICHEDIT")) != NULL)
         return true;
     return false;
 }
@@ -74,9 +75,9 @@ static void tryApplyModernTheme(HWND hwnd)
     if (!setWindowThemeFn)
         return;
 
-    char className[64];
-    className[0] = '\0';
-    GetClassNameA(hwnd, className, sizeof(className));
+    TCHAR className[64];
+    className[0] = TEXT('\0');
+    GetClassName(hwnd, className, _countof(className));
     if (!isModernThemeClass(className))
         return;
 
@@ -124,11 +125,11 @@ static BOOL CALLBACK applyModernThemeEnumProc(HWND hwnd, LPARAM lp)
 static BOOL CALLBACK clearAccelUiStateEnumProc(HWND hwnd, LPARAM lp)
 {
     (void)lp;
-    SendMessageA(hwnd, WM_CHANGEUISTATE, MAKEWPARAM(UIS_CLEAR, UISF_HIDEACCEL), 0);
+    SendMessage(hwnd, WM_CHANGEUISTATE, MAKEWPARAM(UIS_CLEAR, UISF_HIDEACCEL), 0);
     return TRUE;
 }
 
-static const char* s_dialogMnemonicCueProp = "CW_DIALOG_SHOW_MNEMONICS";
+static const TCHAR* s_dialogMnemonicCueProp = TEXT("CW_DIALOG_SHOW_MNEMONICS");
 
 static COLORREF adjustColor(COLORREF color, int delta)
 {
@@ -162,12 +163,12 @@ static void drawThemedButton(DRAWITEMSTRUCT* dis, CWTheme* theme)
         DrawFrameControl(hdc, &rc, DFC_BUTTON,
                          DFCS_BUTTONPUSH | (isPressed ? DFCS_PUSHED : 0) | (isDisabled ? DFCS_INACTIVE : 0));
 
-        char text[256];
-        GetWindowTextA(hwndBtn, text, sizeof(text));
+        TCHAR text[256];
+        GetWindowText(hwndBtn, text, _countof(text));
         SetBkMode(hdc, TRANSPARENT);
         SetTextColor(hdc, GetSysColor(isDisabled ? COLOR_GRAYTEXT : COLOR_BTNTEXT));
 
-        HFONT hFont = (HFONT)SendMessageA(hwndBtn, WM_GETFONT, 0, 0);
+        HFONT hFont = (HFONT)SendMessage(hwndBtn, WM_GETFONT, 0, 0);
         HGDIOBJ oldFont = NULL;
         if (hFont)
             oldFont = SelectObject(hdc, hFont);
@@ -244,11 +245,11 @@ static void drawThemedButton(DRAWITEMSTRUCT* dis, CWTheme* theme)
     DeleteObject(fillBrush);
     DeleteObject(borderPen);
 
-    char text[256];
-    GetWindowTextA(hwndBtn, text, sizeof(text));
+    TCHAR text[256];
+    GetWindowText(hwndBtn, text, _countof(text));
     SetBkMode(hdc, TRANSPARENT);
     SetTextColor(hdc, textColor);
-    HFONT hFont = (HFONT)SendMessageA(hwndBtn, WM_GETFONT, 0, 0);
+    HFONT hFont = (HFONT)SendMessage(hwndBtn, WM_GETFONT, 0, 0);
     HGDIOBJ oldFont = NULL;
     if (hFont)
         oldFont = SelectObject(hdc, hFont);
@@ -280,16 +281,16 @@ void CWDialog::setDialogMnemonicCues(HWND hwnd, bool show)
         return;
 
     if (show)
-        SetPropA(hwnd, s_dialogMnemonicCueProp, (HANDLE)1);
+        SetProp(hwnd, s_dialogMnemonicCueProp, (HANDLE)1);
     else
-        RemovePropA(hwnd, s_dialogMnemonicCueProp);
+        RemoveProp(hwnd, s_dialogMnemonicCueProp);
 }
 
 bool CWDialog::getDialogMnemonicCues(HWND hwnd)
 {
     if (!hwnd)
         return false;
-    return GetPropA(hwnd, s_dialogMnemonicCueProp) != NULL;
+    return GetProp(hwnd, s_dialogMnemonicCueProp) != NULL;
 }
 
 CWDialog::~CWDialog()
@@ -357,7 +358,7 @@ INT_PTR CWDialog::runModal(HWND parent, int w, int h)
     tmpl.hdr.cy              = (short)(h * 8 / baseY);
     /* menu, windowClass, title are all zero = none/default/empty */
 
-    return DialogBoxIndirectParamA(GetModuleHandleA(NULL),
+    return DialogBoxIndirectParam(GetModuleHandle(NULL),
                                    &tmpl.hdr,
                                    parent,
                                    staticDlgProc,
@@ -374,7 +375,7 @@ INT_PTR CWDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
         {
             bool setFocusBySystem = onInit();
             /* Show keyboard cues (accelerator underlines) immediately. */
-            SendMessageA(m_hwnd, WM_CHANGEUISTATE, MAKEWPARAM(UIS_CLEAR, UISF_HIDEACCEL), 0);
+            SendMessage(m_hwnd, WM_CHANGEUISTATE, MAKEWPARAM(UIS_CLEAR, UISF_HIDEACCEL), 0);
             EnumChildWindows(m_hwnd, clearAccelUiStateEnumProc, 0);
             tryApplyDarkTitleBar(m_hwnd);
             EnumChildWindows(m_hwnd, applyModernThemeEnumProc, 0);
@@ -386,7 +387,7 @@ INT_PTR CWDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
             /* Keep accelerator underlines visible even when Windows asks to hide cues. */
             if (LOWORD(wp) == UIS_SET && (HIWORD(wp) & UISF_HIDEACCEL) != 0)
             {
-                SendMessageA(m_hwnd, WM_CHANGEUISTATE, MAKEWPARAM(UIS_CLEAR, UISF_HIDEACCEL), 0);
+                SendMessage(m_hwnd, WM_CHANGEUISTATE, MAKEWPARAM(UIS_CLEAR, UISF_HIDEACCEL), 0);
                 EnumChildWindows(m_hwnd, clearAccelUiStateEnumProc, 0);
                 return TRUE;
             }
@@ -531,14 +532,14 @@ INT_PTR CALLBACK CWDialog::staticDlgProc(HWND hwnd, UINT msg,
         if (self)
         {
             self->m_hwnd = hwnd;
-            SetWindowLongPtrA(hwnd, DWLP_USER,
+            SetWindowLongPtr(hwnd, DWLP_USER,
                               reinterpret_cast<LONG_PTR>(self));
         }
     }
     else
     {
         self = reinterpret_cast<CWDialog*>(
-                   GetWindowLongPtrA(hwnd, DWLP_USER));
+                   GetWindowLongPtr(hwnd, DWLP_USER));
     }
 
     if (self)

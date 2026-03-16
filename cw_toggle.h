@@ -14,24 +14,25 @@
 #include "cw_theme.h"
 #include "cw_dpi.h"
 #include <windows.h>
+#include <tchar.h>
 
 /* ── Property name stored on the HWND ─────────────────────────── */
-static const char* const CW_TOGGLE_PROP = "CW_TOGGLE";
+static const TCHAR* const CW_TOGGLE_PROP = TEXT("CW_TOGGLE");
 
 /* ── State accessors ───────────────────────────────────────────── */
 inline bool CW_ToggleGetChecked(HWND hwnd)
 {
     if (!hwnd) return false;
-    return GetPropA(hwnd, CW_TOGGLE_PROP) != NULL;
+    return GetProp(hwnd, CW_TOGGLE_PROP) != NULL;
 }
 
 inline void CW_ToggleSetChecked(HWND hwnd, bool checked)
 {
     if (!hwnd) return;
     if (checked)
-        SetPropA(hwnd, CW_TOGGLE_PROP, (HANDLE)1);
+        SetProp(hwnd, CW_TOGGLE_PROP, (HANDLE)1);
     else
-        RemovePropA(hwnd, CW_TOGGLE_PROP);
+        RemoveProp(hwnd, CW_TOGGLE_PROP);
 }
 
 /*
@@ -118,8 +119,8 @@ inline void CW_DrawOwnerToggle(DRAWITEMSTRUCT* dis,
     }
 
     /* Label */
-    char text[256] = {0};
-    GetWindowTextA(dis->hwndItem, text, sizeof(text));
+    TCHAR text[256] = {0};
+    GetWindowText(dis->hwndItem, text, _countof(text));
     RECT tr  = rc;
     tr.left  = markRc.right + CW_Scale(10);
 

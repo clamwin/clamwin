@@ -15,9 +15,11 @@
 #include "cw_mnemonic.h"
 #include "cw_dpi.h"
 #include "cw_gui_shared.h"
+#include "cw_text_conv.h"
 #include <commctrl.h>
 #include <shellapi.h>
 #include <shlobj.h>
+#include <tchar.h>
 #include <ctype.h>
 #include <string>
 #include <vector>
@@ -91,27 +93,27 @@ enum
     IDC_PREFS_LIMITS_SPIN_MAXDEPTH
 };
 
-static const char* s_pageNames[8] = {
-    "&General",
-    "&Filters",
-    "Internet &Updates",
-    "&Proxy",
-    "&Scheduled Scans",
-    "&Limits",
-    "File L&ocations",
-    "&Advanced"
+static const TCHAR* s_pageNames[8] = {
+    TEXT("&General"),
+    TEXT("&Filters"),
+    TEXT("Internet &Updates"),
+    TEXT("&Proxy"),
+    TEXT("&Scheduled Scans"),
+    TEXT("&Limits"),
+    TEXT("File L&ocations"),
+    TEXT("&Advanced")
 };
 
-static const char* s_prefsPageOwnerProp = "CWPrefsPageOwner";
-static const char* s_prefsSidebarOwnerProp = "CWPrefsSidebarOwner";
-static const char* s_prefsEditOldProcProp = "CWPrefsEditOldProc";
+static const TCHAR* s_prefsPageOwnerProp = TEXT("CWPrefsPageOwner");
+static const TCHAR* s_prefsSidebarOwnerProp = TEXT("CWPrefsSidebarOwner");
+static const TCHAR* s_prefsEditOldProcProp = TEXT("CWPrefsEditOldProc");
 static const UINT_PTR s_prefsMnemonicTimerId = 0xCA11;
 
 static LRESULT CALLBACK prefsEditSubclassProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
 {
-    WNDPROC oldProc = (WNDPROC)GetPropA(hwnd, s_prefsEditOldProcProp);
+    WNDPROC oldProc = (WNDPROC)GetProp(hwnd, s_prefsEditOldProcProp);
     if (!oldProc)
-        return DefWindowProcA(hwnd, msg, wp, lp);
+        return DefWindowProc(hwnd, msg, wp, lp);
 
     if (msg == WM_KEYDOWN && wp == VK_TAB)
     {
@@ -130,29 +132,29 @@ static LRESULT CALLBACK prefsEditSubclassProc(HWND hwnd, UINT msg, WPARAM wp, LP
 
     if (msg == WM_GETDLGCODE)
     {
-        LRESULT code = CallWindowProcA(oldProc, hwnd, msg, wp, lp);
+        LRESULT code = CallWindowProc(oldProc, hwnd, msg, wp, lp);
         code &= ~(DLGC_WANTTAB | DLGC_WANTALLKEYS);
         return code;
     }
 
-    return CallWindowProcA(oldProc, hwnd, msg, wp, lp);
+    return CallWindowProc(oldProc, hwnd, msg, wp, lp);
 }
 
-static int findSidebarMnemonicPageIndex(char ch)
+static int findSidebarMnemonicPageIndex(TCHAR ch)
 {
     if (!ch)
         return -1;
 
-    unsigned char key = (unsigned char)tolower((unsigned char)ch);
+    TCHAR key = (TCHAR)_totlower(ch);
     const int pageCount = (int)(sizeof(s_pageNames) / sizeof(s_pageNames[0]));
     for (int i = 0; i < pageCount; ++i)
     {
-        std::string plain;
+        std::basic_string<TCHAR> plain;
         int accelIndex = -1;
         CW_ParseMnemonicText(s_pageNames[i], plain, accelIndex);
         if (accelIndex >= 0 && accelIndex < (int)plain.size())
         {
-            unsigned char accel = (unsigned char)tolower((unsigned char)plain[(size_t)accelIndex]);
+            TCHAR accel = (TCHAR)_totlower(plain[(size_t)accelIndex]);
             if (accel == key)
                 return i;
         }
@@ -165,26 +167,26 @@ static int findSidebarMnemonicPageIndexFromVKey(WPARAM key)
     if (key < 'A' || key > 'Z')
         return -1;
 
-    char ch = (char)tolower((unsigned char)key);
+    TCHAR ch = (TCHAR)_totlower((int)key);
     return findSidebarMnemonicPageIndex(ch);
 }
 
 static void enableNotifyStyle(HWND hwnd)
 {
     if (!hwnd) return;
-    LONG_PTR style = GetWindowLongPtrA(hwnd, GWL_STYLE);
-    SetWindowLongPtrA(hwnd, GWL_STYLE, style | BS_NOTIFY);
+    LONG_PTR style = GetWindowLongPtr(hwnd, GWL_STYLE);
+    SetWindowLongPtr(hwnd, GWL_STYLE, style | BS_NOTIFY);
 }
 
 static bool isCheckOrRadio(HWND hwnd)
 {
     if (!hwnd) return false;
-    char cls[32] = {0};
-    GetClassNameA(hwnd, cls, sizeof(cls));
-    if (lstrcmpiA(cls, "Button") != 0)
+    TCHAR cls[32] = {0};
+    GetClassName(hwnd, cls, _countof(cls));
+    if (lstrcmpi(cls, TEXT("Button")) != 0)
         return false;
 
-    LONG_PTR style = GetWindowLongPtrA(hwnd, GWL_STYLE);
+    LONG_PTR style = GetWindowLongPtr(hwnd, GWL_STYLE);
     LONG_PTR type = style & BS_TYPEMASK;
     return type == BS_CHECKBOX ||
            type == BS_AUTOCHECKBOX ||
@@ -234,8 +236,8 @@ static void configureThemedCombo(HWND combo)
     if (!combo) return;
     int fieldHeight = CW_Scale(26);
     int listHeight = CW_Scale(26);
-    SendMessageA(combo, CB_SETITEMHEIGHT, (WPARAM)-1, (LPARAM)fieldHeight);
-    SendMessageA(combo, CB_SETITEMHEIGHT, (WPARAM)0, (LPARAM)listHeight);
+    SendMessage(combo, CB_SETITEMHEIGHT, (WPARAM)-1, (LPARAM)fieldHeight);
+    SendMessage(combo, CB_SETITEMHEIGHT, (WPARAM)0, (LPARAM)listHeight);
 }
 
 static void configureCenteredEditTextRect(HWND edit)
@@ -243,28 +245,28 @@ static void configureCenteredEditTextRect(HWND edit)
     if (!edit)
         return;
 
-    char className[32] = {0};
-    GetClassNameA(edit, className, sizeof(className));
-    if (lstrcmpiA(className, "EDIT") != 0)
+    TCHAR className[32] = {0};
+    GetClassName(edit, className, _countof(className));
+    if (lstrcmpi(className, TEXT("EDIT")) != 0)
         return;
 
-    LONG_PTR style = GetWindowLongPtrA(edit, GWL_STYLE);
+    LONG_PTR style = GetWindowLongPtr(edit, GWL_STYLE);
     if ((style & ES_MULTILINE) == 0)
     {
-        SetWindowLongPtrA(edit, GWL_STYLE, style | ES_MULTILINE);
+        SetWindowLongPtr(edit, GWL_STYLE, style | ES_MULTILINE);
     }
 
-    if (!GetPropA(edit, s_prefsEditOldProcProp))
+    if (!GetProp(edit, s_prefsEditOldProcProp))
     {
-        WNDPROC oldProc = (WNDPROC)SetWindowLongPtrA(edit, GWLP_WNDPROC, (LONG_PTR)prefsEditSubclassProc);
+        WNDPROC oldProc = (WNDPROC)SetWindowLongPtr(edit, GWLP_WNDPROC, (LONG_PTR)prefsEditSubclassProc);
         if (oldProc)
-            SetPropA(edit, s_prefsEditOldProcProp, (HANDLE)oldProc);
+            SetProp(edit, s_prefsEditOldProcProp, (HANDLE)oldProc);
     }
 
     RECT rc;
     GetClientRect(edit, &rc);
 
-    HFONT hFont = (HFONT)SendMessageA(edit, WM_GETFONT, 0, 0);
+    HFONT hFont = (HFONT)SendMessage(edit, WM_GETFONT, 0, 0);
     HDC hdc = GetDC(edit);
     if (!hdc)
         return;
@@ -273,9 +275,9 @@ static void configureCenteredEditTextRect(HWND edit)
     if (hFont)
         oldFont = SelectObject(hdc, hFont);
 
-    TEXTMETRICA tm;
+    TEXTMETRIC tm;
     ZeroMemory(&tm, sizeof(tm));
-    GetTextMetricsA(hdc, &tm);
+    GetTextMetrics(hdc, &tm);
 
     if (oldFont)
         SelectObject(hdc, oldFont);
@@ -297,13 +299,13 @@ static void configureCenteredEditTextRect(HWND edit)
     textRc.top    = topPad;
     textRc.bottom = topPad + textH + 1;
 
-    SendMessageA(edit, EM_SETRECTNP, 0, (LPARAM)&textRc);
+    SendMessage(edit, EM_SETRECTNP, 0, (LPARAM)&textRc);
     InvalidateRect(edit, NULL, TRUE);
 }
 
 /* Prop name matches CW_TOGGLE_PROP in cw_toggle.h */
-static const char* s_toggleProp = CW_TOGGLE_PROP;
-static const char* s_invalidFieldProp = "CW_PREFS_INVALID_FIELD";
+static const TCHAR* s_toggleProp = TEXT("CW_TOGGLE");
+static const TCHAR* s_invalidFieldProp = TEXT("CW_PREFS_INVALID_FIELD");
 
 static HBRUSH getValidationEditBrush(CWTheme* theme)
 {
@@ -328,16 +330,16 @@ static HBRUSH getValidationEditBrush(CWTheme* theme)
 static bool getToggleChecked(HWND hwnd)
 {
     if (!hwnd) return false;
-    return GetPropA(hwnd, s_toggleProp) != NULL;
+    return GetProp(hwnd, s_toggleProp) != NULL;
 }
 
 static void setToggleChecked(HWND hwnd, bool checked)
 {
     if (!hwnd) return;
     if (checked)
-        SetPropA(hwnd, s_toggleProp, (HANDLE)1);
+        SetProp(hwnd, s_toggleProp, (HANDLE)1);
     else
-        RemovePropA(hwnd, s_toggleProp);
+        RemoveProp(hwnd, s_toggleProp);
 }
 
 CWPrefsDialog::CWPrefsDialog(CWConfig& cfg)
@@ -449,11 +451,11 @@ void CWPrefsDialog::createFonts()
 void CWPrefsDialog::setControlFont(HWND hwnd, bool bold)
 {
     if (!hwnd) return;
-    SendMessageA(hwnd, WM_SETFONT, (WPARAM)(bold ? m_hFontBold : m_hFont), TRUE);
+    SendMessage(hwnd, WM_SETFONT, (WPARAM)(bold ? m_hFontBold : m_hFont), TRUE);
 
-    char className[32] = {0};
-    GetClassNameA(hwnd, className, sizeof(className));
-    if (lstrcmpiA(className, "EDIT") == 0)
+    TCHAR className[32] = {0};
+    GetClassName(hwnd, className, _countof(className));
+    if (lstrcmpi(className, TEXT("EDIT")) == 0)
         configureCenteredEditTextRect(hwnd);
 }
 
@@ -466,27 +468,27 @@ void CWPrefsDialog::createSidebar()
     int contentBottom = rc.bottom - pad - btnH - CW_Scale(10);
     int sidebarW = CW_Scale(170);
 
-    m_hwndSidebar = CreateWindowExA(WS_EX_CLIENTEDGE, "LISTBOX", "",
+    m_hwndSidebar = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("LISTBOX"), TEXT(""),
                                     WS_CHILD | WS_VISIBLE | WS_TABSTOP | LBS_NOTIFY |
                                     LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | WS_VSCROLL,
                                     pad, pad, sidebarW, contentBottom - pad,
                                     m_hwnd, (HMENU)IDC_PREFS_SIDEBAR,
-                                    GetModuleHandleA(NULL), NULL);
+                                    GetModuleHandle(NULL), NULL);
     setControlFont(m_hwndSidebar);
 
     if (m_hwndSidebar)
     {
-        SetPropA(m_hwndSidebar, s_prefsSidebarOwnerProp, (HANDLE)this);
-        m_sidebarOldProc = (WNDPROC)SetWindowLongPtrA(
+        SetProp(m_hwndSidebar, s_prefsSidebarOwnerProp, (HANDLE)this);
+        m_sidebarOldProc = (WNDPROC)SetWindowLongPtr(
             m_hwndSidebar,
             GWLP_WNDPROC,
             (LONG_PTR)&CWPrefsDialog::sidebarSubclassProc);
     }
 
     for (int i = 0; i < PAGE_COUNT; ++i)
-        SendMessageA(m_hwndSidebar, LB_ADDSTRING, 0, (LPARAM)s_pageNames[i]);
+        SendMessage(m_hwndSidebar, LB_ADDSTRING, 0, (LPARAM)s_pageNames[i]);
 
-    SendMessageA(m_hwndSidebar, LB_SETCURSEL, PAGE_GENERAL, 0);
+    SendMessage(m_hwndSidebar, LB_SETCURSEL, PAGE_GENERAL, 0);
 }
 
 void CWPrefsDialog::createGeneralPage(HWND page)
@@ -496,13 +498,13 @@ void CWPrefsDialog::createGeneralPage(HWND page)
     int w = CW_Scale(420);
     const int rowStep = CW_Scale(44);
 
-    HWND hTitle = CreateWindowExA(0, "STATIC", "Scanning Options",
+    HWND hTitle = CreateWindowEx(0, TEXT("STATIC"), TEXT("Scanning Options"),
                                   WS_CHILD | WS_VISIBLE, x, y, w, CW_Scale(20),
                                   page, NULL, NULL, NULL);
     setControlFont(hTitle, true);
     y += rowStep;
 
-    m_chkRecursive = CreateWindowExA(0, "BUTTON", "Scan in sub&directories",
+    m_chkRecursive = CreateWindowEx(0, TEXT("BUTTON"), TEXT("Scan in sub&directories"),
                                      WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW | BS_NOTIFY,
                                      x, y, w, CW_Scale(22), page,
                                      (HMENU)IDC_PREFS_GENERAL_RECURSIVE, NULL, NULL);
@@ -510,7 +512,7 @@ void CWPrefsDialog::createGeneralPage(HWND page)
     enableNotifyStyle(m_chkRecursive);
     y += rowStep;
 
-    m_chkScanMail = CreateWindowExA(0, "BUTTON", "Sca&n mail files",
+    m_chkScanMail = CreateWindowEx(0, TEXT("BUTTON"), TEXT("Sca&n mail files"),
                                     WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW | BS_NOTIFY,
                                     x, y, w, CW_Scale(22), page,
                                     (HMENU)IDC_PREFS_GENERAL_SCANMAIL, NULL, NULL);
@@ -518,13 +520,13 @@ void CWPrefsDialog::createGeneralPage(HWND page)
     enableNotifyStyle(m_chkScanMail);
     y += rowStep;
 
-    HWND hAction = CreateWindowExA(0, "STATIC", "Infected files action",
+    HWND hAction = CreateWindowEx(0, TEXT("STATIC"), TEXT("Infected files action"),
                                    WS_CHILD | WS_VISIBLE, x, y, w, CW_Scale(20),
                                    page, NULL, NULL, NULL);
     setControlFont(hAction, true);
     y += rowStep;
 
-    m_radActionReport = CreateWindowExA(0, "BUTTON", "&Report only",
+    m_radActionReport = CreateWindowEx(0, TEXT("BUTTON"), TEXT("&Report only"),
                                         WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW | BS_NOTIFY | WS_GROUP,
                                         x, y, w, CW_Scale(22), page,
                                         (HMENU)IDC_PREFS_GENERAL_ACT_REPORT, NULL, NULL);
@@ -532,7 +534,7 @@ void CWPrefsDialog::createGeneralPage(HWND page)
     enableNotifyStyle(m_radActionReport);
     y += rowStep;
 
-    m_radActionRemove = CreateWindowExA(0, "BUTTON", "R&emove infected files",
+    m_radActionRemove = CreateWindowEx(0, TEXT("BUTTON"), TEXT("R&emove infected files"),
                                         WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW | BS_NOTIFY,
                                         x, y, w, CW_Scale(22), page,
                                         (HMENU)IDC_PREFS_GENERAL_ACT_REMOVE, NULL, NULL);
@@ -540,7 +542,7 @@ void CWPrefsDialog::createGeneralPage(HWND page)
     enableNotifyStyle(m_radActionRemove);
     y += rowStep;
 
-    m_radActionQuarantine = CreateWindowExA(0, "BUTTON", "&Move to quarantine",
+    m_radActionQuarantine = CreateWindowEx(0, TEXT("BUTTON"), TEXT("&Move to quarantine"),
                                             WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW | BS_NOTIFY,
                                             x, y, w, CW_Scale(22), page,
                                             (HMENU)IDC_PREFS_GENERAL_ACT_QUAR, NULL, NULL);
@@ -548,13 +550,13 @@ void CWPrefsDialog::createGeneralPage(HWND page)
     enableNotifyStyle(m_radActionQuarantine);
     y += rowStep;
 
-    m_edtQuarantine = CreateWindowExA(WS_EX_CLIENTEDGE, "EDIT", "",
+    m_edtQuarantine = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
                                       WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_AUTOHSCROLL,
                                       x, y, CW_Scale(300), CW_Scale(30), page,
                                       (HMENU)IDC_PREFS_GENERAL_QUAR_PATH, NULL, NULL);
     setControlFont(m_edtQuarantine);
 
-    m_btnQuarantineBrowse = CreateWindowExA(0, "BUTTON", "&Browse...",
+    m_btnQuarantineBrowse = CreateWindowEx(0, TEXT("BUTTON"), TEXT("&Browse..."),
                                             WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW,
                                             x + CW_Scale(310), y, CW_Scale(100), CW_Scale(30), page,
                                             (HMENU)IDC_PREFS_GENERAL_QUAR_BROWSE, NULL, NULL);
@@ -566,7 +568,7 @@ static const int         s_patSepLen = 14;
 
 static void populatePatternList(HWND lb, const std::string& raw)
 {
-    SendMessageA(lb, LB_RESETCONTENT, 0, 0);
+    SendMessage(lb, LB_RESETCONTENT, 0, 0);
     size_t pos = 0;
     while (pos <= raw.size())
     {
@@ -577,7 +579,7 @@ static void populatePatternList(HWND lb, const std::string& raw)
             if (!item.empty())
             {
                 std::string padded = "  " + item;
-                SendMessageA(lb, LB_ADDSTRING, 0, (LPARAM)padded.c_str());
+                SendMessage(lb, LB_ADDSTRING, 0, (LPARAM)padded.c_str());
             }
             break;
         }
@@ -585,7 +587,7 @@ static void populatePatternList(HWND lb, const std::string& raw)
         if (!item.empty())
         {
             std::string padded = "  " + item;
-            SendMessageA(lb, LB_ADDSTRING, 0, (LPARAM)padded.c_str());
+            SendMessage(lb, LB_ADDSTRING, 0, (LPARAM)padded.c_str());
         }
         pos = next + s_patSepLen;
     }
@@ -593,12 +595,12 @@ static void populatePatternList(HWND lb, const std::string& raw)
 
 static std::string joinPatternList(HWND lb)
 {
-    int count = (int)SendMessageA(lb, LB_GETCOUNT, 0, 0);
+    int count = (int)SendMessage(lb, LB_GETCOUNT, 0, 0);
     std::string result;
     for (int i = 0; i < count; ++i)
     {
         char buf[512] = {0};
-        SendMessageA(lb, LB_GETTEXT, i, (LPARAM)buf);
+        SendMessage(lb, LB_GETTEXT, i, (LPARAM)buf);
         const char* p = buf;
         while (*p == ' ') ++p;  /* strip leading-space margin */
         if (!result.empty()) result += s_patSep;
@@ -622,10 +624,10 @@ static std::string trimAscii(const std::string& s)
 
 static bool showValidationError(HWND owner, HWND target, const char* msg)
 {
-    MessageBoxA(owner, msg, "ClamWin", MB_ICONEXCLAMATION | MB_OK);
+    MessageBox(owner, CW_ToT(msg ? msg : "").c_str(), TEXT("ClamWin"), MB_ICONEXCLAMATION | MB_OK);
     if (target)
     {
-        SetPropA(target, s_invalidFieldProp, (HANDLE)1);
+        SetProp(target, s_invalidFieldProp, (HANDLE)1);
         SetFocus(target);
         InvalidateRect(target, NULL, TRUE);
     }
@@ -637,7 +639,7 @@ static void clearValidationMark(HWND target)
     if (!target)
         return;
 
-    RemovePropA(target, s_invalidFieldProp);
+    RemoveProp(target, s_invalidFieldProp);
     InvalidateRect(target, NULL, TRUE);
 }
 
@@ -653,55 +655,54 @@ void CWPrefsDialog::createFiltersPage(HWND page)
     const int btnW  = CW_Scale(46);
     const int edtW  = colW - btnW - CW_Scale(4);
 
-    HWND hDesc = CreateWindowExA(0, "STATIC",
-                                 "Specify filename patterns to include or exclude from scanning.\r\n"
-                                 "Wildcards: * matches any characters, ? matches one character.",
+    HWND hDesc = CreateWindowEx(0, TEXT("STATIC"), TEXT("Specify filename patterns to include or exclude from scanning.\r\n"
+                                 "Wildcards: * matches any characters, ? matches one character."),
                                  WS_CHILD | WS_VISIBLE | SS_LEFT,
                                  x, y, CW_Scale(430), CW_Scale(36),
                                  page, NULL, NULL, NULL);
     setControlFont(hDesc);
     y += CW_Scale(44);
 
-    HWND hExclLbl = CreateWindowExA(0, "STATIC", "&Exclude Matching Filenames:",
+    HWND hExclLbl = CreateWindowEx(0, TEXT("STATIC"), TEXT("&Exclude Matching Filenames:"),
                                     WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
                                     x, y, colW, CW_Scale(20), page, NULL, NULL, NULL);
     setControlFont(hExclLbl);
-    HWND hInclLbl = CreateWindowExA(0, "STATIC", "Include &Matching Filenames:",
+    HWND hInclLbl = CreateWindowEx(0, TEXT("STATIC"), TEXT("Include &Matching Filenames:"),
                                     WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
                                     col2, y, colW, CW_Scale(20), page, NULL, NULL, NULL);
     setControlFont(hInclLbl);
     y += CW_Scale(24);
 
-    m_edtExclPattern = CreateWindowExA(WS_EX_CLIENTEDGE, "EDIT", "",
+    m_edtExclPattern = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
                                        WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_AUTOHSCROLL,
                                        x, y, edtW, rowH,
                                        page, (HMENU)IDC_PREFS_FILTERS_EDT_EXCL, NULL, NULL);
     setControlFont(m_edtExclPattern);
-    m_btnExclAdd = CreateWindowExA(0, "BUTTON", "&Add",
+    m_btnExclAdd = CreateWindowEx(0, TEXT("BUTTON"), TEXT("&Add"),
                                    WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW,
                                    x + edtW + CW_Scale(4), y, btnW, rowH,
                                    page, (HMENU)IDC_PREFS_FILTERS_BTN_EXCL_ADD, NULL, NULL);
     setControlFont(m_btnExclAdd);
 
-    m_edtInclPattern = CreateWindowExA(WS_EX_CLIENTEDGE, "EDIT", "",
+    m_edtInclPattern = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
                                        WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_AUTOHSCROLL,
                                        col2, y, edtW, rowH,
                                        page, (HMENU)IDC_PREFS_FILTERS_EDT_INCL, NULL, NULL);
     setControlFont(m_edtInclPattern);
-    m_btnInclAdd = CreateWindowExA(0, "BUTTON", "A&dd",
+    m_btnInclAdd = CreateWindowEx(0, TEXT("BUTTON"), TEXT("A&dd"),
                                    WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW,
                                    col2 + edtW + CW_Scale(4), y, btnW, rowH,
                                    page, (HMENU)IDC_PREFS_FILTERS_BTN_INCL_ADD, NULL, NULL);
     setControlFont(m_btnInclAdd);
     y += CW_Scale(36);
 
-    m_lstExclude = CreateWindowExA(WS_EX_CLIENTEDGE, "LISTBOX", "",
+    m_lstExclude = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("LISTBOX"), TEXT(""),
                                    WS_CHILD | WS_VISIBLE | WS_TABSTOP | WS_VSCROLL |
                                    LBS_NOTIFY | LBS_SORT | LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL,
                                    x, y, colW, listH,
                                    page, (HMENU)IDC_PREFS_FILTERS_LST_EXCL, NULL, NULL);
     setControlFont(m_lstExclude);
-    m_lstInclude = CreateWindowExA(WS_EX_CLIENTEDGE, "LISTBOX", "",
+    m_lstInclude = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("LISTBOX"), TEXT(""),
                                    WS_CHILD | WS_VISIBLE | WS_TABSTOP | WS_VSCROLL |
                                    LBS_NOTIFY | LBS_SORT | LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL,
                                    col2, y, colW, listH,
@@ -709,12 +710,12 @@ void CWPrefsDialog::createFiltersPage(HWND page)
     setControlFont(m_lstInclude);
     y += listH + CW_Scale(6);
 
-    m_btnExclRemove = CreateWindowExA(0, "BUTTON", "&Remove Selected",
+    m_btnExclRemove = CreateWindowEx(0, TEXT("BUTTON"), TEXT("&Remove Selected"),
                                       WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW,
                                       x, y, colW, CW_Scale(26),
                                       page, (HMENU)IDC_PREFS_FILTERS_BTN_EXCL_REM, NULL, NULL);
     setControlFont(m_btnExclRemove);
-    m_btnInclRemove = CreateWindowExA(0, "BUTTON", "R&emove Selected",
+    m_btnInclRemove = CreateWindowEx(0, TEXT("BUTTON"), TEXT("R&emove Selected"),
                                       WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW,
                                       col2, y, colW, CW_Scale(26),
                                       page, (HMENU)IDC_PREFS_FILTERS_BTN_INCL_REM, NULL, NULL);
@@ -732,7 +733,7 @@ void CWPrefsDialog::createUpdatesPage(HWND page)
     const int colonW = CW_Scale(12);
     const int minW = CW_Scale(38);
 
-    m_chkUpdateScheduled = CreateWindowExA(0, "BUTTON", "Enable scheduled database &updates",
+    m_chkUpdateScheduled = CreateWindowEx(0, TEXT("BUTTON"), TEXT("Enable scheduled database &updates"),
                                            WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW | BS_NOTIFY,
                                            x, y, CW_Scale(420), CW_Scale(22), page,
                                            (HMENU)IDC_PREFS_UPDATES_ENABLE, NULL, NULL);
@@ -740,43 +741,43 @@ void CWPrefsDialog::createUpdatesPage(HWND page)
     enableNotifyStyle(m_chkUpdateScheduled);
     y += rowStep;
 
-    HWND hMirror = CreateWindowExA(0, "STATIC", "&Download site:",
+    HWND hMirror = CreateWindowEx(0, TEXT("STATIC"), TEXT("&Download site:"),
                                    WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
                                    x, y + CW_Scale(4), CW_Scale(120), CW_Scale(20),
                                    page, NULL, NULL, NULL);
     setControlFont(hMirror);
 
-    m_edtMirror = CreateWindowExA(WS_EX_CLIENTEDGE, "EDIT", "",
+    m_edtMirror = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
                                   WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_AUTOHSCROLL,
                                   x + CW_Scale(122), y, CW_Scale(280), CW_Scale(30),
                                   page, (HMENU)IDC_PREFS_UPDATES_MIRROR, NULL, NULL);
     setControlFont(m_edtMirror);
     y += rowStep;
 
-    HWND hFreq = CreateWindowExA(0, "STATIC", "Freque&ncy:",
+    HWND hFreq = CreateWindowEx(0, TEXT("STATIC"), TEXT("Freque&ncy:"),
                                  WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
                                  x, y + CW_Scale(4), CW_Scale(120), CW_Scale(20),
                                  page, NULL, NULL, NULL);
     setControlFont(hFreq);
 
-    m_cmbUpdateFrequency = CreateWindowExA(0, "COMBOBOX", "",
+    m_cmbUpdateFrequency = CreateWindowEx(0, TEXT("COMBOBOX"), TEXT(""),
                                            WS_CHILD | WS_VISIBLE | WS_TABSTOP | CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | CBS_NOINTEGRALHEIGHT,
                                            x + CW_Scale(122), y, CW_Scale(150), CW_Scale(220),
                                            page, (HMENU)IDC_PREFS_UPDATES_FREQ, NULL, NULL);
     setControlFont(m_cmbUpdateFrequency);
     configureThemedCombo(m_cmbUpdateFrequency);
-    SendMessageA(m_cmbUpdateFrequency, CB_ADDSTRING, 0, (LPARAM)"Daily");
-    SendMessageA(m_cmbUpdateFrequency, CB_ADDSTRING, 0, (LPARAM)"Weekly");
-    SendMessageA(m_cmbUpdateFrequency, CB_ADDSTRING, 0, (LPARAM)"Workdays");
+    SendMessage(m_cmbUpdateFrequency, CB_ADDSTRING, 0, (LPARAM)"Daily");
+    SendMessage(m_cmbUpdateFrequency, CB_ADDSTRING, 0, (LPARAM)"Weekly");
+    SendMessage(m_cmbUpdateFrequency, CB_ADDSTRING, 0, (LPARAM)"Workdays");
     y += rowStep;
 
-    HWND hDay = CreateWindowExA(0, "STATIC", "Day of &week:",
+    HWND hDay = CreateWindowEx(0, TEXT("STATIC"), TEXT("Day of &week:"),
                                 WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
                                 x, y + CW_Scale(4), CW_Scale(120), CW_Scale(20),
                                 page, NULL, NULL, NULL);
     setControlFont(hDay);
 
-    m_cmbUpdateDay = CreateWindowExA(0, "COMBOBOX", "",
+    m_cmbUpdateDay = CreateWindowEx(0, TEXT("COMBOBOX"), TEXT(""),
                                      WS_CHILD | WS_VISIBLE | WS_TABSTOP | CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | CBS_NOINTEGRALHEIGHT,
                                      x + CW_Scale(122), y, CW_Scale(150), CW_Scale(220),
                                      page, (HMENU)IDC_PREFS_UPDATES_DAY, NULL, NULL);
@@ -785,47 +786,47 @@ void CWPrefsDialog::createUpdatesPage(HWND page)
 
     static const char* days[7] = {"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
     for (int i = 0; i < 7; ++i)
-        SendMessageA(m_cmbUpdateDay, CB_ADDSTRING, 0, (LPARAM)days[i]);
+        SendMessage(m_cmbUpdateDay, CB_ADDSTRING, 0, (LPARAM)days[i]);
     y += rowStep;
 
-    HWND hTime = CreateWindowExA(0, "STATIC", "&Time (HH:MM):",
+    HWND hTime = CreateWindowEx(0, TEXT("STATIC"), TEXT("&Time (HH:MM):"),
                                  WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
                                  x, y + CW_Scale(4), CW_Scale(120), CW_Scale(20),
                                  page, NULL, NULL, NULL);
     setControlFont(hTime);
 
-    m_edtUpdateHour = CreateWindowExA(WS_EX_CLIENTEDGE, "EDIT", "",
+    m_edtUpdateHour = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
                                       WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_AUTOHSCROLL,
                                       timeX, y, hourW, CW_Scale(30),
                                       page, (HMENU)IDC_PREFS_UPDATES_HOUR, NULL, NULL);
     setControlFont(m_edtUpdateHour);
 
-    m_spinUpdateHour = CreateWindowExA(0, UPDOWN_CLASSA, "",
+    m_spinUpdateHour = CreateWindowEx(0, UPDOWN_CLASS, TEXT(""),
                                        WS_CHILD | WS_VISIBLE | UDS_ARROWKEYS | UDS_WRAP,
                                        timeX + hourW, y, spinW, CW_Scale(30),
                                        page, (HMENU)IDC_PREFS_UPDATES_SPIN_HOUR, NULL, NULL);
-    SendMessageA(m_spinUpdateHour, UDM_SETRANGE, 0, MAKELONG(23, 0));
+    SendMessage(m_spinUpdateHour, UDM_SETRANGE, 0, MAKELONG(23, 0));
 
-    HWND hColonU = CreateWindowExA(0, "STATIC", ":",
+    HWND hColonU = CreateWindowEx(0, TEXT("STATIC"), TEXT(":"),
                     WS_CHILD | WS_VISIBLE | SS_CENTER,
                     timeX + hourW + spinW, y + CW_Scale(5), colonW, CW_Scale(20),
                     page, NULL, NULL, NULL);
     setControlFont(hColonU);
 
-    m_edtUpdateMinute = CreateWindowExA(WS_EX_CLIENTEDGE, "EDIT", "",
+    m_edtUpdateMinute = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
                                         WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_NUMBER | ES_AUTOHSCROLL,
                                         timeX + hourW + spinW + colonW, y, minW, CW_Scale(30),
                                         page, (HMENU)IDC_PREFS_UPDATES_MINUTE, NULL, NULL);
     setControlFont(m_edtUpdateMinute);
 
-    m_spinUpdateMinute = CreateWindowExA(0, UPDOWN_CLASSA, "",
+    m_spinUpdateMinute = CreateWindowEx(0, UPDOWN_CLASS, TEXT(""),
                                          WS_CHILD | WS_VISIBLE | UDS_ARROWKEYS | UDS_WRAP,
                                          timeX + hourW + spinW + colonW + minW, y, spinW, CW_Scale(30),
                                          page, (HMENU)IDC_PREFS_UPDATES_SPIN_MIN, NULL, NULL);
-    SendMessageA(m_spinUpdateMinute, UDM_SETRANGE, 0, MAKELONG(59, 0));
+    SendMessage(m_spinUpdateMinute, UDM_SETRANGE, 0, MAKELONG(59, 0));
     y += rowStep;
 
-    m_chkUpdateOnStartup = CreateWindowExA(0, "BUTTON", "&Update database on startup",
+    m_chkUpdateOnStartup = CreateWindowEx(0, TEXT("BUTTON"), TEXT("&Update database on startup"),
                                            WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW | BS_NOTIFY,
                                            x, y, CW_Scale(260), CW_Scale(22), page,
                                            (HMENU)IDC_PREFS_UPDATES_ONSTART, NULL, NULL);
@@ -833,7 +834,7 @@ void CWPrefsDialog::createUpdatesPage(HWND page)
     enableNotifyStyle(m_chkUpdateOnStartup);
     y += CW_Scale(28);
 
-    m_chkCheckVersion = CreateWindowExA(0, "BUTTON", "&Notify about new ClamWin releases",
+    m_chkCheckVersion = CreateWindowEx(0, TEXT("BUTTON"), TEXT("&Notify about new ClamWin releases"),
                                         WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW | BS_NOTIFY,
                                         x, y, CW_Scale(320), CW_Scale(22), page,
                                         (HMENU)IDC_PREFS_UPDATES_CHECKVER, NULL, NULL);
@@ -847,7 +848,7 @@ void CWPrefsDialog::createProxyPage(HWND page)
     int y = CW_Scale(16);
     const int rowStep = CW_Scale(44);
 
-    m_chkProxyEnabled = CreateWindowExA(0, "BUTTON", "Use pro&xy server",
+    m_chkProxyEnabled = CreateWindowEx(0, TEXT("BUTTON"), TEXT("Use pro&xy server"),
                                         WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW | BS_NOTIFY,
                                         x, y, CW_Scale(250), CW_Scale(22),
                                         page, (HMENU)IDC_PREFS_PROXY_ENABLE, NULL, NULL);
@@ -855,48 +856,48 @@ void CWPrefsDialog::createProxyPage(HWND page)
     enableNotifyStyle(m_chkProxyEnabled);
     y += rowStep;
 
-    HWND hHost = CreateWindowExA(0, "STATIC", "Proxy s&erver:",
+    HWND hHost = CreateWindowEx(0, TEXT("STATIC"), TEXT("Proxy s&erver:"),
                                  WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
                                  x, y + CW_Scale(4), CW_Scale(120), CW_Scale(20),
                                  page, NULL, NULL, NULL);
     setControlFont(hHost);
-    m_edtProxyHost = CreateWindowExA(WS_EX_CLIENTEDGE, "EDIT", "",
+    m_edtProxyHost = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
                                      WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_AUTOHSCROLL,
                                      x + CW_Scale(122), y, CW_Scale(260), CW_Scale(30),
                                      page, (HMENU)IDC_PREFS_PROXY_HOST, NULL, NULL);
     setControlFont(m_edtProxyHost);
     y += rowStep;
 
-    HWND hPort = CreateWindowExA(0, "STATIC", "P&ort:",
+    HWND hPort = CreateWindowEx(0, TEXT("STATIC"), TEXT("P&ort:"),
                                  WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
                                  x, y + CW_Scale(4), CW_Scale(120), CW_Scale(20),
                                  page, NULL, NULL, NULL);
     setControlFont(hPort);
-    m_edtProxyPort = CreateWindowExA(WS_EX_CLIENTEDGE, "EDIT", "",
+    m_edtProxyPort = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
                                      WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_NUMBER | ES_AUTOHSCROLL,
                                      x + CW_Scale(122), y, CW_Scale(90), CW_Scale(30),
                                      page, (HMENU)IDC_PREFS_PROXY_PORT, NULL, NULL);
     setControlFont(m_edtProxyPort);
     y += rowStep;
 
-    HWND hUser = CreateWindowExA(0, "STATIC", "User&name:",
+    HWND hUser = CreateWindowEx(0, TEXT("STATIC"), TEXT("User&name:"),
                                  WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
                                  x, y + CW_Scale(4), CW_Scale(120), CW_Scale(20),
                                  page, NULL, NULL, NULL);
     setControlFont(hUser);
-    m_edtProxyUser = CreateWindowExA(WS_EX_CLIENTEDGE, "EDIT", "",
+    m_edtProxyUser = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
                                      WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_AUTOHSCROLL,
                                      x + CW_Scale(122), y, CW_Scale(260), CW_Scale(30),
                                      page, (HMENU)IDC_PREFS_PROXY_USER, NULL, NULL);
     setControlFont(m_edtProxyUser);
     y += rowStep;
 
-    HWND hPass = CreateWindowExA(0, "STATIC", "Pass&word:",
+    HWND hPass = CreateWindowEx(0, TEXT("STATIC"), TEXT("Pass&word:"),
                                  WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
                                  x, y + CW_Scale(4), CW_Scale(120), CW_Scale(20),
                                  page, NULL, NULL, NULL);
     setControlFont(hPass);
-    m_edtProxyPass = CreateWindowExA(WS_EX_CLIENTEDGE, "EDIT", "",
+    m_edtProxyPass = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
                                      WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_AUTOHSCROLL | ES_PASSWORD,
                                      x + CW_Scale(122), y, CW_Scale(260), CW_Scale(30),
                                      page, (HMENU)IDC_PREFS_PROXY_PASS, NULL, NULL);
@@ -915,7 +916,7 @@ void CWPrefsDialog::createSchedulePage(HWND page)
     const int colonW = CW_Scale(12);
     const int minW = CW_Scale(38);
 
-    m_chkScanScheduled = CreateWindowExA(0, "BUTTON", "&Enable scheduled scans",
+    m_chkScanScheduled = CreateWindowEx(0, TEXT("BUTTON"), TEXT("&Enable scheduled scans"),
                                          WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW | BS_NOTIFY,
                                          x, y, CW_Scale(250), CW_Scale(22),
                                          page, (HMENU)IDC_PREFS_SCHED_ENABLE, NULL, NULL);
@@ -923,30 +924,30 @@ void CWPrefsDialog::createSchedulePage(HWND page)
     enableNotifyStyle(m_chkScanScheduled);
     y += rowStep;
 
-    HWND hFreq = CreateWindowExA(0, "STATIC", "F&requency:",
+    HWND hFreq = CreateWindowEx(0, TEXT("STATIC"), TEXT("F&requency:"),
                                  WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
                                  x, y + CW_Scale(4), CW_Scale(120), CW_Scale(20),
                                  page, NULL, NULL, NULL);
     setControlFont(hFreq);
 
-    m_cmbScanFrequency = CreateWindowExA(0, "COMBOBOX", "",
+    m_cmbScanFrequency = CreateWindowEx(0, TEXT("COMBOBOX"), TEXT(""),
                                          WS_CHILD | WS_VISIBLE | WS_TABSTOP | CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | CBS_NOINTEGRALHEIGHT,
                                          x + CW_Scale(122), y, CW_Scale(150), CW_Scale(220),
                                          page, (HMENU)IDC_PREFS_SCHED_FREQ, NULL, NULL);
     setControlFont(m_cmbScanFrequency);
     configureThemedCombo(m_cmbScanFrequency);
-    SendMessageA(m_cmbScanFrequency, CB_ADDSTRING, 0, (LPARAM)"Daily");
-    SendMessageA(m_cmbScanFrequency, CB_ADDSTRING, 0, (LPARAM)"Weekly");
-    SendMessageA(m_cmbScanFrequency, CB_ADDSTRING, 0, (LPARAM)"Workdays");
+    SendMessage(m_cmbScanFrequency, CB_ADDSTRING, 0, (LPARAM)"Daily");
+    SendMessage(m_cmbScanFrequency, CB_ADDSTRING, 0, (LPARAM)"Weekly");
+    SendMessage(m_cmbScanFrequency, CB_ADDSTRING, 0, (LPARAM)"Workdays");
     y += rowStep;
 
-    HWND hDay = CreateWindowExA(0, "STATIC", "Day of &week:",
+    HWND hDay = CreateWindowEx(0, TEXT("STATIC"), TEXT("Day of &week:"),
                                 WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
                                 x, y + CW_Scale(4), CW_Scale(120), CW_Scale(20),
                                 page, NULL, NULL, NULL);
     setControlFont(hDay);
 
-    m_cmbScanDay = CreateWindowExA(0, "COMBOBOX", "",
+    m_cmbScanDay = CreateWindowEx(0, TEXT("COMBOBOX"), TEXT(""),
                                    WS_CHILD | WS_VISIBLE | WS_TABSTOP | CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | CBS_NOINTEGRALHEIGHT,
                                    x + CW_Scale(122), y, CW_Scale(150), CW_Scale(220),
                                    page, (HMENU)IDC_PREFS_SCHED_DAY, NULL, NULL);
@@ -955,47 +956,47 @@ void CWPrefsDialog::createSchedulePage(HWND page)
 
     static const char* days[7] = {"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
     for (int i = 0; i < 7; ++i)
-        SendMessageA(m_cmbScanDay, CB_ADDSTRING, 0, (LPARAM)days[i]);
+        SendMessage(m_cmbScanDay, CB_ADDSTRING, 0, (LPARAM)days[i]);
     y += rowStep;
 
-    HWND hTime = CreateWindowExA(0, "STATIC", "&Time (HH:MM):",
+    HWND hTime = CreateWindowEx(0, TEXT("STATIC"), TEXT("&Time (HH:MM):"),
                                  WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
                                  x, y + CW_Scale(4), CW_Scale(120), CW_Scale(20),
                                  page, NULL, NULL, NULL);
     setControlFont(hTime);
 
-    m_edtScanHour = CreateWindowExA(WS_EX_CLIENTEDGE, "EDIT", "",
+    m_edtScanHour = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
                                     WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_AUTOHSCROLL,
                                     timeX, y, hourW, CW_Scale(30),
                                     page, (HMENU)IDC_PREFS_SCHED_HOUR, NULL, NULL);
     setControlFont(m_edtScanHour);
 
-    m_spinScanHour = CreateWindowExA(0, UPDOWN_CLASSA, "",
+    m_spinScanHour = CreateWindowEx(0, UPDOWN_CLASS, TEXT(""),
                                      WS_CHILD | WS_VISIBLE | UDS_ARROWKEYS | UDS_WRAP,
                                      timeX + hourW, y, spinW, CW_Scale(30),
                                      page, (HMENU)IDC_PREFS_SCHED_SPIN_HOUR, NULL, NULL);
-    SendMessageA(m_spinScanHour, UDM_SETRANGE, 0, MAKELONG(23, 0));
+    SendMessage(m_spinScanHour, UDM_SETRANGE, 0, MAKELONG(23, 0));
 
-    HWND hColonS = CreateWindowExA(0, "STATIC", ":",
+    HWND hColonS = CreateWindowEx(0, TEXT("STATIC"), TEXT(":"),
                     WS_CHILD | WS_VISIBLE | SS_CENTER,
                     timeX + hourW + spinW, y + CW_Scale(5), colonW, CW_Scale(20),
                     page, NULL, NULL, NULL);
     setControlFont(hColonS);
 
-    m_edtScanMinute = CreateWindowExA(WS_EX_CLIENTEDGE, "EDIT", "",
+    m_edtScanMinute = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
                                       WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_NUMBER | ES_AUTOHSCROLL,
                                       timeX + hourW + spinW + colonW, y, minW, CW_Scale(30),
                                       page, (HMENU)IDC_PREFS_SCHED_MINUTE, NULL, NULL);
     setControlFont(m_edtScanMinute);
 
-    m_spinScanMinute = CreateWindowExA(0, UPDOWN_CLASSA, "",
+    m_spinScanMinute = CreateWindowEx(0, UPDOWN_CLASS, TEXT(""),
                                        WS_CHILD | WS_VISIBLE | UDS_ARROWKEYS | UDS_WRAP,
                                        timeX + hourW + spinW + colonW + minW, y, spinW, CW_Scale(30),
                                        page, (HMENU)IDC_PREFS_SCHED_SPIN_MIN, NULL, NULL);
-    SendMessageA(m_spinScanMinute, UDM_SETRANGE, 0, MAKELONG(59, 0));
+    SendMessage(m_spinScanMinute, UDM_SETRANGE, 0, MAKELONG(59, 0));
     y += buttonGap;
 
-    m_btnScheduleDetails = CreateWindowExA(0, "BUTTON", "Open &Detailed Schedule...",
+    m_btnScheduleDetails = CreateWindowEx(0, TEXT("BUTTON"), TEXT("Open &Detailed Schedule..."),
                                            WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW,
                                            x, y, CW_Scale(272), CW_Scale(28),
                                            page, (HMENU)IDC_PREFS_SCHED_DETAILS, NULL, NULL);
@@ -1012,7 +1013,7 @@ void CWPrefsDialog::createLimitsPage(HWND page)
     const int editX = x + CW_Scale(250);
     const int spinX = editX + editW;
 
-    m_chkScanArchives = CreateWindowExA(0, "BUTTON", "Extract files from arc&hives",
+    m_chkScanArchives = CreateWindowEx(0, TEXT("BUTTON"), TEXT("Extract files from arc&hives"),
                                         WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW | BS_NOTIFY,
                                         x, y, CW_Scale(280), CW_Scale(22),
                                         page, (HMENU)IDC_PREFS_LIMITS_ARCHIVES, NULL, NULL);
@@ -1020,76 +1021,76 @@ void CWPrefsDialog::createLimitsPage(HWND page)
     enableNotifyStyle(m_chkScanArchives);
     y += rowStep;
 
-    HWND hMaxFile = CreateWindowExA(0, "STATIC", "Do not sca&n files larger than (MB):",
+    HWND hMaxFile = CreateWindowEx(0, TEXT("STATIC"), TEXT("Do not sca&n files larger than (MB):"),
                                     WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
                                     x, y + CW_Scale(4), CW_Scale(240), CW_Scale(20),
                                     page, NULL, NULL, NULL);
     setControlFont(hMaxFile);
-    m_edtMaxFileSize = CreateWindowExA(WS_EX_CLIENTEDGE, "EDIT", "",
+    m_edtMaxFileSize = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
                                        WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_NUMBER | ES_AUTOHSCROLL,
                                        editX, y, editW, CW_Scale(30),
                                        page, (HMENU)IDC_PREFS_LIMITS_MAXFILE, NULL, NULL);
     setControlFont(m_edtMaxFileSize);
-    m_spinMaxFileSize = CreateWindowExA(0, UPDOWN_CLASSA, "",
+    m_spinMaxFileSize = CreateWindowEx(0, UPDOWN_CLASS, TEXT(""),
                                         WS_CHILD | WS_VISIBLE | UDS_ARROWKEYS | UDS_SETBUDDYINT | UDS_NOTHOUSANDS,
                                         spinX, y, spinW, CW_Scale(30),
                                         page, (HMENU)IDC_PREFS_LIMITS_SPIN_MAXFILE, NULL, NULL);
-    SendMessageA(m_spinMaxFileSize, UDM_SETBUDDY, (WPARAM)m_edtMaxFileSize, 0);
-    SendMessageA(m_spinMaxFileSize, UDM_SETRANGE, 0, MAKELONG(32767, 0));
+    SendMessage(m_spinMaxFileSize, UDM_SETBUDDY, (WPARAM)m_edtMaxFileSize, 0);
+    SendMessage(m_spinMaxFileSize, UDM_SETRANGE, 0, MAKELONG(32767, 0));
     y += rowStep;
 
-    HWND hMaxScan = CreateWindowExA(0, "STATIC", "Do not extract &more than (MB):",
+    HWND hMaxScan = CreateWindowEx(0, TEXT("STATIC"), TEXT("Do not extract &more than (MB):"),
                                     WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
                                     x, y + CW_Scale(4), CW_Scale(240), CW_Scale(20),
                                     page, NULL, NULL, NULL);
     setControlFont(hMaxScan);
-    m_edtMaxScanSize = CreateWindowExA(WS_EX_CLIENTEDGE, "EDIT", "",
+    m_edtMaxScanSize = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
                                        WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_NUMBER | ES_AUTOHSCROLL,
                                        editX, y, editW, CW_Scale(30),
                                        page, (HMENU)IDC_PREFS_LIMITS_MAXSCAN, NULL, NULL);
     setControlFont(m_edtMaxScanSize);
-    m_spinMaxScanSize = CreateWindowExA(0, UPDOWN_CLASSA, "",
+    m_spinMaxScanSize = CreateWindowEx(0, UPDOWN_CLASS, TEXT(""),
                                         WS_CHILD | WS_VISIBLE | UDS_ARROWKEYS | UDS_SETBUDDYINT | UDS_NOTHOUSANDS,
                                         spinX, y, spinW, CW_Scale(30),
                                         page, (HMENU)IDC_PREFS_LIMITS_SPIN_MAXSCAN, NULL, NULL);
-    SendMessageA(m_spinMaxScanSize, UDM_SETBUDDY, (WPARAM)m_edtMaxScanSize, 0);
-    SendMessageA(m_spinMaxScanSize, UDM_SETRANGE, 0, MAKELONG(32767, 0));
+    SendMessage(m_spinMaxScanSize, UDM_SETBUDDY, (WPARAM)m_edtMaxScanSize, 0);
+    SendMessage(m_spinMaxScanSize, UDM_SETRANGE, 0, MAKELONG(32767, 0));
     y += rowStep;
 
-    HWND hMaxFiles = CreateWindowExA(0, "STATIC", "Do not e&xtract more than files:",
+    HWND hMaxFiles = CreateWindowEx(0, TEXT("STATIC"), TEXT("Do not e&xtract more than files:"),
                                      WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
                                      x, y + CW_Scale(4), CW_Scale(240), CW_Scale(20),
                                      page, NULL, NULL, NULL);
     setControlFont(hMaxFiles);
-    m_edtMaxFiles = CreateWindowExA(WS_EX_CLIENTEDGE, "EDIT", "",
+    m_edtMaxFiles = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
                                     WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_NUMBER | ES_AUTOHSCROLL,
                                     editX, y, editW, CW_Scale(30),
                                     page, (HMENU)IDC_PREFS_LIMITS_MAXFILES, NULL, NULL);
     setControlFont(m_edtMaxFiles);
-    m_spinMaxFiles = CreateWindowExA(0, UPDOWN_CLASSA, "",
+    m_spinMaxFiles = CreateWindowEx(0, UPDOWN_CLASS, TEXT(""),
                                      WS_CHILD | WS_VISIBLE | UDS_ARROWKEYS | UDS_SETBUDDYINT | UDS_NOTHOUSANDS,
                                      spinX, y, spinW, CW_Scale(30),
                                      page, (HMENU)IDC_PREFS_LIMITS_SPIN_MAXFILES, NULL, NULL);
-    SendMessageA(m_spinMaxFiles, UDM_SETBUDDY, (WPARAM)m_edtMaxFiles, 0);
-    SendMessageA(m_spinMaxFiles, UDM_SETRANGE, 0, MAKELONG(32767, 0));
+    SendMessage(m_spinMaxFiles, UDM_SETBUDDY, (WPARAM)m_edtMaxFiles, 0);
+    SendMessage(m_spinMaxFiles, UDM_SETRANGE, 0, MAKELONG(32767, 0));
     y += rowStep;
 
-    HWND hMaxDepth = CreateWindowExA(0, "STATIC", "Do not extract more than su&b-archives:",
+    HWND hMaxDepth = CreateWindowEx(0, TEXT("STATIC"), TEXT("Do not extract more than su&b-archives:"),
                                      WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
                                      x, y + CW_Scale(4), CW_Scale(240), CW_Scale(20),
                                      page, NULL, NULL, NULL);
     setControlFont(hMaxDepth);
-    m_edtMaxDepth = CreateWindowExA(WS_EX_CLIENTEDGE, "EDIT", "",
+    m_edtMaxDepth = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
                                     WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_NUMBER | ES_AUTOHSCROLL,
                                     editX, y, editW, CW_Scale(30),
                                     page, (HMENU)IDC_PREFS_LIMITS_MAXDEPTH, NULL, NULL);
     setControlFont(m_edtMaxDepth);
-    m_spinMaxDepth = CreateWindowExA(0, UPDOWN_CLASSA, "",
+    m_spinMaxDepth = CreateWindowEx(0, UPDOWN_CLASS, TEXT(""),
                                      WS_CHILD | WS_VISIBLE | UDS_ARROWKEYS | UDS_SETBUDDYINT | UDS_NOTHOUSANDS,
                                      spinX, y, spinW, CW_Scale(30),
                                      page, (HMENU)IDC_PREFS_LIMITS_SPIN_MAXDEPTH, NULL, NULL);
-    SendMessageA(m_spinMaxDepth, UDM_SETBUDDY, (WPARAM)m_edtMaxDepth, 0);
-    SendMessageA(m_spinMaxDepth, UDM_SETRANGE, 0, MAKELONG(32767, 0));
+    SendMessage(m_spinMaxDepth, UDM_SETBUDDY, (WPARAM)m_edtMaxDepth, 0);
+    SendMessage(m_spinMaxDepth, UDM_SETRANGE, 0, MAKELONG(32767, 0));
 }
 
 void CWPrefsDialog::createFilesPage(HWND page)
@@ -1098,51 +1099,51 @@ void CWPrefsDialog::createFilesPage(HWND page)
     int y = CW_Scale(16);
     const int rowStep = CW_Scale(44);
 
-    HWND l1 = CreateWindowExA(0, "STATIC", "&Virus database folder:",
+    HWND l1 = CreateWindowEx(0, TEXT("STATIC"), TEXT("&Virus database folder:"),
                               WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
                               x, y + CW_Scale(4), CW_Scale(150), CW_Scale(20),
                               page, NULL, NULL, NULL);
     setControlFont(l1);
-    m_edtDatabasePath = CreateWindowExA(WS_EX_CLIENTEDGE, "EDIT", "",
+    m_edtDatabasePath = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
                                         WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_AUTOHSCROLL,
                                         x + CW_Scale(156), y, CW_Scale(200), CW_Scale(30),
                                         page, (HMENU)IDC_PREFS_FILES_DB, NULL, NULL);
     setControlFont(m_edtDatabasePath);
-    m_btnDatabaseBrowse = CreateWindowExA(0, "BUTTON", "&Browse...",
+    m_btnDatabaseBrowse = CreateWindowEx(0, TEXT("BUTTON"), TEXT("&Browse..."),
                                           WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW,
                                           x + CW_Scale(362), y, CW_Scale(80), CW_Scale(30),
                                           page, (HMENU)IDC_PREFS_FILES_DB_BROWSE, NULL, NULL);
     setControlFont(m_btnDatabaseBrowse);
     y += rowStep;
 
-    HWND l2 = CreateWindowExA(0, "STATIC", "Sca&n report file:",
+    HWND l2 = CreateWindowEx(0, TEXT("STATIC"), TEXT("Sca&n report file:"),
                               WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
                               x, y + CW_Scale(4), CW_Scale(150), CW_Scale(20),
                               page, NULL, NULL, NULL);
     setControlFont(l2);
-    m_edtScanLog = CreateWindowExA(WS_EX_CLIENTEDGE, "EDIT", "",
+    m_edtScanLog = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
                                    WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_AUTOHSCROLL,
                                    x + CW_Scale(156), y, CW_Scale(200), CW_Scale(30),
                                    page, (HMENU)IDC_PREFS_FILES_SCANLOG, NULL, NULL);
     setControlFont(m_edtScanLog);
-    m_btnScanLogBrowse = CreateWindowExA(0, "BUTTON", "B&rowse...",
+    m_btnScanLogBrowse = CreateWindowEx(0, TEXT("BUTTON"), TEXT("B&rowse..."),
                                          WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW,
                                          x + CW_Scale(362), y, CW_Scale(80), CW_Scale(30),
                                          page, (HMENU)IDC_PREFS_FILES_SCANLOG_BROWSE, NULL, NULL);
     setControlFont(m_btnScanLogBrowse);
     y += rowStep;
 
-    HWND l3 = CreateWindowExA(0, "STATIC", "Up&date report file:",
+    HWND l3 = CreateWindowEx(0, TEXT("STATIC"), TEXT("Up&date report file:"),
                               WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
                               x, y + CW_Scale(4), CW_Scale(150), CW_Scale(20),
                               page, NULL, NULL, NULL);
     setControlFont(l3);
-    m_edtUpdateLog = CreateWindowExA(WS_EX_CLIENTEDGE, "EDIT", "",
+    m_edtUpdateLog = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
                                      WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_AUTOHSCROLL,
                                      x + CW_Scale(156), y, CW_Scale(200), CW_Scale(30),
                                      page, (HMENU)IDC_PREFS_FILES_UPDATELOG, NULL, NULL);
     setControlFont(m_edtUpdateLog);
-    m_btnUpdateLogBrowse = CreateWindowExA(0, "BUTTON", "Bro&wse...",
+    m_btnUpdateLogBrowse = CreateWindowEx(0, TEXT("BUTTON"), TEXT("Bro&wse..."),
                                            WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW,
                                            x + CW_Scale(362), y, CW_Scale(80), CW_Scale(30),
                                            page, (HMENU)IDC_PREFS_FILES_UPDATELOG_BROWSE, NULL, NULL);
@@ -1155,7 +1156,7 @@ void CWPrefsDialog::createAdvancedPage(HWND page)
     int y = CW_Scale(16);
     const int rowStep = CW_Scale(44);
 
-    m_chkScanOle2 = CreateWindowExA(0, "BUTTON", "Extract and scan O&LE2 (Office) objects",
+    m_chkScanOle2 = CreateWindowEx(0, TEXT("BUTTON"), TEXT("Extract and scan O&LE2 (Office) objects"),
                                     WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW | BS_NOTIFY,
                                     x, y, CW_Scale(400), CW_Scale(22),
                                     page, (HMENU)IDC_PREFS_ADV_OLE2, NULL, NULL);
@@ -1163,20 +1164,20 @@ void CWPrefsDialog::createAdvancedPage(HWND page)
     enableNotifyStyle(m_chkScanOle2);
     y += rowStep;
 
-    HWND lPriority = CreateWindowExA(0, "STATIC", "Scanner priori&ty:",
+    HWND lPriority = CreateWindowEx(0, TEXT("STATIC"), TEXT("Scanner priori&ty:"),
                                      WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
                                      x, y + CW_Scale(4), CW_Scale(130), CW_Scale(20),
                                      page, NULL, NULL, NULL);
     setControlFont(lPriority);
 
-    m_cmbPriority = CreateWindowExA(0, "COMBOBOX", "",
+    m_cmbPriority = CreateWindowEx(0, TEXT("COMBOBOX"), TEXT(""),
                                     WS_CHILD | WS_VISIBLE | WS_TABSTOP | CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | CBS_NOINTEGRALHEIGHT,
                                     x + CW_Scale(136), y, CW_Scale(120), CW_Scale(160),
                                     page, (HMENU)IDC_PREFS_ADV_PRIORITY, NULL, NULL);
     setControlFont(m_cmbPriority);
     configureThemedCombo(m_cmbPriority);
-    SendMessageA(m_cmbPriority, CB_ADDSTRING, 0, (LPARAM)"Low");
-    SendMessageA(m_cmbPriority, CB_ADDSTRING, 0, (LPARAM)"Normal");
+    SendMessage(m_cmbPriority, CB_ADDSTRING, 0, (LPARAM)"Low");
+    SendMessage(m_cmbPriority, CB_ADDSTRING, 0, (LPARAM)"Normal");
 }
 
 void CWPrefsDialog::createPages()
@@ -1196,14 +1197,14 @@ void CWPrefsDialog::createPages()
 
     for (int i = 0; i < PAGE_COUNT; ++i)
     {
-        m_hwndPages[i] = CreateWindowExA(WS_EX_CONTROLPARENT, "STATIC", "",
+        m_hwndPages[i] = CreateWindowEx(WS_EX_CONTROLPARENT, TEXT("STATIC"), TEXT(""),
                                          WS_CHILD | (i == 0 ? WS_VISIBLE : 0),
                                          x, y, w, h, m_hwnd,
                                          (HMENU)(INT_PTR)(5000 + i), NULL, NULL);
         if (m_hwndPages[i])
         {
-            SetPropA(m_hwndPages[i], s_prefsPageOwnerProp, (HANDLE)this);
-            m_pageOldProc[i] = (WNDPROC)SetWindowLongPtrA(
+            SetProp(m_hwndPages[i], s_prefsPageOwnerProp, (HANDLE)this);
+            m_pageOldProc[i] = (WNDPROC)SetWindowLongPtr(
                 m_hwndPages[i],
                 GWLP_WNDPROC,
                 (LONG_PTR)&CWPrefsDialog::pageSubclassProc);
@@ -1232,7 +1233,7 @@ int CWPrefsDialog::findPageIndex(HWND hwnd) const
 
 LRESULT CALLBACK CWPrefsDialog::pageSubclassProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
 {
-    CWPrefsDialog* self = (CWPrefsDialog*)GetPropA(hwnd, s_prefsPageOwnerProp);
+    CWPrefsDialog* self = (CWPrefsDialog*)GetProp(hwnd, s_prefsPageOwnerProp);
     HWND parent = GetParent(hwnd);
 
     switch (msg)
@@ -1245,7 +1246,7 @@ LRESULT CALLBACK CWPrefsDialog::pageSubclassProc(HWND hwnd, UINT msg, WPARAM wp,
         case WM_CTLCOLORLISTBOX:
         case WM_NOTIFY:
             if (self && parent)
-                return SendMessageA(parent, msg, wp, lp);
+                return SendMessage(parent, msg, wp, lp);
             break;
     }
 
@@ -1253,17 +1254,17 @@ LRESULT CALLBACK CWPrefsDialog::pageSubclassProc(HWND hwnd, UINT msg, WPARAM wp,
     {
         int idx = self->findPageIndex(hwnd);
         if (idx >= 0 && self->m_pageOldProc[idx])
-            return CallWindowProcA(self->m_pageOldProc[idx], hwnd, msg, wp, lp);
+            return CallWindowProc(self->m_pageOldProc[idx], hwnd, msg, wp, lp);
     }
 
-    return DefWindowProcA(hwnd, msg, wp, lp);
+    return DefWindowProc(hwnd, msg, wp, lp);
 }
 
 LRESULT CALLBACK CWPrefsDialog::sidebarSubclassProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
 {
-    CWPrefsDialog* self = (CWPrefsDialog*)GetPropA(hwnd, s_prefsSidebarOwnerProp);
+    CWPrefsDialog* self = (CWPrefsDialog*)GetProp(hwnd, s_prefsSidebarOwnerProp);
     if (!self)
-        return DefWindowProcA(hwnd, msg, wp, lp);
+        return DefWindowProc(hwnd, msg, wp, lp);
 
     if (msg == WM_KEYDOWN && (wp == VK_RIGHT || wp == VK_TAB))
     {
@@ -1290,7 +1291,7 @@ LRESULT CALLBACK CWPrefsDialog::sidebarSubclassProc(HWND hwnd, UINT msg, WPARAM 
         int page = findSidebarMnemonicPageIndex((char)wp);
         if (page >= 0)
         {
-            SendMessageA(hwnd, LB_SETCURSEL, page, 0);
+            SendMessage(hwnd, LB_SETCURSEL, page, 0);
             self->showPage(page);
             return 0;
         }
@@ -1301,16 +1302,16 @@ LRESULT CALLBACK CWPrefsDialog::sidebarSubclassProc(HWND hwnd, UINT msg, WPARAM 
         int page = findSidebarMnemonicPageIndexFromVKey(wp);
         if (page >= 0)
         {
-            SendMessageA(hwnd, LB_SETCURSEL, page, 0);
+            SendMessage(hwnd, LB_SETCURSEL, page, 0);
             self->showPage(page);
             return 0;
         }
     }
 
     if (self->m_sidebarOldProc)
-        return CallWindowProcA(self->m_sidebarOldProc, hwnd, msg, wp, lp);
+        return CallWindowProc(self->m_sidebarOldProc, hwnd, msg, wp, lp);
 
-    return DefWindowProcA(hwnd, msg, wp, lp);
+    return DefWindowProc(hwnd, msg, wp, lp);
 }
 
 void CWPrefsDialog::createLayout()
@@ -1322,7 +1323,7 @@ void CWPrefsDialog::createLayout()
     int btnW = CW_Scale(110);
     int btnH = CW_Scale(30);
 
-    m_hwndBtnCancel = CreateWindowExA(0, "BUTTON", "&Cancel",
+    m_hwndBtnCancel = CreateWindowEx(0, TEXT("BUTTON"), TEXT("&Cancel"),
                                       WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW,
                                       rc.right - pad - btnW,
                                       rc.bottom - pad - btnH,
@@ -1330,7 +1331,7 @@ void CWPrefsDialog::createLayout()
                                       m_hwnd, (HMENU)IDCANCEL, NULL, NULL);
     setControlFont(m_hwndBtnCancel);
 
-    m_hwndBtnOk = CreateWindowExA(0, "BUTTON", "&Save",
+    m_hwndBtnOk = CreateWindowEx(0, TEXT("BUTTON"), TEXT("&Save"),
                                   WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_DEFPUSHBUTTON | BS_OWNERDRAW,
                                   rc.right - pad - btnW - CW_Scale(120),
                                   rc.bottom - pad - btnH,
@@ -1357,18 +1358,18 @@ void CWPrefsDialog::showPage(int index)
 int CWPrefsDialog::readIntFromEdit(HWND hwndEdit, int fallback) const
 {
     if (!hwndEdit) return fallback;
-    char buf[64] = {0};
-    GetWindowTextA(hwndEdit, buf, sizeof(buf));
-    int v = atoi(buf);
+    TCHAR buf[64] = {0};
+    GetWindowText(hwndEdit, buf, _countof(buf));
+    int v = _ttoi(buf);
     return v;
 }
 
 void CWPrefsDialog::writeIntToEdit(HWND hwndEdit, int value) const
 {
     if (!hwndEdit) return;
-    char buf[64];
-    wsprintfA(buf, "%d", value);
-    SetWindowTextA(hwndEdit, buf);
+    TCHAR buf[64];
+    _stprintf(buf, TEXT("%d"), value);
+    SetWindowText(hwndEdit, buf);
 }
 
 void CWPrefsDialog::updateEnableStates()
@@ -1385,7 +1386,7 @@ void CWPrefsDialog::updateEnableStates()
     EnableWindow(m_edtUpdateMinute, updEnabled);
     EnableWindow(m_spinUpdateMinute, updEnabled);
     EnableWindow(m_chkUpdateOnStartup, updEnabled);
-    int ufreq = (int)SendMessageA(m_cmbUpdateFrequency, CB_GETCURSEL, 0, 0);
+    int ufreq = (int)SendMessage(m_cmbUpdateFrequency, CB_GETCURSEL, 0, 0);
     EnableWindow(m_cmbUpdateDay, updEnabled && ufreq == 1);
 
     bool proxyOn = getToggleChecked(m_chkProxyEnabled);
@@ -1400,7 +1401,7 @@ void CWPrefsDialog::updateEnableStates()
     EnableWindow(m_spinScanHour, scanEnabled);
     EnableWindow(m_edtScanMinute, scanEnabled);
     EnableWindow(m_spinScanMinute, scanEnabled);
-    int sfreq = (int)SendMessageA(m_cmbScanFrequency, CB_GETCURSEL, 0, 0);
+    int sfreq = (int)SendMessage(m_cmbScanFrequency, CB_GETCURSEL, 0, 0);
     EnableWindow(m_cmbScanDay, scanEnabled && sfreq == 1);
 
     bool archivesOn = getToggleChecked(m_chkScanArchives);
@@ -1420,28 +1421,28 @@ void CWPrefsDialog::loadFromConfig()
     InvalidateRect(m_radActionReport, NULL, TRUE);
     InvalidateRect(m_radActionRemove, NULL, TRUE);
     InvalidateRect(m_radActionQuarantine, NULL, TRUE);
-    SetWindowTextA(m_edtQuarantine, m_cfg.quarantinePath.c_str());
+    SetWindowText(m_edtQuarantine, CW_ToT(m_cfg.quarantinePath).c_str());
 
     setToggleChecked(m_chkUpdateScheduled, m_cfg.updateScheduled);
-    SetWindowTextA(m_edtMirror, m_cfg.dbMirror.c_str());
-    SendMessageA(m_cmbUpdateFrequency, CB_SETCURSEL, m_cfg.updateFrequency, 0);
+    SetWindowText(m_edtMirror, CW_ToT(m_cfg.dbMirror).c_str());
+    SendMessage(m_cmbUpdateFrequency, CB_SETCURSEL, m_cfg.updateFrequency, 0);
     CW_WriteHourToEdit(m_edtUpdateHour, m_cfg.updateHour);
     CW_WriteMinuteToEdit(m_edtUpdateMinute, m_cfg.updateMinute);
-    SendMessageA(m_cmbUpdateDay, CB_SETCURSEL, m_cfg.scanDay, 0);
+    SendMessage(m_cmbUpdateDay, CB_SETCURSEL, m_cfg.scanDay, 0);
     setToggleChecked(m_chkUpdateOnStartup, m_cfg.updateOnStartup);
     setToggleChecked(m_chkCheckVersion, m_cfg.checkVersion);
 
     setToggleChecked(m_chkProxyEnabled, m_cfg.proxyEnabled);
-    SetWindowTextA(m_edtProxyHost, m_cfg.proxyHost.c_str());
+    SetWindowText(m_edtProxyHost, CW_ToT(m_cfg.proxyHost).c_str());
     writeIntToEdit(m_edtProxyPort, m_cfg.proxyPort);
-    SetWindowTextA(m_edtProxyUser, m_cfg.proxyUser.c_str());
-    SetWindowTextA(m_edtProxyPass, m_cfg.proxyPass.c_str());
+    SetWindowText(m_edtProxyUser, CW_ToT(m_cfg.proxyUser).c_str());
+    SetWindowText(m_edtProxyPass, CW_ToT(m_cfg.proxyPass).c_str());
 
     setToggleChecked(m_chkScanScheduled, m_cfg.scanScheduled);
-    SendMessageA(m_cmbScanFrequency, CB_SETCURSEL, m_cfg.scanFrequency, 0);
+    SendMessage(m_cmbScanFrequency, CB_SETCURSEL, m_cfg.scanFrequency, 0);
     CW_WriteHourToEdit(m_edtScanHour, m_cfg.scanHour);
     CW_WriteMinuteToEdit(m_edtScanMinute, m_cfg.scanMinute);
-    SendMessageA(m_cmbScanDay, CB_SETCURSEL, m_cfg.scanDay, 0);
+    SendMessage(m_cmbScanDay, CB_SETCURSEL, m_cfg.scanDay, 0);
 
     setToggleChecked(m_chkScanArchives, m_cfg.scanArchives);
     writeIntToEdit(m_edtMaxScanSize, m_cfg.maxScanSizeMb);
@@ -1449,15 +1450,15 @@ void CWPrefsDialog::loadFromConfig()
     writeIntToEdit(m_edtMaxFiles, m_cfg.maxFiles);
     writeIntToEdit(m_edtMaxDepth, m_cfg.maxDepth);
 
-    SetWindowTextA(m_edtDatabasePath, m_cfg.databasePath.c_str());
-    SetWindowTextA(m_edtScanLog, m_cfg.scanLogFile.c_str());
-    SetWindowTextA(m_edtUpdateLog, m_cfg.updateLogFile.c_str());
+    SetWindowText(m_edtDatabasePath, CW_ToT(m_cfg.databasePath).c_str());
+    SetWindowText(m_edtScanLog, CW_ToT(m_cfg.scanLogFile).c_str());
+    SetWindowText(m_edtUpdateLog, CW_ToT(m_cfg.updateLogFile).c_str());
 
     populatePatternList(m_lstExclude, m_cfg.excludePatterns);
     populatePatternList(m_lstInclude, m_cfg.includePatterns);
 
     setToggleChecked(m_chkScanOle2, m_cfg.scanOle2);
-    SendMessageA(m_cmbPriority, CB_SETCURSEL,
+    SendMessage(m_cmbPriority, CB_SETCURSEL,
                  (m_cfg.priority == "l" || m_cfg.priority == "L") ? 0 : 1, 0);
 
     InvalidateRect(m_chkRecursive, NULL, TRUE);
@@ -1485,10 +1486,10 @@ bool CWPrefsDialog::saveToConfig()
     else
         m_cfg.infectedAction = 0;
 
-    char buf[CW_MAX_PATH];
+    TCHAR buf[CW_MAX_PATH];
 
-    GetWindowTextA(m_edtQuarantine, buf, sizeof(buf));
-    m_cfg.quarantinePath = buf;
+    GetWindowText(m_edtQuarantine, buf, _countof(buf));
+    m_cfg.quarantinePath = CW_ToNarrow(buf);
     if (getToggleChecked(m_radActionQuarantine) && trimAscii(m_cfg.quarantinePath).empty())
     {
         showPage(PAGE_GENERAL);
@@ -1496,14 +1497,14 @@ bool CWPrefsDialog::saveToConfig()
     }
 
     m_cfg.updateScheduled = getToggleChecked(m_chkUpdateScheduled);
-    GetWindowTextA(m_edtMirror, buf, sizeof(buf));
-    m_cfg.dbMirror = buf;
+    GetWindowText(m_edtMirror, buf, _countof(buf));
+    m_cfg.dbMirror = CW_ToNarrow(buf);
     if (m_cfg.updateScheduled && trimAscii(m_cfg.dbMirror).empty())
     {
         showPage(PAGE_UPDATES);
         return showValidationError(m_hwnd, m_edtMirror, "Download site cannot be empty when scheduled updates are enabled.");
     }
-    m_cfg.updateFrequency = (int)SendMessageA(m_cmbUpdateFrequency, CB_GETCURSEL, 0, 0);
+    m_cfg.updateFrequency = (int)SendMessage(m_cmbUpdateFrequency, CB_GETCURSEL, 0, 0);
     if (m_cfg.updateFrequency < 0)
     {
         showPage(PAGE_UPDATES);
@@ -1511,7 +1512,7 @@ bool CWPrefsDialog::saveToConfig()
     }
     m_cfg.updateHour = CW_ReadHourFromEdit(m_edtUpdateHour, m_cfg.updateHour);
     m_cfg.updateMinute = readIntFromEdit(m_edtUpdateMinute, m_cfg.updateMinute);
-    m_cfg.scanDay = (int)SendMessageA(m_cmbUpdateDay, CB_GETCURSEL, 0, 0);
+    m_cfg.scanDay = (int)SendMessage(m_cmbUpdateDay, CB_GETCURSEL, 0, 0);
     if (m_cfg.updateFrequency == 1 && m_cfg.scanDay < 0)
     {
         showPage(PAGE_UPDATES);
@@ -1521,8 +1522,8 @@ bool CWPrefsDialog::saveToConfig()
     m_cfg.checkVersion = getToggleChecked(m_chkCheckVersion);
 
     m_cfg.proxyEnabled = getToggleChecked(m_chkProxyEnabled);
-    GetWindowTextA(m_edtProxyHost, buf, sizeof(buf));
-    m_cfg.proxyHost = buf;
+    GetWindowText(m_edtProxyHost, buf, _countof(buf));
+    m_cfg.proxyHost = CW_ToNarrow(buf);
     m_cfg.proxyPort = readIntFromEdit(m_edtProxyPort, m_cfg.proxyPort);
     if (m_cfg.proxyEnabled)
     {
@@ -1537,13 +1538,13 @@ bool CWPrefsDialog::saveToConfig()
             return showValidationError(m_hwnd, m_edtProxyPort, "Proxy port must be between 0 and 65535.");
         }
     }
-    GetWindowTextA(m_edtProxyUser, buf, sizeof(buf));
-    m_cfg.proxyUser = buf;
-    GetWindowTextA(m_edtProxyPass, buf, sizeof(buf));
-    m_cfg.proxyPass = buf;
+    GetWindowText(m_edtProxyUser, buf, _countof(buf));
+    m_cfg.proxyUser = CW_ToNarrow(buf);
+    GetWindowText(m_edtProxyPass, buf, _countof(buf));
+    m_cfg.proxyPass = CW_ToNarrow(buf);
 
     m_cfg.scanScheduled = getToggleChecked(m_chkScanScheduled);
-    m_cfg.scanFrequency = (int)SendMessageA(m_cmbScanFrequency, CB_GETCURSEL, 0, 0);
+    m_cfg.scanFrequency = (int)SendMessage(m_cmbScanFrequency, CB_GETCURSEL, 0, 0);
     if (m_cfg.scanFrequency < 0)
     {
         showPage(PAGE_SCHEDULE);
@@ -1551,7 +1552,7 @@ bool CWPrefsDialog::saveToConfig()
     }
     m_cfg.scanHour = CW_ReadHourFromEdit(m_edtScanHour, m_cfg.scanHour);
     m_cfg.scanMinute = readIntFromEdit(m_edtScanMinute, m_cfg.scanMinute);
-    m_cfg.scanDay = (int)SendMessageA(m_cmbScanDay, CB_GETCURSEL, 0, 0);
+    m_cfg.scanDay = (int)SendMessage(m_cmbScanDay, CB_GETCURSEL, 0, 0);
     if (m_cfg.scanFrequency == 1 && m_cfg.scanDay < 0)
     {
         showPage(PAGE_SCHEDULE);
@@ -1587,12 +1588,12 @@ bool CWPrefsDialog::saveToConfig()
         }
     }
 
-    GetWindowTextA(m_edtDatabasePath, buf, sizeof(buf));
-    m_cfg.databasePath = buf;
-    GetWindowTextA(m_edtScanLog, buf, sizeof(buf));
-    m_cfg.scanLogFile = buf;
-    GetWindowTextA(m_edtUpdateLog, buf, sizeof(buf));
-    m_cfg.updateLogFile = buf;
+    GetWindowText(m_edtDatabasePath, buf, _countof(buf));
+    m_cfg.databasePath = CW_ToNarrow(buf);
+    GetWindowText(m_edtScanLog, buf, _countof(buf));
+    m_cfg.scanLogFile = CW_ToNarrow(buf);
+    GetWindowText(m_edtUpdateLog, buf, _countof(buf));
+    m_cfg.updateLogFile = CW_ToNarrow(buf);
     if (trimAscii(m_cfg.databasePath).empty())
     {
         showPage(PAGE_FILES);
@@ -1610,7 +1611,7 @@ bool CWPrefsDialog::saveToConfig()
     }
 
     m_cfg.scanOle2 = getToggleChecked(m_chkScanOle2);
-    int prioSel = (int)SendMessageA(m_cmbPriority, CB_GETCURSEL, 0, 0);
+    int prioSel = (int)SendMessage(m_cmbPriority, CB_GETCURSEL, 0, 0);
     if (prioSel < 0)
     {
         showPage(PAGE_ADVANCED);
@@ -1636,23 +1637,23 @@ bool CWPrefsDialog::saveToConfig()
     return true;
 }
 
-void CWPrefsDialog::browseForFolder(HWND editTarget, const char* title)
+void CWPrefsDialog::browseForFolder(HWND editTarget, LPCTSTR title)
 {
-    char current[CW_MAX_PATH] = {0};
-    GetWindowTextA(editTarget, current, sizeof(current));
+    TCHAR current[CW_MAX_PATH] = {0};
+    GetWindowText(editTarget, current, _countof(current));
 
-    BROWSEINFOA bi;
+    BROWSEINFO bi;
     ZeroMemory(&bi, sizeof(bi));
     bi.hwndOwner = m_hwnd;
     bi.lpszTitle = title;
     bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
 
-    LPITEMIDLIST pidl = SHBrowseForFolderA(&bi);
+    LPITEMIDLIST pidl = SHBrowseForFolder(&bi);
     if (pidl)
     {
-        char path[MAX_PATH] = {0};
-        if (SHGetPathFromIDListA(pidl, path))
-            SetWindowTextA(editTarget, path);
+        TCHAR path[MAX_PATH] = {0};
+        if (SHGetPathFromIDList(pidl, path))
+            SetWindowText(editTarget, path);
 
         IMalloc* pMalloc = NULL;
         if (SUCCEEDED(SHGetMalloc(&pMalloc)) && pMalloc)
@@ -1663,25 +1664,25 @@ void CWPrefsDialog::browseForFolder(HWND editTarget, const char* title)
     }
 }
 
-void CWPrefsDialog::browseForFile(HWND editTarget, const char* title, const char* filter, bool saveDialog)
+void CWPrefsDialog::browseForFile(HWND editTarget, LPCTSTR title, LPCTSTR filter, bool saveDialog)
 {
-    char path[CW_MAX_PATH] = {0};
-    GetWindowTextA(editTarget, path, sizeof(path));
+    TCHAR path[CW_MAX_PATH] = {0};
+    GetWindowText(editTarget, path, _countof(path));
 
-    OPENFILENAMEA ofn;
+    OPENFILENAME ofn;
     ZeroMemory(&ofn, sizeof(ofn));
     ofn.lStructSize = sizeof(ofn);
     ofn.hwndOwner = m_hwnd;
     ofn.lpstrFilter = filter;
     ofn.lpstrFile = path;
-    ofn.nMaxFile = sizeof(path);
+    ofn.nMaxFile = _countof(path);
     ofn.lpstrTitle = title;
     ofn.Flags = OFN_PATHMUSTEXIST | (saveDialog ? OFN_OVERWRITEPROMPT : OFN_FILEMUSTEXIST);
-    ofn.lpstrDefExt = "txt";
+    ofn.lpstrDefExt = TEXT("txt");
 
-    BOOL ok = saveDialog ? GetSaveFileNameA(&ofn) : GetOpenFileNameA(&ofn);
+    BOOL ok = saveDialog ? GetSaveFileName(&ofn) : GetOpenFileName(&ofn);
     if (ok)
-        SetWindowTextA(editTarget, path);
+        SetWindowText(editTarget, path);
 }
 
 bool CWPrefsDialog::drawSidebarItem(DRAWITEMSTRUCT* dis)
@@ -1707,8 +1708,8 @@ bool CWPrefsDialog::drawSidebarItem(DRAWITEMSTRUCT* dis)
     SetTextColor(hdc, selected ? RGB(255, 255, 255) : theme->colorText());
     HFONT oldFont = (HFONT)SelectObject(hdc, m_hFontBold);
 
-    char text[128] = {0};
-    SendMessageA(dis->hwndItem, LB_GETTEXT, dis->itemID, (LPARAM)text);
+    TCHAR text[128] = {0};
+    SendMessage(dis->hwndItem, LB_GETTEXT, dis->itemID, (LPARAM)text);
     RECT tr = rc;
     tr.left += CW_Scale(10);
     CW_DrawMnemonicTextAlways(hdc,
@@ -1731,9 +1732,9 @@ bool CWPrefsDialog::drawMnemonicStaticItem(DRAWITEMSTRUCT* dis)
     if (!theme)
         return false;
 
-    char text[256] = {0};
-    GetWindowTextA(dis->hwndItem, text, sizeof(text));
-    if (!strchr(text, '&'))
+    TCHAR text[256] = {0};
+    GetWindowText(dis->hwndItem, text, _countof(text));
+    if (!_tcschr(text, TEXT('&')))
         return false;
 
     HDC hdc = dis->hDC;
@@ -1743,7 +1744,7 @@ bool CWPrefsDialog::drawMnemonicStaticItem(DRAWITEMSTRUCT* dis)
     SetBkMode(hdc, TRANSPARENT);
     SetTextColor(hdc, theme->colorText());
 
-    HFONT hFont = (HFONT)SendMessageA(dis->hwndItem, WM_GETFONT, 0, 0);
+    HFONT hFont = (HFONT)SendMessage(dis->hwndItem, WM_GETFONT, 0, 0);
     if (!hFont)
         hFont = m_hFont;
 
@@ -1783,14 +1784,14 @@ bool CWPrefsDialog::drawComboItem(DRAWITEMSTRUCT* dis)
     UINT itemId = dis->itemID;
     if (itemId == (UINT)-1)
     {
-        int sel = (int)SendMessageA(dis->hwndItem, CB_GETCURSEL, 0, 0);
+        int sel = (int)SendMessage(dis->hwndItem, CB_GETCURSEL, 0, 0);
         if (sel >= 0)
             itemId = (UINT)sel;
     }
 
     bool disabled = (dis->itemState & ODS_DISABLED) != 0;
     bool selected = (dis->itemState & ODS_SELECTED) != 0;
-    bool invalid = GetPropA(dis->hwndItem, s_invalidFieldProp) != NULL;
+    bool invalid = GetProp(dis->hwndItem, s_invalidFieldProp) != NULL;
 
     COLORREF invalidBg = theme->isDark() ? RGB(68, 38, 38) : RGB(255, 235, 238);
     COLORREF bg = selected ? theme->colorAccent() : (invalid ? invalidBg : theme->colorSurface());
@@ -1803,8 +1804,8 @@ bool CWPrefsDialog::drawComboItem(DRAWITEMSTRUCT* dis)
 
     if (itemId != (UINT)-1)
     {
-        char text[256] = {0};
-        SendMessageA(dis->hwndItem, CB_GETLBTEXT, (WPARAM)itemId, (LPARAM)text);
+        TCHAR text[256] = {0};
+        SendMessage(dis->hwndItem, CB_GETLBTEXT, (WPARAM)itemId, (LPARAM)text);
 
         RECT tr = rc;
         tr.left += CW_Scale(8);
@@ -1813,7 +1814,7 @@ bool CWPrefsDialog::drawComboItem(DRAWITEMSTRUCT* dis)
         SetBkMode(hdc, TRANSPARENT);
         SetTextColor(hdc, fg);
         HFONT oldFont = (HFONT)SelectObject(hdc, m_hFont);
-        DrawTextA(hdc, text, -1, &tr, DT_LEFT | DT_VCENTER | DT_SINGLELINE);
+        DrawText(hdc, text, -1, &tr, DT_LEFT | DT_VCENTER | DT_SINGLELINE);
         SelectObject(hdc, oldFont);
     }
 
@@ -1829,7 +1830,7 @@ bool CWPrefsDialog::drawComboItem(DRAWITEMSTRUCT* dis)
 
 bool CWPrefsDialog::onInit()
 {
-    SetWindowTextA(m_hwnd, "ClamWin Preferences");
+    SetWindowText(m_hwnd, TEXT("ClamWin Preferences"));
     setDialogMnemonicCues(m_hwnd, false);
     SetTimer(m_hwnd, s_prefsMnemonicTimerId, 30, NULL);
     createFonts();
@@ -1876,70 +1877,70 @@ bool CWPrefsDialog::onCommand(int id, HWND src)
             return true;
 
         case IDC_PREFS_GENERAL_QUAR_BROWSE:
-            browseForFolder(m_edtQuarantine, "Select quarantine folder");
+            browseForFolder(m_edtQuarantine, TEXT("Select quarantine folder"));
             return true;
 
         case IDC_PREFS_FILES_DB_BROWSE:
-            browseForFolder(m_edtDatabasePath, "Select virus database folder");
+            browseForFolder(m_edtDatabasePath, TEXT("Select virus database folder"));
             return true;
 
         case IDC_PREFS_FILES_SCANLOG_BROWSE:
-            browseForFile(m_edtScanLog, "Select scan report file", "Text files (*.txt)\0*.txt\0All files (*.*)\0*.*\0", true);
+            browseForFile(m_edtScanLog, TEXT("Select scan report file"), TEXT("Text files (*.txt)\0*.txt\0All files (*.*)\0*.*\0"), true);
             return true;
 
         case IDC_PREFS_FILES_UPDATELOG_BROWSE:
-            browseForFile(m_edtUpdateLog, "Select update report file", "Text files (*.txt)\0*.txt\0All files (*.*)\0*.*\0", true);
+            browseForFile(m_edtUpdateLog, TEXT("Select update report file"), TEXT("Text files (*.txt)\0*.txt\0All files (*.*)\0*.*\0"), true);
             return true;
 
         case IDC_PREFS_FILTERS_BTN_EXCL_ADD:
         {
-            char buf[512] = {0};
-            GetWindowTextA(m_edtExclPattern, buf, sizeof(buf));
+            TCHAR buf[512] = {0};
+            GetWindowText(m_edtExclPattern, buf, _countof(buf));
             if (buf[0])
             {
-                std::string padded = std::string("  ") + buf;
-                if (SendMessageA(m_lstExclude, LB_FINDSTRINGEXACT, (WPARAM)-1, (LPARAM)padded.c_str()) == LB_ERR)
-                    SendMessageA(m_lstExclude, LB_ADDSTRING, 0, (LPARAM)padded.c_str());
+                std::basic_string<TCHAR> padded = std::basic_string<TCHAR>(TEXT("  ")) + buf;
+                if (SendMessage(m_lstExclude, LB_FINDSTRINGEXACT, (WPARAM)-1, (LPARAM)padded.c_str()) == LB_ERR)
+                    SendMessage(m_lstExclude, LB_ADDSTRING, 0, (LPARAM)padded.c_str());
             }
-            SetWindowTextA(m_edtExclPattern, "");
+            SetWindowText(m_edtExclPattern, TEXT(""));
             SetFocus(m_edtExclPattern);
             return true;
         }
         case IDC_PREFS_FILTERS_BTN_EXCL_REM:
         {
-            int n = (int)SendMessageA(m_lstExclude, LB_GETSELCOUNT, 0, 0);
+            int n = (int)SendMessage(m_lstExclude, LB_GETSELCOUNT, 0, 0);
             if (n > 0)
             {
                 std::vector<int> sel(n);
-                SendMessageA(m_lstExclude, LB_GETSELITEMS, n, (LPARAM)sel.data());
+                SendMessage(m_lstExclude, LB_GETSELITEMS, n, (LPARAM)sel.data());
                 for (int i = n - 1; i >= 0; --i)
-                    SendMessageA(m_lstExclude, LB_DELETESTRING, sel[i], 0);
+                    SendMessage(m_lstExclude, LB_DELETESTRING, sel[i], 0);
             }
             return true;
         }
         case IDC_PREFS_FILTERS_BTN_INCL_ADD:
         {
-            char buf[512] = {0};
-            GetWindowTextA(m_edtInclPattern, buf, sizeof(buf));
+            TCHAR buf[512] = {0};
+            GetWindowText(m_edtInclPattern, buf, _countof(buf));
             if (buf[0])
             {
-                std::string padded = std::string("  ") + buf;
-                if (SendMessageA(m_lstInclude, LB_FINDSTRINGEXACT, (WPARAM)-1, (LPARAM)padded.c_str()) == LB_ERR)
-                    SendMessageA(m_lstInclude, LB_ADDSTRING, 0, (LPARAM)padded.c_str());
+                std::basic_string<TCHAR> padded = std::basic_string<TCHAR>(TEXT("  ")) + buf;
+                if (SendMessage(m_lstInclude, LB_FINDSTRINGEXACT, (WPARAM)-1, (LPARAM)padded.c_str()) == LB_ERR)
+                    SendMessage(m_lstInclude, LB_ADDSTRING, 0, (LPARAM)padded.c_str());
             }
-            SetWindowTextA(m_edtInclPattern, "");
+            SetWindowText(m_edtInclPattern, TEXT(""));
             SetFocus(m_edtInclPattern);
             return true;
         }
         case IDC_PREFS_FILTERS_BTN_INCL_REM:
         {
-            int n = (int)SendMessageA(m_lstInclude, LB_GETSELCOUNT, 0, 0);
+            int n = (int)SendMessage(m_lstInclude, LB_GETSELCOUNT, 0, 0);
             if (n > 0)
             {
                 std::vector<int> sel(n);
-                SendMessageA(m_lstInclude, LB_GETSELITEMS, n, (LPARAM)sel.data());
+                SendMessage(m_lstInclude, LB_GETSELITEMS, n, (LPARAM)sel.data());
                 for (int i = n - 1; i >= 0; --i)
-                    SendMessageA(m_lstInclude, LB_DELETESTRING, sel[i], 0);
+                    SendMessage(m_lstInclude, LB_DELETESTRING, sel[i], 0);
             }
             return true;
         }
@@ -2048,13 +2049,13 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
                 if (!hwnd)
                     return std::string();
 
-                int len = GetWindowTextLengthA(hwnd);
+                int len = GetWindowTextLength(hwnd);
                 if (len <= 0)
                     return std::string();
 
                 std::string text;
                 text.resize((size_t)len);
-                GetWindowTextA(hwnd, &text[0], len + 1);
+                GetWindowText(hwnd, &text[0], len + 1);
                 return text;
             };
 
@@ -2074,10 +2075,10 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
 
                 state.updateScheduled = getToggleChecked(m_chkUpdateScheduled);
                 state.dbMirror = readText(m_edtMirror);
-                state.updateFrequency = (int)SendMessageA(m_cmbUpdateFrequency, CB_GETCURSEL, 0, 0);
+                state.updateFrequency = (int)SendMessage(m_cmbUpdateFrequency, CB_GETCURSEL, 0, 0);
                 state.updateHour = CW_ReadHourFromEdit(m_edtUpdateHour, 0);
                 state.updateMinute = readIntFromEdit(m_edtUpdateMinute, 0);
-                state.updateDay = (int)SendMessageA(m_cmbUpdateDay, CB_GETCURSEL, 0, 0);
+                state.updateDay = (int)SendMessage(m_cmbUpdateDay, CB_GETCURSEL, 0, 0);
                 state.updateOnStartup = getToggleChecked(m_chkUpdateOnStartup);
                 state.checkVersion = getToggleChecked(m_chkCheckVersion);
 
@@ -2088,10 +2089,10 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
                 state.proxyPass = readText(m_edtProxyPass);
 
                 state.scanScheduled = getToggleChecked(m_chkScanScheduled);
-                state.scanFrequency = (int)SendMessageA(m_cmbScanFrequency, CB_GETCURSEL, 0, 0);
+                state.scanFrequency = (int)SendMessage(m_cmbScanFrequency, CB_GETCURSEL, 0, 0);
                 state.scanHour = CW_ReadHourFromEdit(m_edtScanHour, 0);
                 state.scanMinute = readIntFromEdit(m_edtScanMinute, 0);
-                state.scanDay = (int)SendMessageA(m_cmbScanDay, CB_GETCURSEL, 0, 0);
+                state.scanDay = (int)SendMessage(m_cmbScanDay, CB_GETCURSEL, 0, 0);
 
                 state.scanArchives = getToggleChecked(m_chkScanArchives);
                 state.maxScanSizeMb = readIntFromEdit(m_edtMaxScanSize, 0);
@@ -2104,7 +2105,7 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
                 state.updateLogFile = readText(m_edtUpdateLog);
 
                 state.scanOle2 = getToggleChecked(m_chkScanOle2);
-                state.priority = (int)SendMessageA(m_cmbPriority, CB_GETCURSEL, 0, 0);
+                state.priority = (int)SendMessage(m_cmbPriority, CB_GETCURSEL, 0, 0);
 
                 return state;
             };
@@ -2122,28 +2123,28 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
                 setToggleChecked(m_radActionReport, state.infectedAction == 0);
                 setToggleChecked(m_radActionRemove, state.infectedAction == 1);
                 setToggleChecked(m_radActionQuarantine, state.infectedAction == 2);
-                SetWindowTextA(m_edtQuarantine, state.quarantinePath.c_str());
+                SetWindowText(m_edtQuarantine, state.quarantinePath.c_str());
 
                 setToggleChecked(m_chkUpdateScheduled, state.updateScheduled);
-                SetWindowTextA(m_edtMirror, state.dbMirror.c_str());
-                SendMessageA(m_cmbUpdateFrequency, CB_SETCURSEL, state.updateFrequency, 0);
+                SetWindowText(m_edtMirror, state.dbMirror.c_str());
+                SendMessage(m_cmbUpdateFrequency, CB_SETCURSEL, state.updateFrequency, 0);
                 writeIntToEdit(m_edtUpdateHour, state.updateHour);
                 writeIntToEdit(m_edtUpdateMinute, state.updateMinute);
-                SendMessageA(m_cmbUpdateDay, CB_SETCURSEL, state.updateDay, 0);
+                SendMessage(m_cmbUpdateDay, CB_SETCURSEL, state.updateDay, 0);
                 setToggleChecked(m_chkUpdateOnStartup, state.updateOnStartup);
                 setToggleChecked(m_chkCheckVersion, state.checkVersion);
 
                 setToggleChecked(m_chkProxyEnabled, state.proxyEnabled);
-                SetWindowTextA(m_edtProxyHost, state.proxyHost.c_str());
+                SetWindowText(m_edtProxyHost, state.proxyHost.c_str());
                 writeIntToEdit(m_edtProxyPort, state.proxyPort);
-                SetWindowTextA(m_edtProxyUser, state.proxyUser.c_str());
-                SetWindowTextA(m_edtProxyPass, state.proxyPass.c_str());
+                SetWindowText(m_edtProxyUser, state.proxyUser.c_str());
+                SetWindowText(m_edtProxyPass, state.proxyPass.c_str());
 
                 setToggleChecked(m_chkScanScheduled, state.scanScheduled);
-                SendMessageA(m_cmbScanFrequency, CB_SETCURSEL, state.scanFrequency, 0);
+                SendMessage(m_cmbScanFrequency, CB_SETCURSEL, state.scanFrequency, 0);
                 writeIntToEdit(m_edtScanHour, state.scanHour);
                 writeIntToEdit(m_edtScanMinute, state.scanMinute);
-                SendMessageA(m_cmbScanDay, CB_SETCURSEL, state.scanDay, 0);
+                SendMessage(m_cmbScanDay, CB_SETCURSEL, state.scanDay, 0);
 
                 setToggleChecked(m_chkScanArchives, state.scanArchives);
                 writeIntToEdit(m_edtMaxScanSize, state.maxScanSizeMb);
@@ -2151,12 +2152,12 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
                 writeIntToEdit(m_edtMaxFiles, state.maxFiles);
                 writeIntToEdit(m_edtMaxDepth, state.maxDepth);
 
-                SetWindowTextA(m_edtDatabasePath, state.databasePath.c_str());
-                SetWindowTextA(m_edtScanLog, state.scanLogFile.c_str());
-                SetWindowTextA(m_edtUpdateLog, state.updateLogFile.c_str());
+                SetWindowText(m_edtDatabasePath, state.databasePath.c_str());
+                SetWindowText(m_edtScanLog, state.scanLogFile.c_str());
+                SetWindowText(m_edtUpdateLog, state.updateLogFile.c_str());
 
                 setToggleChecked(m_chkScanOle2, state.scanOle2);
-                SendMessageA(m_cmbPriority, CB_SETCURSEL, state.priority, 0);
+                SendMessage(m_cmbPriority, CB_SETCURSEL, state.priority, 0);
 
                 updateEnableStates();
             };
@@ -2183,7 +2184,7 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
 
             if (m_hwndSidebar)
             {
-                RemovePropA(m_hwndSidebar, s_prefsSidebarOwnerProp);
+                RemoveProp(m_hwndSidebar, s_prefsSidebarOwnerProp);
                 m_sidebarOldProc = NULL;
                 DestroyWindow(m_hwndSidebar);
                 m_hwndSidebar = NULL;
@@ -2193,7 +2194,7 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
             {
                 if (m_hwndPages[i])
                 {
-                    RemovePropA(m_hwndPages[i], s_prefsPageOwnerProp);
+                    RemoveProp(m_hwndPages[i], s_prefsPageOwnerProp);
                     DestroyWindow(m_hwndPages[i]);
                     m_hwndPages[i] = NULL;
                     m_pageOldProc[i] = NULL;
@@ -2220,7 +2221,7 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
                 pageToShow = PAGE_GENERAL;
             showPage(pageToShow);
             if (m_hwndSidebar)
-                SendMessageA(m_hwndSidebar, LB_SETCURSEL, pageToShow, 0);
+                SendMessage(m_hwndSidebar, LB_SETCURSEL, pageToShow, 0);
 
             InvalidateRect(m_hwnd, NULL, TRUE);
             return TRUE;
@@ -2278,7 +2279,7 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
                 return FALSE;
             if (ctlId == IDC_PREFS_SIDEBAR && notif == LBN_SELCHANGE)
             {
-                int sel = (int)SendMessageA(m_hwndSidebar, LB_GETCURSEL, 0, 0);
+                int sel = (int)SendMessage(m_hwndSidebar, LB_GETCURSEL, 0, 0);
                 showPage(sel);
                 return TRUE;
             }
@@ -2312,7 +2313,7 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
                 int page = findSidebarMnemonicPageIndex((char)wp);
                 if (page >= 0)
                 {
-                    SendMessageA(m_hwndSidebar, LB_SETCURSEL, page, 0);
+                    SendMessage(m_hwndSidebar, LB_SETCURSEL, page, 0);
                     showPage(page);
                     return TRUE;
                 }
@@ -2362,7 +2363,7 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
         case WM_CTLCOLOREDIT:
         {
             HWND ctrl = (HWND)lp;
-            if (ctrl && GetPropA(ctrl, s_invalidFieldProp) != NULL)
+            if (ctrl && GetProp(ctrl, s_invalidFieldProp) != NULL)
             {
                 CWTheme* theme = CW_GetTheme();
                 HDC hdc = (HDC)wp;
@@ -2376,7 +2377,7 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
         case WM_CTLCOLORLISTBOX:
         {
             HWND ctrl = (HWND)lp;
-            if (ctrl && GetPropA(ctrl, s_invalidFieldProp) != NULL)
+            if (ctrl && GetProp(ctrl, s_invalidFieldProp) != NULL)
             {
                 CWTheme* theme = CW_GetTheme();
                 HDC hdc = (HDC)wp;
@@ -2405,9 +2406,9 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
                 if (ctlId == IDC_PREFS_UPDATES_SPIN_MIN || ctlId == IDC_PREFS_SCHED_SPIN_MIN)
                 {
                     HWND edit = (ctlId == IDC_PREFS_UPDATES_SPIN_MIN) ? m_edtUpdateMinute : m_edtScanMinute;
-                    char mbuf[8] = {0};
-                    GetWindowTextA(edit, mbuf, sizeof(mbuf));
-                    int m = atoi(mbuf);
+                    TCHAR mbuf[8] = {0};
+                    GetWindowText(edit, mbuf, _countof(mbuf));
+                    int m = _ttoi(mbuf);
                     m = (m + nmud->iDelta + 60) % 60;
                     CW_WriteMinuteToEdit(edit, m);
                     return 0;

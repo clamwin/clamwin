@@ -140,8 +140,8 @@ TEST_SUITE("config")
         CWConfig cfg;
         cfg.iniPath = iniPath;
         REQUIRE(cfg.save());
-        CHECK(GetFileAttributesA(nestedDir.c_str()) != INVALID_FILE_ATTRIBUTES);
-        CHECK(GetFileAttributesA(iniPath.c_str()) != INVALID_FILE_ATTRIBUTES);
+        CHECK(GetFileAttributes(nestedDir.c_str()) != INVALID_FILE_ATTRIBUTES);
+        CHECK(GetFileAttributes(iniPath.c_str()) != INVALID_FILE_ATTRIBUTES);
     }
 
     TEST_CASE("blank log path values fall back to defaults")

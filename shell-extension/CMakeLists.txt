@@ -13,15 +13,15 @@ set(clamwin_shell_extension_headers
 )
 
 set(CLAMWIN_SHELLEXT_UNICODE "" CACHE STRING
-    "Shell extension TCHAR mode. Must be explicitly set to ON (Unicode) or OFF (ANSI)."
+    "Shell extension TCHAR mode. Must be ON (Unicode)."
 )
-set_property(CACHE CLAMWIN_SHELLEXT_UNICODE PROPERTY STRINGS ON OFF)
+set_property(CACHE CLAMWIN_SHELLEXT_UNICODE PROPERTY STRINGS ON)
 
-if(NOT CLAMWIN_SHELLEXT_UNICODE MATCHES "^(ON|OFF)$")
+if(NOT CLAMWIN_SHELLEXT_UNICODE STREQUAL "ON")
     message(FATAL_ERROR
-        "CLAMWIN_SHELLEXT_UNICODE must be explicitly set per build directory. "
-        "Use -DCLAMWIN_SHELLEXT_UNICODE=ON for Unicode builds (x64/winxp) "
-        "or -DCLAMWIN_SHELLEXT_UNICODE=OFF for ANSI builds (win98)."
+        "CLAMWIN_SHELLEXT_UNICODE must be ON. "
+        "ANSI shell-extension builds are no longer supported. "
+        "Use -DCLAMWIN_SHELLEXT_UNICODE=ON."
     )
 endif()
 

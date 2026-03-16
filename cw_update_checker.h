@@ -1,7 +1,9 @@
 /*
  * ClamWin Free Antivirus — CWUpdateChecker
  *
- * Checks GitHub Releases for a newer ClamWin version via HTTPS.
+ * Checks for a newer ClamWin version.
+ * - Vista+ uses GitHub Releases via HTTPS.
+ * - XP uses a clamwin.com fallback endpoint.
  * Runs on a background thread, posts WM_CW_VERSION_RESULT to the
  * target HWND when done.  The download URL is hardcoded — the API
  * response only provides the version number.
@@ -32,9 +34,9 @@ public:
     CWUpdateChecker();
     ~CWUpdateChecker();
 
-    /* Hardcoded constants — change the repo slug here, once. */
-    static const char* apiUrl();       /* GitHub Releases API endpoint */
-    static const char* downloadUrl();  /* Always clamwin.com           */
+    /* Public endpoints. apiUrl() returns the modern GitHub endpoint. */
+    static const char* apiUrl();
+    static const char* downloadUrl();
 
     /* Launch a background HTTPS check.  When complete a WM_CW_VERSION_RESULT
      * message is posted to |hwndTarget|.  Only one check runs at a time;

@@ -14,15 +14,17 @@
 #include "cw_theme.h"
 
 #include <string.h>
+#include <tchar.h>
+#include <tchar.h>
 
 CWApplication* CWApplication::s_instance = NULL;
 
-static const WCHAR* s_reportScanText = L"&Virus Scan Report";
-static const WCHAR* s_reportUpdateText = L"Virus &Database Update Report";
-static const WCHAR* s_menuSeparatorMarker = L"__CW_MENU_SEPARATOR__";
+static const TCHAR* s_reportScanText = TEXT("&Virus Scan Report");
+static const TCHAR* s_reportUpdateText = TEXT("Virus &Database Update Report");
+static const TCHAR* s_menuSeparatorMarker = TEXT("__CW_MENU_SEPARATOR__");
 static const UINT_PTR CW_TRAY_RETRY_TIMER_ID = 43;
 static const UINT_PTR CW_VERSION_CHECK_TIMER_ID = 44;
-static const char* s_reportsPopupClass = "ClamWinDarkReportsMenu";
+static const TCHAR* s_reportsPopupClass = TEXT("ClamWinDarkReportsMenu");
 
 struct CWReportsPopupState
 {
@@ -82,7 +84,7 @@ static UINT CW_ReportsPopupItemCommand(int idx)
     return idx == 0 ? IDM_TRAY_SCANREPORT : IDM_TRAY_UPDATEREPORT;
 }
 
-static WCHAR CW_FindMnemonicChar(const WCHAR* text)
+static TCHAR CW_FindMnemonicChar(const TCHAR* text)
 {
     if (!text)
         return 0;
@@ -98,9 +100,8 @@ static WCHAR CW_FindMnemonicChar(const WCHAR* text)
             }
             if (text[i + 1] != 0)
             {
-                WCHAR ch = text[i + 1];
-                if (ch >= L'A' && ch <= L'Z')
-                    ch = (WCHAR)(ch - L'A' + L'a');
+                TCHAR ch = text[i + 1];
+                ch = (TCHAR)_totlower(ch);
                 return ch;
             }
         }
@@ -146,7 +147,7 @@ static void CW_DrawReportsPopup(HWND hwnd, HDC hdc, CWReportsPopupState* s)
         HGDIOBJ oldFont = SelectObject(hdc, s->font);
         SetBkMode(hdc, TRANSPARENT);
         SetTextColor(hdc, enabled ? fg : fgMuted);
-        DrawTextW(hdc, i == 0 ? s_reportScanText : s_reportUpdateText,
+        DrawText(hdc, i == 0 ? s_reportScanText : s_reportUpdateText,
                   -1, &textRc, DT_SINGLELINE | DT_VCENTER | DT_LEFT | (showMnemonics ? 0 : DT_HIDEPREFIX));
         if (oldFont)
             SelectObject(hdc, oldFont);
@@ -155,14 +156,14 @@ static void CW_DrawReportsPopup(HWND hwnd, HDC hdc, CWReportsPopupState* s)
 
 static LRESULT CALLBACK CW_ReportsPopupProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
 {
-    CWReportsPopupState* s = reinterpret_cast<CWReportsPopupState*>(GetWindowLongPtrA(hwnd, GWLP_USERDATA));
+    CWReportsPopupState* s = reinterpret_cast<CWReportsPopupState*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
     switch (msg)
     {
         case WM_NCCREATE:
         {
-            CREATESTRUCTA* cs = reinterpret_cast<CREATESTRUCTA*>(lp);
-            SetWindowLongPtrA(hwnd, GWLP_USERDATA, (LONG_PTR)cs->lpCreateParams);
+            CREATESTRUCT* cs = reinterpret_cast<CREATESTRUCT*>(lp);
+            SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)cs->lpCreateParams);
             return TRUE;
         }
 
@@ -203,7 +204,7 @@ static LRESULT CALLBACK CW_ReportsPopupProc(HWND hwnd, UINT msg, WPARAM wp, LPAR
             {
                 int idx = CW_ReportsPopupItemFromY(s, (int)(short)HIWORD(lp));
                 if (idx >= 0 && CW_ReportsPopupItemEnabled(s, idx))
-                    PostMessageA(s->owner, WM_COMMAND, CW_ReportsPopupItemCommand(idx), 0);
+                    PostMessage(s->owner, WM_COMMAND, CW_ReportsPopupItemCommand(idx), 0);
             }
             DestroyWindow(hwnd);
             return 0;
@@ -248,18 +249,16 @@ static LRESULT CALLBACK CW_ReportsPopupProc(HWND hwnd, UINT msg, WPARAM wp, LPAR
         case WM_SYSCHAR:
             if (s)
             {
-                WCHAR key = (WCHAR)wp;
-                if (key >= L'A' && key <= L'Z')
-                    key = (WCHAR)(key - L'A' + L'a');
+                TCHAR key = (TCHAR)_totlower((TCHAR)wp);
 
                 for (int i = 0; i < 2; ++i)
                 {
-                    const WCHAR* text = (i == 0) ? s_reportScanText : s_reportUpdateText;
+                    const TCHAR* text = (i == 0) ? s_reportScanText : s_reportUpdateText;
                     if (!CW_ReportsPopupItemEnabled(s, i))
                         continue;
                     if (CW_FindMnemonicChar(text) == key)
                     {
-                        PostMessageA(s->owner, WM_COMMAND, CW_ReportsPopupItemCommand(i), 0);
+                        PostMessage(s->owner, WM_COMMAND, CW_ReportsPopupItemCommand(i), 0);
                         DestroyWindow(hwnd);
                         return 0;
                     }
@@ -279,18 +278,18 @@ static LRESULT CALLBACK CW_ReportsPopupProc(HWND hwnd, UINT msg, WPARAM wp, LPAR
                 if (s->font && s->font != (HFONT)GetStockObject(DEFAULT_GUI_FONT))
                     DeleteObject(s->font);
                 delete s;
-                SetWindowLongPtrA(hwnd, GWLP_USERDATA, 0);
+                SetWindowLongPtr(hwnd, GWLP_USERDATA, 0);
             }
             return 0;
     }
 
-    return DefWindowProcA(hwnd, msg, wp, lp);
+    return DefWindowProc(hwnd, msg, wp, lp);
 }
 
 static bool CW_EnsureReportsPopupClass(HINSTANCE hInst)
 {
-    WNDCLASSA wc;
-    if (GetClassInfoA(hInst, s_reportsPopupClass, &wc))
+    WNDCLASS wc;
+    if (GetClassInfo(hInst, s_reportsPopupClass, &wc))
         return true;
 
     ZeroMemory(&wc, sizeof(wc));
@@ -298,12 +297,12 @@ static bool CW_EnsureReportsPopupClass(HINSTANCE hInst)
     wc.hInstance = hInst;
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
     wc.lpszClassName = s_reportsPopupClass;
-    return RegisterClassA(&wc) != 0;
+    return RegisterClass(&wc) != 0;
 }
 
 static bool CW_ShowCustomDarkReportsMenu(HWND owner, bool hasScanReport, bool hasUpdateReport)
 {
-    HINSTANCE hInst = (HINSTANCE)GetModuleHandleA(NULL);
+    HINSTANCE hInst = (HINSTANCE)GetModuleHandle(NULL);
     if (!CW_EnsureReportsPopupClass(hInst))
         return false;
 
@@ -336,7 +335,7 @@ static bool CW_ShowCustomDarkReportsMenu(HWND owner, bool hasScanReport, bool ha
     int y = pt.y - height + CW_Scale(8);
 
     RECT wa;
-    if (SystemParametersInfoA(SPI_GETWORKAREA, 0, &wa, 0))
+    if (SystemParametersInfo(SPI_GETWORKAREA, 0, &wa, 0))
     {
         if (x < wa.left) x = wa.left;
         if (y < wa.top) y = wa.top;
@@ -344,9 +343,9 @@ static bool CW_ShowCustomDarkReportsMenu(HWND owner, bool hasScanReport, bool ha
         if (y + height > wa.bottom) y = wa.bottom - height;
     }
 
-    HWND hwnd = CreateWindowExA(WS_EX_TOPMOST | WS_EX_TOOLWINDOW,
+    HWND hwnd = CreateWindowEx(WS_EX_TOPMOST | WS_EX_TOOLWINDOW,
                                 s_reportsPopupClass,
-                                "",
+                                TEXT(""),
                                 WS_POPUP,
                                 x, y, s->width, height,
                                 owner,
@@ -373,11 +372,11 @@ static void CW_DrawThemedMenuItem(const DRAWITEMSTRUCT* dis)
     if (!dis)
         return;
 
-    const WCHAR* text = reinterpret_cast<const WCHAR*>(dis->itemData);
+    const TCHAR* text = reinterpret_cast<const TCHAR*>(dis->itemData);
     if (!text)
-        text = L"";
+        text = TEXT("");
 
-    const bool isSeparator = (lstrcmpW(text, s_menuSeparatorMarker) == 0);
+    const bool isSeparator = (lstrcmp(text, s_menuSeparatorMarker) == 0);
     CWTheme* theme = CW_GetTheme();
     const bool selected = ((dis->itemState & ODS_SELECTED) != 0) && !isSeparator;
     const bool disabled = (dis->itemState & ODS_DISABLED) != 0;
@@ -442,7 +441,7 @@ static void CW_DrawThemedMenuItem(const DRAWITEMSTRUCT* dis)
 
     SetBkMode(dis->hDC, TRANSPARENT);
     SetTextColor(dis->hDC, textColor);
-    DrawTextW(dis->hDC,
+    DrawText(dis->hDC,
               text,
               -1,
               &textRc,
@@ -454,11 +453,11 @@ static void CW_MeasureThemedMenuItem(MEASUREITEMSTRUCT* mis)
     if (!mis)
         return;
 
-    const WCHAR* text = reinterpret_cast<const WCHAR*>(mis->itemData);
+    const TCHAR* text = reinterpret_cast<const TCHAR*>(mis->itemData);
     if (!text)
-        text = L"";
+        text = TEXT("");
 
-    if (lstrcmpW(text, s_menuSeparatorMarker) == 0)
+    if (lstrcmp(text, s_menuSeparatorMarker) == 0)
     {
         mis->itemWidth = (UINT)CW_Scale(180);
         {
@@ -488,7 +487,7 @@ static void CW_MeasureThemedMenuItem(MEASUREITEMSTRUCT* mis)
                 hOldFont = (HFONT)SelectObject(hdc, hMenuFont);
         }
 
-        GetTextExtentPoint32W(hdc, text, lstrlenW(text), &sz);
+        GetTextExtentPoint32(hdc, text, lstrlen(text), &sz);
 
         if (hOldFont)
             SelectObject(hdc, hOldFont);
@@ -561,7 +560,7 @@ int CWApplication::run(HINSTANCE hInst, LPSTR cmdLine)
         icc.dwICC  = ICC_WIN95_CLASSES | ICC_BAR_CLASSES | ICC_PROGRESS_CLASS | ICC_UPDOWN_CLASS;
         InitCommonControlsEx(&icc);
 
-        LoadLibraryA("riched20.dll");
+        LoadLibrary(TEXT("riched20.dll"));
         CoInitialize(NULL);
 
         if (!cli.configFile.empty())
@@ -597,11 +596,11 @@ int CWApplication::run(HINSTANCE hInst, LPSTR cmdLine)
 normal_startup:
 
     /* Single-instance check */
-    HANDLE hMutex = CreateMutexA(NULL, FALSE, "ClamWinMutex");
+    HANDLE hMutex = CreateMutex(NULL, FALSE, TEXT("ClamWinMutex"));
     if (GetLastError() == ERROR_ALREADY_EXISTS)
     {
-        HWND hExisting = FindWindowA("ClamWinTrayClass", NULL);
-        if (hExisting) PostMessageA(hExisting, WM_COMMAND, IDM_TRAY_OPEN, 0);
+        HWND hExisting = FindWindow(TEXT("ClamWinTrayClass"), NULL);
+        if (hExisting) PostMessage(hExisting, WM_COMMAND, IDM_TRAY_OPEN, 0);
         if (hMutex) CloseHandle(hMutex);
         return 0;
     }
@@ -612,7 +611,7 @@ normal_startup:
     icc.dwICC  = ICC_WIN95_CLASSES | ICC_BAR_CLASSES | ICC_PROGRESS_CLASS | ICC_UPDOWN_CLASS;
     InitCommonControlsEx(&icc);
 
-    LoadLibraryA("riched20.dll");
+    LoadLibrary(TEXT("riched20.dll"));
     CoInitialize(NULL);
 
     /* Load config */
@@ -632,7 +631,7 @@ normal_startup:
         return 1;
     }
 
-    m_taskbarCreatedMsg = RegisterWindowMessageA("TaskbarCreated");
+    m_taskbarCreatedMsg = RegisterWindowMessage(TEXT("TaskbarCreated"));
 
     /* Create tray icon */
     createTray();
@@ -641,14 +640,14 @@ normal_startup:
     m_scheduler.start(m_hwndTray, &m_config);
 
     if (cli.openDashboard)
-        PostMessageA(m_hwndTray, WM_COMMAND, IDM_TRAY_OPEN, 0);
+        PostMessage(m_hwndTray, WM_COMMAND, IDM_TRAY_OPEN, 0);
 
     if (cli.downloadDb)
-        PostMessageA(m_hwndTray, WM_COMMAND, IDM_TRAY_UPDATE, 0);
+        PostMessage(m_hwndTray, WM_COMMAND, IDM_TRAY_UPDATE, 0);
 
     /* Run on startup update if configured */
     if (m_config.updateOnStartup)
-        PostMessageA(m_hwndTray, WM_COMMAND, IDM_TRAY_UPDATE, 0);
+        PostMessage(m_hwndTray, WM_COMMAND, IDM_TRAY_UPDATE, 0);
 
     /* Schedule a delayed version check (randomised 2-10 min after startup)
      * to avoid hitting the API at launch and to spread server load. */
@@ -659,11 +658,11 @@ normal_startup:
 
         /* Test override: set CLAMWIN_UPDATE_CHECK_DELAY_MS to force startup delay.
          * Useful for deterministic local testing without waiting. */
-        char delayBuf[32] = {0};
-        DWORD got = GetEnvironmentVariableA("CLAMWIN_UPDATE_CHECK_DELAY_MS", delayBuf, sizeof(delayBuf));
-        if (got > 0 && got < sizeof(delayBuf))
+        TCHAR delayBuf[32] = {0};
+        DWORD got = GetEnvironmentVariable(TEXT("CLAMWIN_UPDATE_CHECK_DELAY_MS"), delayBuf, _countof(delayBuf));
+        if (got > 0 && got < _countof(delayBuf))
         {
-            long v = atol(delayBuf);
+            long v = _tcstol(delayBuf, NULL, 10);
             if (v >= 0)
                 delayMs = (UINT)v;
         }
@@ -673,10 +672,10 @@ normal_startup:
 
     /* Message loop */
     MSG msg;
-    while (GetMessageA(&msg, NULL, 0, 0))
+    while (GetMessage(&msg, NULL, 0, 0))
     {
         TranslateMessage(&msg);
-        DispatchMessageA(&msg);
+        DispatchMessage(&msg);
     }
 
     m_scheduler.stop();
@@ -692,17 +691,17 @@ normal_startup:
 
 bool CWApplication::registerHiddenClass()
 {
-    WNDCLASSA wc;
+    WNDCLASS wc;
     memset(&wc, 0, sizeof(wc));
     wc.lpfnWndProc   = staticWndProc;
     wc.hInstance     = m_hInst;
-    wc.lpszClassName = "ClamWinTrayClass";
-    return RegisterClassA(&wc) != 0;
+    wc.lpszClassName = TEXT("ClamWinTrayClass");
+    return RegisterClass(&wc) != 0;
 }
 
 bool CWApplication::createHiddenWindow()
 {
-    m_hwndTray = CreateWindowExA(0, "ClamWinTrayClass", "ClamWin",
+    m_hwndTray = CreateWindowEx(0, TEXT("ClamWinTrayClass"), TEXT("ClamWin"),
                                   WS_OVERLAPPEDWINDOW,
                                   0, 0, 0, 0,
                                   NULL, NULL, m_hInst,
@@ -714,7 +713,7 @@ bool CWApplication::createHiddenWindow()
 
 void CWApplication::createTray()
 {
-    m_hIcon = LoadIconA(m_hInst, MAKEINTRESOURCEA(IDI_CLAMWIN));
+    m_hIcon = LoadIcon(m_hInst, MAKEINTRESOURCE(IDI_CLAMWIN));
     if (m_tray.create(m_hwndTray, m_hIcon, "ClamWin"))
     {
         KillTimer(m_hwndTray, CW_TRAY_RETRY_TIMER_ID);
@@ -791,7 +790,7 @@ void CWApplication::doOpenDashboard()
 
 void CWApplication::doHelp()
 {
-    ShellExecuteA(dialogParent(), "open", CLAMWIN_WEBSITE, NULL, NULL, SW_SHOWNORMAL);
+    ShellExecute(dialogParent(), TEXT("open"), TEXT(CLAMWIN_WEBSITE), NULL, NULL, SW_SHOWNORMAL);
 }
 
 void CWApplication::onVersionCheckResult(WPARAM wp, LPARAM lp)
@@ -820,20 +819,28 @@ void CWApplication::onVersionCheckResult(WPARAM wp, LPARAM lp)
 
 void CWApplication::doScan()
 {
-    BROWSEINFOA bi;
-    char path[MAX_PATH] = "";
+    BROWSEINFO bi;
+    TCHAR path[MAX_PATH] = TEXT("");
     memset(&bi, 0, sizeof(bi));
     bi.hwndOwner      = dialogParent();
     bi.pszDisplayName = path;
-    bi.lpszTitle      = "Select a folder to scan:";
+    bi.lpszTitle      = TEXT("Select a folder to scan:");
     bi.ulFlags        = BIF_RETURNONLYFSDIRS;
 
-    LPITEMIDLIST pidl = SHBrowseForFolderA(&bi);
+    LPITEMIDLIST pidl = SHBrowseForFolder(&bi);
     if (pidl)
     {
-        if (SHGetPathFromIDListA(pidl, path))
+        if (SHGetPathFromIDList(pidl, path))
         {
-            int rc = CW_ScanDialogRun(dialogParent(), &m_config, path);
+            char pathAnsi[MAX_PATH] = "";
+#if defined(UNICODE) || defined(_UNICODE)
+            WideCharToMultiByte(CP_ACP, 0, path, -1, pathAnsi, sizeof(pathAnsi), NULL, NULL);
+#else
+            _snprintf(pathAnsi, sizeof(pathAnsi), "%s", path);
+            pathAnsi[sizeof(pathAnsi) - 1] = '\0';
+#endif
+
+            int rc = CW_ScanDialogRun(dialogParent(), &m_config, pathAnsi);
             if (rc == 1)
                 showBalloonNotify(
                     "Virus has been detected during scan! Please review the scan report.",
@@ -995,14 +1002,21 @@ void CWApplication::showReportsMenu()
     if (!hReportsMenu)
         return;
 
-    AppendMenuA(hReportsMenu,
-                MF_STRING | (hasScanReport ? 0 : MF_GRAYED),
+    MENUINFO mi;
+    memset(&mi, 0, sizeof(mi));
+    mi.cbSize = sizeof(mi);
+    mi.fMask = MIM_STYLE;
+    mi.dwStyle = MNS_NOCHECK;
+    SetMenuInfo(hReportsMenu, &mi);
+
+    AppendMenu(hReportsMenu,
+                MF_OWNERDRAW | (hasScanReport ? 0 : MF_GRAYED),
                 IDM_TRAY_SCANREPORT,
-                "&Virus Scan Report");
-    AppendMenuA(hReportsMenu,
-                MF_STRING | (hasUpdateReport ? 0 : MF_GRAYED),
+                (LPCTSTR)s_reportScanText);
+    AppendMenu(hReportsMenu,
+                MF_OWNERDRAW | (hasUpdateReport ? 0 : MF_GRAYED),
                 IDM_TRAY_UPDATEREPORT,
-                "Virus &Database Update Report");
+                (LPCTSTR)s_reportUpdateText);
 
     POINT pt;
     GetCursorPos(&pt);
@@ -1125,7 +1139,7 @@ LRESULT CWApplication::handleMessage(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
         return 0;
     }
 
-    return DefWindowProcA(hwnd, msg, wp, lp);
+    return DefWindowProc(hwnd, msg, wp, lp);
 }
 
 LRESULT CALLBACK CWApplication::staticWndProc(HWND hwnd, UINT msg,
@@ -1135,19 +1149,19 @@ LRESULT CALLBACK CWApplication::staticWndProc(HWND hwnd, UINT msg,
 
     if (msg == WM_CREATE)
     {
-        CREATESTRUCTA* cs = reinterpret_cast<CREATESTRUCTA*>(lp);
+        CREATESTRUCT* cs = reinterpret_cast<CREATESTRUCT*>(lp);
         self = static_cast<CWApplication*>(cs->lpCreateParams);
         if (self)
-            SetWindowLongPtrA(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(self));
+            SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(self));
     }
     else
     {
         self = reinterpret_cast<CWApplication*>(
-                   GetWindowLongPtrA(hwnd, GWLP_USERDATA));
+                   GetWindowLongPtr(hwnd, GWLP_USERDATA));
     }
 
     if (self)
         return self->handleMessage(hwnd, msg, wp, lp);
 
-    return DefWindowProcA(hwnd, msg, wp, lp);
+    return DefWindowProc(hwnd, msg, wp, lp);
 }

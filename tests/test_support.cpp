@@ -14,7 +14,7 @@ void deleteTree(const std::string& path)
     pattern += "*";
 
     WIN32_FIND_DATAA data;
-    HANDLE hFind = FindFirstFileA(pattern.c_str(), &data);
+    HANDLE hFind = FindFirstFile(pattern.c_str(), &data);
     if (hFind != INVALID_HANDLE_VALUE)
     {
         do
@@ -30,14 +30,14 @@ void deleteTree(const std::string& path)
             if (data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
             {
                 deleteTree(child);
-                RemoveDirectoryA(child.c_str());
+                RemoveDirectory(child.c_str());
             }
             else
             {
-                DeleteFileA(child.c_str());
+                DeleteFile(child.c_str());
             }
         }
-        while (FindNextFileA(hFind, &data));
+        while (FindNextFile(hFind, &data));
 
         FindClose(hFind);
     }
@@ -50,10 +50,10 @@ TestTempDir::TestTempDir()
     char tempFile[MAX_PATH];
     tempPath[0] = '\0';
     tempFile[0] = '\0';
-    GetTempPathA(MAX_PATH, tempPath);
-    GetTempFileNameA(tempPath, "cwg", 0, tempFile);
-    DeleteFileA(tempFile);
-    CreateDirectoryA(tempFile, NULL);
+    GetTempPath(MAX_PATH, tempPath);
+    GetTempFileName(tempPath, "cwg", 0, tempFile);
+    DeleteFile(tempFile);
+    CreateDirectory(tempFile, NULL);
     path = tempFile;
 }
 
@@ -62,7 +62,7 @@ TestTempDir::~TestTempDir()
     if (!path.empty())
     {
         deleteTree(path);
-        RemoveDirectoryA(path.c_str());
+        RemoveDirectory(path.c_str());
     }
 }
 
@@ -79,7 +79,7 @@ bool testWriteFile(const std::string& path, const std::string& content)
 
 bool testMakeDirectory(const std::string& path)
 {
-    if (CreateDirectoryA(path.c_str(), NULL) != 0)
+    if (CreateDirectory(path.c_str(), NULL) != 0)
         return true;
     return GetLastError() == ERROR_ALREADY_EXISTS;
 }
@@ -101,14 +101,14 @@ std::string testJoinPath(const std::string& left, const std::string& right)
 
 bool testPathExists(const std::string& path)
 {
-    return !path.empty() && GetFileAttributesA(path.c_str()) != INVALID_FILE_ATTRIBUTES;
+    return !path.empty() && GetFileAttributes(path.c_str()) != INVALID_FILE_ATTRIBUTES;
 }
 
 std::string testExecutableDir(void)
 {
     char modulePath[MAX_PATH];
     modulePath[0] = '\0';
-    GetModuleFileNameA(NULL, modulePath, MAX_PATH);
+    GetModuleFileName(NULL, modulePath, MAX_PATH);
     char* slash = strrchr(modulePath, '\\');
     if (slash)
         *slash = '\0';
@@ -121,7 +121,7 @@ std::string testGetEnv(const char* name)
         return std::string();
 
     char buf[2048];
-    DWORD len = GetEnvironmentVariableA(name, buf, sizeof(buf));
+    DWORD len = GetEnvironmentVariable(name, buf, sizeof(buf));
     if (len == 0 || len >= sizeof(buf))
         return std::string();
     return buf;
@@ -147,8 +147,8 @@ std::string testFixturesDir(void)
 {
     char path[MAX_PATH];
     path[0] = '\0';
-    GetModuleFileNameA(NULL, path, MAX_PATH);
-    PathRemoveFileSpecA(path);
+    GetModuleFileName(NULL, path, MAX_PATH);
+    PathRemoveFileSpec(path);
     return testJoinPath(testJoinPath(testJoinPath(path, ".."), "src"), "clamwin-gui-cpp\\tests\\fixtures");
 }
 
@@ -185,7 +185,7 @@ bool testRunCommandCapture(const std::string& commandLine,
     std::vector<char> cmd(commandLine.begin(), commandLine.end());
     cmd.push_back('\0');
 
-    BOOL created = CreateProcessA(NULL,
+    BOOL created = CreateProcess(NULL,
                                   cmd.data(),
                                   NULL,
                                   NULL,

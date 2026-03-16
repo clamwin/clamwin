@@ -139,11 +139,12 @@ TEST_SUITE("Scheduler")
         cfg.updateRunMissed = true;
         cfg.updateFrequency = 0;
         cfg.updateLastRunTime = 0;
-        cfg.scanHour = tm_mock.tm_hour;
-        cfg.scanMinute = tm_mock.tm_min;
+        // Keep scheduled time always-reached for real-time check() call in this integration test.
+        cfg.scanHour = 0;
+        cfg.scanMinute = 0;
         cfg.scanDay = tm_mock.tm_wday;
-        cfg.updateHour = tm_mock.tm_hour;
-        cfg.updateMinute = tm_mock.tm_min;
+        cfg.updateHour = 0;
+        cfg.updateMinute = 0;
 
         // Simulate that the last runs were 3 days ago, so they definitely trigger runMissed logic.
         time_t past = now - (3 * 86400);
@@ -151,7 +152,7 @@ TEST_SUITE("Scheduler")
         cfg.updateLastRunTime = past;
 
         // Create a dummy message loop window to catch postmessages
-        HWND hwnd = CreateWindowA("STATIC", "Test", 0, 0, 0, 0, 0, NULL, NULL, GetModuleHandle(NULL), NULL);
+        HWND hwnd = CreateWindow("STATIC", "Test", 0, 0, 0, 0, 0, NULL, NULL, GetModuleHandle(NULL), NULL);
         REQUIRE(hwnd != NULL);
 
         long long dummy_scan_last = past;

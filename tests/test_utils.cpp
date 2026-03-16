@@ -9,7 +9,7 @@ namespace
 {
 bool setFileMTimeDaysAgo(const std::string& path, int daysAgo)
 {
-    HANDLE h = CreateFileA(path.c_str(), FILE_WRITE_ATTRIBUTES, FILE_SHARE_READ,
+    HANDLE h = CreateFile(path.c_str(), FILE_WRITE_ATTRIBUTES, FILE_SHARE_READ,
                            NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
     if (h == INVALID_HANDLE_VALUE)
         return false;

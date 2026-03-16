@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <vector>
 #include <string>
+#include <tchar.h>
 
 #define STBI_NO_STDIO
 #define STBI_ONLY_PNG
@@ -93,14 +94,14 @@ static std::string getFileVersion(const std::string& filePath)
 
 void* CWAboutDialog::loadPngResource(int resourceId)
 {
-    HRSRC hRes = FindResourceA(GetModuleHandleA(NULL), MAKEINTRESOURCEA(resourceId), (LPCSTR)RT_RCDATA);
+    HRSRC hRes = FindResource(GetModuleHandle(NULL), MAKEINTRESOURCE(resourceId), RT_RCDATA);
     if (!hRes) return NULL;
 
-    HGLOBAL hLoad = LoadResource(GetModuleHandleA(NULL), hRes);
+    HGLOBAL hLoad = LoadResource(GetModuleHandle(NULL), hRes);
     if (!hLoad) return NULL;
 
     const BYTE* data = (const BYTE*)LockResource(hLoad);
-    DWORD size = SizeofResource(GetModuleHandleA(NULL), hRes);
+    DWORD size = SizeofResource(GetModuleHandle(NULL), hRes);
     if (!data || size == 0) return NULL;
 
     int w, h, channels;
@@ -134,35 +135,35 @@ CWAboutDialog::~CWAboutDialog()
 
 void CWAboutDialog::createFonts()
 {
-    m_hFontTitle = CreateFontA(-CW_Scale(20), 0, 0, 0, FW_BOLD, 0, 0, 0,
-                               DEFAULT_CHARSET, 0, 0, CLEARTYPE_QUALITY, 0, "Segoe UI");
+    m_hFontTitle = CreateFont(-CW_Scale(20), 0, 0, 0, FW_BOLD, 0, 0, 0,
+                               DEFAULT_CHARSET, 0, 0, CLEARTYPE_QUALITY, 0, TEXT("Segoe UI"));
     if (!m_hFontTitle)
-        m_hFontTitle = CreateFontA(-CW_Scale(20), 0, 0, 0, FW_BOLD, 0, 0, 0,
-                                   DEFAULT_CHARSET, 0, 0, DEFAULT_QUALITY, 0, "Tahoma");
+        m_hFontTitle = CreateFont(-CW_Scale(20), 0, 0, 0, FW_BOLD, 0, 0, 0,
+                                   DEFAULT_CHARSET, 0, 0, DEFAULT_QUALITY, 0, TEXT("Tahoma"));
 
-    m_hFontSection = CreateFontA(-CW_Scale(13), 0, 0, 0, FW_SEMIBOLD, 0, 0, 0,
-                                 DEFAULT_CHARSET, 0, 0, CLEARTYPE_QUALITY, 0, "Segoe UI");
+    m_hFontSection = CreateFont(-CW_Scale(13), 0, 0, 0, FW_SEMIBOLD, 0, 0, 0,
+                                 DEFAULT_CHARSET, 0, 0, CLEARTYPE_QUALITY, 0, TEXT("Segoe UI"));
     if (!m_hFontSection)
-        m_hFontSection = CreateFontA(-CW_Scale(13), 0, 0, 0, FW_SEMIBOLD, 0, 0, 0,
-                                     DEFAULT_CHARSET, 0, 0, DEFAULT_QUALITY, 0, "Tahoma");
+        m_hFontSection = CreateFont(-CW_Scale(13), 0, 0, 0, FW_SEMIBOLD, 0, 0, 0,
+                                     DEFAULT_CHARSET, 0, 0, DEFAULT_QUALITY, 0, TEXT("Tahoma"));
 
-    m_hFontNormal = CreateFontA(-CW_Scale(12), 0, 0, 0, FW_NORMAL, 0, 0, 0,
-                                DEFAULT_CHARSET, 0, 0, CLEARTYPE_QUALITY, 0, "Segoe UI");
+    m_hFontNormal = CreateFont(-CW_Scale(12), 0, 0, 0, FW_NORMAL, 0, 0, 0,
+                                DEFAULT_CHARSET, 0, 0, CLEARTYPE_QUALITY, 0, TEXT("Segoe UI"));
     if (!m_hFontNormal)
-        m_hFontNormal = CreateFontA(-CW_Scale(12), 0, 0, 0, FW_NORMAL, 0, 0, 0,
-                                    DEFAULT_CHARSET, 0, 0, DEFAULT_QUALITY, 0, "Tahoma");
+        m_hFontNormal = CreateFont(-CW_Scale(12), 0, 0, 0, FW_NORMAL, 0, 0, 0,
+                                    DEFAULT_CHARSET, 0, 0, DEFAULT_QUALITY, 0, TEXT("Tahoma"));
 
-    m_hFontSmall = CreateFontA(-CW_Scale(11), 0, 0, 0, FW_NORMAL, 0, 0, 0,
-                               DEFAULT_CHARSET, 0, 0, CLEARTYPE_QUALITY, 0, "Segoe UI");
+    m_hFontSmall = CreateFont(-CW_Scale(11), 0, 0, 0, FW_NORMAL, 0, 0, 0,
+                               DEFAULT_CHARSET, 0, 0, CLEARTYPE_QUALITY, 0, TEXT("Segoe UI"));
     if (!m_hFontSmall)
-        m_hFontSmall = CreateFontA(-CW_Scale(11), 0, 0, 0, FW_NORMAL, 0, 0, 0,
-                                   DEFAULT_CHARSET, 0, 0, DEFAULT_QUALITY, 0, "Tahoma");
+        m_hFontSmall = CreateFont(-CW_Scale(11), 0, 0, 0, FW_NORMAL, 0, 0, 0,
+                                   DEFAULT_CHARSET, 0, 0, DEFAULT_QUALITY, 0, TEXT("Tahoma"));
 
-    m_hFontLink = CreateFontA(-CW_Scale(12), 0, 0, 0, FW_NORMAL, TRUE, 0, 0,
-                              DEFAULT_CHARSET, 0, 0, CLEARTYPE_QUALITY, 0, "Segoe UI");
+    m_hFontLink = CreateFont(-CW_Scale(12), 0, 0, 0, FW_NORMAL, TRUE, 0, 0,
+                              DEFAULT_CHARSET, 0, 0, CLEARTYPE_QUALITY, 0, TEXT("Segoe UI"));
     if (!m_hFontLink)
-        m_hFontLink = CreateFontA(-CW_Scale(12), 0, 0, 0, FW_NORMAL, TRUE, 0, 0,
-                                  DEFAULT_CHARSET, 0, 0, DEFAULT_QUALITY, 0, "Tahoma");
+        m_hFontLink = CreateFont(-CW_Scale(12), 0, 0, 0, FW_NORMAL, TRUE, 0, 0,
+                                  DEFAULT_CHARSET, 0, 0, DEFAULT_QUALITY, 0, TEXT("Tahoma"));
 }
 
 void CWAboutDialog::destroyFonts()
@@ -195,34 +196,34 @@ void CWAboutDialog::destroyImages()
 
 /* ─── Control helpers ───────────────────────────────────────── */
 
-HWND CWAboutDialog::addLabel(const char* text, int x, int y, int w, int h, HFONT font, int id)
+HWND CWAboutDialog::addLabel(LPCTSTR text, int x, int y, int w, int h, HFONT font, int id)
 {
-    HWND hw = CreateWindowExA(0, "STATIC", text,
+    HWND hw = CreateWindowEx(0, TEXT("STATIC"), text,
                               WS_CHILD | WS_VISIBLE | SS_NOPREFIX,
                               x, y, w, h, m_hwnd,
                               id ? (HMENU)(INT_PTR)id : NULL,
-                              GetModuleHandleA(NULL), NULL);
-    if (hw && font) SendMessageA(hw, WM_SETFONT, (WPARAM)font, 0);
+                              GetModuleHandle(NULL), NULL);
+    if (hw && font) SendMessage(hw, WM_SETFONT, (WPARAM)font, 0);
     return hw;
 }
 
-HWND CWAboutDialog::addLink(const char* text, int x, int y, int w, int h, HFONT font, int id)
+HWND CWAboutDialog::addLink(LPCTSTR text, int x, int y, int w, int h, HFONT font, int id)
 {
-    HWND hw = CreateWindowExA(0, "STATIC", text,
+    HWND hw = CreateWindowEx(0, TEXT("STATIC"), text,
                               WS_CHILD | WS_VISIBLE | SS_NOPREFIX | SS_NOTIFY,
                               x, y, w, h, m_hwnd,
                               (HMENU)(INT_PTR)id,
-                              GetModuleHandleA(NULL), NULL);
-    if (hw && font) SendMessageA(hw, WM_SETFONT, (WPARAM)font, 0);
+                              GetModuleHandle(NULL), NULL);
+    if (hw && font) SendMessage(hw, WM_SETFONT, (WPARAM)font, 0);
     return hw;
 }
 
 HWND CWAboutDialog::addBitmap(int id, int x, int y, int w, int h)
 {
-    HWND hw = CreateWindowExA(0, "STATIC", NULL,
+    HWND hw = CreateWindowEx(0, TEXT("STATIC"), NULL,
                               WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
                               x, y, w, h, m_hwnd,
-                              (HMENU)(INT_PTR)id, GetModuleHandleA(NULL), NULL);
+                              (HMENU)(INT_PTR)id, GetModuleHandle(NULL), NULL);
     return hw;
 }
 
@@ -238,11 +239,11 @@ bool CWAboutDialog::onInit()
     m_pImgNetfarm  = loadPngResource(IDB_NETFARM_LOGO);
 
     /* Set window icon to force left margin spacing in the title bar */
-    HICON hIcon = LoadIconA(GetModuleHandleA(NULL), MAKEINTRESOURCEA(100)); // 100 is clamwin.ico in clamwin.rc
+    HICON hIcon = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(100)); // 100 is clamwin.ico in clamwin.rc
     if (hIcon)
     {
-        SendMessageA(m_hwnd, WM_SETICON, ICON_BIG, (LPARAM)hIcon);
-        SendMessageA(m_hwnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
+        SendMessage(m_hwnd, WM_SETICON, ICON_BIG, (LPARAM)hIcon);
+        SendMessage(m_hwnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
     }
 
     const int dlgW = CW_Scale(520);
@@ -258,7 +259,7 @@ bool CWAboutDialog::onInit()
 
     /* Header block */
     int yClamWin = y;
-    addLabel("ClamWin Free Antivirus", textX, y, contentW, CW_Scale(28), m_hFontTitle);
+    addLabel(TEXT("ClamWin Free Antivirus"), textX, y, contentW, CW_Scale(28), m_hFontTitle);
     y += CW_Scale(30);
 
     /* Retrieve ClamWin version from resources */
@@ -276,24 +277,25 @@ bool CWAboutDialog::onInit()
             exeDir = std::string(exePath, lastSlash + 1);
     }
 
-    std::string verLabel = "Version " + versionStr;
+    std::basic_string<TCHAR> verLabel = TEXT("Version ");
+    verLabel += versionStr;
     addLabel(verLabel.c_str(), textX, y, contentW, CW_Scale(18), m_hFontNormal);
     y += CW_Scale(18);
-    m_hwndLinkWeb = addLink(CLAMWIN_WEBSITE, textX, y, contentW, CW_Scale(18),
+    m_hwndLinkWeb = addLink(TEXT(CLAMWIN_WEBSITE), textX, y, contentW, CW_Scale(18),
                             m_hFontLink, IDC_LINK_WEB);
     y += CW_Scale(26); /* Increased from 20 for more space below text block */
 
     int hClamWin = y - yClamWin;
     addBitmap(IDC_LOGO_CLAMWIN, pad, yClamWin + (hClamWin - iconSize)/2, iconSize, iconSize);
 
-    CreateWindowExA(0, "STATIC", NULL, WS_CHILD | WS_VISIBLE | SS_ETCHEDHORZ,
+    CreateWindowEx(0, TEXT("STATIC"), NULL, WS_CHILD | WS_VISIBLE | SS_ETCHEDHORZ,
                     pad, y, contentRight - pad, CW_Scale(1), m_hwnd,
-                    NULL, GetModuleHandleA(NULL), NULL);
+                    NULL, GetModuleHandle(NULL), NULL);
     y += CW_Scale(18);
 
     /* Scanning Engine row */
     int yClamAV = y;
-    addLabel("Scanning Engine", textX, y, contentW, CW_Scale(20), m_hFontSection);
+    addLabel(TEXT("Scanning Engine"), textX, y, contentW, CW_Scale(20), m_hFontSection);
     y += CW_Scale(20);
     std::string clamavLabel = "Powered by ClamAV";
     if (!exeDir.empty())
@@ -305,25 +307,25 @@ bool CWAboutDialog::onInit()
     clamavLabel += ", maintained by Cisco Talos";
     addLabel(clamavLabel.c_str(), textX, y, contentW, CW_Scale(18), m_hFontNormal);
     y += CW_Scale(18);
-    m_hwndLinkClamAV = addLink("https://www.clamav.net", textX, y, contentW, CW_Scale(18),
+    m_hwndLinkClamAV = addLink(TEXT("https://www.clamav.net"), textX, y, contentW, CW_Scale(18),
                                m_hFontLink, IDC_LINK_CLAMAV);
     y += CW_Scale(26); /* Increased */
 
     int hClamAV = y - yClamAV;
     addBitmap(IDC_LOGO_CLAMAV, pad, yClamAV + (hClamAV - iconSize)/2, iconSize, iconSize);
 
-    CreateWindowExA(0, "STATIC", NULL, WS_CHILD | WS_VISIBLE | SS_ETCHEDHORZ,
+    CreateWindowEx(0, TEXT("STATIC"), NULL, WS_CHILD | WS_VISIBLE | SS_ETCHEDHORZ,
                     pad, y, contentRight - pad, CW_Scale(1), m_hwnd,
-                    NULL, GetModuleHandleA(NULL), NULL);
+                    NULL, GetModuleHandle(NULL), NULL);
     y += CW_Scale(18); /* Increased */
 
     /* Legacy port row */
     int yNetfarm = y;
-    addLabel("Legacy Windows Ports", textX, y, contentW, CW_Scale(20), m_hFontSection);
+    addLabel(TEXT("Legacy Windows Ports"), textX, y, contentW, CW_Scale(20), m_hFontSection);
     y += CW_Scale(20);
-    addLabel("Netfarm S.r.l.", textX, y, contentW, CW_Scale(18), m_hFontNormal);
+    addLabel(TEXT("Netfarm S.r.l."), textX, y, contentW, CW_Scale(18), m_hFontNormal);
     y += CW_Scale(18);
-    m_hwndLinkNetfarm = addLink("https://oss.netfarm.it/clamav/", textX, y, contentW, CW_Scale(18),
+    m_hwndLinkNetfarm = addLink(TEXT("https://oss.netfarm.it/clamav/"), textX, y, contentW, CW_Scale(18),
                                 m_hFontLink, IDC_LINK_NETFARM);
     y += CW_Scale(26); /* Increased */
 
@@ -334,56 +336,56 @@ bool CWAboutDialog::onInit()
     const int netfarmX = pad + (iconSize - netfarmSize) / 2;
     addBitmap(IDC_LOGO_NETFARM, netfarmX, yNetfarm + (hNetfarm - netfarmSize)/2, netfarmSize, netfarmSize);
 
-    CreateWindowExA(0, "STATIC", NULL, WS_CHILD | WS_VISIBLE | SS_ETCHEDHORZ,
+    CreateWindowEx(0, TEXT("STATIC"), NULL, WS_CHILD | WS_VISIBLE | SS_ETCHEDHORZ,
                     pad, y, contentRight - pad, CW_Scale(1), m_hwnd,
-                    NULL, GetModuleHandleA(NULL), NULL);
+                    NULL, GetModuleHandle(NULL), NULL);
     y += CW_Scale(18); /* Increased */
 
     /* Authors row */
-    addLabel("Authors", textX, y, contentW, CW_Scale(20), m_hFontSection);
+    addLabel(TEXT("Authors"), textX, y, contentW, CW_Scale(20), m_hFontSection);
     y += CW_Scale(20);
-    addLabel("Alex Cherney <alex@clamwin.com>", textX, y, contentW, CW_Scale(18), m_hFontNormal);
+    addLabel(TEXT("Alex Cherney <alex@clamwin.com>"), textX, y, contentW, CW_Scale(18), m_hFontNormal);
     y += CW_Scale(18);
     addLabel("Gianluigi Tiesi <sherpya@gmail.com>", textX, y, contentW, CW_Scale(18), m_hFontNormal);
     y += CW_Scale(26); /* Increased */
 
-    CreateWindowExA(0, "STATIC", NULL, WS_CHILD | WS_VISIBLE | SS_ETCHEDHORZ,
+    CreateWindowEx(0, TEXT("STATIC"), NULL, WS_CHILD | WS_VISIBLE | SS_ETCHEDHORZ,
                     pad, y, contentRight - pad, CW_Scale(1), m_hwnd,
-                    NULL, GetModuleHandleA(NULL), NULL);
+                    NULL, GetModuleHandle(NULL), NULL);
     y += CW_Scale(18); /* Increased */
 
     /* Centered legal text */
     {
-        HWND h = addLabel("Copyright ClamWin Pty Ltd (c) 2004-2026\n"
-                          "Portions Copyright Cisco Inc. (ClamAV)\n"
-                          "ClamWin is not affiliated with ClamAV or Cisco Inc.", 
+        HWND h = addLabel(TEXT("Copyright ClamWin Pty Ltd (c) 2004-2026\n"
+                  "Portions Copyright Cisco Inc. (ClamAV)\n"
+                  "ClamWin is not affiliated with ClamAV or Cisco Inc."), 
                           pad, y, contentRight - pad, CW_Scale(56), m_hFontSmall);
         if (h) {
-            SetWindowLongPtrA(h, GWL_STYLE, GetWindowLongPtrA(h, GWL_STYLE) | SS_CENTER);
-            SetWindowLongPtrA(h, GWLP_ID, 4201);
+            SetWindowLongPtr(h, GWL_STYLE, GetWindowLongPtr(h, GWL_STYLE) | SS_CENTER);
+            SetWindowLongPtr(h, GWLP_ID, 4201);
         }
     }
     y += CW_Scale(60); 
     {
-        HWND h = addLabel("This program is free software; you can redistribute it and/or modify "
-                          "it under the terms of the GNU General Public License (GPLv2).",
+        HWND h = addLabel(TEXT("This program is free software; you can redistribute it and/or modify "
+                  "it under the terms of the GNU General Public License (GPLv2)."),
                           pad, y, contentRight - pad, CW_Scale(40), m_hFontSmall); /* Increased height to 40 so it doesn't clip */
         if (h) {
-            SetWindowLongPtrA(h, GWL_STYLE, GetWindowLongPtrA(h, GWL_STYLE) | SS_CENTER);
-            SetWindowLongPtrA(h, GWLP_ID, 4201);
+            SetWindowLongPtr(h, GWL_STYLE, GetWindowLongPtr(h, GWL_STYLE) | SS_CENTER);
+            SetWindowLongPtr(h, GWLP_ID, 4201);
         }
     }
     y += CW_Scale(46); /* Increased space explicitly above OK button to un-overlap it */
 
     /* ── OK button ──────────────────────────────────────────── */
-    m_hwndBtnOk = CreateWindowExA(0, "BUTTON", "&OK",
+    m_hwndBtnOk = CreateWindowEx(0, TEXT("BUTTON"), TEXT("&OK"),
                                   WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_DEFPUSHBUTTON | BS_OWNERDRAW,
                                   (dlgW - CW_Scale(96)) / 2, y,
                                   CW_Scale(96), CW_Scale(30),
-                                  m_hwnd, (HMENU)IDOK, GetModuleHandleA(NULL), NULL);
-    SendMessageA(m_hwndBtnOk, WM_SETFONT, (WPARAM)m_hFontNormal, 0);
+                                  m_hwnd, (HMENU)IDOK, GetModuleHandle(NULL), NULL);
+    SendMessage(m_hwndBtnOk, WM_SETFONT, (WPARAM)m_hFontNormal, 0);
 
-    SetWindowTextA(m_hwnd, "About ClamWin Free Antivirus");
+    SetWindowText(m_hwnd, TEXT("About ClamWin Free Antivirus"));
     SetFocus(m_hwndBtnOk);
     return false; /* Did set focus ourselves */
 }
@@ -401,15 +403,15 @@ bool CWAboutDialog::onCommand(int id, HWND src)
             return true;
 
         case IDC_LINK_WEB:
-            ShellExecuteA(m_hwnd, "open", CLAMWIN_WEBSITE, NULL, NULL, SW_SHOWNORMAL);
+            ShellExecute(m_hwnd, TEXT("open"), TEXT(CLAMWIN_WEBSITE), NULL, NULL, SW_SHOWNORMAL);
             return true;
 
         case IDC_LINK_CLAMAV:
-            ShellExecuteA(m_hwnd, "open", "https://www.clamav.net", NULL, NULL, SW_SHOWNORMAL);
+            ShellExecute(m_hwnd, TEXT("open"), TEXT("https://www.clamav.net"), NULL, NULL, SW_SHOWNORMAL);
             return true;
 
         case IDC_LINK_NETFARM:
-            ShellExecuteA(m_hwnd, "open", "https://oss.netfarm.it/clamav/", NULL, NULL, SW_SHOWNORMAL);
+            ShellExecute(m_hwnd, TEXT("open"), TEXT("https://oss.netfarm.it/clamav/"), NULL, NULL, SW_SHOWNORMAL);
             return true;
     }
     return false;
@@ -519,7 +521,7 @@ INT_PTR CWAboutDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
             HWND ctrl = (HWND)lp;
             HDC hdc = (HDC)wp;
             CWTheme* theme = CW_GetTheme();
-            int ctlId = GetWindowLongA(ctrl, GWL_ID);
+            int ctlId = GetWindowLong(ctrl, GWL_ID);
 
             /* Color link controls blue */
             if (ctrl == m_hwndLinkWeb || ctrl == m_hwndLinkClamAV || ctrl == m_hwndLinkNetfarm)
@@ -542,7 +544,7 @@ INT_PTR CWAboutDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
             HWND ctrl = (HWND)wp;
             if (ctrl == m_hwndLinkWeb || ctrl == m_hwndLinkClamAV || ctrl == m_hwndLinkNetfarm)
             {
-                SetCursor(LoadCursorA(NULL, (LPCSTR)32649)); /* IDC_HAND */
+                SetCursor(LoadCursor(NULL, IDC_HAND));
                 return TRUE;
             }
             break;

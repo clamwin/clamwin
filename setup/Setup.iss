@@ -1,13 +1,12 @@
 ; ClamWin Free Antivirus — Inno Setup script
 ; Packages the native C++ GUI build (clamwin-gui-cpp).
 ;
-; Build outputs are taken from {#BuildDirWin9x}, {#BuildDir32}, {#BuildDir64}.
+; Build outputs are taken from {#BuildDir32}, {#BuildDir64}.
 ; Override individual dirs at compile time, e.g.:
 ;   iscc /DBuildDir64=C:\path\to\x64-build Setup.iss
 
 #DEFINE IncludeCVD
 #DEFINE AppVersion "1.5.2"
-#DEFINE BuildDirWin9x "..\..\..\build-x86-mingw-win98"
 #DEFINE BuildDir32    "..\..\..\build-x86-mingw-winxp"
 #DEFINE BuildDir64    "..\..\..\build-x64"
 
@@ -23,7 +22,7 @@ DefaultDirName={code:BaseDir}\ClamWin
 DefaultGroupName=ClamWin Antivirus
 LicenseFile=Setupfiles\License.rtf
 AllowNoIcons=true
-MinVersion=4.1.1998,5.0.2195
+MinVersion=5.0.2195,5.0.2195
 ShowLanguageDialog=no
 LanguageDetectionMethod=none
 OutputDir=Output
@@ -51,40 +50,37 @@ Name: desktopicon; Description: Create a &desktop icon; GroupDescription: Additi
 [Files]
 ; ── ClamWin GUI ───────────────────────────────────────────────────────────────
 ; clamwin.exe
-Source: {#BuildDirWin9x}\clamwin.exe; DestDir: {app}\bin; Components: ClamWin; Check: IsWin9xTier; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: {#BuildDir32}\clamwin.exe;    DestDir: {app}\bin; Components: ClamWin; Check: Is32bitNT;   Flags: restartreplace uninsrestartdelete replacesameversion
 Source: {#BuildDir64}\clamwin.exe;    DestDir: {app}\bin; Components: ClamWin; Check: IsWin64;     Flags: restartreplace uninsrestartdelete replacesameversion
 
 ; libExpShell.dll
-Source: {#BuildDirWin9x}\libExpShell.dll; DestDir: {app}\bin; Components: ExplorerShell; Check: IsWin9xTier; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: {#BuildDir32}\libExpShell.dll;    DestDir: {app}\bin; Components: ExplorerShell; Check: Is32bitNT;   Flags: restartreplace uninsrestartdelete replacesameversion
 Source: {#BuildDir64}\libExpShell.dll;    DestDir: {app}\bin; Components: ExplorerShell; Check: IsWin64;     Flags: restartreplace uninsrestartdelete replacesameversion
 
 ; ── ClamAV Engine ─────────────────────────────────────────────────────────────
 ; clamscan.exe
-Source: {#BuildDirWin9x}\clamscan.exe; DestDir: {app}\bin; Components: ClamAV; Check: IsWin9xTier; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: {#BuildDir32}\clamscan.exe;    DestDir: {app}\bin; Components: ClamAV; Check: Is32bitNT;   Flags: restartreplace uninsrestartdelete replacesameversion
 Source: {#BuildDir64}\clamscan.exe;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin64;     Flags: restartreplace uninsrestartdelete replacesameversion
 
 ; freshclam.exe
-Source: {#BuildDirWin9x}\freshclam.exe; DestDir: {app}\bin; Components: ClamAV; Check: IsWin9xTier; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: {#BuildDir32}\freshclam.exe;    DestDir: {app}\bin; Components: ClamAV; Check: Is32bitNT;   Flags: restartreplace uninsrestartdelete replacesameversion
 Source: {#BuildDir64}\freshclam.exe;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin64;     Flags: restartreplace uninsrestartdelete replacesameversion
 
 ; sigtool.exe
-Source: {#BuildDirWin9x}\sigtool.exe; DestDir: {app}\bin; Components: ClamAV; Check: IsWin9xTier; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: {#BuildDir32}\sigtool.exe;    DestDir: {app}\bin; Components: ClamAV; Check: Is32bitNT;   Flags: restartreplace uninsrestartdelete replacesameversion
 Source: {#BuildDir64}\sigtool.exe;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin64;     Flags: restartreplace uninsrestartdelete replacesameversion
 
 ; libclamav.dll
-Source: {#BuildDirWin9x}\libclamav.dll; DestDir: {app}\bin; Components: ClamAV; Check: IsWin9xTier; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: {#BuildDir32}\libclamav.dll;    DestDir: {app}\bin; Components: ClamAV; Check: Is32bitNT;   Flags: restartreplace uninsrestartdelete replacesameversion
 Source: {#BuildDir64}\libclamav.dll;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin64;     Flags: restartreplace uninsrestartdelete replacesameversion
 
 ; libfreshclam.dll
-Source: {#BuildDirWin9x}\libfreshclam.dll; DestDir: {app}\bin; Components: ClamAV; Check: IsWin9xTier; Flags: restartreplace uninsrestartdelete replacesameversion
 Source: {#BuildDir32}\libfreshclam.dll;    DestDir: {app}\bin; Components: ClamAV; Check: Is32bitNT;   Flags: restartreplace uninsrestartdelete replacesameversion
 Source: {#BuildDir64}\libfreshclam.dll;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin64;     Flags: restartreplace uninsrestartdelete replacesameversion
+
+; TLS CA bundle for XP-era libcurl/OpenSSL validation
+Source: {#BuildDir32}\curl-ca-bundle.crt;  DestDir: {app}\bin; Components: ClamAV; Check: Is32bitNT;   Flags: ignoreversion
+Source: {#BuildDir64}\curl-ca-bundle.crt;  DestDir: {app}\bin; Components: ClamAV; Check: IsWin64;     Flags: ignoreversion
 
 ; certs
 Source: ..\..\..\clamav\certs\clamav.crt; DestDir: {app}\bin\certs; Components: ClamAV; Flags: ignoreversion
@@ -173,6 +169,16 @@ Root: HKCU;   Subkey: Software\ClamWin; ValueType: string; ValueName: Path;    V
 Root: HKCU;   Subkey: Software\ClamWin; ValueType: dword;  ValueName: Version; ValueData: 10502;     Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
 Root: HKCU64; Subkey: Software\ClamWin; ValueType: string; ValueName: Path;    ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers and IsWin64
 
+; ── ClamAV defaults for freshclam/clamd compatibility ─────────────────────────
+Root: HKLM;   Subkey: Software\ClamAV; ValueType: string; ValueName: ConfDir; ValueData: {code:CommonProfileDir}\.clamwin;     Flags: uninsdeletevalue; Components: ClamAV; Check: IsAllUsers
+Root: HKLM;   Subkey: Software\ClamAV; ValueType: string; ValueName: DataDir; ValueData: {code:CommonProfileDir}\.clamwin\db; Flags: uninsdeletevalue; Components: ClamAV; Check: IsAllUsers
+Root: HKLM64; Subkey: Software\ClamAV; ValueType: string; ValueName: ConfDir; ValueData: {code:CommonProfileDir}\.clamwin;     Flags: uninsdeletevalue; Components: ClamAV; Check: IsAllUsers and IsWin64
+Root: HKLM64; Subkey: Software\ClamAV; ValueType: string; ValueName: DataDir; ValueData: {code:CommonProfileDir}\.clamwin\db; Flags: uninsdeletevalue; Components: ClamAV; Check: IsAllUsers and IsWin64
+Root: HKCU;   Subkey: Software\ClamAV; ValueType: string; ValueName: ConfDir; ValueData: {code:CommonProfileDir}\.clamwin;     Flags: uninsdeletevalue; Components: ClamAV; Check: not IsAllUsers
+Root: HKCU;   Subkey: Software\ClamAV; ValueType: string; ValueName: DataDir; ValueData: {code:CommonProfileDir}\.clamwin\db; Flags: uninsdeletevalue; Components: ClamAV; Check: not IsAllUsers
+Root: HKCU64; Subkey: Software\ClamAV; ValueType: string; ValueName: ConfDir; ValueData: {code:CommonProfileDir}\.clamwin;     Flags: uninsdeletevalue; Components: ClamAV; Check: not IsAllUsers and IsWin64
+Root: HKCU64; Subkey: Software\ClamAV; ValueType: string; ValueName: DataDir; ValueData: {code:CommonProfileDir}\.clamwin\db; Flags: uninsdeletevalue; Components: ClamAV; Check: not IsAllUsers and IsWin64
+
 ; ── Auto-start tray (not needed for new C++ build — clamwin.exe manages itself) ─
 
 ; ── Explorer shell extension (all users) ────────────────────────────────────────
@@ -211,16 +217,9 @@ function PostThreadMessage(ThreadId: Cardinal; Msg: Cardinal; wParam: Cardinal; 
 // Helpers
 //────────────────────────────────────────────────────────────────────────────
 
-function IsWin9xTier(): Boolean;
-var Version: TWindowsVersion;
-begin
-  GetWindowsVersionEx(Version);
-  Result := not Version.NTPlatform;
-end;
-
 function Is32bitNT(): Boolean;
 begin
-  Result := not IsWin9xTier() and not IsWin64;
+  Result := not IsWin64;
 end;
 
 function IsAllUsers(): Boolean;
@@ -483,13 +482,13 @@ end;
 { Returns the freshclam.conf path alongside ClamWin.conf in the profile dir. }
 function ClamWinConfPath(Default: String): String;
 begin
-  Result := ExpandConstant('{%USERPROFILE}') + '\.clamwin\ClamWin.conf';
+  Result := CommonProfileDir(Default) + '\.clamwin\ClamWin.conf';
 end;
 
 { Returns the freshclam.conf path alongside ClamWin.conf in the profile dir. }
 function FreshclamConfPath(Default: String): String;
 begin
-  Result := ExpandConstant('{%USERPROFILE}') + '\.clamwin\freshclam.conf';
+  Result := CommonProfileDir(Default) + '\.clamwin\freshclam.conf';
 end;
 
 function ClamWinPostInstallParams(Default: String): String;
@@ -503,11 +502,12 @@ end;
   invocation works even before the user opens preferences. }
 procedure WriteFreshclamConf();
 var
-  DbDir, LogDir, ConfPath: String;
+  DbDir, LogDir, CertDir, ConfPath: String;
   Lines: TStringList;
 begin
-  DbDir    := ExpandConstant('{%USERPROFILE}') + '\.clamwin\db';
-  LogDir   := ExpandConstant('{%USERPROFILE}') + '\.clamwin\log';
+  DbDir    := CommonProfileDir('') + '\.clamwin\db';
+  LogDir   := CommonProfileDir('') + '\.clamwin\log';
+  CertDir  := ExpandConstant('{app}\bin\certs');
   ConfPath := FreshclamConfPath('');
 
   ForceDirectories(ExtractFileDir(ConfPath));
@@ -519,6 +519,7 @@ begin
     Lines.Add('');
     Lines.Add('DatabaseMirror database.clamav.net');
     Lines.Add('DatabaseDirectory ' + DbDir);
+    Lines.Add('CVDCertsDirectory ' + CertDir);
     Lines.Add('UpdateLogFile ' + LogDir + '\ClamUpdateLog.txt');
     Lines.SaveToFile(ConfPath);
   finally

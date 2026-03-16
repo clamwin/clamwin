@@ -11,6 +11,7 @@
 #pragma once
 #include "cwdefs.h"
 #include <windows.h>
+#include <tchar.h>
 #include <string>
 
 class CWWindow
@@ -33,12 +34,12 @@ protected:
     HINSTANCE m_hInst;
 
     /* Register window class and create window.
-     * className:  Win32 class name (ANSI)
-     * windowName: window title (ANSI)
+    * className:  Win32 class name
+    * windowName: window title
      * style:      WS_* flags
      * ex:         WS_EX_* flags */
-    bool create(const std::string& className,
-                const std::string& windowName,
+    bool create(const std::basic_string<TCHAR>& className,
+             const std::basic_string<TCHAR>& windowName,
                 DWORD style,
                 DWORD exStyle  = 0,
                 HWND  parent   = NULL,
@@ -48,7 +49,7 @@ protected:
                 int   h        = CW_USEDEFAULT);
 
     /* Override to customize class registration before calling create(). */
-    virtual void fillWndClass(WNDCLASSA& wc);
+    virtual void fillWndClass(WNDCLASS& wc);
 
     /* ── Virtual message handlers ─────────────────────────── */
 

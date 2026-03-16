@@ -42,7 +42,7 @@ private:
     void destroyFonts();
     void destroyImages();
     void* loadPngResource(int resourceId);
-    HWND addLabel(const char* text, int x, int y, int w, int h, HFONT font, int id = 0);
-    HWND addLink(const char* text, int x, int y, int w, int h, HFONT font, int id);
+    HWND addLabel(LPCTSTR text, int x, int y, int w, int h, HFONT font, int id = 0);
+    HWND addLink(LPCTSTR text, int x, int y, int w, int h, HFONT font, int id);
     HWND addBitmap(int id, int x, int y, int w, int h);
 };

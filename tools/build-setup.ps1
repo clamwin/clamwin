@@ -49,6 +49,21 @@ function Get-ProjectVersion {
     return $hit.Matches[0].Groups[1].Value
 }
 
+function Resolve-IsccPath {
+    $candidates = @(
+        "C:\Program Files (x86)\Inno Setup 5\ISCC.exe",
+        "C:\Program Files\Inno Setup 5\ISCC.exe"
+    )
+
+    foreach ($path in $candidates) {
+        if (Test-Path $path) {
+            return $path
+        }
+    }
+
+    throw "ISCC not found. Install Inno Setup 5 (ISCC.exe) and retry."
+}
+
 function Resolve-StagePackageBySuffix {
     param(
         [Parameter(Mandatory = $true)][string]$StageRoot,
@@ -163,17 +178,17 @@ function Invoke-ConfigureProfile {
     }
 
     $invokeConfigure = {
-        $args = @()
+        $cmakeArgs = @()
         # Force a stable C dialect for all profiles to avoid compiler-default keyword collisions.
-        $args += @("-DCMAKE_C_STANDARD=11", "-DCMAKE_C_STANDARD_REQUIRED=ON", "-DCMAKE_C_EXTENSIONS=ON")
-        $shellExtUnicode = if ($Profile.Name -eq "win9x") { "OFF" } else { "ON" }
-        $args += @("-DCLAMWIN_SHELLEXT_UNICODE=$shellExtUnicode")
+        $cmakeArgs += @("-DCMAKE_C_STANDARD=11", "-DCMAKE_C_STANDARD_REQUIRED=ON", "-DCMAKE_C_EXTENSIONS=ON")
+        $shellExtUnicode = "ON"
+        $cmakeArgs += @("-DCLAMWIN_SHELLEXT_UNICODE=$shellExtUnicode")
         if ($expectedRustTarget) {
             # Pass both typed and untyped forms to avoid option typing edge-cases in subprojects.
-            $args += @("-DRUST_COMPILER_TARGET=$expectedRustTarget")
+            $cmakeArgs += @("-DRUST_COMPILER_TARGET=$expectedRustTarget")
         }
-        $args += $Profile.ConfigureArgs
-        & cmake @args
+        $cmakeArgs += $Profile.ConfigureArgs
+        & cmake @cmakeArgs
         if ($LASTEXITCODE -ne 0) {
             throw "Configure failed for $($Profile.Name) (exit $LASTEXITCODE)"
         }
@@ -239,25 +254,25 @@ function Get-LatestSetupExe {
 
 function Invoke-BuildSetup {
     param(
-        [Parameter(Mandatory = $true)][string]$ISToolExe,
+        [Parameter(Mandatory = $true)][string]$IsccExe,
         [Parameter(Mandatory = $true)][string]$SetupDir,
         [Parameter(Mandatory = $true)][string]$SetupScript,
         [Parameter(Mandatory = $true)][string]$SetupOutputDir
     )
 
-    if (-not (Test-Path $ISToolExe)) {
-        throw "ISTool not found: $ISToolExe"
+    if (-not (Test-Path $IsccExe)) {
+        throw "ISCC not found: $IsccExe"
     }
     if (-not (Test-Path $SetupScript)) {
         throw "Setup script not found: $SetupScript"
     }
 
-    Write-Host "[setup] building $SetupScript via ISTool (-compile)"
+    Write-Host "[setup] building $SetupScript via ISCC"
     Push-Location $SetupDir
     try {
-        $proc = Start-Process -FilePath $ISToolExe -ArgumentList @('-compile', $SetupScript) -WorkingDirectory $SetupDir -Wait -PassThru
+        $proc = Start-Process -FilePath $IsccExe -ArgumentList @($SetupScript) -WorkingDirectory $SetupDir -Wait -PassThru
         if ($proc.ExitCode -ne 0) {
-            throw "ISTool compile failed (exit $($proc.ExitCode))"
+            throw "ISCC compile failed (exit $($proc.ExitCode))"
         }
     }
     finally {
@@ -325,12 +340,80 @@ function Invoke-PrepareBundledDatabases {
     Write-Host "[db] bundled CVD files prepared in $CvdDir"
 }
 
+function Resolve-CurlCaBundleSource {
+    param(
+        [Parameter(Mandatory = $true)][string]$RepoRoot,
+        [Parameter(Mandatory = $true)][string]$ProjectVersion,
+        [Parameter(Mandatory = $true)][ValidateSet("legacy-x86", "legacy-x64")][string]$Flavor
+    )
+
+    $direct = Join-Path $RepoRoot ("binaries/all-os-staging/clamav-{0}-{1}/curl-ca-bundle.crt" -f $ProjectVersion, $Flavor)
+    if (Test-Path $direct) {
+        return $direct
+    }
+
+    $stagingPattern = Join-Path $RepoRoot ("binaries/all-os-staging/clamav-*-{0}/curl-ca-bundle.crt" -f $Flavor)
+    $staging = Get-ChildItem -Path $stagingPattern -File -ErrorAction SilentlyContinue |
+        Sort-Object LastWriteTime -Descending |
+        Select-Object -First 1
+    if ($staging) {
+        return $staging.FullName
+    }
+
+    if ($Flavor -eq "legacy-x86") {
+        $comparePattern = Join-Path $RepoRoot "binaries/_compare-legacy-x86-original/clamav-*-legacy-x86/curl-ca-bundle.crt"
+        $compare = Get-ChildItem -Path $comparePattern -File -ErrorAction SilentlyContinue |
+            Sort-Object LastWriteTime -Descending |
+            Select-Object -First 1
+        if ($compare) {
+            return $compare.FullName
+        }
+    }
+
+    return ""
+}
+
+function Invoke-StageCurlCaBundles {
+    param(
+        [Parameter(Mandatory = $true)][string]$RepoRoot,
+        [Parameter(Mandatory = $true)][string]$ProjectVersion,
+        [Parameter(Mandatory = $true)][string]$BuildDirX86,
+        [Parameter(Mandatory = $true)][string]$BuildDirX64
+    )
+
+    $srcX86 = Resolve-CurlCaBundleSource -RepoRoot $RepoRoot -ProjectVersion $ProjectVersion -Flavor "legacy-x86"
+    $srcX64 = Resolve-CurlCaBundleSource -RepoRoot $RepoRoot -ProjectVersion $ProjectVersion -Flavor "legacy-x64"
+
+    if ([string]::IsNullOrWhiteSpace($srcX86) -and [string]::IsNullOrWhiteSpace($srcX64)) {
+        throw "Unable to locate curl-ca-bundle.crt source in binaries staging folders. Build cannot package FreshClam TLS bundle."
+    }
+
+    if ([string]::IsNullOrWhiteSpace($srcX86)) {
+        $srcX86 = $srcX64
+    }
+    if ([string]::IsNullOrWhiteSpace($srcX64)) {
+        $srcX64 = $srcX86
+    }
+
+    New-Item -ItemType Directory -Force $BuildDirX86 | Out-Null
+    New-Item -ItemType Directory -Force $BuildDirX64 | Out-Null
+
+    $dstX86 = Join-Path $BuildDirX86 "curl-ca-bundle.crt"
+    $dstX64 = Join-Path $BuildDirX64 "curl-ca-bundle.crt"
+
+    Copy-Item $srcX86 $dstX86 -Force
+    Copy-Item $srcX64 $dstX64 -Force
+
+    Write-Host "[setup] staged curl-ca-bundle.crt for x86: $dstX86"
+    Write-Host "[setup] staged curl-ca-bundle.crt for x64: $dstX64"
+}
+
 $clamavRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot "..\..\.."))
 $repoRoot = Split-Path $clamavRoot -Parent
 $isoPayloadRoot = Join-Path $repoRoot "binaries\iso-payload"
 $isoPath = Join-Path $repoRoot "binaries\clamwin-all-os.iso"
 $projectVersion = Get-ProjectVersion -CMakeListsPath (Join-Path $clamavRoot "CMakeLists.txt")
-$isToolExe = "C:\Program Files (x86)\ISTool\ISTool.exe"
+$isccExe = Resolve-IsccPath
 $setupDir = Join-Path $clamavRoot "src\clamwin-gui-cpp\setup"
 $setupIss = Join-Path $setupDir "Setup.iss"
 $setupNodbIss = Join-Path $setupDir "Setup-nodb.iss"
@@ -349,25 +432,6 @@ if ($SkipBuild) {
 Write-Host ("[version] detected clamav-win32 version: {0}" -f $projectVersion)
 
 $profiles = @(
-    @{
-        Name = "win9x"
-        BuildDir = Join-Path $clamavRoot "build-x86-mingw-win98"
-        UseMingw32 = $true
-        ConfigureArgs = @(
-            "-S", $clamavRoot,
-            "-B", (Join-Path $clamavRoot "build-x86-mingw-win98"),
-            "-G", "MinGW Makefiles",
-            "-DCMAKE_MAKE_PROGRAM=mingw32-make",
-            "-DCMAKE_C_COMPILER=gcc",
-            "-DCMAKE_CXX_COMPILER=g++",
-            "-DCMAKE_RC_COMPILER=windres",
-            "-DCMAKE_C_FLAGS=-std=gnu11 -Wno-error=implicit-function-declaration",
-            "-DENABLE_LEGACY=ON",
-            "-DCLAMWIN_SHELLEXT_UNICODE=OFF",
-            "-DRUST_COMPILER_TARGET:STRING=i686-pc-windows-gnu",
-            "-DUSE_ZLIB_NG_ON_X86=ON"
-        )
-    },
     @{
         Name = "legacy-x86"
         BuildDir = Join-Path $clamavRoot "build-x86-mingw-winxp"
@@ -438,12 +502,16 @@ if (-not $SkipBuild) {
     }
 }
 
-$setupNodbExe = Invoke-BuildSetup -ISToolExe $isToolExe -SetupDir $setupDir -SetupScript $setupNodbIss -SetupOutputDir $setupOutputDir
+$legacyX86BuildDir = Join-Path $clamavRoot "build-x86-mingw-winxp"
+$legacyX64BuildDir = Join-Path $clamavRoot "build-x64"
+Invoke-StageCurlCaBundles -RepoRoot $repoRoot -ProjectVersion $projectVersion -BuildDirX86 $legacyX86BuildDir -BuildDirX64 $legacyX64BuildDir
+
+$setupNodbExe = Invoke-BuildSetup -IsccExe $isccExe -SetupDir $setupDir -SetupScript $setupNodbIss -SetupOutputDir $setupOutputDir
 $setupExe = ""
 if ($IncludeFulldbInstaller) {
     $freshclamForSetup = Join-Path (Join-Path $clamavRoot "build-gui") "freshclam.exe"
     Invoke-PrepareBundledDatabases -FreshclamExe $freshclamForSetup -CvdDir $setupCvdDir -CertSource $clamavCert
-    $setupExe = Invoke-BuildSetup -ISToolExe $isToolExe -SetupDir $setupDir -SetupScript $setupIss -SetupOutputDir $setupOutputDir
+    $setupExe = Invoke-BuildSetup -IsccExe $isccExe -SetupDir $setupDir -SetupScript $setupIss -SetupOutputDir $setupOutputDir
 }
 
 if (Test-Path $isoPayloadRoot) {

@@ -101,12 +101,12 @@ public:
     bool writeFreshclamConf() const;
 
 private:
-    std::string getStr(const char* section, const char* key,
+    std::string getStr(LPCTSTR section, LPCTSTR key,
                        const std::string& def) const;
-    int         getInt(const char* section, const char* key, int def) const;
-    void        setStr(const char* section, const char* key,
+    int         getInt(LPCTSTR section, LPCTSTR key, int def) const;
+    void        setStr(LPCTSTR section, LPCTSTR key,
                        const std::string& val) const;
-    void        setInt(const char* section, const char* key, int val) const;
-    long long   getInt64(const char* section, const char* key, long long def) const;
-    void        setInt64(const char* section, const char* key, long long val) const;
+    void        setInt(LPCTSTR section, LPCTSTR key, int val) const;
+    long long   getInt64(LPCTSTR section, LPCTSTR key, long long def) const;
+    void        setInt64(LPCTSTR section, LPCTSTR key, long long val) const;
 };

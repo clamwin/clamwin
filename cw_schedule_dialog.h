@@ -51,7 +51,7 @@ private:
     void createLayout();
     void createTooltips();
     void destroyTooltips();
-    void addTooltip(HWND target, const char* text);
+    void addTooltip(HWND target, LPCTSTR text);
     void loadFromConfig();
     void saveToConfig();
     void browseForFolder();

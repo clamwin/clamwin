@@ -1,5 +1,5 @@
 /*
- * ClamWin Free Antivirus — mnemonic drawing helpers
+ * ClamWin Free Antivirus - mnemonic drawing helpers
  *
  * Draw owner-drawn labels with accelerator underlines always visible,
  * independent of current UI cue state.
@@ -10,11 +10,12 @@
 
 #pragma once
 #include <windows.h>
+#include <tchar.h>
 #include <ctype.h>
 #include <string>
 #include "cw_dpi.h"
 
-inline void CW_ParseMnemonicText(const char* text, std::string& plain, int& accelIndex)
+inline void CW_ParseMnemonicText(const TCHAR* text, std::basic_string<TCHAR>& plain, int& accelIndex)
 {
     plain.clear();
     accelIndex = -1;
@@ -23,12 +24,12 @@ inline void CW_ParseMnemonicText(const char* text, std::string& plain, int& acce
 
     for (int i = 0; text[i]; ++i)
     {
-        char c = text[i];
-        if (c == '&')
+        TCHAR c = text[i];
+        if (c == TEXT('&'))
         {
-            if (text[i + 1] == '&')
+            if (text[i + 1] == TEXT('&'))
             {
-                plain.push_back('&');
+                plain.push_back(TEXT('&'));
                 ++i;
                 continue;
             }
@@ -44,7 +45,7 @@ inline void CW_ParseMnemonicText(const char* text, std::string& plain, int& acce
 inline void CW_DrawMnemonicTextAlways(HDC hdc,
                                       HFONT hFont,
                                       const RECT& rc,
-                                      const char* text,
+                                      const TCHAR* text,
                                       UINT drawFlags,
                                       bool showMnemonics = true)
 {
@@ -58,14 +59,14 @@ inline void CW_DrawMnemonicTextAlways(HDC hdc,
             oldFont = (HFONT)SelectObject(hdc, hFont);
 
         RECT textRc = rc;
-        DrawTextA(hdc, text ? text : "", -1, &textRc, drawFlags | DT_HIDEPREFIX);
+        DrawText(hdc, text ? text : TEXT(""), -1, &textRc, drawFlags | DT_HIDEPREFIX);
 
         if (oldFont)
             SelectObject(hdc, oldFont);
         return;
     }
 
-    std::string plain;
+    std::basic_string<TCHAR> plain;
     int accelIndex = -1;
     CW_ParseMnemonicText(text, plain, accelIndex);
 
@@ -74,13 +75,13 @@ inline void CW_DrawMnemonicTextAlways(HDC hdc,
         oldFont = (HFONT)SelectObject(hdc, hFont);
 
     RECT textRc = rc;
-    DrawTextA(hdc, plain.c_str(), -1, &textRc, drawFlags);
+    DrawText(hdc, plain.c_str(), -1, &textRc, drawFlags);
 
     if (accelIndex >= 0 && accelIndex < (int)plain.size())
     {
-        TEXTMETRICA tm;
+        TEXTMETRIC tm;
         ZeroMemory(&tm, sizeof(tm));
-        GetTextMetricsA(hdc, &tm);
+        GetTextMetrics(hdc, &tm);
 
         SIZE fullSize;
         SIZE leftSize;
@@ -89,10 +90,10 @@ inline void CW_DrawMnemonicTextAlways(HDC hdc,
         ZeroMemory(&leftSize, sizeof(leftSize));
         ZeroMemory(&charSize, sizeof(charSize));
 
-        GetTextExtentPoint32A(hdc, plain.c_str(), (int)plain.size(), &fullSize);
+        GetTextExtentPoint32(hdc, plain.c_str(), (int)plain.size(), &fullSize);
         if (accelIndex > 0)
-            GetTextExtentPoint32A(hdc, plain.c_str(), accelIndex, &leftSize);
-        GetTextExtentPoint32A(hdc, plain.c_str() + accelIndex, 1, &charSize);
+            GetTextExtentPoint32(hdc, plain.c_str(), accelIndex, &leftSize);
+        GetTextExtentPoint32(hdc, plain.c_str() + accelIndex, 1, &charSize);
 
         int x = rc.left;
         if ((drawFlags & DT_CENTER) != 0)
@@ -109,7 +110,6 @@ inline void CW_DrawMnemonicTextAlways(HDC hdc,
         bool isLower = islower(mnemonicChar) != 0;
         if (isLower)
         {
-            /* Lowercase glyphs can be narrow; enforce a clearer underline span. */
             const int minUnderlineWidth = CW_Scale(8);
             int currentWidth = x2 - x1 + 1;
             if (currentWidth < minUnderlineWidth)
@@ -134,14 +134,10 @@ inline void CW_DrawMnemonicTextAlways(HDC hdc,
         SelectObject(hdc, oldFont);
 }
 
-/*
- * Static label variant: keep underline geometry uniform across upper/lowercase
- * so form labels look consistent.
- */
 inline void CW_DrawMnemonicTextStaticLabel(HDC hdc,
                                            HFONT hFont,
                                            const RECT& rc,
-                                           const char* text,
+                                           const TCHAR* text,
                                            UINT drawFlags,
                                            bool showMnemonics = true)
 {
@@ -155,14 +151,14 @@ inline void CW_DrawMnemonicTextStaticLabel(HDC hdc,
             oldFont = (HFONT)SelectObject(hdc, hFont);
 
         RECT textRc = rc;
-        DrawTextA(hdc, text ? text : "", -1, &textRc, drawFlags | DT_HIDEPREFIX);
+        DrawText(hdc, text ? text : TEXT(""), -1, &textRc, drawFlags | DT_HIDEPREFIX);
 
         if (oldFont)
             SelectObject(hdc, oldFont);
         return;
     }
 
-    std::string plain;
+    std::basic_string<TCHAR> plain;
     int accelIndex = -1;
     CW_ParseMnemonicText(text, plain, accelIndex);
 
@@ -171,13 +167,13 @@ inline void CW_DrawMnemonicTextStaticLabel(HDC hdc,
         oldFont = (HFONT)SelectObject(hdc, hFont);
 
     RECT textRc = rc;
-    DrawTextA(hdc, plain.c_str(), -1, &textRc, drawFlags);
+    DrawText(hdc, plain.c_str(), -1, &textRc, drawFlags);
 
     if (accelIndex >= 0 && accelIndex < (int)plain.size())
     {
-        TEXTMETRICA tm;
+        TEXTMETRIC tm;
         ZeroMemory(&tm, sizeof(tm));
-        GetTextMetricsA(hdc, &tm);
+        GetTextMetrics(hdc, &tm);
 
         SIZE fullSize;
         SIZE leftSize;
@@ -186,10 +182,10 @@ inline void CW_DrawMnemonicTextStaticLabel(HDC hdc,
         ZeroMemory(&leftSize, sizeof(leftSize));
         ZeroMemory(&charSize, sizeof(charSize));
 
-        GetTextExtentPoint32A(hdc, plain.c_str(), (int)plain.size(), &fullSize);
+        GetTextExtentPoint32(hdc, plain.c_str(), (int)plain.size(), &fullSize);
         if (accelIndex > 0)
-            GetTextExtentPoint32A(hdc, plain.c_str(), accelIndex, &leftSize);
-        GetTextExtentPoint32A(hdc, plain.c_str() + accelIndex, 1, &charSize);
+            GetTextExtentPoint32(hdc, plain.c_str(), accelIndex, &leftSize);
+        GetTextExtentPoint32(hdc, plain.c_str() + accelIndex, 1, &charSize);
 
         int x = rc.left;
         if ((drawFlags & DT_CENTER) != 0)

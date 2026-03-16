@@ -6,6 +6,7 @@
  */
 
 #include "cw_process.h"
+#include "cw_text_conv.h"
 #include <string.h>
 #include <stdlib.h>
 
@@ -66,6 +67,7 @@ void flushPipeBuffer(std::string& pending, CW_OutputCb cb, void* userdata)
     emitBufferedLine(cb, userdata, pending);
     pending.clear();
 }
+
 }
 
 CWProcess::CWProcess()
@@ -132,7 +134,7 @@ bool CWProcess::start(const std::string& cmdline,
     }
 
     /* Set up startup info */
-    STARTUPINFOA si;
+    STARTUPINFO si;
     memset(&si, 0, sizeof(si));
     si.cb          = sizeof(si);
     si.dwFlags     = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES;
@@ -142,13 +144,13 @@ bool CWProcess::start(const std::string& cmdline,
     si.hStdInput   = GetStdHandle(STD_INPUT_HANDLE);
 
     /* CreateProcess needs a mutable command line */
-    std::string cmdCopy = cmdline;
+    std::basic_string<TCHAR> cmdCopy = CW_ToT(cmdline);
 
     PROCESS_INFORMATION pi;
     memset(&pi, 0, sizeof(pi));
 
-    BOOL created = CreateProcessA(NULL,
-                                   const_cast<char*>(cmdCopy.c_str()),
+    BOOL created = CreateProcess(NULL,
+                                   const_cast<LPTSTR>(cmdCopy.c_str()),
                                    NULL, NULL, TRUE,
                                    CREATE_NO_WINDOW, NULL, NULL,
                                    &si, &pi);

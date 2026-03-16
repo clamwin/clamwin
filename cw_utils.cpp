@@ -12,6 +12,7 @@
  */
 
 #include "cw_gui_shared.h"
+#include "cw_text_conv.h"
 #include <time.h>
 
 static bool composeDbPath(char* out, size_t outCap, const char* dbPath, const char* fileName)
@@ -51,13 +52,13 @@ int CW_GetDBInfo(const char *db_path, CW_DBInfo *info)
     /* Try main.cld first, then main.cvd */
     if (!composeDbPath(main_path, sizeof(main_path), db_path, "main.cld"))
         return 0;
-    if (GetFileAttributesA(main_path) == INVALID_FILE_ATTRIBUTES)
+    if (GetFileAttributes(CW_ToT(main_path).c_str()) == INVALID_FILE_ATTRIBUTES)
     {
         if (!composeDbPath(main_path, sizeof(main_path), db_path, "main.cvd"))
             return 0;
     }
 
-    hFile = CreateFileA(main_path, GENERIC_READ, FILE_SHARE_READ,
+    hFile = CreateFile(CW_ToT(main_path).c_str(), GENERIC_READ, FILE_SHARE_READ,
                         NULL, OPEN_EXISTING, 0, NULL);
     if (hFile != INVALID_HANDLE_VALUE)
     {
@@ -84,13 +85,13 @@ int CW_GetDBInfo(const char *db_path, CW_DBInfo *info)
     /* Try daily.cld first, then daily.cvd */
     if (!composeDbPath(daily_path, sizeof(daily_path), db_path, "daily.cld"))
         return (info->main_ver > 0 || info->daily_ver > 0) ? 1 : 0;
-    if (GetFileAttributesA(daily_path) == INVALID_FILE_ATTRIBUTES)
+    if (GetFileAttributes(CW_ToT(daily_path).c_str()) == INVALID_FILE_ATTRIBUTES)
     {
         if (!composeDbPath(daily_path, sizeof(daily_path), db_path, "daily.cvd"))
             return (info->main_ver > 0 || info->daily_ver > 0) ? 1 : 0;
     }
 
-    hFile = CreateFileA(daily_path, GENERIC_READ, FILE_SHARE_READ,
+    hFile = CreateFile(CW_ToT(daily_path).c_str(), GENERIC_READ, FILE_SHARE_READ,
                         NULL, OPEN_EXISTING, 0, NULL);
     if (hFile != INVALID_HANDLE_VALUE)
     {

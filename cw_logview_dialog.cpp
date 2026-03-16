@@ -9,6 +9,7 @@
 
 #include "cw_logview_dialog.h"
 #include "cw_dpi.h"
+#include "cw_text_conv.h"
 #include "cw_theme.h"
 #include <commctrl.h>
 #include <richedit.h>
@@ -72,9 +73,9 @@ static COLORREF adjustColorLocal(COLORREF color, int delta)
 
 LRESULT CALLBACK CW_LogViewScrollbarProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
 {
-    CWLogViewDialog* dlg = reinterpret_cast<CWLogViewDialog*>(GetWindowLongPtrA(hwnd, GWLP_USERDATA));
+    CWLogViewDialog* dlg = reinterpret_cast<CWLogViewDialog*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
     if (!dlg)
-        return DefWindowProcA(hwnd, msg, wp, lp);
+        return DefWindowProc(hwnd, msg, wp, lp);
 
     switch (msg)
     {
@@ -109,7 +110,7 @@ LRESULT CALLBACK CW_LogViewScrollbarProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM 
             return 0;
     }
 
-    return DefWindowProcA(hwnd, msg, wp, lp);
+    return DefWindowProc(hwnd, msg, wp, lp);
 }
 
 static void configureRichEditTheme(HWND hwndEdit, CWTheme* theme)
@@ -117,14 +118,14 @@ static void configureRichEditTheme(HWND hwndEdit, CWTheme* theme)
     if (!hwndEdit || !theme)
         return;
 
-    SendMessageA(hwndEdit, EM_SETBKGNDCOLOR, 0, (LPARAM)theme->colorSurface());
+    SendMessage(hwndEdit, EM_SETBKGNDCOLOR, 0, (LPARAM)theme->colorSurface());
 
     CHARFORMATA cf;
     ZeroMemory(&cf, sizeof(cf));
     cf.cbSize = sizeof(cf);
     cf.dwMask = CFM_COLOR;
     cf.crTextColor = theme->colorText();
-    SendMessageA(hwndEdit, EM_SETCHARFORMAT, SCF_DEFAULT, (LPARAM)&cf);
+    SendMessage(hwndEdit, EM_SETCHARFORMAT, SCF_DEFAULT, (LPARAM)&cf);
 }
 
 static void applyRichEditContentTheme(HWND hwndEdit, CWTheme* theme)
@@ -139,9 +140,9 @@ static void applyRichEditContentTheme(HWND hwndEdit, CWTheme* theme)
     cf.crTextColor = theme->colorText();
 
     /* Force color over existing content, not just future typed text. */
-    SendMessageA(hwndEdit, EM_SETSEL, 0, -1);
-    SendMessageA(hwndEdit, EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&cf);
-    SendMessageA(hwndEdit, EM_SETSEL, -1, -1);
+    SendMessage(hwndEdit, EM_SETSEL, 0, -1);
+    SendMessage(hwndEdit, EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&cf);
+    SendMessage(hwndEdit, EM_SETSEL, -1, -1);
 }
 
 static bool tryApplyDarkFlatScrollbars(HWND hwndEdit, CWTheme* theme)
@@ -186,16 +187,16 @@ CWLogViewDialog::~CWLogViewDialog()
 
 bool CWLogViewDialog::onInit()
 {
-    SetWindowTextA(m_hwnd, m_title);
+    SetWindowText(m_hwnd, CW_ToT(m_title).c_str());
 
-    m_hFont = CreateFontA(CW_Scale(12), 0, 0, 0, FW_NORMAL, 0, 0, 0, ANSI_CHARSET,
+    m_hFont = CreateFont(CW_Scale(12), 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET,
                           OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
-                          DEFAULT_PITCH | FF_SWISS, "Segoe UI");
+                          DEFAULT_PITCH | FF_SWISS, TEXT("Segoe UI"));
 
     CWTheme* theme = CW_GetTheme();
     const bool useModernControls = !theme || !theme->useClassicPalette();
     m_useCustomScrollbars = useModernControls && theme && theme->isDark();
-    const char* textClass = useModernControls ? RICHEDIT_CLASSA : "EDIT";
+    LPCTSTR textClass = useModernControls ? RICHEDIT_CLASS : TEXT("EDIT");
 
     DWORD textStyle = WS_CHILD | WS_VISIBLE | ES_MULTILINE | ES_READONLY | ES_AUTOVSCROLL | ES_AUTOHSCROLL;
     if (!m_useCustomScrollbars)
@@ -203,7 +204,7 @@ bool CWLogViewDialog::onInit()
 
     /* Use RichEdit on modern systems for better native behavior; keep classic EDIT on legacy OS. */
     DWORD textExStyle = m_useCustomScrollbars ? 0 : WS_EX_CLIENTEDGE;
-    m_hwndText = CreateWindowExA(textExStyle, textClass, "",
+    m_hwndText = CreateWindowEx(textExStyle, textClass, TEXT(""),
                                  textStyle,
                                  0, 0, 0, 0, m_hwnd, NULL, GetModuleHandle(NULL), NULL);
 
@@ -219,37 +220,37 @@ bool CWLogViewDialog::onInit()
     /* Create the OK button */
     DWORD btnStyle = WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_DEFPUSHBUTTON | BS_OWNERDRAW;
 
-    m_hwndBtnOk = CreateWindowExA(0, "BUTTON", "&OK",
+    m_hwndBtnOk = CreateWindowEx(0, TEXT("BUTTON"), TEXT("&OK"),
                                   btnStyle,
                                   0, 0, 0, 0, m_hwnd, (HMENU)IDOK, GetModuleHandle(NULL), NULL);
     SendMessage(m_hwndBtnOk, WM_SETFONT, (WPARAM)m_hFont, 0);
 
     if (m_useCustomScrollbars)
     {
-        m_hwndVScroll = CreateWindowExA(0, "STATIC", "",
+        m_hwndVScroll = CreateWindowEx(0, TEXT("STATIC"), TEXT(""),
                                         WS_CHILD | WS_VISIBLE,
                                         0, 0, 0, 0,
                                         m_hwnd, (HMENU)CW_LOGVIEW_ID_VSCROLL,
                                         GetModuleHandle(NULL), NULL);
-        m_hwndHScroll = CreateWindowExA(0, "STATIC", "",
+        m_hwndHScroll = CreateWindowEx(0, TEXT("STATIC"), TEXT(""),
                                         WS_CHILD | WS_VISIBLE,
                                         0, 0, 0, 0,
                                         m_hwnd, (HMENU)CW_LOGVIEW_ID_HSCROLL,
                                         GetModuleHandle(NULL), NULL);
         if (m_hwndVScroll)
         {
-            SetWindowLongPtrA(m_hwndVScroll, GWLP_USERDATA, (LONG_PTR)this);
-            SetWindowLongPtrA(m_hwndVScroll, GWLP_WNDPROC, (LONG_PTR)CW_LogViewScrollbarProc);
+            SetWindowLongPtr(m_hwndVScroll, GWLP_USERDATA, (LONG_PTR)this);
+            SetWindowLongPtr(m_hwndVScroll, GWLP_WNDPROC, (LONG_PTR)CW_LogViewScrollbarProc);
         }
         if (m_hwndHScroll)
         {
-            SetWindowLongPtrA(m_hwndHScroll, GWLP_USERDATA, (LONG_PTR)this);
-            SetWindowLongPtrA(m_hwndHScroll, GWLP_WNDPROC, (LONG_PTR)CW_LogViewScrollbarProc);
+            SetWindowLongPtr(m_hwndHScroll, GWLP_USERDATA, (LONG_PTR)this);
+            SetWindowLongPtr(m_hwndHScroll, GWLP_WNDPROC, (LONG_PTR)CW_LogViewScrollbarProc);
         }
     }
 
     /* Read the log file into the edit control */
-    HANDLE hFile = CreateFileA(m_logfile, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
+    HANDLE hFile = CreateFile(CW_ToT(m_logfile).c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
     if (hFile != INVALID_HANDLE_VALUE)
     {
         DWORD size = GetFileSize(hFile, NULL);
@@ -261,7 +262,7 @@ bool CWLogViewDialog::onInit()
             {
                 buf[read] = 0;
                 /* Note: Standard edit control needs \r\n for line breaks */
-                SetWindowTextA(m_hwndText, buf);
+                SetWindowText(m_hwndText, CW_ToT(std::string(buf)).c_str());
 
                 m_maxLineWidthPx = computeMaxLineWidthPx(buf);
 
@@ -279,7 +280,7 @@ bool CWLogViewDialog::onInit()
     }
     else
     {
-        SetWindowTextA(m_hwndText, "Failed to open or read the log file.");
+        SetWindowText(m_hwndText, TEXT("Failed to open or read the log file."));
         m_maxLineWidthPx = computeMaxLineWidthPx("Failed to open or read the log file.");
         if (useModernControls && theme)
             applyRichEditContentTheme(m_hwndText, theme);
@@ -357,9 +358,9 @@ int CWLogViewDialog::lineHeightPx() const
         return CW_Scale(16);
 
     HGDIOBJ oldFont = SelectObject(hdc, m_hFont);
-    TEXTMETRICA tm;
+    TEXTMETRIC tm;
     ZeroMemory(&tm, sizeof(tm));
-    GetTextMetricsA(hdc, &tm);
+    GetTextMetrics(hdc, &tm);
     if (oldFont)
         SelectObject(hdc, oldFont);
     ReleaseDC(m_hwndText, hdc);
@@ -391,7 +392,9 @@ int CWLogViewDialog::computeMaxLineWidthPx(const char* text) const
                 SIZE sz;
                 sz.cx = 0;
                 sz.cy = 0;
-                GetTextExtentPoint32A(hdc, start, len, &sz);
+                std::string chunk(start, (size_t)len);
+                std::basic_string<TCHAR> tChunk = CW_ToT(chunk);
+                GetTextExtentPoint32(hdc, tChunk.c_str(), lstrlen(tChunk.c_str()), &sz);
                 if (sz.cx > maxWidth)
                     maxWidth = sz.cx;
             }
@@ -416,10 +419,10 @@ int CWLogViewDialog::computeMaxLineWidthPx(const char* text) const
 
 void CWLogViewDialog::setTopVisibleLine(int topLine)
 {
-    int first = (int)SendMessageA(m_hwndText, EM_GETFIRSTVISIBLELINE, 0, 0);
+    int first = (int)SendMessage(m_hwndText, EM_GETFIRSTVISIBLELINE, 0, 0);
     int delta = topLine - first;
     if (delta != 0)
-        SendMessageA(m_hwndText, EM_LINESCROLL, 0, delta);
+        SendMessage(m_hwndText, EM_LINESCROLL, 0, delta);
 }
 
 void CWLogViewDialog::setHorizontalScrollPx(int x)
@@ -427,9 +430,9 @@ void CWLogViewDialog::setHorizontalScrollPx(int x)
     POINT pt;
     pt.x = 0;
     pt.y = 0;
-    SendMessageA(m_hwndText, EM_GETSCROLLPOS, 0, (LPARAM)&pt);
+    SendMessage(m_hwndText, EM_GETSCROLLPOS, 0, (LPARAM)&pt);
     pt.x = x;
-    SendMessageA(m_hwndText, EM_SETSCROLLPOS, 0, (LPARAM)&pt);
+    SendMessage(m_hwndText, EM_SETSCROLLPOS, 0, (LPARAM)&pt);
 }
 
 void CWLogViewDialog::refreshCustomScrollbars()
@@ -469,14 +472,14 @@ void CWLogViewDialog::paintCustomScrollbar(HWND hwnd, HDC hdc)
 
     if (vertical)
     {
-        int total = (int)SendMessageA(m_hwndText, EM_GETLINECOUNT, 0, 0);
+        int total = (int)SendMessage(m_hwndText, EM_GETLINECOUNT, 0, 0);
         int page = txtRc.bottom - txtRc.top;
         int lh = lineHeightPx();
         page = lh > 0 ? (page / lh) : 1;
         if (page < 1) page = 1;
         int maxPos = total - page;
         if (maxPos < 0) maxPos = 0;
-        int first = (int)SendMessageA(m_hwndText, EM_GETFIRSTVISIBLELINE, 0, 0);
+        int first = (int)SendMessage(m_hwndText, EM_GETFIRSTVISIBLELINE, 0, 0);
         if (first < 0) first = 0;
         if (first > maxPos) first = maxPos;
 
@@ -494,7 +497,7 @@ void CWLogViewDialog::paintCustomScrollbar(HWND hwnd, HDC hdc)
         POINT pt;
         pt.x = 0;
         pt.y = 0;
-        SendMessageA(m_hwndText, EM_GETSCROLLPOS, 0, (LPARAM)&pt);
+        SendMessage(m_hwndText, EM_GETSCROLLPOS, 0, (LPARAM)&pt);
         int pos = pt.x;
         int page = txtRc.right - txtRc.left;
         int content = m_maxLineWidthPx;
@@ -549,14 +552,14 @@ void CWLogViewDialog::onCustomScrollbarMouseDown(HWND hwnd, int x, int y)
 
     if (vertical)
     {
-        int total = (int)SendMessageA(m_hwndText, EM_GETLINECOUNT, 0, 0);
+        int total = (int)SendMessage(m_hwndText, EM_GETLINECOUNT, 0, 0);
         page = txtRc.bottom - txtRc.top;
         int lh = lineHeightPx();
         page = lh > 0 ? (page / lh) : 1;
         if (page < 1) page = 1;
         maxPos = total - page;
         if (maxPos < 0) maxPos = 0;
-        int first = (int)SendMessageA(m_hwndText, EM_GETFIRSTVISIBLELINE, 0, 0);
+        int first = (int)SendMessage(m_hwndText, EM_GETFIRSTVISIBLELINE, 0, 0);
         if (first < 0) first = 0;
         if (first > maxPos) first = maxPos;
 
@@ -572,7 +575,7 @@ void CWLogViewDialog::onCustomScrollbarMouseDown(HWND hwnd, int x, int y)
         POINT pt;
         pt.x = 0;
         pt.y = 0;
-        SendMessageA(m_hwndText, EM_GETSCROLLPOS, 0, (LPARAM)&pt);
+        SendMessage(m_hwndText, EM_GETSCROLLPOS, 0, (LPARAM)&pt);
         int pos = pt.x;
         page = txtRc.right - txtRc.left;
         int content = m_maxLineWidthPx;
@@ -602,24 +605,24 @@ void CWLogViewDialog::onCustomScrollbarMouseDown(HWND hwnd, int x, int y)
     if (coord < thumbPos)
     {
         if (vertical)
-            setTopVisibleLine((int)SendMessageA(m_hwndText, EM_GETFIRSTVISIBLELINE, 0, 0) - page);
+            setTopVisibleLine((int)SendMessage(m_hwndText, EM_GETFIRSTVISIBLELINE, 0, 0) - page);
         else
         {
             POINT pt;
             pt.x = 0; pt.y = 0;
-            SendMessageA(m_hwndText, EM_GETSCROLLPOS, 0, (LPARAM)&pt);
+            SendMessage(m_hwndText, EM_GETSCROLLPOS, 0, (LPARAM)&pt);
             setHorizontalScrollPx(pt.x - page);
         }
     }
     else
     {
         if (vertical)
-            setTopVisibleLine((int)SendMessageA(m_hwndText, EM_GETFIRSTVISIBLELINE, 0, 0) + page);
+            setTopVisibleLine((int)SendMessage(m_hwndText, EM_GETFIRSTVISIBLELINE, 0, 0) + page);
         else
         {
             POINT pt;
             pt.x = 0; pt.y = 0;
-            SendMessageA(m_hwndText, EM_GETSCROLLPOS, 0, (LPARAM)&pt);
+            SendMessage(m_hwndText, EM_GETSCROLLPOS, 0, (LPARAM)&pt);
             setHorizontalScrollPx(pt.x + page);
         }
     }
@@ -644,7 +647,7 @@ void CWLogViewDialog::onCustomScrollbarMouseMove(HWND hwnd, int x, int y)
 
     if (vertical)
     {
-        int total = (int)SendMessageA(m_hwndText, EM_GETLINECOUNT, 0, 0);
+        int total = (int)SendMessage(m_hwndText, EM_GETLINECOUNT, 0, 0);
         int page = txtRc.bottom - txtRc.top;
         int lh = lineHeightPx();
         page = lh > 0 ? (page / lh) : 1;

@@ -11,6 +11,7 @@
 
 #include "cw_update_checker.h"
 #include "cw_gui_shared.h"   /* CLAMWIN_VERSION_STR */
+#include "cw_text_conv.h"
 
 #include <wininet.h>
 #include <string.h>
@@ -21,21 +22,67 @@
 
 /* ─── Hardcoded endpoints ───────────────────────────────────── */
 
-static const char* CW_GITHUB_API_HOST = "api.github.com";
-static const char* CW_GITHUB_API_PATH = "/repos/clamwin/clamwin/releases/latest";
-static const char* CW_DOWNLOAD_PAGE   = "https://www.clamwin.com/download";
+static const char* CW_GITHUB_API_HOST      = "api.github.com";
+static const char* CW_GITHUB_API_PATH      = "/repos/clamwin/clamwin/releases/latest";
+static const char* CW_LEGACY_UPDATE_HOST   = "www.clamwin.com";
+static const char* CW_LEGACY_UPDATE_PATH   = "/latest-version.txt";
+static const char* CW_DOWNLOAD_PAGE         = "https://www.clamwin.com/download";
 
 /* GitHub API requires modern TLS; skip check on legacy OS families (Win9x/XP). */
 static bool canUseGithubTlsOnThisOs()
 {
-    OSVERSIONINFOA osv;
+    OSVERSIONINFO osv;
     memset(&osv, 0, sizeof(osv));
     osv.dwOSVersionInfoSize = sizeof(osv);
 
-    if (!GetVersionExA(&osv))
+    if (!GetVersionEx(&osv))
         return true; /* If detection fails, keep behavior unchanged. */
 
     return osv.dwMajorVersion >= 6;
+}
+
+static bool extractVersionToken(const char* text, int textLen, char* out, int outCap)
+{
+    if (!text || textLen <= 0 || !out || outCap <= 0)
+        return false;
+
+    for (int i = 0; i < textLen; ++i)
+    {
+        int j = i;
+        if (text[j] == 'v' || text[j] == 'V')
+            ++j;
+
+        if (j >= textLen || text[j] < '0' || text[j] > '9')
+            continue;
+
+        int k = j;
+        bool sawDot = false;
+        while (k < textLen)
+        {
+            char c = text[k];
+            if ((c >= '0' && c <= '9') || c == '.')
+            {
+                if (c == '.')
+                    sawDot = true;
+                ++k;
+                continue;
+            }
+            break;
+        }
+
+        if (!sawDot)
+            continue;
+
+        int n = k - i;
+        if (n <= 0 || n >= outCap)
+            continue;
+
+        memcpy(out, text + i, n);
+        out[n] = '\0';
+        return true;
+    }
+
+    return false;
 }
 
 const char* CWUpdateChecker::apiUrl()
@@ -190,10 +237,7 @@ void CWUpdateChecker::doCheck()
 
     do
     {
-        if (!canUseGithubTlsOnThisOs())
-            break;
-
-        hInet = InternetOpenA("ClamWin/" CLAMWIN_VERSION_STR,
+        hInet = InternetOpen(CW_ToT("ClamWin/" CLAMWIN_VERSION_STR).c_str(),
                               INTERNET_OPEN_TYPE_PRECONFIG,
                               NULL, NULL, 0);
         if (!hInet)
@@ -201,32 +245,40 @@ void CWUpdateChecker::doCheck()
 
         /* Set a reasonable timeout so we don't block forever */
         DWORD timeout = 15000;
-        InternetSetOptionA(hInet, INTERNET_OPTION_CONNECT_TIMEOUT, &timeout, sizeof(timeout));
-        InternetSetOptionA(hInet, INTERNET_OPTION_RECEIVE_TIMEOUT, &timeout, sizeof(timeout));
+        InternetSetOption(hInet, INTERNET_OPTION_CONNECT_TIMEOUT, &timeout, sizeof(timeout));
+        InternetSetOption(hInet, INTERNET_OPTION_RECEIVE_TIMEOUT, &timeout, sizeof(timeout));
 
-        hConn = InternetConnectA(hInet, CW_GITHUB_API_HOST,
-                                 INTERNET_DEFAULT_HTTPS_PORT,
+        const bool modernTls = canUseGithubTlsOnThisOs();
+        const char* host = modernTls ? CW_GITHUB_API_HOST : CW_LEGACY_UPDATE_HOST;
+        const char* path = modernTls ? CW_GITHUB_API_PATH : CW_LEGACY_UPDATE_PATH;
+        INTERNET_PORT port = modernTls ? INTERNET_DEFAULT_HTTPS_PORT : INTERNET_DEFAULT_HTTP_PORT;
+        DWORD reqFlags = INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_RELOAD | INTERNET_FLAG_NO_UI;
+        if (modernTls)
+            reqFlags |= INTERNET_FLAG_SECURE;
+
+        hConn = InternetConnect(hInet, CW_ToT(host).c_str(),
+                                 port,
                                  NULL, NULL,
                                  INTERNET_SERVICE_HTTP, 0, 0);
         if (!hConn)
             break;
 
-        const char* acceptTypes[] = { "application/json", NULL };
-        hReq = HttpOpenRequestA(hConn, "GET", CW_GITHUB_API_PATH,
+        std::basic_string<TCHAR> acceptTypeValue = CW_ToT(modernTls ? "application/json" : "text/plain");
+        const TCHAR* acceptTypes[] = { acceptTypeValue.c_str(), NULL };
+        hReq = HttpOpenRequest(hConn, TEXT("GET"), CW_ToT(path).c_str(),
                                 NULL, NULL, acceptTypes,
-                                INTERNET_FLAG_SECURE | INTERNET_FLAG_NO_CACHE_WRITE |
-                                INTERNET_FLAG_RELOAD | INTERNET_FLAG_NO_UI,
+                                reqFlags,
                                 0);
         if (!hReq)
             break;
 
-        if (!HttpSendRequestA(hReq, NULL, 0, NULL, 0))
+        if (!HttpSendRequest(hReq, NULL, 0, NULL, 0))
             break;
 
         /* Check HTTP status code */
         DWORD statusCode = 0;
         DWORD statusSize = sizeof(statusCode);
-        if (!HttpQueryInfoA(hReq, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER,
+        if (!HttpQueryInfo(hReq, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER,
                             &statusCode, &statusSize, NULL))
             break;
         if (statusCode != 200)
@@ -251,14 +303,20 @@ void CWUpdateChecker::doCheck()
         }
         body[totalRead] = '\0';
 
-        char tagName[64] = "";
-        if (extractTagName(body, totalRead, tagName, sizeof(tagName)))
+        char remoteVersion[64] = "";
+        bool parsed = false;
+        if (modernTls)
+            parsed = extractTagName(body, totalRead, remoteVersion, sizeof(remoteVersion));
+        else
+            parsed = extractVersionToken(body, totalRead, remoteVersion, sizeof(remoteVersion));
+
+        if (parsed)
         {
-            if (isNewerVersion(tagName))
+            if (isNewerVersion(remoteVersion))
             {
                 result->available = true;
-                parseVersion(tagName, result->major, result->minor, result->patch);
-                _snprintf(result->versionStr, sizeof(result->versionStr), "%s", tagName);
+                parseVersion(remoteVersion, result->major, result->minor, result->patch);
+                _snprintf(result->versionStr, sizeof(result->versionStr), "%s", remoteVersion);
                 result->versionStr[sizeof(result->versionStr) - 1] = '\0';
             }
         }
@@ -274,7 +332,7 @@ void CWUpdateChecker::doCheck()
     /* Post result to the UI thread */
     if (m_hwndTarget && IsWindow(m_hwndTarget))
     {
-        PostMessageA(m_hwndTarget, WM_CW_VERSION_RESULT,
+        PostMessage(m_hwndTarget, WM_CW_VERSION_RESULT,
                      (WPARAM)(result->available ? 1 : 0),
                      (LPARAM)result);
     }

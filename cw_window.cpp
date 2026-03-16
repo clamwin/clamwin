@@ -12,7 +12,7 @@ CWWindow::CWWindow()
     : m_hwnd(NULL)
     , m_hInst(NULL)
 {
-    m_hInst = GetModuleHandleA(NULL);
+    m_hInst = GetModuleHandle(NULL);
 }
 
 CWWindow::~CWWindow()
@@ -20,7 +20,7 @@ CWWindow::~CWWindow()
     if (m_hwnd)
     {
         /* Detach us from the HWND before destroy to prevent double-free */
-        SetWindowLongPtrA(m_hwnd, GWLP_USERDATA, 0);
+        SetWindowLongPtr(m_hwnd, GWLP_USERDATA, 0);
         DestroyWindow(m_hwnd);
         m_hwnd = NULL;
     }
@@ -43,15 +43,15 @@ void CWWindow::invalidate(bool erase)
 
 /* ─── fill default WNDCLASS fields ─────────────────────────── */
 
-void CWWindow::fillWndClass(WNDCLASSA& wc)
+void CWWindow::fillWndClass(WNDCLASS& wc)
 {
     wc.style         = CS_HREDRAW | CS_VREDRAW;
     wc.lpfnWndProc   = staticWndProc;
     wc.cbClsExtra    = 0;
     wc.cbWndExtra    = 0;
     wc.hInstance     = m_hInst;
-    wc.hIcon         = LoadIconA(NULL, (LPCSTR)IDI_APPLICATION);
-    wc.hCursor       = LoadCursorA(NULL, (LPCSTR)IDC_ARROW);
+    wc.hIcon         = LoadIcon(NULL, IDI_APPLICATION);
+    wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
     wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
     wc.lpszMenuName  = NULL;
     /* lpszClassName set by create() before registration */
@@ -59,22 +59,22 @@ void CWWindow::fillWndClass(WNDCLASSA& wc)
 
 /* ─── create ────────────────────────────────────────────────── */
 
-bool CWWindow::create(const std::string& className,
-                      const std::string& windowName,
+bool CWWindow::create(const std::basic_string<TCHAR>& className,
+                      const std::basic_string<TCHAR>& windowName,
                       DWORD style,
                       DWORD exStyle,
                       HWND  parent,
                       int   x, int y, int w, int h)
 {
     /* Register class (idempotent if already registered) */
-    WNDCLASSA wc;
+    WNDCLASS wc;
     memset(&wc, 0, sizeof(wc));
     fillWndClass(wc);
     wc.lpszClassName = className.c_str();
-    RegisterClassA(&wc);   /* ignore failure if already registered */
+    RegisterClass(&wc);   /* ignore failure if already registered */
 
     /* Pass `this` via lpCreateParams so WM_CREATE can set GWLP_USERDATA */
-    m_hwnd = CreateWindowExA(exStyle,
+    m_hwnd = CreateWindowEx(exStyle,
                               className.c_str(),
                               windowName.c_str(),
                               style,
@@ -116,7 +116,7 @@ LRESULT CWWindow::onMessage(UINT msg, WPARAM wp, LPARAM lp)
             onSize(LOWORD(lp), HIWORD(lp));
             return 0;
     }
-    return DefWindowProcA(m_hwnd, msg, wp, lp);
+    return DefWindowProc(m_hwnd, msg, wp, lp);
 }
 
 /* ─── Static WndProc ─────────────────────────────────────────── */
@@ -128,23 +128,23 @@ LRESULT CALLBACK CWWindow::staticWndProc(HWND hwnd, UINT msg,
 
     if (msg == WM_CREATE)
     {
-        CREATESTRUCTA* cs = reinterpret_cast<CREATESTRUCTA*>(lp);
+        CREATESTRUCT* cs = reinterpret_cast<CREATESTRUCT*>(lp);
         self = static_cast<CWWindow*>(cs->lpCreateParams);
         if (self)
         {
             self->m_hwnd = hwnd;
-            SetWindowLongPtrA(hwnd, GWLP_USERDATA,
+            SetWindowLongPtr(hwnd, GWLP_USERDATA,
                               reinterpret_cast<LONG_PTR>(self));
         }
     }
     else
     {
         self = reinterpret_cast<CWWindow*>(
-                   GetWindowLongPtrA(hwnd, GWLP_USERDATA));
+                   GetWindowLongPtr(hwnd, GWLP_USERDATA));
     }
 
     if (self)
         return self->onMessage(msg, wp, lp);
 
-    return DefWindowProcA(hwnd, msg, wp, lp);
+    return DefWindowProc(hwnd, msg, wp, lp);
 }

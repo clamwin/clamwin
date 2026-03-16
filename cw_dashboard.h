@@ -11,6 +11,7 @@
 #pragma once
 #include "cw_window.h"
 #include "cw_gui_shared.h"   /* CW_Config, IDC_CARD_*, IDM_*, CW_DBInfo, CW_ProtectionStatus */
+#include <tchar.h>
 #include <vector>
 
 class CWDashboard : public CWWindow
@@ -34,13 +35,13 @@ protected:
     virtual void onPaint(HDC hdc);
     virtual void onCommand(int id, HWND src);
     virtual LRESULT onMessage(UINT msg, WPARAM wp, LPARAM lp);
-    virtual void fillWndClass(WNDCLASSA& wc);
+    virtual void fillWndClass(WNDCLASS& wc);
 
 private:
     struct CardInfo {
         int          id;
-        const char*  title;
-        const char*  desc;
+        const TCHAR* title;
+        const TCHAR* desc;
     };
 
     static const CardInfo s_cards[];
@@ -54,7 +55,7 @@ private:
     HWND                m_hwndTooltip;
     bool                m_updateAvailable;
     bool                m_updateLayoutAdjusted;
-    char                m_newVersion[64];
+    TCHAR               m_newVersion[64];
 
     /* Fonts — owned, cleaned up in onDestroy */
     HFONT m_fontTitle;

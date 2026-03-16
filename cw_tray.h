@@ -31,7 +31,7 @@ private:
     CWTray(const CWTray&);
     CWTray& operator=(const CWTray&);
 
-    NOTIFYICONDATAA m_nid;
+    NOTIFYICONDATA m_nid;
     bool m_created;
     bool m_version4;   /* true if shell accepted NOTIFYICON_VERSION_4 */
 };

@@ -11,8 +11,10 @@
 #include "cw_gui_shared.h"
 #include "cw_dpi.h"
 #include "cw_theme.h"
+#include "cw_text_conv.h"
 
 #include <string.h>
+#include <tchar.h>
 
 /* Win10+ requires NOTIFYICON_VERSION_4 and NIF_SHOWTIP for visible toasts.
  * These are normally available with _WIN32_IE >= 0x0600 but we target 0x0500.
@@ -24,38 +26,24 @@
 #  define NIF_SHOWTIP           0x00000080
 #endif
 
-static const WCHAR* s_trayOpen = L"&Open ClamWin";
-static const WCHAR* s_traySep = L"__CW_MENU_SEPARATOR__";
-static const WCHAR* s_trayScanFiles = L"Scan &Files...";
-static const WCHAR* s_trayScanMemory = L"Scan &Memory";
-static const WCHAR* s_trayUpdateDatabase = L"&Update Database";
-static const WCHAR* s_trayDisplayReports = L"Display &Reports";
-static const WCHAR* s_trayVirusScanReport = L"&Virus Scan Report";
-static const WCHAR* s_trayVirusDbUpdateReport = L"Virus &Database Update Report";
-static const WCHAR* s_trayPreferences = L"&Preferences";
-static const WCHAR* s_trayScheduledScans = L"Scheduled S&cans";
-static const WCHAR* s_trayAbout = L"&About";
-static const WCHAR* s_trayExit = L"E&xit";
-
-/* ANSI equivalents used by the standard (non-dark) menu fallback.
- * Win9x does not support AppendMenuW, so we use AppendMenuA here. */
-static const char* s_trayOpenA            = "&Open ClamWin";
-static const char* s_trayScanFilesA       = "Scan &Files...";
-static const char* s_trayScanMemoryA      = "Scan &Memory";
-static const char* s_trayUpdateDatabaseA  = "&Update Database";
-static const char* s_trayDisplayReportsA  = "Display &Reports";
-static const char* s_trayVirusScanReportA = "&Virus Scan Report";
-static const char* s_trayVirusDbUpdateReportA = "Virus &Database Update Report";
-static const char* s_trayPreferencesA     = "&Preferences";
-static const char* s_trayScheduledScansA  = "Scheduled S&cans";
-static const char* s_trayAboutA           = "&About";
-static const char* s_trayExitA            = "E&xit";
-static const char* s_trayCustomMenuClass = "ClamWinDarkTrayMenu";
+static const TCHAR* s_trayOpen = TEXT("&Open ClamWin");
+static const TCHAR* s_traySep = TEXT("__CW_MENU_SEPARATOR__");
+static const TCHAR* s_trayScanFiles = TEXT("Scan &Files...");
+static const TCHAR* s_trayScanMemory = TEXT("Scan &Memory");
+static const TCHAR* s_trayUpdateDatabase = TEXT("&Update Database");
+static const TCHAR* s_trayDisplayReports = TEXT("Display &Reports");
+static const TCHAR* s_trayVirusScanReport = TEXT("&Virus Scan Report");
+static const TCHAR* s_trayVirusDbUpdateReport = TEXT("Virus &Database Update Report");
+static const TCHAR* s_trayPreferences = TEXT("&Preferences");
+static const TCHAR* s_trayScheduledScans = TEXT("Scheduled S&cans");
+static const TCHAR* s_trayAbout = TEXT("&About");
+static const TCHAR* s_trayExit = TEXT("E&xit");
+static const TCHAR* s_trayCustomMenuClass = TEXT("ClamWinDarkTrayMenu");
 
 struct CWTrayPopupItemDef
 {
     UINT id;
-    const WCHAR* text;
+    const TCHAR* text;
     bool separator;
     bool disabled;
     bool arrow;
@@ -126,25 +114,24 @@ static bool cwUseCustomDarkTrayMenu()
     return theme && theme->isDark() && !theme->useClassicPalette();
 }
 
-static WCHAR cwFindMnemonicChar(const WCHAR* text)
+static TCHAR cwFindMnemonicChar(const TCHAR* text)
 {
     if (!text)
         return 0;
 
     for (int i = 0; text[i] != 0; ++i)
     {
-        if (text[i] == L'&')
+        if (text[i] == TEXT('&'))
         {
-            if (text[i + 1] == L'&')
+            if (text[i + 1] == TEXT('&'))
             {
                 ++i;
                 continue;
             }
             if (text[i + 1] != 0)
             {
-                WCHAR ch = text[i + 1];
-                if (ch >= L'A' && ch <= L'Z')
-                    ch = (WCHAR)(ch - L'A' + L'a');
+                TCHAR ch = text[i + 1];
+                ch = (TCHAR)_totlower((int)ch);
                 return ch;
             }
         }
@@ -243,7 +230,7 @@ static void cwTrayPopupDraw(HWND hwnd, HDC hdc, CWTrayPopupState* state)
             HGDIOBJ oldFont = SelectObject(hdc, useFont);
             SetBkMode(hdc, TRANSPARENT);
             SetTextColor(hdc, item.disabled ? fgMuted : fg);
-            DrawTextW(hdc,
+            DrawText(hdc,
                       item.text,
                       -1,
                       &textRc,
@@ -256,7 +243,7 @@ static void cwTrayPopupDraw(HWND hwnd, HDC hdc, CWTrayPopupState* state)
                 RECT arrowRc = itemRc;
                 arrowRc.right -= CW_Scale(10);
                 SetTextColor(hdc, item.disabled ? fgMuted : fg);
-                DrawTextW(hdc, L">", -1, &arrowRc, DT_SINGLELINE | DT_VCENTER | DT_RIGHT);
+                DrawText(hdc, TEXT(">"), -1, &arrowRc, DT_SINGLELINE | DT_VCENTER | DT_RIGHT);
             }
         }
 
@@ -266,14 +253,14 @@ static void cwTrayPopupDraw(HWND hwnd, HDC hdc, CWTrayPopupState* state)
 
 static LRESULT CALLBACK cwTrayPopupWndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
 {
-    CWTrayPopupState* state = reinterpret_cast<CWTrayPopupState*>(GetWindowLongPtrA(hwnd, GWLP_USERDATA));
+    CWTrayPopupState* state = reinterpret_cast<CWTrayPopupState*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
     switch (msg)
     {
         case WM_NCCREATE:
         {
             CREATESTRUCTA* cs = reinterpret_cast<CREATESTRUCTA*>(lp);
-            SetWindowLongPtrA(hwnd, GWLP_USERDATA, (LONG_PTR)cs->lpCreateParams);
+            SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)cs->lpCreateParams);
             return TRUE;
         }
 
@@ -334,7 +321,7 @@ static LRESULT CALLBACK cwTrayPopupWndProc(HWND hwnd, UINT msg, WPARAM wp, LPARA
                         return 0;
                     }
 
-                    PostMessageA(state->owner, WM_COMMAND, state->items[idx].id, 0);
+                    PostMessage(state->owner, WM_COMMAND, state->items[idx].id, 0);
 
                     if (state->isReportsSubmenu && state->parentMenu)
                         DestroyWindow(state->parentMenu);
@@ -370,7 +357,7 @@ static LRESULT CALLBACK cwTrayPopupWndProc(HWND hwnd, UINT msg, WPARAM wp, LPARA
                         return 0;
                     }
 
-                    PostMessageA(state->owner, WM_COMMAND, state->items[state->hover].id, 0);
+                    PostMessage(state->owner, WM_COMMAND, state->items[state->hover].id, 0);
                     if (state->isReportsSubmenu && state->parentMenu)
                         DestroyWindow(state->parentMenu);
 
@@ -412,9 +399,7 @@ static LRESULT CALLBACK cwTrayPopupWndProc(HWND hwnd, UINT msg, WPARAM wp, LPARA
         case WM_SYSCHAR:
             if (state)
             {
-                WCHAR key = (WCHAR)wp;
-                if (key >= L'A' && key <= L'Z')
-                    key = (WCHAR)(key - L'A' + L'a');
+                TCHAR key = (TCHAR)_totlower((TCHAR)wp);
                 for (int i = 0; i < state->count; ++i)
                 {
                     const CWTrayPopupItemDef& item = state->items[i];
@@ -429,7 +414,7 @@ static LRESULT CALLBACK cwTrayPopupWndProc(HWND hwnd, UINT msg, WPARAM wp, LPARA
                             return 0;
                         }
 
-                        PostMessageA(state->owner, WM_COMMAND, item.id, 0);
+                        PostMessage(state->owner, WM_COMMAND, item.id, 0);
                         if (state->isReportsSubmenu && state->parentMenu)
                             DestroyWindow(state->parentMenu);
                         if (state->submenuWnd)
@@ -461,7 +446,7 @@ static LRESULT CALLBACK cwTrayPopupWndProc(HWND hwnd, UINT msg, WPARAM wp, LPARA
             {
                 if (state->parentMenu)
                 {
-                    CWTrayPopupState* parentState = reinterpret_cast<CWTrayPopupState*>(GetWindowLongPtrA(state->parentMenu, GWLP_USERDATA));
+                    CWTrayPopupState* parentState = reinterpret_cast<CWTrayPopupState*>(GetWindowLongPtr(state->parentMenu, GWLP_USERDATA));
                     if (parentState && parentState->submenuWnd == hwnd)
                         parentState->submenuWnd = NULL;
                 }
@@ -475,18 +460,18 @@ static LRESULT CALLBACK cwTrayPopupWndProc(HWND hwnd, UINT msg, WPARAM wp, LPARA
                 if (state->font) DeleteObject(state->font);
                 if (state->fontBold) DeleteObject(state->fontBold);
                 delete state;
-                SetWindowLongPtrA(hwnd, GWLP_USERDATA, 0);
+                SetWindowLongPtr(hwnd, GWLP_USERDATA, 0);
             }
             return 0;
     }
 
-    return DefWindowProcA(hwnd, msg, wp, lp);
+    return DefWindowProc(hwnd, msg, wp, lp);
 }
 
 static bool cwEnsureTrayPopupClass(HINSTANCE hInst)
 {
-    WNDCLASSA wc;
-    if (GetClassInfoA(hInst, s_trayCustomMenuClass, &wc))
+    WNDCLASS wc;
+    if (GetClassInfo(hInst, s_trayCustomMenuClass, &wc))
         return true;
 
     ZeroMemory(&wc, sizeof(wc));
@@ -495,15 +480,15 @@ static bool cwEnsureTrayPopupClass(HINSTANCE hInst)
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
     wc.lpszClassName = s_trayCustomMenuClass;
     wc.style = CS_DBLCLKS;
-    return RegisterClassA(&wc) != 0;
+    return RegisterClass(&wc) != 0;
 }
 
 static HWND cwCreateTrayPopupWindow(HWND owner, CWTrayPopupState* state, int x, int y)
 {
-    HINSTANCE hInst = (HINSTANCE)GetModuleHandleA(NULL);
-    HWND hwnd = CreateWindowExA(WS_EX_TOPMOST | WS_EX_TOOLWINDOW,
+    HINSTANCE hInst = (HINSTANCE)GetModuleHandle(NULL);
+    HWND hwnd = CreateWindowEx(WS_EX_TOPMOST | WS_EX_TOOLWINDOW,
                                 s_trayCustomMenuClass,
-                                "",
+                                TEXT(""),
                                 WS_POPUP,
                                 x, y, state->width, cwTrayPopupTotalHeight(state),
                                 owner,
@@ -584,7 +569,7 @@ static HWND cwShowReportsSubmenu(HWND parentHwnd, CWTrayPopupState* parentState)
 
 static bool cwShowCustomDarkTrayPopup(HWND owner, bool enableScanReport, bool enableUpdateReport)
 {
-    HINSTANCE hInst = (HINSTANCE)GetModuleHandleA(NULL);
+    HINSTANCE hInst = (HINSTANCE)GetModuleHandle(NULL);
     if (!cwEnsureTrayPopupClass(hInst))
         return false;
 
@@ -643,7 +628,7 @@ static bool cwShowCustomDarkTrayPopup(HWND owner, bool enableScanReport, bool en
     int y = pt.y - height + CW_Scale(8);
 
     RECT wa;
-    if (SystemParametersInfoA(SPI_GETWORKAREA, 0, &wa, 0))
+    if (SystemParametersInfo(SPI_GETWORKAREA, 0, &wa, 0))
     {
         if (x < wa.left) x = wa.left;
         if (y < wa.top) y = wa.top;
@@ -692,23 +677,23 @@ bool CWTray::create(HWND hwnd, HICON hIcon, const char* tooltip)
         return true;
 
     /* Use legacy size on old shells (e.g. Win98) for compatibility. */
-    m_nid.cbSize = NOTIFYICONDATAA_V2_SIZE;
+    m_nid.cbSize = NOTIFYICONDATA_V2_SIZE;
     m_nid.hWnd   = hwnd;
     m_nid.uID    = IDI_CLAMWIN;
     m_nid.uFlags = NIF_ICON | NIF_TIP | NIF_MESSAGE;
     m_nid.uCallbackMessage = WM_TRAYICON;
     m_nid.hIcon  = hIcon;
     if (tooltip)
-        lstrcpynA(m_nid.szTip, tooltip, 128);
+        lstrcpyn(m_nid.szTip, CW_ToT(tooltip).c_str(), 128);
     else
         m_nid.szTip[0] = '\0';
 
-    m_created = Shell_NotifyIconA(NIM_ADD, &m_nid) != FALSE;
+    m_created = Shell_NotifyIcon(NIM_ADD, &m_nid) != FALSE;
 
     if (!m_created)
     {
-        m_nid.cbSize = NOTIFYICONDATAA_V1_SIZE;
-        m_created = Shell_NotifyIconA(NIM_ADD, &m_nid) != FALSE;
+        m_nid.cbSize = NOTIFYICONDATA_V1_SIZE;
+        m_created = Shell_NotifyIcon(NIM_ADD, &m_nid) != FALSE;
     }
 
     if (m_created)
@@ -717,14 +702,14 @@ bool CWTray::create(HWND hwnd, HICON hIcon, const char* tooltip)
          * Fall back to VERSION (v3) for older shells like XP/Vista. */
         m_nid.uVersion = NOTIFYICON_VERSION_4;
         m_nid.uFlags = 0;
-        if (Shell_NotifyIconA(NIM_SETVERSION, &m_nid))
+        if (Shell_NotifyIcon(NIM_SETVERSION, &m_nid))
         {
             m_version4 = true;
         }
         else
         {
             m_nid.uVersion = NOTIFYICON_VERSION;
-            Shell_NotifyIconA(NIM_SETVERSION, &m_nid);
+            Shell_NotifyIcon(NIM_SETVERSION, &m_nid);
             m_version4 = false;
         }
     }
@@ -736,7 +721,7 @@ void CWTray::destroy()
 {
     if (m_created)
     {
-        Shell_NotifyIconA(NIM_DELETE, &m_nid);
+        Shell_NotifyIcon(NIM_DELETE, &m_nid);
         m_created = false;
     }
 }
@@ -748,8 +733,8 @@ void CWTray::setIcon(HICON hIcon, const char* tooltip)
     m_nid.uFlags = NIF_ICON | NIF_TIP;
     m_nid.hIcon = hIcon;
     if (tooltip)
-        lstrcpynA(m_nid.szTip, tooltip, 128);
-    Shell_NotifyIconA(NIM_MODIFY, &m_nid);
+        lstrcpyn(m_nid.szTip, CW_ToT(tooltip).c_str(), 128);
+    Shell_NotifyIcon(NIM_MODIFY, &m_nid);
 }
 
 void CWTray::showBalloon(const char* title, const char* msg, DWORD flags)
@@ -759,11 +744,11 @@ void CWTray::showBalloon(const char* title, const char* msg, DWORD flags)
     /* NIF_SHOWTIP is required on Win10/11 with VERSION_4 to actually
      * show the balloon as a visible toast instead of only in Action Center. */
     m_nid.uFlags = NIF_INFO | (m_version4 ? NIF_SHOWTIP : 0);
-    lstrcpynA(m_nid.szInfoTitle, title ? title : "", 64);
-    lstrcpynA(m_nid.szInfo, msg ? msg : "", 256);
+    lstrcpyn(m_nid.szInfoTitle, CW_ToT(title ? title : "").c_str(), 64);
+    lstrcpyn(m_nid.szInfo, CW_ToT(msg ? msg : "").c_str(), 256);
     m_nid.dwInfoFlags = flags;
     m_nid.uTimeout = 10000;
-    Shell_NotifyIconA(NIM_MODIFY, &m_nid);
+    Shell_NotifyIcon(NIM_MODIFY, &m_nid);
 }
 
 void CWTray::showContextMenu(bool enableScanReport, bool enableUpdateReport)
@@ -787,27 +772,27 @@ void CWTray::showContextMenu(bool enableScanReport, bool enableUpdateReport)
     }
 
 
-    AppendMenuA(hMenu, MF_STRING,                                         IDM_TRAY_OPEN,       s_trayOpenA);
-    AppendMenuA(hMenu, MF_SEPARATOR,                                      0,                   NULL);
-    AppendMenuA(hMenu, MF_STRING,                                         IDM_TRAY_SCAN,       s_trayScanFilesA);
-    AppendMenuA(hMenu, MF_STRING,                                         IDM_TRAY_SCANMEM,    s_trayScanMemoryA);
-    AppendMenuA(hMenu, MF_STRING,                                         IDM_TRAY_UPDATE,     s_trayUpdateDatabaseA);
-    AppendMenuA(hMenu, MF_SEPARATOR,                                      0,                   NULL);
-    AppendMenuA(hReportsMenu,
-                MF_STRING | (enableScanReport ? 0 : MF_GRAYED),
+    AppendMenu(hMenu, MF_OWNERDRAW, IDM_TRAY_OPEN, (LPCTSTR)s_trayOpen);
+    AppendMenu(hMenu, MF_OWNERDRAW | MF_DISABLED, 60001, (LPCTSTR)s_traySep);
+    AppendMenu(hMenu, MF_OWNERDRAW, IDM_TRAY_SCAN,    (LPCTSTR)s_trayScanFiles);
+    AppendMenu(hMenu, MF_OWNERDRAW, IDM_TRAY_SCANMEM, (LPCTSTR)s_trayScanMemory);
+    AppendMenu(hMenu, MF_OWNERDRAW, IDM_TRAY_UPDATE,  (LPCTSTR)s_trayUpdateDatabase);
+    AppendMenu(hMenu, MF_OWNERDRAW | MF_DISABLED, 60002, (LPCTSTR)s_traySep);
+    AppendMenu(hReportsMenu,
+                MF_OWNERDRAW | (enableScanReport ? 0 : MF_GRAYED),
                 IDM_TRAY_SCANREPORT,
-                s_trayVirusScanReportA);
-    AppendMenuA(hReportsMenu,
-                MF_STRING | (enableUpdateReport ? 0 : MF_GRAYED),
+                (LPCTSTR)s_trayVirusScanReport);
+    AppendMenu(hReportsMenu,
+                MF_OWNERDRAW | (enableUpdateReport ? 0 : MF_GRAYED),
                 IDM_TRAY_UPDATEREPORT,
-                s_trayVirusDbUpdateReportA);
-    AppendMenuA(hMenu, MF_POPUP,         (UINT_PTR)hReportsMenu,           s_trayDisplayReportsA);
-    AppendMenuA(hMenu, MF_SEPARATOR,                                      0,                   NULL);
-    AppendMenuA(hMenu, MF_STRING,                                         IDM_TRAY_PREFS,      s_trayPreferencesA);
-    AppendMenuA(hMenu, MF_STRING,                                         IDM_TRAY_SCHEDULE,   s_trayScheduledScansA);
-    AppendMenuA(hMenu, MF_STRING,                                         IDM_TRAY_ABOUT,      s_trayAboutA);
-    AppendMenuA(hMenu, MF_SEPARATOR,                                      0,                   NULL);
-    AppendMenuA(hMenu, MF_STRING,                                         IDM_TRAY_EXIT,       s_trayExitA);
+                (LPCTSTR)s_trayVirusDbUpdateReport);
+    AppendMenu(hMenu, MF_POPUP | MF_OWNERDRAW, (UINT_PTR)hReportsMenu, (LPCTSTR)s_trayDisplayReports);
+    AppendMenu(hMenu, MF_OWNERDRAW | MF_DISABLED, 60003, (LPCTSTR)s_traySep);
+    AppendMenu(hMenu, MF_OWNERDRAW, IDM_TRAY_PREFS,    (LPCTSTR)s_trayPreferences);
+    AppendMenu(hMenu, MF_OWNERDRAW, IDM_TRAY_SCHEDULE, (LPCTSTR)s_trayScheduledScans);
+    AppendMenu(hMenu, MF_OWNERDRAW, IDM_TRAY_ABOUT,    (LPCTSTR)s_trayAbout);
+    AppendMenu(hMenu, MF_OWNERDRAW | MF_DISABLED, 60004, (LPCTSTR)s_traySep);
+    AppendMenu(hMenu, MF_OWNERDRAW, IDM_TRAY_EXIT, (LPCTSTR)s_trayExit);
 
     SetMenuDefaultItem(hMenu, IDM_TRAY_OPEN, FALSE);
 

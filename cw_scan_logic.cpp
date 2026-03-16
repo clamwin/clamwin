@@ -1,4 +1,5 @@
 #include "cw_scan_logic.h"
+#include "cw_text_conv.h"
 
 #include <ctype.h>
 #include <stdio.h>
@@ -359,7 +360,8 @@ bool shouldApplyPreferenceFilters(const std::string& rawTarget)
     if (target.empty())
         return false;
 
-    DWORD attr = GetFileAttributesA(target.c_str());
+    std::basic_string<TCHAR> tTarget = CW_ToT(target);
+    DWORD attr = GetFileAttributes(tTarget.c_str());
     if (attr != INVALID_FILE_ATTRIBUTES)
         return (attr & FILE_ATTRIBUTE_DIRECTORY) != 0;
 
@@ -459,6 +461,15 @@ std::string buildClamscanCommand(const CWConfig& cfg,
     std::string normalizedExeDir = normalizeExeDir(exeDir);
     std::string cmd = quoteCommandArg(normalizedExeDir + "clamscan.exe");
     cmd += " --stdout --show-progress";
+
+    std::string certsDir = normalizedExeDir + "certs";
+    std::basic_string<TCHAR> tCertsDir = CW_ToT(certsDir);
+    DWORD certsAttr = GetFileAttributes(tCertsDir.c_str());
+    if (certsAttr != INVALID_FILE_ATTRIBUTES && (certsAttr & FILE_ATTRIBUTE_DIRECTORY))
+    {
+        cmd += " --cvdcertsdir=";
+        cmd += quoteCommandArg(certsDir);
+    }
 
     if (!cfg.databasePath.empty())
     {
@@ -564,7 +575,8 @@ std::string buildFreshclamCommand(const CWConfig& cfg,
     }
 
     std::string certsDir = normalizedExeDir + "certs";
-    DWORD certsAttr = GetFileAttributesA(certsDir.c_str());
+    std::basic_string<TCHAR> tCertsDir = CW_ToT(certsDir);
+    DWORD certsAttr = GetFileAttributes(tCertsDir.c_str());
     if (certsAttr != INVALID_FILE_ATTRIBUTES && (certsAttr & FILE_ATTRIBUTE_DIRECTORY))
     {
         cmd += " --cvdcertsdir=";
@@ -594,7 +606,8 @@ std::string buildFreshclamExecutablePath(const std::string& exeDir)
 bool hasFreshclamExecutable(const std::string& exeDir)
 {
     std::string exePath = buildFreshclamExecutablePath(exeDir);
-    DWORD attr = GetFileAttributesA(exePath.c_str());
+    std::basic_string<TCHAR> tExePath = CW_ToT(exePath);
+    DWORD attr = GetFileAttributes(tExePath.c_str());
     return attr != INVALID_FILE_ATTRIBUTES && (attr & FILE_ATTRIBUTE_DIRECTORY) == 0;
 }
 
@@ -745,7 +758,8 @@ ScanLineEffects processOutputLine(ScanOutputState& state, const char* text, bool
 
                 WIN32_FILE_ATTRIBUTE_DATA fad;
                 memset(&fad, 0, sizeof(fad));
-                if (GetFileAttributesExA(fileResultPath.c_str(), GetFileExInfoStandard, &fad))
+                std::basic_string<TCHAR> tFileResultPath = CW_ToT(fileResultPath);
+                if (GetFileAttributesEx(tFileResultPath.c_str(), GetFileExInfoStandard, &fad))
                     state.scanScannedBytes += ((ULONGLONG)fad.nFileSizeHigh << 32) | fad.nFileSizeLow;
 
                 if (state.scanExpectedBytes > 0)

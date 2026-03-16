@@ -8,6 +8,7 @@
 #include "cw_scan_dialog.h"
 #include "cw_dpi.h"
 #include "cw_scan_logic.h"
+#include "cw_text_conv.h"
 #include "cw_theme.h"
 #include <ctype.h>
 #include <string.h>
@@ -28,6 +29,12 @@ namespace
 const int kScanProgressMax = 100;
 const char* const kPatternSep = "|CLAMWIN_SEP|";
 const int kPatternSepLen = (int)(sizeof("|CLAMWIN_SEP|") - 1);
+
+void setWindowTextUtf8(HWND hwnd, const std::string& text)
+{
+    std::basic_string<TCHAR> t = CW_ToT(text);
+    SetWindowText(hwnd, t.c_str());
+}
 
 struct ScanPattern
 {
@@ -239,7 +246,8 @@ bool shouldApplyPreferenceFilters(const std::string& rawTarget)
     if (target.empty())
         return false;
 
-    DWORD attr = GetFileAttributesA(target.c_str());
+    std::basic_string<TCHAR> tTarget = CW_ToT(target);
+    DWORD attr = GetFileAttributes(tTarget.c_str());
     if (attr != INVALID_FILE_ATTRIBUTES)
         return (attr & FILE_ATTRIBUTE_DIRECTORY) != 0;
 
@@ -374,7 +382,8 @@ void appendDebugLineToFile(const std::string& filePath, const std::string& line)
     if (filePath.empty() || line.empty())
         return;
 
-    HANDLE hFile = CreateFileA(filePath.c_str(), FILE_APPEND_DATA,
+    std::basic_string<TCHAR> tFilePath = CW_ToT(filePath);
+    HANDLE hFile = CreateFile(tFilePath.c_str(), FILE_APPEND_DATA,
                                FILE_SHARE_READ | FILE_SHARE_WRITE,
                                NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
     if (hFile == INVALID_HANDLE_VALUE)
@@ -393,14 +402,15 @@ void enumScanPath(const std::string& path,
                   int& fileCount,
                   ULONGLONG& totalBytes)
 {
-    DWORD attr = GetFileAttributesA(path.c_str());
+    std::basic_string<TCHAR> tPath = CW_ToT(path);
+    DWORD attr = GetFileAttributes(tPath.c_str());
     if (attr == INVALID_FILE_ATTRIBUTES)
         return;
 
     if ((attr & FILE_ATTRIBUTE_DIRECTORY) == 0)
     {
-        WIN32_FIND_DATAA ffd0;
-        HANDLE h = FindFirstFileA(path.c_str(), &ffd0);
+        WIN32_FIND_DATA ffd0;
+        HANDLE h = FindFirstFile(tPath.c_str(), &ffd0);
         if (h != INVALID_HANDLE_VALUE)
         {
             if (!applyFilters || shouldCountPath(path, includePatterns, excludePatterns))
@@ -422,14 +432,15 @@ void enumScanPath(const std::string& path,
     }
     pattern += "*";
 
-    WIN32_FIND_DATAA ffd;
-    HANDLE hFind = FindFirstFileA(pattern.c_str(), &ffd);
+    std::basic_string<TCHAR> tPattern = CW_ToT(pattern);
+    WIN32_FIND_DATA ffd;
+    HANDLE hFind = FindFirstFile(tPattern.c_str(), &ffd);
     if (hFind == INVALID_HANDLE_VALUE)
         return;
 
     do
     {
-        if (strcmp(ffd.cFileName, ".") == 0 || strcmp(ffd.cFileName, "..") == 0)
+        if (lstrcmp(ffd.cFileName, TEXT(".")) == 0 || lstrcmp(ffd.cFileName, TEXT("..")) == 0)
             continue;
 
         std::string child = path;
@@ -439,7 +450,7 @@ void enumScanPath(const std::string& path,
             if (tail != '\\' && tail != '/')
                 child += "\\";
         }
-        child += ffd.cFileName;
+        child += CW_ToNarrow(ffd.cFileName);
 
         if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
         {
@@ -454,7 +465,7 @@ void enumScanPath(const std::string& path,
             }
         }
     }
-    while (FindNextFileA(hFind, &ffd));
+    while (FindNextFile(hFind, &ffd));
 
     FindClose(hFind);
 }
@@ -1006,9 +1017,11 @@ void CWScanDialog::outputCb(const char* text, void* userdata)
     CWScanDialog* self = static_cast<CWScanDialog*>(userdata);
     OutputMsg* msg = (OutputMsg*)malloc(sizeof(OutputMsg));
     if (!msg) return;
-    lstrcpynA(msg->text, text, sizeof(msg->text));
+    if (!text) text = "";
+    _snprintf(msg->text, sizeof(msg->text), "%s", text);
+    msg->text[sizeof(msg->text) - 1] = '\0';
     msg->is_error = 0;
-    PostMessageA(self->m_hwnd, WM_SCAN_UPDATE, 0, (LPARAM)msg);
+    PostMessage(self->m_hwnd, WM_SCAN_UPDATE, 0, (LPARAM)msg);
 }
 
 void CWScanDialog::errorCb(const char* text, void* userdata)
@@ -1016,15 +1029,17 @@ void CWScanDialog::errorCb(const char* text, void* userdata)
     CWScanDialog* self = static_cast<CWScanDialog*>(userdata);
     OutputMsg* msg = (OutputMsg*)malloc(sizeof(OutputMsg));
     if (!msg) return;
-    lstrcpynA(msg->text, text, sizeof(msg->text));
+    if (!text) text = "";
+    _snprintf(msg->text, sizeof(msg->text), "%s", text);
+    msg->text[sizeof(msg->text) - 1] = '\0';
     msg->is_error = 1;
-    PostMessageA(self->m_hwnd, WM_SCAN_UPDATE, 0, (LPARAM)msg);
+    PostMessage(self->m_hwnd, WM_SCAN_UPDATE, 0, (LPARAM)msg);
 }
 
 void CWScanDialog::finishedCb(int exitCode, void* userdata)
 {
     CWScanDialog* self = static_cast<CWScanDialog*>(userdata);
-    PostMessageA(self->m_hwnd, WM_SCAN_FINISHED, (WPARAM)exitCode, 0);
+    PostMessage(self->m_hwnd, WM_SCAN_FINISHED, (WPARAM)exitCode, 0);
 }
 
 /* ─── Worker threads ─────────────────────────────────────────── */
@@ -1042,10 +1057,11 @@ DWORD WINAPI CWScanDialog::scanWorker(LPVOID param)
         self->m_scanExpectedBytes = tb;
     }
 
-    char exeDir[CW_MAX_PATH];
-    GetModuleFileNameA(NULL, exeDir, sizeof(exeDir));
-    char* slash = strrchr(exeDir, '\\');
-    if (slash) *(slash + 1) = '\0';
+    TCHAR exeDirT[CW_MAX_PATH];
+    GetModuleFileName(NULL, exeDirT, _countof(exeDirT));
+    TCHAR* slash = _tcsrchr(exeDirT, TEXT('\\'));
+    if (slash) *(slash + 1) = TEXT('\0');
+    std::string exeDir = CW_ToNarrow(exeDirT);
 
     std::string cmd = CWScanLogic::buildClamscanCommand(self->m_cfg,
                                                         self->m_targetPath,
@@ -1056,14 +1072,15 @@ DWORD WINAPI CWScanDialog::scanWorker(LPVOID param)
         std::string debugLine = "[CWDebug] clamscan command: ";
         debugLine += cmd;
         debugLine += "\r\n";
-        OutputDebugStringA(debugLine.c_str());
+        std::basic_string<TCHAR> tDebugLine = CW_ToT(debugLine);
+        OutputDebugString(tDebugLine.c_str());
         appendDebugLineToFile(self->m_cfg.scanLogFile, debugLine);
     }
 
     if (!self->m_process.start(cmd, self->m_cfg.priority,
                                outputCb, errorCb, finishedCb, self))
     {
-        PostMessageA(self->m_hwnd, WM_SCAN_FINISHED, (WPARAM)-1, 0);
+        PostMessage(self->m_hwnd, WM_SCAN_FINISHED, (WPARAM)-1, 0);
     }
     return 0;
 }
@@ -1073,10 +1090,11 @@ DWORD WINAPI CWScanDialog::updateWorker(LPVOID param)
     CWScanDialog* self = static_cast<CWScanDialog*>(param);
 
     /* Build freshclam command line using std::string (no fixed buffer overflows) */
-    char exeDir[CW_MAX_PATH];
-    GetModuleFileNameA(NULL, exeDir, sizeof(exeDir));
-    char* slash = strrchr(exeDir, '\\');
-    if (slash) *(slash + 1) = '\0';
+    TCHAR exeDirT[CW_MAX_PATH];
+    GetModuleFileName(NULL, exeDirT, _countof(exeDirT));
+    TCHAR* slash = _tcsrchr(exeDirT, TEXT('\\'));
+    if (slash) *(slash + 1) = TEXT('\0');
+    std::string exeDir = CW_ToNarrow(exeDirT);
 
     if (!CWScanLogic::hasFreshclamExecutable(exeDir))
     {
@@ -1085,7 +1103,7 @@ DWORD WINAPI CWScanDialog::updateWorker(LPVOID param)
         err += CWScanLogic::buildFreshclamExecutablePath(exeDir);
         err += "\r\n";
         errorCb(err.c_str(), self);
-        PostMessageA(self->m_hwnd, WM_SCAN_FINISHED, (WPARAM)-1, 0);
+        PostMessage(self->m_hwnd, WM_SCAN_FINISHED, (WPARAM)-1, 0);
         return 0;
     }
 
@@ -1094,7 +1112,7 @@ DWORD WINAPI CWScanDialog::updateWorker(LPVOID param)
     if (!self->m_process.start(cmd, self->m_cfg.priority,
                                outputCb, errorCb, finishedCb, self))
     {
-        PostMessageA(self->m_hwnd, WM_SCAN_FINISHED, (WPARAM)-1, 0);
+        PostMessage(self->m_hwnd, WM_SCAN_FINISHED, (WPARAM)-1, 0);
     }
     return 0;
 }
@@ -1114,22 +1132,22 @@ void CWScanDialog::startWorker()
 bool CWScanDialog::onInit()
 {
     /* Icon */
-    HICON hIcon = LoadIconA(GetModuleHandleA(NULL),
-                             MAKEINTRESOURCEA(IDI_CLAMWIN));
-    SendMessageA(m_hwnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
-    SendMessageA(m_hwnd, WM_SETICON, ICON_BIG,   (LPARAM)hIcon);
+    HICON hIcon = LoadIcon(GetModuleHandle(NULL),
+                             MAKEINTRESOURCE(IDI_CLAMWIN));
+    SendMessage(m_hwnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
+    SendMessage(m_hwnd, WM_SETICON, ICON_BIG,   (LPARAM)hIcon);
 
     /* Title */
-    SetWindowTextA(m_hwnd, m_isUpdate ? "ClamWin - Updating Database"
-                                      : "ClamWin - Scanning");
+    SetWindowText(m_hwnd, m_isUpdate ? TEXT("ClamWin - Updating Database")
+                                      : TEXT("ClamWin - Scanning"));
 
     /* Fonts */
-    m_hFont = CreateFontA(-CW_Scale(13), 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE,
+    m_hFont = CreateFont(-CW_Scale(13), 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE,
                            DEFAULT_CHARSET, 0, 0, CLEARTYPE_QUALITY, 0,
-                           "Tahoma");
-    m_hFontBold = CreateFontA(-CW_Scale(13), 0, 0, 0, FW_BOLD, FALSE, FALSE, FALSE,
+                           TEXT("Tahoma"));
+    m_hFontBold = CreateFont(-CW_Scale(13), 0, 0, 0, FW_BOLD, FALSE, FALSE, FALSE,
                                DEFAULT_CHARSET, 0, 0, CLEARTYPE_QUALITY, 0,
-                               "Tahoma");
+                               TEXT("Tahoma"));
     if (!m_hFont)     m_hFont     = (HFONT)GetStockObject(DEFAULT_GUI_FONT);
     if (!m_hFontBold) m_hFontBold = (HFONT)GetStockObject(DEFAULT_GUI_FONT);
 
@@ -1138,56 +1156,56 @@ bool CWScanDialog::onInit()
     GetClientRect(m_hwnd, &rc);
     int w = rc.right - CW_Scale(24);
 
-    m_hwndStatus = CreateWindowExA(0, "STATIC",
-        m_isUpdate ? "Checking update metadata..."
-                   : (m_scanMemoryOnly ? "Scanning computer memory..."
-                                       : "Enumerating files..."),
+    m_hwndStatus = CreateWindowEx(0, TEXT("STATIC"),
+        m_isUpdate ? TEXT("Checking update metadata...")
+                   : (m_scanMemoryOnly ? TEXT("Scanning computer memory...")
+                                       : TEXT("Enumerating files...")),
         WS_CHILD | WS_VISIBLE | SS_LEFT,
         CW_Scale(12), CW_Scale(12), w, CW_Scale(20), m_hwnd, (HMENU)IDC_SCAN_STATUS, NULL, NULL);
-    SendMessageA(m_hwndStatus, WM_SETFONT, (WPARAM)m_hFont, 0);
+    SendMessage(m_hwndStatus, WM_SETFONT, (WPARAM)m_hFont, 0);
 
     DWORD progressStyle = WS_CHILD | WS_VISIBLE | PBS_SMOOTH;
     if (!m_isUpdate && m_scanMemoryOnly)
         progressStyle |= PBS_MARQUEE;
 
-    m_hwndProgress = CreateWindowExA(0, PROGRESS_CLASSA, NULL,
+    m_hwndProgress = CreateWindowEx(0, PROGRESS_CLASS, NULL,
         progressStyle,
         CW_Scale(12), CW_Scale(38), w, CW_Scale(22), m_hwnd, (HMENU)IDC_SCAN_PROGRESS, NULL, NULL);
-    SendMessageA(m_hwndProgress, PBM_SETRANGE, 0, MAKELPARAM(0, 100));
-    SendMessageA(m_hwndProgress, PBM_SETPOS, 0, 0);
+    SendMessage(m_hwndProgress, PBM_SETRANGE, 0, MAKELPARAM(0, 100));
+    SendMessage(m_hwndProgress, PBM_SETPOS, 0, 0);
     if (!m_isUpdate && m_scanMemoryOnly)
     {
-        LRESULT marqueeOk = SendMessageA(m_hwndProgress, PBM_SETMARQUEE, TRUE, 30);
+        LRESULT marqueeOk = SendMessage(m_hwndProgress, PBM_SETMARQUEE, TRUE, 30);
         m_memoryUseMarquee = (marqueeOk != 0);
     }
 
-    m_hwndStats = CreateWindowExA(0, "STATIC", "",
+    m_hwndStats = CreateWindowEx(0, TEXT("STATIC"), TEXT(""),
         WS_CHILD | WS_VISIBLE | SS_LEFT,
         CW_Scale(12), CW_Scale(68), w, CW_Scale(20), m_hwnd, (HMENU)IDC_SCAN_STATS, NULL, NULL);
-    SendMessageA(m_hwndStats, WM_SETFONT, (WPARAM)m_hFont, 0);
+    SendMessage(m_hwndStats, WM_SETFONT, (WPARAM)m_hFont, 0);
     if (m_isUpdate)
-        SetWindowTextA(m_hwndStats, "Downloaded: 0 B / 0 B    Speed: 0 B/s    Elapsed: 00:00");
+        SetWindowText(m_hwndStats, TEXT("Downloaded: 0 B / 0 B    Speed: 0 B/s    Elapsed: 00:00"));
 
-    m_hwndLog = CreateWindowExA(0, RICHEDIT_CLASSA, "",
+    m_hwndLog = CreateWindowEx(0, RICHEDIT_CLASS, TEXT(""),
         WS_CHILD | WS_VISIBLE | WS_VSCROLL | WS_BORDER |
         ES_MULTILINE | ES_READONLY | ES_AUTOVSCROLL,
         CW_Scale(12), CW_Scale(96), w, rc.bottom - CW_Scale(140), m_hwnd, (HMENU)IDC_SCAN_LOG, NULL, NULL);
-    SendMessageA(m_hwndLog, WM_SETFONT, (WPARAM)m_hFont, 0);
+    SendMessage(m_hwndLog, WM_SETFONT, (WPARAM)m_hFont, 0);
     CWTheme* theme = CW_GetTheme();
-    SendMessageA(m_hwndLog, EM_SETBKGNDCOLOR, 0,
+    SendMessage(m_hwndLog, EM_SETBKGNDCOLOR, 0,
                  theme ? theme->colorSurface() : RGB(250, 250, 250));
 
-    m_hwndBtnSave = CreateWindowExA(0, "BUTTON", "&Save Report",
+    m_hwndBtnSave = CreateWindowEx(0, TEXT("BUTTON"), TEXT("&Save Report"),
         WS_CHILD | WS_VISIBLE | WS_DISABLED | WS_TABSTOP | BS_OWNERDRAW,
         rc.right - CW_Scale(220), rc.bottom - CW_Scale(36), CW_Scale(100), CW_Scale(28),
         m_hwnd, (HMENU)IDC_SCAN_SAVE, NULL, NULL);
-    SendMessageA(m_hwndBtnSave, WM_SETFONT, (WPARAM)m_hFont, 0);
+    SendMessage(m_hwndBtnSave, WM_SETFONT, (WPARAM)m_hFont, 0);
 
-    m_hwndBtnStop = CreateWindowExA(0, "BUTTON", "&Stop",
+    m_hwndBtnStop = CreateWindowEx(0, TEXT("BUTTON"), TEXT("&Stop"),
         WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW | BS_DEFPUSHBUTTON,
         rc.right - CW_Scale(112), rc.bottom - CW_Scale(36), CW_Scale(100), CW_Scale(28),
         m_hwnd, (HMENU)IDC_SCAN_STOP, NULL, NULL);
-    SendMessageA(m_hwndBtnStop, WM_SETFONT, (WPARAM)m_hFont, 0);
+    SendMessage(m_hwndBtnStop, WM_SETFONT, (WPARAM)m_hFont, 0);
 
     setDialogMnemonicCues(m_hwnd, false);
     SetTimer(m_hwnd, 1, 200, NULL);
@@ -1259,7 +1277,7 @@ INT_PTR CWScanDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
                     m_memoryLoopProgressPos += 4;
                     if (m_memoryLoopProgressPos > 100)
                         m_memoryLoopProgressPos = 0;
-                    SendMessageA(m_hwndProgress, PBM_SETPOS, m_memoryLoopProgressPos, 0);
+                    SendMessage(m_hwndProgress, PBM_SETPOS, m_memoryLoopProgressPos, 0);
                 }
             }
             else if (wp == 2)
@@ -1413,7 +1431,7 @@ void CWScanDialog::onScanOutput(const char* text, bool isError)
     }
 
     if (effects.progressChanged && !(m_scanMemoryOnly && !m_isUpdate && !m_finished))
-        SendMessageA(m_hwndProgress, PBM_SETPOS, effects.progressPos, 0);
+        SendMessage(m_hwndProgress, PBM_SETPOS, effects.progressPos, 0);
 
     if (effects.appendToLog)
         appendLog(text, isError);
@@ -1423,12 +1441,15 @@ void CWScanDialog::onScanOutput(const char* text, bool isError)
 
 void CWScanDialog::appendLog(const char* text, bool isError)
 {
+    if (!text)
+        return;
+
     CWTheme* theme = CW_GetTheme();
     CHARRANGE cr;
     cr.cpMin = -1; cr.cpMax = -1;
-    SendMessageA(m_hwndLog, EM_EXSETSEL, 0, (LPARAM)&cr);
+    SendMessage(m_hwndLog, EM_EXSETSEL, 0, (LPARAM)&cr);
 
-    CHARFORMAT2A cf;
+    CHARFORMAT2 cf;
     memset(&cf, 0, sizeof(cf));
     cf.cbSize = sizeof(cf);
     cf.dwMask = CFM_COLOR | CFM_BOLD;
@@ -1449,9 +1470,11 @@ void CWScanDialog::appendLog(const char* text, bool isError)
         cf.dwEffects  = 0;
         cf.crTextColor = theme ? theme->colorText() : RGB(33, 33, 33);
     }
-    SendMessageA(m_hwndLog, EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&cf);
-    SendMessageA(m_hwndLog, EM_REPLACESEL, FALSE, (LPARAM)text);
-    SendMessageA(m_hwndLog, WM_VSCROLL, SB_BOTTOM, 0);
+
+    std::basic_string<TCHAR> tText = CW_ToT(std::string(text));
+    SendMessage(m_hwndLog, EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&cf);
+    SendMessage(m_hwndLog, EM_REPLACESEL, FALSE, (LPARAM)tText.c_str());
+    SendMessage(m_hwndLog, WM_VSCROLL, SB_BOTTOM, 0);
 }
 
 /* ─── onScanFinished ─────────────────────────────────────────── */
@@ -1465,7 +1488,7 @@ void CWScanDialog::onScanFinished(int exitCode)
     updateStatsDisplay();
 
     if (!m_isUpdate && m_scanMemoryOnly && m_memoryUseMarquee)
-        SendMessageA(m_hwndProgress, PBM_SETMARQUEE, FALSE, 0);
+        SendMessage(m_hwndProgress, PBM_SETMARQUEE, FALSE, 0);
 
     bool noUpdatesNeeded = m_isUpdate && !m_cancelled && (m_exitCode == 0) &&
                            (!m_updateHadChanges) && (m_updateUpToDateCount > 0);
@@ -1478,9 +1501,9 @@ void CWScanDialog::onScanFinished(int exitCode)
     bool updateErrorVisual = updateFailed || updateBlocked;
 
     if (m_isUpdate && updateErrorVisual)
-        SendMessageA(m_hwndProgress, PBM_SETPOS, 0, 0);
+        SendMessage(m_hwndProgress, PBM_SETPOS, 0, 0);
     else
-        SendMessageA(m_hwndProgress, PBM_SETPOS, 100, 0);
+        SendMessage(m_hwndProgress, PBM_SETPOS, 100, 0);
 
     m_scanAnimate = false;
     const char* statusText = m_cancelled      ? "Cancelled"
@@ -1494,7 +1517,7 @@ void CWScanDialog::onScanFinished(int exitCode)
                            : m_isUpdate       ? "Update complete"
                                               : "Scan complete";
     setStatusTextIfChanged(statusText);
-    SetWindowTextA(m_hwndBtnStop, "&Close");
+    SetWindowText(m_hwndBtnStop, TEXT("&Close"));
     EnableWindow(m_hwndBtnSave, TRUE);
 
     const char* resultLabel = m_cancelled ? "Cancelled"
@@ -1567,20 +1590,20 @@ void CWScanDialog::onScanFinished(int exitCode)
 
     if (m_isUpdate && updateErrorVisual)
     {
-        HICON hErrorIcon = LoadIconA(NULL, MAKEINTRESOURCEA(32513)); /* IDI_ERROR / IDI_HAND */
+        HICON hErrorIcon = LoadIcon(NULL, MAKEINTRESOURCE(32513)); /* IDI_ERROR / IDI_HAND */
         if (hErrorIcon)
         {
-            SendMessageA(m_hwnd, WM_SETICON, ICON_SMALL, (LPARAM)hErrorIcon);
-            SendMessageA(m_hwnd, WM_SETICON, ICON_BIG, (LPARAM)hErrorIcon);
+            SendMessage(m_hwnd, WM_SETICON, ICON_SMALL, (LPARAM)hErrorIcon);
+            SendMessage(m_hwnd, WM_SETICON, ICON_BIG, (LPARAM)hErrorIcon);
         }
     }
 
-    SetWindowTextA(m_hwnd,
+    SetWindowText(m_hwnd,
                    m_isUpdate
-                       ? (updateFailed ? "ClamWin - Update Failed"
-                                       : (updateBlocked ? "ClamWin - Update Blocked"
-                                                        : "ClamWin - Update Complete"))
-                       : "ClamWin - Scan Complete");
+                       ? (updateFailed ? TEXT("ClamWin - Update Failed")
+                                       : (updateBlocked ? TEXT("ClamWin - Update Blocked")
+                                                        : TEXT("ClamWin - Update Complete")))
+                       : TEXT("ClamWin - Scan Complete"));
 
     if (m_isUpdate && !m_cancelled && !updateFailed && !updateBlocked && noUpdatesNeeded)
         m_exitCode = CW_UPDATE_RC_NO_CHANGES;
@@ -1616,15 +1639,17 @@ void CWScanDialog::updateStatsDisplay()
 
         if (m_updateProgressKnown)
         {
-            wsprintfA(buf, "Downloaded total: %s    Throughput: %s/s    Elapsed: %02d:%02d",
+            _snprintf(buf, sizeof(buf), "Downloaded total: %s    Throughput: %s/s    Elapsed: %02d:%02d",
                       done, speedText, mins, secs);
+            buf[sizeof(buf) - 1] = '\0';
         }
         else
         {
             if (!m_updateHadChanges && m_updateUpToDateCount > 0)
-                wsprintfA(buf, "No new virus definitions were downloaded.    Elapsed: %02d:%02d", mins, secs);
+                _snprintf(buf, sizeof(buf), "No new virus definitions were downloaded.    Elapsed: %02d:%02d", mins, secs);
             else
-                wsprintfA(buf, "Preparing secure download channel...    Elapsed: %02d:%02d", mins, secs);
+                _snprintf(buf, sizeof(buf), "Preparing secure download channel...    Elapsed: %02d:%02d", mins, secs);
+            buf[sizeof(buf) - 1] = '\0';
         }
     }
     else
@@ -1632,13 +1657,15 @@ void CWScanDialog::updateStatsDisplay()
         int expected = (m_scanExpectedFiles > 0) ? m_scanExpectedFiles : m_scanCompletedFiles;
         if (m_scanExpectedFiles > 0)
         {
-            wsprintfA(buf, "Files: %d / %d    Threats: %d    Elapsed: %02d:%02d",
+            _snprintf(buf, sizeof(buf), "Files: %d / %d    Threats: %d    Elapsed: %02d:%02d",
                       m_scanCompletedFiles, expected, m_stats.threats_found, mins, secs);
+            buf[sizeof(buf) - 1] = '\0';
         }
         else
         {
-            wsprintfA(buf, "Files scanned: %d    Threats: %d    Elapsed: %02d:%02d",
+            _snprintf(buf, sizeof(buf), "Files scanned: %d    Threats: %d    Elapsed: %02d:%02d",
                       m_scanCompletedFiles, m_stats.threats_found, mins, secs);
+            buf[sizeof(buf) - 1] = '\0';
         }
 
         if (!m_isUpdate && !m_scanDbPhaseSeen && !m_scanFilePhaseSeen &&
@@ -1652,7 +1679,7 @@ void CWScanDialog::updateStatsDisplay()
             setScanStatusText(status, true);
         }
     }
-    SetWindowTextA(m_hwndStats, buf);
+    setWindowTextUtf8(m_hwndStats, buf);
 }
 
 void CWScanDialog::setStatusTextIfChanged(const std::string& text)
@@ -1663,7 +1690,7 @@ void CWScanDialog::setStatusTextIfChanged(const std::string& text)
     if (text == m_lastStatusText)
         return;
 
-    SetWindowTextA(m_hwndStatus, text.c_str());
+    setWindowTextUtf8(m_hwndStatus, text);
     m_lastStatusText = text;
 }
 
@@ -1725,9 +1752,9 @@ std::string CWScanDialog::fitPathForStatus(const std::string& path, int reserved
     HFONT useFont = m_hFont ? m_hFont : (HFONT)GetStockObject(DEFAULT_GUI_FONT);
     HFONT oldFont = (HFONT)SelectObject(hdc, useFont);
 
-    TEXTMETRICA tm;
+    TEXTMETRIC tm;
     memset(&tm, 0, sizeof(tm));
-    GetTextMetricsA(hdc, &tm);
+    GetTextMetrics(hdc, &tm);
 
     SelectObject(hdc, oldFont);
     ReleaseDC(m_hwndStatus, hdc);
@@ -1764,35 +1791,49 @@ void CWScanDialog::layoutControls(int w, int h)
 
 void CWScanDialog::saveReport()
 {
-    char filename[CW_MAX_PATH];
+    TCHAR filename[CW_MAX_PATH];
     time_t t = time(NULL);
     struct tm* tm = localtime(&t);
-    strftime(filename, sizeof(filename),
-             "clamav_report_%d%m%y_%H%M%S.txt", tm);
+    _tcsftime(filename, _countof(filename),
+             TEXT("clamav_report_%d%m%y_%H%M%S.txt"), tm);
 
-    OPENFILENAMEA ofn;
+    OPENFILENAME ofn;
     memset(&ofn, 0, sizeof(ofn));
     ofn.lStructSize = sizeof(ofn);
     ofn.hwndOwner   = m_hwnd;
-    ofn.lpstrFilter = "Text files (*.txt)\0*.txt\0All files (*.*)\0*.*\0";
+    ofn.lpstrFilter = TEXT("Text files (*.txt)\0*.txt\0All files (*.*)\0*.*\0");
     ofn.lpstrFile   = filename;
-    ofn.nMaxFile    = sizeof(filename);
+    ofn.nMaxFile    = _countof(filename);
     ofn.Flags       = OFN_OVERWRITEPROMPT;
-    ofn.lpstrDefExt = "txt";
+    ofn.lpstrDefExt = TEXT("txt");
 
-    if (!GetSaveFileNameA(&ofn)) return;
+    if (!GetSaveFileName(&ofn)) return;
 
-    int len = GetWindowTextLengthA(m_hwndLog);
-    char* text = (char*)malloc(len + 2);
+    int len = GetWindowTextLength(m_hwndLog);
+    TCHAR* text = (TCHAR*)malloc((size_t)(len + 2) * sizeof(TCHAR));
     if (!text) return;
 
-    GetWindowTextA(m_hwndLog, text, len + 1);
-    HANDLE hFile = CreateFileA(filename, GENERIC_WRITE, 0,
+    GetWindowText(m_hwndLog, text, len + 1);
+    HANDLE hFile = CreateFile(filename, GENERIC_WRITE, 0,
                                 NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
     if (hFile != INVALID_HANDLE_VALUE)
     {
         DWORD written;
+#if defined(UNICODE) || defined(_UNICODE)
+        int bytesNeeded = WideCharToMultiByte(CP_UTF8, 0, text, len, NULL, 0, NULL, NULL);
+        if (bytesNeeded > 0)
+        {
+            char* utf8 = (char*)malloc((size_t)bytesNeeded);
+            if (utf8)
+            {
+                WideCharToMultiByte(CP_UTF8, 0, text, len, utf8, bytesNeeded, NULL, NULL);
+                WriteFile(hFile, utf8, (DWORD)bytesNeeded, &written, NULL);
+                free(utf8);
+            }
+        }
+#else
         WriteFile(hFile, text, (DWORD)len, &written, NULL);
+#endif
         CloseHandle(hFile);
     }
     free(text);

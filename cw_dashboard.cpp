@@ -13,23 +13,24 @@
 #include "cw_update_checker.h"
 #include <commctrl.h>
 #include <string.h>
+#include <tchar.h>
 #include <time.h>
 
-#define MAINWND_CLASS_A  "ClamWinDashboard"
+#define MAINWND_CLASS  TEXT("ClamWinDashboard")
 #define MAINWND_WIDTH    560
 #define MAINWND_HEIGHT   518
 
 /* ─── Card table ────────────────────────────────────────────── */
 
 const CWDashboard::CardInfo CWDashboard::s_cards[] = {
-    { IDC_CARD_SCAN,     "Scan &Files",       "Select files or folders to scan"  },
-    { IDC_CARD_UPDATE,   "&Update Database",  "Download latest virus definitions" },
-    { IDC_CARD_SCANMEM,  "Scan &Memory",      "Check running processes"           },
-    { IDC_CARD_REPORTS,  "View &Reports",     "Scan and update log files"         },
-    { IDC_CARD_PREFS,    "&Preferences",      "Configure scanner and updates"     },
-    { IDC_CARD_SCHEDULE, "Scheduled S&cans",  "Manage scan schedule"              },
-    { IDC_CARD_HELP,     "&Help",             "Online support and documentation" },
-    { IDC_CARD_ABOUT,    "&About ClamWin",    "Version, licenses, and credits" },
+    { IDC_CARD_SCAN,     TEXT("Scan &Files"),       TEXT("Select files or folders to scan")  },
+    { IDC_CARD_UPDATE,   TEXT("&Update Database"),  TEXT("Download latest virus definitions") },
+    { IDC_CARD_SCANMEM,  TEXT("Scan &Memory"),      TEXT("Check running processes")           },
+    { IDC_CARD_REPORTS,  TEXT("View &Reports"),     TEXT("Scan and update log files")         },
+    { IDC_CARD_PREFS,    TEXT("&Preferences"),      TEXT("Configure scanner and updates")     },
+    { IDC_CARD_SCHEDULE, TEXT("Scheduled S&cans"),  TEXT("Manage scan schedule")              },
+    { IDC_CARD_HELP,     TEXT("&Help"),             TEXT("Online support and documentation") },
+    { IDC_CARD_ABOUT,    TEXT("&About ClamWin"),    TEXT("Version, licenses, and credits") },
 };
 const int CWDashboard::s_cardCount =
     (int)(sizeof(s_cards) / sizeof(s_cards[0]));
@@ -67,8 +68,8 @@ bool CWDashboard::open(HWND parent)
     if (m_updateAvailable)
         initialHeight += CW_Scale(46);
 
-    bool ok = create(MAINWND_CLASS_A,
-                     "ClamWin Free Antivirus",
+    bool ok = create(MAINWND_CLASS,
+                     TEXT("ClamWin Free Antivirus"),
                      WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
                      WS_EX_APPWINDOW, parent,
                      CW_USEDEFAULT, CW_USEDEFAULT,
@@ -91,11 +92,15 @@ void CWDashboard::setUpdateAvailable(const char* versionStr)
     m_updateAvailable = true;
     if (versionStr)
     {
-        lstrcpynA(m_newVersion, versionStr, sizeof(m_newVersion));
+#if defined(UNICODE) || defined(_UNICODE)
+    MultiByteToWideChar(CP_ACP, 0, versionStr, -1, m_newVersion, _countof(m_newVersion));
+#else
+    lstrcpyn(m_newVersion, versionStr, _countof(m_newVersion));
+#endif
     }
     else
     {
-        m_newVersion[0] = '\0';
+    m_newVersion[0] = TEXT('\0');
     }
 
     if (m_hwnd)
@@ -118,11 +123,11 @@ void CWDashboard::setUpdateAvailable(const char* versionStr)
 
 /* ─── fillWndClass override ─────────────────────────────────── */
 
-void CWDashboard::fillWndClass(WNDCLASSA& wc)
+void CWDashboard::fillWndClass(WNDCLASS& wc)
 {
     CWWindow::fillWndClass(wc);
     wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
-    wc.hIcon = LoadIconA(m_hInst, MAKEINTRESOURCEA(IDI_CLAMWIN));
+    wc.hIcon = LoadIcon(m_hInst, MAKEINTRESOURCE(IDI_CLAMWIN));
 }
 
 /* ─── onCreate ──────────────────────────────────────────────── */
@@ -139,7 +144,7 @@ void CWDashboard::initCardTooltips()
     if (!m_hwnd)
         return;
 
-    m_hwndTooltip = CreateWindowExA(WS_EX_TOPMOST, TOOLTIPS_CLASSA, "",
+    m_hwndTooltip = CreateWindowEx(WS_EX_TOPMOST, TOOLTIPS_CLASS, TEXT(""),
                                     WS_POPUP | TTS_ALWAYSTIP | TTS_NOPREFIX,
                                     CW_USEDEFAULT, CW_USEDEFAULT,
                                     CW_USEDEFAULT, CW_USEDEFAULT,
@@ -149,18 +154,18 @@ void CWDashboard::initCardTooltips()
 
     SetWindowPos(m_hwndTooltip, HWND_TOPMOST, 0, 0, 0, 0,
                  SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
-    SendMessageA(m_hwndTooltip, TTM_SETMAXTIPWIDTH, 0, CW_Scale(320));
+    SendMessage(m_hwndTooltip, TTM_SETMAXTIPWIDTH, 0, CW_Scale(320));
 
     for (int i = 0; i < s_cardCount; ++i)
     {
-        TOOLINFOA ti;
+        TOOLINFO ti;
         ZeroMemory(&ti, sizeof(ti));
         ti.cbSize = sizeof(ti);
         ti.uFlags = TTF_SUBCLASS;
         ti.hwnd = m_hwnd;
         ti.uId = (UINT_PTR)(100 + i);
-        ti.lpszText = const_cast<LPSTR>(s_cards[i].desc);
-        SendMessageA(m_hwndTooltip, TTM_ADDTOOLA, 0, (LPARAM)&ti);
+        ti.lpszText = const_cast<LPTSTR>(s_cards[i].desc);
+        SendMessage(m_hwndTooltip, TTM_ADDTOOL, 0, (LPARAM)&ti);
     }
 
     updateCardTooltipRects();
@@ -178,13 +183,13 @@ void CWDashboard::updateCardTooltipRects()
     {
         getCardRect(i, client, cardRc);
 
-        TOOLINFOA ti;
+        TOOLINFO ti;
         ZeroMemory(&ti, sizeof(ti));
         ti.cbSize = sizeof(ti);
         ti.hwnd = m_hwnd;
         ti.uId = (UINT_PTR)(100 + i);
         ti.rect = cardRc;
-        SendMessageA(m_hwndTooltip, TTM_NEWTOOLRECTA, 0, (LPARAM)&ti);
+        SendMessage(m_hwndTooltip, TTM_NEWTOOLRECT, 0, (LPARAM)&ti);
     }
 }
 
@@ -199,9 +204,9 @@ void CWDashboard::destroyCardTooltips()
 
 /* ─── Font management ───────────────────────────────────────── */
 
-static HFONT makeFont(int pt, int weight, const char* face)
+static HFONT makeFont(int pt, int weight, LPCTSTR face)
 {
-    HFONT hf = CreateFontA(-CW_Scale(pt), 0, 0, 0, weight,
+    HFONT hf = CreateFont(-CW_Scale(pt), 0, 0, 0, weight,
                             FALSE, FALSE, FALSE,
                             DEFAULT_CHARSET, 0, 0,
                             CLEARTYPE_QUALITY, 0, face);
@@ -210,7 +215,7 @@ static HFONT makeFont(int pt, int weight, const char* face)
     return hf;
 }
 
-static void buildMnemonicTitle(const char* src, char* out, int outCap, int& mnemonicIndex)
+static void buildMnemonicTitle(const TCHAR* src, TCHAR* out, int outCap, int& mnemonicIndex)
 {
     int inPos = 0;
     int outPos = 0;
@@ -223,12 +228,12 @@ static void buildMnemonicTitle(const char* src, char* out, int outCap, int& mnem
 
     while (src[inPos] != '\0' && outPos < outCap - 1)
     {
-        if (src[inPos] == '&')
+        if (src[inPos] == TEXT('&'))
         {
             /* Escaped ampersand: "&&" -> "&" */
-            if (src[inPos + 1] == '&')
+            if (src[inPos + 1] == TEXT('&'))
             {
-                out[outPos++] = '&';
+                out[outPos++] = TEXT('&');
                 inPos += 2;
                 continue;
             }
@@ -251,11 +256,11 @@ static void buildMnemonicTitle(const char* src, char* out, int outCap, int& mnem
 
 void CWDashboard::createFonts()
 {
-    m_fontTitle      = makeFont(16, FW_SEMIBOLD, "Tahoma");
-    m_fontDesc       = makeFont(13, FW_NORMAL,   "Tahoma");
-    m_fontBanner     = makeFont(18, FW_SEMIBOLD, "Tahoma");
-    m_fontBannerSub  = makeFont(12, FW_NORMAL,   "Tahoma");
-    m_fontStatus     = makeFont(12, FW_NORMAL,   "Tahoma");
+    m_fontTitle      = makeFont(16, FW_SEMIBOLD, TEXT("Tahoma"));
+    m_fontDesc       = makeFont(13, FW_NORMAL,   TEXT("Tahoma"));
+    m_fontBanner     = makeFont(18, FW_SEMIBOLD, TEXT("Tahoma"));
+    m_fontBannerSub  = makeFont(12, FW_NORMAL,   TEXT("Tahoma"));
+    m_fontStatus     = makeFont(12, FW_NORMAL,   TEXT("Tahoma"));
 }
 
 void CWDashboard::destroyFonts()
@@ -311,20 +316,20 @@ void CWDashboard::paintBanner(HDC hdc, const RECT& client)
     CWTheme* theme = CW_GetTheme();
     COLORREF bannerColor;
     const COLORREF bannerTextColor = RGB(255, 255, 255);
-    const char* statusText;
+    const TCHAR* statusText;
     switch (m_status)
     {
         case CW_STATUS_OK:
             bannerColor = theme ? theme->colorSuccess() : RGB(46, 125, 50);
-            statusText  = "Virus definitions are up to date";
+            statusText  = TEXT("Virus definitions are up to date");
             break;
         case CW_STATUS_WARN:
             bannerColor = theme ? theme->colorAccent() : RGB(230, 162, 0);
-            statusText  = "Virus definitions may be out of date";
+            statusText  = TEXT("Virus definitions may be out of date");
             break;
         default:
             bannerColor = theme ? theme->colorWarning() : RGB(198, 40, 40);
-            statusText  = "Virus definitions not found";
+            statusText  = TEXT("Virus definitions not found");
             break;
     }
 
@@ -347,33 +352,34 @@ void CWDashboard::paintBanner(HDC hdc, const RECT& client)
     SelectObject(hdc, m_fontBanner);
     RECT tr = { bannerRc.left + CW_Scale(20), bannerRc.top + CW_Scale(12),
                 bannerRc.right - CW_Scale(20), bannerRc.top + CW_Scale(38) };
-    DrawTextA(hdc, statusText, -1, &tr, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+    DrawText(hdc, statusText, -1, &tr, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
 
     /* Sub-text: DB info */
     SelectObject(hdc, m_fontBannerSub);
-    char dbLine[256];
+    TCHAR dbLine[256];
     if (m_dbInfo.total_sigs > 0)
     {
-        char tStr[64] = "";
+        TCHAR tStr[64] = TEXT("");
         if (m_dbInfo.updated_time > 0)
         {
             time_t t = (time_t)m_dbInfo.updated_time;
             struct tm* tm = localtime(&t);
-            if (tm) strftime(tStr, 64, "%d %b %Y %I:%M %p", tm);
+            if (tm) _tcsftime(tStr, _countof(tStr), TEXT("%d %b %Y %I:%M %p"), tm);
         }
-        wsprintfA(dbLine,
-                  "Database: v%d (main) / v%d (daily) - %d signatures\n"
-                  "Last updated: %s",
+        _sntprintf(dbLine, _countof(dbLine),
+                  TEXT("Database: v%d (main) / v%d (daily) - %d signatures\n")
+                  TEXT("Last updated: %s"),
                   m_dbInfo.main_ver, m_dbInfo.daily_ver,
                   m_dbInfo.total_sigs, tStr);
+        dbLine[_countof(dbLine) - 1] = TEXT('\0');
     }
     else
     {
-        lstrcpyA(dbLine, "No virus database found. Click 'Update Database' to download.");
+        lstrcpy(dbLine, TEXT("No virus database found. Click 'Update Database' to download."));
     }
     RECT sr = { bannerRc.left + CW_Scale(20), bannerRc.top + CW_Scale(40),
                 bannerRc.right - CW_Scale(20), bannerRc.bottom - CW_Scale(6) };
-    DrawTextA(hdc, dbLine, -1, &sr, DT_LEFT | DT_WORDBREAK);
+    DrawText(hdc, dbLine, -1, &sr, DT_LEFT | DT_WORDBREAK);
 }
 
 void CWDashboard::paintCards(HDC hdc, const RECT& client)
@@ -408,30 +414,30 @@ void CWDashboard::paintCards(HDC hdc, const RECT& client)
         RECT tr = { cardRc.left + CW_Scale(16), cardRc.top + CW_Scale(14),
                     cardRc.right - CW_Scale(12), cardRc.top + CW_Scale(36) };
 
-        char titleText[64];
+        TCHAR titleText[64];
         int mnemonicIndex = -1;
         buildMnemonicTitle(s_cards[i].title, titleText, (int)sizeof(titleText), mnemonicIndex);
 
-        DrawTextA(hdc, titleText, -1, &tr, DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX);
+        DrawText(hdc, titleText, -1, &tr, DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX);
 
         if (m_showMnemonics && mnemonicIndex >= 0)
         {
             SIZE fullSz = { 0, 0 };
-            GetTextExtentPoint32A(hdc, titleText, lstrlenA(titleText), &fullSz);
-            TEXTMETRICA tm;
-            GetTextMetricsA(hdc, &tm);
+            GetTextExtentPoint32(hdc, titleText, lstrlen(titleText), &fullSz);
+            TEXTMETRIC tm;
+            GetTextMetrics(hdc, &tm);
 
             int textTop = tr.top + ((tr.bottom - tr.top - fullSz.cy) / 2);
             int prefixLen = mnemonicIndex;
             if (prefixLen > 0)
             {
                 SIZE prefixSz = { 0, 0 };
-                GetTextExtentPoint32A(hdc, titleText, prefixLen, &prefixSz);
+                GetTextExtentPoint32(hdc, titleText, prefixLen, &prefixSz);
                 tr.left += prefixSz.cx;
             }
 
             SIZE mnemonicSz = { 0, 0 };
-            GetTextExtentPoint32A(hdc, &titleText[mnemonicIndex], 1, &mnemonicSz);
+            GetTextExtentPoint32(hdc, &titleText[mnemonicIndex], 1, &mnemonicSz);
 
             const int underlineGap = CW_Scale(2);
             const int underlineThickness = CW_Scale(1);
@@ -452,7 +458,7 @@ void CWDashboard::paintCards(HDC hdc, const RECT& client)
         SelectObject(hdc, m_fontDesc);
         RECT dr = { cardRc.left + CW_Scale(16), cardRc.top + CW_Scale(40),
                     cardRc.right - CW_Scale(12), cardRc.bottom - CW_Scale(8) };
-        DrawTextA(hdc, s_cards[i].desc, -1, &dr,
+        DrawText(hdc, s_cards[i].desc, -1, &dr,
                   DT_LEFT | DT_SINGLELINE | DT_VCENTER);
     }
 }
@@ -478,9 +484,9 @@ void CWDashboard::paintStatusBar(HDC hdc, const RECT& client)
 
     SelectObject(hdc, m_fontStatus);
     SetTextColor(hdc, textColor);
-    const char* txt = "\xA9 2026 ClamWin Project. All rights reserved.";
+    const TCHAR* txt = TEXT("\xA9 2026 ClamWin Project. All rights reserved.");
     RECT tr = { CW_Scale(8), sbarRc.top + CW_Scale(4), client.right - CW_Scale(8), client.bottom - CW_Scale(4) };
-    DrawTextA(hdc, txt, -1, &tr, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
+    DrawText(hdc, txt, -1, &tr, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
 }
 
 /* ─── Update available banner ───────────────────────────────── */
@@ -512,45 +518,45 @@ void CWDashboard::paintUpdateBanner(HDC hdc, const RECT& client)
     SetTextColor(hdc, bannerText);
 
     /* Use a larger, bolder font for high-contrast update messaging. */
-    HFONT hMsgFont = makeFont(15, FW_SEMIBOLD, "Tahoma");
+    HFONT hMsgFont = makeFont(15, FW_SEMIBOLD, TEXT("Tahoma"));
     HGDIOBJ oldMsgFont = NULL;
     if (hMsgFont)
         oldMsgFont = SelectObject(hdc, hMsgFont);
 
-    char prefixMsg[220];
-    _snprintf(prefixMsg, sizeof(prefixMsg),
-              "New release: ClamWin %s is available!  ",
+    TCHAR prefixMsg[220];
+    _sntprintf(prefixMsg, _countof(prefixMsg),
+              TEXT("New release: ClamWin %s is available!  "),
               m_newVersion);
-    prefixMsg[sizeof(prefixMsg) - 1] = '\0';
+    prefixMsg[_countof(prefixMsg) - 1] = TEXT('\0');
 
-    const char* linkMsg = "Click here to download";
-    const char* suffixMsg = ".";
+    const TCHAR* linkMsg = TEXT("Click here to download");
+    const TCHAR* suffixMsg = TEXT(".");
 
     RECT textRc = { rc.left + CW_Scale(16), rc.top, rc.right - CW_Scale(16), rc.bottom };
 
     /* Draw prefix text. */
-    DrawTextA(hdc, prefixMsg, -1, &textRc, DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX);
+    DrawText(hdc, prefixMsg, -1, &textRc, DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX);
 
     SIZE prefixSz = {0, 0};
-    GetTextExtentPoint32A(hdc, prefixMsg, lstrlenA(prefixMsg), &prefixSz);
+    GetTextExtentPoint32(hdc, prefixMsg, lstrlen(prefixMsg), &prefixSz);
     int linkX = textRc.left + prefixSz.cx;
 
     /* Draw link text underlined for hyperlink affordance. */
     HFONT hUnderline = NULL;
     HFONT oldFont = NULL;
-    LOGFONTA lf;
+    LOGFONT lf;
     ZeroMemory(&lf, sizeof(lf));
-    if (hMsgFont && GetObjectA(hMsgFont, sizeof(lf), &lf) == sizeof(lf))
+    if (hMsgFont && GetObject(hMsgFont, sizeof(lf), &lf) == sizeof(lf))
     {
         lf.lfUnderline = TRUE;
         lf.lfWeight = FW_BOLD;
-        hUnderline = CreateFontIndirectA(&lf);
+        hUnderline = CreateFontIndirect(&lf);
     }
     if (hUnderline)
         oldFont = (HFONT)SelectObject(hdc, hUnderline);
 
     RECT linkRc = { linkX, rc.top, rc.right - CW_Scale(16), rc.bottom };
-    DrawTextA(hdc, linkMsg, -1, &linkRc, DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX);
+    DrawText(hdc, linkMsg, -1, &linkRc, DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX);
 
     if (oldFont)
         SelectObject(hdc, oldFont);
@@ -558,10 +564,10 @@ void CWDashboard::paintUpdateBanner(HDC hdc, const RECT& client)
         DeleteObject(hUnderline);
 
     SIZE linkSz = {0, 0};
-    GetTextExtentPoint32A(hdc, linkMsg, lstrlenA(linkMsg), &linkSz);
+    GetTextExtentPoint32(hdc, linkMsg, lstrlen(linkMsg), &linkSz);
 
     RECT suffixRc = { linkX + linkSz.cx, rc.top, rc.right - CW_Scale(16), rc.bottom };
-    DrawTextA(hdc, suffixMsg, -1, &suffixRc, DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX);
+    DrawText(hdc, suffixMsg, -1, &suffixRc, DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX);
 
     if (oldMsgFont)
         SelectObject(hdc, oldMsgFont);
@@ -634,8 +640,8 @@ LRESULT CWDashboard::onMessage(UINT msg, WPARAM wp, LPARAM lp)
                 tme.hwndTrack = m_hwnd;
                 TrackMouseEvent(&tme);
             }
-            SetCursor(LoadCursorA(NULL,
-                      (m_hoverCard >= 0 || onBanner) ? (LPCSTR)IDC_HAND : (LPCSTR)IDC_ARROW));
+            SetCursor(LoadCursor(NULL,
+                      (m_hoverCard >= 0 || onBanner) ? IDC_HAND : IDC_ARROW));
             return 0;
         }
 
@@ -657,8 +663,8 @@ LRESULT CWDashboard::onMessage(UINT msg, WPARAM wp, LPARAM lp)
                 bannerRc.right = client.right - CW_Scale(12);
                 if (PtInRect(&bannerRc, pt))
                 {
-                    ShellExecuteA(m_hwnd, "open",
-                                  CWUpdateChecker::downloadUrl(),
+                    ShellExecute(m_hwnd, TEXT("open"),
+                                  TEXT("https://www.clamwin.com/download"),
                                   NULL, NULL, SW_SHOWNORMAL);
                     return 0;
                 }
@@ -782,6 +788,6 @@ void CWDashboard::postTrayCommand(int menuId)
     if (CWApplication::instance())
     {
         HWND target = CWApplication::instance()->getTrayHwnd();
-        if (target) PostMessageA(target, WM_COMMAND, (WPARAM)trayId, 0);
+        if (target) PostMessage(target, WM_COMMAND, (WPARAM)trayId, 0);
     }
 }

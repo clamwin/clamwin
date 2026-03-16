@@ -7,18 +7,19 @@
 
 #include "cw_config.h"
 #include "cw_gui_shared.h"   /* for CW_INI_SECTION_* defines */
+#include "cw_text_conv.h"
 
 #include <stdio.h>
 #include <string.h>
 
 /* ─── Section names (same as legacy Python ClamWin) ─────────── */
 
-static const char* SEC_CLAMAV   = "ClamAV";
-static const char* SEC_UPDATES  = "Updates";
-static const char* SEC_PROXY    = "Proxy";
-static const char* SEC_SCHEDULE = "Schedule";
-static const char* SEC_ALERTS   = "EmailAlerts";
-static const char* SEC_UI       = "UI";
+static const TCHAR* SEC_CLAMAV   = TEXT("ClamAV");
+static const TCHAR* SEC_UPDATES  = TEXT("Updates");
+static const TCHAR* SEC_PROXY    = TEXT("Proxy");
+static const TCHAR* SEC_SCHEDULE = TEXT("Schedule");
+static const TCHAR* SEC_ALERTS   = TEXT("EmailAlerts");
+static const TCHAR* SEC_UI       = TEXT("UI");
 
 static std::string normalizeFilterPatterns(const std::string& raw)
 {
@@ -38,16 +39,17 @@ CWConfig::CWConfig()
 
 void CWConfig::defaults()
 {
-    char exedir[MAX_PATH];
-    GetModuleFileNameA(NULL, exedir, MAX_PATH);
-    char* slash = strrchr(exedir, '\\');
+    TCHAR exedir[MAX_PATH];
+    GetModuleFileName(NULL, exedir, MAX_PATH);
+    TCHAR* slash = _tcsrchr(exedir, TEXT('\\'));
     if (slash) *(slash + 1) = '\0';
+    std::string exedirStr = CW_ToNarrow(exedir);
 
-    char profile[MAX_PATH];
-    DWORD profileLen = GetEnvironmentVariableA("USERPROFILE", profile, MAX_PATH);
+    TCHAR profile[MAX_PATH];
+    DWORD profileLen = GetEnvironmentVariable(TEXT("USERPROFILE"), profile, MAX_PATH);
     if (profileLen > 0 && profileLen < MAX_PATH)
     {
-        std::string profileRoot = std::string(profile) + "\\.clamwin";
+        std::string profileRoot = CW_ToNarrow(profile) + "\\.clamwin";
         databasePath   = profileRoot + "\\db";
         quarantinePath = profileRoot + "\\Quarantine";
         scanLogFile    = profileRoot + "\\ClamScan.log";
@@ -55,10 +57,10 @@ void CWConfig::defaults()
     }
     else
     {
-        databasePath   = std::string(exedir) + "db";
-        quarantinePath = std::string(exedir) + "Quarantine";
-        scanLogFile    = std::string(exedir) + "ClamScan.log";
-        updateLogFile  = std::string(exedir) + "FreshClam.log";
+        databasePath   = exedirStr + "db";
+        quarantinePath = exedirStr + "Quarantine";
+        scanLogFile    = exedirStr + "ClamScan.log";
+        updateLogFile  = exedirStr + "FreshClam.log";
     }
 
     iniPath         = defaultIniPath();
@@ -115,18 +117,18 @@ void CWConfig::defaults()
 
 std::string CWConfig::defaultIniPath()
 {
-    char profile[MAX_PATH];
-    DWORD len = GetEnvironmentVariableA("USERPROFILE", profile, MAX_PATH);
+    TCHAR profile[MAX_PATH];
+    DWORD len = GetEnvironmentVariable(TEXT("USERPROFILE"), profile, MAX_PATH);
     if (len > 0 && len < MAX_PATH)
     {
-        return std::string(profile) + "\\.clamwin\\ClamWin.conf";
+        return CW_ToNarrow(profile) + "\\.clamwin\\ClamWin.conf";
     }
     /* Fallback: same directory as executable */
-    char exedir[MAX_PATH];
-    GetModuleFileNameA(NULL, exedir, MAX_PATH);
-    char* slash = strrchr(exedir, '\\');
+    TCHAR exedir[MAX_PATH];
+    GetModuleFileName(NULL, exedir, MAX_PATH);
+    TCHAR* slash = _tcsrchr(exedir, TEXT('\\'));
     if (slash) *(slash + 1) = '\0';
-    return std::string(exedir) + "ClamWin.conf";
+    return CW_ToNarrow(exedir) + "ClamWin.conf";
 }
 
 /* ─── freshclam.conf path ────────────────────────────────────── */
@@ -152,7 +154,8 @@ bool CWConfig::writeFreshclamConf() const
     if (slash != std::string::npos)
     {
         dir.resize(slash);
-        CreateDirectoryA(dir.c_str(), NULL);
+        std::basic_string<TCHAR> tDir = CW_ToT(dir);
+        CreateDirectory(tDir.c_str(), NULL);
     }
 
     FILE* f = fopen(path.c_str(), "w");
@@ -198,103 +201,107 @@ bool CWConfig::load(const std::string& path)
     if (!path.empty())
         iniPath = path;
 
-    if (GetFileAttributesA(iniPath.c_str()) == INVALID_FILE_ATTRIBUTES)
     {
-        /* Keep freshclam.conf in sync with the default/profile config path
-         * even when ClamWin.conf does not exist yet. */
-        writeFreshclamConf();
-        return false;  /* no file — defaults already applied */
+        std::basic_string<TCHAR> tIniPath = CW_ToT(iniPath);
+        if (GetFileAttributes(tIniPath.c_str()) == INVALID_FILE_ATTRIBUTES)
+        {
+            /* Keep freshclam.conf in sync with the default/profile config path
+             * even when ClamWin.conf does not exist yet. */
+            writeFreshclamConf();
+            return false;  /* no file — defaults already applied */
+        }
     }
 
-    databasePath   = getStr(SEC_CLAMAV, "Database",      databasePath);
-    scanRecursive  = getInt(SEC_CLAMAV, "ScanRecursive", scanRecursive) != 0;
-    scanArchives   = getInt(SEC_CLAMAV, "ScanArchives",  scanArchives)  != 0;
-    scanOle2       = getInt(SEC_CLAMAV, "ScanOle2",      scanOle2)      != 0;
-    scanMail       = getInt(SEC_CLAMAV, "ScanMail",      scanMail)      != 0;
-    infectedAction = getInt(SEC_CLAMAV, "InfectedAction", infectedAction);
-    maxScanSizeMb  = getInt(SEC_CLAMAV, "MaxScanSize",   maxScanSizeMb);
-    maxFileSizeMb  = getInt(SEC_CLAMAV, "MaxFileSize",   maxFileSizeMb);
-    maxFiles       = getInt(SEC_CLAMAV, "MaxFiles",      maxFiles);
-    maxDepth       = getInt(SEC_CLAMAV, "MaxRecursion",  maxDepth);
-    quarantinePath = getStr(SEC_CLAMAV, "Quarantine",    quarantinePath);
-    scanLogFile    = getStr(SEC_CLAMAV, "LogFile",       scanLogFile);
-    priority       = getStr(SEC_CLAMAV, "Priority",      priority);
+    databasePath   = getStr(SEC_CLAMAV, TEXT("Database"),      databasePath);
+    scanRecursive  = getInt(SEC_CLAMAV, TEXT("ScanRecursive"), scanRecursive) != 0;
+    scanArchives   = getInt(SEC_CLAMAV, TEXT("ScanArchives"),  scanArchives)  != 0;
+    scanOle2       = getInt(SEC_CLAMAV, TEXT("ScanOle2"),      scanOle2)      != 0;
+    scanMail       = getInt(SEC_CLAMAV, TEXT("ScanMail"),      scanMail)      != 0;
+    infectedAction = getInt(SEC_CLAMAV, TEXT("InfectedAction"), infectedAction);
+    maxScanSizeMb  = getInt(SEC_CLAMAV, TEXT("MaxScanSize"),   maxScanSizeMb);
+    maxFileSizeMb  = getInt(SEC_CLAMAV, TEXT("MaxFileSize"),   maxFileSizeMb);
+    maxFiles       = getInt(SEC_CLAMAV, TEXT("MaxFiles"),      maxFiles);
+    maxDepth       = getInt(SEC_CLAMAV, TEXT("MaxRecursion"),  maxDepth);
+    quarantinePath = getStr(SEC_CLAMAV, TEXT("Quarantine"),    quarantinePath);
+    scanLogFile    = getStr(SEC_CLAMAV, TEXT("LogFile"),       scanLogFile);
+    priority       = getStr(SEC_CLAMAV, TEXT("Priority"),      priority);
 
-    dbMirror        = getStr(SEC_UPDATES, "DBMirror",        dbMirror);
-    updateLogFile   = getStr(SEC_UPDATES, "UpdateLog",       updateLogFile);
-    updateOnStartup = getInt(SEC_UPDATES, "UpdateOnStartup", updateOnStartup) != 0;
-    checkVersion    = getInt(SEC_UPDATES, "CheckVersion",    checkVersion)    != 0;
+    dbMirror        = getStr(SEC_UPDATES, TEXT("DBMirror"),        dbMirror);
+    updateLogFile   = getStr(SEC_UPDATES, TEXT("UpdateLog"),       updateLogFile);
+    updateOnStartup = getInt(SEC_UPDATES, TEXT("UpdateOnStartup"), updateOnStartup) != 0;
+    checkVersion    = getInt(SEC_UPDATES, TEXT("CheckVersion"),    checkVersion)    != 0;
 
-    proxyEnabled = getInt(SEC_PROXY, "Enabled",  proxyEnabled) != 0;
-    proxyHost    = getStr(SEC_PROXY, "Host",     proxyHost);
-    proxyPort    = getInt(SEC_PROXY, "Port",     proxyPort);
-    proxyUser    = getStr(SEC_PROXY, "User",     proxyUser);
-    proxyPass    = getStr(SEC_PROXY, "Password", proxyPass);
+    proxyEnabled = getInt(SEC_PROXY, TEXT("Enabled"),  proxyEnabled) != 0;
+    proxyHost    = getStr(SEC_PROXY, TEXT("Host"),     proxyHost);
+    proxyPort    = getInt(SEC_PROXY, TEXT("Port"),     proxyPort);
+    proxyUser    = getStr(SEC_PROXY, TEXT("User"),     proxyUser);
+    proxyPass    = getStr(SEC_PROXY, TEXT("Password"), proxyPass);
 
-    emailEnabled = getInt(SEC_ALERTS, "Enabled", emailEnabled) != 0;
-    emailFrom    = getStr(SEC_ALERTS, "From",    emailFrom);
-    emailTo      = getStr(SEC_ALERTS, "To",      emailTo);
-    emailSmtp    = getStr(SEC_ALERTS, "SMTP",    emailSmtp);
+    emailEnabled = getInt(SEC_ALERTS, TEXT("Enabled"), emailEnabled) != 0;
+    emailFrom    = getStr(SEC_ALERTS, TEXT("From"),    emailFrom);
+    emailTo      = getStr(SEC_ALERTS, TEXT("To"),      emailTo);
+    emailSmtp    = getStr(SEC_ALERTS, TEXT("SMTP"),    emailSmtp);
 
-    scanScheduled   = getInt(SEC_SCHEDULE, "ScanEnabled",    scanScheduled)   != 0;
-    scanHour        = getInt(SEC_SCHEDULE, "ScanHour",       scanHour);
-    scanMinute      = getInt(SEC_SCHEDULE, "ScanMinute",     scanMinute);
-    scanFrequency   = getInt(SEC_SCHEDULE, "ScanFrequency",  scanFrequency);
-    scanDay         = getInt(SEC_SCHEDULE, "ScanDay",        scanDay);
-    scanPath        = getStr(SEC_SCHEDULE, "ScanPath",        scanPath);
-    scanDescription = getStr(SEC_SCHEDULE, "ScanDescription", scanDescription);
-    scanMemory      = getInt(SEC_SCHEDULE, "ScanMemory",      scanMemory) != 0;
-    scanRunMissed   = getInt(SEC_SCHEDULE, "RunMissed",       scanRunMissed) != 0;
-    scanLastRunTime = getInt64(SEC_SCHEDULE, "ScanLastRun",   scanLastRunTime);
-    updateScheduled = getInt(SEC_SCHEDULE, "UpdateEnabled",  updateScheduled) != 0;
-    updateHour      = getInt(SEC_SCHEDULE, "UpdateHour",     updateHour);
-    updateMinute    = getInt(SEC_SCHEDULE, "UpdateMinute",   updateMinute);
-    updateFrequency = getInt(SEC_SCHEDULE, "UpdateFrequency",updateFrequency);
-    updateRunMissed = getInt(SEC_SCHEDULE, "UpdateRunMissed",updateRunMissed) != 0;
-    updateLastRunTime = getInt64(SEC_SCHEDULE,"UpdateLastRun",updateLastRunTime);
+    scanScheduled   = getInt(SEC_SCHEDULE, TEXT("ScanEnabled"),    scanScheduled)   != 0;
+    scanHour        = getInt(SEC_SCHEDULE, TEXT("ScanHour"),       scanHour);
+    scanMinute      = getInt(SEC_SCHEDULE, TEXT("ScanMinute"),     scanMinute);
+    scanFrequency   = getInt(SEC_SCHEDULE, TEXT("ScanFrequency"),  scanFrequency);
+    scanDay         = getInt(SEC_SCHEDULE, TEXT("ScanDay"),        scanDay);
+    scanPath        = getStr(SEC_SCHEDULE, TEXT("ScanPath"),        scanPath);
+    scanDescription = getStr(SEC_SCHEDULE, TEXT("ScanDescription"), scanDescription);
+    scanMemory      = getInt(SEC_SCHEDULE, TEXT("ScanMemory"),      scanMemory) != 0;
+    scanRunMissed   = getInt(SEC_SCHEDULE, TEXT("RunMissed"),       scanRunMissed) != 0;
+    scanLastRunTime = getInt64(SEC_SCHEDULE, TEXT("ScanLastRun"),   scanLastRunTime);
+    updateScheduled = getInt(SEC_SCHEDULE, TEXT("UpdateEnabled"),  updateScheduled) != 0;
+    updateHour      = getInt(SEC_SCHEDULE, TEXT("UpdateHour"),     updateHour);
+    updateMinute    = getInt(SEC_SCHEDULE, TEXT("UpdateMinute"),   updateMinute);
+    updateFrequency = getInt(SEC_SCHEDULE, TEXT("UpdateFrequency"),updateFrequency);
+    updateRunMissed = getInt(SEC_SCHEDULE, TEXT("UpdateRunMissed"),updateRunMissed) != 0;
+    updateLastRunTime = getInt64(SEC_SCHEDULE, TEXT("UpdateLastRun"),updateLastRunTime);
 
-    closeOnExit     = getInt(SEC_UI, "CloseOnExit", closeOnExit)  != 0;
-    trayNotify      = getInt(SEC_UI, "TrayNotify",  trayNotify)   != 0;
+    closeOnExit     = getInt(SEC_UI, TEXT("CloseOnExit"), closeOnExit)  != 0;
+    trayNotify      = getInt(SEC_UI, TEXT("TrayNotify"),  trayNotify)   != 0;
 
     /* Preserve backward compatibility with INI files that contain empty log path values. */
     if (scanLogFile.empty())
     {
-        char exedir[MAX_PATH];
-        GetModuleFileNameA(NULL, exedir, MAX_PATH);
-        char* slash = strrchr(exedir, '\\');
+        TCHAR exedir[MAX_PATH];
+        GetModuleFileName(NULL, exedir, MAX_PATH);
+        TCHAR* slash = _tcsrchr(exedir, TEXT('\\'));
         if (slash)
             *(slash + 1) = '\0';
-        scanLogFile = std::string(exedir) + "ClamScan.log";
+        scanLogFile = CW_ToNarrow(exedir) + "ClamScan.log";
     }
     if (updateLogFile.empty())
     {
-        char exedir[MAX_PATH];
-        GetModuleFileNameA(NULL, exedir, MAX_PATH);
-        char* slash = strrchr(exedir, '\\');
+        TCHAR exedir[MAX_PATH];
+        GetModuleFileName(NULL, exedir, MAX_PATH);
+        TCHAR* slash = _tcsrchr(exedir, TEXT('\\'));
         if (slash)
             *(slash + 1) = '\0';
-        updateLogFile = std::string(exedir) + "FreshClam.log";
+        updateLogFile = CW_ToNarrow(exedir) + "FreshClam.log";
     }
 
     /* Migrate legacy install-dir defaults to user profile paths.
      * This avoids update failures when ClamWin is installed under Program Files. */
     {
-        char exedir[MAX_PATH];
-        GetModuleFileNameA(NULL, exedir, MAX_PATH);
-        char* slash = strrchr(exedir, '\\');
+        TCHAR exedir[MAX_PATH];
+        GetModuleFileName(NULL, exedir, MAX_PATH);
+        TCHAR* slash = _tcsrchr(exedir, TEXT('\\'));
         if (slash)
             *(slash + 1) = '\0';
 
-        std::string installDb         = std::string(exedir) + "db";
-        std::string installQuarantine = std::string(exedir) + "Quarantine";
-        std::string installScanLog    = std::string(exedir) + "ClamScan.log";
-        std::string installUpdateLog  = std::string(exedir) + "FreshClam.log";
+        std::string exedirStr = CW_ToNarrow(exedir);
+        std::string installDb         = exedirStr + "db";
+        std::string installQuarantine = exedirStr + "Quarantine";
+        std::string installScanLog    = exedirStr + "ClamScan.log";
+        std::string installUpdateLog  = exedirStr + "FreshClam.log";
 
-        char profile[MAX_PATH];
-        DWORD profileLen = GetEnvironmentVariableA("USERPROFILE", profile, MAX_PATH);
+        TCHAR profile[MAX_PATH];
+        DWORD profileLen = GetEnvironmentVariable(TEXT("USERPROFILE"), profile, MAX_PATH);
         if (profileLen > 0 && profileLen < MAX_PATH)
         {
-            std::string profileRoot = std::string(profile) + "\\.clamwin";
+            std::string profileRoot = CW_ToNarrow(profile) + "\\.clamwin";
             if (databasePath == installDb)
                 databasePath = profileRoot + "\\db";
             if (quarantinePath == installQuarantine)
@@ -306,8 +313,8 @@ bool CWConfig::load(const std::string& path)
         }
     }
 
-    includePatterns = getStr(SEC_CLAMAV, "IncludePatterns", includePatterns);
-    excludePatterns = getStr(SEC_CLAMAV, "ExcludePatterns", excludePatterns);
+    includePatterns = getStr(SEC_CLAMAV, TEXT("IncludePatterns"), includePatterns);
+    excludePatterns = getStr(SEC_CLAMAV, TEXT("ExcludePatterns"), excludePatterns);
     includePatterns = normalizeFilterPatterns(includePatterns);
     excludePatterns = normalizeFilterPatterns(excludePatterns);
 
@@ -326,60 +333,61 @@ bool CWConfig::save() const
     if (slash != std::string::npos)
     {
         dir.resize(slash);
-        CreateDirectoryA(dir.c_str(), NULL);
+        std::basic_string<TCHAR> tDir = CW_ToT(dir);
+        CreateDirectory(tDir.c_str(), NULL);
     }
 
-    setStr(SEC_CLAMAV, "Database",       databasePath);
-    setInt(SEC_CLAMAV, "ScanRecursive",  scanRecursive  ? 1 : 0);
-    setInt(SEC_CLAMAV, "ScanArchives",   scanArchives   ? 1 : 0);
-    setInt(SEC_CLAMAV, "ScanOle2",       scanOle2       ? 1 : 0);
-    setInt(SEC_CLAMAV, "ScanMail",       scanMail       ? 1 : 0);
-    setInt(SEC_CLAMAV, "InfectedAction", infectedAction);
-    setInt(SEC_CLAMAV, "MaxScanSize",    maxScanSizeMb);
-    setInt(SEC_CLAMAV, "MaxFileSize",    maxFileSizeMb);
-    setInt(SEC_CLAMAV, "MaxFiles",       maxFiles);
-    setInt(SEC_CLAMAV, "MaxRecursion",   maxDepth);
-    setStr(SEC_CLAMAV, "Quarantine",     quarantinePath);
-    setStr(SEC_CLAMAV, "LogFile",        scanLogFile);
-    setStr(SEC_CLAMAV, "Priority",       priority);
+    setStr(SEC_CLAMAV, TEXT("Database"),       databasePath);
+    setInt(SEC_CLAMAV, TEXT("ScanRecursive"),  scanRecursive  ? 1 : 0);
+    setInt(SEC_CLAMAV, TEXT("ScanArchives"),   scanArchives   ? 1 : 0);
+    setInt(SEC_CLAMAV, TEXT("ScanOle2"),       scanOle2       ? 1 : 0);
+    setInt(SEC_CLAMAV, TEXT("ScanMail"),       scanMail       ? 1 : 0);
+    setInt(SEC_CLAMAV, TEXT("InfectedAction"), infectedAction);
+    setInt(SEC_CLAMAV, TEXT("MaxScanSize"),    maxScanSizeMb);
+    setInt(SEC_CLAMAV, TEXT("MaxFileSize"),    maxFileSizeMb);
+    setInt(SEC_CLAMAV, TEXT("MaxFiles"),       maxFiles);
+    setInt(SEC_CLAMAV, TEXT("MaxRecursion"),   maxDepth);
+    setStr(SEC_CLAMAV, TEXT("Quarantine"),     quarantinePath);
+    setStr(SEC_CLAMAV, TEXT("LogFile"),        scanLogFile);
+    setStr(SEC_CLAMAV, TEXT("Priority"),       priority);
 
-    setStr(SEC_UPDATES, "DBMirror",         dbMirror);
-    setStr(SEC_UPDATES, "UpdateLog",        updateLogFile);
-    setInt(SEC_UPDATES, "UpdateOnStartup",  updateOnStartup ? 1 : 0);
-    setInt(SEC_UPDATES, "CheckVersion",     checkVersion    ? 1 : 0);
+    setStr(SEC_UPDATES, TEXT("DBMirror"),         dbMirror);
+    setStr(SEC_UPDATES, TEXT("UpdateLog"),        updateLogFile);
+    setInt(SEC_UPDATES, TEXT("UpdateOnStartup"),  updateOnStartup ? 1 : 0);
+    setInt(SEC_UPDATES, TEXT("CheckVersion"),     checkVersion    ? 1 : 0);
 
-    setInt(SEC_PROXY, "Enabled",  proxyEnabled ? 1 : 0);
-    setStr(SEC_PROXY, "Host",     proxyHost);
-    setInt(SEC_PROXY, "Port",     proxyPort);
-    setStr(SEC_PROXY, "User",     proxyUser);
-    setStr(SEC_PROXY, "Password", proxyPass);
+    setInt(SEC_PROXY, TEXT("Enabled"),  proxyEnabled ? 1 : 0);
+    setStr(SEC_PROXY, TEXT("Host"),     proxyHost);
+    setInt(SEC_PROXY, TEXT("Port"),     proxyPort);
+    setStr(SEC_PROXY, TEXT("User"),     proxyUser);
+    setStr(SEC_PROXY, TEXT("Password"), proxyPass);
 
-    setInt(SEC_ALERTS, "Enabled", emailEnabled ? 1 : 0);
-    setStr(SEC_ALERTS, "From",    emailFrom);
-    setStr(SEC_ALERTS, "To",      emailTo);
-    setStr(SEC_ALERTS, "SMTP",    emailSmtp);
+    setInt(SEC_ALERTS, TEXT("Enabled"), emailEnabled ? 1 : 0);
+    setStr(SEC_ALERTS, TEXT("From"),    emailFrom);
+    setStr(SEC_ALERTS, TEXT("To"),      emailTo);
+    setStr(SEC_ALERTS, TEXT("SMTP"),    emailSmtp);
 
-    setInt(SEC_SCHEDULE, "ScanEnabled",    scanScheduled   ? 1 : 0);
-    setInt(SEC_SCHEDULE, "ScanHour",       scanHour);
-    setInt(SEC_SCHEDULE, "ScanMinute",     scanMinute);
-    setInt(SEC_SCHEDULE, "ScanFrequency",  scanFrequency);
-    setInt(SEC_SCHEDULE, "ScanDay",        scanDay);
-    setStr(SEC_SCHEDULE, "ScanPath",        scanPath);
-    setStr(SEC_SCHEDULE, "ScanDescription", scanDescription);
-    setInt(SEC_SCHEDULE, "ScanMemory",      scanMemory ? 1 : 0);
-    setInt(SEC_SCHEDULE, "RunMissed",       scanRunMissed ? 1 : 0);
-    setInt64(SEC_SCHEDULE, "ScanLastRun",   scanLastRunTime);
-    setInt(SEC_SCHEDULE, "UpdateEnabled",  updateScheduled ? 1 : 0);
-    setInt(SEC_SCHEDULE, "UpdateHour",     updateHour);
-    setInt(SEC_SCHEDULE, "UpdateMinute",   updateMinute);
-    setInt(SEC_SCHEDULE, "UpdateFrequency",updateFrequency);
-    setInt(SEC_SCHEDULE, "UpdateRunMissed",updateRunMissed ? 1 : 0);
-    setInt64(SEC_SCHEDULE, "UpdateLastRun",updateLastRunTime);
+    setInt(SEC_SCHEDULE, TEXT("ScanEnabled"),    scanScheduled   ? 1 : 0);
+    setInt(SEC_SCHEDULE, TEXT("ScanHour"),       scanHour);
+    setInt(SEC_SCHEDULE, TEXT("ScanMinute"),     scanMinute);
+    setInt(SEC_SCHEDULE, TEXT("ScanFrequency"),  scanFrequency);
+    setInt(SEC_SCHEDULE, TEXT("ScanDay"),        scanDay);
+    setStr(SEC_SCHEDULE, TEXT("ScanPath"),        scanPath);
+    setStr(SEC_SCHEDULE, TEXT("ScanDescription"), scanDescription);
+    setInt(SEC_SCHEDULE, TEXT("ScanMemory"),      scanMemory ? 1 : 0);
+    setInt(SEC_SCHEDULE, TEXT("RunMissed"),       scanRunMissed ? 1 : 0);
+    setInt64(SEC_SCHEDULE, TEXT("ScanLastRun"),   scanLastRunTime);
+    setInt(SEC_SCHEDULE, TEXT("UpdateEnabled"),  updateScheduled ? 1 : 0);
+    setInt(SEC_SCHEDULE, TEXT("UpdateHour"),     updateHour);
+    setInt(SEC_SCHEDULE, TEXT("UpdateMinute"),   updateMinute);
+    setInt(SEC_SCHEDULE, TEXT("UpdateFrequency"),updateFrequency);
+    setInt(SEC_SCHEDULE, TEXT("UpdateRunMissed"),updateRunMissed ? 1 : 0);
+    setInt64(SEC_SCHEDULE, TEXT("UpdateLastRun"),updateLastRunTime);
 
-    setInt(SEC_UI, "CloseOnExit", closeOnExit ? 1 : 0);
-    setInt(SEC_UI, "TrayNotify",  trayNotify  ? 1 : 0);
-    setStr(SEC_CLAMAV, "IncludePatterns", includePatterns);
-    setStr(SEC_CLAMAV, "ExcludePatterns", excludePatterns);
+    setInt(SEC_UI, TEXT("CloseOnExit"), closeOnExit ? 1 : 0);
+    setInt(SEC_UI, TEXT("TrayNotify"),  trayNotify  ? 1 : 0);
+    setStr(SEC_CLAMAV, TEXT("IncludePatterns"), includePatterns);
+    setStr(SEC_CLAMAV, TEXT("ExcludePatterns"), excludePatterns);
 
     writeFreshclamConf();
 
@@ -388,43 +396,51 @@ bool CWConfig::save() const
 
 /* ─── Private helpers ────────────────────────────────────────── */
 
-std::string CWConfig::getStr(const char* sec, const char* key,
+std::string CWConfig::getStr(LPCTSTR sec, LPCTSTR key,
                               const std::string& def) const
 {
-    char buf[1024];
-    GetPrivateProfileStringA(sec, key, def.c_str(),
-                              buf, sizeof(buf), iniPath.c_str());
-    return std::string(buf);
+    TCHAR buf[1024];
+    std::basic_string<TCHAR> tDef = CW_ToT(def);
+    std::basic_string<TCHAR> tIniPath = CW_ToT(iniPath);
+    GetPrivateProfileString(sec, key, tDef.c_str(),
+                              buf, _countof(buf), tIniPath.c_str());
+    return CW_ToNarrow(buf);
 }
 
-int CWConfig::getInt(const char* sec, const char* key, int def) const
+int CWConfig::getInt(LPCTSTR sec, LPCTSTR key, int def) const
 {
-    return GetPrivateProfileIntA(sec, key, def, iniPath.c_str());
+    std::basic_string<TCHAR> tIniPath = CW_ToT(iniPath);
+    return GetPrivateProfileInt(sec, key, def, tIniPath.c_str());
 }
 
-void CWConfig::setStr(const char* sec, const char* key,
+void CWConfig::setStr(LPCTSTR sec, LPCTSTR key,
                        const std::string& val) const
 {
-    WritePrivateProfileStringA(sec, key, val.c_str(), iniPath.c_str());
+    std::basic_string<TCHAR> tVal = CW_ToT(val);
+    std::basic_string<TCHAR> tIniPath = CW_ToT(iniPath);
+    WritePrivateProfileString(sec, key, tVal.c_str(), tIniPath.c_str());
 }
 
-void CWConfig::setInt(const char* sec, const char* key, int val) const
+void CWConfig::setInt(LPCTSTR sec, LPCTSTR key, int val) const
 {
-    char buf[32];
-    wsprintfA(buf, "%d", val);
-    WritePrivateProfileStringA(sec, key, buf, iniPath.c_str());
+    TCHAR buf[32];
+    wsprintf(buf, TEXT("%d"), val);
+    std::basic_string<TCHAR> tIniPath = CW_ToT(iniPath);
+    WritePrivateProfileString(sec, key, buf, tIniPath.c_str());
 }
 
-long long CWConfig::getInt64(const char* sec, const char* key, long long def) const
+long long CWConfig::getInt64(LPCTSTR sec, LPCTSTR key, long long def) const
 {
     std::string valStr = getStr(sec, key, "");
     if (valStr.empty()) return def;
     return _atoi64(valStr.c_str());
 }
 
-void CWConfig::setInt64(const char* sec, const char* key, long long val) const
+void CWConfig::setInt64(LPCTSTR sec, LPCTSTR key, long long val) const
 {
-    char buf[64];
-    _snprintf(buf, sizeof(buf), "%I64d", val);
-    WritePrivateProfileStringA(sec, key, buf, iniPath.c_str());
+    TCHAR buf[64];
+    _sntprintf(buf, _countof(buf), TEXT("%I64d"), val);
+    buf[_countof(buf) - 1] = TEXT('\0');
+    std::basic_string<TCHAR> tIniPath = CW_ToT(iniPath);
+    WritePrivateProfileString(sec, key, buf, tIniPath.c_str());
 }

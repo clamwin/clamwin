@@ -9,15 +9,15 @@
 
 #include "cw_theme.h"
 
-static const char* s_themeRegPath = "Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize";
-static const char* s_themeRegKey  = "AppsUseLightTheme";
+static const TCHAR* s_themeRegPath = TEXT("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
+static const TCHAR* s_themeRegKey  = TEXT("AppsUseLightTheme");
 
 static bool isLegacyClassicOs()
 {
-    OSVERSIONINFOA vi;
+    OSVERSIONINFO vi;
     ZeroMemory(&vi, sizeof(vi));
     vi.dwOSVersionInfoSize = sizeof(vi);
-    if (!GetVersionExA(&vi))
+    if (!GetVersionEx(&vi))
         return false;
 
     if (vi.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS)
@@ -66,9 +66,9 @@ void CWTheme::updateSystemTheme()
     /* Read Windows 10/11 app light theme preference
      * If 1 = Light Mode, 0 = Dark Mode.
      * Fails gracefully on older OS versions. */
-    if (RegOpenKeyExA(HKEY_CURRENT_USER, s_themeRegPath, 0, KEY_READ, &hKey) == ERROR_SUCCESS)
+    if (RegOpenKeyEx(HKEY_CURRENT_USER, s_themeRegPath, 0, KEY_READ, &hKey) == ERROR_SUCCESS)
     {
-        if (RegQueryValueExA(hKey, s_themeRegKey, NULL, &type, (LPBYTE)&val, &len) == ERROR_SUCCESS)
+        if (RegQueryValueEx(hKey, s_themeRegKey, NULL, &type, (LPBYTE)&val, &len) == ERROR_SUCCESS)
         {
             if (type == REG_DWORD)
             {

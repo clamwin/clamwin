@@ -127,7 +127,7 @@ private:
     void createLayout();
     void createTooltips();
     void destroyTooltips();
-    void addTooltip(HWND target, const char* text);
+    void addTooltip(HWND target, LPCTSTR text);
     void createSidebar();
     void createPages();
     void createGeneralPage(HWND page);
@@ -145,8 +145,8 @@ private:
     void loadFromConfig();
     bool saveToConfig();
 
-    void browseForFolder(HWND editTarget, const char* title);
-    void browseForFile(HWND editTarget, const char* title, const char* filter, bool saveDialog);
+    void browseForFolder(HWND editTarget, LPCTSTR title);
+    void browseForFile(HWND editTarget, LPCTSTR title, LPCTSTR filter, bool saveDialog);
     int readIntFromEdit(HWND hwndEdit, int fallback) const;
     void writeIntToEdit(HWND hwndEdit, int value) const;
     void moveLabeledEditRow(HWND label, HWND edit, HWND btn, int y, int labelW, int editX, int editW, int btnW);

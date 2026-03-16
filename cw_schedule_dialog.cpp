@@ -13,9 +13,11 @@
 #include "cw_time_edit.h"
 #include "cw_mnemonic.h"
 #include "cw_dpi.h"
+#include "cw_text_conv.h"
 #include <shlobj.h>
 #include <commctrl.h>
 #include <cstdlib>
+#include <tchar.h>
 
 /* ─── Local control IDs ───────────────────────────────────────── */
 enum
@@ -68,49 +70,49 @@ CWScheduleDialog::~CWScheduleDialog()
     if (m_hFontBold) DeleteObject(m_hFontBold);
 }
 
-void CWScheduleDialog::addTooltip(HWND target, const char* text)
+void CWScheduleDialog::addTooltip(HWND target, LPCTSTR text)
 {
     if (!m_hwndTooltip || !target || !text || !text[0])
         return;
 
-    TOOLINFOA ti;
+    TOOLINFO ti;
     ZeroMemory(&ti, sizeof(ti));
     ti.cbSize = sizeof(ti);
     ti.uFlags = TTF_SUBCLASS | TTF_IDISHWND;
     ti.hwnd = m_hwnd;
     ti.uId = (UINT_PTR)target;
-    ti.lpszText = const_cast<LPSTR>(text);
-    SendMessageA(m_hwndTooltip, TTM_ADDTOOLA, 0, (LPARAM)&ti);
+    ti.lpszText = const_cast<LPTSTR>(text);
+    SendMessage(m_hwndTooltip, TTM_ADDTOOL, 0, (LPARAM)&ti);
 }
 
 void CWScheduleDialog::createTooltips()
 {
-    m_hwndTooltip = CreateWindowExA(WS_EX_TOPMOST, TOOLTIPS_CLASSA, "",
+    m_hwndTooltip = CreateWindowEx(WS_EX_TOPMOST, TOOLTIPS_CLASS, TEXT(""),
                                     WS_POPUP | TTS_ALWAYSTIP | TTS_NOPREFIX,
                                     CW_USEDEFAULT, CW_USEDEFAULT,
                                     CW_USEDEFAULT, CW_USEDEFAULT,
-                                    m_hwnd, NULL, GetModuleHandleA(NULL), NULL);
+                                    m_hwnd, NULL, GetModuleHandle(NULL), NULL);
     if (!m_hwndTooltip)
         return;
 
     SetWindowPos(m_hwndTooltip, HWND_TOPMOST, 0, 0, 0, 0,
                  SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
-    SendMessageA(m_hwndTooltip, TTM_SETMAXTIPWIDTH, 0, CW_Scale(360));
+    SendMessage(m_hwndTooltip, TTM_SETMAXTIPWIDTH, 0, CW_Scale(360));
 
-    addTooltip(m_cmbFrequency, "How often the schedule is executed");
-    addTooltip(m_edtHour, "When the schedule should be started");
-    addTooltip(m_edtMinute, "When the schedule should be started");
-    addTooltip(m_spinHour, "When the schedule should be started");
-    addTooltip(m_spinMinute, "When the schedule should be started");
-    addTooltip(m_cmbDay, "When schedule frequency is weekly select day of the week");
-    addTooltip(m_edtFolder, "Specify a folder to be scanned");
-    addTooltip(m_btnBrowse, "Click to browse for a folder");
-    addTooltip(m_edtDescription, "Specify a friendly description for the scheduled scan");
-    addTooltip(m_chkActive, "Select if you wish to enable this schedule");
-    addTooltip(m_chkScanMemory, "Select if you wish to include programs computer memory during every scan");
-    addTooltip(m_chkRunMissed, "Select if you wish to run the scheduled task if the computer was turned off at the time");
-    addTooltip(m_btnOk, "Closes the dialog and applies the settings");
-    addTooltip(m_btnCancel, "Closes the dialog and discards the changes");
+    addTooltip(m_cmbFrequency, TEXT("How often the schedule is executed"));
+    addTooltip(m_edtHour, TEXT("When the schedule should be started"));
+    addTooltip(m_edtMinute, TEXT("When the schedule should be started"));
+    addTooltip(m_spinHour, TEXT("When the schedule should be started"));
+    addTooltip(m_spinMinute, TEXT("When the schedule should be started"));
+    addTooltip(m_cmbDay, TEXT("When schedule frequency is weekly select day of the week"));
+    addTooltip(m_edtFolder, TEXT("Specify a folder to be scanned"));
+    addTooltip(m_btnBrowse, TEXT("Click to browse for a folder"));
+    addTooltip(m_edtDescription, TEXT("Specify a friendly description for the scheduled scan"));
+    addTooltip(m_chkActive, TEXT("Select if you wish to enable this schedule"));
+    addTooltip(m_chkScanMemory, TEXT("Select if you wish to include programs computer memory during every scan"));
+    addTooltip(m_chkRunMissed, TEXT("Select if you wish to run the scheduled task if the computer was turned off at the time"));
+    addTooltip(m_btnOk, TEXT("Closes the dialog and applies the settings"));
+    addTooltip(m_btnCancel, TEXT("Closes the dialog and discards the changes"));
 }
 
 void CWScheduleDialog::destroyTooltips()
@@ -127,27 +129,27 @@ void CWScheduleDialog::destroyTooltips()
 void CWScheduleDialog::setFont(HWND hwnd, bool bold)
 {
     if (!hwnd) return;
-    SendMessageA(hwnd, WM_SETFONT, (WPARAM)(bold ? m_hFontBold : m_hFont), TRUE);
+    SendMessage(hwnd, WM_SETFONT, (WPARAM)(bold ? m_hFontBold : m_hFont), TRUE);
     /* Apply EM_SETRECTNP centering on EDIT controls */
     configureEditRect(hwnd);
 }
 
 void CWScheduleDialog::configureEditRect(HWND edit)
 {
-    char cls[32] = {0};
-    GetClassNameA(edit, cls, sizeof(cls));
-    if (lstrcmpiA(cls, "EDIT") != 0)
+    TCHAR cls[32] = {0};
+    GetClassName(edit, cls, _countof(cls));
+    if (lstrcmpi(cls, TEXT("EDIT")) != 0)
         return;
 
     RECT rc;
     GetClientRect(edit, &rc);
 
-    HFONT hf = (HFONT)SendMessageA(edit, WM_GETFONT, 0, 0);
+    HFONT hf = (HFONT)SendMessage(edit, WM_GETFONT, 0, 0);
     HDC hdc = GetDC(edit);
     if (!hdc) return;
     HGDIOBJ old = hf ? SelectObject(hdc, hf) : NULL;
-    TEXTMETRICA tm = {0};
-    GetTextMetricsA(hdc, &tm);
+    TEXTMETRIC tm = {0};
+    GetTextMetrics(hdc, &tm);
     if (old) SelectObject(hdc, old);
     ReleaseDC(edit, hdc);
 
@@ -160,22 +162,22 @@ void CWScheduleDialog::configureEditRect(HWND edit)
     textRc.right  = rc.right - CW_Scale(8);
     textRc.top    = topPad;
     textRc.bottom = topPad + textH + 1;
-    SendMessageA(edit, EM_SETRECTNP, 0, (LPARAM)&textRc);
+    SendMessage(edit, EM_SETRECTNP, 0, (LPARAM)&textRc);
     InvalidateRect(edit, NULL, TRUE);
 }
 
 void CWScheduleDialog::configureComboHeight(HWND combo)
 {
     if (!combo) return;
-    SendMessageA(combo, CB_SETITEMHEIGHT, (WPARAM)-1, CW_Scale(26));
-    SendMessageA(combo, CB_SETITEMHEIGHT, (WPARAM)0,  CW_Scale(26));
+    SendMessage(combo, CB_SETITEMHEIGHT, (WPARAM)-1, CW_Scale(26));
+    SendMessage(combo, CB_SETITEMHEIGHT, (WPARAM)0,  CW_Scale(26));
 }
 
 /* ─── Layout ──────────────────────────────────────────────────── */
 
 void CWScheduleDialog::createLayout()
 {
-    HMODULE hInst = GetModuleHandleA(NULL);
+    HMODULE hInst = GetModuleHandle(NULL);
 
     m_hFont = CreateFontW(-CW_Scale(13), 0, 0, 0, FW_NORMAL,
                           FALSE, FALSE, FALSE, DEFAULT_CHARSET,
@@ -197,7 +199,7 @@ void CWScheduleDialog::createLayout()
     int y = CW_Scale(16);
 
     /* ── "Schedule" section label ── */
-    HWND hSecSched = CreateWindowExA(0, "STATIC", "Schedule",
+    HWND hSecSched = CreateWindowEx(0, TEXT("STATIC"), TEXT("Schedule"),
                                      WS_CHILD | WS_VISIBLE,
                                      x0, y, CW_Scale(300), CW_Scale(20),
                                      m_hwnd, NULL, hInst, NULL);
@@ -205,13 +207,13 @@ void CWScheduleDialog::createLayout()
     y += CW_Scale(28);
 
     /* Frequency */
-    HWND hLblFreq = CreateWindowExA(0, "STATIC", "Scanning Frequency:",
+    HWND hLblFreq = CreateWindowEx(0, TEXT("STATIC"), TEXT("Scanning Frequency:"),
                                     WS_CHILD | WS_VISIBLE,
                                     x0, y + CW_Scale(4), colLabel, CW_Scale(20),
                                     m_hwnd, NULL, hInst, NULL);
     setFont(hLblFreq);
 
-    m_cmbFrequency = CreateWindowExA(0, "COMBOBOX", "",
+    m_cmbFrequency = CreateWindowEx(0, TEXT("COMBOBOX"), TEXT(""),
                                      WS_CHILD | WS_VISIBLE | WS_TABSTOP |
                                      CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED |
                                      CBS_HASSTRINGS | CBS_NOINTEGRALHEIGHT,
@@ -221,17 +223,17 @@ void CWScheduleDialog::createLayout()
     configureComboHeight(m_cmbFrequency);
     static const char* freqs[] = { "Daily", "Workdays", "Weekly", "Hourly" };
     for (int i = 0; i < 4; ++i)
-        SendMessageA(m_cmbFrequency, CB_ADDSTRING, 0, (LPARAM)freqs[i]);
+        SendMessage(m_cmbFrequency, CB_ADDSTRING, 0, (LPARAM)freqs[i]);
     y += rowStep;
 
     /* Day of week */
-    HWND hLblDay = CreateWindowExA(0, "STATIC", "Day of Week:",
+    HWND hLblDay = CreateWindowEx(0, TEXT("STATIC"), TEXT("Day of Week:"),
                                    WS_CHILD | WS_VISIBLE,
                                    x0, y + CW_Scale(4), colLabel, CW_Scale(20),
                                    m_hwnd, NULL, hInst, NULL);
     setFont(hLblDay);
 
-    m_cmbDay = CreateWindowExA(0, "COMBOBOX", "",
+    m_cmbDay = CreateWindowEx(0, TEXT("COMBOBOX"), TEXT(""),
                                WS_CHILD | WS_VISIBLE | WS_TABSTOP |
                                CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED |
                                CBS_HASSTRINGS | CBS_NOINTEGRALHEIGHT,
@@ -242,52 +244,52 @@ void CWScheduleDialog::createLayout()
     static const char* days[] = { "Monday","Tuesday","Wednesday",
                                   "Thursday","Friday","Saturday","Sunday" };
     for (int i = 0; i < 7; ++i)
-        SendMessageA(m_cmbDay, CB_ADDSTRING, 0, (LPARAM)days[i]);
+        SendMessage(m_cmbDay, CB_ADDSTRING, 0, (LPARAM)days[i]);
     y += rowStep;
 
     /* Time */
-    HWND hLblTime = CreateWindowExA(0, "STATIC", "Time (HH:MM):",
+    HWND hLblTime = CreateWindowEx(0, TEXT("STATIC"), TEXT("Time (HH:MM):"),
                                     WS_CHILD | WS_VISIBLE,
                                     x0, y + CW_Scale(4), colLabel, CW_Scale(20),
                                     m_hwnd, NULL, hInst, NULL);
     setFont(hLblTime);
 
-    m_edtHour = CreateWindowExA(WS_EX_CLIENTEDGE, "EDIT", "",
+    m_edtHour = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
                                 WS_CHILD | WS_VISIBLE | WS_TABSTOP |
                                 ES_AUTOHSCROLL,
                                 colCtrl, y, CW_Scale(84), rowH,
                                 m_hwnd, (HMENU)IDC_SCHED_HOUR, hInst, NULL);
     setFont(m_edtHour);
 
-    m_spinHour = CreateWindowExA(0, UPDOWN_CLASSA, "",
+    m_spinHour = CreateWindowEx(0, UPDOWN_CLASS, TEXT(""),
                                  WS_CHILD | WS_VISIBLE | UDS_ARROWKEYS | UDS_WRAP,
                                  colCtrl + CW_Scale(86), y, CW_Scale(18), rowH,
                                  m_hwnd, (HMENU)IDC_SCHED_SPIN_HOUR, hInst, NULL);
-    SendMessageA(m_spinHour, UDM_SETRANGE, 0, MAKELONG(23, 0));
+    SendMessage(m_spinHour, UDM_SETRANGE, 0, MAKELONG(23, 0));
 
-    HWND hColon = CreateWindowExA(0, "STATIC", ":",
+    HWND hColon = CreateWindowEx(0, TEXT("STATIC"), TEXT(":"),
                                   WS_CHILD | WS_VISIBLE | SS_CENTER,
                                   colCtrl + CW_Scale(107), y + CW_Scale(4),
                                   CW_Scale(12), CW_Scale(20),
                                   m_hwnd, NULL, hInst, NULL);
     setFont(hColon);
 
-    m_edtMinute = CreateWindowExA(WS_EX_CLIENTEDGE, "EDIT", "",
+    m_edtMinute = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
                                   WS_CHILD | WS_VISIBLE | WS_TABSTOP |
                                   ES_NUMBER | ES_AUTOHSCROLL,
                                   colCtrl + CW_Scale(122), y, CW_Scale(38), rowH,
                                   m_hwnd, (HMENU)IDC_SCHED_MINUTE, hInst, NULL);
     setFont(m_edtMinute);
 
-    m_spinMinute = CreateWindowExA(0, UPDOWN_CLASSA, "",
+    m_spinMinute = CreateWindowEx(0, UPDOWN_CLASS, TEXT(""),
                                    WS_CHILD | WS_VISIBLE | UDS_ARROWKEYS | UDS_WRAP,
                                    colCtrl + CW_Scale(162), y, CW_Scale(18), rowH,
                                    m_hwnd, (HMENU)IDC_SCHED_SPIN_MIN, hInst, NULL);
-    SendMessageA(m_spinMinute, UDM_SETRANGE, 0, MAKELONG(59, 0));
+    SendMessage(m_spinMinute, UDM_SETRANGE, 0, MAKELONG(59, 0));
     y += rowStep + CW_Scale(6);
 
     /* Divider (thin static line) */
-    HWND hDiv = CreateWindowExA(0, "STATIC", "",
+    HWND hDiv = CreateWindowEx(0, TEXT("STATIC"), TEXT(""),
                                 WS_CHILD | WS_VISIBLE | SS_ETCHEDHORZ,
                                 x0, y, CW_Scale(368), CW_Scale(2),
                                 m_hwnd, NULL, hInst, NULL);
@@ -295,21 +297,21 @@ void CWScheduleDialog::createLayout()
     y += CW_Scale(12);
 
     /* Checkboxes */
-    m_chkActive = CreateWindowExA(0, "BUTTON", "&Activate This Schedule",
+    m_chkActive = CreateWindowEx(0, TEXT("BUTTON"), TEXT("&Activate This Schedule"),
                                   WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW | BS_NOTIFY,
                                   x0, y, CW_Scale(320), CW_Scale(24),
                                   m_hwnd, (HMENU)IDC_SCHED_ACTIVE, hInst, NULL);
     setFont(m_chkActive);
     y += CW_Scale(32);
 
-    m_chkScanMemory = CreateWindowExA(0, "BUTTON", "Scan Programs Loaded in &Memory",
+    m_chkScanMemory = CreateWindowEx(0, TEXT("BUTTON"), TEXT("Scan Programs Loaded in &Memory"),
                                       WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW | BS_NOTIFY,
                                       x0, y, CW_Scale(320), CW_Scale(24),
                                       m_hwnd, (HMENU)IDC_SCHED_SCANMEM, hInst, NULL);
     setFont(m_chkScanMemory);
     y += CW_Scale(32);
 
-    m_chkRunMissed = CreateWindowExA(0, "BUTTON", "&Catch up on missed tasks",
+    m_chkRunMissed = CreateWindowEx(0, TEXT("BUTTON"), TEXT("&Catch up on missed tasks"),
                                      WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW | BS_NOTIFY,
                                      x0, y, CW_Scale(320), CW_Scale(24),
                                      m_hwnd, (HMENU)IDC_SCHED_RUNMISSED, hInst, NULL);
@@ -317,21 +319,21 @@ void CWScheduleDialog::createLayout()
     y += CW_Scale(36);
 
     /* Scan Folder */
-    HWND hLblFolder = CreateWindowExA(0, "STATIC", "Scan Folder:",
+    HWND hLblFolder = CreateWindowEx(0, TEXT("STATIC"), TEXT("Scan Folder:"),
                                       WS_CHILD | WS_VISIBLE,
                                       x0, y, CW_Scale(200), CW_Scale(20),
                                       m_hwnd, NULL, hInst, NULL);
     setFont(hLblFolder);
     y += CW_Scale(24);
 
-    m_edtFolder = CreateWindowExA(WS_EX_CLIENTEDGE, "EDIT", "",
+    m_edtFolder = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
                                   WS_CHILD | WS_VISIBLE | WS_TABSTOP |
                                   ES_AUTOHSCROLL,
                                   x0, y, CW_Scale(282), rowH,
                                   m_hwnd, (HMENU)IDC_SCHED_FOLDER, hInst, NULL);
     setFont(m_edtFolder);
 
-    m_btnBrowse = CreateWindowExA(0, "BUTTON", "&Browse...",
+    m_btnBrowse = CreateWindowEx(0, TEXT("BUTTON"), TEXT("&Browse..."),
                                   WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW,
                                   x0 + CW_Scale(290), y, CW_Scale(94), rowH,
                                   m_hwnd, (HMENU)IDC_SCHED_BROWSE, hInst, NULL);
@@ -339,14 +341,14 @@ void CWScheduleDialog::createLayout()
     y += rowStep;
 
     /* Description */
-    HWND hLblDesc = CreateWindowExA(0, "STATIC", "Description:",
+    HWND hLblDesc = CreateWindowEx(0, TEXT("STATIC"), TEXT("Description:"),
                                     WS_CHILD | WS_VISIBLE,
                                     x0, y, CW_Scale(200), CW_Scale(20),
                                     m_hwnd, NULL, hInst, NULL);
     setFont(hLblDesc);
     y += CW_Scale(24);
 
-    m_edtDescription = CreateWindowExA(WS_EX_CLIENTEDGE, "EDIT", "",
+    m_edtDescription = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
                                        WS_CHILD | WS_VISIBLE | WS_TABSTOP |
                                        ES_AUTOHSCROLL,
                                        x0, y, CW_Scale(384), rowH,
@@ -361,13 +363,13 @@ void CWScheduleDialog::createLayout()
     int btnX2 = dlgRc.right - CW_Scale(16) - btnW;
     int btnX1 = btnX2 - CW_Scale(8) - btnW;
 
-    m_btnOk = CreateWindowExA(0, "BUTTON", "&OK",
+    m_btnOk = CreateWindowEx(0, TEXT("BUTTON"), TEXT("&OK"),
                               WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW,
                               btnX1, y, btnW, btnH,
                               m_hwnd, (HMENU)IDOK, hInst, NULL);
     setFont(m_btnOk);
 
-    m_btnCancel = CreateWindowExA(0, "BUTTON", "&Cancel",
+    m_btnCancel = CreateWindowEx(0, TEXT("BUTTON"), TEXT("&Cancel"),
                                   WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW,
                                   btnX2, y, btnW, btnH,
                                   m_hwnd, (HMENU)IDCANCEL, hInst, NULL);
@@ -379,39 +381,39 @@ void CWScheduleDialog::createLayout()
 static void writeIntToEditSched(HWND edit, int value)
 {
     if (!edit) return;
-    char buf[16];
-    wsprintfA(buf, "%02d", value);
-    SetWindowTextA(edit, buf);
+    TCHAR buf[16];
+    wsprintf(buf, TEXT("%02d"), value);
+    SetWindowText(edit, buf);
 }
 
 void CWScheduleDialog::loadFromConfig()
 {
-    SendMessageA(m_cmbFrequency, CB_SETCURSEL,
+    SendMessage(m_cmbFrequency, CB_SETCURSEL,
                  (WPARAM)m_cfg.scanFrequency, 0);
     CW_WriteHourToEdit(m_edtHour,   m_cfg.scanHour);
     writeIntToEditSched(m_edtMinute, m_cfg.scanMinute);
-    SendMessageA(m_cmbDay, CB_SETCURSEL, (WPARAM)m_cfg.scanDay, 0);
+    SendMessage(m_cmbDay, CB_SETCURSEL, (WPARAM)m_cfg.scanDay, 0);
     CW_ToggleSetChecked(m_chkActive,     m_cfg.scanScheduled);
     CW_ToggleSetChecked(m_chkScanMemory, m_cfg.scanMemory);
     CW_ToggleSetChecked(m_chkRunMissed,  m_cfg.scanRunMissed);
-    SetWindowTextA(m_edtFolder,      m_cfg.scanPath.c_str());
-    SetWindowTextA(m_edtDescription, m_cfg.scanDescription.c_str());
+    SetWindowText(m_edtFolder,      CW_ToT(m_cfg.scanPath).c_str());
+    SetWindowText(m_edtDescription, CW_ToT(m_cfg.scanDescription).c_str());
     updateDayEnableState();
 }
 
 static int readIntFromEditSched(HWND edit, int fallback)
 {
     if (!edit) return fallback;
-    char buf[16] = {0};
-    GetWindowTextA(edit, buf, sizeof(buf));
+    TCHAR buf[16] = {0};
+    GetWindowText(edit, buf, _countof(buf));
     int val = fallback;
-    if (buf[0]) val = atoi(buf);
+    if (buf[0]) val = _ttoi(buf);
     return val;
 }
 
 void CWScheduleDialog::saveToConfig()
 {
-    int freq = (int)SendMessageA(m_cmbFrequency, CB_GETCURSEL, 0, 0);
+    int freq = (int)SendMessage(m_cmbFrequency, CB_GETCURSEL, 0, 0);
     if (freq < 0) freq = 0;
     m_cfg.scanFrequency = freq;
 
@@ -422,7 +424,7 @@ void CWScheduleDialog::saveToConfig()
     m_cfg.scanHour   = h;
     m_cfg.scanMinute = m;
 
-    int day = (int)SendMessageA(m_cmbDay, CB_GETCURSEL, 0, 0);
+    int day = (int)SendMessage(m_cmbDay, CB_GETCURSEL, 0, 0);
     if (day < 0) day = 0;
     m_cfg.scanDay = day;
 
@@ -430,33 +432,33 @@ void CWScheduleDialog::saveToConfig()
     m_cfg.scanMemory     = CW_ToggleGetChecked(m_chkScanMemory);
     m_cfg.scanRunMissed  = CW_ToggleGetChecked(m_chkRunMissed);
 
-    char buf[MAX_PATH] = {0};
-    GetWindowTextA(m_edtFolder, buf, MAX_PATH);
-    m_cfg.scanPath = buf;
+    TCHAR buf[MAX_PATH] = {0};
+    GetWindowText(m_edtFolder, buf, _countof(buf));
+    m_cfg.scanPath = CW_ToNarrow(buf);
 
-    char desc[256] = {0};
-    GetWindowTextA(m_edtDescription, desc, sizeof(desc));
-    m_cfg.scanDescription = desc;
+    TCHAR desc[256] = {0};
+    GetWindowText(m_edtDescription, desc, _countof(desc));
+    m_cfg.scanDescription = CW_ToNarrow(desc);
 }
 
 /* ─── Browse ─────────────────────────────────────────────────── */
 
 void CWScheduleDialog::browseForFolder()
 {
-    char path[MAX_PATH] = {0};
-    GetWindowTextA(m_edtFolder, path, MAX_PATH);
+    TCHAR path[MAX_PATH] = {0};
+    GetWindowText(m_edtFolder, path, _countof(path));
 
-    BROWSEINFOA bi = {0};
+    BROWSEINFO bi = {0};
     bi.hwndOwner  = m_hwnd;
     bi.pszDisplayName = path;
-    bi.lpszTitle  = "Select folder to scan";
+    bi.lpszTitle  = TEXT("Select folder to scan");
     bi.ulFlags    = BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
 
-    LPITEMIDLIST pidl = SHBrowseForFolderA(&bi);
+    LPITEMIDLIST pidl = SHBrowseForFolder(&bi);
     if (pidl)
     {
-        if (SHGetPathFromIDListA(pidl, path))
-            SetWindowTextA(m_edtFolder, path);
+        if (SHGetPathFromIDList(pidl, path))
+            SetWindowText(m_edtFolder, path);
         CoTaskMemFree(pidl);
     }
 }
@@ -466,7 +468,7 @@ void CWScheduleDialog::browseForFolder()
 void CWScheduleDialog::updateDayEnableState()
 {
     /* Day-of-week combo is only meaningful for Weekly frequency (index 2) */
-    int freq = (int)SendMessageA(m_cmbFrequency, CB_GETCURSEL, 0, 0);
+    int freq = (int)SendMessage(m_cmbFrequency, CB_GETCURSEL, 0, 0);
     EnableWindow(m_cmbDay, freq == 2 ? TRUE : FALSE);
 }
 
@@ -487,7 +489,7 @@ bool CWScheduleDialog::drawComboItem(DRAWITEMSTRUCT* dis)
     UINT itemId = dis->itemID;
     if (itemId == (UINT)-1)
     {
-        int sel = (int)SendMessageA(dis->hwndItem, CB_GETCURSEL, 0, 0);
+        int sel = (int)SendMessage(dis->hwndItem, CB_GETCURSEL, 0, 0);
         if (sel >= 0) itemId = (UINT)sel;
     }
 
@@ -505,8 +507,8 @@ bool CWScheduleDialog::drawComboItem(DRAWITEMSTRUCT* dis)
 
     if (itemId != (UINT)-1)
     {
-        char text[128] = {0};
-        SendMessageA(dis->hwndItem, CB_GETLBTEXT, (WPARAM)itemId, (LPARAM)text);
+        TCHAR text[128] = {0};
+        SendMessage(dis->hwndItem, CB_GETLBTEXT, (WPARAM)itemId, (LPARAM)text);
 
         RECT tr = rc;
         tr.left  += CW_Scale(8);
@@ -515,7 +517,7 @@ bool CWScheduleDialog::drawComboItem(DRAWITEMSTRUCT* dis)
         SetBkMode(hdc, TRANSPARENT);
         SetTextColor(hdc, fg);
         HFONT oldFont = (HFONT)SelectObject(hdc, m_hFont);
-        DrawTextA(hdc, text, -1, &tr, DT_LEFT | DT_VCENTER | DT_SINGLELINE);
+        DrawText(hdc, text, -1, &tr, DT_LEFT | DT_VCENTER | DT_SINGLELINE);
         SelectObject(hdc, oldFont);
     }
 
@@ -532,7 +534,7 @@ bool CWScheduleDialog::drawComboItem(DRAWITEMSTRUCT* dis)
 
 bool CWScheduleDialog::onInit()
 {
-    SetWindowTextA(m_hwnd, "Scheduled Scan");
+    SetWindowText(m_hwnd, TEXT("Scheduled Scan"));
     setDialogMnemonicCues(m_hwnd, false);
     SetTimer(m_hwnd, s_scheduleMnemonicTimerId, 30, NULL);
     createLayout();
@@ -605,9 +607,9 @@ INT_PTR CWScheduleDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
                 }
                 if (ctlId == IDC_SCHED_SPIN_MIN)
                 {
-                    char mbuf[8] = {0};
-                    GetWindowTextA(m_edtMinute, mbuf, sizeof(mbuf));
-                    int m = atoi(mbuf);
+                    TCHAR mbuf[8] = {0};
+                    GetWindowText(m_edtMinute, mbuf, _countof(mbuf));
+                    int m = _ttoi(mbuf);
                     m = (m + nmud->iDelta + 60) % 60;
                     CW_WriteMinuteToEdit(m_edtMinute, m);
                     return 0;
