@@ -111,8 +111,17 @@ add_dependencies(clamwin cw_gui_build_version)
 add_dependencies(clamwin_test cw_gui_build_version)
 
 if(MINGW)
-    target_link_options(clamwin PRIVATE -static-libstdc++ -static-libgcc)
-    target_link_options(clamwin_test PRIVATE -static-libstdc++ -static-libgcc)
+    # -static-libstdc++ / -static-libgcc link the C++ and GCC runtime statically.
+    # libstdc++ (posix thread model) references pthread_create; we must ensure
+    # libwinpthread.a (static) is used instead of the DLL import library.
+    # --whole-archive pre-loads all libwinpthread.a symbols so they are already
+    # defined when libstdc++'s implicit trailing pass resolves pthread_create.
+    target_link_options(clamwin PRIVATE
+        -static-libstdc++ -static-libgcc
+        -Wl,--whole-archive,-Bstatic,-lwinpthread,-Bdynamic,--no-whole-archive)
+    target_link_options(clamwin_test PRIVATE
+        -static-libstdc++ -static-libgcc
+        -Wl,--whole-archive,-Bstatic,-lwinpthread,-Bdynamic,--no-whole-archive)
 endif()
 
 if(MSVC)

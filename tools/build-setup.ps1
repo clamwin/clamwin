@@ -234,7 +234,7 @@ function Get-LatestSetupExe {
 
     $scriptLeaf = (Split-Path $SetupScript -Leaf).ToLowerInvariant()
     if ($scriptLeaf -eq "setup-nodb.iss") {
-        $pattern = '(^clamwin-.*-setup-nodb\.exe$)|(^Setup-nodb\.exe$)'
+        $pattern = '(^clamwin-.*-setup-nodb(?:-w98)?\.exe$)|(^Setup-nodb\.exe$)'
     }
     else {
         $pattern = '(^clamwin-.*-setup\.exe$)|(^Setup\.exe$)'
@@ -257,7 +257,8 @@ function Invoke-BuildSetup {
         [Parameter(Mandatory = $true)][string]$IsccExe,
         [Parameter(Mandatory = $true)][string]$SetupDir,
         [Parameter(Mandatory = $true)][string]$SetupScript,
-        [Parameter(Mandatory = $true)][string]$SetupOutputDir
+        [Parameter(Mandatory = $true)][string]$SetupOutputDir,
+        [hashtable]$PreprocessorDefines = @{}
     )
 
     if (-not (Test-Path $IsccExe)) {
@@ -270,7 +271,13 @@ function Invoke-BuildSetup {
     Write-Host "[setup] building $SetupScript via ISCC"
     Push-Location $SetupDir
     try {
-        $proc = Start-Process -FilePath $IsccExe -ArgumentList @($SetupScript) -WorkingDirectory $SetupDir -Wait -PassThru
+        $isccArgs = @()
+        foreach ($define in $PreprocessorDefines.GetEnumerator()) {
+            $isccArgs += "/D$($define.Key)=$($define.Value)"
+        }
+        $isccArgs += $SetupScript
+
+        $proc = Start-Process -FilePath $IsccExe -ArgumentList $isccArgs -WorkingDirectory $SetupDir -Wait -PassThru
         if ($proc.ExitCode -ne 0) {
             throw "ISCC compile failed (exit $($proc.ExitCode))"
         }
@@ -373,6 +380,35 @@ function Resolve-CurlCaBundleSource {
     return ""
 }
 
+function Resolve-OrCreateCurlCaBundleSource {
+    param(
+        [Parameter(Mandatory = $true)][string]$RepoRoot,
+        [Parameter(Mandatory = $true)][string]$ProjectVersion,
+        [Parameter(Mandatory = $true)][ValidateSet("legacy-x86", "legacy-x64")][string]$Flavor
+    )
+
+    $existing = Resolve-CurlCaBundleSource -RepoRoot $RepoRoot -ProjectVersion $ProjectVersion -Flavor $Flavor
+    if (-not [string]::IsNullOrWhiteSpace($existing)) {
+        return $existing
+    }
+
+    $fallbackDir = Join-Path $RepoRoot "binaries\all-os-staging\clamav-$ProjectVersion-$Flavor"
+    New-Item -ItemType Directory -Force $fallbackDir | Out-Null
+    $fallbackPath = Join-Path $fallbackDir "curl-ca-bundle.crt"
+
+    if (-not (Test-Path $fallbackPath)) {
+        Write-Host "[setup] curl-ca-bundle.crt not found for $Flavor, downloading fallback from curl.se"
+        try {
+            Invoke-WebRequest -Uri "https://curl.se/ca/cacert.pem" -OutFile $fallbackPath -UseBasicParsing
+        }
+        catch {
+            throw "Unable to locate or download curl-ca-bundle.crt for $Flavor. $_"
+        }
+    }
+
+    return $fallbackPath
+}
+
 function Invoke-StageCurlCaBundles {
     param(
         [Parameter(Mandatory = $true)][string]$RepoRoot,
@@ -381,12 +417,8 @@ function Invoke-StageCurlCaBundles {
         [Parameter(Mandatory = $true)][string]$BuildDirX64
     )
 
-    $srcX86 = Resolve-CurlCaBundleSource -RepoRoot $RepoRoot -ProjectVersion $ProjectVersion -Flavor "legacy-x86"
-    $srcX64 = Resolve-CurlCaBundleSource -RepoRoot $RepoRoot -ProjectVersion $ProjectVersion -Flavor "legacy-x64"
-
-    if ([string]::IsNullOrWhiteSpace($srcX86) -and [string]::IsNullOrWhiteSpace($srcX64)) {
-        throw "Unable to locate curl-ca-bundle.crt source in binaries staging folders. Build cannot package FreshClam TLS bundle."
-    }
+    $srcX86 = Resolve-OrCreateCurlCaBundleSource -RepoRoot $RepoRoot -ProjectVersion $ProjectVersion -Flavor "legacy-x86"
+    $srcX64 = Resolve-OrCreateCurlCaBundleSource -RepoRoot $RepoRoot -ProjectVersion $ProjectVersion -Flavor "legacy-x64"
 
     if ([string]::IsNullOrWhiteSpace($srcX86)) {
         $srcX86 = $srcX64
@@ -408,19 +440,31 @@ function Invoke-StageCurlCaBundles {
     Write-Host "[setup] staged curl-ca-bundle.crt for x64: $dstX64"
 }
 
-$clamavRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot "..\..\.."))
-$repoRoot = Split-Path $clamavRoot -Parent
+$workspaceRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot "..\.."))
+$repoRoot = $workspaceRoot
+$clamavRoot = Join-Path $workspaceRoot "clamav-win32"
+$clamwinRoot = Join-Path $workspaceRoot "clamwin"
+
+if (!(Test-Path $clamavRoot)) {
+    throw "clamav-win32 folder not found: $clamavRoot"
+}
+if (!(Test-Path $clamwinRoot)) {
+    throw "clamwin folder not found: $clamwinRoot"
+}
+
 $isoPayloadRoot = Join-Path $repoRoot "binaries\iso-payload"
 $isoPath = Join-Path $repoRoot "binaries\clamwin-all-os.iso"
 $projectVersion = Get-ProjectVersion -CMakeListsPath (Join-Path $clamavRoot "CMakeLists.txt")
 $isccExe = Resolve-IsccPath
-$setupDir = Join-Path $clamavRoot "src\clamwin-gui-cpp\setup"
+$setupDir = Join-Path $clamwinRoot "setup"
 $setupIss = Join-Path $setupDir "Setup.iss"
 $setupNodbIss = Join-Path $setupDir "Setup-nodb.iss"
 $setupOutputDir = Join-Path $setupDir "Output"
 $setupCvdDir = Join-Path $setupDir "cvd"
 $bashExe = "C:\msys64\usr\bin\bash.exe"
 $clamavCert = Join-Path $clamavRoot "clamav\certs\clamav.crt"
+$prebuiltW98Root = Join-Path $repoRoot "binaries\prebuilt-w98"
+$prebuiltW98EngineDir = Join-Path $prebuiltW98Root "clamav"
 
 if (!(Test-Path $bashExe)) {
     throw "MSYS bash not found: $bashExe"
@@ -431,7 +475,7 @@ if ($SkipBuild) {
 }
 Write-Host ("[version] detected clamav-win32 version: {0}" -f $projectVersion)
 
-$profiles = @(
+$engineProfiles = @(
     @{
         Name = "legacy-x86"
         BuildDir = Join-Path $clamavRoot "build-x86-mingw-winxp"
@@ -444,7 +488,7 @@ $profiles = @(
             "-DCMAKE_C_COMPILER=gcc",
             "-DCMAKE_CXX_COMPILER=g++",
             "-DCMAKE_RC_COMPILER=windres",
-            "-DCMAKE_C_FLAGS=-std=gnu11 -Wno-error=implicit-function-declaration",
+            "-DCMAKE_C_FLAGS=-std=gnu17 -Wno-error=implicit-function-declaration",
             "-DENABLE_LEGACY=ON",
             "-DCLAMWIN_SHELLEXT_UNICODE=ON",
             "-DRUST_COMPILER_TARGET:STRING=i686-pc-windows-gnu",
@@ -453,65 +497,132 @@ $profiles = @(
     },
     @{
         Name = "legacy-x64"
-        BuildDir = Join-Path $clamavRoot "build-x64"
+        BuildDir = Join-Path $clamavRoot "build-x64-mingw"
         UseMingw32 = $false
         ConfigureArgs = @(
             "-S", $clamavRoot,
-            "-B", (Join-Path $clamavRoot "build-x64"),
+            "-B", (Join-Path $clamavRoot "build-x64-mingw"),
             "-G", "MinGW Makefiles",
             "-DCMAKE_MAKE_PROGRAM=mingw32-make",
             "-DCMAKE_C_COMPILER=gcc",
             "-DCMAKE_CXX_COMPILER=g++",
             "-DCMAKE_RC_COMPILER=windres",
-            "-DCMAKE_C_FLAGS=-std=gnu11 -Wno-error=implicit-function-declaration",
+            "-DCMAKE_C_FLAGS=-std=gnu17 -Wno-error=implicit-function-declaration",
             "-DENABLE_LEGACY=ON",
-            "-DCLAMWIN_SHELLEXT_UNICODE=ON",
-            "-DRUST_COMPILER_TARGET:STRING=x86_64-pc-windows-gnu"
-        )
-    },
-    @{
-        Name = "x64"
-        BuildDir = Join-Path $clamavRoot "build-gui"
-        UseMingw32 = $false
-        ConfigureArgs = @(
-            "-S", $clamavRoot,
-            "-B", (Join-Path $clamavRoot "build-gui"),
-            "-G", "MinGW Makefiles",
-            "-DCMAKE_MAKE_PROGRAM=mingw32-make",
-            "-DCMAKE_C_COMPILER=gcc",
-            "-DCMAKE_CXX_COMPILER=g++",
-            "-DCMAKE_RC_COMPILER=windres",
-            "-DCMAKE_C_FLAGS=-std=gnu11 -Wno-error=implicit-function-declaration",
-            "-DENABLE_LEGACY=OFF",
             "-DCLAMWIN_SHELLEXT_UNICODE=ON",
             "-DRUST_COMPILER_TARGET:STRING=x86_64-pc-windows-gnu"
         )
     }
 )
 
-$clamavTargets = @("clambc", "clamscan", "freshclam", "sigtool", "clamd", "clamdscan", "clamdtop", "clamwin", "clamwin_shell_extension")
+$guiProfiles = @(
+    @{
+        Name = "gui-x86"
+        BuildDir = Join-Path $clamwinRoot "build-x86-mingw-winxp"
+        UseMingw32 = $true
+        ConfigureArgs = @(
+            "-S", $clamwinRoot,
+            "-B", (Join-Path $clamwinRoot "build-x86-mingw-winxp"),
+            "-G", "MinGW Makefiles",
+            "-DCMAKE_MAKE_PROGRAM=mingw32-make",
+            "-DCMAKE_C_COMPILER=gcc",
+            "-DCMAKE_CXX_COMPILER=g++",
+            "-DCMAKE_RC_COMPILER=windres",
+            "-DCLAMWIN_SHELLEXT_UNICODE=ON"
+        )
+    },
+    @{
+        Name = "gui-x86-ansi"
+        BuildDir = Join-Path $clamwinRoot "build-x86-mingw-ansi"
+        UseMingw32 = $true
+        ConfigureArgs = @(
+            "-S", $clamwinRoot,
+            "-B", (Join-Path $clamwinRoot "build-x86-mingw-ansi"),
+            "-G", "MinGW Makefiles",
+            "-DCMAKE_MAKE_PROGRAM=mingw32-make",
+            "-DCMAKE_C_COMPILER=gcc",
+            "-DCMAKE_CXX_COMPILER=g++",
+            "-DCMAKE_RC_COMPILER=windres",
+            "-DCLAMWIN_SHELLEXT_UNICODE=OFF"
+        )
+    },
+    @{
+        Name = "gui-x64"
+        BuildDir = Join-Path $clamwinRoot "build"
+        UseMingw32 = $false
+        ConfigureArgs = @(
+            "-S", $clamwinRoot,
+            "-B", (Join-Path $clamwinRoot "build"),
+            "-G", "MinGW Makefiles",
+            "-DCMAKE_MAKE_PROGRAM=mingw32-make",
+            "-DCMAKE_C_COMPILER=gcc",
+            "-DCMAKE_CXX_COMPILER=g++",
+            "-DCMAKE_RC_COMPILER=windres",
+            "-DCLAMWIN_SHELLEXT_UNICODE=ON"
+        )
+    }
+)
+
+$clamavTargets = @("clambc", "clamscan", "freshclam", "sigtool", "clamd", "clamdscan", "clamdtop")
+$clamwinTargets = @("clamwin", "clamwin_shell_extension")
 
 if (-not $SkipBuild) {
-    foreach ($p in $profiles) {
-        if (!(Test-Path $p.BuildDir)) {
-            throw "Build directory missing for profile $($p.Name): $($p.BuildDir)"
-        }
+    foreach ($p in $engineProfiles) {
         $expectedRustTarget = Get-ExpectedRustTarget -ConfigureArgs $p.ConfigureArgs
         Invoke-ConfigureProfile -Profile $p
         Invoke-BuildTarget -BuildDir $p.BuildDir -Targets $clamavTargets -UseMingw32 $p.UseMingw32 -RustTarget $expectedRustTarget
     }
+
+    foreach ($p in $guiProfiles) {
+        Invoke-ConfigureProfile -Profile $p
+        if ($p.Name -eq "gui-x86-ansi") {
+            Invoke-BuildTarget -BuildDir $p.BuildDir -Targets @("clamwin", "clamwin_shell_extension") -UseMingw32 $p.UseMingw32
+        }
+        else {
+            Invoke-BuildTarget -BuildDir $p.BuildDir -Targets $clamwinTargets -UseMingw32 $p.UseMingw32
+        }
+    }
 }
 
 $legacyX86BuildDir = Join-Path $clamavRoot "build-x86-mingw-winxp"
-$legacyX64BuildDir = Join-Path $clamavRoot "build-x64"
+$legacyX64BuildDir = Join-Path $clamavRoot "build-x64-mingw"
+$guiX86BuildDir = Join-Path $clamwinRoot "build-x86-mingw-winxp"
+$guiX86AnsiBuildDir = Join-Path $clamwinRoot "build-x86-mingw-ansi"
+$guiX64BuildDir = Join-Path $clamwinRoot "build"
+
+$setupDefines = @{
+    BuildDir98Engine = $prebuiltW98EngineDir
+    BuildDir32Engine = $legacyX86BuildDir
+    BuildDir64Engine = $legacyX64BuildDir
+    BuildDir98Gui = $guiX86AnsiBuildDir
+    BuildDir32Gui = $guiX86BuildDir
+    BuildDir64Gui = $guiX64BuildDir
+    BuildDir98ShellExt = $guiX86AnsiBuildDir
+    BuildDir32ShellExt = $guiX86BuildDir
+    BuildDir64ShellExt = $guiX64BuildDir
+    ClamavCertSource = $clamavCert
+}
+
 Invoke-StageCurlCaBundles -RepoRoot $repoRoot -ProjectVersion $projectVersion -BuildDirX86 $legacyX86BuildDir -BuildDirX64 $legacyX64BuildDir
 
-$setupNodbExe = Invoke-BuildSetup -IsccExe $isccExe -SetupDir $setupDir -SetupScript $setupNodbIss -SetupOutputDir $setupOutputDir
+$builtW98GuiExe = Join-Path $guiX86AnsiBuildDir "clamwin.exe"
+$prebuiltW98EngineExe = Join-Path $prebuiltW98EngineDir "clamscan.exe"
+
+if (!(Test-Path $builtW98GuiExe)) {
+    throw "Win98 ANSI GUI binaries are missing. Expected '$builtW98GuiExe'. Build without -SkipBuild to generate $guiX86AnsiBuildDir, then rerun build-setup.ps1."
+}
+Write-Host "[setup] using built Win98 ANSI GUI binaries from: $guiX86AnsiBuildDir"
+
+if (!(Test-Path $prebuiltW98EngineExe)) {
+    throw "Win98 ClamAV engine binaries are missing. Copy prebuilt Win98 engine binaries (including clamscan.exe) to '$prebuiltW98EngineDir', then rerun build-setup.ps1."
+}
+
+$setupNodbExe = Invoke-BuildSetup -IsccExe $isccExe -SetupDir $setupDir -SetupScript $setupNodbIss -SetupOutputDir $setupOutputDir -PreprocessorDefines $setupDefines
 $setupExe = ""
 if ($IncludeFulldbInstaller) {
-    $freshclamForSetup = Join-Path (Join-Path $clamavRoot "build-gui") "freshclam.exe"
+    $freshclamForSetup = Join-Path $legacyX64BuildDir "freshclam.exe"
     Invoke-PrepareBundledDatabases -FreshclamExe $freshclamForSetup -CvdDir $setupCvdDir -CertSource $clamavCert
-    $setupExe = Invoke-BuildSetup -IsccExe $isccExe -SetupDir $setupDir -SetupScript $setupIss -SetupOutputDir $setupOutputDir
+    $setupExe = Invoke-BuildSetup -IsccExe $isccExe -SetupDir $setupDir -SetupScript $setupIss -SetupOutputDir $setupOutputDir -PreprocessorDefines $setupDefines
 }
 
 if (Test-Path $isoPayloadRoot) {

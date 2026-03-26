@@ -1,4 +1,6 @@
 /build
-/setup/Output
+/build-x86-mingw-winxp
 /setup/Output
 /setup/cvd
+build-*
+tools/libempty_file.a

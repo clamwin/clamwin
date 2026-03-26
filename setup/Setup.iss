@@ -1,14 +1,52 @@
 ; ClamWin Free Antivirus — Inno Setup script
 ; Packages the native C++ GUI build (clamwin-gui-cpp).
 ;
-; Build outputs are taken from {#BuildDir32}, {#BuildDir64}.
+; Build outputs are taken from {#BuildDir32Gui}/{#BuildDir64Gui} and
+; {#BuildDir32Engine}/{#BuildDir64Engine}.
 ; Override individual dirs at compile time, e.g.:
-;   iscc /DBuildDir64=C:\path\to\x64-build Setup.iss
+;   iscc /DBuildDir64Gui=C:\path\to\gui-x64-build /DBuildDir64Engine=C:\path\to\engine-x64-build Setup.iss
 
 #DEFINE IncludeCVD
 #DEFINE AppVersion "1.5.2"
-#DEFINE BuildDir32    "..\..\..\build-x86-mingw-winxp"
-#DEFINE BuildDir64    "..\..\..\build-x64"
+#ifndef BuildDir98Engine
+  #DEFINE BuildDir98Engine "..\..\binaries\prebuilt-w98\clamav"
+#endif
+#ifndef BuildDir32Engine
+  #DEFINE BuildDir32Engine "..\..\clamav-win32\build-x86-mingw-winxp"
+#endif
+#ifndef BuildDir64Engine
+  #DEFINE BuildDir64Engine "..\..\clamav-win32\build-x64-mingw"
+#endif
+#ifndef BuildDir98Gui
+  #DEFINE BuildDir98Gui "..\build-x86-mingw-ansi"
+#endif
+#ifndef BuildDir32Gui
+  #DEFINE BuildDir32Gui BuildDir32Engine
+#endif
+#ifndef BuildDir64Gui
+  #DEFINE BuildDir64Gui "..\build"
+#endif
+#ifndef BuildDir98ShellExt
+  #DEFINE BuildDir98ShellExt BuildDir98Gui
+#endif
+#ifndef BuildDir32ShellExt
+  #DEFINE BuildDir32ShellExt BuildDir32Gui
+#endif
+#ifndef BuildDir64ShellExt
+  #DEFINE BuildDir64ShellExt BuildDir64Gui
+#endif
+#ifndef IncludeX64
+  #DEFINE IncludeX64 1
+#endif
+#ifndef SetupMinVersion
+  #DEFINE SetupMinVersion "4.10.1998,4.0"
+#endif
+#ifndef OutputBaseFilenamePrefix
+  #DEFINE OutputBaseFilenamePrefix "clamwin-" + AppVersion + "-setup"
+#endif
+#ifndef ClamavCertSource
+  #DEFINE ClamavCertSource "..\..\clamav-win32\clamav\certs\clamav.crt"
+#endif
 
 [Setup]
 AppName=ClamWin Free Antivirus
@@ -22,11 +60,11 @@ DefaultDirName={code:BaseDir}\ClamWin
 DefaultGroupName=ClamWin Antivirus
 LicenseFile=Setupfiles\License.rtf
 AllowNoIcons=true
-MinVersion=5.0.2195,5.0.2195
+MinVersion={#SetupMinVersion}
 ShowLanguageDialog=no
 LanguageDetectionMethod=none
 OutputDir=Output
-OutputBaseFilename=clamwin-{#AppVersion}-setup
+OutputBaseFilename={#OutputBaseFilenamePrefix}
 Compression=lzma/ultra
 InternalCompressLevel=max
 SolidCompression=true
@@ -50,40 +88,64 @@ Name: desktopicon; Description: Create a &desktop icon; GroupDescription: Additi
 [Files]
 ; ── ClamWin GUI ───────────────────────────────────────────────────────────────
 ; clamwin.exe
-Source: {#BuildDir32}\clamwin.exe;    DestDir: {app}\bin; Components: ClamWin; Check: Is32bitNT;   Flags: restartreplace uninsrestartdelete replacesameversion
-Source: {#BuildDir64}\clamwin.exe;    DestDir: {app}\bin; Components: ClamWin; Check: IsWin64;     Flags: restartreplace uninsrestartdelete replacesameversion
+Source: {#BuildDir98Gui}\clamwin.exe;    DestDir: {app}\bin; Components: ClamWin; Check: IsWin98;      Flags: restartreplace uninsrestartdelete replacesameversion
+Source: {#BuildDir32Gui}\clamwin.exe;    DestDir: {app}\bin; Components: ClamWin; Check: Is32bitNT;   Flags: restartreplace uninsrestartdelete replacesameversion
+#if IncludeX64
+Source: {#BuildDir64Gui}\clamwin.exe;    DestDir: {app}\bin; Components: ClamWin; Check: IsWin64;     Flags: restartreplace uninsrestartdelete replacesameversion
+#endif
 
 ; libExpShell.dll
-Source: {#BuildDir32}\libExpShell.dll;    DestDir: {app}\bin; Components: ExplorerShell; Check: Is32bitNT;   Flags: restartreplace uninsrestartdelete replacesameversion
-Source: {#BuildDir64}\libExpShell.dll;    DestDir: {app}\bin; Components: ExplorerShell; Check: IsWin64;     Flags: restartreplace uninsrestartdelete replacesameversion
+Source: {#BuildDir98ShellExt}\libExpShell.dll;    DestDir: {app}\bin; Components: ExplorerShell; Check: IsWin98;      Flags: restartreplace uninsrestartdelete replacesameversion
+Source: {#BuildDir32ShellExt}\libExpShell.dll;    DestDir: {app}\bin; Components: ExplorerShell; Check: Is32bitNT;   Flags: restartreplace uninsrestartdelete replacesameversion
+#if IncludeX64
+Source: {#BuildDir64ShellExt}\libExpShell.dll;    DestDir: {app}\bin; Components: ExplorerShell; Check: IsWin64;     Flags: restartreplace uninsrestartdelete replacesameversion
+#endif
 
 ; ── ClamAV Engine ─────────────────────────────────────────────────────────────
 ; clamscan.exe
-Source: {#BuildDir32}\clamscan.exe;    DestDir: {app}\bin; Components: ClamAV; Check: Is32bitNT;   Flags: restartreplace uninsrestartdelete replacesameversion
-Source: {#BuildDir64}\clamscan.exe;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin64;     Flags: restartreplace uninsrestartdelete replacesameversion
+Source: {#BuildDir98Engine}\clamscan.exe;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin98;      Flags: restartreplace uninsrestartdelete replacesameversion
+Source: {#BuildDir32Engine}\clamscan.exe;    DestDir: {app}\bin; Components: ClamAV; Check: Is32bitNT;   Flags: restartreplace uninsrestartdelete replacesameversion
+#if IncludeX64
+Source: {#BuildDir64Engine}\clamscan.exe;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin64;     Flags: restartreplace uninsrestartdelete replacesameversion
+#endif
 
 ; freshclam.exe
-Source: {#BuildDir32}\freshclam.exe;    DestDir: {app}\bin; Components: ClamAV; Check: Is32bitNT;   Flags: restartreplace uninsrestartdelete replacesameversion
-Source: {#BuildDir64}\freshclam.exe;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin64;     Flags: restartreplace uninsrestartdelete replacesameversion
+Source: {#BuildDir98Engine}\freshclam.exe;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin98;      Flags: restartreplace uninsrestartdelete replacesameversion
+Source: {#BuildDir32Engine}\freshclam.exe;    DestDir: {app}\bin; Components: ClamAV; Check: Is32bitNT;   Flags: restartreplace uninsrestartdelete replacesameversion
+#if IncludeX64
+Source: {#BuildDir64Engine}\freshclam.exe;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin64;     Flags: restartreplace uninsrestartdelete replacesameversion
+#endif
 
 ; sigtool.exe
-Source: {#BuildDir32}\sigtool.exe;    DestDir: {app}\bin; Components: ClamAV; Check: Is32bitNT;   Flags: restartreplace uninsrestartdelete replacesameversion
-Source: {#BuildDir64}\sigtool.exe;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin64;     Flags: restartreplace uninsrestartdelete replacesameversion
+Source: {#BuildDir98Engine}\sigtool.exe;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin98;      Flags: restartreplace uninsrestartdelete replacesameversion
+Source: {#BuildDir32Engine}\sigtool.exe;    DestDir: {app}\bin; Components: ClamAV; Check: Is32bitNT;   Flags: restartreplace uninsrestartdelete replacesameversion
+#if IncludeX64
+Source: {#BuildDir64Engine}\sigtool.exe;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin64;     Flags: restartreplace uninsrestartdelete replacesameversion
+#endif
 
 ; libclamav.dll
-Source: {#BuildDir32}\libclamav.dll;    DestDir: {app}\bin; Components: ClamAV; Check: Is32bitNT;   Flags: restartreplace uninsrestartdelete replacesameversion
-Source: {#BuildDir64}\libclamav.dll;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin64;     Flags: restartreplace uninsrestartdelete replacesameversion
+Source: {#BuildDir98Engine}\libclamav.dll;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin98;      Flags: restartreplace uninsrestartdelete replacesameversion
+Source: {#BuildDir32Engine}\libclamav.dll;    DestDir: {app}\bin; Components: ClamAV; Check: Is32bitNT;   Flags: restartreplace uninsrestartdelete replacesameversion
+#if IncludeX64
+Source: {#BuildDir64Engine}\libclamav.dll;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin64;     Flags: restartreplace uninsrestartdelete replacesameversion
+#endif
 
 ; libfreshclam.dll
-Source: {#BuildDir32}\libfreshclam.dll;    DestDir: {app}\bin; Components: ClamAV; Check: Is32bitNT;   Flags: restartreplace uninsrestartdelete replacesameversion
-Source: {#BuildDir64}\libfreshclam.dll;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin64;     Flags: restartreplace uninsrestartdelete replacesameversion
+Source: {#BuildDir98Engine}\libfreshclam.dll;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin98;      Flags: restartreplace uninsrestartdelete replacesameversion
+Source: {#BuildDir32Engine}\libfreshclam.dll;    DestDir: {app}\bin; Components: ClamAV; Check: Is32bitNT;   Flags: restartreplace uninsrestartdelete replacesameversion
+#if IncludeX64
+Source: {#BuildDir64Engine}\libfreshclam.dll;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin64;     Flags: restartreplace uninsrestartdelete replacesameversion
+#endif
 
 ; TLS CA bundle for XP-era libcurl/OpenSSL validation
-Source: {#BuildDir32}\curl-ca-bundle.crt;  DestDir: {app}\bin; Components: ClamAV; Check: Is32bitNT;   Flags: ignoreversion
-Source: {#BuildDir64}\curl-ca-bundle.crt;  DestDir: {app}\bin; Components: ClamAV; Check: IsWin64;     Flags: ignoreversion
+Source: {#BuildDir98Engine}\curl-ca-bundle.crt;  DestDir: {app}\bin; Components: ClamAV; Check: IsWin98;      Flags: ignoreversion
+Source: {#BuildDir32Engine}\curl-ca-bundle.crt;  DestDir: {app}\bin; Components: ClamAV; Check: Is32bitNT;   Flags: ignoreversion
+#if IncludeX64
+Source: {#BuildDir64Engine}\curl-ca-bundle.crt;  DestDir: {app}\bin; Components: ClamAV; Check: IsWin64;     Flags: ignoreversion
+#endif
 
 ; certs
-Source: ..\..\..\clamav\certs\clamav.crt; DestDir: {app}\bin\certs; Components: ClamAV; Flags: ignoreversion
+Source: {#ClamavCertSource}; DestDir: {app}\bin\certs; Components: ClamAV; Flags: ignoreversion
 
 ; ── Virus Databases (optional) ────────────────────────────────────────────────
 #IFDEF IncludeCVD
@@ -217,9 +279,22 @@ function PostThreadMessage(ThreadId: Cardinal; Msg: Cardinal; wParam: Cardinal; 
 // Helpers
 //────────────────────────────────────────────────────────────────────────────
 
-function Is32bitNT(): Boolean;
+function IsWin98(): Boolean;
+var
+  Version: TWindowsVersion;
 begin
-  Result := not IsWin64;
+  GetWindowsVersionEx(Version);
+  { Win98 = non-NT, major 4, minor 10 (98) or 90 (Me) }
+  Result := (not Version.NTPlatform) and (Version.Major = 4) and (Version.Minor >= 10);
+end;
+
+function Is32bitNT(): Boolean;
+var
+  Version: TWindowsVersion;
+begin
+  GetWindowsVersionEx(Version);
+  { NT 32-bit: must be NT platform, major >= 5, not 64-bit, and not Win9x }
+  Result := Version.NTPlatform and (Version.Major >= 5) and (not IsWin64) and (not IsWin98());
 end;
 
 function IsAllUsers(): Boolean;

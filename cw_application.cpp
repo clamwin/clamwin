@@ -26,6 +26,26 @@ static const UINT_PTR CW_TRAY_RETRY_TIMER_ID = 43;
 static const UINT_PTR CW_VERSION_CHECK_TIMER_ID = 44;
 static const TCHAR* s_reportsPopupClass = TEXT("ClamWinDarkReportsMenu");
 
+static bool CW_CanUseOwnerDrawMenuFallback()
+{
+    static int cached = -1;
+    if (cached >= 0)
+        return cached != 0;
+
+    HMODULE hGdiplus = LoadLibrary(TEXT("gdiplus.dll"));
+    if (hGdiplus)
+    {
+        FreeLibrary(hGdiplus);
+        cached = 1;
+    }
+    else
+    {
+        cached = 0;
+    }
+
+    return cached != 0;
+}
+
 struct CWReportsPopupState
 {
     HWND owner;
@@ -1002,19 +1022,25 @@ void CWApplication::showReportsMenu()
     if (!hReportsMenu)
         return;
 
-    MENUINFO mi;
-    memset(&mi, 0, sizeof(mi));
-    mi.cbSize = sizeof(mi);
-    mi.fMask = MIM_STYLE;
-    mi.dwStyle = MNS_NOCHECK;
-    SetMenuInfo(hReportsMenu, &mi);
+    const bool useOwnerDraw = CW_CanUseOwnerDrawMenuFallback();
+    if (useOwnerDraw)
+    {
+        MENUINFO mi;
+        memset(&mi, 0, sizeof(mi));
+        mi.cbSize = sizeof(mi);
+        mi.fMask = MIM_STYLE;
+        mi.dwStyle = MNS_NOCHECK;
+        SetMenuInfo(hReportsMenu, &mi);
+    }
+
+    UINT reportItemFlags = (useOwnerDraw ? MF_OWNERDRAW : MF_STRING);
 
     AppendMenu(hReportsMenu,
-                MF_OWNERDRAW | (hasScanReport ? 0 : MF_GRAYED),
+                reportItemFlags | (hasScanReport ? 0 : MF_GRAYED),
                 IDM_TRAY_SCANREPORT,
                 (LPCTSTR)s_reportScanText);
     AppendMenu(hReportsMenu,
-                MF_OWNERDRAW | (hasUpdateReport ? 0 : MF_GRAYED),
+                reportItemFlags | (hasUpdateReport ? 0 : MF_GRAYED),
                 IDM_TRAY_UPDATEREPORT,
                 (LPCTSTR)s_reportUpdateText);
 

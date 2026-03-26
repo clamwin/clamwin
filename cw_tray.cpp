@@ -40,6 +40,26 @@ static const TCHAR* s_trayAbout = TEXT("&About");
 static const TCHAR* s_trayExit = TEXT("E&xit");
 static const TCHAR* s_trayCustomMenuClass = TEXT("ClamWinDarkTrayMenu");
 
+static bool cwCanUseOwnerDrawMenuFallback()
+{
+    static int cached = -1;
+    if (cached >= 0)
+        return cached != 0;
+
+    HMODULE hGdiplus = LoadLibrary(TEXT("gdiplus.dll"));
+    if (hGdiplus)
+    {
+        FreeLibrary(hGdiplus);
+        cached = 1;
+    }
+    else
+    {
+        cached = 0;
+    }
+
+    return cached != 0;
+}
+
 struct CWTrayPopupItemDef
 {
     UINT id;
@@ -771,28 +791,54 @@ void CWTray::showContextMenu(bool enableScanReport, bool enableUpdateReport)
         return;
     }
 
+    const bool useOwnerDraw = cwCanUseOwnerDrawMenuFallback();
+    UINT itemFlags = useOwnerDraw ? MF_OWNERDRAW : MF_STRING;
+    UINT popupFlags = useOwnerDraw ? (MF_POPUP | MF_OWNERDRAW) : MF_POPUP;
 
-    AppendMenu(hMenu, MF_OWNERDRAW, IDM_TRAY_OPEN, (LPCTSTR)s_trayOpen);
-    AppendMenu(hMenu, MF_OWNERDRAW | MF_DISABLED, 60001, (LPCTSTR)s_traySep);
-    AppendMenu(hMenu, MF_OWNERDRAW, IDM_TRAY_SCAN,    (LPCTSTR)s_trayScanFiles);
-    AppendMenu(hMenu, MF_OWNERDRAW, IDM_TRAY_SCANMEM, (LPCTSTR)s_trayScanMemory);
-    AppendMenu(hMenu, MF_OWNERDRAW, IDM_TRAY_UPDATE,  (LPCTSTR)s_trayUpdateDatabase);
-    AppendMenu(hMenu, MF_OWNERDRAW | MF_DISABLED, 60002, (LPCTSTR)s_traySep);
+    if (useOwnerDraw)
+    {
+        MENUINFO mi;
+        memset(&mi, 0, sizeof(mi));
+        mi.cbSize = sizeof(mi);
+        mi.fMask = MIM_STYLE;
+        mi.dwStyle = MNS_NOCHECK;
+        SetMenuInfo(hMenu, &mi);
+        SetMenuInfo(hReportsMenu, &mi);
+    }
+
+    AppendMenu(hMenu, itemFlags, IDM_TRAY_OPEN, s_trayOpen);
+    if (useOwnerDraw)
+        AppendMenu(hMenu, itemFlags | MF_DISABLED, 60001, s_traySep);
+    else
+        AppendMenu(hMenu, MF_SEPARATOR, 0, NULL);
+    AppendMenu(hMenu, itemFlags, IDM_TRAY_SCAN, s_trayScanFiles);
+    AppendMenu(hMenu, itemFlags, IDM_TRAY_SCANMEM, s_trayScanMemory);
+    AppendMenu(hMenu, itemFlags, IDM_TRAY_UPDATE, s_trayUpdateDatabase);
+    if (useOwnerDraw)
+        AppendMenu(hMenu, itemFlags | MF_DISABLED, 60002, s_traySep);
+    else
+        AppendMenu(hMenu, MF_SEPARATOR, 0, NULL);
     AppendMenu(hReportsMenu,
-                MF_OWNERDRAW | (enableScanReport ? 0 : MF_GRAYED),
+                itemFlags | (enableScanReport ? 0 : MF_GRAYED),
                 IDM_TRAY_SCANREPORT,
-                (LPCTSTR)s_trayVirusScanReport);
+                s_trayVirusScanReport);
     AppendMenu(hReportsMenu,
-                MF_OWNERDRAW | (enableUpdateReport ? 0 : MF_GRAYED),
+                itemFlags | (enableUpdateReport ? 0 : MF_GRAYED),
                 IDM_TRAY_UPDATEREPORT,
-                (LPCTSTR)s_trayVirusDbUpdateReport);
-    AppendMenu(hMenu, MF_POPUP | MF_OWNERDRAW, (UINT_PTR)hReportsMenu, (LPCTSTR)s_trayDisplayReports);
-    AppendMenu(hMenu, MF_OWNERDRAW | MF_DISABLED, 60003, (LPCTSTR)s_traySep);
-    AppendMenu(hMenu, MF_OWNERDRAW, IDM_TRAY_PREFS,    (LPCTSTR)s_trayPreferences);
-    AppendMenu(hMenu, MF_OWNERDRAW, IDM_TRAY_SCHEDULE, (LPCTSTR)s_trayScheduledScans);
-    AppendMenu(hMenu, MF_OWNERDRAW, IDM_TRAY_ABOUT,    (LPCTSTR)s_trayAbout);
-    AppendMenu(hMenu, MF_OWNERDRAW | MF_DISABLED, 60004, (LPCTSTR)s_traySep);
-    AppendMenu(hMenu, MF_OWNERDRAW, IDM_TRAY_EXIT, (LPCTSTR)s_trayExit);
+                s_trayVirusDbUpdateReport);
+    AppendMenu(hMenu, popupFlags, (UINT_PTR)hReportsMenu, s_trayDisplayReports);
+    if (useOwnerDraw)
+        AppendMenu(hMenu, itemFlags | MF_DISABLED, 60003, s_traySep);
+    else
+        AppendMenu(hMenu, MF_SEPARATOR, 0, NULL);
+    AppendMenu(hMenu, itemFlags, IDM_TRAY_PREFS, s_trayPreferences);
+    AppendMenu(hMenu, itemFlags, IDM_TRAY_SCHEDULE, s_trayScheduledScans);
+    AppendMenu(hMenu, itemFlags, IDM_TRAY_ABOUT, s_trayAbout);
+    if (useOwnerDraw)
+        AppendMenu(hMenu, itemFlags | MF_DISABLED, 60004, s_traySep);
+    else
+        AppendMenu(hMenu, MF_SEPARATOR, 0, NULL);
+    AppendMenu(hMenu, itemFlags, IDM_TRAY_EXIT, s_trayExit);
 
     SetMenuDefaultItem(hMenu, IDM_TRAY_OPEN, FALSE);
 
