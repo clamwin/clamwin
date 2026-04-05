@@ -936,12 +936,27 @@ bool isExcludedFileResult(const std::string& status)
 {
     return status.size() >= 8 && _strnicmp(status.c_str(), "Excluded", 8) == 0;
 }
+
+CWAutoClosePolicy dialogAutoClosePolicy(bool autoClose, int autoCloseRetCode)
+{
+    if (!autoClose)
+        return CW_AutoCloseDisabled();
+
+    if (autoCloseRetCode == INT_MIN)
+        return CW_AutoCloseOnAnyResult();
+
+    return CW_AutoCloseOnExitCode(autoCloseRetCode);
+}
 }
 
 /* ─── Constructor / Destructor ──────────────────────────────── */
 
-CWScanDialog::CWScanDialog(CWConfig& cfg, const std::string& targetPath,
-                           bool isUpdate, bool scanMemoryOnly)
+CWScanDialog::CWScanDialog(CWConfig& cfg,
+                           const std::string& targetPath,
+                           bool isUpdate,
+                           bool scanMemoryOnly,
+                           bool autoClose,
+                           int autoCloseRetCode)
     : m_cfg(cfg)
     , m_targetPath(targetPath)
     , m_isUpdate(isUpdate)
@@ -951,6 +966,7 @@ CWScanDialog::CWScanDialog(CWConfig& cfg, const std::string& targetPath,
     , m_hwndBtnStop(NULL),m_hwndBtnSave(NULL)
     , m_hFont(NULL), m_hFontBold(NULL)
     , m_finished(0), m_cancelled(0), m_exitCode(-1)
+    , m_autoClosePolicy(dialogAutoClosePolicy(autoClose, autoCloseRetCode))
     , m_showMnemonics(false)
     , m_scanExpectedFiles(0)
     , m_scanExpectedBytes(0)
@@ -1614,6 +1630,11 @@ void CWScanDialog::onScanFinished(int exitCode)
         CloseHandle(m_hWorker);
         m_hWorker = NULL;
     }
+
+    if (CW_ShouldAutoClose(m_autoClosePolicy, m_exitCode, m_cancelled != 0))
+    {
+        PostMessage(m_hwnd, WM_COMMAND, IDC_SCAN_STOP, 0);
+    }
 }
 
 /* ─── updateStatsDisplay ─────────────────────────────────────── */
@@ -1841,20 +1862,35 @@ void CWScanDialog::saveReport()
 
 /* ─── Public C wrappers (called by CWApplication) ─────────────── */
 
-int CW_ScanDialogRun(HWND hwndParent, CWConfig* cfg, const char* targetPath)
+int CW_ScanDialogRun(HWND hwndParent,
+                     CWConfig* cfg,
+                     const char* targetPath,
+                     bool autoClose,
+                     int autoCloseRetCode)
 {
-    CWScanDialog dlg(*cfg, targetPath ? std::string(targetPath) : "", false, false);
+    CWScanDialog dlg(*cfg,
+                     targetPath ? std::string(targetPath) : "",
+                     false,
+                     false,
+                     autoClose,
+                     autoCloseRetCode);
     return dlg.run(hwndParent);
 }
 
-int CW_ScanMemoryDialogRun(HWND hwndParent, CWConfig* cfg)
+int CW_ScanMemoryDialogRun(HWND hwndParent,
+                           CWConfig* cfg,
+                           bool autoClose,
+                           int autoCloseRetCode)
 {
-    CWScanDialog dlg(*cfg, "", false, true);
+    CWScanDialog dlg(*cfg, "", false, true, autoClose, autoCloseRetCode);
     return dlg.run(hwndParent);
 }
 
-int CW_UpdateDialogRun(HWND hwndParent, CWConfig* cfg)
+int CW_UpdateDialogRun(HWND hwndParent,
+                       CWConfig* cfg,
+                       bool autoClose,
+                       int autoCloseRetCode)
 {
-    CWScanDialog dlg(*cfg, "", true, false);
+    CWScanDialog dlg(*cfg, "", true, false, autoClose, autoCloseRetCode);
     return dlg.run(hwndParent);
 }

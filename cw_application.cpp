@@ -6,9 +6,11 @@
  */
 
 #include "cw_application.h"
+#include "cw_bg_task.h"
 #include "cw_dashboard.h"
 #include "cw_dashboard.h"
 #include "cw_cli_args.h"
+#include "cw_auto_close.h"
 #include "cw_gui_shared.h"
 #include "cw_dpi.h"
 #include "cw_theme.h"
@@ -536,12 +538,18 @@ CWApplication::CWApplication()
     , m_dash(m_config)
     , m_hIcon(NULL)
     , m_taskbarCreatedMsg(0)
+    , m_bgScan(NULL)
+    , m_bgUpdate(NULL)
 {
     s_instance = this;
 }
 
 CWApplication::~CWApplication()
 {
+    delete m_bgScan;
+    m_bgScan = NULL;
+    delete m_bgUpdate;
+    m_bgUpdate = NULL;
     s_instance = NULL;
 }
 
@@ -593,13 +601,22 @@ int CWApplication::run(HINSTANCE hInst, LPSTR cmdLine)
         int cliRc = 0;
         if (_stricmp(cli.mode.c_str(), "scanner") == 0)
         {
+            CWAutoClosePolicy autoClosePolicy = CW_CliAutoClosePolicy(cli.mode, cli.close);
             const char* target = cli.paths.empty() ? "" : cli.paths[0].c_str();
-            cliRc = CW_ScanDialogRun(NULL, &m_config, target);
+            cliRc = CW_ScanDialogRun(NULL,
+                                     &m_config,
+                                     target,
+                                     autoClosePolicy.enabled,
+                                     autoClosePolicy.hasRetCodeFilter ? autoClosePolicy.retCodeFilter : INT_MIN);
         }
         else if (_stricmp(cli.mode.c_str(), "updater") == 0 ||
                  _stricmp(cli.mode.c_str(), "update") == 0)
         {
-            cliRc = CW_UpdateDialogRun(NULL, &m_config);
+            CWAutoClosePolicy autoClosePolicy = CW_CliAutoClosePolicy(cli.mode, cli.close);
+            cliRc = CW_UpdateDialogRun(NULL,
+                                       &m_config,
+                                       autoClosePolicy.enabled,
+                                       autoClosePolicy.hasRetCodeFilter ? autoClosePolicy.retCodeFilter : INT_MIN);
         }
         else if (_stricmp(cli.mode.c_str(), "viewlog") == 0)
         {
@@ -837,6 +854,52 @@ void CWApplication::onVersionCheckResult(WPARAM wp, LPARAM lp)
     delete result;
 }
 
+void CWApplication::onBgTaskFinished(WPARAM wp, LPARAM lp)
+{
+    CWBgTask* task = reinterpret_cast<CWBgTask*>(lp);
+    if (!task)
+        return;
+
+    CWBgResult res = task->result();
+
+    if (res.isUpdate)
+    {
+        if (res.exitCode == CW_UPDATE_RC_SUCCESS ||
+            res.exitCode == CW_UPDATE_RC_NO_CHANGES)
+        {
+            m_dash.refreshStatus();
+            if (res.updateHadChanges)
+                showBalloonNotify("Virus database has been updated.", NIIF_INFO);
+        }
+        else
+        {
+            showBalloonNotify(
+                "An error occurred during Scheduled Virus Database Update. "
+                "Please review the update report.",
+                NIIF_WARNING);
+        }
+        delete m_bgUpdate;
+        m_bgUpdate = NULL;
+    }
+    else
+    {
+        if (res.exitCode == 1)
+            showBalloonNotify(
+                "Virus has been detected during scheduled scan! "
+                "Please review the scan report.",
+                NIIF_ERROR);
+        else if (res.exitCode != 0 && res.exitCode != -1)
+            showBalloonNotify(
+                "An error occurred during scheduled scan. "
+                "Please review the scan report.",
+                NIIF_WARNING);
+        delete m_bgScan;
+        m_bgScan = NULL;
+    }
+
+    updateTrayTip();
+}
+
 void CWApplication::doScan()
 {
     BROWSEINFO bi;
@@ -922,6 +985,10 @@ void CWApplication::doPreferences()
 
 void CWApplication::doScheduledScan()
 {
+    /* Skip if a background scan is already running */
+    if (m_bgScan)
+        return;
+
     const char* path = m_config.scanPath.empty()
                      ? m_config.databasePath.c_str()
                      : m_config.scanPath.c_str();
@@ -937,45 +1004,38 @@ void CWApplication::doScheduledScan()
         showBalloonNotify(balloon, NIIF_INFO);
     }
 
-    int rc;
-    if (m_config.scanMemory)
-        rc = CW_ScanMemoryDialogRun(dialogParent(), &m_config);
-    else
-        rc = CW_ScanDialogRun(dialogParent(), &m_config, path);
-
-    if (rc == 1)
+    m_bgScan = new CWBgTask(m_hwndTray, m_config,
+                            false, path, m_config.scanMemory);
+    if (!m_bgScan->start())
+    {
+        delete m_bgScan;
+        m_bgScan = NULL;
         showBalloonNotify(
-            "Virus has been detected during scheduled scan! "
-            "Please review the scan report.",
-            NIIF_ERROR);
-    else if (rc != 0 && rc != -1)
-        showBalloonNotify(
-            "An error occurred during scheduled scan. "
+            "An error occurred starting scheduled scan. "
             "Please review the scan report.",
             NIIF_WARNING);
-
-    updateTrayTip();
+    }
 }
 
 void CWApplication::doScheduledUpdate()
 {
+    /* Skip if a background update is already running */
+    if (m_bgUpdate)
+        return;
+
     showBalloonNotify("Running Scheduled Task:\nVirus Database Update", NIIF_INFO);
 
-    int rc = CW_UpdateDialogRun(dialogParent(), &m_config);
-    if (rc == CW_UPDATE_RC_SUCCESS || rc == CW_UPDATE_RC_NO_CHANGES)
+    m_bgUpdate = new CWBgTask(m_hwndTray, m_config,
+                              true, std::string());
+    if (!m_bgUpdate->start())
     {
-        m_dash.refreshStatus();
-        if (rc == CW_UPDATE_RC_SUCCESS)
-            showBalloonNotify("Virus database has been updated.", NIIF_INFO);
-    }
-    else if (rc != CW_UPDATE_RC_CANCELLED)
-    {
+        delete m_bgUpdate;
+        m_bgUpdate = NULL;
         showBalloonNotify(
-            "An error occurred during Scheduled Virus Database Update. "
+            "An error occurred starting Scheduled Virus Database Update. "
             "Please review the update report.",
             NIIF_WARNING);
     }
-    updateTrayTip();
 }
 
 void CWApplication::doSchedule()
@@ -1151,6 +1211,10 @@ LRESULT CWApplication::handleMessage(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
 
         case WM_CW_VERSION_RESULT:
             onVersionCheckResult(wp, lp);
+            return 0;
+
+        case WM_CW_BG_FINISHED:
+            onBgTaskFinished(wp, lp);
             return 0;
 
         case WM_DESTROY:

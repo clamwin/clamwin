@@ -8,6 +8,8 @@ set(clamwin
     cw_main.cpp
     cw_application.cpp
     cw_cli_args.cpp
+    cw_auto_close.cpp
+    cw_bg_task.cpp
     cw_dashboard.cpp
     cw_window.cpp
     cw_dialog.cpp
@@ -83,6 +85,9 @@ set(clamwin_test_sources
     ${clamwin_test_dir}/test_main.cpp
     ${clamwin_test_dir}/test_support.cpp
     ${clamwin_test_dir}/test_cli_args.cpp
+    ${clamwin_test_dir}/test_auto_close.cpp
+    ${clamwin_test_dir}/test_auto_close_integration.cpp
+    ${clamwin_test_dir}/test_bg_task.cpp
     ${clamwin_test_dir}/test_shell_extension_command.cpp
     ${clamwin_test_dir}/test_config.cpp
     ${clamwin_test_dir}/test_scan_commands.cpp
@@ -95,6 +100,9 @@ set(clamwin_test_sources
     ${clamwin_test_dir}/test_update_checker.cpp
     cw_config.cpp
     cw_cli_args.cpp
+    cw_auto_close.cpp
+    cw_bg_task.cpp
+    cw_process.cpp
     cw_scan_logic.cpp
     cw_prefs_validation.cpp
     cw_scheduler.cpp

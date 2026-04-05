@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 
 #include "cw_build_version.h"
 
@@ -77,6 +78,7 @@
 #define WM_TRAYICON             (WM_USER + 100)
 #define WM_SCAN_UPDATE          (WM_USER + 101)
 #define WM_SCAN_FINISHED        (WM_USER + 102)
+#define WM_CW_BG_FINISHED       (WM_USER + 103)
 
 #define CW_INI_SECTION_CLAMAV   "ClamAV"
 #define CW_INI_SECTION_UI       "UI"
@@ -123,9 +125,19 @@ void CW_TraySetIcon(HWND hwnd, HICON hIcon, const WCHAR *tooltip);
 void CW_TrayShowContextMenu(HWND hwnd);
 
 
-int  CW_ScanDialogRun(HWND hwndParent, CWConfig *cfg, const char *target_path);
-int  CW_ScanMemoryDialogRun(HWND hwndParent, CWConfig *cfg);
-int  CW_UpdateDialogRun(HWND hwndParent, CWConfig *cfg);
+int  CW_ScanDialogRun(HWND hwndParent,
+                      CWConfig *cfg,
+                      const char *target_path,
+                      bool autoClose = false,
+                      int autoCloseRetCode = INT_MIN);
+int  CW_ScanMemoryDialogRun(HWND hwndParent,
+                            CWConfig *cfg,
+                            bool autoClose = false,
+                            int autoCloseRetCode = INT_MIN);
+int  CW_UpdateDialogRun(HWND hwndParent,
+                        CWConfig *cfg,
+                        bool autoClose = false,
+                        int autoCloseRetCode = INT_MIN);
 
 /* Update dialog return codes for caller-side notification behavior. */
 #define CW_UPDATE_RC_SUCCESS      0

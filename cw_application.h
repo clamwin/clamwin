@@ -17,6 +17,8 @@
 #include "cw_scheduler.h"
 #include "cw_update_checker.h"
 
+class CWBgTask;
+
 class CWApplication
 {
 public:
@@ -51,6 +53,8 @@ private:
     CWScheduler  m_scheduler;
     CWConfig     m_config;
     CWUpdateChecker m_updateChecker;
+    CWBgTask*    m_bgScan;      /* in-flight background scan, or NULL  */
+    CWBgTask*    m_bgUpdate;    /* in-flight background update, or NULL */
 
     /* Returns dashboard HWND if created, else tray HWND. */
     HWND dialogParent() const;
@@ -82,6 +86,7 @@ private:
     void doOpenDashboard();
     void doHelp();
     void onVersionCheckResult(WPARAM wp, LPARAM lp);
+    void onBgTaskFinished(WPARAM wp, LPARAM lp);
 
     /* Balloon tip helper — respects trayNotify config */
     void showBalloonNotify(const char* msg, DWORD flags);

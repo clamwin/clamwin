@@ -10,6 +10,7 @@
 
 #pragma once
 #include "cw_dialog.h"
+#include "cw_auto_close.h"
 #include "cw_process.h"
 #include "cw_gui_shared.h"   /* CW_Config, CW_ScanStats, IDC_* */
 #include <string>
@@ -18,7 +19,12 @@ class CWScanDialog : public CWDialog
 {
 public:
     /* mode = false → scan target_path; mode = true → DB update */
-    CWScanDialog(CWConfig& cfg, const std::string& targetPath, bool isUpdate, bool scanMemoryOnly);
+    CWScanDialog(CWConfig& cfg,
+                 const std::string& targetPath,
+                 bool isUpdate,
+                 bool scanMemoryOnly,
+                 bool autoClose,
+                 int autoCloseRetCode);
     virtual ~CWScanDialog();
 
     /* Returns process exit code (0 = clean, 1 = threats, -1 = error/cancel) */
@@ -84,6 +90,7 @@ private:
     volatile int m_finished;
     volatile int m_cancelled;
     int          m_exitCode;
+    CWAutoClosePolicy m_autoClosePolicy;
 
     /* Scan-mode progress state (file scan mode only) */
     int          m_scanExpectedFiles;
