@@ -19,7 +19,7 @@
   #DEFINE BuildDir98Gui "..\build-x86-mingw-ansi"
 #endif
 #ifndef BuildDir32Gui
-  #DEFINE BuildDir32Gui BuildDir32Engine
+  #DEFINE BuildDir32Gui "..\build-x86-mingw-winxp"
 #endif
 #ifndef BuildDir64Gui
   #DEFINE BuildDir64Gui "..\build"
