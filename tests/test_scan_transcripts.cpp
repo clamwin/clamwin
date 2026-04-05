@@ -144,6 +144,37 @@ TEST_SUITE("scan_transcripts")
             CHECK_FALSE(effects.statusAnimate);
             CHECK(effects.progressChanged);
             CHECK(effects.progressPos == 100);
+            /* OK lines are suppressed from the log */
+            CHECK_FALSE(effects.appendToLog);
+        }
+
+        SUBCASE("FOUND lines are not suppressed")
+        {
+            CWScanLogic::ScanOutputState state = makeScanState(0);
+            CWScanLogic::ScanLineEffects effects = feedLine(
+                state,
+                "C:\\scan\\infected.txt: Win.Test.EICAR_HDB-1 FOUND",
+                false);
+
+            CHECK(state.scanCompletedFiles == 1);
+            CHECK(state.threatsFound == 1);
+            CHECK(effects.appendToLog);
+        }
+
+        SUBCASE("summary with errors updates errorsCount")
+        {
+            CWScanLogic::ScanOutputState state = makeScanState(5);
+            std::vector<std::string> lines =
+                requireTranscript("transcripts\\clamscan\\summary_with_errors.txt", 3);
+
+            feedLine(state, lines[0].c_str(), false); /* Scanned files: 5 */
+            CHECK(state.filesScanned == 5);
+
+            feedLine(state, lines[1].c_str(), false); /* Infected files: 2 */
+            CHECK(state.threatsFound == 2);
+
+            feedLine(state, lines[2].c_str(), false); /* Errors: 1 */
+            CHECK(state.errorsCount == 1);
         }
     }
 

@@ -149,7 +149,7 @@ std::string testFixturesDir(void)
     path[0] = '\0';
     GetModuleFileName(NULL, path, MAX_PATH);
     PathRemoveFileSpec(path);
-    return testJoinPath(testJoinPath(testJoinPath(path, ".."), "src"), "clamwin-gui-cpp\\tests\\fixtures");
+    return testJoinPath(testJoinPath(path, ".."), "tests\\fixtures");
 }
 
 bool testRunCommandCapture(const std::string& commandLine,

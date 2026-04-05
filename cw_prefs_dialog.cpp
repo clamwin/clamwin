@@ -30,6 +30,7 @@ enum
 
     IDC_PREFS_GENERAL_RECURSIVE,
     IDC_PREFS_GENERAL_SCANMAIL,
+    IDC_PREFS_GENERAL_INFECTED_ONLY,
     IDC_PREFS_GENERAL_ACT_REPORT,
     IDC_PREFS_GENERAL_ACT_REMOVE,
     IDC_PREFS_GENERAL_ACT_QUAR,
@@ -200,6 +201,7 @@ static bool isToggleControlId(int id)
     {
         case IDC_PREFS_GENERAL_RECURSIVE:
         case IDC_PREFS_GENERAL_SCANMAIL:
+        case IDC_PREFS_GENERAL_INFECTED_ONLY:
         case IDC_PREFS_GENERAL_ACT_REPORT:
         case IDC_PREFS_GENERAL_ACT_REMOVE:
         case IDC_PREFS_GENERAL_ACT_QUAR:
@@ -354,6 +356,7 @@ CWPrefsDialog::CWPrefsDialog(CWConfig& cfg)
     , m_showMnemonics(false)
     , m_chkRecursive(NULL)
     , m_chkScanMail(NULL)
+    , m_chkInfectedOnly(NULL)
     , m_radActionReport(NULL)
     , m_radActionRemove(NULL)
     , m_radActionQuarantine(NULL)
@@ -518,6 +521,14 @@ void CWPrefsDialog::createGeneralPage(HWND page)
                                     (HMENU)IDC_PREFS_GENERAL_SCANMAIL, NULL, NULL);
     setControlFont(m_chkScanMail);
     enableNotifyStyle(m_chkScanMail);
+    y += rowStep;
+
+    m_chkInfectedOnly = CreateWindowEx(0, TEXT("BUTTON"), TEXT("Show &infected files only (hide clean results)"),
+                                        WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW | BS_NOTIFY,
+                                        x, y, w, CW_Scale(22), page,
+                                        (HMENU)IDC_PREFS_GENERAL_INFECTED_ONLY, NULL, NULL);
+    setControlFont(m_chkInfectedOnly);
+    enableNotifyStyle(m_chkInfectedOnly);
     y += rowStep;
 
     HWND hAction = CreateWindowEx(0, TEXT("STATIC"), TEXT("Infected files action"),
@@ -1414,6 +1425,7 @@ void CWPrefsDialog::loadFromConfig()
 {
     setToggleChecked(m_chkRecursive, m_cfg.scanRecursive);
     setToggleChecked(m_chkScanMail, m_cfg.scanMail);
+    setToggleChecked(m_chkInfectedOnly, m_cfg.infectedOnly);
 
     setToggleChecked(m_radActionReport, m_cfg.infectedAction == 0);
     setToggleChecked(m_radActionRemove, m_cfg.infectedAction == 1);
@@ -1463,6 +1475,7 @@ void CWPrefsDialog::loadFromConfig()
 
     InvalidateRect(m_chkRecursive, NULL, TRUE);
     InvalidateRect(m_chkScanMail, NULL, TRUE);
+    InvalidateRect(m_chkInfectedOnly, NULL, TRUE);
     InvalidateRect(m_chkUpdateScheduled, NULL, TRUE);
     InvalidateRect(m_chkUpdateOnStartup, NULL, TRUE);
     InvalidateRect(m_chkCheckVersion, NULL, TRUE);
@@ -1478,6 +1491,7 @@ bool CWPrefsDialog::saveToConfig()
 {
     m_cfg.scanRecursive = getToggleChecked(m_chkRecursive);
     m_cfg.scanMail = getToggleChecked(m_chkScanMail);
+    m_cfg.infectedOnly = getToggleChecked(m_chkInfectedOnly);
 
     if (getToggleChecked(m_radActionRemove))
         m_cfg.infectedAction = 1;
@@ -1976,6 +1990,7 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
 
                 bool scanRecursive;
                 bool scanMail;
+                bool infectedOnly;
                 int infectedAction;
                 std::string quarantinePath;
 
@@ -2018,6 +2033,7 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
                     , activePage(PAGE_GENERAL)
                     , scanRecursive(false)
                     , scanMail(false)
+                    , infectedOnly(false)
                     , infectedAction(0)
                     , updateScheduled(false)
                     , updateFrequency(0)
@@ -2070,6 +2086,7 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
 
                 state.scanRecursive = getToggleChecked(m_chkRecursive);
                 state.scanMail = getToggleChecked(m_chkScanMail);
+                state.infectedOnly = getToggleChecked(m_chkInfectedOnly);
                 state.infectedAction = getToggleChecked(m_radActionRemove) ? 1 : (getToggleChecked(m_radActionQuarantine) ? 2 : 0);
                 state.quarantinePath = readText(m_edtQuarantine);
 
@@ -2120,6 +2137,7 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
 
                 setToggleChecked(m_chkRecursive, state.scanRecursive);
                 setToggleChecked(m_chkScanMail, state.scanMail);
+                setToggleChecked(m_chkInfectedOnly, state.infectedOnly);
                 setToggleChecked(m_radActionReport, state.infectedAction == 0);
                 setToggleChecked(m_radActionRemove, state.infectedAction == 1);
                 setToggleChecked(m_radActionQuarantine, state.infectedAction == 2);

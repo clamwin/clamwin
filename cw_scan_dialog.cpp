@@ -1437,6 +1437,7 @@ void CWScanDialog::onScanOutput(const char* text, bool isError)
     m_updateBlocked = state.updateBlocked;
     m_updateUnsupportedVersion = state.updateUnsupportedVersion;
     m_updateServerError = state.updateServerError;
+    m_stats.errors = state.errorsCount;
 
     if (effects.statusChanged)
     {
@@ -1471,10 +1472,22 @@ void CWScanDialog::appendLog(const char* text, bool isError)
     cf.dwMask = CFM_COLOR | CFM_BOLD;
 
     bool isThreat = !isError && strstr(text, "FOUND") != NULL;
-    if (isThreat)
+
+    /* "Infected files: N" — bold red when N > 0, bold green when N == 0. */
+    int  infectedCount = 0;
+    bool isInfectedSummary = !isError &&
+                             strstr(text, "Infected files:") != NULL &&
+                             CWScanLogic::parseSummaryInt(text, "Infected files:", &infectedCount);
+
+    if (isThreat || (isInfectedSummary && infectedCount > 0))
     {
-        cf.dwEffects  = CFE_BOLD;
+        cf.dwEffects   = CFE_BOLD;
         cf.crTextColor = theme ? theme->colorWarning() : RGB(198, 40, 40);
+    }
+    else if (isInfectedSummary && infectedCount == 0)
+    {
+        cf.dwEffects   = CFE_BOLD;
+        cf.crTextColor = theme ? theme->colorSuccess() : RGB(15, 157, 88);
     }
     else if (isError)
     {
@@ -1546,6 +1559,16 @@ void CWScanDialog::onScanFinished(int exitCode)
               resultLabel);
     footer[sizeof(footer) - 1] = '\0';
     appendLog(footer, false);
+
+    /* Scan-mode error count note — mirrors Python ReformatLog behaviour. */
+    if (!m_isUpdate && !m_cancelled && m_stats.errors > 0)
+    {
+        char errNote[128];
+        _snprintf(errNote, sizeof(errNote),
+                  "Errors: %d file(s) could not be scanned.\r\n", m_stats.errors);
+        errNote[sizeof(errNote) - 1] = '\0';
+        appendLog(errNote, true);
+    }
 
     if (m_isUpdate && !m_cancelled)
     {
@@ -1687,14 +1710,22 @@ void CWScanDialog::updateStatsDisplay()
         int expected = (m_scanExpectedFiles > 0) ? m_scanExpectedFiles : m_scanCompletedFiles;
         if (m_scanExpectedFiles > 0)
         {
-            _snprintf(buf, sizeof(buf), "Files: %d / %d    Threats: %d    Elapsed: %02d:%02d",
-                      m_scanCompletedFiles, expected, m_stats.threats_found, mins, secs);
+            if (m_stats.errors > 0)
+                _snprintf(buf, sizeof(buf), "Files: %d / %d    Threats: %d    Errors: %d    Elapsed: %02d:%02d",
+                          m_scanCompletedFiles, expected, m_stats.threats_found, m_stats.errors, mins, secs);
+            else
+                _snprintf(buf, sizeof(buf), "Files: %d / %d    Threats: %d    Elapsed: %02d:%02d",
+                          m_scanCompletedFiles, expected, m_stats.threats_found, mins, secs);
             buf[sizeof(buf) - 1] = '\0';
         }
         else
         {
-            _snprintf(buf, sizeof(buf), "Files scanned: %d    Threats: %d    Elapsed: %02d:%02d",
-                      m_scanCompletedFiles, m_stats.threats_found, mins, secs);
+            if (m_stats.errors > 0)
+                _snprintf(buf, sizeof(buf), "Files scanned: %d    Threats: %d    Errors: %d    Elapsed: %02d:%02d",
+                          m_scanCompletedFiles, m_stats.threats_found, m_stats.errors, mins, secs);
+            else
+                _snprintf(buf, sizeof(buf), "Files scanned: %d    Threats: %d    Elapsed: %02d:%02d",
+                          m_scanCompletedFiles, m_stats.threats_found, mins, secs);
             buf[sizeof(buf) - 1] = '\0';
         }
 

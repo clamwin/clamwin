@@ -1,0 +1,3 @@
+Scanned files: 5
+Infected files: 2
+Errors: 1

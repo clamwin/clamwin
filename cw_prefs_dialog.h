@@ -65,6 +65,7 @@ private:
     /* General */
     HWND m_chkRecursive;
     HWND m_chkScanMail;
+    HWND m_chkInfectedOnly;
     HWND m_radActionReport;
     HWND m_radActionRemove;
     HWND m_radActionQuarantine;

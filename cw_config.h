@@ -22,6 +22,7 @@ public:
     bool scanOle2;
     bool scanMail;
     int  infectedAction;   /* 0=report, 1=remove, 2=quarantine */
+    bool infectedOnly;     /* show infected files only in scan log (--infected) */
     int  maxScanSizeMb;
     int  maxFileSizeMb;
     int  maxFiles;

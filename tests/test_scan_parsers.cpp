@@ -60,6 +60,15 @@ TEST_SUITE("scan_parsers")
         CHECK(status == "Win.Test.EICAR_HDB-1 FOUND");
         CHECK(CWScanLogic::parseSummaryInt("Scanned files: 42", "Scanned files:", &value));
         CHECK(value == 42);
+        CHECK(CWScanLogic::parseSummaryInt("Infected files: 3", "Infected files:", &value));
+        CHECK(value == 3);
+        CHECK(CWScanLogic::parseSummaryInt("Infected files: 0", "Infected files:", &value));
+        CHECK(value == 0);
+        CHECK(CWScanLogic::parseSummaryInt("Errors: 2", "Errors:", &value));
+        CHECK(value == 2);
+        CHECK(CWScanLogic::parseSummaryInt("Errors: 0", "Errors:", &value));
+        CHECK(value == 0);
+        CHECK_FALSE(CWScanLogic::parseSummaryInt("Errors: none", "Errors:", &value));
         CHECK(CWScanLogic::isExcludedFileResult("Excluded by pattern"));
     }
 
