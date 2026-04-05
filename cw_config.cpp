@@ -70,6 +70,7 @@ void CWConfig::defaults()
     scanOle2        = true;
     scanMail        = false;
     infectedAction  = 0;
+    infectedOnly    = false;
     maxScanSizeMb   = 150;
     maxFileSizeMb   = 100;
     maxFiles        = 500;
@@ -219,6 +220,7 @@ bool CWConfig::load(const std::string& path)
     scanOle2       = getInt(SEC_CLAMAV, TEXT("ScanOle2"),      scanOle2)      != 0;
     scanMail       = getInt(SEC_CLAMAV, TEXT("ScanMail"),      scanMail)      != 0;
     infectedAction = getInt(SEC_CLAMAV, TEXT("InfectedAction"), infectedAction);
+    infectedOnly   = getInt(SEC_CLAMAV, TEXT("InfectedOnly"),   infectedOnly)   != 0;
     maxScanSizeMb  = getInt(SEC_CLAMAV, TEXT("MaxScanSize"),   maxScanSizeMb);
     maxFileSizeMb  = getInt(SEC_CLAMAV, TEXT("MaxFileSize"),   maxFileSizeMb);
     maxFiles       = getInt(SEC_CLAMAV, TEXT("MaxFiles"),      maxFiles);
@@ -345,6 +347,7 @@ bool CWConfig::save() const
     setInt(SEC_CLAMAV, TEXT("ScanOle2"),       scanOle2       ? 1 : 0);
     setInt(SEC_CLAMAV, TEXT("ScanMail"),       scanMail       ? 1 : 0);
     setInt(SEC_CLAMAV, TEXT("InfectedAction"), infectedAction);
+    setInt(SEC_CLAMAV, TEXT("InfectedOnly"),   infectedOnly   ? 1 : 0);
     setInt(SEC_CLAMAV, TEXT("MaxScanSize"),    maxScanSizeMb);
     setInt(SEC_CLAMAV, TEXT("MaxFileSize"),    maxFileSizeMb);
     setInt(SEC_CLAMAV, TEXT("MaxFiles"),       maxFiles);

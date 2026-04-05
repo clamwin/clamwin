@@ -37,6 +37,7 @@ struct ScanOutputState
     bool updateBlocked;
     bool updateUnsupportedVersion;
     bool updateServerError;
+    int  errorsCount;
 };
 
 struct ScanLineEffects

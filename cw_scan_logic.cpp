@@ -543,6 +543,9 @@ std::string buildClamscanCommand(const CWConfig& cfg,
         }
     }
 
+    if (cfg.infectedOnly)
+        cmd += " --infected";
+
     if (!cfg.scanLogFile.empty())
     {
         cmd += " --log=";
@@ -634,6 +637,7 @@ void initScanOutputState(ScanOutputState& state, bool isUpdate)
     state.updateBlocked = false;
     state.updateUnsupportedVersion = false;
     state.updateServerError = false;
+    state.errorsCount = 0;
 }
 
 ScanLineEffects processOutputLine(ScanOutputState& state, const char* text, bool isError)
@@ -690,6 +694,8 @@ ScanLineEffects processOutputLine(ScanOutputState& state, const char* text, bool
         state.filesScanned = summaryValue;
     if (parseSummaryInt(text, "Infected files:", &summaryValue))
         state.threatsFound = summaryValue;
+    if (parseSummaryInt(text, "Errors:", &summaryValue))
+        state.errorsCount = summaryValue;
 
     if (!state.isUpdate)
     {
@@ -779,6 +785,7 @@ ScanLineEffects processOutputLine(ScanOutputState& state, const char* text, bool
                     uiProgress = 100;
             }
             isFileScan = true;
+
         }
 
         if (isFileScan)
