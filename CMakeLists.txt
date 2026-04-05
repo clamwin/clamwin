@@ -122,6 +122,32 @@ add_dependencies(clamwin cw_gui_build_version)
 add_dependencies(clamwin_test cw_gui_build_version)
 
 if(MINGW)
+    # libwinpthread.a ships a version.o member that contains a VERSIONINFO (.rsrc)
+    # resource (type 10 / name 1 / lang 0x409).  When --whole-archive pulls the whole
+    # archive into the link it clashes with our own VS_VERSION_INFO block in clamwin.rc,
+    # producing "duplicate leaf: type: 10 (VERSION) name: 1 lang: 409".
+    # Fix: make a stripped copy of libwinpthread.a with version.o deleted, and link
+    # against that copy instead.  The version.o member contains only resource data and
+    # no code symbols, so removing it is safe.
+    execute_process(
+        COMMAND ${CMAKE_CXX_COMPILER} -print-file-name=libwinpthread.a
+        OUTPUT_VARIABLE _cw_winpthread_src
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    set(_cw_winpthread_stripped ${CMAKE_BINARY_DIR}/libwinpthread_norsrc.a)
+
+    add_custom_command(
+        OUTPUT  ${_cw_winpthread_stripped}
+        COMMAND ${CMAKE_COMMAND} -E copy ${_cw_winpthread_src} ${_cw_winpthread_stripped}
+        COMMAND ${CMAKE_AR} d ${_cw_winpthread_stripped} version.o
+        DEPENDS ${_cw_winpthread_src}
+        COMMENT "Stripping version resource from libwinpthread.a"
+        VERBATIM
+    )
+    add_custom_target(cw_winpthread_stripped DEPENDS ${_cw_winpthread_stripped})
+    add_dependencies(clamwin      cw_winpthread_stripped)
+    add_dependencies(clamwin_test cw_winpthread_stripped)
+
     # -static-libstdc++ / -static-libgcc link the C++ and GCC runtime statically.
     # libstdc++ (posix thread model) references pthread_create; we must ensure
     # libwinpthread.a (static) is used instead of the DLL import library.
@@ -129,10 +155,10 @@ if(MINGW)
     # defined when libstdc++'s implicit trailing pass resolves pthread_create.
     target_link_options(clamwin PRIVATE
         -static-libstdc++ -static-libgcc
-        -Wl,--whole-archive,-Bstatic,-lwinpthread,-Bdynamic,--no-whole-archive)
+        -Wl,--whole-archive,-Bstatic ${_cw_winpthread_stripped} -Wl,-Bdynamic,--no-whole-archive)
     target_link_options(clamwin_test PRIVATE
         -static-libstdc++ -static-libgcc
-        -Wl,--whole-archive,-Bstatic,-lwinpthread,-Bdynamic,--no-whole-archive)
+        -Wl,--whole-archive,-Bstatic ${_cw_winpthread_stripped} -Wl,-Bdynamic,--no-whole-archive)
 endif()
 
 if(MSVC)
