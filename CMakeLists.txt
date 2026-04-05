@@ -10,6 +10,7 @@ set(clamwin
     cw_cli_args.cpp
     cw_auto_close.cpp
     cw_bg_task.cpp
+    cw_log_utils.cpp
     cw_dashboard.cpp
     cw_window.cpp
     cw_dialog.cpp
@@ -102,6 +103,7 @@ set(clamwin_test_sources
     cw_cli_args.cpp
     cw_auto_close.cpp
     cw_bg_task.cpp
+    cw_log_utils.cpp
     cw_process.cpp
     cw_scan_logic.cpp
     cw_prefs_validation.cpp

@@ -7,6 +7,7 @@
 
 #include "cw_scan_dialog.h"
 #include "cw_dpi.h"
+#include "cw_log_utils.h"
 #include "cw_scan_logic.h"
 #include "cw_text_conv.h"
 #include "cw_theme.h"
@@ -379,20 +380,7 @@ bool shouldCountPath(const std::string& path,
 
 void appendDebugLineToFile(const std::string& filePath, const std::string& line)
 {
-    if (filePath.empty() || line.empty())
-        return;
-
-    std::basic_string<TCHAR> tFilePath = CW_ToT(filePath);
-    HANDLE hFile = CreateFile(tFilePath.c_str(), FILE_APPEND_DATA,
-                               FILE_SHARE_READ | FILE_SHARE_WRITE,
-                               NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-    if (hFile == INVALID_HANDLE_VALUE)
-        return;
-
-    DWORD written = 0;
-    WriteFile(hFile, line.c_str(), (DWORD)line.size(), &written, NULL);
-    (void)written;
-    CloseHandle(hFile);
+    CW_AppendToLogFile(filePath, line);
 }
 
 void enumScanPath(const std::string& path,
@@ -1085,27 +1073,9 @@ DWORD WINAPI CWScanDialog::scanWorker(LPVOID param)
                                                         self->m_scanMemoryOnly);
 
     /* Write "Scan Started <timestamp>" to the log file before spawning —
-     * matches legacy Python wxDialogStatus line 220:
-     * file(logfile, 'wt').write('\nScan Started %s' % time.ctime()) */
-    {
-        time_t now = time(NULL);
-        char timeBuf[64];
-        char* ct = ctime(&now);
-        if (ct)
-        {
-            _snprintf(timeBuf, sizeof(timeBuf), "%s", ct);
-            timeBuf[sizeof(timeBuf) - 1] = '\0';
-            char* nl = strchr(timeBuf, '\n');
-            if (nl) *nl = '\0';
-        }
-        else
-            _snprintf(timeBuf, sizeof(timeBuf), "(unknown)");
-
-        std::string tsLine = "\r\nScan Started ";
-        tsLine += timeBuf;
-        tsLine += "\r\n";
-        appendDebugLineToFile(self->m_cfg.scanLogFile, tsLine);
-    }
+     * matches legacy Python wxDialogStatus scan-start logging. */
+    CW_AppendToLogFile(self->m_cfg.scanLogFile,
+                       CW_BuildStartTimestamp(false));
 
     {
         std::string debugLine = "[CWDebug] clamscan command: ";
@@ -1119,6 +1089,7 @@ DWORD WINAPI CWScanDialog::scanWorker(LPVOID param)
     if (!self->m_process.start(cmd, self->m_cfg.priority,
                                outputCb, errorCb, finishedCb, self))
     {
+        CW_AppendToLogFile(self->m_cfg.scanLogFile, CW_BuildFailedFooter());
         PostMessage(self->m_hwnd, WM_SCAN_FINISHED, (WPARAM)-1, 0);
     }
     return 0;
@@ -1148,31 +1119,15 @@ DWORD WINAPI CWScanDialog::updateWorker(LPVOID param)
 
     /* Write "Update Started <timestamp>" to the log file before spawning —
      * matches legacy Python behavior. */
-    {
-        time_t now = time(NULL);
-        char timeBuf[64];
-        char* ct = ctime(&now);
-        if (ct)
-        {
-            _snprintf(timeBuf, sizeof(timeBuf), "%s", ct);
-            timeBuf[sizeof(timeBuf) - 1] = '\0';
-            char* nl = strchr(timeBuf, '\n');
-            if (nl) *nl = '\0';
-        }
-        else
-            _snprintf(timeBuf, sizeof(timeBuf), "(unknown)");
-
-        std::string tsLine = "\r\nUpdate Started ";
-        tsLine += timeBuf;
-        tsLine += "\r\n";
-        appendDebugLineToFile(self->m_cfg.updateLogFile, tsLine);
-    }
+    CW_AppendToLogFile(self->m_cfg.updateLogFile,
+                       CW_BuildStartTimestamp(true));
 
     std::string cmd = CWScanLogic::buildFreshclamCommand(self->m_cfg, exeDir);
 
     if (!self->m_process.start(cmd, self->m_cfg.priority,
                                outputCb, errorCb, finishedCb, self))
     {
+        CW_AppendToLogFile(self->m_cfg.updateLogFile, CW_BuildFailedFooter());
         PostMessage(self->m_hwnd, WM_SCAN_FINISHED, (WPARAM)-1, 0);
     }
     return 0;
@@ -1682,8 +1637,7 @@ void CWScanDialog::onScanFinished(int exitCode)
     {
         const std::string& logPath = m_isUpdate ? m_cfg.updateLogFile
                                                 : m_cfg.scanLogFile;
-        appendDebugLineToFile(logPath,
-            "\r\n--------------------------------------\r\nCompleted\r\n--------------------------------------\r\n");
+        CW_AppendToLogFile(logPath, CW_BuildCompletedFooter());
     }
 
     if (CW_ShouldAutoClose(m_autoClosePolicy, m_exitCode, m_cancelled != 0))
