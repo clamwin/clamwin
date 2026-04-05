@@ -61,9 +61,10 @@ add_custom_target(cw_gui_build_version
             -DBASE_MAJOR=${PROJECT_VERSION_MAJOR}
             -DBASE_MINOR=${PROJECT_VERSION_MINOR}
             -DBASE_PATCH=${PROJECT_VERSION_PATCH}
+            -DINCREMENT=OFF
             -P ${CW_BUILD_VERSION_SCRIPT}
     BYPRODUCTS ${CW_BUILD_VERSION_HEADER} ${CW_BUILD_VERSION_RC}
-    COMMENT "Incrementing ClamWin GUI build number"
+    COMMENT "Generating ClamWin GUI build version header"
     VERBATIM
 )
 
