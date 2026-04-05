@@ -1506,6 +1506,50 @@ void CWScanDialog::appendLog(const char* text, bool isError)
     SendMessage(m_hwndLog, WM_VSCROLL, SB_BOTTOM, 0);
 }
 
+/* ─── reformatLog ────────────────────────────────────────────── */
+
+void CWScanDialog::reformatLog()
+{
+    int lineCount = (int)SendMessage(m_hwndLog, EM_GETLINECOUNT, 0, 0);
+    if (lineCount <= 0)
+        return;
+
+    /* Collect char-index ranges of OK lines; delete in reverse to
+     * keep earlier indices valid. */
+    struct LineRange { int start; int end; };
+    std::vector<LineRange> toDelete;
+
+    char buf[MAX_PATH + 16];
+    for (int i = 0; i < lineCount; ++i)
+    {
+        int lineStart = (int)SendMessage(m_hwndLog, EM_LINEINDEX, (WPARAM)i, 0);
+        int lineLen   = (int)SendMessage(m_hwndLog, EM_LINELENGTH, (WPARAM)lineStart, 0);
+
+        if (lineLen < 4 || lineLen >= (int)(sizeof(buf) - 1))
+            continue;
+
+        *(WORD*)buf = (WORD)(sizeof(buf) - 1);
+        int got = (int)SendMessage(m_hwndLog, EM_GETLINE, (WPARAM)i, (LPARAM)buf);
+        buf[got] = '\0';
+
+        if (got >= 4 && strcmp(buf + got - 4, ": OK") == 0)
+        {
+            /* EM_LINEINDEX(i+1) gives start of next line, covering the \r\n.
+             * Falls back to end-of-content if i is the last line. */
+            int lineEnd = (int)SendMessage(m_hwndLog, EM_LINEINDEX, (WPARAM)(i + 1), 0);
+            if (lineEnd < 0)
+                lineEnd = lineStart + lineLen;
+            toDelete.push_back({lineStart, lineEnd});
+        }
+    }
+
+    for (int j = (int)toDelete.size() - 1; j >= 0; --j)
+    {
+        SendMessage(m_hwndLog, EM_SETSEL, (WPARAM)toDelete[j].start, (LPARAM)toDelete[j].end);
+        SendMessage(m_hwndLog, EM_REPLACESEL, FALSE, (LPARAM)"");
+    }
+}
+
 /* ─── onScanFinished ─────────────────────────────────────────── */
 
 void CWScanDialog::onScanFinished(int exitCode)
@@ -1514,6 +1558,14 @@ void CWScanDialog::onScanFinished(int exitCode)
     m_exitCode = exitCode;
 
     KillTimer(m_hwnd, 1);
+
+    /* Strip ": OK" lines accumulated during scan — mirrors Python
+     * ReformatLog Layer 2 post-processing.  Runs before the footer
+     * separator so users see progress during scanning but only threats
+     * and errors remain in the final log. */
+    if (!m_isUpdate)
+        reformatLog();
+
     updateStatsDisplay();
 
     if (!m_isUpdate && m_scanMemoryOnly && m_memoryUseMarquee)

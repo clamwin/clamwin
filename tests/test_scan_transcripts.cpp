@@ -144,11 +144,12 @@ TEST_SUITE("scan_transcripts")
             CHECK_FALSE(effects.statusAnimate);
             CHECK(effects.progressChanged);
             CHECK(effects.progressPos == 100);
-            /* OK lines are suppressed from the log */
-            CHECK_FALSE(effects.appendToLog);
+            /* OK lines appear in the log during scanning; they are stripped
+             * post-scan by CWScanDialog::reformatLog() (Layer 2). */
+            CHECK(effects.appendToLog);
         }
 
-        SUBCASE("FOUND lines are not suppressed")
+        SUBCASE("FOUND lines append to log")
         {
             CWScanLogic::ScanOutputState state = makeScanState(0);
             CWScanLogic::ScanLineEffects effects = feedLine(

@@ -786,11 +786,6 @@ ScanLineEffects processOutputLine(ScanOutputState& state, const char* text, bool
             }
             isFileScan = true;
 
-            /* Suppress clean-file lines — mirrors Python ReformatLog Layer 2.
-             * Stats and progress are already updated above; only the log entry
-             * is suppressed so the user sees only threats and errors. */
-            if (fileResultText == "OK")
-                effects.appendToLog = false;
         }
 
         if (isFileScan)

@@ -60,6 +60,7 @@ private:
     void refreshScanStatusAnimation();
     std::string fitPathForStatus(const std::string& path, int reservedChars) const;
     void appendLog(const char* text, bool isError);
+    void reformatLog();
     void layoutControls(int w, int h);
     void saveReport();
 
