@@ -32,4 +32,5 @@ private:
     HWND      m_hwnd;
     CWConfig* m_config;
     UINT_PTR  m_timerId;
+    bool      m_debug;
 };

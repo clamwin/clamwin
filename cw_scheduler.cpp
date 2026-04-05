@@ -85,6 +85,7 @@ CWScheduler::CWScheduler()
     : m_hwnd(NULL)
     , m_config(NULL)
     , m_timerId(0)
+    , m_debug(false)
 {
 }
 
@@ -275,34 +276,50 @@ void CWScheduler::check()
     time_t now = time(NULL);
     bool conf_changed = false;
 
-    std::string logPath = schedulerLogPath(m_config->scanLogFile);
+    std::string logPath = m_debug ? schedulerLogPath(m_config->scanLogFile) : "";
 
-    schedLog(logPath, "=== Scheduler check ===");
+    if (m_debug)
+        schedLog(logPath, "=== Scheduler check ===");
 
-    if (isDueVerbose(logPath, "Scan",
-                     now, m_config->scanScheduled,
-                     m_config->scanHour, m_config->scanMinute,
-                     m_config->scanFrequency, m_config->scanDay,
-                     m_config->scanRunMissed, m_config->scanLastRunTime))
+    int scanDue, updateDue;
+    if (m_debug) {
+        scanDue   = isDueVerbose(logPath, "Scan",
+                         now, m_config->scanScheduled,
+                         m_config->scanHour, m_config->scanMinute,
+                         m_config->scanFrequency, m_config->scanDay,
+                         m_config->scanRunMissed, m_config->scanLastRunTime);
+        updateDue = isDueVerbose(logPath, "Update",
+                         now, m_config->updateScheduled,
+                         m_config->updateHour, m_config->updateMinute,
+                         m_config->updateFrequency, 0,
+                         m_config->updateRunMissed, m_config->updateLastRunTime);
+    } else {
+        scanDue   = isDue(now, m_config->scanScheduled,
+                         m_config->scanHour, m_config->scanMinute,
+                         m_config->scanFrequency, m_config->scanDay,
+                         m_config->scanRunMissed, m_config->scanLastRunTime);
+        updateDue = isDue(now, m_config->updateScheduled,
+                         m_config->updateHour, m_config->updateMinute,
+                         m_config->updateFrequency, 0,
+                         m_config->updateRunMissed, m_config->updateLastRunTime);
+    }
+
+    if (scanDue)
     {
-        schedLog(logPath, "  => Posting IDM_TRAY_SCHEDULED_SCAN");
+        if (m_debug) schedLog(logPath, "  => Posting IDM_TRAY_SCHEDULED_SCAN");
         conf_changed = true;
         PostMessage(m_hwnd, WM_COMMAND, IDM_TRAY_SCHEDULED_SCAN, 0);
     }
 
-    if (isDueVerbose(logPath, "Update",
-                     now, m_config->updateScheduled,
-                     m_config->updateHour, m_config->updateMinute,
-                     m_config->updateFrequency, 0,
-                     m_config->updateRunMissed, m_config->updateLastRunTime))
+    if (updateDue)
     {
-        schedLog(logPath, "  => Posting IDM_TRAY_SCHEDULED_UPDATE");
+        if (m_debug) schedLog(logPath, "  => Posting IDM_TRAY_SCHEDULED_UPDATE");
         conf_changed = true;
         PostMessage(m_hwnd, WM_COMMAND, IDM_TRAY_SCHEDULED_UPDATE, 0);
     }
 
     if (conf_changed) {
-        schedLog(logPath, "  => Saving config (lastRunTime updated)");
+        if (m_debug) schedLog(logPath, "  => Saving config (lastRunTime updated)");
         m_config->save();
     }
 }
@@ -311,20 +328,23 @@ void CWScheduler::check()
 
 void CWScheduler::start(HWND hwnd, CWConfig *cfg)
 {
-    m_hwnd = hwnd;
+    m_hwnd   = hwnd;
     m_config = cfg;
+    m_debug  = cfg->schedulerDebug;
 
-    std::string logPath = schedulerLogPath(cfg->scanLogFile);
-    schedLog(logPath, "=== Scheduler started (interval=%ds) ===", SCHEDULER_INTERVAL / 1000);
-    schedLog(logPath, "  Scan:   scheduled=%d  freq=%s  at=%02d:%02d  runMissed=%d  lastRun=%lld",
-             cfg->scanScheduled, frequencyName(cfg->scanFrequency),
-             cfg->scanHour, cfg->scanMinute, (int)cfg->scanRunMissed, cfg->scanLastRunTime);
-    schedLog(logPath, "  Update: scheduled=%d  freq=%s  at=%02d:%02d  runMissed=%d  lastRun=%lld",
-             cfg->updateScheduled, frequencyName(cfg->updateFrequency),
-             cfg->updateHour, cfg->updateMinute, (int)cfg->updateRunMissed, cfg->updateLastRunTime);
-    schedLog(logPath, "  ScanPath: [%s]  LogFile: [%s]",
-             cfg->scanPath.c_str(), cfg->scanLogFile.c_str());
-    schedLog(logPath, "  SchedulerLog: [%s]", logPath.c_str());
+    if (m_debug) {
+        std::string logPath = schedulerLogPath(cfg->scanLogFile);
+        schedLog(logPath, "=== Scheduler started (interval=%ds) ===", SCHEDULER_INTERVAL / 1000);
+        schedLog(logPath, "  Scan:   scheduled=%d  freq=%s  at=%02d:%02d  runMissed=%d  lastRun=%lld",
+                 cfg->scanScheduled, frequencyName(cfg->scanFrequency),
+                 cfg->scanHour, cfg->scanMinute, (int)cfg->scanRunMissed, cfg->scanLastRunTime);
+        schedLog(logPath, "  Update: scheduled=%d  freq=%s  at=%02d:%02d  runMissed=%d  lastRun=%lld",
+                 cfg->updateScheduled, frequencyName(cfg->updateFrequency),
+                 cfg->updateHour, cfg->updateMinute, (int)cfg->updateRunMissed, cfg->updateLastRunTime);
+        schedLog(logPath, "  ScanPath: [%s]  LogFile: [%s]",
+                 cfg->scanPath.c_str(), cfg->scanLogFile.c_str());
+        schedLog(logPath, "  SchedulerLog: [%s]", logPath.c_str());
+    }
 
     m_timerId = SetTimer(hwnd, SCHEDULER_TIMER_ID, SCHEDULER_INTERVAL, NULL);
 
@@ -336,13 +356,16 @@ void CWScheduler::stop()
 {
     if (m_timerId && m_hwnd)
     {
-        std::string logPath = m_config ? schedulerLogPath(m_config->scanLogFile) : "";
-        schedLog(logPath, "=== Scheduler stopped ===");
+        if (m_debug && m_config) {
+            std::string logPath = schedulerLogPath(m_config->scanLogFile);
+            schedLog(logPath, "=== Scheduler stopped ===");
+        }
         KillTimer(m_hwnd, SCHEDULER_TIMER_ID);
         m_timerId = 0;
     }
-    m_hwnd = NULL;
+    m_hwnd   = NULL;
     m_config = NULL;
+    m_debug  = false;
 }
 
 /* ─── Global C wrappers for compatibility ───────────────────────── */

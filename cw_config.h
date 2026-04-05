@@ -69,6 +69,7 @@ public:
     int  updateFrequency;
     bool updateRunMissed;
     long long updateLastRunTime;
+    bool schedulerDebug;  /* write verbose per-tick log to ClamWinScheduler.log */
 
     /* Filters */
     std::string includePatterns;  /* |CLAMWIN_SEP|-delimited wildcard patterns */

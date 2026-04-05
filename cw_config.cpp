@@ -104,6 +104,7 @@ void CWConfig::defaults()
     updateFrequency = 0;
     updateRunMissed = true;
     updateLastRunTime = 0;
+    schedulerDebug  = false;
 
     closeOnExit     = false;
     trayNotify      = true;
@@ -258,6 +259,7 @@ bool CWConfig::load(const std::string& path)
     updateFrequency = getInt(SEC_SCHEDULE, TEXT("UpdateFrequency"),updateFrequency);
     updateRunMissed = getInt(SEC_SCHEDULE, TEXT("UpdateRunMissed"),updateRunMissed) != 0;
     updateLastRunTime = getInt64(SEC_SCHEDULE, TEXT("UpdateLastRun"),updateLastRunTime);
+    schedulerDebug  = getInt(SEC_SCHEDULE, TEXT("SchedulerDebug"), schedulerDebug) != 0;
 
     closeOnExit     = getInt(SEC_UI, TEXT("CloseOnExit"), closeOnExit)  != 0;
     trayNotify      = getInt(SEC_UI, TEXT("TrayNotify"),  trayNotify)   != 0;
@@ -383,6 +385,7 @@ bool CWConfig::save() const
     setInt(SEC_SCHEDULE, TEXT("UpdateFrequency"),updateFrequency);
     setInt(SEC_SCHEDULE, TEXT("UpdateRunMissed"),updateRunMissed ? 1 : 0);
     setInt64(SEC_SCHEDULE, TEXT("UpdateLastRun"),updateLastRunTime);
+    setInt(SEC_SCHEDULE, TEXT("SchedulerDebug"), schedulerDebug ? 1 : 0);
 
     setInt(SEC_UI, TEXT("CloseOnExit"), closeOnExit ? 1 : 0);
     setInt(SEC_UI, TEXT("TrayNotify"),  trayNotify  ? 1 : 0);
