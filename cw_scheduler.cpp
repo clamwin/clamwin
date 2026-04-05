@@ -112,13 +112,22 @@ int CWScheduler::isDue(time_t now, int scheduled, int hour, int minute, int freq
         if (ltm_ptr) ltm = *ltm_ptr;
     }
 
-    /* Determine current interval identifier to prevent running twice */
+    /* Determine current interval identifier to prevent running twice.
+     * We only count a previous run as "this interval" if it occurred AT or
+     * AFTER the scheduled time — a runMissed catch-up that fired before the
+     * scheduled time must not block the real scheduled firing later. */
     bool ran_this_interval = false;
     if (last_rt > 0) {
+        bool same_day = (ltm.tm_year == tm->tm_year && ltm.tm_yday == tm->tm_yday);
         if (frequency == 3) {
-            ran_this_interval = (ltm.tm_year == tm->tm_year && ltm.tm_yday == tm->tm_yday && ltm.tm_hour == tm->tm_hour);
+            /* Hourly: same hour AND last run was at or after the scheduled minute */
+            bool same_hour = same_day && (ltm.tm_hour == tm->tm_hour);
+            ran_this_interval = same_hour && (ltm.tm_min >= minute);
         } else {
-            ran_this_interval = (ltm.tm_year == tm->tm_year && ltm.tm_yday == tm->tm_yday);
+            /* Daily/Workdays/Weekly: same day AND last run was at or after scheduled time */
+            bool ran_at_or_after = (ltm.tm_hour > hour ||
+                                    (ltm.tm_hour == hour && ltm.tm_min >= minute));
+            ran_this_interval = same_day && ran_at_or_after;
         }
     }
 
@@ -221,10 +230,15 @@ static int isDueVerbose(const std::string& logPath, const char* label,
 
     bool ran_this_interval = false;
     if (last_rt > 0) {
-        if (frequency == 3)
-            ran_this_interval = (ltm.tm_year == tmNow.tm_year && ltm.tm_yday == tmNow.tm_yday && ltm.tm_hour == tmNow.tm_hour);
-        else
-            ran_this_interval = (ltm.tm_year == tmNow.tm_year && ltm.tm_yday == tmNow.tm_yday);
+        bool same_day = (ltm.tm_year == tmNow.tm_year && ltm.tm_yday == tmNow.tm_yday);
+        if (frequency == 3) {
+            bool same_hour = same_day && (ltm.tm_hour == tmNow.tm_hour);
+            ran_this_interval = same_hour && (ltm.tm_min >= minute);
+        } else {
+            bool ran_at_or_after = (ltm.tm_hour > hour ||
+                                    (ltm.tm_hour == hour && ltm.tm_min >= minute));
+            ran_this_interval = same_day && ran_at_or_after;
+        }
     }
 
     bool eligible_day = false;
