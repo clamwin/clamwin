@@ -7,6 +7,7 @@
 
 #include "cw_application.h"
 #include "cw_bg_task.h"
+#include "cw_log_utils.h"
 #include "cw_dashboard.h"
 #include "cw_dashboard.h"
 #include "cw_cli_args.h"
@@ -27,6 +28,16 @@ static const TCHAR* s_menuSeparatorMarker = TEXT("__CW_MENU_SEPARATOR__");
 static const UINT_PTR CW_TRAY_RETRY_TIMER_ID = 43;
 static const UINT_PTR CW_VERSION_CHECK_TIMER_ID = 44;
 static const TCHAR* s_reportsPopupClass = TEXT("ClamWinDarkReportsMenu");
+
+/* Derive scheduler log path from scan log (same dir, different name). */
+static std::string appSchedLogPath(const CWConfig& cfg)
+{
+    const std::string& sl = cfg.scanLogFile;
+    if (sl.empty()) return "";
+    std::string::size_type sep = sl.rfind('\\');
+    std::string dir = (sep != std::string::npos) ? sl.substr(0, sep + 1) : "";
+    return dir + "ClamWinScheduler.log";
+}
 
 static bool CW_CanUseOwnerDrawMenuFallback()
 {
@@ -985,13 +996,26 @@ void CWApplication::doPreferences()
 
 void CWApplication::doScheduledScan()
 {
+    std::string logPath = appSchedLogPath(m_config);
+
     /* Skip if a background scan is already running */
     if (m_bgScan)
+    {
+        CW_AppendToLogFile(logPath,
+            "[doScheduledScan] SKIP: background scan already running\r\n");
         return;
+    }
 
     const char* path = m_config.scanPath.empty()
                      ? m_config.databasePath.c_str()
                      : m_config.scanPath.c_str();
+
+    char msg[512];
+    _snprintf_s(msg, sizeof(msg), _TRUNCATE,
+                "[doScheduledScan] Starting scan: path=[%s] memory=%d desc=[%s]\r\n",
+                path, (int)m_config.scanMemory,
+                m_config.scanDescription.c_str());
+    CW_AppendToLogFile(logPath, msg);
 
     /* Notify user that a scheduled task is starting */
     {
@@ -1008,6 +1032,8 @@ void CWApplication::doScheduledScan()
                             false, path, m_config.scanMemory);
     if (!m_bgScan->start())
     {
+        CW_AppendToLogFile(logPath,
+            "[doScheduledScan] ERROR: CWBgTask::start() failed\r\n");
         delete m_bgScan;
         m_bgScan = NULL;
         showBalloonNotify(
@@ -1015,13 +1041,27 @@ void CWApplication::doScheduledScan()
             "Please review the scan report.",
             NIIF_WARNING);
     }
+    else
+    {
+        CW_AppendToLogFile(logPath,
+            "[doScheduledScan] CWBgTask started successfully\r\n");
+    }
 }
 
 void CWApplication::doScheduledUpdate()
 {
+    std::string logPath = appSchedLogPath(m_config);
+
     /* Skip if a background update is already running */
     if (m_bgUpdate)
+    {
+        CW_AppendToLogFile(logPath,
+            "[doScheduledUpdate] SKIP: background update already running\r\n");
         return;
+    }
+
+    CW_AppendToLogFile(logPath,
+        "[doScheduledUpdate] Starting virus database update\r\n");
 
     showBalloonNotify("Running Scheduled Task:\nVirus Database Update", NIIF_INFO);
 
@@ -1029,12 +1069,19 @@ void CWApplication::doScheduledUpdate()
                               true, std::string());
     if (!m_bgUpdate->start())
     {
+        CW_AppendToLogFile(logPath,
+            "[doScheduledUpdate] ERROR: CWBgTask::start() failed\r\n");
         delete m_bgUpdate;
         m_bgUpdate = NULL;
         showBalloonNotify(
             "An error occurred starting Scheduled Virus Database Update. "
             "Please review the update report.",
             NIIF_WARNING);
+    }
+    else
+    {
+        CW_AppendToLogFile(logPath,
+            "[doScheduledUpdate] CWBgTask started successfully\r\n");
     }
 }
 
