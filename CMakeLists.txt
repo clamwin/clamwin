@@ -292,7 +292,6 @@ target_compile_definitions(clamwin_test PRIVATE
 target_link_libraries(clamwin PRIVATE
     comctl32
     shlwapi
-    wininet
     version
     ${CW_CURL_LINK_LIBS}
     crypt32
@@ -302,7 +301,6 @@ target_link_libraries(clamwin PRIVATE
 
 target_link_libraries(clamwin_test PRIVATE
     shlwapi
-    wininet
     ${CW_CURL_LINK_LIBS}
     crypt32
     ws2_32
