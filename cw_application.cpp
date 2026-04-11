@@ -554,6 +554,7 @@ CWApplication::CWApplication()
     , m_taskbarCreatedMsg(0)
     , m_bgScan(NULL)
     , m_bgUpdate(NULL)
+    , m_curlInited(false)
 {
     s_instance = this;
 }
@@ -664,7 +665,7 @@ normal_startup:
 
     LoadLibrary(TEXT("riched20.dll"));
     CoInitialize(NULL);
-    curl_global_init(CURL_GLOBAL_DEFAULT);
+    m_curlInited = (curl_global_init(CURL_GLOBAL_DEFAULT) == CURLE_OK);
 
     /* Load config */
     if (!startupConfigPath.empty())
@@ -678,7 +679,7 @@ normal_startup:
     /* Create hidden tray window */
     if (!registerHiddenClass() || !createHiddenWindow())
     {
-        curl_global_cleanup();
+        if (m_curlInited) curl_global_cleanup();
         CoUninitialize();
         if (hMutex) CloseHandle(hMutex);
         return 1;
@@ -735,7 +736,7 @@ normal_startup:
     m_updateChecker.waitForThread();
     m_tray.destroy();
     CW_ThemeDeinit();
-    curl_global_cleanup();
+    if (m_curlInited) curl_global_cleanup();
     CoUninitialize();
     if (hMutex) CloseHandle(hMutex);
     return (int)msg.wParam;
@@ -1250,7 +1251,8 @@ LRESULT CWApplication::handleMessage(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
             else if (wp == CW_VERSION_CHECK_TIMER_ID)
             {
                 KillTimer(hwnd, CW_VERSION_CHECK_TIMER_ID);
-                m_updateChecker.startCheck(m_hwndTray);
+                if (m_curlInited)
+                    m_updateChecker.startCheck(m_hwndTray);
             }
             return 0;
 

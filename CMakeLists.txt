@@ -24,40 +24,36 @@ if(TARGET libcurl_static)
     set(CW_CURL_INCLUDE "")           # headers already on the include path
     set(CW_OPENSSL_INCLUDE "")
     set(CW_CURL_LINK_LIBS libcurl_static)
+    set(CW_CURL_IS_STATIC TRUE)
 else()
     # ── Case 2 & 3: standalone or hint-based discovery ──
-    get_filename_component(_CW_ROOT "${CMAKE_SOURCE_DIR}/.." ABSOLUTE)
-    set(_CW_SIBLING_3P "${_CW_ROOT}/clamav-win32/3rdparty")
-
-    # Arch-aware sibling OpenSSL prebuilt path (hint only, not required)
-    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-        set(_CW_OPENSSL_HINT "${_CW_SIBLING_3P}/openssl/lib/mingw/x64")
-    else()
-        set(_CW_OPENSSL_HINT "${_CW_SIBLING_3P}/openssl/lib/mingw/x86")
-    endif()
-
     # Set CMAKE_PREFIX_PATH hints before calling find_package
     set(CMAKE_PREFIX_PATH
         "${CLAMWIN_CURL_ROOT}"
-        "${_CW_SIBLING_3P}/curl"
         ${CMAKE_PREFIX_PATH}
     )
 
     find_package(CURL QUIET)
 
     if(CURL_FOUND)
-        # find_package succeeded (system toolchain or CLAMWIN_CURL_ROOT)
+        # find_package succeeded (system toolchain or CLAMWIN_CURL_ROOT).
+        # This may be a shared lib; do NOT define CURL_STATICLIB.
         set(CW_CURL_INCLUDE "")          # CURL::libcurl carries include dirs
         set(CW_OPENSSL_INCLUDE "")
         set(CW_CURL_LINK_LIBS CURL::libcurl)
+        set(CW_CURL_IS_STATIC FALSE)
     else()
-        # Last resort: look for prebuilt .a files in sibling tree
-        find_library(CW_LIBCURL NAMES libcurl_static libcurl
-            HINTS "${_CW_SIBLING_3P}/curl/lib" NO_DEFAULT_PATH)
+        # Last resort: look for prebuilt .a files.
+        # The sibling source tree (3rdparty/curl/lib) only contains .c sources;
+        # the built .a lives in the sibling *build* tree, which is already
+        # handled by Case 1 (TARGET libcurl_static).  So here we only search
+        # CLAMWIN_CURL_ROOT and the system default paths.
+        find_library(CW_LIBCURL NAMES curl libcurl
+            HINTS "${CLAMWIN_CURL_ROOT}/lib")
         find_library(CW_LIBSSL NAMES ssl libssl
-            HINTS "${_CW_OPENSSL_HINT}" NO_DEFAULT_PATH)
+            HINTS "${CLAMWIN_CURL_ROOT}/lib")
         find_library(CW_LIBCRYPTO NAMES crypto libcrypto
-            HINTS "${_CW_OPENSSL_HINT}" NO_DEFAULT_PATH)
+            HINTS "${CLAMWIN_CURL_ROOT}/lib")
 
         if(NOT CW_LIBCURL)
             message(FATAL_ERROR
@@ -67,8 +63,12 @@ else()
                 "or build from within the clamav-win32 sibling tree.")
         endif()
 
-        set(CW_CURL_INCLUDE "${_CW_SIBLING_3P}/curl/include")
-        set(CW_OPENSSL_INCLUDE "${_CW_SIBLING_3P}/openssl/include")
+        # When found via CLAMWIN_CURL_ROOT, assume static linkage.
+        set(CW_CURL_INCLUDE "")
+        set(CW_OPENSSL_INCLUDE "")
+        if(CLAMWIN_CURL_ROOT)
+            set(CW_CURL_INCLUDE "${CLAMWIN_CURL_ROOT}/include")
+        endif()
         set(CW_CURL_LINK_LIBS "${CW_LIBCURL}")
         if(CW_LIBSSL)
             list(APPEND CW_CURL_LINK_LIBS "${CW_LIBSSL}")
@@ -76,6 +76,7 @@ else()
         if(CW_LIBCRYPTO)
             list(APPEND CW_CURL_LINK_LIBS "${CW_LIBCRYPTO}")
         endif()
+        set(CW_CURL_IS_STATIC TRUE)
     endif()
 endif()
 
@@ -261,12 +262,12 @@ target_include_directories(clamwin_test PRIVATE
 
 target_compile_definitions(clamwin PRIVATE
     _CRT_SECURE_NO_WARNINGS
-    CURL_STATICLIB
+    $<$<BOOL:${CW_CURL_IS_STATIC}>:CURL_STATICLIB>
 )
 
 target_compile_definitions(clamwin_test PRIVATE
     _CRT_SECURE_NO_WARNINGS
-    CURL_STATICLIB
+    $<$<BOOL:${CW_CURL_IS_STATIC}>:CURL_STATICLIB>
 )
 
 target_link_libraries(clamwin PRIVATE
