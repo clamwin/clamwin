@@ -2,9 +2,10 @@
  * ClamWin Free Antivirus — CWUpdateChecker
  *
  * Checks for a newer ClamWin version via the GitHub Releases API (HTTPS).
- * Uses libcurl + statically linked OpenSSL (the same stack as clamav-win32's
- * freshclam), so TLS 1.2 works on all supported Windows versions including XP
- * — no OS-version sniffing or plain-HTTP fallback needed.
+ *
+ * Two TLS back-ends, selected at runtime:
+ *   Vista+  — WinINet + native SChannel TLS 1.2 (lightweight, OS cert store).
+ *   XP      — libcurl + static OpenSSL (same stack as clamav-win32's freshclam).
  *
  * Runs on a background thread; posts WM_CW_VERSION_RESULT to the target HWND
  * when done.  The download URL is hardcoded — the API response only provides
@@ -64,4 +65,8 @@ private:
 
     static DWORD WINAPI threadProc(LPVOID param);
     void doCheck();
+    void doCheckWinINet();  /* Vista+: native SChannel TLS 1.2    */
+    void doCheckCurl();     /* XP: libcurl + static OpenSSL       */
+    void postResult(CWVersionResult* result);
+    static void fillResult(CWVersionResult* result, const char* remoteVersion);
 };
