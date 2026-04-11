@@ -99,6 +99,23 @@ else()
     endif()
 endif()
 
+# ── clamav_compat: XP legacy compatibility library from clamav-win32 ────────
+# Provides IAT-level shims for Vista+ APIs (SRW locks, condition variables,
+# bcrypt, secure CRT functions, etc.) using assembly forwarders — the same
+# library freshclam links against. Only relevant for x86/XP builds.
+set(CW_COMPAT_LINK_LIBS)
+if(CMAKE_SIZEOF_VOID_P EQUAL 4)
+    get_filename_component(_CW_ROOT2 "${CMAKE_SOURCE_DIR}/.." ABSOLUTE)
+    find_library(CW_LIBCLAMAV_COMPAT NAMES clamav_compat libclamav_compat
+        HINTS "${_CW_ROOT2}/clamav-win32/build-x86-mingw-winxp")
+    if(CW_LIBCLAMAV_COMPAT)
+        list(APPEND CW_COMPAT_LINK_LIBS "${CW_LIBCLAMAV_COMPAT}" ntdll)
+        message(STATUS "XP legacy compat: found ${CW_LIBCLAMAV_COMPAT}")
+    else()
+        message(STATUS "XP legacy compat: not found (non-XP build, OK)")
+    endif()
+endif()
+
 
 set(clamwin
     cw_main.cpp
@@ -124,8 +141,6 @@ set(clamwin
     cw_utils.cpp
     cw_theme.cpp
     cw_update_checker.cpp
-    cw_bcrypt_compat.c
-    cw_xpcompat.c
 )
 
 # Legacy function-based GUI modules were removed after the cw_* class migration.
@@ -209,8 +224,6 @@ set(clamwin_test_sources
     cw_scheduler.cpp
     cw_utils.cpp
     cw_update_checker.cpp
-    cw_bcrypt_compat.c
-    cw_xpcompat.c
     shell-extension/cw_shell_extension_command.cpp
 )
 
@@ -298,17 +311,19 @@ target_link_libraries(clamwin PRIVATE
     shlwapi
     version
     ${CW_CURL_LINK_LIBS}
+    ${CW_COMPAT_LINK_LIBS}
     crypt32
     ws2_32
-    advapi32
+    bcrypt
 )
 
 target_link_libraries(clamwin_test PRIVATE
     shlwapi
     ${CW_CURL_LINK_LIBS}
+    ${CW_COMPAT_LINK_LIBS}
     crypt32
     ws2_32
-    advapi32
+    bcrypt
 )
 
 add_custom_target(clamwin_check
