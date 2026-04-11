@@ -108,13 +108,28 @@ function Invoke-BuildTarget {
         $env:CARGO_BUILD_TARGET = $RustTarget
     }
 
+    $makeCandidates = @(
+        (Join-Path $mingwPath "mingw32-make.exe"),
+        "C:\msys64\mingw64\bin\mingw32-make.exe",
+        "C:\msys64\mingw32\bin\mingw32-make.exe"
+    )
+    $makeExe = $makeCandidates | Where-Object { Test-Path $_ } | Select-Object -First 1
+    if ([string]::IsNullOrWhiteSpace($makeExe)) {
+        throw "mingw32-make.exe not found. Checked: $([string]::Join(', ', $makeCandidates))"
+    }
+
     $targetText = [string]::Join(' ', $Targets)
-    $cmd = "cd /d `"$BuildDir`" && mingw32-make $targetText 2>&1"
 
     Write-Host "[build] $BuildDir => $targetText"
-    & cmd.exe /c $cmd
-    if ($LASTEXITCODE -ne 0) {
-        throw "Build failed in $BuildDir (exit $LASTEXITCODE)"
+    Push-Location $BuildDir
+    try {
+        & $makeExe @Targets
+        if ($LASTEXITCODE -ne 0) {
+            throw "Build failed in $BuildDir (exit $LASTEXITCODE)"
+        }
+    }
+    finally {
+        Pop-Location
     }
 }
 

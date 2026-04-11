@@ -1,12 +1,14 @@
 /*
  * ClamWin Free Antivirus — CWUpdateChecker
  *
- * Checks for a newer ClamWin version.
- * - Vista+ uses GitHub Releases via HTTPS.
- * - XP uses a clamwin.com fallback endpoint.
- * Runs on a background thread, posts WM_CW_VERSION_RESULT to the
- * target HWND when done.  The download URL is hardcoded — the API
- * response only provides the version number.
+ * Checks for a newer ClamWin version via the GitHub Releases API (HTTPS).
+ * Uses libcurl + static OpenSSL, mirroring the stack used by clamav-win32's
+ * freshclam. OpenSSL provides TLS 1.2 independently of the Windows SChannel,
+ * so this works on all supported platforms including Windows XP and Win98.
+ *
+ * Runs on a background thread; posts WM_CW_VERSION_RESULT to the target HWND
+ * when done.  The download URL is hardcoded — the API response only provides
+ * the version number.
  *
  * Copyright (c) 2004-2026 ClamWin Pty Ltd
  * License: GPLv2
@@ -15,6 +17,7 @@
 #pragma once
 #include "cwdefs.h"
 #include <windows.h>
+#include <string>
 
 /* Custom message posted to the target HWND when the check completes.
  * WPARAM = 1 if a newer version is available, 0 if not (or on error).
@@ -41,7 +44,7 @@ public:
     /* Launch a background HTTPS check.  When complete a WM_CW_VERSION_RESULT
      * message is posted to |hwndTarget|.  Only one check runs at a time;
      * calling again while one is in flight is a no-op. */
-    void startCheck(HWND hwndTarget);
+    void startCheck(HWND hwndTarget, bool debugEnabled = false, const std::string& debugLogPath = "");
 
     /* Block until the background thread finishes (used during shutdown). */
     void waitForThread();
@@ -58,7 +61,9 @@ private:
     CWUpdateChecker& operator=(const CWUpdateChecker&);
 
     HANDLE m_hThread;
-    HWND   m_hwndTarget;
+    HWND        m_hwndTarget;
+    bool        m_debugEnabled;
+    std::string m_debugLogPath;
 
     static DWORD WINAPI threadProc(LPVOID param);
     void doCheck();

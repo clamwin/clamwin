@@ -18,7 +18,10 @@
 
 #include <string.h>
 #include <tchar.h>
-#include <tchar.h>
+
+/* curl must be included before windows.h; cw_application.h already pulled
+ * windows.h so we just need the curl init/cleanup declarations here. */
+#include <curl/curl.h>
 
 CWApplication* CWApplication::s_instance = NULL;
 
@@ -551,6 +554,7 @@ CWApplication::CWApplication()
     , m_taskbarCreatedMsg(0)
     , m_bgScan(NULL)
     , m_bgUpdate(NULL)
+    , m_curlInited(false)
 {
     s_instance = this;
 }
@@ -648,7 +652,15 @@ normal_startup:
     if (GetLastError() == ERROR_ALREADY_EXISTS)
     {
         HWND hExisting = FindWindow(TEXT("ClamWinTrayClass"), NULL);
-        if (hExisting) PostMessage(hExisting, WM_COMMAND, IDM_TRAY_OPEN, 0);
+        if (hExisting) 
+        {
+            if (cli.checkVersion)
+                PostMessage(hExisting, WM_COMMAND, IDM_TRAY_CHECK_VERSION, 0);
+            else if (cli.downloadDb)
+                PostMessage(hExisting, WM_COMMAND, IDM_TRAY_UPDATE, 0);
+            else
+                PostMessage(hExisting, WM_COMMAND, IDM_TRAY_OPEN, 0);
+        }
         if (hMutex) CloseHandle(hMutex);
         return 0;
     }
@@ -661,6 +673,7 @@ normal_startup:
 
     LoadLibrary(TEXT("riched20.dll"));
     CoInitialize(NULL);
+    m_curlInited = (curl_global_init(CURL_GLOBAL_DEFAULT) == CURLE_OK);
 
     /* Load config */
     if (!startupConfigPath.empty())
@@ -674,6 +687,7 @@ normal_startup:
     /* Create hidden tray window */
     if (!registerHiddenClass() || !createHiddenWindow())
     {
+        if (m_curlInited) curl_global_cleanup();
         CoUninitialize();
         if (hMutex) CloseHandle(hMutex);
         return 1;
@@ -692,6 +706,9 @@ normal_startup:
 
     if (cli.downloadDb)
         PostMessage(m_hwndTray, WM_COMMAND, IDM_TRAY_UPDATE, 0);
+
+    if (cli.checkVersion)
+        PostMessage(m_hwndTray, WM_COMMAND, IDM_TRAY_CHECK_VERSION, 0);
 
     /* Run on startup update if configured */
     if (m_config.updateOnStartup)
@@ -730,6 +747,7 @@ normal_startup:
     m_updateChecker.waitForThread();
     m_tray.destroy();
     CW_ThemeDeinit();
+    if (m_curlInited) curl_global_cleanup();
     CoUninitialize();
     if (hMutex) CloseHandle(hMutex);
     return (int)msg.wParam;
@@ -1011,10 +1029,11 @@ void CWApplication::doScheduledScan()
                      : m_config.scanPath.c_str();
 
     char msg[512];
-    _snprintf_s(msg, sizeof(msg), _TRUNCATE,
-                "[doScheduledScan] Starting scan: path=[%s] memory=%d desc=[%s]\r\n",
-                path, (int)m_config.scanMemory,
-                m_config.scanDescription.c_str());
+    snprintf(msg, sizeof(msg),
+             "[doScheduledScan] Starting scan: path=[%s] memory=%d desc=[%s]\r\n",
+             path, (int)m_config.scanMemory,
+             m_config.scanDescription.c_str());
+    msg[sizeof(msg) - 1] = '\0';
     CW_AppendToLogFile(logPath, msg);
 
     /* Notify user that a scheduled task is starting */
@@ -1201,6 +1220,19 @@ LRESULT CWApplication::handleMessage(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
                 case IDM_TRAY_HELP:
                     doHelp();
                     break;
+                case IDM_TRAY_CHECK_VERSION:
+                    if (m_curlInited)
+                    {
+                        if (!m_config.iniPath.empty())
+                            m_config.load(m_config.iniPath);
+                        else
+                            m_config.load();
+
+                        m_updateChecker.startCheck(m_hwndTray,
+                                                   m_config.debugEnabled,
+                                                   CW_GetDebugLogPath(m_config.scanLogFile));
+                    }
+                    break;
                 case IDM_TRAY_EXIT:
                     DestroyWindow(hwnd);
                     break;
@@ -1244,7 +1276,8 @@ LRESULT CWApplication::handleMessage(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
             else if (wp == CW_VERSION_CHECK_TIMER_ID)
             {
                 KillTimer(hwnd, CW_VERSION_CHECK_TIMER_ID);
-                m_updateChecker.startCheck(m_hwndTray);
+                if (m_curlInited)
+                    m_updateChecker.startCheck(m_hwndTray, m_config.debugEnabled, CW_GetDebugLogPath(m_config.scanLogFile));
             }
             return 0;
 
