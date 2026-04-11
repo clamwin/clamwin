@@ -664,7 +664,7 @@ LRESULT CWDashboard::onMessage(UINT msg, WPARAM wp, LPARAM lp)
                 if (PtInRect(&bannerRc, pt))
                 {
                     ShellExecute(m_hwnd, TEXT("open"),
-                                  TEXT("https://www.clamwin.com/download"),
+                                  TEXT("https://clamwin.com/download"),
                                   NULL, NULL, SW_SHOWNORMAL);
                     return 0;
                 }
