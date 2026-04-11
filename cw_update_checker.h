@@ -1,12 +1,14 @@
 /*
  * ClamWin Free Antivirus — CWUpdateChecker
  *
- * Checks for a newer ClamWin version.
- * - Vista+ uses GitHub Releases via HTTPS.
- * - XP uses a clamwin.com fallback endpoint.
- * Runs on a background thread, posts WM_CW_VERSION_RESULT to the
- * target HWND when done.  The download URL is hardcoded — the API
- * response only provides the version number.
+ * Checks for a newer ClamWin version via the GitHub Releases API (HTTPS).
+ * Uses libcurl + statically linked OpenSSL (the same stack as clamav-win32's
+ * freshclam), so TLS 1.2 works on all supported Windows versions including XP
+ * — no OS-version sniffing or plain-HTTP fallback needed.
+ *
+ * Runs on a background thread; posts WM_CW_VERSION_RESULT to the target HWND
+ * when done.  The download URL is hardcoded — the API response only provides
+ * the version number.
  *
  * Copyright (c) 2004-2026 ClamWin Pty Ltd
  * License: GPLv2

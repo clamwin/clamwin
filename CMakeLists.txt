@@ -4,6 +4,37 @@
 cmake_minimum_required(VERSION 3.14)
 project(clamwin VERSION "1.5.2")
 
+# ── curl + OpenSSL (from clamav-win32 prebuilts) ──────────────────────────
+# The update checker uses libcurl + static OpenSSL for HTTPS so that TLS 1.2
+# works on Windows XP without relying on the OS's SChannel.
+get_filename_component(_CW_ROOT "${CMAKE_SOURCE_DIR}/.." ABSOLUTE)
+set(_CLAMAV_WIN32_3P "${_CW_ROOT}/clamav-win32/3rdparty")
+
+# Curl static library (built as part of the clamav-win32 build tree)
+# We point at the curl source include dir; the .a is built there.
+set(CW_CURL_INCLUDE "${_CLAMAV_WIN32_3P}/curl/include")
+
+# OpenSSL prebuilt statics — arch-aware selection (x64 vs x86)
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    set(_CW_OPENSSL_LIB_DIR "${_CLAMAV_WIN32_3P}/openssl/lib/mingw/x64")
+else()
+    set(_CW_OPENSSL_LIB_DIR "${_CLAMAV_WIN32_3P}/openssl/lib/mingw/x86")
+endif()
+set(CW_OPENSSL_INCLUDE "${_CLAMAV_WIN32_3P}/openssl/include")
+
+# These targets are created by the clamav-win32 sibling CMake project that
+# must be the parent (or included) build.  When clamwin is built standalone
+# (e.g. in CI without clamav-win32) fall back to find_library so the build
+# still works if the .a files are present.
+if(NOT TARGET libcurl_static)
+    find_library(CW_LIBCURL   NAMES libcurl_static libcurl  HINTS "${_CLAMAV_WIN32_3P}/curl/lib" REQUIRED)
+    find_library(CW_LIBSSL    NAMES ssl libssl                HINTS "${_CW_OPENSSL_LIB_DIR}" REQUIRED)
+    find_library(CW_LIBCRYPTO NAMES crypto libcrypto          HINTS "${_CW_OPENSSL_LIB_DIR}" REQUIRED)
+    set(CW_CURL_LINK_LIBS "${CW_LIBCURL}" "${CW_LIBSSL}" "${CW_LIBCRYPTO}")
+else()
+    set(CW_CURL_LINK_LIBS libcurl_static "${_CW_OPENSSL_LIB_DIR}/libssl.a" "${_CW_OPENSSL_LIB_DIR}/libcrypto.a")
+endif()
+
 set(clamwin
     cw_main.cpp
     cw_application.cpp
@@ -169,6 +200,8 @@ endif()
 target_include_directories(clamwin PRIVATE
     ${CMAKE_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}
+    ${CW_CURL_INCLUDE}
+    ${CW_OPENSSL_INCLUDE}
 )
 
 target_include_directories(clamwin_test PRIVATE
@@ -177,26 +210,34 @@ target_include_directories(clamwin_test PRIVATE
     ${CMAKE_SOURCE_DIR}/3rdparty/doctest
     ${CMAKE_BINARY_DIR}
     ${clamwin_test_dir}
+    ${CW_CURL_INCLUDE}
+    ${CW_OPENSSL_INCLUDE}
 )
 
 target_compile_definitions(clamwin PRIVATE
     _CRT_SECURE_NO_WARNINGS
+    CURL_STATICLIB
 )
 
 target_compile_definitions(clamwin_test PRIVATE
     _CRT_SECURE_NO_WARNINGS
+    CURL_STATICLIB
 )
 
 target_link_libraries(clamwin PRIVATE
     comctl32
     shlwapi
-    wininet
     version
+    ${CW_CURL_LINK_LIBS}
+    crypt32
+    ws2_32
 )
 
 target_link_libraries(clamwin_test PRIVATE
     shlwapi
-    wininet
+    ${CW_CURL_LINK_LIBS}
+    crypt32
+    ws2_32
 )
 
 add_custom_target(clamwin_check

@@ -1,9 +1,13 @@
 /*
  * ClamWin Free Antivirus — CWUpdateChecker implementation
  *
- * Uses WinINet (InternetOpenA / HttpOpenRequestA) for HTTPS GET to
- * the GitHub Releases API.  Parses the "tag_name" field from the
- * JSON response for a semantic version comparison.
+ * Uses libcurl + static OpenSSL (same stack as clamav-win32's freshclam)
+ * for an HTTPS GET to the GitHub Releases API.  Because OpenSSL provides
+ * TLS 1.2 independently of the Windows SChannel, this works on Windows XP
+ * as well as modern systems — no OS-version sniffing required.
+ *
+ * Parses the "tag_name" field from the JSON response for a semantic
+ * version comparison.
  *
  * Copyright (c) 2004-2026 ClamWin Pty Ltd
  * License: GPLv2
@@ -11,88 +15,48 @@
 
 #include "cw_update_checker.h"
 #include "cw_gui_shared.h"   /* CLAMWIN_VERSION_STR */
-#include "cw_text_conv.h"
 
-#include <wininet.h>
+/* curl must be included before windows.h to avoid winsock conflicts */
+#include <curl/curl.h>
+
+#include <windows.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#pragma comment(lib, "wininet.lib")
-
 /* ─── Hardcoded endpoints ───────────────────────────────────── */
 
-static const char* CW_GITHUB_API_HOST      = "api.github.com";
-static const char* CW_GITHUB_API_PATH      = "/repos/clamwin/clamwin/releases/latest";
-static const char* CW_LEGACY_UPDATE_HOST   = "www.clamwin.com";
-static const char* CW_LEGACY_UPDATE_PATH   = "/latest-version.txt";
-static const char* CW_DOWNLOAD_PAGE         = "https://www.clamwin.com/download";
+static const char* CW_GITHUB_API_URL   = "https://api.github.com/repos/clamwin/clamwin/releases/latest";
+static const char* CW_DOWNLOAD_PAGE    = "https://www.clamwin.com/download";
 
-/* GitHub API requires modern TLS; skip check on legacy OS families (Win9x/XP). */
-static bool canUseGithubTlsOnThisOs()
+/* User-Agent string sent with every request. */
+static const char* CW_USER_AGENT       = "ClamWin/" CLAMWIN_VERSION_STR;
+
+/* ─── CA bundle path (for XP where OpenSSL can't use the system store) ─── *
+ * Locate curl-ca-bundle.crt next to the executable at runtime.             */
+
+static bool getCaBundlePath(char* out, int outCap)
 {
-    OSVERSIONINFO osv;
-    memset(&osv, 0, sizeof(osv));
-    osv.dwOSVersionInfoSize = sizeof(osv);
-
-    if (!GetVersionEx(&osv))
-        return true; /* If detection fails, keep behavior unchanged. */
-
-    return osv.dwMajorVersion >= 6;
-}
-
-static bool extractVersionToken(const char* text, int textLen, char* out, int outCap)
-{
-    if (!text || textLen <= 0 || !out || outCap <= 0)
+    char exePath[MAX_PATH];
+    if (!GetModuleFileNameA(NULL, exePath, MAX_PATH))
         return false;
 
-    for (int i = 0; i < textLen; ++i)
-    {
-        int j = i;
-        if (text[j] == 'v' || text[j] == 'V')
-            ++j;
+    /* Strip the filename to get the directory */
+    char* sep = strrchr(exePath, '\\');
+    if (!sep)
+        sep = strrchr(exePath, '/');
+    if (!sep)
+        return false;
+    *(sep + 1) = '\0';
 
-        if (j >= textLen || text[j] < '0' || text[j] > '9')
-            continue;
+    int n = _snprintf(out, outCap, "%scurl-ca-bundle.crt", exePath);
+    if (n < 0 || n >= outCap)
+        return false;
+    out[outCap - 1] = '\0';
 
-        int k = j;
-        bool sawDot = false;
-        while (k < textLen)
-        {
-            char c = text[k];
-            if ((c >= '0' && c <= '9') || c == '.')
-            {
-                if (c == '.')
-                    sawDot = true;
-                ++k;
-                continue;
-            }
-            break;
-        }
-
-        if (!sawDot)
-            continue;
-
-        int n = k - i;
-        if (n <= 0 || n >= outCap)
-            continue;
-
-        memcpy(out, text + i, n);
-        out[n] = '\0';
-        return true;
-    }
-
-    return false;
-}
-
-const char* CWUpdateChecker::apiUrl()
-{
-    return "https://api.github.com/repos/clamwin/clamwin/releases/latest";
-}
-
-const char* CWUpdateChecker::downloadUrl()
-{
-    return CW_DOWNLOAD_PAGE;
+    /* Only report it if it actually exists */
+    DWORD attr = GetFileAttributesA(out);
+    return (attr != INVALID_FILE_ATTRIBUTES && !(attr & FILE_ATTRIBUTE_DIRECTORY));
 }
 
 /* ─── Version parsing / comparison ──────────────────────────── */
@@ -129,6 +93,18 @@ bool CWUpdateChecker::isNewerVersion(const char* remote)
     if (rMaj != lMaj) return rMaj > lMaj;
     if (rMin != lMin) return rMin > lMin;
     return rPat > lPat;
+}
+
+/* ─── Public URL accessors ──────────────────────────────────── */
+
+const char* CWUpdateChecker::apiUrl()
+{
+    return CW_GITHUB_API_URL;
+}
+
+const char* CWUpdateChecker::downloadUrl()
+{
+    return CW_DOWNLOAD_PAGE;
 }
 
 /* ─── Constructor / Destructor ──────────────────────────────── */
@@ -174,11 +150,49 @@ DWORD WINAPI CWUpdateChecker::threadProc(LPVOID param)
     return 0;
 }
 
+/* ─── curl response-body accumulator ───────────────────────── */
+
+struct CurlBuffer
+{
+    char*  data;
+    size_t used;
+    size_t cap;
+};
+
+static size_t curlWriteCb(char* ptr, size_t size, size_t nmemb, void* userdata)
+{
+    size_t bytes = size * nmemb;
+    CurlBuffer* buf = static_cast<CurlBuffer*>(userdata);
+
+    /* cap the total response size at 64 KB (real GitHub response is ~5 KB) */
+    const size_t MAX_BODY = 65536;
+    if (buf->used >= MAX_BODY)
+        return bytes;   /* silently discard the rest but report success */
+
+    size_t toWrite = bytes;
+    if (buf->used + toWrite > MAX_BODY)
+        toWrite = MAX_BODY - buf->used;
+
+    if (buf->used + toWrite + 1 > buf->cap)
+    {
+        size_t newCap = buf->used + toWrite + 1;
+        char* grown = (char*)realloc(buf->data, newCap);
+        if (!grown)
+            return 0;   /* signal error to curl */
+        buf->data = grown;
+        buf->cap  = newCap;
+    }
+
+    memcpy(buf->data + buf->used, ptr, toWrite);
+    buf->used += toWrite;
+    buf->data[buf->used] = '\0';
+    return bytes;
+}
+
 /* ─── Minimal JSON extraction ───────────────────────────────── *
- * We only need the "tag_name" value from the GitHub response.
- * A full JSON parser is overkill — we search for the key and
- * extract the quoted string value that follows it.
- */
+ * We only need the "tag_name" value from the GitHub response.   *
+ * A full JSON parser is overkill — search for the key and       *
+ * extract the quoted string value that follows it.              */
 
 static bool extractTagName(const char* json, int jsonLen, char* out, int outCap)
 {
@@ -224,110 +238,88 @@ static bool extractTagName(const char* json, int jsonLen, char* out, int outCap)
     return i > 0;
 }
 
-/* ─── The actual HTTPS check ────────────────────────────────── */
+/* ─── The actual HTTPS check (curl + OpenSSL) ───────────────── */
 
 void CWUpdateChecker::doCheck()
 {
     CWVersionResult* result = new CWVersionResult();
     memset(result, 0, sizeof(*result));
 
-    HINTERNET hInet = NULL;
-    HINTERNET hConn = NULL;
-    HINTERNET hReq  = NULL;
+    CURL*    hCurl  = NULL;
+    curl_slist* hdrs = NULL;
+    CurlBuffer body = { NULL, 0, 0 };
 
     do
     {
-        hInet = InternetOpen(CW_ToT("ClamWin/" CLAMWIN_VERSION_STR).c_str(),
-                              INTERNET_OPEN_TYPE_PRECONFIG,
-                              NULL, NULL, 0);
-        if (!hInet)
+        hCurl = curl_easy_init();
+        if (!hCurl)
             break;
 
-        /* Set a reasonable timeout so we don't block forever */
-        DWORD timeout = 15000;
-        InternetSetOption(hInet, INTERNET_OPTION_CONNECT_TIMEOUT, &timeout, sizeof(timeout));
-        InternetSetOption(hInet, INTERNET_OPTION_RECEIVE_TIMEOUT, &timeout, sizeof(timeout));
+        /* Request URL */
+        curl_easy_setopt(hCurl, CURLOPT_URL, CW_GITHUB_API_URL);
 
-        const bool modernTls = canUseGithubTlsOnThisOs();
-        const char* host = modernTls ? CW_GITHUB_API_HOST : CW_LEGACY_UPDATE_HOST;
-        const char* path = modernTls ? CW_GITHUB_API_PATH : CW_LEGACY_UPDATE_PATH;
-        INTERNET_PORT port = modernTls ? INTERNET_DEFAULT_HTTPS_PORT : INTERNET_DEFAULT_HTTP_PORT;
-        DWORD reqFlags = INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_RELOAD | INTERNET_FLAG_NO_UI;
-        if (modernTls)
-            reqFlags |= INTERNET_FLAG_SECURE;
+        /* User-Agent — GitHub API requires a non-empty UA */
+        curl_easy_setopt(hCurl, CURLOPT_USERAGENT, CW_USER_AGENT);
 
-        hConn = InternetConnect(hInet, CW_ToT(host).c_str(),
-                                 port,
-                                 NULL, NULL,
-                                 INTERNET_SERVICE_HTTP, 0, 0);
-        if (!hConn)
+        /* Accept header so GitHub returns JSON */
+        hdrs = curl_slist_append(hdrs, "Accept: application/vnd.github+json");
+        if (hdrs)
+            curl_easy_setopt(hCurl, CURLOPT_HTTPHEADER, hdrs);
+
+        /* Accumulate response body */
+        curl_easy_setopt(hCurl, CURLOPT_WRITEFUNCTION, curlWriteCb);
+        curl_easy_setopt(hCurl, CURLOPT_WRITEDATA,     &body);
+
+        /* Timeouts (ms) */
+        curl_easy_setopt(hCurl, CURLOPT_CONNECTTIMEOUT, 15L);
+        curl_easy_setopt(hCurl, CURLOPT_TIMEOUT,        30L);
+
+        /* Follow redirects (just in case) */
+        curl_easy_setopt(hCurl, CURLOPT_FOLLOWLOCATION, 1L);
+        curl_easy_setopt(hCurl, CURLOPT_MAXREDIRS,      5L);
+
+        /* TLS peer/host verification — mandatory */
+        curl_easy_setopt(hCurl, CURLOPT_SSL_VERIFYPEER, 1L);
+        curl_easy_setopt(hCurl, CURLOPT_SSL_VERIFYHOST, 2L);
+
+        /* On XP the OS certificate store is not accessible to OpenSSL.
+         * Use the bundled CA bundle if it exists next to the executable. */
+        char caBundle[MAX_PATH + 32];
+        if (getCaBundlePath(caBundle, sizeof(caBundle)))
+            curl_easy_setopt(hCurl, CURLOPT_CAINFO, caBundle);
+
+        /* Perform the request */
+        CURLcode rc = curl_easy_perform(hCurl);
+        if (rc != CURLE_OK)
             break;
 
-        std::basic_string<TCHAR> acceptTypeValue = CW_ToT(modernTls ? "application/json" : "text/plain");
-        const TCHAR* acceptTypes[] = { acceptTypeValue.c_str(), NULL };
-        hReq = HttpOpenRequest(hConn, TEXT("GET"), CW_ToT(path).c_str(),
-                                NULL, NULL, acceptTypes,
-                                reqFlags,
-                                0);
-        if (!hReq)
+        /* Check HTTP status */
+        long httpStatus = 0;
+        curl_easy_getinfo(hCurl, CURLINFO_RESPONSE_CODE, &httpStatus);
+        if (httpStatus != 200)
             break;
 
-        if (!HttpSendRequest(hReq, NULL, 0, NULL, 0))
+        /* Extract version from JSON */
+        if (!body.data)
             break;
-
-        /* Check HTTP status code */
-        DWORD statusCode = 0;
-        DWORD statusSize = sizeof(statusCode);
-        if (!HttpQueryInfo(hReq, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER,
-                            &statusCode, &statusSize, NULL))
-            break;
-        if (statusCode != 200)
-            break;
-
-        /* Read response body (capped at 32 KB — the real response is ~5 KB) */
-        const int MAX_RESPONSE = 32768;
-        char* body = (char*)malloc(MAX_RESPONSE + 1);
-        if (!body)
-            break;
-
-        int totalRead = 0;
-        DWORD bytesRead = 0;
-        while (totalRead < MAX_RESPONSE)
-        {
-            if (!InternetReadFile(hReq, body + totalRead,
-                                  MAX_RESPONSE - totalRead, &bytesRead))
-                break;
-            if (bytesRead == 0)
-                break;
-            totalRead += (int)bytesRead;
-        }
-        body[totalRead] = '\0';
 
         char remoteVersion[64] = "";
-        bool parsed = false;
-        if (modernTls)
-            parsed = extractTagName(body, totalRead, remoteVersion, sizeof(remoteVersion));
-        else
-            parsed = extractVersionToken(body, totalRead, remoteVersion, sizeof(remoteVersion));
+        if (!extractTagName(body.data, (int)body.used, remoteVersion, sizeof(remoteVersion)))
+            break;
 
-        if (parsed)
+        if (isNewerVersion(remoteVersion))
         {
-            if (isNewerVersion(remoteVersion))
-            {
-                result->available = true;
-                parseVersion(remoteVersion, result->major, result->minor, result->patch);
-                _snprintf(result->versionStr, sizeof(result->versionStr), "%s", remoteVersion);
-                result->versionStr[sizeof(result->versionStr) - 1] = '\0';
-            }
+            result->available = true;
+            parseVersion(remoteVersion, result->major, result->minor, result->patch);
+            _snprintf(result->versionStr, sizeof(result->versionStr), "%s", remoteVersion);
+            result->versionStr[sizeof(result->versionStr) - 1] = '\0';
         }
-
-        free(body);
 
     } while (false);
 
-    if (hReq)  InternetCloseHandle(hReq);
-    if (hConn) InternetCloseHandle(hConn);
-    if (hInet) InternetCloseHandle(hInet);
+    if (hdrs)  curl_slist_free_all(hdrs);
+    if (hCurl) curl_easy_cleanup(hCurl);
+    if (body.data) free(body.data);
 
     /* Post result to the UI thread */
     if (m_hwndTarget && IsWindow(m_hwndTarget))
