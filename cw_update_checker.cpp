@@ -53,8 +53,13 @@ static bool canUseNativeTls()
     if (!GetVersionEx(&osv))
         return true; /* assume modern if detection fails */
 
-    /* Vista (6.0) and later ship SChannel with TLS 1.2 support. */
-    return osv.dwMajorVersion >= 6;
+    /* WinINet/SChannel TLS 1.2 is enabled by default from Windows 8 (6.2).
+     * Vista (6.0) has no TLS 1.2 client support at all.
+     * Windows 7 (6.1) has TLS 1.2 compiled in but disabled by default.
+     * Both of those require curl+OpenSSL since GitHub mandates TLS 1.2. */
+    DWORD maj = osv.dwMajorVersion;
+    DWORD min = osv.dwMinorVersion;
+    return (maj > 6) || (maj == 6 && min >= 2);
 }
 
 /* ─── CA bundle path (XP curl path only) ─────────────────────── *
