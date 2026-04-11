@@ -125,6 +125,7 @@ set(clamwin
     cw_theme.cpp
     cw_update_checker.cpp
     cw_bcrypt_compat.c
+    cw_xpcompat.c
 )
 
 # Legacy function-based GUI modules were removed after the cw_* class migration.
@@ -209,6 +210,7 @@ set(clamwin_test_sources
     cw_utils.cpp
     cw_update_checker.cpp
     cw_bcrypt_compat.c
+    cw_xpcompat.c
     shell-extension/cw_shell_extension_command.cpp
 )
 
