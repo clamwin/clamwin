@@ -6,31 +6,33 @@
  * Windows XP's kernel32.dll has the DLL but not these exports, producing
  * "Entry Point Not Found" at process startup before main() runs.
  *
- * This file provides our own definitions for each affected symbol.  At the
- * first call we probe kernel32.dll via GetProcAddress:
- *   - Vista+: the real function is available, call it directly.
- *   - XP:     fall back to a CRITICAL_SECTION / semaphore implementation.
- *
- * SRW lock fallback: SRWLOCK is { PVOID Ptr }.  On XP we allocate a
- * CRITICAL_SECTION on the heap and store the pointer in Ptr.  Locks are
- * long-lived in curl (connection cache, share handle), so not explicitly
- * deleting them on shutdown is acceptable.
- *
- * Condition variable fallback: a semaphore + waiter counter stored behind
- * the CONDITION_VARIABLE Ptr field.  Provides correct signal / broadcast
- * semantics for the Mesa-style usage curl makes of condition variables.
+ * This file is compiled with _WIN32_WINNT=0x0501 so that synchapi.h does
+ * NOT declare these functions (they're guarded by _WIN32_WINNT >= 0x0600).
+ * We then define the Vista+ types manually and provide our own
+ * implementations that dynamically probe kernel32.dll at first use:
+ *   - Vista+: the real kernel32 export is available, call it.
+ *   - XP:     fall back to CRITICAL_SECTION (SRW) / semaphore (condvar).
  *
  * Copyright (c) 2004-2026 ClamWin Pty Ltd
  * License: GPLv2
  */
 
+/* Must be set before any Windows headers so synchapi.h skips Vista+ decls */
+#undef  _WIN32_WINNT
+#define _WIN32_WINNT 0x0501
+
 #include <windows.h>
+
+/* ── Vista+ types not declared when _WIN32_WINNT=0x0501 ────────── */
+
+typedef struct _CW_SRWLOCK          { PVOID Ptr; } CW_SRWLOCK, *PCW_SRWLOCK;
+typedef struct _CW_CONDITION_VARIABLE { PVOID Ptr; } CW_CONDITION_VARIABLE, *PCW_CONDITION_VARIABLE;
+typedef unsigned char CW_BOOLEAN;
 
 /* ── Probe helper ──────────────────────────────────────────────── */
 
 static FARPROC cw_k32proc(const char* name)
 {
-    /* kernel32.dll is always mapped into every process; no LoadLibrary needed */
     HMODULE k32 = GetModuleHandleA("kernel32.dll");
     return k32 ? GetProcAddress(k32, name) : NULL;
 }
@@ -38,197 +40,176 @@ static FARPROC cw_k32proc(const char* name)
 /* ══════════════════════════════════════════════════════════════════
  *  SRW Locks
  * ══════════════════════════════════════════════════════════════════
- * SRWLOCK  =  { PVOID Ptr }  (single pointer, opaque on Vista+)
  * XP fallback stores a heap-allocated CRITICAL_SECTION in Ptr.
  */
 
-typedef void  (WINAPI *fn_InitSRW)(PVOID);
-typedef void  (WINAPI *fn_AcqSRWEx)(PVOID);
-typedef void  (WINAPI *fn_RelSRWEx)(PVOID);
-typedef void  (WINAPI *fn_AcqSRWSh)(PVOID);
-typedef void  (WINAPI *fn_RelSRWSh)(PVOID);
-typedef BOOL  (WINAPI *fn_TryAcqSRWEx)(PVOID);
-typedef BOOL  (WINAPI *fn_TryAcqSRWSh)(PVOID);
+typedef void        (WINAPI *fn_InitSRW)      (PCW_SRWLOCK);
+typedef void        (WINAPI *fn_AcqSRWEx)     (PCW_SRWLOCK);
+typedef void        (WINAPI *fn_RelSRWEx)     (PCW_SRWLOCK);
+typedef void        (WINAPI *fn_AcqSRWSh)     (PCW_SRWLOCK);
+typedef void        (WINAPI *fn_RelSRWSh)     (PCW_SRWLOCK);
+typedef CW_BOOLEAN  (WINAPI *fn_TryAcqSRWEx)  (PCW_SRWLOCK);
+typedef CW_BOOLEAN  (WINAPI *fn_TryAcqSRWSh)  (PCW_SRWLOCK);
 
-/* Lazy-initialised, written once under the assumption of benign data races
- * (worst case: two threads both probe and get the same answer). */
-static fn_InitSRW      pfn_InitializeSRWLock           = (fn_InitSRW)(LONG_PTR)-1;
-static fn_AcqSRWEx     pfn_AcquireSRWLockExclusive     = (fn_AcqSRWEx)(LONG_PTR)-1;
-static fn_RelSRWEx     pfn_ReleaseSRWLockExclusive     = (fn_RelSRWEx)(LONG_PTR)-1;
-static fn_AcqSRWSh     pfn_AcquireSRWLockShared        = (fn_AcqSRWSh)(LONG_PTR)-1;
-static fn_RelSRWSh     pfn_ReleaseSRWLockShared        = (fn_RelSRWSh)(LONG_PTR)-1;
-static fn_TryAcqSRWEx  pfn_TryAcquireSRWLockExclusive  = (fn_TryAcqSRWEx)(LONG_PTR)-1;
-static fn_TryAcqSRWSh  pfn_TryAcquireSRWLockShared     = (fn_TryAcqSRWSh)(LONG_PTR)-1;
-
+#define SENTINEL ((FARPROC)(LONG_PTR)-1)
 #define PROBE(var, name, type) \
-    if ((LONG_PTR)(var) == (LONG_PTR)-1) \
-        (var) = (type)cw_k32proc(name)
+    if ((FARPROC)(var) == SENTINEL) (var) = (type)cw_k32proc(name)
 
-/* XP helpers */
-static CRITICAL_SECTION* cw_srw_cs(PVOID* ptr)
-{
-    return (CRITICAL_SECTION*)(*ptr);
-}
+static fn_InitSRW     pfn_InitializeSRWLock          = (fn_InitSRW)SENTINEL;
+static fn_AcqSRWEx    pfn_AcquireSRWLockExclusive    = (fn_AcqSRWEx)SENTINEL;
+static fn_RelSRWEx    pfn_ReleaseSRWLockExclusive    = (fn_RelSRWEx)SENTINEL;
+static fn_AcqSRWSh    pfn_AcquireSRWLockShared       = (fn_AcqSRWSh)SENTINEL;
+static fn_RelSRWSh    pfn_ReleaseSRWLockShared       = (fn_RelSRWSh)SENTINEL;
+static fn_TryAcqSRWEx pfn_TryAcquireSRWLockExclusive = (fn_TryAcqSRWEx)SENTINEL;
+static fn_TryAcqSRWSh pfn_TryAcquireSRWLockShared    = (fn_TryAcqSRWSh)SENTINEL;
 
-static void cw_srw_init_xp(PVOID* ptr)
+static CRITICAL_SECTION* cw_srw_cs(PCW_SRWLOCK lock) { return (CRITICAL_SECTION*)(lock->Ptr); }
+
+static void cw_srw_init_xp(PCW_SRWLOCK lock)
 {
     CRITICAL_SECTION* cs = HeapAlloc(GetProcessHeap(), 0, sizeof(CRITICAL_SECTION));
     if (cs) InitializeCriticalSection(cs);
-    *ptr = cs;
+    lock->Ptr = cs;
 }
 
-/* ── Public symbols ──────────────────────────────────────────── */
-
-void WINAPI InitializeSRWLock(PVOID lock)
+void WINAPI InitializeSRWLock(PCW_SRWLOCK lock)
 {
     PROBE(pfn_InitializeSRWLock, "InitializeSRWLock", fn_InitSRW);
     if (pfn_InitializeSRWLock) { pfn_InitializeSRWLock(lock); return; }
-    cw_srw_init_xp((PVOID*)lock);
+    cw_srw_init_xp(lock);
 }
 
-void WINAPI AcquireSRWLockExclusive(PVOID lock)
+void WINAPI AcquireSRWLockExclusive(PCW_SRWLOCK lock)
 {
     PROBE(pfn_AcquireSRWLockExclusive, "AcquireSRWLockExclusive", fn_AcqSRWEx);
     if (pfn_AcquireSRWLockExclusive) { pfn_AcquireSRWLockExclusive(lock); return; }
-    EnterCriticalSection(cw_srw_cs((PVOID*)lock));
+    EnterCriticalSection(cw_srw_cs(lock));
 }
 
-void WINAPI ReleaseSRWLockExclusive(PVOID lock)
+void WINAPI ReleaseSRWLockExclusive(PCW_SRWLOCK lock)
 {
     PROBE(pfn_ReleaseSRWLockExclusive, "ReleaseSRWLockExclusive", fn_RelSRWEx);
     if (pfn_ReleaseSRWLockExclusive) { pfn_ReleaseSRWLockExclusive(lock); return; }
-    LeaveCriticalSection(cw_srw_cs((PVOID*)lock));
+    LeaveCriticalSection(cw_srw_cs(lock));
 }
 
-void WINAPI AcquireSRWLockShared(PVOID lock)
+void WINAPI AcquireSRWLockShared(PCW_SRWLOCK lock)
 {
     PROBE(pfn_AcquireSRWLockShared, "AcquireSRWLockShared", fn_AcqSRWSh);
     if (pfn_AcquireSRWLockShared) { pfn_AcquireSRWLockShared(lock); return; }
-    /* Degrade to exclusive on XP — correct, just lower concurrency */
-    EnterCriticalSection(cw_srw_cs((PVOID*)lock));
+    EnterCriticalSection(cw_srw_cs(lock));  /* degrade to exclusive on XP */
 }
 
-void WINAPI ReleaseSRWLockShared(PVOID lock)
+void WINAPI ReleaseSRWLockShared(PCW_SRWLOCK lock)
 {
     PROBE(pfn_ReleaseSRWLockShared, "ReleaseSRWLockShared", fn_RelSRWSh);
     if (pfn_ReleaseSRWLockShared) { pfn_ReleaseSRWLockShared(lock); return; }
-    LeaveCriticalSection(cw_srw_cs((PVOID*)lock));
+    LeaveCriticalSection(cw_srw_cs(lock));
 }
 
-BOOL WINAPI TryAcquireSRWLockExclusive(PVOID lock)
+CW_BOOLEAN WINAPI TryAcquireSRWLockExclusive(PCW_SRWLOCK lock)
 {
     PROBE(pfn_TryAcquireSRWLockExclusive, "TryAcquireSRWLockExclusive", fn_TryAcqSRWEx);
     if (pfn_TryAcquireSRWLockExclusive) return pfn_TryAcquireSRWLockExclusive(lock);
-    return TryEnterCriticalSection(cw_srw_cs((PVOID*)lock));
+    return (CW_BOOLEAN)TryEnterCriticalSection(cw_srw_cs(lock));
 }
 
-BOOL WINAPI TryAcquireSRWLockShared(PVOID lock)
+CW_BOOLEAN WINAPI TryAcquireSRWLockShared(PCW_SRWLOCK lock)
 {
     PROBE(pfn_TryAcquireSRWLockShared, "TryAcquireSRWLockShared", fn_TryAcqSRWSh);
     if (pfn_TryAcquireSRWLockShared) return pfn_TryAcquireSRWLockShared(lock);
-    return TryEnterCriticalSection(cw_srw_cs((PVOID*)lock));
+    return (CW_BOOLEAN)TryEnterCriticalSection(cw_srw_cs(lock));
 }
 
 /* ══════════════════════════════════════════════════════════════════
  *  Condition Variables  (Vista+)
  * ══════════════════════════════════════════════════════════════════
- * CONDITION_VARIABLE = { PVOID Ptr } — same layout as SRWLOCK.
- * XP fallback: heap-allocated struct with a semaphore + waiter count.
+ * XP fallback: heap-allocated {semaphore, waiter count} behind Ptr.
  */
 
 typedef struct
 {
-    HANDLE          sem;        /* counting semaphore                    */
-    volatile LONG   waiters;    /* number of threads waiting             */
+    HANDLE        sem;
+    volatile LONG waiters;
 } CW_CondVarXP;
 
-typedef void  (WINAPI *fn_InitCV)(PVOID);
-typedef BOOL  (WINAPI *fn_SleepCVSRW)(PVOID cv, PVOID lock, DWORD ms, ULONG flags);
-typedef BOOL  (WINAPI *fn_SleepCVCS)(PVOID cv, PVOID cs, DWORD ms);
-typedef void  (WINAPI *fn_WakeCV)(PVOID);
-typedef void  (WINAPI *fn_WakeAllCV)(PVOID);
+typedef void   (WINAPI *fn_InitCV)    (PCW_CONDITION_VARIABLE);
+typedef BOOL   (WINAPI *fn_SleepCVSRW)(PCW_CONDITION_VARIABLE, PCW_SRWLOCK, DWORD, ULONG);
+typedef BOOL   (WINAPI *fn_SleepCVCS) (PCW_CONDITION_VARIABLE, PCRITICAL_SECTION, DWORD);
+typedef void   (WINAPI *fn_WakeCV)    (PCW_CONDITION_VARIABLE);
+typedef void   (WINAPI *fn_WakeAllCV) (PCW_CONDITION_VARIABLE);
 
-static fn_InitCV      pfn_InitializeConditionVariable   = (fn_InitCV)(LONG_PTR)-1;
-static fn_SleepCVSRW  pfn_SleepConditionVariableSRW     = (fn_SleepCVSRW)(LONG_PTR)-1;
-static fn_SleepCVCS   pfn_SleepConditionVariableCS      = (fn_SleepCVCS)(LONG_PTR)-1;
-static fn_WakeCV      pfn_WakeConditionVariable         = (fn_WakeCV)(LONG_PTR)-1;
-static fn_WakeAllCV   pfn_WakeAllConditionVariable      = (fn_WakeAllCV)(LONG_PTR)-1;
+static fn_InitCV     pfn_InitializeConditionVariable  = (fn_InitCV)SENTINEL;
+static fn_SleepCVSRW pfn_SleepConditionVariableSRW    = (fn_SleepCVSRW)SENTINEL;
+static fn_SleepCVCS  pfn_SleepConditionVariableCS     = (fn_SleepCVCS)SENTINEL;
+static fn_WakeCV     pfn_WakeConditionVariable        = (fn_WakeCV)SENTINEL;
+static fn_WakeAllCV  pfn_WakeAllConditionVariable     = (fn_WakeAllCV)SENTINEL;
 
-static CW_CondVarXP* cw_cv_xp(PVOID* ptr)
+static CW_CondVarXP* cw_cv_xp(PCW_CONDITION_VARIABLE cv) { return (CW_CondVarXP*)(cv->Ptr); }
+
+static void cw_cv_init_xp(PCW_CONDITION_VARIABLE cv)
 {
-    return (CW_CondVarXP*)(*ptr);
+    CW_CondVarXP* x = HeapAlloc(GetProcessHeap(), 0, sizeof(CW_CondVarXP));
+    if (!x) return;
+    x->waiters = 0;
+    x->sem = CreateSemaphoreA(NULL, 0, 0x7FFFFFFF, NULL);
+    if (!x->sem) { HeapFree(GetProcessHeap(), 0, x); return; }
+    cv->Ptr = x;
 }
 
-static void cw_cv_init_xp(PVOID* ptr)
-{
-    CW_CondVarXP* cv = HeapAlloc(GetProcessHeap(), 0, sizeof(CW_CondVarXP));
-    if (!cv) return;
-    cv->waiters = 0;
-    cv->sem = CreateSemaphore(NULL, 0, 0x7FFFFFFF, NULL);
-    if (!cv->sem) { HeapFree(GetProcessHeap(), 0, cv); return; }
-    *ptr = cv;
-}
-
-void WINAPI InitializeConditionVariable(PVOID cv)
+void WINAPI InitializeConditionVariable(PCW_CONDITION_VARIABLE cv)
 {
     PROBE(pfn_InitializeConditionVariable, "InitializeConditionVariable", fn_InitCV);
     if (pfn_InitializeConditionVariable) { pfn_InitializeConditionVariable(cv); return; }
-    cw_cv_init_xp((PVOID*)cv);
+    cw_cv_init_xp(cv);
 }
 
-void WINAPI WakeConditionVariable(PVOID cv)
+void WINAPI WakeConditionVariable(PCW_CONDITION_VARIABLE cv)
 {
     PROBE(pfn_WakeConditionVariable, "WakeConditionVariable", fn_WakeCV);
     if (pfn_WakeConditionVariable) { pfn_WakeConditionVariable(cv); return; }
-    {
-        CW_CondVarXP* xp = cw_cv_xp((PVOID*)cv);
-        if (xp && xp->sem && xp->waiters > 0)
-            ReleaseSemaphore(xp->sem, 1, NULL);
-    }
+    { CW_CondVarXP* x = cw_cv_xp(cv); if (x && x->waiters > 0) ReleaseSemaphore(x->sem, 1, NULL); }
 }
 
-void WINAPI WakeAllConditionVariable(PVOID cv)
+void WINAPI WakeAllConditionVariable(PCW_CONDITION_VARIABLE cv)
 {
     PROBE(pfn_WakeAllConditionVariable, "WakeAllConditionVariable", fn_WakeAllCV);
     if (pfn_WakeAllConditionVariable) { pfn_WakeAllConditionVariable(cv); return; }
-    {
-        CW_CondVarXP* xp = cw_cv_xp((PVOID*)cv);
-        if (xp && xp->sem && xp->waiters > 0)
-            ReleaseSemaphore(xp->sem, xp->waiters, NULL);
-    }
+    { CW_CondVarXP* x = cw_cv_xp(cv); if (x && x->waiters > 0) ReleaseSemaphore(x->sem, x->waiters, NULL); }
 }
 
-BOOL WINAPI SleepConditionVariableSRW(PVOID cv, PVOID lock, DWORD ms, ULONG flags)
+BOOL WINAPI SleepConditionVariableSRW(PCW_CONDITION_VARIABLE cv, PCW_SRWLOCK lock,
+                                       DWORD ms, ULONG flags)
 {
     PROBE(pfn_SleepConditionVariableSRW, "SleepConditionVariableSRW", fn_SleepCVSRW);
     if (pfn_SleepConditionVariableSRW) return pfn_SleepConditionVariableSRW(cv, lock, ms, flags);
     {
-        CW_CondVarXP* xp = cw_cv_xp((PVOID*)cv);
+        CW_CondVarXP* x = cw_cv_xp(cv);
         DWORD rc;
-        if (!xp) return FALSE;
-        InterlockedIncrement(&xp->waiters);
-        /* Release the SRW lock (treated as exclusive on XP) */
-        LeaveCriticalSection(cw_srw_cs((PVOID*)lock));
-        rc = WaitForSingleObject(xp->sem, ms);
-        InterlockedDecrement(&xp->waiters);
-        EnterCriticalSection(cw_srw_cs((PVOID*)lock));
-        return (rc == WAIT_OBJECT_0);
+        if (!x) return FALSE;
+        InterlockedIncrement(&x->waiters);
+        LeaveCriticalSection(cw_srw_cs(lock));
+        rc = WaitForSingleObject(x->sem, ms);
+        InterlockedDecrement(&x->waiters);
+        EnterCriticalSection(cw_srw_cs(lock));
+        return rc == WAIT_OBJECT_0;
     }
 }
 
-BOOL WINAPI SleepConditionVariableCS(PVOID cv, PVOID cs, DWORD ms)
+BOOL WINAPI SleepConditionVariableCS(PCW_CONDITION_VARIABLE cv, PCRITICAL_SECTION cs,
+                                      DWORD ms)
 {
     PROBE(pfn_SleepConditionVariableCS, "SleepConditionVariableCS", fn_SleepCVCS);
     if (pfn_SleepConditionVariableCS) return pfn_SleepConditionVariableCS(cv, cs, ms);
     {
-        CW_CondVarXP* xp = cw_cv_xp((PVOID*)cv);
+        CW_CondVarXP* x = cw_cv_xp(cv);
         DWORD rc;
-        if (!xp) return FALSE;
-        InterlockedIncrement(&xp->waiters);
-        LeaveCriticalSection((CRITICAL_SECTION*)cs);
-        rc = WaitForSingleObject(xp->sem, ms);
-        InterlockedDecrement(&xp->waiters);
-        EnterCriticalSection((CRITICAL_SECTION*)cs);
-        return (rc == WAIT_OBJECT_0);
+        if (!x) return FALSE;
+        InterlockedIncrement(&x->waiters);
+        LeaveCriticalSection(cs);
+        rc = WaitForSingleObject(x->sem, ms);
+        InterlockedDecrement(&x->waiters);
+        EnterCriticalSection(cs);
+        return rc == WAIT_OBJECT_0;
     }
 }
