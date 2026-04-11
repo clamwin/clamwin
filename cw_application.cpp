@@ -18,7 +18,10 @@
 
 #include <string.h>
 #include <tchar.h>
-#include <tchar.h>
+
+/* curl must be included before windows.h; cw_application.h already pulled
+ * windows.h so we just need the curl init/cleanup declarations here. */
+#include <curl/curl.h>
 
 CWApplication* CWApplication::s_instance = NULL;
 
@@ -661,6 +664,7 @@ normal_startup:
 
     LoadLibrary(TEXT("riched20.dll"));
     CoInitialize(NULL);
+    curl_global_init(CURL_GLOBAL_DEFAULT);
 
     /* Load config */
     if (!startupConfigPath.empty())
@@ -674,6 +678,7 @@ normal_startup:
     /* Create hidden tray window */
     if (!registerHiddenClass() || !createHiddenWindow())
     {
+        curl_global_cleanup();
         CoUninitialize();
         if (hMutex) CloseHandle(hMutex);
         return 1;
@@ -730,6 +735,7 @@ normal_startup:
     m_updateChecker.waitForThread();
     m_tray.destroy();
     CW_ThemeDeinit();
+    curl_global_cleanup();
     CoUninitialize();
     if (hMutex) CloseHandle(hMutex);
     return (int)msg.wParam;

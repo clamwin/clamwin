@@ -172,26 +172,26 @@ TEST_CASE("download URL points to clamwin.com")
     CHECK(hasClamwin);
 }
 
-TEST_CASE(\"API URL points to GitHub releases\")
+TEST_CASE("API URL points to GitHub releases")
 {
     /* Since we now use OpenSSL for TLS on all platforms, the GitHub endpoint
      * must always be used — the old clamwin.com plain-HTTP fallback is gone. */
     const char* api = CWUpdateChecker::apiUrl();
-    bool isGitHub = (strstr(api, \"api.github.com\") != nullptr);
+    bool isGitHub = (strstr(api, "api.github.com") != nullptr);
     CHECK(isGitHub);
 }
 
-TEST_CASE(\"API URL is for the clamwin repo\")
+TEST_CASE("API URL is for the clamwin repo")
 {
     const char* api = CWUpdateChecker::apiUrl();
-    bool hasClamwinRepo = (strstr(api, \"clamwin/clamwin\") != nullptr);
+    bool hasClamwinRepo = (strstr(api, "clamwin/clamwin") != nullptr);
     CHECK(hasClamwinRepo);
 }
 
-TEST_CASE(\"API URL contains releases/latest\")
+TEST_CASE("API URL contains releases/latest")
 {
     const char* api = CWUpdateChecker::apiUrl();
-    bool hasReleasesLatest = (strstr(api, \"releases/latest\") != nullptr);
+    bool hasReleasesLatest = (strstr(api, "releases/latest") != nullptr);
     CHECK(hasReleasesLatest);
 }
 
