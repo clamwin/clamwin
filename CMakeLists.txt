@@ -297,6 +297,7 @@ target_link_libraries(clamwin PRIVATE
     ${CW_CURL_LINK_LIBS}
     crypt32
     ws2_32
+    bcrypt
 )
 
 target_link_libraries(clamwin_test PRIVATE
@@ -305,6 +306,7 @@ target_link_libraries(clamwin_test PRIVATE
     ${CW_CURL_LINK_LIBS}
     crypt32
     ws2_32
+    bcrypt
 )
 
 add_custom_target(clamwin_check
