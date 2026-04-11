@@ -17,6 +17,7 @@
 #pragma once
 #include "cwdefs.h"
 #include <windows.h>
+#include <string>
 
 /* Custom message posted to the target HWND when the check completes.
  * WPARAM = 1 if a newer version is available, 0 if not (or on error).
@@ -43,7 +44,7 @@ public:
     /* Launch a background HTTPS check.  When complete a WM_CW_VERSION_RESULT
      * message is posted to |hwndTarget|.  Only one check runs at a time;
      * calling again while one is in flight is a no-op. */
-    void startCheck(HWND hwndTarget);
+    void startCheck(HWND hwndTarget, bool debugEnabled = false, const std::string& debugLogPath = "");
 
     /* Block until the background thread finishes (used during shutdown). */
     void waitForThread();
@@ -60,7 +61,9 @@ private:
     CWUpdateChecker& operator=(const CWUpdateChecker&);
 
     HANDLE m_hThread;
-    HWND   m_hwndTarget;
+    HWND        m_hwndTarget;
+    bool        m_debugEnabled;
+    std::string m_debugLogPath;
 
     static DWORD WINAPI threadProc(LPVOID param);
     void doCheck();

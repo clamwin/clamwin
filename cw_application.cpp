@@ -1253,7 +1253,7 @@ LRESULT CWApplication::handleMessage(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
             {
                 KillTimer(hwnd, CW_VERSION_CHECK_TIMER_ID);
                 if (m_curlInited)
-                    m_updateChecker.startCheck(m_hwndTray);
+                    m_updateChecker.startCheck(m_hwndTray, m_config.debugEnabled, CW_GetDebugLogPath(m_config.scanLogFile));
             }
             return 0;
 

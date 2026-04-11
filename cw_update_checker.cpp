@@ -15,6 +15,7 @@
 
 #include "cw_update_checker.h"
 #include "cw_gui_shared.h"   /* CLAMWIN_VERSION_STR */
+#include "cw_log_utils.h"    /* CW_DebugLog */
 
 /* curl must be included before windows.h to avoid winsock conflicts */
 #include <curl/curl.h>
@@ -111,6 +112,7 @@ const char* CWUpdateChecker::downloadUrl()
 CWUpdateChecker::CWUpdateChecker()
     : m_hThread(NULL)
     , m_hwndTarget(NULL)
+    , m_debugEnabled(false)
 {
 }
 
@@ -131,12 +133,14 @@ void CWUpdateChecker::waitForThread()
 
 /* ─── Start background check ───────────────────────────────── */
 
-void CWUpdateChecker::startCheck(HWND hwndTarget)
+void CWUpdateChecker::startCheck(HWND hwndTarget, bool debugEnabled, const std::string& debugLogPath)
 {
     if (m_hThread)
         return;   /* already in flight */
 
     m_hwndTarget = hwndTarget;
+    m_debugEnabled = debugEnabled;
+    m_debugLogPath = debugLogPath;
     DWORD tid = 0; /* Win98 requires a valid lpThreadId pointer, NULL is not accepted */
     m_hThread = CreateThread(NULL, 0, threadProc, this, 0, &tid);
 }
@@ -245,6 +249,7 @@ void CWUpdateChecker::doCheck()
     CURL*       hCurl = NULL;
     curl_slist* hdrs  = NULL;
     CurlBuffer  body  = { NULL, 0, 0 };
+    char        errbuf[CURL_ERROR_SIZE] = {0};
 
     do
     {
@@ -281,14 +286,25 @@ void CWUpdateChecker::doCheck()
         if (getCaBundlePath(caBundle, sizeof(caBundle)))
             curl_easy_setopt(hCurl, CURLOPT_CAINFO, caBundle);
 
+        curl_easy_setopt(hCurl, CURLOPT_ERRORBUFFER, errbuf);
+
         CURLcode rc = curl_easy_perform(hCurl);
-        if (rc != CURLE_OK)
+        if (rc != CURLE_OK) {
+            if (m_debugEnabled) {
+                CW_DebugLog(m_debugLogPath, "[UpdateChecker] cURL error %d: %s",
+                            (int)rc, errbuf[0] ? errbuf : curl_easy_strerror(rc));
+            }
             break;
+        }
 
         long httpStatus = 0;
         curl_easy_getinfo(hCurl, CURLINFO_RESPONSE_CODE, &httpStatus);
-        if (httpStatus != 200)
+        if (httpStatus != 200) {
+            if (m_debugEnabled) {
+                CW_DebugLog(m_debugLogPath, "[UpdateChecker] HTTP status %ld", httpStatus);
+            }
             break;
+        }
 
         if (!body.data)
             break;

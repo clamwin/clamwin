@@ -17,50 +17,7 @@
 #define SCHEDULER_INTERVAL  60000  /* 60 seconds */
 
 /* ─── Scheduler diagnostic log ─────────────────────────────── */
-
-/* Derive the scheduler log path from the scan log file path:
- * same directory, filename = "ClamWinScheduler.log". */
-static std::string schedulerLogPath(const std::string& scanLogFile)
-{
-    if (scanLogFile.empty())
-        return "";
-    std::string::size_type sep = scanLogFile.rfind('\\');
-    std::string dir = (sep != std::string::npos)
-                    ? scanLogFile.substr(0, sep + 1)
-                    : "";
-    return dir + "ClamWinScheduler.log";
-}
-
-static void schedLog(const std::string& logPath, const char* fmt, ...)
-{
-    if (logPath.empty())
-        return;
-
-    /* Build timestamp prefix */
-    time_t now = time(NULL);
-    char timeBuf[32] = "(unknown)";
-    struct tm tmBuf = {0};
-    struct tm* tmPtr = localtime(&now);
-    if (now != (time_t)(-1) && tmPtr) {
-        tmBuf = *tmPtr;
-        strftime(timeBuf, sizeof(timeBuf), "%Y-%m-%d %H:%M:%S", &tmBuf);
-    }
-
-    char msg[512];
-    va_list ap;
-    va_start(ap, fmt);
-    vsnprintf(msg, sizeof(msg), fmt, ap);
-    msg[sizeof(msg) - 1] = '\0';
-    va_end(ap);
-
-    std::string line = "[";
-    line += timeBuf;
-    line += "] ";
-    line += msg;
-    line += "\r\n";
-
-    CW_AppendToLogFile(logPath, line);
-}
+/* Scheduler logging is now handled by cw_log_utils.cpp: CW_DebugLog */
 
 /* ─── Day mapping ───────────────────────────────────────────── */
 
@@ -202,8 +159,8 @@ static int isDueVerbose(const std::string& logPath, const char* label,
                         int frequency, int day, bool runMissed,
                         long long& last_run_time)
 {
-    schedLog(logPath, "--- Checking %s schedule ---", label);
-    schedLog(logPath, "  scheduled=%d  frequency=%s(%d)  at=%02d:%02d  day=%d  runMissed=%d",
+    CW_DebugLog(logPath, "--- Checking %s schedule ---", label);
+    CW_DebugLog(logPath, "  scheduled=%d  frequency=%s(%d)  at=%02d:%02d  day=%d  runMissed=%d",
              scheduled, frequencyName(frequency), frequency, hour, minute, day, (int)runMissed);
 
     char lastBuf[32] = "never";
@@ -216,10 +173,10 @@ static int isDueVerbose(const std::string& logPath, const char* label,
             strftime(lastBuf, sizeof(lastBuf), "%Y-%m-%d %H:%M:%S", &ltmBuf);
         }
     }
-    schedLog(logPath, "  lastRunTime=%lld (%s)", last_run_time, lastBuf);
+    CW_DebugLog(logPath, "  lastRunTime=%lld (%s)", last_run_time, lastBuf);
 
     if (!scheduled) {
-        schedLog(logPath, "  SKIP: not scheduled");
+        CW_DebugLog(logPath, "  SKIP: not scheduled");
         return 0;
     }
 
@@ -227,7 +184,7 @@ static int isDueVerbose(const std::string& logPath, const char* label,
     struct tm tmNow = {0};
     struct tm* tmPtr = localtime(&now);
     if (tmPtr) tmNow = *tmPtr;
-    schedLog(logPath, "  now: wday=%d  yday=%d  hour=%d  min=%d",
+    CW_DebugLog(logPath, "  now: wday=%d  yday=%d  hour=%d  min=%d",
              tmNow.tm_wday, tmNow.tm_yday, tmNow.tm_hour, tmNow.tm_min);
 
     time_t last_rt = (time_t)last_run_time;
@@ -266,12 +223,12 @@ static int isDueVerbose(const std::string& logPath, const char* label,
 
     int gap = (last_rt > 0) ? (int)(now - last_rt) : -1;
 
-    schedLog(logPath, "  ran_this_interval=%d  eligible_day=%d  time_reached=%d  gap=%ds",
+    CW_DebugLog(logPath, "  ran_this_interval=%d  eligible_day=%d  time_reached=%d  gap=%ds",
              (int)ran_this_interval, (int)eligible_day, (int)time_reached, gap);
 
     int result = CWScheduler::isDue(now, scheduled, hour, minute, frequency, day, runMissed, last_run_time);
 
-    schedLog(logPath, "  RESULT: %s", result ? "TRIGGER" : "not due");
+    CW_DebugLog(logPath, "  RESULT: %s", result ? "TRIGGER" : "not due");
     return result;
 }
 
@@ -284,10 +241,10 @@ void CWScheduler::check()
     time_t now = time(NULL);
     bool conf_changed = false;
 
-    std::string logPath = m_debug ? schedulerLogPath(m_config->scanLogFile) : "";
+    std::string logPath = m_debug ? CW_GetDebugLogPath(m_config->scanLogFile) : "";
 
     if (m_debug)
-        schedLog(logPath, "=== Scheduler check ===");
+        CW_DebugLog(logPath, "=== Scheduler check ===");
 
     int scanDue, updateDue;
     if (m_debug) {
@@ -314,20 +271,20 @@ void CWScheduler::check()
 
     if (scanDue)
     {
-        if (m_debug) schedLog(logPath, "  => Posting IDM_TRAY_SCHEDULED_SCAN");
+        if (m_debug) CW_DebugLog(logPath, "  => Posting IDM_TRAY_SCHEDULED_SCAN");
         conf_changed = true;
         PostMessage(m_hwnd, WM_COMMAND, IDM_TRAY_SCHEDULED_SCAN, 0);
     }
 
     if (updateDue)
     {
-        if (m_debug) schedLog(logPath, "  => Posting IDM_TRAY_SCHEDULED_UPDATE");
+        if (m_debug) CW_DebugLog(logPath, "  => Posting IDM_TRAY_SCHEDULED_UPDATE");
         conf_changed = true;
         PostMessage(m_hwnd, WM_COMMAND, IDM_TRAY_SCHEDULED_UPDATE, 0);
     }
 
     if (conf_changed) {
-        if (m_debug) schedLog(logPath, "  => Saving config (lastRunTime updated)");
+        if (m_debug) CW_DebugLog(logPath, "  => Saving config (lastRunTime updated)");
         m_config->save();
     }
 }
@@ -338,20 +295,20 @@ void CWScheduler::start(HWND hwnd, CWConfig *cfg)
 {
     m_hwnd   = hwnd;
     m_config = cfg;
-    m_debug  = cfg->schedulerDebug;
+    m_debug  = cfg->debugEnabled;
 
     if (m_debug) {
-        std::string logPath = schedulerLogPath(cfg->scanLogFile);
-        schedLog(logPath, "=== Scheduler started (interval=%ds) ===", SCHEDULER_INTERVAL / 1000);
-        schedLog(logPath, "  Scan:   scheduled=%d  freq=%s  at=%02d:%02d  runMissed=%d  lastRun=%lld",
+        std::string logPath = CW_GetDebugLogPath(cfg->scanLogFile);
+        CW_DebugLog(logPath, "=== Scheduler started (interval=%ds) ===", SCHEDULER_INTERVAL / 1000);
+        CW_DebugLog(logPath, "  Scan:   scheduled=%d  freq=%s  at=%02d:%02d  runMissed=%d  lastRun=%lld",
                  cfg->scanScheduled, frequencyName(cfg->scanFrequency),
                  cfg->scanHour, cfg->scanMinute, (int)cfg->scanRunMissed, cfg->scanLastRunTime);
-        schedLog(logPath, "  Update: scheduled=%d  freq=%s  at=%02d:%02d  runMissed=%d  lastRun=%lld",
+        CW_DebugLog(logPath, "  Update: scheduled=%d  freq=%s  at=%02d:%02d  runMissed=%d  lastRun=%lld",
                  cfg->updateScheduled, frequencyName(cfg->updateFrequency),
                  cfg->updateHour, cfg->updateMinute, (int)cfg->updateRunMissed, cfg->updateLastRunTime);
-        schedLog(logPath, "  ScanPath: [%s]  LogFile: [%s]",
+        CW_DebugLog(logPath, "  ScanPath: [%s]  LogFile: [%s]",
                  cfg->scanPath.c_str(), cfg->scanLogFile.c_str());
-        schedLog(logPath, "  SchedulerLog: [%s]", logPath.c_str());
+        CW_DebugLog(logPath, "  SchedulerLog: [%s]", logPath.c_str());
     }
 
     m_timerId = SetTimer(hwnd, SCHEDULER_TIMER_ID, SCHEDULER_INTERVAL, NULL);
@@ -365,8 +322,8 @@ void CWScheduler::stop()
     if (m_timerId && m_hwnd)
     {
         if (m_debug && m_config) {
-            std::string logPath = schedulerLogPath(m_config->scanLogFile);
-            schedLog(logPath, "=== Scheduler stopped ===");
+            std::string logPath = CW_GetDebugLogPath(m_config->scanLogFile);
+            CW_DebugLog(logPath, "=== Scheduler stopped ===");
         }
         KillTimer(m_hwnd, SCHEDULER_TIMER_ID);
         m_timerId = 0;

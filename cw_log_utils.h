@@ -24,3 +24,13 @@ std::string CW_BuildCompletedFooter();
 
 /* Build a footer for when the process failed to launch. */
 std::string CW_BuildFailedFooter();
+
+/* ─── Debug Logging ─────────────────────────────────────────── */
+
+/* Derive the path for ClamWinDebug.log based on the scan log path.
+ * The debug log is placed in the same directory as the sibling path. */
+std::string CW_GetDebugLogPath(const std::string& siblingPath);
+
+/* Append a timestamped, formatted string to the debug log file.
+ * If logPath is empty, the log is skipped. */
+void CW_DebugLog(const std::string& logPath, const char* fmt, ...);

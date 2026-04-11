@@ -80,3 +80,48 @@ std::string CW_BuildFailedFooter()
            "Failed to Start\r\n"
            "--------------------------------------\r\n";
 }
+
+/* ─── Debug Logging ─────────────────────────────────────────── */
+
+std::string CW_GetDebugLogPath(const std::string& siblingPath)
+{
+    if (siblingPath.empty())
+        return "";
+    std::string::size_type sep = siblingPath.rfind('\\');
+    if (sep == std::string::npos)
+        sep = siblingPath.rfind('/');
+    std::string dir = (sep != std::string::npos)
+                    ? siblingPath.substr(0, sep + 1)
+                    : "";
+    return dir + "ClamWinDebug.log";
+}
+
+void CW_DebugLog(const std::string& logPath, const char* fmt, ...)
+{
+    if (logPath.empty() || !fmt)
+        return;
+
+    time_t now = time(NULL);
+    char timeBuf[32] = "(unknown)";
+    struct tm tmBuf = {0};
+    struct tm* tmPtr = localtime(&now);
+    if (now != (time_t)(-1) && tmPtr) {
+        tmBuf = *tmPtr;
+        strftime(timeBuf, sizeof(timeBuf), "%Y-%m-%d %H:%M:%S", &tmBuf);
+    }
+
+    char msg[1024];
+    va_list ap;
+    va_start(ap, fmt);
+    vsnprintf(msg, sizeof(msg), fmt, ap);
+    msg[sizeof(msg) - 1] = '\0';
+    va_end(ap);
+
+    std::string line = "[";
+    line += timeBuf;
+    line += "] ";
+    line += msg;
+    line += "\r\n";
+
+    CW_AppendToLogFile(logPath, line);
+}
