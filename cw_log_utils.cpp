@@ -44,15 +44,18 @@ std::string CW_BuildStartTimestamp(bool isUpdate)
 
     if (now == (time_t)(-1))
     {
-        _snprintf_s(timeBuf, sizeof(timeBuf), _TRUNCATE, "(unknown)");
+        snprintf(timeBuf, sizeof(timeBuf), "(unknown)");
     }
     else
     {
-        struct tm tmBuf;
-        if (localtime_s(&tmBuf, &now) == 0)
+        struct tm tmBuf = {0};
+        struct tm* tmPtr = localtime(&now);
+        if (tmPtr) {
+            tmBuf = *tmPtr;
             strftime(timeBuf, sizeof(timeBuf), "%a %b %d %H:%M:%S %Y", &tmBuf);
-        else
-            _snprintf_s(timeBuf, sizeof(timeBuf), _TRUNCATE, "(unknown)");
+        } else {
+            snprintf(timeBuf, sizeof(timeBuf), "(unknown)");
+        }
     }
 
     std::string line = "\r\n";

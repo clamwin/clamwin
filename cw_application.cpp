@@ -1018,10 +1018,11 @@ void CWApplication::doScheduledScan()
                      : m_config.scanPath.c_str();
 
     char msg[512];
-    _snprintf_s(msg, sizeof(msg), _TRUNCATE,
-                "[doScheduledScan] Starting scan: path=[%s] memory=%d desc=[%s]\r\n",
-                path, (int)m_config.scanMemory,
-                m_config.scanDescription.c_str());
+    snprintf(msg, sizeof(msg),
+             "[doScheduledScan] Starting scan: path=[%s] memory=%d desc=[%s]\r\n",
+             path, (int)m_config.scanMemory,
+             m_config.scanDescription.c_str());
+    msg[sizeof(msg) - 1] = '\0';
     CW_AppendToLogFile(logPath, msg);
 
     /* Notify user that a scheduled task is starting */

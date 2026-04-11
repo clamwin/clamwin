@@ -16,7 +16,7 @@
 void CW_AppendToLogFile(const std::string& filePath, const std::string& text);
 
 /* Build a "Scan Started <timestamp>" or "Update Started <timestamp>" line
- * using localtime_s + strftime (thread-safe). */
+ * using localtime + strftime. */
 std::string CW_BuildStartTimestamp(bool isUpdate);
 
 /* Build the separator footer written after a scan/update completes. */

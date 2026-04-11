@@ -39,14 +39,18 @@ static void schedLog(const std::string& logPath, const char* fmt, ...)
     /* Build timestamp prefix */
     time_t now = time(NULL);
     char timeBuf[32] = "(unknown)";
-    struct tm tmBuf;
-    if (now != (time_t)(-1) && localtime_s(&tmBuf, &now) == 0)
+    struct tm tmBuf = {0};
+    struct tm* tmPtr = localtime(&now);
+    if (now != (time_t)(-1) && tmPtr) {
+        tmBuf = *tmPtr;
         strftime(timeBuf, sizeof(timeBuf), "%Y-%m-%d %H:%M:%S", &tmBuf);
+    }
 
     char msg[512];
     va_list ap;
     va_start(ap, fmt);
-    _vsnprintf_s(msg, sizeof(msg), _TRUNCATE, fmt, ap);
+    vsnprintf(msg, sizeof(msg), fmt, ap);
+    msg[sizeof(msg) - 1] = '\0';
     va_end(ap);
 
     std::string line = "[";
@@ -205,9 +209,12 @@ static int isDueVerbose(const std::string& logPath, const char* label,
     char lastBuf[32] = "never";
     if (last_run_time > 0) {
         time_t lrt = (time_t)last_run_time;
-        struct tm ltmBuf;
-        if (localtime_s(&ltmBuf, &lrt) == 0)
+        struct tm ltmBuf = {0};
+        struct tm* tmPtr = localtime(&lrt);
+        if (tmPtr) {
+            ltmBuf = *tmPtr;
             strftime(lastBuf, sizeof(lastBuf), "%Y-%m-%d %H:%M:%S", &ltmBuf);
+        }
     }
     schedLog(logPath, "  lastRunTime=%lld (%s)", last_run_time, lastBuf);
 
@@ -217,8 +224,9 @@ static int isDueVerbose(const std::string& logPath, const char* label,
     }
 
     /* Replicate isDue decision trace */
-    struct tm tmNow;
-    localtime_s(&tmNow, &now);
+    struct tm tmNow = {0};
+    struct tm* tmPtr = localtime(&now);
+    if (tmPtr) tmNow = *tmPtr;
     schedLog(logPath, "  now: wday=%d  yday=%d  hour=%d  min=%d",
              tmNow.tm_wday, tmNow.tm_yday, tmNow.tm_hour, tmNow.tm_min);
 
