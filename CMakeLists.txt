@@ -44,31 +44,50 @@ else()
         set(CW_CURL_IS_STATIC FALSE)
     else()
         # Last resort: look for prebuilt .a files.
-        # The sibling source tree (3rdparty/curl/lib) only contains .c sources;
-        # the built .a lives in the sibling *build* tree, which is already
-        # handled by Case 1 (TARGET libcurl_static).  So here we only search
-        # CLAMWIN_CURL_ROOT and the system default paths.
+        # When building standalone alongside clamav-win32, the built .a lives
+        # in the sibling build tree (not the source tree).  Hint at the known
+        # arch-selected locations in addition to any CLAMWIN_CURL_ROOT the user
+        # provides.
+        get_filename_component(_CW_ROOT "${CMAKE_SOURCE_DIR}/.." ABSOLUTE)
+        set(_CW_SIBLING_ROOT "${_CW_ROOT}/clamav-win32")
+
+        if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+            set(_CW_SIBLING_BUILD "${_CW_SIBLING_ROOT}/build-x64-mingw")
+            set(_CW_OPENSSL_PREBUILT "${_CW_SIBLING_ROOT}/3rdparty/openssl/lib/mingw/x64")
+        else()
+            set(_CW_SIBLING_BUILD "${_CW_SIBLING_ROOT}/build-x86-mingw-winxp")
+            set(_CW_OPENSSL_PREBUILT "${_CW_SIBLING_ROOT}/3rdparty/openssl/lib/mingw/x86")
+        endif()
+
         find_library(CW_LIBCURL NAMES curl libcurl
-            HINTS "${CLAMWIN_CURL_ROOT}/lib")
+            HINTS
+                "${CLAMWIN_CURL_ROOT}/lib"
+                "${_CW_SIBLING_BUILD}/3rdparty/curl/lib")
         find_library(CW_LIBSSL NAMES ssl libssl
-            HINTS "${CLAMWIN_CURL_ROOT}/lib")
+            HINTS
+                "${CLAMWIN_CURL_ROOT}/lib"
+                "${_CW_OPENSSL_PREBUILT}")
         find_library(CW_LIBCRYPTO NAMES crypto libcrypto
-            HINTS "${CLAMWIN_CURL_ROOT}/lib")
+            HINTS
+                "${CLAMWIN_CURL_ROOT}/lib"
+                "${_CW_OPENSSL_PREBUILT}")
 
         if(NOT CW_LIBCURL)
             message(FATAL_ERROR
                 "libcurl not found. Install curl via your toolchain "
                 "(e.g. pacman -S mingw-w64-x86_64-curl in MSYS2), or "
                 "set -DCLAMWIN_CURL_ROOT=<prefix> on the cmake command line, "
-                "or build from within the clamav-win32 sibling tree.")
+                "or build clamav-win32 first so the sibling build tree exists.")
         endif()
 
-        # When found via CLAMWIN_CURL_ROOT, assume static linkage.
-        set(CW_CURL_INCLUDE "")
-        set(CW_OPENSSL_INCLUDE "")
+        # Resolve include paths: prefer CLAMWIN_CURL_ROOT, fall back to sibling.
         if(CLAMWIN_CURL_ROOT)
             set(CW_CURL_INCLUDE "${CLAMWIN_CURL_ROOT}/include")
+        else()
+            set(CW_CURL_INCLUDE "${_CW_SIBLING_ROOT}/3rdparty/curl/include")
         endif()
+        set(CW_OPENSSL_INCLUDE "${_CW_SIBLING_ROOT}/3rdparty/openssl/include")
+
         set(CW_CURL_LINK_LIBS "${CW_LIBCURL}")
         if(CW_LIBSSL)
             list(APPEND CW_CURL_LINK_LIBS "${CW_LIBSSL}")
