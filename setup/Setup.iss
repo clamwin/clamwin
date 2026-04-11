@@ -7,7 +7,7 @@
 ;   iscc /DBuildDir64Gui=C:\path\to\gui-x64-build /DBuildDir64Engine=C:\path\to\engine-x64-build Setup.iss
 
 #DEFINE IncludeCVD
-#DEFINE AppVersion "1.5.2"
+#DEFINE AppVersion "1.5.3"
 #ifndef BuildDir98Engine
   #DEFINE BuildDir98Engine "..\..\binaries\prebuilt-w98\clamav"
 #endif
@@ -225,10 +225,10 @@ Filename: {code:ClamWinConfPath}; Section: Updates;  Key: time;            Strin
 [Registry]
 ; ── ClamWin path ────────────────────────────────────────────────────────────────
 Root: HKLM;   Subkey: Software\ClamWin; ValueType: string; ValueName: Path;    ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
-Root: HKLM;   Subkey: Software\ClamWin; ValueType: dword;  ValueName: Version; ValueData: 10502;     Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
+Root: HKLM;   Subkey: Software\ClamWin; ValueType: dword;  ValueName: Version; ValueData: 10503;     Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKLM64; Subkey: Software\ClamWin; ValueType: string; ValueName: Path;    ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers and IsWin64
 Root: HKCU;   Subkey: Software\ClamWin; ValueType: string; ValueName: Path;    ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
-Root: HKCU;   Subkey: Software\ClamWin; ValueType: dword;  ValueName: Version; ValueData: 10502;     Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
+Root: HKCU;   Subkey: Software\ClamWin; ValueType: dword;  ValueName: Version; ValueData: 10503;     Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers
 Root: HKCU64; Subkey: Software\ClamWin; ValueType: string; ValueName: Path;    ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: not IsAllUsers and IsWin64
 
 ; ── ClamAV defaults for freshclam/clamd compatibility ─────────────────────────
@@ -527,7 +527,7 @@ var value: Cardinal;
 begin
   Result      := True;
   AllUsers    := IsAdminLoggedOn();
-  ThisVersion := 10502;   { 1.5.2 encoded as major*10000 + minor*100 + patch }
+  ThisVersion := 10503;   { 1.5.3 encoded as major*10000 + minor*100 + patch }
   Time        := GetDateTimeString('hh:nn', #0, ':') + ':00';
 
   value := 0;

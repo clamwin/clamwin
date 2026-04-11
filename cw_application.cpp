@@ -652,7 +652,15 @@ normal_startup:
     if (GetLastError() == ERROR_ALREADY_EXISTS)
     {
         HWND hExisting = FindWindow(TEXT("ClamWinTrayClass"), NULL);
-        if (hExisting) PostMessage(hExisting, WM_COMMAND, IDM_TRAY_OPEN, 0);
+        if (hExisting) 
+        {
+            if (cli.checkVersion)
+                PostMessage(hExisting, WM_COMMAND, IDM_TRAY_CHECK_VERSION, 0);
+            else if (cli.downloadDb)
+                PostMessage(hExisting, WM_COMMAND, IDM_TRAY_UPDATE, 0);
+            else
+                PostMessage(hExisting, WM_COMMAND, IDM_TRAY_OPEN, 0);
+        }
         if (hMutex) CloseHandle(hMutex);
         return 0;
     }
@@ -698,6 +706,9 @@ normal_startup:
 
     if (cli.downloadDb)
         PostMessage(m_hwndTray, WM_COMMAND, IDM_TRAY_UPDATE, 0);
+
+    if (cli.checkVersion)
+        PostMessage(m_hwndTray, WM_COMMAND, IDM_TRAY_CHECK_VERSION, 0);
 
     /* Run on startup update if configured */
     if (m_config.updateOnStartup)
@@ -1208,6 +1219,19 @@ LRESULT CWApplication::handleMessage(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
                     break;
                 case IDM_TRAY_HELP:
                     doHelp();
+                    break;
+                case IDM_TRAY_CHECK_VERSION:
+                    if (m_curlInited)
+                    {
+                        if (!m_config.iniPath.empty())
+                            m_config.load(m_config.iniPath);
+                        else
+                            m_config.load();
+
+                        m_updateChecker.startCheck(m_hwndTray,
+                                                   m_config.debugEnabled,
+                                                   CW_GetDebugLogPath(m_config.scanLogFile));
+                    }
                     break;
                 case IDM_TRAY_EXIT:
                     DestroyWindow(hwnd);

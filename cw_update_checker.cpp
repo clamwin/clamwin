@@ -136,13 +136,30 @@ void CWUpdateChecker::waitForThread()
 void CWUpdateChecker::startCheck(HWND hwndTarget, bool debugEnabled, const std::string& debugLogPath)
 {
     if (m_hThread)
-        return;   /* already in flight */
+    {
+        DWORD waitRc = WaitForSingleObject(m_hThread, 0);
+        if (waitRc == WAIT_OBJECT_0)
+        {
+            CloseHandle(m_hThread);
+            m_hThread = NULL;
+        }
+        else
+        {
+            if (debugEnabled)
+                CW_DebugLog(debugLogPath, "[UpdateChecker] Request ignored because a check is already running");
+            return;   /* already in flight */
+        }
+    }
 
     m_hwndTarget = hwndTarget;
     m_debugEnabled = debugEnabled;
     m_debugLogPath = debugLogPath;
+    if (m_debugEnabled)
+        CW_DebugLog(m_debugLogPath, "[UpdateChecker] Starting version check: url=%s", CW_GITHUB_API_URL);
     DWORD tid = 0; /* Win98 requires a valid lpThreadId pointer, NULL is not accepted */
     m_hThread = CreateThread(NULL, 0, threadProc, this, 0, &tid);
+    if (!m_hThread && m_debugEnabled)
+        CW_DebugLog(m_debugLogPath, "[UpdateChecker] Failed to create worker thread (GetLastError=%lu)", GetLastError());
 }
 
 DWORD WINAPI CWUpdateChecker::threadProc(LPVOID param)
@@ -255,7 +272,11 @@ void CWUpdateChecker::doCheck()
     {
         hCurl = curl_easy_init();
         if (!hCurl)
+        {
+            if (m_debugEnabled)
+                CW_DebugLog(m_debugLogPath, "[UpdateChecker] curl_easy_init failed");
             break;
+        }
 
         curl_easy_setopt(hCurl, CURLOPT_URL, CW_GITHUB_API_URL);
 
@@ -307,11 +328,19 @@ void CWUpdateChecker::doCheck()
         }
 
         if (!body.data)
+        {
+            if (m_debugEnabled)
+                CW_DebugLog(m_debugLogPath, "[UpdateChecker] Empty response body");
             break;
+        }
 
         char remoteVersion[64] = "";
         if (!extractTagName(body.data, (int)body.used, remoteVersion, sizeof(remoteVersion)))
+        {
+            if (m_debugEnabled)
+                CW_DebugLog(m_debugLogPath, "[UpdateChecker] Failed to parse tag_name from response");
             break;
+        }
 
         if (isNewerVersion(remoteVersion))
         {
@@ -319,6 +348,12 @@ void CWUpdateChecker::doCheck()
             parseVersion(remoteVersion, result->major, result->minor, result->patch);
             _snprintf(result->versionStr, sizeof(result->versionStr), "%s", remoteVersion);
             result->versionStr[sizeof(result->versionStr) - 1] = '\0';
+            if (m_debugEnabled)
+                CW_DebugLog(m_debugLogPath, "[UpdateChecker] Newer version available: remote=%s local=%s", remoteVersion, CLAMWIN_VERSION_STR);
+        }
+        else if (m_debugEnabled)
+        {
+            CW_DebugLog(m_debugLogPath, "[UpdateChecker] No update available: remote=%s local=%s", remoteVersion, CLAMWIN_VERSION_STR);
         }
 
     } while (false);
@@ -330,12 +365,16 @@ void CWUpdateChecker::doCheck()
     /* Post result to the UI thread */
     if (m_hwndTarget && IsWindow(m_hwndTarget))
     {
+        if (m_debugEnabled)
+            CW_DebugLog(m_debugLogPath, "[UpdateChecker] Posting result: available=%d", result->available ? 1 : 0);
         PostMessage(m_hwndTarget, WM_CW_VERSION_RESULT,
                      (WPARAM)(result->available ? 1 : 0),
                      (LPARAM)result);
     }
     else
     {
+        if (m_debugEnabled)
+            CW_DebugLog(m_debugLogPath, "[UpdateChecker] Target window is not valid; dropping result");
         delete result;
     }
 }

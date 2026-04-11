@@ -3,6 +3,15 @@
 
 TEST_SUITE("cli_args")
 {
+    TEST_CASE("accepts legacy checkversion switch spelling")
+    {
+        CWCliArgs args;
+        CW_ParseCommandLineArgs("--checkversion", args);
+
+        CHECK(args.hasSwitches);
+        CHECK(args.checkVersion);
+    }
+
     TEST_CASE("parses scanner mode and repeated path arguments")
     {
         CWCliArgs args;

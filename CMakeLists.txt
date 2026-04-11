@@ -2,7 +2,7 @@
 # Spawns clamscan.exe / freshclam.exe (no libclamav link dependency)
 
 cmake_minimum_required(VERSION 3.14)
-project(clamwin VERSION "1.5.2")
+project(clamwin VERSION "1.5.3")
 
 # ── curl + OpenSSL (from clamav-win32 prebuilts) ──────────────────────────
 # The update checker uses libcurl + static OpenSSL for HTTPS so that TLS 1.2
@@ -116,6 +116,22 @@ if(CMAKE_SIZEOF_VOID_P EQUAL 4)
     endif()
 endif()
 
+get_filename_component(_CW_REPO_ROOT "${CMAKE_SOURCE_DIR}/.." ABSOLUTE)
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    set(CW_CA_BUNDLE_FLAVOR "legacy-x64")
+    set(CW_CA_BUNDLE_ENGINE_BUILD "${_CW_REPO_ROOT}/clamav-win32/build-x64-mingw")
+else()
+    set(CW_CA_BUNDLE_FLAVOR "legacy-x86")
+    set(CW_CA_BUNDLE_ENGINE_BUILD "${_CW_REPO_ROOT}/clamav-win32/build-x86-mingw-winxp")
+endif()
+
+find_file(CW_CA_BUNDLE_SOURCE
+    NAMES curl-ca-bundle.crt
+    HINTS
+        "${CW_CA_BUNDLE_ENGINE_BUILD}"
+        "${_CW_REPO_ROOT}/binaries/all-os-staging/clamav-${PROJECT_VERSION}-${CW_CA_BUNDLE_FLAVOR}"
+)
+
 
 set(clamwin
     cw_main.cpp
@@ -194,6 +210,18 @@ add_executable(clamwin WIN32
     ${clamwin_headers}
     ${clamwin_resources}
 )
+
+if(CW_CA_BUNDLE_SOURCE)
+    add_custom_command(TARGET clamwin POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                "${CW_CA_BUNDLE_SOURCE}"
+                "$<TARGET_FILE_DIR:clamwin>/curl-ca-bundle.crt"
+        COMMENT "Staging curl-ca-bundle.crt next to clamwin.exe"
+        VERBATIM
+    )
+else()
+    message(WARNING "curl-ca-bundle.crt not found for local GUI build; --check-version may fail TLS verification until the bundle is staged manually")
+endif()
 
 set(clamwin_test_dir tests)
 set(clamwin_test_sources

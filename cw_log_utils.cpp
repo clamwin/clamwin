@@ -13,10 +13,50 @@
 #include <time.h>
 #include <stdio.h>
 
+namespace
+{
+void ensureParentDirectoryExists(const std::string& filePath)
+{
+    if (filePath.empty())
+        return;
+
+    std::basic_string<TCHAR> tPath = CW_ToT(filePath);
+    size_t sep = tPath.rfind(TEXT('\\'));
+    if (sep == std::basic_string<TCHAR>::npos)
+        sep = tPath.rfind(TEXT('/'));
+    if (sep == std::basic_string<TCHAR>::npos)
+        return;
+
+    std::basic_string<TCHAR> dir = tPath.substr(0, sep);
+    if (dir.empty())
+        return;
+
+    for (size_t i = 0; i < dir.size(); ++i)
+    {
+        const TCHAR ch = dir[i];
+        if (ch != TEXT('\\') && ch != TEXT('/'))
+            continue;
+
+        if (i == 0)
+            continue;
+        if (i == 2 && dir.size() > 1 && dir[1] == TEXT(':'))
+            continue;
+
+        std::basic_string<TCHAR> part = dir.substr(0, i);
+        if (!part.empty())
+            CreateDirectory(part.c_str(), NULL);
+    }
+
+    CreateDirectory(dir.c_str(), NULL);
+}
+}
+
 void CW_AppendToLogFile(const std::string& filePath, const std::string& text)
 {
     if (filePath.empty() || text.empty())
         return;
+
+    ensureParentDirectoryExists(filePath);
 
     std::basic_string<TCHAR> tPath = CW_ToT(filePath);
     HANDLE hFile = CreateFile(tPath.c_str(), FILE_APPEND_DATA,
@@ -85,8 +125,14 @@ std::string CW_BuildFailedFooter()
 
 std::string CW_GetDebugLogPath(const std::string& siblingPath)
 {
+    char tempPath[MAX_PATH + 1] = {0};
+    DWORD len = GetTempPathA(MAX_PATH, tempPath);
+    if (len > 0 && len < MAX_PATH)
+        return std::string(tempPath) + "ClamWinDebug.log";
+
     if (siblingPath.empty())
         return "";
+
     std::string::size_type sep = siblingPath.rfind('\\');
     if (sep == std::string::npos)
         sep = siblingPath.rfind('/');

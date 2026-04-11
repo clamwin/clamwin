@@ -27,8 +27,8 @@ std::string CW_BuildFailedFooter();
 
 /* ─── Debug Logging ─────────────────────────────────────────── */
 
-/* Derive the path for ClamWinDebug.log based on the scan log path.
- * The debug log is placed in the same directory as the sibling path. */
+/* Derive the path for ClamWinDebug.log in the standard temp directory.
+ * Falls back to the sibling path directory if the temp path is unavailable. */
 std::string CW_GetDebugLogPath(const std::string& siblingPath);
 
 /* Append a timestamped, formatted string to the debug log file.
