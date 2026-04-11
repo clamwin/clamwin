@@ -15,6 +15,7 @@ struct CWCliArgs
     bool close;
     bool openDashboard;
     bool downloadDb;
+    bool checkVersion;
     std::string mode;
     std::string configFile;
     std::vector<std::string> paths;
@@ -24,6 +25,7 @@ struct CWCliArgs
         , close(false)
         , openDashboard(false)
         , downloadDb(false)
+        , checkVersion(false)
         , mode("main")
     {
     }

@@ -484,7 +484,7 @@ void CWDashboard::paintStatusBar(HDC hdc, const RECT& client)
 
     SelectObject(hdc, m_fontStatus);
     SetTextColor(hdc, textColor);
-    const TCHAR* txt = TEXT("\xA9 2026 ClamWin Project. All rights reserved.");
+    const TCHAR* txt = TEXT("\xA9 2026 ClamWin Pty Ltd. All rights reserved.");
     RECT tr = { CW_Scale(8), sbarRc.top + CW_Scale(4), client.right - CW_Scale(8), client.bottom - CW_Scale(4) };
     DrawText(hdc, txt, -1, &tr, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
 }

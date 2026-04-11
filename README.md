@@ -10,6 +10,11 @@ This repository was split out from the [clamav-win32](https://github.com/nicorla
 - **ClamAV command-line binaries** — pre-built Windows packages are available at <https://oss.netfarm.it/clamav/>
 - **CMake** 3.14 or later
 - **MinGW-w64** (GCC) or **MSVC**
+- **libcurl + OpenSSL** — required by the update checker for HTTPS on all Windows versions.
+  MSYS2 provides this automatically (`pacman -S mingw-w64-x86_64-curl` for x64 builds).
+  For a custom installation pass `-DCLAMWIN_CURL_ROOT=<prefix>` to CMake.
+  When building from within the `clamav-win32` sibling tree the prebuilt libraries
+  are picked up automatically.
 
 ## Building
 

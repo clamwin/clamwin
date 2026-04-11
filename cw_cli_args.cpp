@@ -78,6 +78,13 @@ void CW_ParseCommandLineArgs(const char* cmdLine, CWCliArgs& out)
             continue;
         }
 
+        if (arg == "--check-version" || arg == "--checkversion")
+        {
+            out.hasSwitches = true;
+            out.checkVersion = true;
+            continue;
+        }
+
         if (startsWith(arg, "--mode="))
         {
             out.hasSwitches = true;

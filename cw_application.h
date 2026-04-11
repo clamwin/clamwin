@@ -55,6 +55,7 @@ private:
     CWUpdateChecker m_updateChecker;
     CWBgTask*    m_bgScan;      /* in-flight background scan, or NULL  */
     CWBgTask*    m_bgUpdate;    /* in-flight background update, or NULL */
+    bool         m_curlInited;  /* true if curl_global_init() succeeded */
 
     /* Returns dashboard HWND if created, else tray HWND. */
     HWND dialogParent() const;

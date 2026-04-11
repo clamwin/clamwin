@@ -16,7 +16,7 @@
 void CW_AppendToLogFile(const std::string& filePath, const std::string& text);
 
 /* Build a "Scan Started <timestamp>" or "Update Started <timestamp>" line
- * using localtime_s + strftime (thread-safe). */
+ * using localtime + strftime. */
 std::string CW_BuildStartTimestamp(bool isUpdate);
 
 /* Build the separator footer written after a scan/update completes. */
@@ -24,3 +24,13 @@ std::string CW_BuildCompletedFooter();
 
 /* Build a footer for when the process failed to launch. */
 std::string CW_BuildFailedFooter();
+
+/* ─── Debug Logging ─────────────────────────────────────────── */
+
+/* Derive the path for ClamWinDebug.log in the standard temp directory.
+ * Falls back to the sibling path directory if the temp path is unavailable. */
+std::string CW_GetDebugLogPath(const std::string& siblingPath);
+
+/* Append a timestamped, formatted string to the debug log file.
+ * If logPath is empty, the log is skipped. */
+void CW_DebugLog(const std::string& logPath, const char* fmt, ...);

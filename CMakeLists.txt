@@ -2,7 +2,136 @@
 # Spawns clamscan.exe / freshclam.exe (no libclamav link dependency)
 
 cmake_minimum_required(VERSION 3.14)
-project(clamwin VERSION "1.5.2")
+project(clamwin VERSION "1.5.3")
+
+# ── curl + OpenSSL (from clamav-win32 prebuilts) ──────────────────────────
+# The update checker uses libcurl + static OpenSSL for HTTPS so that TLS 1.2
+# works on Windows XP without relying on the OS's SChannel.
+#
+# Discovery order:
+#   1. libcurl_static CMake target already defined (parent/sibling build)
+#   2. find_package(CURL) — standard system/toolchain installation
+#   3. Sibling clamav-win32 prebuilt .a files as a last-resort hint
+#
+# For standalone builds (as documented in README.md) a MinGW toolchain that
+# ships curl+OpenSSL (e.g. MSYS2 mingw64) satisfies path 2 automatically.
+# To point at a custom installation pass:
+#   cmake ... -DCLAMWIN_CURL_ROOT=<path to curl prefix>
+
+if(TARGET libcurl_static)
+    # ── Case 1: already defined by a parent/sibling build ──
+    # libcurl_static carries OpenSSL transitively; do not double-link the .a.
+    set(CW_CURL_INCLUDE "")           # headers already on the include path
+    set(CW_OPENSSL_INCLUDE "")
+    set(CW_CURL_LINK_LIBS libcurl_static)
+    set(CW_CURL_IS_STATIC TRUE)
+else()
+    # ── Case 2 & 3: standalone or hint-based discovery ──
+    # Set CMAKE_PREFIX_PATH hints before calling find_package
+    set(CMAKE_PREFIX_PATH
+        "${CLAMWIN_CURL_ROOT}"
+        ${CMAKE_PREFIX_PATH}
+    )
+
+    find_package(CURL QUIET)
+
+    if(CURL_FOUND)
+        # find_package succeeded (system toolchain or CLAMWIN_CURL_ROOT).
+        # This may be a shared lib; do NOT define CURL_STATICLIB.
+        set(CW_CURL_INCLUDE "")          # CURL::libcurl carries include dirs
+        set(CW_OPENSSL_INCLUDE "")
+        set(CW_CURL_LINK_LIBS CURL::libcurl)
+        set(CW_CURL_IS_STATIC FALSE)
+    else()
+        # Last resort: look for prebuilt .a files.
+        # When building standalone alongside clamav-win32, the built .a lives
+        # in the sibling build tree (not the source tree).  Hint at the known
+        # arch-selected locations in addition to any CLAMWIN_CURL_ROOT the user
+        # provides.
+        get_filename_component(_CW_ROOT "${CMAKE_SOURCE_DIR}/.." ABSOLUTE)
+        set(_CW_SIBLING_ROOT "${_CW_ROOT}/clamav-win32")
+
+        if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+            set(_CW_SIBLING_BUILD "${_CW_SIBLING_ROOT}/build-x64-mingw")
+            set(_CW_OPENSSL_PREBUILT "${_CW_SIBLING_ROOT}/3rdparty/openssl/lib/mingw/x64")
+        else()
+            set(_CW_SIBLING_BUILD "${_CW_SIBLING_ROOT}/build-x86-mingw-winxp")
+            set(_CW_OPENSSL_PREBUILT "${_CW_SIBLING_ROOT}/3rdparty/openssl/lib/mingw/x86")
+        endif()
+
+        find_library(CW_LIBCURL NAMES curl libcurl
+            HINTS
+                "${CLAMWIN_CURL_ROOT}/lib"
+                "${_CW_SIBLING_BUILD}/3rdparty/curl/lib")
+        find_library(CW_LIBSSL NAMES ssl libssl
+            HINTS
+                "${CLAMWIN_CURL_ROOT}/lib"
+                "${_CW_OPENSSL_PREBUILT}")
+        find_library(CW_LIBCRYPTO NAMES crypto libcrypto
+            HINTS
+                "${CLAMWIN_CURL_ROOT}/lib"
+                "${_CW_OPENSSL_PREBUILT}")
+
+        if(NOT CW_LIBCURL)
+            message(FATAL_ERROR
+                "libcurl not found. Install curl via your toolchain "
+                "(e.g. pacman -S mingw-w64-x86_64-curl in MSYS2), or "
+                "set -DCLAMWIN_CURL_ROOT=<prefix> on the cmake command line, "
+                "or build clamav-win32 first so the sibling build tree exists.")
+        endif()
+
+        # Resolve include paths: prefer CLAMWIN_CURL_ROOT, fall back to sibling.
+        if(CLAMWIN_CURL_ROOT)
+            set(CW_CURL_INCLUDE "${CLAMWIN_CURL_ROOT}/include")
+        else()
+            set(CW_CURL_INCLUDE "${_CW_SIBLING_ROOT}/3rdparty/curl/include")
+        endif()
+        set(CW_OPENSSL_INCLUDE "${_CW_SIBLING_ROOT}/3rdparty/openssl/include")
+
+        set(CW_CURL_LINK_LIBS "${CW_LIBCURL}")
+        if(CW_LIBSSL)
+            list(APPEND CW_CURL_LINK_LIBS "${CW_LIBSSL}")
+        endif()
+        if(CW_LIBCRYPTO)
+            list(APPEND CW_CURL_LINK_LIBS "${CW_LIBCRYPTO}")
+        endif()
+        set(CW_CURL_IS_STATIC TRUE)
+    endif()
+endif()
+
+# ── clamav_compat: XP legacy compatibility library from clamav-win32 ────────
+# Provides IAT-level shims for Vista+ APIs (SRW locks, condition variables,
+# bcrypt, secure CRT functions, etc.) using assembly forwarders — the same
+# library freshclam links against. Only relevant for x86/XP builds.
+set(CW_COMPAT_LINK_LIBS)
+if(CMAKE_SIZEOF_VOID_P EQUAL 4)
+    get_filename_component(_CW_ROOT2 "${CMAKE_SOURCE_DIR}/.." ABSOLUTE)
+    find_library(CW_LIBCLAMAV_COMPAT NAMES clamav_compat libclamav_compat
+        HINTS "${_CW_ROOT2}/clamav-win32/build-x86-mingw-winxp")
+    if(CW_LIBCLAMAV_COMPAT)
+        list(APPEND CW_COMPAT_LINK_LIBS "${CW_LIBCLAMAV_COMPAT}" ntdll)
+        message(STATUS "XP legacy compat: found ${CW_LIBCLAMAV_COMPAT}")
+    else()
+        message(STATUS "XP legacy compat: not found (non-XP build, OK)")
+    endif()
+endif()
+
+get_filename_component(_CW_REPO_ROOT "${CMAKE_SOURCE_DIR}/.." ABSOLUTE)
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    set(CW_CA_BUNDLE_FLAVOR "legacy-x64")
+    set(CW_CA_BUNDLE_ENGINE_BUILD "${_CW_REPO_ROOT}/clamav-win32/build-x64-mingw")
+else()
+    set(CW_CA_BUNDLE_FLAVOR "legacy-x86")
+    set(CW_CA_BUNDLE_ENGINE_BUILD "${_CW_REPO_ROOT}/clamav-win32/build-x86-mingw-winxp")
+endif()
+
+find_file(CW_CA_BUNDLE_SOURCE
+    NAMES curl-ca-bundle.crt
+    HINTS
+        "${CW_CA_BUNDLE_ENGINE_BUILD}"
+        "${_CW_REPO_ROOT}/binaries/all-os-staging/clamav-${PROJECT_VERSION}-${CW_CA_BUNDLE_FLAVOR}"
+)
+
 
 set(clamwin
     cw_main.cpp
@@ -81,6 +210,18 @@ add_executable(clamwin WIN32
     ${clamwin_headers}
     ${clamwin_resources}
 )
+
+if(CW_CA_BUNDLE_SOURCE)
+    add_custom_command(TARGET clamwin POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                "${CW_CA_BUNDLE_SOURCE}"
+                "$<TARGET_FILE_DIR:clamwin>/curl-ca-bundle.crt"
+        COMMENT "Staging curl-ca-bundle.crt next to clamwin.exe"
+        VERBATIM
+    )
+else()
+    message(WARNING "curl-ca-bundle.crt not found for local GUI build; --check-version may fail TLS verification until the bundle is staged manually")
+endif()
 
 set(clamwin_test_dir tests)
 set(clamwin_test_sources
@@ -169,6 +310,8 @@ endif()
 target_include_directories(clamwin PRIVATE
     ${CMAKE_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}
+    ${CW_CURL_INCLUDE}
+    ${CW_OPENSSL_INCLUDE}
 )
 
 target_include_directories(clamwin_test PRIVATE
@@ -177,26 +320,38 @@ target_include_directories(clamwin_test PRIVATE
     ${CMAKE_SOURCE_DIR}/3rdparty/doctest
     ${CMAKE_BINARY_DIR}
     ${clamwin_test_dir}
+    ${CW_CURL_INCLUDE}
+    ${CW_OPENSSL_INCLUDE}
 )
 
 target_compile_definitions(clamwin PRIVATE
     _CRT_SECURE_NO_WARNINGS
+    $<$<BOOL:${CW_CURL_IS_STATIC}>:CURL_STATICLIB>
 )
 
 target_compile_definitions(clamwin_test PRIVATE
     _CRT_SECURE_NO_WARNINGS
+    $<$<BOOL:${CW_CURL_IS_STATIC}>:CURL_STATICLIB>
 )
 
 target_link_libraries(clamwin PRIVATE
     comctl32
     shlwapi
-    wininet
     version
+    ${CW_CURL_LINK_LIBS}
+    ${CW_COMPAT_LINK_LIBS}
+    crypt32
+    ws2_32
+    bcrypt
 )
 
 target_link_libraries(clamwin_test PRIVATE
     shlwapi
-    wininet
+    ${CW_CURL_LINK_LIBS}
+    ${CW_COMPAT_LINK_LIBS}
+    crypt32
+    ws2_32
+    bcrypt
 )
 
 add_custom_target(clamwin_check
