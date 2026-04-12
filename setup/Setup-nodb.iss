@@ -3,17 +3,24 @@
 ; The user will download virus databases via freshclam after installation.
 ;
 ; Override individual dirs at compile time, e.g.:
-;   iscc /DBuildDir64Gui=C:\path\to\gui-x64-build /DBuildDir64Engine=C:\path\to\engine-x64-build Setup-nodb.iss
+;   iscc /DBuildDir64Gui=C:\path\to\gui-x64-build /DBuildDir64EngineLegacy=C:\path\to\engine-x64-legacy /DBuildDir64EngineModern=C:\path\to\engine-x64-modern Setup-nodb.iss
 
 #DEFINE AppVersion "1.5.3"
 #ifndef BuildDir98Engine
-  #DEFINE BuildDir98Engine "..\..\binaries\prebuilt-w98\clamav"
+  #DEFINE BuildDir98Engine "..\..\binaries\clamav\clamav-legacy-win9x"
 #endif
 #ifndef BuildDir32Engine
-  #DEFINE BuildDir32Engine "..\..\clamav-win32\build-x86-mingw-winxp"
+  #DEFINE BuildDir32Engine "..\..\binaries\clamav\clamav-legacy-x86"
 #endif
-#ifndef BuildDir64Engine
-  #DEFINE BuildDir64Engine "..\..\clamav-win32\build-x64-mingw"
+#ifndef BuildDir64EngineLegacy
+  #ifdef BuildDir64Engine
+    #DEFINE BuildDir64EngineLegacy BuildDir64Engine
+  #else
+    #DEFINE BuildDir64EngineLegacy "..\..\binaries\clamav\clamav-legacy-x64"
+  #endif
+#endif
+#ifndef BuildDir64EngineModern
+  #DEFINE BuildDir64EngineModern "..\..\binaries\clamav\clamav-x64"
 #endif
 #ifndef BuildDir98Gui
   #DEFINE BuildDir98Gui "..\build-x86-mingw-ansi"
@@ -41,9 +48,6 @@
 #endif
 #ifndef OutputBaseFilenamePrefix
   #DEFINE OutputBaseFilenamePrefix "clamwin-" + AppVersion + "-setup-nodb"
-#endif
-#ifndef ClamavCertSource
-  #DEFINE ClamavCertSource "..\..\clamav-win32\clamav\certs\clamav.crt"
 #endif
 
 [Setup]
@@ -104,46 +108,57 @@ Source: {#BuildDir64ShellExt}\libExpShell.dll;    DestDir: {app}\bin; Components
 Source: {#BuildDir98Engine}\clamscan.exe;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin98;      Flags: restartreplace uninsrestartdelete replacesameversion
 Source: {#BuildDir32Engine}\clamscan.exe;    DestDir: {app}\bin; Components: ClamAV; Check: Is32bitNT;   Flags: restartreplace uninsrestartdelete replacesameversion
 #if IncludeX64
-Source: {#BuildDir64Engine}\clamscan.exe;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin64;     Flags: restartreplace uninsrestartdelete replacesameversion
+Source: {#BuildDir64EngineLegacy}\clamscan.exe; DestDir: {app}\bin; Components: ClamAV; Check: Is64bitLegacyNT; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: {#BuildDir64EngineModern}\clamscan.exe; DestDir: {app}\bin; Components: ClamAV; Check: Is64bitModernNT; Flags: restartreplace uninsrestartdelete replacesameversion
 #endif
 
 ; freshclam.exe
 Source: {#BuildDir98Engine}\freshclam.exe;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin98;      Flags: restartreplace uninsrestartdelete replacesameversion
 Source: {#BuildDir32Engine}\freshclam.exe;    DestDir: {app}\bin; Components: ClamAV; Check: Is32bitNT;   Flags: restartreplace uninsrestartdelete replacesameversion
 #if IncludeX64
-Source: {#BuildDir64Engine}\freshclam.exe;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin64;     Flags: restartreplace uninsrestartdelete replacesameversion
+Source: {#BuildDir64EngineLegacy}\freshclam.exe; DestDir: {app}\bin; Components: ClamAV; Check: Is64bitLegacyNT; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: {#BuildDir64EngineModern}\freshclam.exe; DestDir: {app}\bin; Components: ClamAV; Check: Is64bitModernNT; Flags: restartreplace uninsrestartdelete replacesameversion
 #endif
 
 ; sigtool.exe
 Source: {#BuildDir98Engine}\sigtool.exe;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin98;      Flags: restartreplace uninsrestartdelete replacesameversion
 Source: {#BuildDir32Engine}\sigtool.exe;    DestDir: {app}\bin; Components: ClamAV; Check: Is32bitNT;   Flags: restartreplace uninsrestartdelete replacesameversion
 #if IncludeX64
-Source: {#BuildDir64Engine}\sigtool.exe;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin64;     Flags: restartreplace uninsrestartdelete replacesameversion
+Source: {#BuildDir64EngineLegacy}\sigtool.exe; DestDir: {app}\bin; Components: ClamAV; Check: Is64bitLegacyNT; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: {#BuildDir64EngineModern}\sigtool.exe; DestDir: {app}\bin; Components: ClamAV; Check: Is64bitModernNT; Flags: restartreplace uninsrestartdelete replacesameversion
 #endif
 
 ; libclamav.dll
 Source: {#BuildDir98Engine}\libclamav.dll;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin98;      Flags: restartreplace uninsrestartdelete replacesameversion
 Source: {#BuildDir32Engine}\libclamav.dll;    DestDir: {app}\bin; Components: ClamAV; Check: Is32bitNT;   Flags: restartreplace uninsrestartdelete replacesameversion
 #if IncludeX64
-Source: {#BuildDir64Engine}\libclamav.dll;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin64;     Flags: restartreplace uninsrestartdelete replacesameversion
+Source: {#BuildDir64EngineLegacy}\libclamav.dll; DestDir: {app}\bin; Components: ClamAV; Check: Is64bitLegacyNT; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: {#BuildDir64EngineModern}\libclamav.dll; DestDir: {app}\bin; Components: ClamAV; Check: Is64bitModernNT; Flags: restartreplace uninsrestartdelete replacesameversion
 #endif
 
 ; libfreshclam.dll
 Source: {#BuildDir98Engine}\libfreshclam.dll;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin98;      Flags: restartreplace uninsrestartdelete replacesameversion
 Source: {#BuildDir32Engine}\libfreshclam.dll;    DestDir: {app}\bin; Components: ClamAV; Check: Is32bitNT;   Flags: restartreplace uninsrestartdelete replacesameversion
 #if IncludeX64
-Source: {#BuildDir64Engine}\libfreshclam.dll;    DestDir: {app}\bin; Components: ClamAV; Check: IsWin64;     Flags: restartreplace uninsrestartdelete replacesameversion
+Source: {#BuildDir64EngineLegacy}\libfreshclam.dll; DestDir: {app}\bin; Components: ClamAV; Check: Is64bitLegacyNT; Flags: restartreplace uninsrestartdelete replacesameversion
+Source: {#BuildDir64EngineModern}\libfreshclam.dll; DestDir: {app}\bin; Components: ClamAV; Check: Is64bitModernNT; Flags: restartreplace uninsrestartdelete replacesameversion
 #endif
 
 ; TLS CA bundle for XP-era libcurl/OpenSSL validation
 Source: {#BuildDir98Engine}\curl-ca-bundle.crt;  DestDir: {app}\bin; Components: ClamAV; Check: IsWin98;      Flags: ignoreversion
 Source: {#BuildDir32Engine}\curl-ca-bundle.crt;  DestDir: {app}\bin; Components: ClamAV; Check: Is32bitNT;   Flags: ignoreversion
 #if IncludeX64
-Source: {#BuildDir64Engine}\curl-ca-bundle.crt;  DestDir: {app}\bin; Components: ClamAV; Check: IsWin64;     Flags: ignoreversion
+Source: {#BuildDir64EngineLegacy}\curl-ca-bundle.crt; DestDir: {app}\bin; Components: ClamAV; Check: Is64bitLegacyNT; Flags: ignoreversion
+Source: {#BuildDir64EngineModern}\curl-ca-bundle.crt; DestDir: {app}\bin; Components: ClamAV; Check: Is64bitModernNT; Flags: ignoreversion
 #endif
 
 ; certs
-Source: {#ClamavCertSource}; DestDir: {app}\bin\certs; Components: ClamAV; Flags: ignoreversion
+Source: {#BuildDir32Engine}\certs\clamav.crt; DestDir: {app}\bin\certs; Components: ClamAV; Check: IsWin98;      Flags: ignoreversion
+Source: {#BuildDir32Engine}\certs\clamav.crt; DestDir: {app}\bin\certs; Components: ClamAV; Check: Is32bitNT;   Flags: ignoreversion
+#if IncludeX64
+Source: {#BuildDir64EngineLegacy}\certs\clamav.crt; DestDir: {app}\bin\certs; Components: ClamAV; Check: Is64bitLegacyNT; Flags: ignoreversion
+Source: {#BuildDir64EngineModern}\certs\clamav.crt; DestDir: {app}\bin\certs; Components: ClamAV; Check: Is64bitModernNT; Flags: ignoreversion
+#endif
 
 ; NOTE: No CVD files in this variant — user downloads databases via freshclam.
 
@@ -285,6 +300,22 @@ begin
   GetWindowsVersionEx(Version);
   { NT 32-bit: must be NT platform, major >= 5, not 64-bit, and not Win9x }
   Result := Version.NTPlatform and (Version.Major >= 5) and (not IsWin64) and (not IsWin98());
+end;
+
+function Is64bitLegacyNT(): Boolean;
+var
+  Version: TWindowsVersion;
+begin
+  GetWindowsVersionEx(Version);
+  Result := Version.NTPlatform and IsWin64 and (Version.Major < 6);
+end;
+
+function Is64bitModernNT(): Boolean;
+var
+  Version: TWindowsVersion;
+begin
+  GetWindowsVersionEx(Version);
+  Result := Version.NTPlatform and IsWin64 and (Version.Major >= 6);
 end;
 
 function IsAllUsers(): Boolean;

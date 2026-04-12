@@ -1,5 +1,5 @@
 param(
-    [Alias('SkipClamBuild','SkipClamAvBuild')]
+    [Alias('NoBuild','SkipClamBuild','SkipClamAvBuild')]
     [switch]$SkipBuild,
     [switch]$BuildClamAV,
     [switch]$GenerateIso,
@@ -293,9 +293,9 @@ function Invoke-BuildSetup {
         }
         $isccArgs += $SetupScript
 
-        $proc = Start-Process -FilePath $IsccExe -ArgumentList $isccArgs -WorkingDirectory $SetupDir -Wait -PassThru
-        if ($proc.ExitCode -ne 0) {
-            throw "ISCC compile failed (exit $($proc.ExitCode))"
+        & $IsccExe @isccArgs | Out-Host
+        if ($LASTEXITCODE -ne 0) {
+            throw "ISCC compile failed (exit $LASTEXITCODE)"
         }
     }
     finally {
@@ -478,9 +478,9 @@ $setupNodbIss = Join-Path $setupDir "Setup-nodb.iss"
 $setupOutputDir = Join-Path $setupDir "Output"
 $setupCvdDir = Join-Path $setupDir "cvd"
 $bashExe = "C:\msys64\usr\bin\bash.exe"
-$clamavCert = Join-Path $clamavRoot "clamav\certs\clamav.crt"
-$prebuiltW98Root = Join-Path $repoRoot "binaries\prebuilt-w98"
-$prebuiltW98EngineDir = Join-Path $prebuiltW98Root "clamav"
+$clamavBinariesRoot = Join-Path $repoRoot "binaries\clamav"
+$clamavCert = Join-Path $clamavBinariesRoot "clamav-legacy-x64\certs\clamav.crt"
+$prebuiltW98EngineDir = Join-Path $clamavBinariesRoot "clamav-legacy-win9x"
 
 if (!(Test-Path $bashExe)) {
     throw "MSYS bash not found: $bashExe"
@@ -605,8 +605,9 @@ if (-not $SkipBuild) {
     }
 }
 
-$legacyX86BuildDir = Join-Path $clamavRoot "build-x86-mingw-winxp"
-$legacyX64BuildDir = Join-Path $clamavRoot "build-x64-mingw"
+$legacyX86BuildDir = Join-Path $clamavBinariesRoot "clamav-legacy-x86"
+$legacyX64BuildDir = Join-Path $clamavBinariesRoot "clamav-legacy-x64"
+$modernX64BuildDir = Join-Path $clamavBinariesRoot "clamav-x64"
 $guiX86BuildDir = Join-Path $clamwinRoot "build-x86-mingw-winxp"
 $guiX86AnsiBuildDir = Join-Path $clamwinRoot "build-x86-mingw-ansi"
 $guiX64BuildDir = Join-Path $clamwinRoot "build"
@@ -614,14 +615,14 @@ $guiX64BuildDir = Join-Path $clamwinRoot "build"
 $setupDefines = @{
     BuildDir98Engine = $prebuiltW98EngineDir
     BuildDir32Engine = $legacyX86BuildDir
-    BuildDir64Engine = $legacyX64BuildDir
+    BuildDir64EngineLegacy = $legacyX64BuildDir
+    BuildDir64EngineModern = $modernX64BuildDir
     BuildDir98Gui = $guiX86AnsiBuildDir
     BuildDir32Gui = $guiX86BuildDir
     BuildDir64Gui = $guiX64BuildDir
     BuildDir98ShellExt = $guiX86AnsiBuildDir
     BuildDir32ShellExt = $guiX86BuildDir
     BuildDir64ShellExt = $guiX64BuildDir
-    ClamavCertSource = $clamavCert
 }
 
 Invoke-StageCurlCaBundles -RepoRoot $repoRoot -ProjectVersion $projectVersion -BuildDirX86 $legacyX86BuildDir -BuildDirX64 $legacyX64BuildDir
@@ -635,7 +636,7 @@ if (!(Test-Path $builtW98GuiExe)) {
 Write-Host "[setup] using built Win98 ANSI GUI binaries from: $guiX86AnsiBuildDir"
 
 if (!(Test-Path $prebuiltW98EngineExe)) {
-    throw "Win98 ClamAV engine binaries are missing. Copy prebuilt Win98 engine binaries (including clamscan.exe) to '$prebuiltW98EngineDir', then rerun build-setup.ps1."
+    throw "Win98 ClamAV engine binaries are missing. Copy Win98 engine binaries (including clamscan.exe) to '$prebuiltW98EngineDir', then rerun build-setup.ps1."
 }
 
 $setupNodbExe = Invoke-BuildSetup -IsccExe $isccExe -SetupDir $setupDir -SetupScript $setupNodbIss -SetupOutputDir $setupOutputDir -PreprocessorDefines $setupDefines
@@ -646,22 +647,22 @@ if ($IncludeFulldbInstaller) {
     $setupExe = Invoke-BuildSetup -IsccExe $isccExe -SetupDir $setupDir -SetupScript $setupIss -SetupOutputDir $setupOutputDir -PreprocessorDefines $setupDefines
 }
 
-if (Test-Path $isoPayloadRoot) {
-    Remove-Item $isoPayloadRoot -Recurse -Force
-}
-New-Item -ItemType Directory -Force $isoPayloadRoot | Out-Null
-
-$setupNodbPayloadPath = Join-Path $isoPayloadRoot (Split-Path $setupNodbExe -Leaf)
-Copy-Item $setupNodbExe $setupNodbPayloadPath -Force
-Write-Host "[iso] payload prepared: $setupNodbPayloadPath"
-if ($IncludeFulldbInstaller -and -not [string]::IsNullOrWhiteSpace($setupExe) -and (Test-Path $setupExe)) {
-    $setupPayloadPath = Join-Path $isoPayloadRoot (Split-Path $setupExe -Leaf)
-    Copy-Item $setupExe $setupPayloadPath -Force
-    Write-Host "[iso] payload prepared: $setupPayloadPath"
-}
-
 $isoBuilt = $false
 if ($GenerateIso) {
+    if (Test-Path $isoPayloadRoot) {
+        Remove-Item $isoPayloadRoot -Recurse -Force
+    }
+    New-Item -ItemType Directory -Force $isoPayloadRoot | Out-Null
+
+    $setupNodbPayloadPath = Join-Path $isoPayloadRoot (Split-Path $setupNodbExe -Leaf)
+    Copy-Item $setupNodbExe $setupNodbPayloadPath -Force
+    Write-Host "[iso] payload prepared: $setupNodbPayloadPath"
+    if ($IncludeFulldbInstaller -and -not [string]::IsNullOrWhiteSpace($setupExe) -and (Test-Path $setupExe)) {
+        $setupPayloadPath = Join-Path $isoPayloadRoot (Split-Path $setupExe -Leaf)
+        Copy-Item $setupExe $setupPayloadPath -Force
+        Write-Host "[iso] payload prepared: $setupPayloadPath"
+    }
+
     $payloadMsys = Convert-ToMsysPath -WindowsPath $isoPayloadRoot
     $isoMsys = Convert-ToMsysPath -WindowsPath $isoPath
 
