@@ -189,9 +189,17 @@ bool CWLogViewDialog::onInit()
 {
     SetWindowText(m_hwnd, CW_ToT(m_title).c_str());
 
-    m_hFont = CreateFont(CW_Scale(12), 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET,
-                          OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
+    m_hFont = CreateFont(-CW_Scale(13), 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET,
+                          OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY,
                           DEFAULT_PITCH | FF_SWISS, TEXT("Segoe UI"));
+    if (!m_hFont)
+    {
+        m_hFont = CreateFont(-CW_Scale(13), 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET,
+                              OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
+                              DEFAULT_PITCH | FF_SWISS, TEXT("Tahoma"));
+    }
+    if (!m_hFont)
+        m_hFont = (HFONT)GetStockObject(DEFAULT_GUI_FONT);
 
     CWTheme* theme = CW_GetTheme();
     const bool useModernControls = !theme || !theme->useClassicPalette();
