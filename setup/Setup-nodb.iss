@@ -218,13 +218,35 @@ Root: HKCU;   Subkey: Software\ClamAV; ValueType: string; ValueName: DataDir; Va
 Root: HKCU64; Subkey: Software\ClamAV; ValueType: string; ValueName: ConfDir; ValueData: {code:CommonProfileDir}\.clamwin;     Flags: uninsdeletevalue; Components: ClamAV; Check: not IsAllUsers and IsWin64
 Root: HKCU64; Subkey: Software\ClamAV; ValueType: string; ValueName: DataDir; ValueData: {code:CommonProfileDir}\.clamwin\db; Flags: uninsdeletevalue; Components: ClamAV; Check: not IsAllUsers and IsWin64
 
-Root: HKCR;   Subkey: CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueData: {app}\bin\libExpShell.dll; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers
-Root: HKCR;   Subkey: CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueName: ThreadingModel; ValueData: Apartment; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers
-Root: HKCR;   Subkey: *\shellex\ContextMenuHandlers\ClamWin; ValueType: string; ValueData: {{65713842-C410-4f44-8383-BFE01A398C90}; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers
-Root: HKCR;   Subkey: Folder\shellex\ContextMenuHandlers\ClamWin; ValueType: string; ValueData: {{65713842-C410-4f44-8383-BFE01A398C90}; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers
+; Explorer shell extension (all users, 32-bit / Win98 / 32-bit-NT).
+; HKCR on a 32-bit installer process is WOW64-redirected for CLSID keys, so this
+; covers 32-bit Explorer on 32-bit Windows and 32-bit NT hosts only.
+Root: HKCR;   Subkey: CLSID\{{65713842-C410-4f44-8383-BFE01A398C90};             ValueType: string; ValueData: ClamWin Shell Extension;      Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers and not IsWin64
+Root: HKCR;   Subkey: CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueData: {app}\bin\libExpShell.dll; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers and not IsWin64
+Root: HKCR;   Subkey: CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueName: ThreadingModel; ValueData: Apartment;             Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers and not IsWin64
+Root: HKCR;   Subkey: *\shellex\ContextMenuHandlers\ClamWin;      ValueType: string; ValueData: {{65713842-C410-4f44-8383-BFE01A398C90}; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers and not IsWin64
+Root: HKCR;   Subkey: Folder\shellex\ContextMenuHandlers\ClamWin; ValueType: string; ValueData: {{65713842-C410-4f44-8383-BFE01A398C90}; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers and not IsWin64
+
+; Explorer shell extension (all users, 64-bit Windows).
+; On 64-bit Windows the installer runs as a 32-bit process, so HKCR\CLSID writes
+; are silently redirected to Wow6432Node by WOW64.  64-bit Explorer looks in the
+; native (non-redirected) hive, so we must use HKCR64 for the CLSID entry.
+; The ContextMenuHandlers path is exempt from WOW64 redirection and is shared.
+#if IncludeX64
+Root: HKCR64; Subkey: CLSID\{{65713842-C410-4f44-8383-BFE01A398C90};             ValueType: string; ValueData: ClamWin Shell Extension;      Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers and IsWin64
+Root: HKCR64; Subkey: CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueData: {app}\bin\libExpShell.dll; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers and IsWin64
+Root: HKCR64; Subkey: CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueName: ThreadingModel; ValueData: Apartment;             Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers and IsWin64
+Root: HKCR;   Subkey: *\shellex\ContextMenuHandlers\ClamWin;      ValueType: string; ValueData: {{65713842-C410-4f44-8383-BFE01A398C90}; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers and IsWin64
+Root: HKCR;   Subkey: Folder\shellex\ContextMenuHandlers\ClamWin; ValueType: string; ValueData: {{65713842-C410-4f44-8383-BFE01A398C90}; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers and IsWin64
+#endif
+
+; Explorer shell extension (per-user).
+; HKCU\Software\Classes\CLSID is not subject to WOW64 redirection, so a single
+; set of entries works for both 32-bit and 64-bit Windows.
+Root: HKCU;   Subkey: Software\Classes\CLSID\{{65713842-C410-4f44-8383-BFE01A398C90};             ValueType: string; ValueData: ClamWin Shell Extension;      Flags: uninsdeletekey; Components: ExplorerShell; Check: not IsAllUsers
 Root: HKCU;   Subkey: Software\Classes\CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueData: {app}\bin\libExpShell.dll; Flags: uninsdeletekey; Components: ExplorerShell; Check: not IsAllUsers
-Root: HKCU;   Subkey: Software\Classes\CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueName: ThreadingModel; ValueData: Apartment; Flags: uninsdeletekey; Components: ExplorerShell; Check: not IsAllUsers
-Root: HKCU;   Subkey: Software\Classes\*\shellex\ContextMenuHandlers\ClamWin; ValueType: string; ValueData: {{65713842-C410-4f44-8383-BFE01A398C90}; Flags: uninsdeletekey; Components: ExplorerShell; Check: not IsAllUsers
+Root: HKCU;   Subkey: Software\Classes\CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueName: ThreadingModel; ValueData: Apartment;             Flags: uninsdeletekey; Components: ExplorerShell; Check: not IsAllUsers
+Root: HKCU;   Subkey: Software\Classes\*\shellex\ContextMenuHandlers\ClamWin;      ValueType: string; ValueData: {{65713842-C410-4f44-8383-BFE01A398C90}; Flags: uninsdeletekey; Components: ExplorerShell; Check: not IsAllUsers
 Root: HKCU;   Subkey: Software\Classes\Folder\shellex\ContextMenuHandlers\ClamWin; ValueType: string; ValueData: {{65713842-C410-4f44-8383-BFE01A398C90}; Flags: uninsdeletekey; Components: ExplorerShell; Check: not IsAllUsers
 
 [Code]
