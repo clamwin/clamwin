@@ -158,7 +158,6 @@ Name: {app}\bin; Components: ClamWin ExplorerShell
 
 [InstallDelete]
 Type: files; Name: {app}\bin\ClamTray.exe
-Type: files; Name: {app}\bin\WClose.exe
 Type: files; Name: {app}\bin\OlAddin.exe
 Type: files; Name: {app}\bin\w9xpopen.exe
 Type: files; Name: {app}\bin\python23.dll
@@ -308,18 +307,40 @@ begin
   Result := (Val = '');
 end;
 
+function IsClamWinRunning(): Boolean;
+forward;
+
+function PostQuitToClamWin(): Boolean;
+forward;
+
+procedure ForceKillClamWin();
+forward;
+
 procedure CloseClamTray();
-var path, keyname: String; resultcode: Integer;
+var i: Integer;
 begin
-  keyname := 'SOFTWARE\ClamWin'; path := '';
-  if not RegQueryStringValue(HKEY_CURRENT_USER, keyname, 'Path', path) then
-    RegQueryStringValue(HKEY_LOCAL_MACHINE, keyname, 'Path', path);
-  if path = '' then exit;
-  if not CheckForMutexes('ClamWinTrayMutex01') then exit;
+  if not CheckForMutexes('ClamWinMutex') then exit;
   if SuppressibleMsgBox('ClamWin is currently running. Close it now? (Recommended)', mbConfirmation, MB_YESNO, IDYES) = idYes then
   begin
-    path := RemoveQuotes(path) + '\WClose.exe';
-    if FileExists(path) then Exec(path, '', '', SW_SHOWNORMAL, ewWaitUntilTerminated, resultcode);
+    PostQuitToClamWin();
+
+    for i := 1 to 30 do
+    begin
+      Sleep(200);
+      if not CheckForMutexes('ClamWinMutex') then
+        exit;
+    end;
+
+    ForceKillClamWin();
+
+    for i := 1 to 10 do
+    begin
+      Sleep(200);
+      if not CheckForMutexes('ClamWinMutex') then
+        exit;
+    end;
+
+    SuppressibleMsgBox('ClamWin is still running. Please close clamwin.exe manually and retry Setup.', mbError, MB_OK, IDOK);
   end;
 end;
 
@@ -348,7 +369,7 @@ procedure ForceKillClamWin();
 var
   resultcode: Integer;
 begin
-  Exec(ExpandConstant('{cmd}'), '/C taskkill /IM clamwin.exe /T /F >nul 2>&1', '', SW_HIDE, ewWaitUntilTerminated, resultcode);
+  Exec(ExpandConstant('{cmd}'), '/C taskkill /IM clamwin.exe /T /F >nul 2>&1 & tskill clamwin >nul 2>&1', '', SW_HIDE, ewWaitUntilTerminated, resultcode);
 end;
 
 procedure CloseClamWinForUninstall();
@@ -385,7 +406,11 @@ begin
       0: AllUsers := True;
       1: AllUsers := False;
     end
-  else if CurPage = wpReady then CloseClamTray();
+  else if CurPage = wpReady then
+  begin
+    CloseClamTray();
+    Result := not IsClamWinRunning();
+  end;
 end;
 
 procedure RegisterPreviousData(PreviousDataKey: Integer);
