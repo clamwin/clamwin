@@ -218,14 +218,14 @@ Root: HKCU;   Subkey: Software\ClamAV; ValueType: string; ValueName: DataDir; Va
 Root: HKCU64; Subkey: Software\ClamAV; ValueType: string; ValueName: ConfDir; ValueData: {code:CommonProfileDir}\.clamwin;     Flags: uninsdeletevalue; Components: ClamAV; Check: not IsAllUsers and IsWin64
 Root: HKCU64; Subkey: Software\ClamAV; ValueType: string; ValueName: DataDir; ValueData: {code:CommonProfileDir}\.clamwin\db; Flags: uninsdeletevalue; Components: ClamAV; Check: not IsAllUsers and IsWin64
 
-Root: HKCR;   Subkey: CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}}\InProcServer32; ValueType: string; ValueData: {app}\bin\libExpShell.dll; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers
-Root: HKCR;   Subkey: CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}}\InProcServer32; ValueType: string; ValueName: ThreadingModel; ValueData: Apartment; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers
-Root: HKCR;   Subkey: *\shellex\ContextMenuHandlers\ClamWin; ValueType: string; ValueData: {{65713842-C410-4f44-8383-BFE01A398C90}}; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers
-Root: HKCR;   Subkey: Folder\shellex\ContextMenuHandlers\ClamWin; ValueType: string; ValueData: {{65713842-C410-4f44-8383-BFE01A398C90}}; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers
-Root: HKCU;   Subkey: Software\Classes\CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}}\InProcServer32; ValueType: string; ValueData: {app}\bin\libExpShell.dll; Flags: uninsdeletekey; Components: ExplorerShell; Check: not IsAllUsers
-Root: HKCU;   Subkey: Software\Classes\CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}}\InProcServer32; ValueType: string; ValueName: ThreadingModel; ValueData: Apartment; Flags: uninsdeletekey; Components: ExplorerShell; Check: not IsAllUsers
-Root: HKCU;   Subkey: Software\Classes\*\shellex\ContextMenuHandlers\ClamWin; ValueType: string; ValueData: {{65713842-C410-4f44-8383-BFE01A398C90}}; Flags: uninsdeletekey; Components: ExplorerShell; Check: not IsAllUsers
-Root: HKCU;   Subkey: Software\Classes\Folder\shellex\ContextMenuHandlers\ClamWin; ValueType: string; ValueData: {{65713842-C410-4f44-8383-BFE01A398C90}}; Flags: uninsdeletekey; Components: ExplorerShell; Check: not IsAllUsers
+Root: HKCR;   Subkey: CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueData: {app}\bin\libExpShell.dll; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers
+Root: HKCR;   Subkey: CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueName: ThreadingModel; ValueData: Apartment; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers
+Root: HKCR;   Subkey: *\shellex\ContextMenuHandlers\ClamWin; ValueType: string; ValueData: {{65713842-C410-4f44-8383-BFE01A398C90}; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers
+Root: HKCR;   Subkey: Folder\shellex\ContextMenuHandlers\ClamWin; ValueType: string; ValueData: {{65713842-C410-4f44-8383-BFE01A398C90}; Flags: uninsdeletekey; Components: ExplorerShell; Check: IsAllUsers
+Root: HKCU;   Subkey: Software\Classes\CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueData: {app}\bin\libExpShell.dll; Flags: uninsdeletekey; Components: ExplorerShell; Check: not IsAllUsers
+Root: HKCU;   Subkey: Software\Classes\CLSID\{{65713842-C410-4f44-8383-BFE01A398C90}\InProcServer32; ValueType: string; ValueName: ThreadingModel; ValueData: Apartment; Flags: uninsdeletekey; Components: ExplorerShell; Check: not IsAllUsers
+Root: HKCU;   Subkey: Software\Classes\*\shellex\ContextMenuHandlers\ClamWin; ValueType: string; ValueData: {{65713842-C410-4f44-8383-BFE01A398C90}; Flags: uninsdeletekey; Components: ExplorerShell; Check: not IsAllUsers
+Root: HKCU;   Subkey: Software\Classes\Folder\shellex\ContextMenuHandlers\ClamWin; ValueType: string; ValueData: {{65713842-C410-4f44-8383-BFE01A398C90}; Flags: uninsdeletekey; Components: ExplorerShell; Check: not IsAllUsers
 
 [Code]
 
