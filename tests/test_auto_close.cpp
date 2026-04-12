@@ -35,5 +35,16 @@ TEST_SUITE("auto_close")
         CHECK(CW_ShouldAutoClose(policy, 0, false));
         CHECK(CW_ShouldAutoClose(policy, 1, false));
         CHECK(CW_ShouldAutoClose(policy, -1, false));
+        CHECK(CW_ShouldAutoClose(policy, -1, true));
+    }
+
+    TEST_CASE("update success policy closes only for success outcomes")
+    {
+        CWAutoClosePolicy policy = CW_AutoCloseOnExitCodes(0, 2);
+
+        CHECK(CW_ShouldAutoClose(policy, 0, false));
+        CHECK(CW_ShouldAutoClose(policy, 2, false));
+        CHECK_FALSE(CW_ShouldAutoClose(policy, 1, false));
+        CHECK_FALSE(CW_ShouldAutoClose(policy, -1, true));
     }
 }

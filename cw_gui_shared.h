@@ -23,6 +23,7 @@
 #include <limits.h>
 
 #include "cw_build_version.h"
+#include "cw_auto_close.h"
 
 #ifndef CLAMWIN_VERSION_STR
 #define CLAMWIN_VERSION_STR     "1.5.2.0"
@@ -131,14 +132,24 @@ int  CW_ScanDialogRun(HWND hwndParent,
                       const char *target_path,
                       bool autoClose = false,
                       int autoCloseRetCode = INT_MIN);
+int  CW_ScanDialogRun(HWND hwndParent,
+                      CWConfig *cfg,
+                      const char *target_path,
+                      const CWAutoClosePolicy& autoClosePolicy);
 int  CW_ScanMemoryDialogRun(HWND hwndParent,
                             CWConfig *cfg,
                             bool autoClose = false,
                             int autoCloseRetCode = INT_MIN);
+int  CW_ScanMemoryDialogRun(HWND hwndParent,
+                            CWConfig *cfg,
+                            const CWAutoClosePolicy& autoClosePolicy);
 int  CW_UpdateDialogRun(HWND hwndParent,
                         CWConfig *cfg,
                         bool autoClose = false,
                         int autoCloseRetCode = INT_MIN);
+int  CW_UpdateDialogRun(HWND hwndParent,
+                        CWConfig *cfg,
+                        const CWAutoClosePolicy& autoClosePolicy);
 
 /* Update dialog return codes for caller-side notification behavior. */
 #define CW_UPDATE_RC_SUCCESS      0

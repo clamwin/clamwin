@@ -943,8 +943,7 @@ CWScanDialog::CWScanDialog(CWConfig& cfg,
                            const std::string& targetPath,
                            bool isUpdate,
                            bool scanMemoryOnly,
-                           bool autoClose,
-                           int autoCloseRetCode)
+                           const CWAutoClosePolicy& autoClosePolicy)
     : m_cfg(cfg)
     , m_targetPath(targetPath)
     , m_isUpdate(isUpdate)
@@ -954,7 +953,7 @@ CWScanDialog::CWScanDialog(CWConfig& cfg,
     , m_hwndBtnStop(NULL),m_hwndBtnSave(NULL)
     , m_hFont(NULL), m_hFontBold(NULL)
     , m_finished(0), m_cancelled(0), m_exitCode(-1)
-    , m_autoClosePolicy(dialogAutoClosePolicy(autoClose, autoCloseRetCode))
+    , m_autoClosePolicy(autoClosePolicy)
     , m_showMnemonics(false)
     , m_scanExpectedFiles(0)
     , m_scanExpectedBytes(0)
@@ -1015,7 +1014,6 @@ int CWScanDialog::run(HWND parent)
 }
 
 /* ─── Process callbacks (called from reader thread — must PostMessage) */
-
 void CWScanDialog::outputCb(const char* text, void* userdata)
 {
     CWScanDialog* self = static_cast<CWScanDialog*>(userdata);
@@ -1960,12 +1958,22 @@ int CW_ScanDialogRun(HWND hwndParent,
                      bool autoClose,
                      int autoCloseRetCode)
 {
+    return CW_ScanDialogRun(hwndParent,
+                            cfg,
+                            targetPath,
+                            dialogAutoClosePolicy(autoClose, autoCloseRetCode));
+}
+
+int CW_ScanDialogRun(HWND hwndParent,
+                     CWConfig* cfg,
+                     const char* targetPath,
+                     const CWAutoClosePolicy& autoClosePolicy)
+{
     CWScanDialog dlg(*cfg,
                      targetPath ? std::string(targetPath) : "",
                      false,
                      false,
-                     autoClose,
-                     autoCloseRetCode);
+                     autoClosePolicy);
     return dlg.run(hwndParent);
 }
 
@@ -1974,7 +1982,16 @@ int CW_ScanMemoryDialogRun(HWND hwndParent,
                            bool autoClose,
                            int autoCloseRetCode)
 {
-    CWScanDialog dlg(*cfg, "", false, true, autoClose, autoCloseRetCode);
+    return CW_ScanMemoryDialogRun(hwndParent,
+                                  cfg,
+                                  dialogAutoClosePolicy(autoClose, autoCloseRetCode));
+}
+
+int CW_ScanMemoryDialogRun(HWND hwndParent,
+                           CWConfig* cfg,
+                           const CWAutoClosePolicy& autoClosePolicy)
+{
+    CWScanDialog dlg(*cfg, "", false, true, autoClosePolicy);
     return dlg.run(hwndParent);
 }
 
@@ -1983,6 +2000,15 @@ int CW_UpdateDialogRun(HWND hwndParent,
                        bool autoClose,
                        int autoCloseRetCode)
 {
-    CWScanDialog dlg(*cfg, "", true, false, autoClose, autoCloseRetCode);
+    return CW_UpdateDialogRun(hwndParent,
+                              cfg,
+                              dialogAutoClosePolicy(autoClose, autoCloseRetCode));
+}
+
+int CW_UpdateDialogRun(HWND hwndParent,
+                       CWConfig* cfg,
+                       const CWAutoClosePolicy& autoClosePolicy)
+{
+    CWScanDialog dlg(*cfg, "", true, false, autoClosePolicy);
     return dlg.run(hwndParent);
 }

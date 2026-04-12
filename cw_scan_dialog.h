@@ -23,8 +23,7 @@ public:
                  const std::string& targetPath,
                  bool isUpdate,
                  bool scanMemoryOnly,
-                 bool autoClose,
-                 int autoCloseRetCode);
+                 const CWAutoClosePolicy& autoClosePolicy);
     virtual ~CWScanDialog();
 
     /* Returns process exit code (0 = clean, 1 = threats, -1 = error/cancel) */

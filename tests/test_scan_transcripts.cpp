@@ -215,6 +215,16 @@ TEST_SUITE("scan_transcripts")
             CHECK(effects.statusText == "Installed daily.cvd");
         }
 
+        SUBCASE("tracks up to date when freshclam writes status to stderr")
+        {
+            CWScanLogic::ScanOutputState state = makeUpdateState();
+
+            CWScanLogic::ScanLineEffects effects = feedLine(state, "main database is up-to-date", true);
+
+            CHECK(state.updateUpToDateCount == 1);
+            CHECK(effects.statusText == "Virus definitions are already up to date");
+        }
+
         SUBCASE("resets progress across database switches")
         {
             CWScanLogic::ScanOutputState state = makeUpdateState();

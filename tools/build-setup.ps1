@@ -11,6 +11,23 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
+$mingw32Bin = "C:\msys64\mingw32\bin"
+$mingw64Bin = "C:\msys64\mingw64\bin"
+$mingw32Gcc = Join-Path $mingw32Bin "gcc.exe"
+$mingw32Gxx = Join-Path $mingw32Bin "g++.exe"
+$mingw32Cpp = Join-Path $mingw32Bin "cpp.exe"
+$mingw32Windres = Join-Path $mingw32Bin "windres.exe"
+$mingw64Gcc = Join-Path $mingw64Bin "gcc.exe"
+$mingw64Gxx = Join-Path $mingw64Bin "g++.exe"
+$mingw64Cpp = Join-Path $mingw64Bin "cpp.exe"
+$mingw64Windres = Join-Path $mingw64Bin "windres.exe"
+
+foreach ($toolPath in @($mingw32Gcc, $mingw32Gxx, $mingw32Cpp, $mingw32Windres, $mingw64Gcc, $mingw64Gxx, $mingw64Cpp, $mingw64Windres)) {
+    if (-not (Test-Path $toolPath)) {
+        throw "Required MinGW tool not found: $toolPath"
+    }
+}
+
 function Convert-ToMsysPath {
     param([Parameter(Mandatory = $true)][string]$WindowsPath)
 
@@ -101,7 +118,7 @@ function Invoke-BuildTarget {
         [string]$RustTarget = ""
     )
 
-    $mingwPath = if ($UseMingw32) { "C:\msys64\mingw32\bin" } else { "C:\msys64\mingw64\bin" }
+    $mingwPath = if ($UseMingw32) { $mingw32Bin } else { $mingw64Bin }
     $env:PATH = "$mingwPath;C:\Program Files\CMake\bin;" + $env:PATH
     # Enforce GNU11 for all C compilation units, including libclamav, without source edits.
     #$env:CFLAGS = "-std=gnu11"
@@ -162,7 +179,7 @@ function Invoke-ConfigureProfile {
         return
     }
 
-    $mingwPath = if ($Profile.UseMingw32) { "C:\msys64\mingw32\bin" } else { "C:\msys64\mingw64\bin" }
+    $mingwPath = if ($Profile.UseMingw32) { $mingw32Bin } else { $mingw64Bin }
     $env:PATH = "$mingwPath;C:\Program Files\CMake\bin;" + $env:PATH
     # Keep CMake-generated build rules pinned to GNU11 even if cache is regenerated.
     $env:CFLAGS = "-std=gnu11"
@@ -504,9 +521,10 @@ $engineProfiles = @(
             "-B", (Join-Path $clamavRoot "build-x86-mingw-winxp"),
             "-G", "MinGW Makefiles",
             "-DCMAKE_MAKE_PROGRAM=mingw32-make",
-            "-DCMAKE_C_COMPILER=gcc",
-            "-DCMAKE_CXX_COMPILER=g++",
-            "-DCMAKE_RC_COMPILER=windres",
+            "-DCMAKE_C_COMPILER=$mingw32Gcc",
+            "-DCMAKE_CXX_COMPILER=$mingw32Gxx",
+            "-DCMAKE_RC_COMPILER=$mingw32Windres",
+            "-DCMAKE_RC_FLAGS=--preprocessor=$($mingw32Cpp.Replace('\', '/')) --preprocessor-arg=-DRC_INVOKED",
             "-DCMAKE_C_FLAGS=-std=gnu17 -Wno-error=implicit-function-declaration",
             "-DENABLE_LEGACY=ON",
             "-DCLAMWIN_SHELLEXT_UNICODE=ON",
@@ -523,9 +541,10 @@ $engineProfiles = @(
             "-B", (Join-Path $clamavRoot "build-x64-mingw"),
             "-G", "MinGW Makefiles",
             "-DCMAKE_MAKE_PROGRAM=mingw32-make",
-            "-DCMAKE_C_COMPILER=gcc",
-            "-DCMAKE_CXX_COMPILER=g++",
-            "-DCMAKE_RC_COMPILER=windres",
+            "-DCMAKE_C_COMPILER=$mingw64Gcc",
+            "-DCMAKE_CXX_COMPILER=$mingw64Gxx",
+            "-DCMAKE_RC_COMPILER=$mingw64Windres",
+            "-DCMAKE_RC_FLAGS=--preprocessor=$($mingw64Cpp.Replace('\', '/')) --preprocessor-arg=-DRC_INVOKED",
             "-DCMAKE_C_FLAGS=-std=gnu17 -Wno-error=implicit-function-declaration",
             "-DENABLE_LEGACY=ON",
             "-DCLAMWIN_SHELLEXT_UNICODE=ON",
@@ -544,9 +563,10 @@ $guiProfiles = @(
             "-B", (Join-Path $clamwinRoot "build-x86-mingw-winxp"),
             "-G", "MinGW Makefiles",
             "-DCMAKE_MAKE_PROGRAM=mingw32-make",
-            "-DCMAKE_C_COMPILER=gcc",
-            "-DCMAKE_CXX_COMPILER=g++",
-            "-DCMAKE_RC_COMPILER=windres",
+            "-DCMAKE_C_COMPILER=$mingw32Gcc",
+            "-DCMAKE_CXX_COMPILER=$mingw32Gxx",
+            "-DCMAKE_RC_COMPILER=$mingw32Windres",
+            "-DCMAKE_RC_FLAGS=--preprocessor=$($mingw32Cpp.Replace('\', '/')) --preprocessor-arg=-DRC_INVOKED",
             "-DCLAMWIN_SHELLEXT_UNICODE=ON"
         )
     },
@@ -559,9 +579,10 @@ $guiProfiles = @(
             "-B", (Join-Path $clamwinRoot "build-x86-mingw-ansi"),
             "-G", "MinGW Makefiles",
             "-DCMAKE_MAKE_PROGRAM=mingw32-make",
-            "-DCMAKE_C_COMPILER=gcc",
-            "-DCMAKE_CXX_COMPILER=g++",
-            "-DCMAKE_RC_COMPILER=windres",
+            "-DCMAKE_C_COMPILER=$mingw32Gcc",
+            "-DCMAKE_CXX_COMPILER=$mingw32Gxx",
+            "-DCMAKE_RC_COMPILER=$mingw32Windres",
+            "-DCMAKE_RC_FLAGS=--preprocessor=$($mingw32Cpp.Replace('\', '/')) --preprocessor-arg=-DRC_INVOKED",
             "-DCLAMWIN_SHELLEXT_UNICODE=OFF"
         )
     },
@@ -574,9 +595,10 @@ $guiProfiles = @(
             "-B", (Join-Path $clamwinRoot "build"),
             "-G", "MinGW Makefiles",
             "-DCMAKE_MAKE_PROGRAM=mingw32-make",
-            "-DCMAKE_C_COMPILER=gcc",
-            "-DCMAKE_CXX_COMPILER=g++",
-            "-DCMAKE_RC_COMPILER=windres",
+            "-DCMAKE_C_COMPILER=$mingw64Gcc",
+            "-DCMAKE_CXX_COMPILER=$mingw64Gxx",
+            "-DCMAKE_RC_COMPILER=$mingw64Windres",
+            "-DCMAKE_RC_FLAGS=--preprocessor=$($mingw64Cpp.Replace('\', '/')) --preprocessor-arg=-DRC_INVOKED",
             "-DCLAMWIN_SHELLEXT_UNICODE=ON"
         )
     }

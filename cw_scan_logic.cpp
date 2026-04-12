@@ -686,6 +686,48 @@ ScanLineEffects processOutputLine(ScanOutputState& state, const char* text, bool
         effects.statusText = "Update failed: server/DNS resolution error";
     }
 
+    std::string dbLabel;
+
+    if (state.isUpdate && strstr(text, " database available for download"))
+        state.updateHadChanges = true;
+
+    if (state.isUpdate && strstr(text, " updated (version"))
+        state.updateHadChanges = true;
+
+    if (state.isUpdate &&
+        (containsInsensitive(text, " database is up-to-date") ||
+         containsInsensitive(text, " database is up to date")))
+    {
+        ++state.updateUpToDateCount;
+        if (!state.updateHadChanges)
+        {
+            effects.statusChanged = true;
+            effects.statusText = "Virus definitions are already up to date";
+        }
+    }
+
+    if (state.isUpdate && strstr(text, "Testing database:"))
+    {
+        char status[256];
+        const char* activeDb = isDbFileLabel(state.updateCurrentDb)
+            ? state.updateCurrentDb.c_str()
+            : "definitions";
+        _snprintf(status, sizeof(status), "Verifying %s...", activeDb);
+        status[sizeof(status) - 1] = '\0';
+        effects.statusChanged = true;
+        effects.statusText = status;
+    }
+
+    if (state.isUpdate && extractDbLabelFromUpdatedLine(text, dbLabel))
+    {
+        state.updateCurrentDb = dbLabel;
+        char status[256];
+        _snprintf(status, sizeof(status), "Installed %s", state.updateCurrentDb.c_str());
+        status[sizeof(status) - 1] = '\0';
+        effects.statusChanged = true;
+        effects.statusText = status;
+    }
+
     if (isError)
         return effects;
 
@@ -840,47 +882,6 @@ ScanLineEffects processOutputLine(ScanOutputState& state, const char* text, bool
 
         return effects;
     }
-
-    std::string dbLabel;
-
-    if (strstr(text, " database available for download"))
-        state.updateHadChanges = true;
-
-    if (strstr(text, " updated (version"))
-        state.updateHadChanges = true;
-
-    if (strstr(text, " database is up-to-date"))
-    {
-        state.updateUpToDateCount += countSubstring(text, " database is up-to-date");
-        if (!state.updateHadChanges)
-        {
-            effects.statusChanged = true;
-            effects.statusText = "Virus definitions are already up to date";
-        }
-    }
-
-    if (strstr(text, "Testing database:"))
-    {
-        char status[256];
-        const char* activeDb = isDbFileLabel(state.updateCurrentDb)
-            ? state.updateCurrentDb.c_str()
-            : "definitions";
-        _snprintf(status, sizeof(status), "Verifying %s...", activeDb);
-        status[sizeof(status) - 1] = '\0';
-        effects.statusChanged = true;
-        effects.statusText = status;
-    }
-
-    if (extractDbLabelFromUpdatedLine(text, dbLabel))
-    {
-        state.updateCurrentDb = dbLabel;
-        char status[256];
-        _snprintf(status, sizeof(status), "Installed %s", state.updateCurrentDb.c_str());
-        status[sizeof(status) - 1] = '\0';
-        effects.statusChanged = true;
-        effects.statusText = status;
-    }
-
     if (extractDbLabelFromAvailableLine(text, dbLabel))
     {
         /* Roll current file progress into the session total before switching files. */

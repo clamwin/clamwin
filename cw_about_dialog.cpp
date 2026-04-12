@@ -71,12 +71,12 @@ static std::string getFileVersion(const std::string& filePath)
     if (!VerQueryValueA(infoData.data(), subBlock, (LPVOID*)&lpBuffer, &cbBufSize) || cbBufSize == 0)
         return "";
 
-    /* Normalize "1,5,2,0" → "1.5.2" (first 3 components, dot-separated) */
+    /* Normalize "1,5,2,1" -> "1.5.2.1" (up to 4 components, dot-separated) */
     std::string raw = lpBuffer;
     std::string result;
     int nparts = 0;
     size_t start = 0;
-    for (size_t i = 0; i <= raw.size() && nparts < 3; ++i)
+    for (size_t i = 0; i <= raw.size() && nparts < 4; ++i)
     {
         if (i == raw.size() || raw[i] == ',' || raw[i] == '.')
         {

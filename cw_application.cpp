@@ -630,8 +630,7 @@ int CWApplication::run(HINSTANCE hInst, LPSTR cmdLine)
             CWAutoClosePolicy autoClosePolicy = CW_CliAutoClosePolicy(cli.mode, cli.close);
             cliRc = CW_UpdateDialogRun(NULL,
                                        &m_config,
-                                       autoClosePolicy.enabled,
-                                       autoClosePolicy.hasRetCodeFilter ? autoClosePolicy.retCodeFilter : INT_MIN);
+                                       autoClosePolicy);
         }
         else if (_stricmp(cli.mode.c_str(), "viewlog") == 0)
         {

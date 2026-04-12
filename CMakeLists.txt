@@ -2,7 +2,18 @@
 # Spawns clamscan.exe / freshclam.exe (no libclamav link dependency)
 
 cmake_minimum_required(VERSION 3.14)
-project(clamwin VERSION "1.5.3")
+project(clamwin VERSION "1.5.2.1")
+
+if(MINGW AND CMAKE_C_COMPILER)
+    get_filename_component(CW_MINGW_BIN_DIR "${CMAKE_C_COMPILER}" DIRECTORY)
+    set(CW_RC_PREPROCESSOR "${CW_MINGW_BIN_DIR}/cpp.exe")
+    if(EXISTS "${CW_RC_PREPROCESSOR}")
+        file(TO_CMAKE_PATH "${CW_RC_PREPROCESSOR}" CW_RC_PREPROCESSOR)
+        if(NOT CMAKE_RC_FLAGS MATCHES "(^| )--preprocessor=")
+            set(CMAKE_RC_FLAGS "${CMAKE_RC_FLAGS} --preprocessor=${CW_RC_PREPROCESSOR} --preprocessor-arg=-DRC_INVOKED")
+        endif()
+    endif()
+endif()
 
 # ── curl + OpenSSL (from clamav-win32 prebuilts) ──────────────────────────
 # The update checker uses libcurl + static OpenSSL for HTTPS so that TLS 1.2
@@ -185,6 +196,7 @@ execute_process(
             -DBASE_MAJOR=${PROJECT_VERSION_MAJOR}
             -DBASE_MINOR=${PROJECT_VERSION_MINOR}
             -DBASE_PATCH=${PROJECT_VERSION_PATCH}
+            -DBASE_TWEAK=${PROJECT_VERSION_TWEAK}
             -DINCREMENT=OFF
             -P ${CW_BUILD_VERSION_SCRIPT}
 )
@@ -197,6 +209,7 @@ add_custom_target(cw_gui_build_version
             -DBASE_MAJOR=${PROJECT_VERSION_MAJOR}
             -DBASE_MINOR=${PROJECT_VERSION_MINOR}
             -DBASE_PATCH=${PROJECT_VERSION_PATCH}
+            -DBASE_TWEAK=${PROJECT_VERSION_TWEAK}
             -DINCREMENT=OFF
             -P ${CW_BUILD_VERSION_SCRIPT}
     BYPRODUCTS ${CW_BUILD_VERSION_HEADER} ${CW_BUILD_VERSION_RC}

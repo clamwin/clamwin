@@ -3,6 +3,7 @@
 #   COUNTER_FILE, HEADER_OUT, RC_OUT,
 #   BASE_MAJOR, BASE_MINOR, BASE_PATCH
 # Optional:
+#   BASE_TWEAK=0..N (default 0)
 #   INCREMENT=ON|OFF (default ON)
 
 if(NOT DEFINED COUNTER_FILE)
@@ -27,12 +28,27 @@ if(EXISTS "${COUNTER_FILE}")
     endif()
 endif()
 
+if(NOT DEFINED BASE_TWEAK)
+    set(BASE_TWEAK 0)
+endif()
+
 if(NOT DEFINED INCREMENT)
     set(INCREMENT ON)
 endif()
 
 if(INCREMENT)
+    if(EXISTS "${COUNTER_FILE}")
+        file(READ "${COUNTER_FILE}" _raw)
+        string(STRIP "${_raw}" _raw)
+        if(_raw MATCHES "^[0-9]+$")
+            set(_counter "${_raw}")
+        endif()
+    else()
+        set(_counter "${BASE_TWEAK}")
+    endif()
     math(EXPR _counter "${_counter} + 1")
+else()
+    set(_counter "${BASE_TWEAK}")
 endif()
 set(_version_str "${BASE_MAJOR}.${BASE_MINOR}.${BASE_PATCH}.${_counter}")
 

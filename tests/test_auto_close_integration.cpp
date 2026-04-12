@@ -16,7 +16,7 @@ TEST_SUITE("auto_close_integration")
         CHECK(policy.retCodeFilter == 0);
     }
 
-    TEST_CASE("update close switch maps to close-on-completion autoclose policy")
+    TEST_CASE("update close switch maps to success-only autoclose policy")
     {
         CWCliArgs args;
         CW_ParseCommandLineArgs("--mode=update --close", args);
@@ -24,6 +24,10 @@ TEST_SUITE("auto_close_integration")
         CWAutoClosePolicy policy = CW_CliAutoClosePolicy(args.mode, args.close);
 
         CHECK(policy.enabled);
-        CHECK_FALSE(policy.hasRetCodeFilter);
+        CHECK(policy.hasRetCodeFilter);
+        CHECK(policy.retCodeFilter == 0);
+        CHECK(policy.hasAltRetCodeFilter);
+        CHECK(policy.altRetCodeFilter == 2);
+        CHECK_FALSE(policy.allowCancelled);
     }
 }
