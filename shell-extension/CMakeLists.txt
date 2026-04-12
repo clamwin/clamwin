@@ -18,8 +18,24 @@ set(CLAMWIN_SHELLEXT_UNICODE "" CACHE STRING
 set_property(CACHE CLAMWIN_SHELLEXT_UNICODE PROPERTY STRINGS ON OFF)
 
 if(NOT CLAMWIN_SHELLEXT_UNICODE MATCHES "^(ON|OFF)$")
+    get_filename_component(_cw_shell_build_dir_name "${CMAKE_BINARY_DIR}" NAME)
+
+    if(_cw_shell_build_dir_name MATCHES "(ansi|win98)$")
+        set(CLAMWIN_SHELLEXT_UNICODE OFF CACHE STRING
+            "Shell extension TCHAR mode. Must be explicitly set to ON (Unicode) or OFF (ANSI)."
+            FORCE
+        )
+    elseif(_cw_shell_build_dir_name MATCHES "^(build|build-gui|build-x86-mingw-winxp|build-x64.*)$")
+        set(CLAMWIN_SHELLEXT_UNICODE ON CACHE STRING
+            "Shell extension TCHAR mode. Must be explicitly set to ON (Unicode) or OFF (ANSI)."
+            FORCE
+        )
+    endif()
+endif()
+
+if(NOT CLAMWIN_SHELLEXT_UNICODE MATCHES "^(ON|OFF)$")
     message(FATAL_ERROR
-        "CLAMWIN_SHELLEXT_UNICODE must be explicitly set per build directory. "
+        "Unable to determine CLAMWIN_SHELLEXT_UNICODE for build directory '${CMAKE_BINARY_DIR}'. "
         "Use -DCLAMWIN_SHELLEXT_UNICODE=ON for Unicode builds (x64/winxp) "
         "or -DCLAMWIN_SHELLEXT_UNICODE=OFF for ANSI builds (win98)."
     )
@@ -61,8 +77,13 @@ if(CLAMWIN_SHELLEXT_UNICODE STREQUAL "ON")
 endif()
 
 if(MINGW)
+    if(TARGET cw_winpthread_stripped)
+        add_dependencies(clamwin_shell_extension cw_winpthread_stripped)
+    endif()
+
     target_link_options(clamwin_shell_extension PRIVATE
         -static-libstdc++ -static-libgcc
+        -Wl,--whole-archive,-Bstatic ${_cw_winpthread_stripped} -Wl,-Bdynamic,--no-whole-archive
         -Wl,--enable-stdcall-fixup
     )
 endif()

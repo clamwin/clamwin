@@ -4,3 +4,4 @@
 /setup/cvd
 build-*
 tools/libempty_file.a
+libempty_file.a

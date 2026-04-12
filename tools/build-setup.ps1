@@ -103,7 +103,7 @@ function Invoke-BuildTarget {
     $mingwPath = if ($UseMingw32) { "C:\msys64\mingw32\bin" } else { "C:\msys64\mingw64\bin" }
     $env:PATH = "$mingwPath;C:\Program Files\CMake\bin;" + $env:PATH
     # Enforce GNU11 for all C compilation units, including libclamav, without source edits.
-    $env:CFLAGS = "-std=gnu11"
+    #$env:CFLAGS = "-std=gnu11"
     if (-not [string]::IsNullOrWhiteSpace($RustTarget)) {
         $env:CARGO_BUILD_TARGET = $RustTarget
     }
@@ -195,7 +195,7 @@ function Invoke-ConfigureProfile {
     $invokeConfigure = {
         $cmakeArgs = @()
         # Force a stable C dialect for all profiles to avoid compiler-default keyword collisions.
-        $cmakeArgs += @("-DCMAKE_C_STANDARD=11", "-DCMAKE_C_STANDARD_REQUIRED=ON", "-DCMAKE_C_EXTENSIONS=ON")
+        # $cmakeArgs += @("-DCMAKE_C_STANDARD=11", "-DCMAKE_C_STANDARD_REQUIRED=ON", "-DCMAKE_C_EXTENSIONS=ON")
         $shellExtUnicode = "ON"
         $cmakeArgs += @("-DCLAMWIN_SHELLEXT_UNICODE=$shellExtUnicode")
         if ($expectedRustTarget) {
