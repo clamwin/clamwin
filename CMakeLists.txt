@@ -99,21 +99,28 @@ else()
     endif()
 endif()
 
-# ── clamav_compat: XP legacy compatibility library from clamav-win32 ────────
+# ── clamav_compat: legacy compatibility library from clamav-win32 ───────────
 # Provides IAT-level shims for Vista+ APIs (SRW locks, condition variables,
 # bcrypt, secure CRT functions, etc.) using assembly forwarders — the same
-# library freshclam links against. Only relevant for x86/XP builds.
+# library freshclam links against. Use it whenever a sibling legacy engine
+# build exists so the GUI does not import bcrypt.dll on pre-Vista systems.
 set(CW_COMPAT_LINK_LIBS)
-if(CMAKE_SIZEOF_VOID_P EQUAL 4)
-    get_filename_component(_CW_ROOT2 "${CMAKE_SOURCE_DIR}/.." ABSOLUTE)
-    find_library(CW_LIBCLAMAV_COMPAT NAMES clamav_compat libclamav_compat
-        HINTS "${_CW_ROOT2}/clamav-win32/build-x86-mingw-winxp")
-    if(CW_LIBCLAMAV_COMPAT)
-        list(APPEND CW_COMPAT_LINK_LIBS "${CW_LIBCLAMAV_COMPAT}" ntdll)
-        message(STATUS "XP legacy compat: found ${CW_LIBCLAMAV_COMPAT}")
-    else()
-        message(STATUS "XP legacy compat: not found (non-XP build, OK)")
-    endif()
+set(CW_BCRYPT_LINK_LIBS bcrypt)
+get_filename_component(_CW_ROOT2 "${CMAKE_SOURCE_DIR}/.." ABSOLUTE)
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    set(_CW_COMPAT_BUILD_DIR "${_CW_ROOT2}/clamav-win32/build-x64-mingw")
+else()
+    set(_CW_COMPAT_BUILD_DIR "${_CW_ROOT2}/clamav-win32/build-x86-mingw-winxp")
+endif()
+
+find_library(CW_LIBCLAMAV_COMPAT NAMES clamav_compat libclamav_compat
+    HINTS "${_CW_COMPAT_BUILD_DIR}")
+if(CW_LIBCLAMAV_COMPAT)
+    list(APPEND CW_COMPAT_LINK_LIBS "${CW_LIBCLAMAV_COMPAT}" ntdll)
+    set(CW_BCRYPT_LINK_LIBS)
+    message(STATUS "Legacy compat: found ${CW_LIBCLAMAV_COMPAT}")
+else()
+    message(STATUS "Legacy compat: not found, linking bcrypt directly")
 endif()
 
 get_filename_component(_CW_REPO_ROOT "${CMAKE_SOURCE_DIR}/.." ABSOLUTE)
@@ -342,7 +349,7 @@ target_link_libraries(clamwin PRIVATE
     ${CW_COMPAT_LINK_LIBS}
     crypt32
     ws2_32
-    bcrypt
+    ${CW_BCRYPT_LINK_LIBS}
 )
 
 target_link_libraries(clamwin_test PRIVATE
@@ -351,7 +358,7 @@ target_link_libraries(clamwin_test PRIVATE
     ${CW_COMPAT_LINK_LIBS}
     crypt32
     ws2_32
-    bcrypt
+    ${CW_BCRYPT_LINK_LIBS}
 )
 
 add_custom_target(clamwin_check
