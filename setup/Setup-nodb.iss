@@ -198,6 +198,10 @@ Filename: {code:ClamWinConfPath}; Section: Updates; Key: dbupdatelogfile; String
 Filename: {code:ClamWinConfPath}; Section: Updates; Key: time;            String: {code:CurTime};           Check: IsIniValueEmpty(ExpandConstant('Updates*time*{code:ClamWinConfPath}'))
 
 [Registry]
+; Start the tray app automatically at logon.
+Root: HKLM;   Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: ClamWin; ValueData: """{app}\bin\clamwin.exe"""; Flags: uninsdeletevalue; Components: ClamWin; Check: IsAllUsers
+Root: HKCU;   Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: ClamWin; ValueData: """{app}\bin\clamwin.exe"""; Flags: uninsdeletevalue; Components: ClamWin; Check: not IsAllUsers
+
 Root: HKLM;   Subkey: Software\ClamWin; ValueType: string; ValueName: Path;    ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKLM;   Subkey: Software\ClamWin; ValueType: dword;  ValueName: Version; ValueData: 10503;     Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers
 Root: HKLM64; Subkey: Software\ClamWin; ValueType: string; ValueName: Path;    ValueData: {app}\bin; Flags: uninsdeletekey deletevalue; Components: ClamWin; Check: IsAllUsers and IsWin64
