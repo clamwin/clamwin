@@ -1,6 +1,7 @@
 param(
     [Alias('SkipClamBuild','SkipClamAvBuild')]
     [switch]$SkipBuild,
+    [switch]$BuildClamAV,
     [switch]$GenerateIso,
     [switch]$IncludeFulldbInstaller,
     [string]$DatabaseSource = "",
@@ -488,6 +489,9 @@ if (!(Test-Path $bashExe)) {
 if ($SkipBuild) {
     Write-Host "[build] SkipBuild enabled: skipping configure/compile; installer will still be rebuilt"
 }
+elseif (-not $BuildClamAV) {
+    Write-Host "[build] BuildClamAV not set: skipping ClamAV configure/compile; only ClamWin will be rebuilt"
+}
 Write-Host ("[version] detected clamav-win32 version: {0}" -f $projectVersion)
 
 $engineProfiles = @(
@@ -582,10 +586,12 @@ $clamavTargets = @("clambc", "clamscan", "freshclam", "sigtool", "clamd", "clamd
 $clamwinTargets = @("clamwin", "clamwin_shell_extension")
 
 if (-not $SkipBuild) {
-    foreach ($p in $engineProfiles) {
-        $expectedRustTarget = Get-ExpectedRustTarget -ConfigureArgs $p.ConfigureArgs
-        Invoke-ConfigureProfile -Profile $p
-        Invoke-BuildTarget -BuildDir $p.BuildDir -Targets $clamavTargets -UseMingw32 $p.UseMingw32 -RustTarget $expectedRustTarget
+    if ($BuildClamAV) {
+        foreach ($p in $engineProfiles) {
+            $expectedRustTarget = Get-ExpectedRustTarget -ConfigureArgs $p.ConfigureArgs
+            Invoke-ConfigureProfile -Profile $p
+            Invoke-BuildTarget -BuildDir $p.BuildDir -Targets $clamavTargets -UseMingw32 $p.UseMingw32 -RustTarget $expectedRustTarget
+        }
     }
 
     foreach ($p in $guiProfiles) {

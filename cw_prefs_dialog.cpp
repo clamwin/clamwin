@@ -2457,5 +2457,5 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
 int CW_PrefsDialogRun(HWND hwndParent, CWConfig *cfg)
 {
     CWPrefsDialog dlg(*cfg);
-    return (int)dlg.runModal(hwndParent, 680, 440);
+    return (int)dlg.runModal(hwndParent, 680, 480);
 }
