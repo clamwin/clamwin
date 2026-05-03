@@ -62,6 +62,8 @@ function Resolve-MsysRoot {
 }
 
 $msysRoot = Resolve-MsysRoot
+$mingw32Root = Join-Path $msysRoot "mingw32"
+$mingw64Root = Join-Path $msysRoot "mingw64"
 $mingw32Bin = Join-Path $msysRoot "mingw32\bin"
 $mingw64Bin = Join-Path $msysRoot "mingw64\bin"
 $mingw32Gcc = Join-Path $mingw32Bin "gcc.exe"
@@ -815,6 +817,7 @@ $guiProfiles = @(
             "-DCMAKE_CXX_COMPILER=$mingw32Gxx",
             "-DCMAKE_RC_COMPILER=$mingw32WindresCMake",
             "-DCMAKE_RC_FLAGS=--preprocessor=$($mingw32Cpp.Replace('\', '/')) --preprocessor-arg=-DRC_INVOKED",
+            "-DCLAMWIN_CURL_ROOT=$($mingw32Root.Replace('\', '/'))",
             "-DCLAMWIN_SHELLEXT_UNICODE=ON"
         )
     },
@@ -831,6 +834,7 @@ $guiProfiles = @(
             "-DCMAKE_CXX_COMPILER=$mingw32Gxx",
             "-DCMAKE_RC_COMPILER=$mingw32WindresCMake",
             "-DCMAKE_RC_FLAGS=--preprocessor=$($mingw32Cpp.Replace('\', '/')) --preprocessor-arg=-DRC_INVOKED",
+            "-DCLAMWIN_CURL_ROOT=$($mingw32Root.Replace('\', '/'))",
             "-DCLAMWIN_SHELLEXT_UNICODE=OFF"
         )
     },
@@ -847,6 +851,7 @@ $guiProfiles = @(
             "-DCMAKE_CXX_COMPILER=$mingw64Gxx",
             "-DCMAKE_RC_COMPILER=$mingw64WindresCMake",
             "-DCMAKE_RC_FLAGS=--preprocessor=$($mingw64Cpp.Replace('\', '/')) --preprocessor-arg=-DRC_INVOKED",
+            "-DCLAMWIN_CURL_ROOT=$($mingw64Root.Replace('\', '/'))",
             "-DCLAMWIN_SHELLEXT_UNICODE=ON"
         )
     }
