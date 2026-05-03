@@ -67,20 +67,15 @@ jobs:
             mingw-w64-x86_64-make
             mingw-w64-x86_64-curl
 
-      - name: Install repo-local Inno Setup 5 + ISPP
+      - name: Install repo-local Inno Setup 5
         shell: pwsh
         run: |
           $installer = Join-Path $env:GITHUB_WORKSPACE "setup\InnoSetup\isetup-5.2.3.exe"
-          $quickStartPack = Join-Path $env:GITHUB_WORKSPACE "setup\InnoSetup\ispack-5.2.3.exe"
           if (!(Test-Path $installer)) {
             throw "Repo-local Inno Setup installer not found: $installer"
           }
-          if (!(Test-Path $quickStartPack)) {
-            throw "Repo-local Inno Setup QuickStart Pack not found: $quickStartPack"
-          }
 
           Start-Process -FilePath $installer -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/SP-" -Wait
-          Start-Process -FilePath $quickStartPack -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/SP-" -Wait
 
       - name: Verify Inno Setup 5 compiler
         id: iscc
@@ -132,7 +127,7 @@ jobs:
           ) | Add-Content -Path "inno-setup-version.log"
 
           if ($isppExitCode -ne 0) {
-            throw "Expected ISPP support after installing the QuickStart Pack, but the probe compile failed."
+            throw "Expected ISPP support after installing repo-local Inno Setup 5, but the probe compile failed."
           }
 
           # ISCC returns a nonzero exit code for the help screen; do not let that fail the step.
