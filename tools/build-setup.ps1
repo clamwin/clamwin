@@ -72,6 +72,8 @@ $mingw64Gcc = Join-Path $mingw64Bin "gcc.exe"
 $mingw64Gxx = Join-Path $mingw64Bin "g++.exe"
 $mingw64Cpp = Join-Path $mingw64Bin "cpp.exe"
 $mingw64Windres = Join-Path $mingw64Bin "windres.exe"
+$mingw32WindresCMake = $mingw32Windres.Replace('\', '/')
+$mingw64WindresCMake = $mingw64Windres.Replace('\', '/')
 
 function Assert-RequiredTools {
     param([Parameter(Mandatory = $true)][string[]]$ToolPaths)
@@ -769,7 +771,7 @@ $engineProfiles = @(
             "-DCMAKE_MAKE_PROGRAM=mingw32-make",
             "-DCMAKE_C_COMPILER=$mingw32Gcc",
             "-DCMAKE_CXX_COMPILER=$mingw32Gxx",
-            "-DCMAKE_RC_COMPILER=$mingw32Windres",
+            "-DCMAKE_RC_COMPILER=$mingw32WindresCMake",
             "-DCMAKE_RC_FLAGS=--preprocessor=$($mingw32Cpp.Replace('\', '/')) --preprocessor-arg=-DRC_INVOKED",
             "-DCMAKE_C_FLAGS=-std=gnu17 -Wno-error=implicit-function-declaration",
             "-DENABLE_LEGACY=ON",
@@ -789,7 +791,7 @@ $engineProfiles = @(
             "-DCMAKE_MAKE_PROGRAM=mingw32-make",
             "-DCMAKE_C_COMPILER=$mingw64Gcc",
             "-DCMAKE_CXX_COMPILER=$mingw64Gxx",
-            "-DCMAKE_RC_COMPILER=$mingw64Windres",
+            "-DCMAKE_RC_COMPILER=$mingw64WindresCMake",
             "-DCMAKE_RC_FLAGS=--preprocessor=$($mingw64Cpp.Replace('\', '/')) --preprocessor-arg=-DRC_INVOKED",
             "-DCMAKE_C_FLAGS=-std=gnu17 -Wno-error=implicit-function-declaration",
             "-DENABLE_LEGACY=ON",
@@ -811,7 +813,7 @@ $guiProfiles = @(
             "-DCMAKE_MAKE_PROGRAM=mingw32-make",
             "-DCMAKE_C_COMPILER=$mingw32Gcc",
             "-DCMAKE_CXX_COMPILER=$mingw32Gxx",
-            "-DCMAKE_RC_COMPILER=$mingw32Windres",
+            "-DCMAKE_RC_COMPILER=$mingw32WindresCMake",
             "-DCMAKE_RC_FLAGS=--preprocessor=$($mingw32Cpp.Replace('\', '/')) --preprocessor-arg=-DRC_INVOKED",
             "-DCLAMWIN_SHELLEXT_UNICODE=ON"
         )
@@ -827,7 +829,7 @@ $guiProfiles = @(
             "-DCMAKE_MAKE_PROGRAM=mingw32-make",
             "-DCMAKE_C_COMPILER=$mingw32Gcc",
             "-DCMAKE_CXX_COMPILER=$mingw32Gxx",
-            "-DCMAKE_RC_COMPILER=$mingw32Windres",
+            "-DCMAKE_RC_COMPILER=$mingw32WindresCMake",
             "-DCMAKE_RC_FLAGS=--preprocessor=$($mingw32Cpp.Replace('\', '/')) --preprocessor-arg=-DRC_INVOKED",
             "-DCLAMWIN_SHELLEXT_UNICODE=OFF"
         )
@@ -843,7 +845,7 @@ $guiProfiles = @(
             "-DCMAKE_MAKE_PROGRAM=mingw32-make",
             "-DCMAKE_C_COMPILER=$mingw64Gcc",
             "-DCMAKE_CXX_COMPILER=$mingw64Gxx",
-            "-DCMAKE_RC_COMPILER=$mingw64Windres",
+            "-DCMAKE_RC_COMPILER=$mingw64WindresCMake",
             "-DCMAKE_RC_FLAGS=--preprocessor=$($mingw64Cpp.Replace('\', '/')) --preprocessor-arg=-DRC_INVOKED",
             "-DCLAMWIN_SHELLEXT_UNICODE=ON"
         )
