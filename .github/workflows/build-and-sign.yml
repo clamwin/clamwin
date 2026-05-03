@@ -91,12 +91,19 @@ jobs:
           }
 
           $versionOutput = (& $iscc /? 2>&1) | Out-String
-          $versionOutput | Tee-Object -FilePath "inno-setup-version.log"
-          Write-Host "Resolved ISCC: $iscc"
+          $probeExitCode = $LASTEXITCODE
+          @(
+            "Resolved ISCC: $iscc",
+            "ProbeExitCode: $probeExitCode",
+            $versionOutput.TrimEnd()
+          ) | Tee-Object -FilePath "inno-setup-version.log"
 
           if (($versionOutput -notmatch "Inno Setup.*5\.") -and ($iscc -notmatch "Inno Setup 5")) {
             throw "Expected Inno Setup 5.x, but ISCC output/path did not prove Version 5.x."
           }
+
+          # ISCC returns a nonzero exit code for the help screen; do not let that fail the step.
+          $global:LASTEXITCODE = 0
 
           "ISCC_EXE=$iscc" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
           "iscc_exe=$iscc" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
