@@ -13,8 +13,57 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-$mingw32Bin = "C:\msys64\mingw32\bin"
-$mingw64Bin = "C:\msys64\mingw64\bin"
+function Resolve-MsysRoot {
+    $candidates = @()
+
+    foreach ($candidate in @(
+        $env:CLAMWIN_MSYS_ROOT,
+        $env:MSYS2_ROOT,
+        $env:MSYS2_LOCATION,
+        "C:\msys64"
+    )) {
+        if (-not [string]::IsNullOrWhiteSpace($candidate)) {
+            $candidates += $candidate
+        }
+    }
+
+    if (-not [string]::IsNullOrWhiteSpace($env:RUNNER_TEMP)) {
+        $candidates += @(
+            (Join-Path $env:RUNNER_TEMP "msys64"),
+            (Join-Path $env:RUNNER_TEMP "setup-msys2\msys64"),
+            (Join-Path $env:RUNNER_TEMP "setup-msys2")
+        )
+    }
+
+    foreach ($root in $candidates | Select-Object -Unique) {
+        if ([string]::IsNullOrWhiteSpace($root)) {
+            continue
+        }
+
+        $mingw32Candidate = Join-Path $root "mingw32\bin\gcc.exe"
+        $mingw64Candidate = Join-Path $root "mingw64\bin\gcc.exe"
+        if ((Test-Path $mingw32Candidate) -and (Test-Path $mingw64Candidate)) {
+            return $root
+        }
+    }
+
+    if (-not [string]::IsNullOrWhiteSpace($env:RUNNER_TEMP)) {
+        $runnerTempRoot = Join-Path $env:RUNNER_TEMP "setup-msys2"
+        if (Test-Path $runnerTempRoot) {
+            $discoveredRoot = Get-ChildItem -Path $runnerTempRoot -Directory -Filter "msys64" -Recurse -ErrorAction SilentlyContinue |
+                Select-Object -First 1
+            if ($discoveredRoot) {
+                return $discoveredRoot.FullName
+            }
+        }
+    }
+
+    throw "MSYS2 root not found. Checked: $([string]::Join(', ', ($candidates | Select-Object -Unique)))"
+}
+
+$msysRoot = Resolve-MsysRoot
+$mingw32Bin = Join-Path $msysRoot "mingw32\bin"
+$mingw64Bin = Join-Path $msysRoot "mingw64\bin"
 $mingw32Gcc = Join-Path $mingw32Bin "gcc.exe"
 $mingw32Gxx = Join-Path $mingw32Bin "g++.exe"
 $mingw32Cpp = Join-Path $mingw32Bin "cpp.exe"
@@ -632,7 +681,7 @@ $setupIss = Join-Path $setupDir "Setup.iss"
 $setupNodbIss = Join-Path $setupDir "Setup-nodb.iss"
 $setupOutputDir = Join-Path $setupDir "Output"
 $setupCvdDir = Join-Path $setupDir "cvd"
-$bashExe = "C:\msys64\usr\bin\bash.exe"
+$bashExe = Join-Path $msysRoot "usr\bin\bash.exe"
 if (-not [string]::IsNullOrWhiteSpace($prebuiltClamAvRootResolved)) {
     $clamavBinariesRoot = $prebuiltClamAvRootResolved
 }
