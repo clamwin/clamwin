@@ -596,6 +596,45 @@ function Assert-ClamAvBinaryPackage {
     }
 }
 
+function Get-Sha256HexFromBytes {
+    param([Parameter(Mandatory = $true)][byte[]]$Bytes)
+
+    $sha256 = [System.Security.Cryptography.SHA256]::Create()
+    try {
+        return -join ($sha256.ComputeHash($Bytes) | ForEach-Object { $_.ToString("x2") })
+    }
+    finally {
+        $sha256.Dispose()
+    }
+}
+
+function Test-TextFileHashWithNormalizedLineEndings {
+    param(
+        [Parameter(Mandatory = $true)][string]$Path,
+        [Parameter(Mandatory = $true)][string]$ExpectedHash
+    )
+
+    $textExtensions = @(".txt", ".md", ".conf", ".reg", ".h", ".crt")
+    $extension = [System.IO.Path]::GetExtension($Path).ToLowerInvariant()
+    if ($extension -notin $textExtensions) {
+        return $false
+    }
+
+    $content = [System.IO.File]::ReadAllText($Path)
+    $lfContent = $content -replace "`r`n", "`n"
+    $crlfContent = $lfContent -replace "(?<!`r)`n", "`r`n"
+    $utf8NoBom = [System.Text.UTF8Encoding]::new($false)
+
+    foreach ($candidate in @($lfContent, $crlfContent)) {
+        $candidateHash = Get-Sha256HexFromBytes -Bytes $utf8NoBom.GetBytes($candidate)
+        if ($candidateHash -eq $ExpectedHash) {
+            return $true
+        }
+    }
+
+    return $false
+}
+
 function Assert-Sha256Manifest {
     param([Parameter(Mandatory = $true)][string]$Root)
 
@@ -630,6 +669,11 @@ function Assert-Sha256Manifest {
 
         $actualHash = (Get-FileHash -Algorithm SHA256 -Path $path).Hash.ToLowerInvariant()
         if ($actualHash -ne $expectedHash) {
+            if (Test-TextFileHashWithNormalizedLineEndings -Path $path -ExpectedHash $expectedHash) {
+                Write-Host "[setup] accepted line-ending-normalized SHA256 match for: $relativePath"
+                continue
+            }
+
             throw "SHA256 mismatch for '$relativePath': expected $expectedHash, got $actualHash"
         }
     }
