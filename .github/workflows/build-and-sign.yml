@@ -67,28 +67,48 @@ jobs:
             mingw-w64-x86_64-make
             mingw-w64-x86_64-curl
 
-      - name: Install repo-local Inno Setup 5.2.3 QuickStart Pack
+      - name: Prepare repo-local Inno Setup 5.2.3 toolchain
         shell: pwsh
         run: |
-          $installer = Join-Path $env:GITHUB_WORKSPACE "setup\InnoSetup\ispack-5.2.3.exe"
-          if (!(Test-Path $installer)) {
-            throw "Repo-local Inno Setup QuickStart Pack installer not found: $installer"
+          $toolRoot = Join-Path $env:GITHUB_WORKSPACE "setup\InnoSetup\Inno Setup 5"
+          if (!(Test-Path $toolRoot)) {
+            throw "Repo-local Inno Setup 5.2.3 toolchain directory not found: $toolRoot"
           }
 
-          $installLog = Join-Path $env:RUNNER_TEMP "ispack-install.log"
-          Start-Process -FilePath $installer -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/SP-", "/TASKS=ispp", "/LOG=$installLog" -Wait
+          $required = @(
+            "ISCC.exe",
+            "ISCmplr.dll",
+            "ISCmplr.dls",
+            "Builtins.iss",
+            "Default.isl",
+            "Setup.e32",
+            "SetupLdr.e32",
+            "iszlib.dll",
+            "isbzip.dll",
+            "isbunzip.dll",
+            "islzma.dll",
+            "isunzlib.dll"
+          )
+
+          foreach ($leaf in $required) {
+            $path = Join-Path $toolRoot $leaf
+            if (!(Test-Path $path)) {
+              throw "Repo-local Inno Setup toolchain is missing required file: $path"
+            }
+          }
 
       - name: Verify Inno Setup 5 compiler
         id: iscc
         shell: pwsh
         run: |
           $candidates = @(
+            (Join-Path $env:GITHUB_WORKSPACE "setup\InnoSetup\Inno Setup 5\ISCC.exe"),
             "C:\Program Files (x86)\Inno Setup 5\ISCC.exe",
             "C:\Program Files\Inno Setup 5\ISCC.exe"
           )
           $iscc = $candidates | Where-Object { Test-Path $_ } | Select-Object -First 1
           if ([string]::IsNullOrWhiteSpace($iscc)) {
-            throw "ISCC.exe was not found after installing repo-local Inno Setup 5.2.3 QuickStart Pack."
+            throw "ISCC.exe was not found in the repo-local Inno Setup 5.2.3 toolchain or standard install locations."
           }
 
           $versionOutput = (& $iscc /? 2>&1) | Out-String
@@ -98,15 +118,6 @@ jobs:
             "ProbeExitCode: $probeExitCode",
             $versionOutput.TrimEnd()
           ) | Tee-Object -FilePath "inno-setup-version.log"
-
-          $installLog = Join-Path $env:RUNNER_TEMP "ispack-install.log"
-          if (Test-Path $installLog) {
-            @(
-              '',
-              'QuickStart Pack install log:',
-              (Get-Content $installLog -Raw).TrimEnd()
-            ) | Add-Content -Path "inno-setup-version.log"
-          }
 
           if (($versionOutput -notmatch "Inno Setup.*5\.") -and ($iscc -notmatch "Inno Setup 5")) {
             throw "Expected Inno Setup 5.x, but ISCC output/path did not prove Version 5.x."
@@ -120,6 +131,7 @@ jobs:
             '[Setup]',
             'AppName=ISPP Probe',
             'AppVersion=1.0',
+            'AppVerName=ISPP Probe 1.0',
             'DefaultDirName={tmp}\ISPPProbe',
             'OutputDir=.',
             'OutputBaseFilename=ispp-probe',
@@ -137,7 +149,7 @@ jobs:
           ) | Add-Content -Path "inno-setup-version.log"
 
           if ($isppExitCode -ne 0) {
-            throw "Expected ISPP support after installing repo-local Inno Setup 5.2.3 QuickStart Pack, but the probe compile failed."
+            throw "Expected ISPP support from the repo-local Inno Setup 5.2.3 toolchain, but the probe compile failed."
           }
 
           # ISCC returns a nonzero exit code for the help screen; do not let that fail the step.
