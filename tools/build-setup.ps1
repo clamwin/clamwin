@@ -377,6 +377,23 @@ function Get-LatestSetupExe {
     return $latest.FullName
 }
 
+function Convert-ToSetupRelativePath {
+    param(
+        [Parameter(Mandatory = $true)][string]$BaseDir,
+        [Parameter(Mandatory = $true)][string]$PathValue
+    )
+
+    if ([string]::IsNullOrWhiteSpace($PathValue)) {
+        return $PathValue
+    }
+
+    if (-not [System.IO.Path]::IsPathRooted($PathValue)) {
+        return $PathValue
+    }
+
+    return [System.IO.Path]::GetRelativePath($BaseDir, $PathValue)
+}
+
 function Invoke-BuildSetup {
     param(
         [Parameter(Mandatory = $true)][string]$IsccExe,
@@ -397,8 +414,12 @@ function Invoke-BuildSetup {
     Push-Location $SetupDir
     try {
         $isccArgs = @()
-        foreach ($define in $PreprocessorDefines.GetEnumerator()) {
-            $isccArgs += "/D$($define.Key)=$($define.Value)"
+        foreach ($define in ($PreprocessorDefines.GetEnumerator() | Sort-Object Key)) {
+            $defineValue = [string]$define.Value
+            if (-not [string]::IsNullOrWhiteSpace($defineValue)) {
+                $defineValue = Convert-ToSetupRelativePath -BaseDir $SetupDir -PathValue $defineValue
+            }
+            $isccArgs += "/D$($define.Key)=$defineValue"
         }
         $isccArgs += $SetupScript
 
