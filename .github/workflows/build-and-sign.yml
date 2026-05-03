@@ -14,9 +14,6 @@ on:
     tags:
       - "v*"
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 permissions:
   actions: read
   contents: write
@@ -29,7 +26,7 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Validate SignPath configuration
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.sign_installer }}
@@ -162,7 +159,7 @@ jobs:
           "iscc_exe=$iscc" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
 
       - name: Upload Inno Setup version log
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: inno-setup-version-log
           path: inno-setup-version.log
@@ -205,7 +202,7 @@ jobs:
 
       - name: Upload unsigned installer artifact
         id: upload_unsigned
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: unsigned-clamwin-installer
           path: ${{ steps.unsigned.outputs.unsigned_installer }}
@@ -243,7 +240,7 @@ jobs:
 
       - name: Upload signed installer
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.sign_installer }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: signed-clamwin-installer
           path: signed/**/*.exe
