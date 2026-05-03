@@ -3,5 +3,6 @@
 /setup/Output
 /setup/cvd
 build-*
+!.github/workflows/build-and-sign.yml
 tools/libempty_file.a
 libempty_file.a

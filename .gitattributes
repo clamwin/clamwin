@@ -1,0 +1,3 @@
+# Preserve packaged payload bytes exactly so CI SHA256 verification is stable.
+/setup/InnoSetup/** -text
+/setup/clamav-binaries/** -text

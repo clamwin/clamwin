@@ -1,10 +1,12 @@
 param(
-    [Alias('NoBuild','SkipClamBuild','SkipClamAvBuild')]
+    [Alias('NoBuild','SkipClamBuild','SkipClamAvBuild','PackageOnly')]
     [switch]$SkipBuild,
     [switch]$BuildClamAV,
     [switch]$GenerateIso,
     [switch]$IncludeFulldbInstaller,
     [string]$DatabaseSource = "",
+    [string]$PrebuiltClamAvRoot = "",
+    [string]$IsccPath = "",
     [string[]]$MountVm = @()
 )
 
@@ -22,10 +24,27 @@ $mingw64Gxx = Join-Path $mingw64Bin "g++.exe"
 $mingw64Cpp = Join-Path $mingw64Bin "cpp.exe"
 $mingw64Windres = Join-Path $mingw64Bin "windres.exe"
 
-foreach ($toolPath in @($mingw32Gcc, $mingw32Gxx, $mingw32Cpp, $mingw32Windres, $mingw64Gcc, $mingw64Gxx, $mingw64Cpp, $mingw64Windres)) {
-    if (-not (Test-Path $toolPath)) {
-        throw "Required MinGW tool not found: $toolPath"
+function Assert-RequiredTools {
+    param([Parameter(Mandatory = $true)][string[]]$ToolPaths)
+
+    foreach ($toolPath in $ToolPaths) {
+        if (-not (Test-Path $toolPath)) {
+            throw "Required tool not found: $toolPath"
+        }
     }
+}
+
+function Assert-MingwTools {
+    Assert-RequiredTools -ToolPaths @(
+        $mingw32Gcc,
+        $mingw32Gxx,
+        $mingw32Cpp,
+        $mingw32Windres,
+        $mingw64Gcc,
+        $mingw64Gxx,
+        $mingw64Cpp,
+        $mingw64Windres
+    )
 }
 
 function Convert-ToMsysPath {
@@ -53,22 +72,42 @@ function Get-ExpectedRustTarget {
 }
 
 function Get-ProjectVersion {
-    param([Parameter(Mandatory = $true)][string]$CMakeListsPath)
+    param(
+        [Parameter(Mandatory = $true)][string]$CMakeListsPath,
+        [string]$ProjectName = ""
+    )
 
     if (-not (Test-Path $CMakeListsPath)) {
         throw "CMakeLists.txt not found: $CMakeListsPath"
     }
 
-    $hit = Select-String -Path $CMakeListsPath -Pattern '^\s*project\s*\(\s*clamav-win32\s+VERSION\s+"([0-9]+\.[0-9]+\.[0-9]+)"\s*\)' -CaseSensitive:$false | Select-Object -First 1
+    if ([string]::IsNullOrWhiteSpace($ProjectName)) {
+        $pattern = '^\s*project\s*\(\s*[-_A-Za-z0-9]+\s+VERSION\s+"([0-9]+\.[0-9]+\.[0-9]+(?:\.[0-9]+)?)"\s*\)'
+    }
+    else {
+        $pattern = '^\s*project\s*\(\s*' + [regex]::Escape($ProjectName) + '\s+VERSION\s+"([0-9]+\.[0-9]+\.[0-9]+(?:\.[0-9]+)?)"\s*\)'
+    }
+
+    $hit = Select-String -Path $CMakeListsPath -Pattern $pattern -CaseSensitive:$false | Select-Object -First 1
     if (-not $hit) {
-        throw "Unable to detect clamav-win32 version from: $CMakeListsPath"
+        throw "Unable to detect project version from: $CMakeListsPath"
     }
 
     return $hit.Matches[0].Groups[1].Value
 }
 
 function Resolve-IsccPath {
-    $candidates = @(
+    param([string]$PreferredPath = "")
+
+    $candidates = @()
+    if (-not [string]::IsNullOrWhiteSpace($PreferredPath)) {
+        $candidates += $PreferredPath
+    }
+    if (-not [string]::IsNullOrWhiteSpace($env:CLAMWIN_ISCC_EXE)) {
+        $candidates += $env:CLAMWIN_ISCC_EXE
+    }
+
+    $candidates += @(
         "C:\Program Files (x86)\Inno Setup 5\ISCC.exe",
         "C:\Program Files\Inno Setup 5\ISCC.exe"
     )
@@ -473,34 +512,148 @@ function Invoke-StageCurlCaBundles {
     Write-Host "[setup] staged curl-ca-bundle.crt for x64: $dstX64"
 }
 
-$workspaceRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot "..\.."))
-$repoRoot = $workspaceRoot
-$clamavRoot = Join-Path $workspaceRoot "clamav-win32"
-$clamwinRoot = Join-Path $workspaceRoot "clamwin"
+function Assert-ClamAvBinaryPackage {
+    param([Parameter(Mandatory = $true)][string]$ClamAvRoot)
 
-if (!(Test-Path $clamavRoot)) {
+    $engineFiles = @(
+        "clamscan.exe",
+        "freshclam.exe",
+        "sigtool.exe",
+        "libclamav.dll",
+        "libfreshclam.dll",
+        "curl-ca-bundle.crt"
+    )
+    $engineDirs = @(
+        "clamav-legacy-win9x",
+        "clamav-legacy-x86",
+        "clamav-legacy-x64",
+        "clamav-x64"
+    )
+
+    foreach ($engineDir in $engineDirs) {
+        foreach ($engineFile in $engineFiles) {
+            $path = Join-Path (Join-Path $ClamAvRoot $engineDir) $engineFile
+            if (-not (Test-Path $path)) {
+                throw "Prebuilt ClamAV binary package is missing: $path"
+            }
+        }
+    }
+
+    foreach ($engineDir in @("clamav-legacy-x86", "clamav-legacy-x64", "clamav-x64")) {
+        $certPath = Join-Path (Join-Path $ClamAvRoot $engineDir) "certs\clamav.crt"
+        if (-not (Test-Path $certPath)) {
+            throw "Prebuilt ClamAV binary package is missing: $certPath"
+        }
+    }
+}
+
+function Assert-Sha256Manifest {
+    param([Parameter(Mandatory = $true)][string]$Root)
+
+    $manifestPath = Join-Path $Root "SHA256SUMS.txt"
+    if (-not (Test-Path $manifestPath)) {
+        Write-Host "[setup] SHA256SUMS.txt not found; skipping prebuilt ClamAV hash verification"
+        return
+    }
+
+    $lineNumber = 0
+    foreach ($line in Get-Content -Path $manifestPath) {
+        $lineNumber++
+        $trimmed = $line.Trim()
+        if ([string]::IsNullOrWhiteSpace($trimmed) -or $trimmed.StartsWith("#")) {
+            continue
+        }
+
+        if ($trimmed -notmatch '^(?<Hash>[A-Fa-f0-9]{64})\s+\*?(?<RelativePath>.+)$') {
+            throw "Invalid SHA256SUMS.txt entry at line $lineNumber"
+        }
+
+        $expectedHash = $Matches.Hash.ToLowerInvariant()
+        $relativePath = $Matches.RelativePath.Trim()
+        if ([System.IO.Path]::IsPathRooted($relativePath) -or $relativePath -match '(^|[\\/])\.\.([\\/]|$)') {
+            throw "Unsafe SHA256SUMS.txt path at line ${lineNumber}: $relativePath"
+        }
+
+        $path = Join-Path $Root $relativePath
+        if (-not (Test-Path $path -PathType Leaf)) {
+            throw "SHA256SUMS.txt references missing file: $path"
+        }
+
+        $actualHash = (Get-FileHash -Algorithm SHA256 -Path $path).Hash.ToLowerInvariant()
+        if ($actualHash -ne $expectedHash) {
+            throw "SHA256 mismatch for '$relativePath': expected $expectedHash, got $actualHash"
+        }
+    }
+
+    Write-Host "[setup] verified SHA256 manifest: $manifestPath"
+}
+
+$standaloneClamwinRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot ".."))
+$siblingWorkspaceRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot "..\.."))
+$siblingClamwinRoot = Join-Path $siblingWorkspaceRoot "clamwin"
+
+if (Test-Path (Join-Path $siblingClamwinRoot "CMakeLists.txt")) {
+    $repoRoot = $siblingWorkspaceRoot
+    $clamwinRoot = $siblingClamwinRoot
+    $clamavRoot = Join-Path $siblingWorkspaceRoot "clamav-win32"
+}
+elseif (Test-Path (Join-Path $standaloneClamwinRoot "CMakeLists.txt")) {
+    $repoRoot = $standaloneClamwinRoot
+    $clamwinRoot = $standaloneClamwinRoot
+    $clamavRoot = Join-Path $siblingWorkspaceRoot "clamav-win32"
+}
+else {
+    throw "Unable to resolve ClamWin repository root from: $PSScriptRoot"
+}
+
+if ($BuildClamAV -and !(Test-Path $clamavRoot)) {
     throw "clamav-win32 folder not found: $clamavRoot"
 }
-if (!(Test-Path $clamwinRoot)) {
-    throw "clamwin folder not found: $clamwinRoot"
+
+$prebuiltClamAvRootResolved = ""
+if (-not [string]::IsNullOrWhiteSpace($PrebuiltClamAvRoot)) {
+    $prebuiltClamAvRootResolved = [System.IO.Path]::GetFullPath($PrebuiltClamAvRoot)
+    if (!(Test-Path $prebuiltClamAvRootResolved)) {
+        throw "Prebuilt ClamAV root not found: $prebuiltClamAvRootResolved"
+    }
 }
 
 $isoPayloadRoot = Join-Path $repoRoot "binaries\iso-payload"
 $isoPath = Join-Path $repoRoot "binaries\clamwin-all-os.iso"
-$projectVersion = Get-ProjectVersion -CMakeListsPath (Join-Path $clamavRoot "CMakeLists.txt")
-$isccExe = Resolve-IsccPath
+if (Test-Path (Join-Path $clamavRoot "CMakeLists.txt")) {
+    $projectVersion = Get-ProjectVersion -CMakeListsPath (Join-Path $clamavRoot "CMakeLists.txt") -ProjectName "clamav-win32"
+}
+else {
+    $projectVersion = Get-ProjectVersion -CMakeListsPath (Join-Path $clamwinRoot "CMakeLists.txt") -ProjectName "clamwin"
+}
+$isccExe = Resolve-IsccPath -PreferredPath $IsccPath
 $setupDir = Join-Path $clamwinRoot "setup"
 $setupIss = Join-Path $setupDir "Setup.iss"
 $setupNodbIss = Join-Path $setupDir "Setup-nodb.iss"
 $setupOutputDir = Join-Path $setupDir "Output"
 $setupCvdDir = Join-Path $setupDir "cvd"
 $bashExe = "C:\msys64\usr\bin\bash.exe"
-$clamavBinariesRoot = Join-Path $repoRoot "binaries\clamav"
+if (-not [string]::IsNullOrWhiteSpace($prebuiltClamAvRootResolved)) {
+    $clamavBinariesRoot = $prebuiltClamAvRootResolved
+}
+else {
+    $clamavBinariesRoot = Join-Path $repoRoot "binaries\clamav"
+}
 $clamavCert = Join-Path $clamavBinariesRoot "clamav-legacy-x64\certs\clamav.crt"
 $prebuiltW98EngineDir = Join-Path $clamavBinariesRoot "clamav-legacy-win9x"
 
-if (!(Test-Path $bashExe)) {
+if ($GenerateIso -and !(Test-Path $bashExe)) {
     throw "MSYS bash not found: $bashExe"
+}
+
+if (-not $SkipBuild) {
+    Assert-MingwTools
+}
+
+if (-not [string]::IsNullOrWhiteSpace($prebuiltClamAvRootResolved)) {
+    Assert-ClamAvBinaryPackage -ClamAvRoot $clamavBinariesRoot
+    Assert-Sha256Manifest -Root $clamavBinariesRoot
+    Write-Host "[setup] using prebuilt ClamAV binaries from: $clamavBinariesRoot"
 }
 
 if ($SkipBuild) {
@@ -509,7 +662,7 @@ if ($SkipBuild) {
 elseif (-not $BuildClamAV) {
     Write-Host "[build] BuildClamAV not set: skipping ClamAV configure/compile; only ClamWin will be rebuilt"
 }
-Write-Host ("[version] detected clamav-win32 version: {0}" -f $projectVersion)
+Write-Host ("[version] detected project version: {0}" -f $projectVersion)
 
 $engineProfiles = @(
     @{
@@ -647,7 +800,12 @@ $setupDefines = @{
     BuildDir64ShellExt = $guiX64BuildDir
 }
 
-Invoke-StageCurlCaBundles -RepoRoot $repoRoot -ProjectVersion $projectVersion -BuildDirX86 $legacyX86BuildDir -BuildDirX64 $legacyX64BuildDir
+if ([string]::IsNullOrWhiteSpace($prebuiltClamAvRootResolved)) {
+    Invoke-StageCurlCaBundles -RepoRoot $repoRoot -ProjectVersion $projectVersion -BuildDirX86 $legacyX86BuildDir -BuildDirX64 $legacyX64BuildDir
+}
+else {
+    Write-Host "[setup] prebuilt ClamAV root selected; curl-ca-bundle.crt must already be present in each engine folder"
+}
 
 $builtW98GuiExe = Join-Path $guiX86AnsiBuildDir "clamwin.exe"
 $prebuiltW98EngineExe = Join-Path $prebuiltW98EngineDir "clamscan.exe"
