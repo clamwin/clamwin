@@ -2,6 +2,7 @@
 /build-x86-mingw-winxp
 /setup/Output
 /setup/cvd
+/setup/*.generated.iss
 build-*
 !.github/workflows/build-and-sign.yml
 tools/libempty_file.a

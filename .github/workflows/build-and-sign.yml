@@ -67,15 +67,20 @@ jobs:
             mingw-w64-x86_64-make
             mingw-w64-x86_64-curl
 
-      - name: Install repo-local Inno Setup 5
+      - name: Install repo-local Inno Setup 5 + ISPP
         shell: pwsh
         run: |
           $installer = Join-Path $env:GITHUB_WORKSPACE "setup\InnoSetup\isetup-5.2.3.exe"
+          $quickStartPack = Join-Path $env:GITHUB_WORKSPACE "setup\InnoSetup\ispack-5.2.3.exe"
           if (!(Test-Path $installer)) {
             throw "Repo-local Inno Setup installer not found: $installer"
           }
+          if (!(Test-Path $quickStartPack)) {
+            throw "Repo-local Inno Setup QuickStart Pack not found: $quickStartPack"
+          }
 
           Start-Process -FilePath $installer -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/SP-" -Wait
+          Start-Process -FilePath $quickStartPack -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/SP-" -Wait
 
       - name: Verify Inno Setup 5 compiler
         id: iscc
@@ -100,6 +105,34 @@ jobs:
 
           if (($versionOutput -notmatch "Inno Setup.*5\.") -and ($iscc -notmatch "Inno Setup 5")) {
             throw "Expected Inno Setup 5.x, but ISCC output/path did not prove Version 5.x."
+          }
+
+          $probeDir = Join-Path $env:RUNNER_TEMP "inno-ispp-probe"
+          New-Item -ItemType Directory -Path $probeDir -Force | Out-Null
+          $probeScript = Join-Path $probeDir "ispp-probe.iss"
+          @(
+            '#define ProbeToken "ISPP_OK"',
+            '[Setup]',
+            'AppName=ISPP Probe',
+            'AppVersion=1.0',
+            'DefaultDirName={tmp}\ISPPProbe',
+            'OutputDir=.',
+            'OutputBaseFilename=ispp-probe',
+            'DisableProgramGroupPage=yes',
+            'Uninstallable=no'
+          ) | Set-Content -Path $probeScript -Encoding ascii
+
+          $isppOutput = (& $iscc $probeScript 2>&1) | Out-String
+          $isppExitCode = $LASTEXITCODE
+          @(
+            '',
+            'ISPP probe:',
+            "ISPPProbeExitCode: $isppExitCode",
+            $isppOutput.TrimEnd()
+          ) | Add-Content -Path "inno-setup-version.log"
+
+          if ($isppExitCode -ne 0) {
+            throw "Expected ISPP support after installing the QuickStart Pack, but the probe compile failed."
           }
 
           # ISCC returns a nonzero exit code for the help screen; do not let that fail the step.
