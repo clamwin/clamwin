@@ -67,15 +67,16 @@ jobs:
             mingw-w64-x86_64-make
             mingw-w64-x86_64-curl
 
-      - name: Install repo-local Inno Setup 5
+      - name: Install repo-local Inno Setup 5.2.3 QuickStart Pack
         shell: pwsh
         run: |
-          $installer = Join-Path $env:GITHUB_WORKSPACE "setup\InnoSetup\isetup-5.2.3.exe"
+          $installer = Join-Path $env:GITHUB_WORKSPACE "setup\InnoSetup\ispack-5.2.3.exe"
           if (!(Test-Path $installer)) {
-            throw "Repo-local Inno Setup installer not found: $installer"
+            throw "Repo-local Inno Setup QuickStart Pack installer not found: $installer"
           }
 
-          Start-Process -FilePath $installer -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/SP-" -Wait
+          $installLog = Join-Path $env:RUNNER_TEMP "ispack-install.log"
+          Start-Process -FilePath $installer -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/SP-", "/TASKS=ispp", "/LOG=$installLog" -Wait
 
       - name: Verify Inno Setup 5 compiler
         id: iscc
@@ -87,7 +88,7 @@ jobs:
           )
           $iscc = $candidates | Where-Object { Test-Path $_ } | Select-Object -First 1
           if ([string]::IsNullOrWhiteSpace($iscc)) {
-            throw "ISCC.exe was not found after installing repo-local Inno Setup 5."
+            throw "ISCC.exe was not found after installing repo-local Inno Setup 5.2.3 QuickStart Pack."
           }
 
           $versionOutput = (& $iscc /? 2>&1) | Out-String
@@ -97,6 +98,15 @@ jobs:
             "ProbeExitCode: $probeExitCode",
             $versionOutput.TrimEnd()
           ) | Tee-Object -FilePath "inno-setup-version.log"
+
+          $installLog = Join-Path $env:RUNNER_TEMP "ispack-install.log"
+          if (Test-Path $installLog) {
+            @(
+              '',
+              'QuickStart Pack install log:',
+              (Get-Content $installLog -Raw).TrimEnd()
+            ) | Add-Content -Path "inno-setup-version.log"
+          }
 
           if (($versionOutput -notmatch "Inno Setup.*5\.") -and ($iscc -notmatch "Inno Setup 5")) {
             throw "Expected Inno Setup 5.x, but ISCC output/path did not prove Version 5.x."
@@ -127,7 +137,7 @@ jobs:
           ) | Add-Content -Path "inno-setup-version.log"
 
           if ($isppExitCode -ne 0) {
-            throw "Expected ISPP support after installing repo-local Inno Setup 5, but the probe compile failed."
+            throw "Expected ISPP support after installing repo-local Inno Setup 5.2.3 QuickStart Pack, but the probe compile failed."
           }
 
           # ISCC returns a nonzero exit code for the help screen; do not let that fail the step.
