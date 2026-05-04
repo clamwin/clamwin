@@ -115,7 +115,7 @@ jobs:
           $env:CARGO_TARGET_I686_PC_WINDOWS_GNU_LINKER = "$t32\gcc.exe"
 
           Set-Location build-x86-mingw-winxp
-          & "$t32\mingw32-make.exe" clambc clamscan freshclam sigtool clamd clamdscan clamdtop
+          & "$t32\mingw32-make.exe" clambc clamscan freshclam sigtool clamd clamdscan clamdtop libclamunrar libclamunrar_iface
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: CMake configure – legacy-x64 (Vista+)
@@ -151,7 +151,7 @@ jobs:
           $env:CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER = "$t64\gcc.exe"
 
           Set-Location build-x64-mingw
-          & "$t64\mingw32-make.exe" clambc clamscan freshclam sigtool clamd clamdscan clamdtop
+          & "$t64\mingw32-make.exe" clambc clamscan freshclam sigtool clamd clamdscan clamdtop libclamunrar libclamunrar_iface
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Collect and upload ClamAV binaries
