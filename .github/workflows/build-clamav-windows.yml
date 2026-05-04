@@ -111,7 +111,7 @@ jobs:
           $env:CARGO_TARGET_I686_PC_WINDOWS_GNU_LINKER = "$t32\gcc.exe"
 
           Set-Location build-x86-mingw-winxp
-          & "$t32\mingw32-make.exe" -j4 clambc clamscan freshclam sigtool clamd clamdscan clamdtop
+          & "$t32\mingw32-make.exe" clambc clamscan freshclam sigtool clamd clamdscan clamdtop
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       # ── 5a. Configure – legacy-x64 (targets Windows Vista+) ──────────────
@@ -149,7 +149,7 @@ jobs:
           $env:CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER = "$t64\gcc.exe"
 
           Set-Location build-x64-mingw
-          & "$t64\mingw32-make.exe" -j4 clambc clamscan freshclam sigtool clamd clamdscan clamdtop
+          & "$t64\mingw32-make.exe" clambc clamscan freshclam sigtool clamd clamdscan clamdtop
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       # ── 6. Collect and upload artifacts ────────────────────────────────────
