@@ -203,15 +203,136 @@ jobs:
           path: ${{ steps.collect.outputs.output_root }}/legacy-x64/
           if-no-files-found: error
 
-  # ── Job 2: Build ClamWin installer ─────────────────────────────────────────
+  # ── Job 2: Build ClamAV Win9x from source (branch 1.4) ────────────────────
+  build_clamav_win9x:
+    name: Build ClamAV Win9x (GCC 12.2.0 / branch 1.4)
+    runs-on: windows-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Check out clamav-win32 branch 1.4 (without submodules)
+        uses: actions/checkout@v6
+        with:
+          repository: clamwin/clamav-win32
+          ref: refs/heads/1.4
+          submodules: false
+
+      - name: Rewrite git:// (port 9418) URLs to HTTPS for SourceForge
+        shell: pwsh
+        run: |
+          git config --global `
+            url."https://git.code.sf.net/p/".insteadOf `
+            "git://git.code.sf.net/p/"
+
+      - name: Initialise submodules recursively
+        shell: pwsh
+        run: git submodule update --init --recursive
+
+      - name: Add Rust i686 target for MinGW cross-compilation
+        shell: pwsh
+        run: rustup target add i686-pc-windows-gnu
+
+      - name: Download and extract WinLibs i686 GCC 12.2.0 / MinGW-w64 10.0.0
+        id: toolchain
+        shell: pwsh
+        run: |
+          $toolRoot = 'C:\toolchain'
+          New-Item -ItemType Directory -Path $toolRoot -Force | Out-Null
+
+          $baseUrl  = 'https://github.com/brechtsanders/winlibs_mingw/releases/download/12.2.0-14.0.6-10.0.0-msvcrt-r2'
+          $x86Asset = 'winlibs-i686-posix-dwarf-gcc-12.2.0-mingw-w64msvcrt-10.0.0-r2.7z'
+
+          Write-Host "Downloading i686 toolchain (85.1 MB)..."
+          Invoke-WebRequest -Uri "$baseUrl/$x86Asset" -OutFile "$env:TEMP\winlibs-x86.7z"
+          Write-Host "Extracting i686 toolchain..."
+          7z x "$env:TEMP\winlibs-x86.7z" "-o$toolRoot" -y | Out-Null
+
+          $gcc32 = "$toolRoot\mingw32\bin\gcc.exe"
+          if (!(Test-Path $gcc32)) { throw "i686 GCC not found after extraction: $gcc32" }
+          Write-Host "=== i686 toolchain ==="
+          & $gcc32 --version
+
+          "TOOLCHAIN_ROOT=$toolRoot" | Out-File -Append -FilePath $env:GITHUB_ENV -Encoding utf8
+
+      - name: CMake configure – legacy-win9x
+        shell: pwsh
+        run: |
+          $t32 = "$env:TOOLCHAIN_ROOT\mingw32\bin"
+          $env:PATH = "$t32;$env:PATH"
+          $env:CARGO_BUILD_TARGET = 'i686-pc-windows-gnu'
+          $env:CARGO_TARGET_I686_PC_WINDOWS_GNU_LINKER = "$t32\gcc.exe"
+
+          $t32f = $t32.Replace('\', '/')
+          cmake `
+            -S . `
+            -B build-x86-mingw-win9x `
+            -G "MinGW Makefiles" `
+            -DCMAKE_MAKE_PROGRAM=mingw32-make `
+            "-DCMAKE_C_COMPILER=$t32f/gcc.exe" `
+            "-DCMAKE_CXX_COMPILER=$t32f/g++.exe" `
+            "-DCMAKE_RC_COMPILER=$t32f/windres.exe" `
+            "-DCMAKE_RC_FLAGS=--preprocessor=$t32f/cpp.exe --preprocessor-arg=-DRC_INVOKED" `
+            "-DCMAKE_C_FLAGS=-std=gnu11 -Wno-error=implicit-function-declaration" `
+            "-DRUST_COMPILER_TARGET:STRING=i686-pc-windows-gnu"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Build ClamAV – legacy-win9x
+        shell: pwsh
+        run: |
+          $t32 = "$env:TOOLCHAIN_ROOT\mingw32\bin"
+          $env:PATH = "$t32;$env:PATH"
+          $env:CARGO_BUILD_TARGET = 'i686-pc-windows-gnu'
+          $env:CARGO_TARGET_I686_PC_WINDOWS_GNU_LINKER = "$t32\gcc.exe"
+
+          Set-Location build-x86-mingw-win9x
+          & "$t32\mingw32-make.exe" clambc clamscan freshclam sigtool libclamunrar libclamunrar_iface
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Collect and upload ClamAV Win9x binaries
+        id: collect
+        shell: pwsh
+        run: |
+          $outDir = "$env:RUNNER_TEMP\clamav-win9x-output"
+          New-Item -ItemType Directory -Path $outDir -Force | Out-Null
+
+          $items = @(
+            'clambc.exe', 'clamscan.exe', 'freshclam.exe', 'sigtool.exe',
+            'libclamav.dll', 'libfreshclam.dll',
+            'libclamunrar.dll', 'libclamunrar_iface.dll'
+          )
+
+          foreach ($f in $items) {
+            $src = "build-x86-mingw-win9x\$f"
+            if (Test-Path $src) { Copy-Item $src $outDir }
+          }
+
+          Write-Host "=== legacy-win9x ==="
+          Get-ChildItem $outDir | Select-Object Name, Length | Format-Table -AutoSize
+
+          "output_dir=$outDir" | Out-File -Append -FilePath $env:GITHUB_OUTPUT -Encoding utf8
+
+      - name: Upload ClamAV legacy-win9x binaries
+        uses: actions/upload-artifact@v7
+        with:
+          name: clamav-legacy-win9x-gcc12
+          path: ${{ steps.collect.outputs.output_dir }}/
+          if-no-files-found: error
+
+  # ── Job 3: Build ClamWin installer ─────────────────────────────────────────
   package_installer:
     name: Package Installer
     runs-on: windows-latest
-    needs: build_clamav
+    needs: [build_clamav, build_clamav_win9x]
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
+
+      - name: Download freshly built ClamAV legacy-win9x binaries
+        uses: actions/download-artifact@v8
+        with:
+          name: clamav-legacy-win9x-gcc12
+          path: setup/clamav-binaries/clamav-legacy-win9x
 
       - name: Download freshly built ClamAV legacy-x86 binaries
         uses: actions/download-artifact@v8
