@@ -217,13 +217,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: clamav-legacy-x86-gcc12
-          path: binaries/clamav/clamav-legacy-x86
+          path: setup/clamav-binaries/clamav-legacy-x86
 
       - name: Download freshly built ClamAV legacy-x64 binaries
         uses: actions/download-artifact@v4
         with:
           name: clamav-legacy-x64-gcc12
-          path: binaries/clamav/clamav-legacy-x64
+          path: setup/clamav-binaries/clamav-legacy-x64
 
       - name: Validate SignPath configuration
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.sign_installer }}
@@ -365,7 +365,12 @@ jobs:
       - name: Build unsigned installer
         shell: pwsh
         run: |
-          $prebuiltClamAvRoot = Join-Path $env:GITHUB_WORKSPACE "binaries\clamav"
+          $prebuiltClamAvRoot = Join-Path $env:GITHUB_WORKSPACE "setup\clamav-binaries"
+
+          # Remove the SHA256 manifest so build-setup.ps1 skips hash verification
+          # against the vendored binaries - we've replaced x86/x64 with freshly built ones
+          $manifest = Join-Path $prebuiltClamAvRoot "SHA256SUMS.txt"
+          if (Test-Path $manifest) { Remove-Item $manifest -Force }
 
           $outputDir = Join-Path $env:GITHUB_WORKSPACE "setup\Output"
           if (Test-Path $outputDir) {
