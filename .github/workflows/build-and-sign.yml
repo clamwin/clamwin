@@ -77,6 +77,7 @@ jobs:
           CARGO_TARGET_I686_PC_WINDOWS_GNU_LINKER: i686-w64-mingw32-gcc
         run: |
           make -C build-x86-mingw-winxp \
+            clamav_rust_target \
             clambc clamscan freshclam sigtool \
             clamd clamdscan clamdtop \
             libclamunrar libclamunrar_iface
@@ -100,6 +101,7 @@ jobs:
           CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER: x86_64-w64-mingw32-gcc
         run: |
           make -C build-x64-mingw \
+            clamav_rust_target \
             clambc clamscan freshclam sigtool \
             clamd clamdscan clamdtop \
             libclamunrar libclamunrar_iface
@@ -192,6 +194,7 @@ jobs:
           CARGO_TARGET_I686_PC_WINDOWS_GNU_LINKER: i686-w64-mingw32-gcc
         run: |
           make -C build-x86-mingw-win9x \
+            clamav_rust_target \
             clambc clamscan freshclam sigtool \
             libclamunrar libclamunrar_iface
 
