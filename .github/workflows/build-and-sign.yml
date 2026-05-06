@@ -26,8 +26,8 @@ concurrency:
 jobs:
   # ── Job 1: Build ClamAV from source ────────────────────────────────────────
   build_clamav:
-    name: Build ClamAV (GCC 12.2.0 / MinGW-w64 10.0.0)
-    runs-on: windows-latest
+    name: Build ClamAV (MinGW-w64, Linux cross-compile)
+    runs-on: ubuntu-24.04
     timeout-minutes: 120
 
     steps:
@@ -37,157 +37,95 @@ jobs:
           repository: clamwin/clamav-win32
           submodules: false
 
-      - name: Rewrite git:// (port 9418) URLs to HTTPS for SourceForge
-        shell: pwsh
+      - name: Install MinGW-w64 cross-compilation toolchain
         run: |
-          git config --global `
-            url."https://git.code.sf.net/p/".insteadOf `
+          sudo apt-get update
+          sudo apt-get install -y mingw-w64 cmake make python3
+
+      - name: Rewrite git:// (port 9418) URLs to HTTPS for SourceForge
+        run: |
+          git config --global \
+            url."https://git.code.sf.net/p/".insteadOf \
             "git://git.code.sf.net/p/"
 
       - name: Initialise submodules recursively
-        shell: pwsh
         run: git submodule update --init --recursive
 
-      - name: Add Rust targets for MinGW cross-compilation
-        shell: pwsh
-        run: rustup target add i686-pc-windows-gnu x86_64-pc-windows-gnu
-
-      - name: Download and extract WinLibs GCC 12.2.0 / MinGW-w64 10.0.0
-        id: toolchain
-        shell: pwsh
+      - name: Pin Rust to 1.94.1 and add Windows targets
         run: |
-          $toolRoot = 'C:\toolchain'
-          New-Item -ItemType Directory -Path $toolRoot -Force | Out-Null
-
-          $baseUrl  = 'https://github.com/brechtsanders/winlibs_mingw/releases/download/12.2.0-14.0.6-10.0.0-msvcrt-r2'
-          $x64Asset = 'winlibs-x86_64-posix-seh-gcc-12.2.0-mingw-w64msvcrt-10.0.0-r2.7z'
-          $x86Asset = 'winlibs-i686-posix-dwarf-gcc-12.2.0-mingw-w64msvcrt-10.0.0-r2.7z'
-
-          Write-Host "Downloading x86_64 toolchain (88.9 MB)..."
-          Invoke-WebRequest -Uri "$baseUrl/$x64Asset" -OutFile "$env:TEMP\winlibs-x64.7z"
-          Write-Host "Extracting x86_64 toolchain..."
-          7z x "$env:TEMP\winlibs-x64.7z" "-o$toolRoot" -y | Out-Null
-
-          Write-Host "Downloading i686 toolchain (85.1 MB)..."
-          Invoke-WebRequest -Uri "$baseUrl/$x86Asset" -OutFile "$env:TEMP\winlibs-x86.7z"
-          Write-Host "Extracting i686 toolchain..."
-          7z x "$env:TEMP\winlibs-x86.7z" "-o$toolRoot" -y | Out-Null
-
-          $gcc64 = "$toolRoot\mingw64\bin\gcc.exe"
-          $gcc32 = "$toolRoot\mingw32\bin\gcc.exe"
-          if (!(Test-Path $gcc64)) { throw "x86_64 GCC not found after extraction: $gcc64" }
-          if (!(Test-Path $gcc32)) { throw "i686 GCC not found after extraction: $gcc32" }
-
-          Write-Host "=== x86_64 toolchain ==="
-          & $gcc64 --version
-          Write-Host "=== i686 toolchain ==="
-          & $gcc32 --version
-
-          "TOOLCHAIN_ROOT=$toolRoot" | Out-File -Append -FilePath $env:GITHUB_ENV -Encoding utf8
+          rustup toolchain install 1.94.1
+          rustup default 1.94.1
+          rustup target add i686-pc-windows-gnu x86_64-pc-windows-gnu
 
       - name: CMake configure – legacy-x86 (WinXP)
-        shell: pwsh
+        env:
+          CARGO_BUILD_TARGET: i686-pc-windows-gnu
+          CARGO_TARGET_I686_PC_WINDOWS_GNU_LINKER: i686-w64-mingw32-gcc
         run: |
-          $t32 = "$env:TOOLCHAIN_ROOT\mingw32\bin"
-          $env:PATH = "$t32;$env:PATH"
-          $env:CARGO_BUILD_TARGET = 'i686-pc-windows-gnu'
-          $env:CARGO_TARGET_I686_PC_WINDOWS_GNU_LINKER = "$t32\gcc.exe"
-
-          $t32f = $t32.Replace('\', '/')
-          cmake `
-            -S . `
-            -B build-x86-mingw-winxp `
-            -G "MinGW Makefiles" `
-            -DCMAKE_MAKE_PROGRAM=mingw32-make `
-            "-DCMAKE_C_COMPILER=$t32f/gcc.exe" `
-            "-DCMAKE_CXX_COMPILER=$t32f/g++.exe" `
-            "-DCMAKE_RC_COMPILER=$t32f/windres.exe" `
-            "-DCMAKE_RC_FLAGS=--preprocessor=$t32f/cpp.exe --preprocessor-arg=-DRC_INVOKED" `
-            "-DCMAKE_C_FLAGS=-std=gnu17 -Wno-error=implicit-function-declaration" `
-            -DENABLE_LEGACY=ON `
-            -DCLAMWIN_SHELLEXT_UNICODE=ON `
-            "-DRUST_COMPILER_TARGET:STRING=i686-pc-windows-gnu" `
+          cmake \
+            -S . \
+            -B build-x86-mingw-winxp \
+            -DCMAKE_TOOLCHAIN_FILE=cmake/toolchain-mingw-x86.cmake \
+            "-DCMAKE_C_FLAGS=-std=gnu17 -Wno-error=implicit-function-declaration" \
+            -DENABLE_LEGACY=ON \
+            -DCLAMWIN_SHELLEXT_UNICODE=ON \
             -DUSE_ZLIB_NG_ON_X86=ON
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Build ClamAV – legacy-x86 (WinXP)
-        shell: pwsh
+        env:
+          CARGO_BUILD_TARGET: i686-pc-windows-gnu
+          CARGO_TARGET_I686_PC_WINDOWS_GNU_LINKER: i686-w64-mingw32-gcc
         run: |
-          $t32 = "$env:TOOLCHAIN_ROOT\mingw32\bin"
-          $env:PATH = "$t32;$env:PATH"
-          $env:CARGO_BUILD_TARGET = 'i686-pc-windows-gnu'
-          $env:CARGO_TARGET_I686_PC_WINDOWS_GNU_LINKER = "$t32\gcc.exe"
-
-          Set-Location build-x86-mingw-winxp
-          & "$t32\mingw32-make.exe" clambc clamscan freshclam sigtool clamd clamdscan clamdtop libclamunrar libclamunrar_iface
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          make -C build-x86-mingw-winxp \
+            clambc clamscan freshclam sigtool \
+            clamd clamdscan clamdtop \
+            libclamunrar libclamunrar_iface
 
       - name: CMake configure – legacy-x64 (Vista+)
-        shell: pwsh
+        env:
+          CARGO_BUILD_TARGET: x86_64-pc-windows-gnu
+          CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER: x86_64-w64-mingw32-gcc
         run: |
-          $t64 = "$env:TOOLCHAIN_ROOT\mingw64\bin"
-          $env:PATH = "$t64;$env:PATH"
-          $env:CARGO_BUILD_TARGET = 'x86_64-pc-windows-gnu'
-          $env:CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER = "$t64\gcc.exe"
-
-          $t64f = $t64.Replace('\', '/')
-          cmake `
-            -S . `
-            -B build-x64-mingw `
-            -G "MinGW Makefiles" `
-            -DCMAKE_MAKE_PROGRAM=mingw32-make `
-            "-DCMAKE_C_COMPILER=$t64f/gcc.exe" `
-            "-DCMAKE_CXX_COMPILER=$t64f/g++.exe" `
-            "-DCMAKE_RC_COMPILER=$t64f/windres.exe" `
-            "-DCMAKE_RC_FLAGS=--preprocessor=$t64f/cpp.exe --preprocessor-arg=-DRC_INVOKED" `
-            "-DCMAKE_C_FLAGS=-std=gnu17 -Wno-error=implicit-function-declaration" `
-            -DENABLE_LEGACY=ON `
-            -DCLAMWIN_SHELLEXT_UNICODE=ON `
-            "-DRUST_COMPILER_TARGET:STRING=x86_64-pc-windows-gnu"
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          cmake \
+            -S . \
+            -B build-x64-mingw \
+            -DCMAKE_TOOLCHAIN_FILE=cmake/toolchain-mingw-x64.cmake \
+            "-DCMAKE_C_FLAGS=-std=gnu17 -Wno-error=implicit-function-declaration" \
+            -DENABLE_LEGACY=ON \
+            -DCLAMWIN_SHELLEXT_UNICODE=ON
 
       - name: Build ClamAV – legacy-x64 (Vista+)
-        shell: pwsh
+        env:
+          CARGO_BUILD_TARGET: x86_64-pc-windows-gnu
+          CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER: x86_64-w64-mingw32-gcc
         run: |
-          $t64 = "$env:TOOLCHAIN_ROOT\mingw64\bin"
-          $env:PATH = "$t64;$env:PATH"
-          $env:CARGO_BUILD_TARGET = 'x86_64-pc-windows-gnu'
-          $env:CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER = "$t64\gcc.exe"
-
-          Set-Location build-x64-mingw
-          & "$t64\mingw32-make.exe" clambc clamscan freshclam sigtool clamd clamdscan clamdtop libclamunrar libclamunrar_iface
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          make -C build-x64-mingw \
+            clambc clamscan freshclam sigtool \
+            clamd clamdscan clamdtop \
+            libclamunrar libclamunrar_iface
 
       - name: Collect and upload ClamAV binaries
         id: collect
-        shell: pwsh
         run: |
-          $outRoot = "$env:RUNNER_TEMP\clamav-output"
-          New-Item -ItemType Directory -Path "$outRoot\legacy-x86" -Force | Out-Null
-          New-Item -ItemType Directory -Path "$outRoot\legacy-x64" -Force | Out-Null
+          outRoot="$RUNNER_TEMP/clamav-output"
+          mkdir -p "$outRoot/legacy-x86" "$outRoot/legacy-x64"
 
-          $items = @(
-            'clambc.exe', 'clamscan.exe', 'freshclam.exe', 'sigtool.exe',
-            'clamd.exe', 'clamdscan.exe', 'clamdtop.exe',
-            'libclamav.dll', 'libfreshclam.dll',
-            'libclamunrar.dll', 'libclamunrar_iface.dll'
+          items=(
+            clambc.exe clamscan.exe freshclam.exe sigtool.exe
+            clamd.exe clamdscan.exe clamdtop.exe
+            libclamav.dll libfreshclam.dll
+            libclamunrar.dll libclamunrar_iface.dll
           )
 
-          foreach ($f in $items) {
-            $src = "build-x86-mingw-winxp\$f"
-            if (Test-Path $src) { Copy-Item $src "$outRoot\legacy-x86\" }
-          }
-          foreach ($f in $items) {
-            $src = "build-x64-mingw\$f"
-            if (Test-Path $src) { Copy-Item $src "$outRoot\legacy-x64\" }
-          }
+          for f in "${items[@]}"; do
+            [ -f "build-x86-mingw-winxp/$f" ] && cp "build-x86-mingw-winxp/$f" "$outRoot/legacy-x86/"
+            [ -f "build-x64-mingw/$f"       ] && cp "build-x64-mingw/$f"       "$outRoot/legacy-x64/"
+          done
 
-          Write-Host "=== legacy-x86 ==="
-          Get-ChildItem "$outRoot\legacy-x86" | Select-Object Name, Length | Format-Table -AutoSize
-          Write-Host "=== legacy-x64 ==="
-          Get-ChildItem "$outRoot\legacy-x64" | Select-Object Name, Length | Format-Table -AutoSize
+          echo "=== legacy-x86 ===" && ls -lh "$outRoot/legacy-x86/"
+          echo "=== legacy-x64 ===" && ls -lh "$outRoot/legacy-x64/"
 
-          "output_root=$outRoot" | Out-File -Append -FilePath $env:GITHUB_OUTPUT -Encoding utf8
+          echo "output_root=$outRoot" >> "$GITHUB_OUTPUT"
 
       - name: Upload ClamAV legacy-x86 binaries
         uses: actions/upload-artifact@v7
@@ -205,8 +143,8 @@ jobs:
 
   # ── Job 2: Build ClamAV Win9x from source (branch 1.4) ────────────────────
   build_clamav_win9x:
-    name: Build ClamAV Win9x (GCC 12.2.0 / branch 1.4)
-    runs-on: windows-latest
+    name: Build ClamAV Win9x (MinGW-w64, Linux cross-compile, branch 1.4)
+    runs-on: ubuntu-24.04
     timeout-minutes: 90
 
     steps:
@@ -217,99 +155,65 @@ jobs:
           ref: refs/heads/1.4
           submodules: false
 
-      - name: Rewrite git:// (port 9418) URLs to HTTPS for SourceForge
-        shell: pwsh
+      - name: Install MinGW-w64 cross-compilation toolchain
         run: |
-          git config --global `
-            url."https://git.code.sf.net/p/".insteadOf `
+          sudo apt-get update
+          sudo apt-get install -y mingw-w64 cmake make python3
+
+      - name: Rewrite git:// (port 9418) URLs to HTTPS for SourceForge
+        run: |
+          git config --global \
+            url."https://git.code.sf.net/p/".insteadOf \
             "git://git.code.sf.net/p/"
 
       - name: Initialise submodules recursively
-        shell: pwsh
         run: git submodule update --init --recursive
 
-      - name: Add Rust i686 target for MinGW cross-compilation
-        shell: pwsh
-        run: rustup target add i686-pc-windows-gnu
-
-      - name: Download and extract WinLibs i686 GCC 12.2.0 / MinGW-w64 10.0.0
-        id: toolchain
-        shell: pwsh
+      - name: Pin Rust to 1.94.1 and add i686 Windows target
         run: |
-          $toolRoot = 'C:\toolchain'
-          New-Item -ItemType Directory -Path $toolRoot -Force | Out-Null
-
-          $baseUrl  = 'https://github.com/brechtsanders/winlibs_mingw/releases/download/12.2.0-14.0.6-10.0.0-msvcrt-r2'
-          $x86Asset = 'winlibs-i686-posix-dwarf-gcc-12.2.0-mingw-w64msvcrt-10.0.0-r2.7z'
-
-          Write-Host "Downloading i686 toolchain (85.1 MB)..."
-          Invoke-WebRequest -Uri "$baseUrl/$x86Asset" -OutFile "$env:TEMP\winlibs-x86.7z"
-          Write-Host "Extracting i686 toolchain..."
-          7z x "$env:TEMP\winlibs-x86.7z" "-o$toolRoot" -y | Out-Null
-
-          $gcc32 = "$toolRoot\mingw32\bin\gcc.exe"
-          if (!(Test-Path $gcc32)) { throw "i686 GCC not found after extraction: $gcc32" }
-          Write-Host "=== i686 toolchain ==="
-          & $gcc32 --version
-
-          "TOOLCHAIN_ROOT=$toolRoot" | Out-File -Append -FilePath $env:GITHUB_ENV -Encoding utf8
+          rustup toolchain install 1.94.1
+          rustup default 1.94.1
+          rustup target add i686-pc-windows-gnu
 
       - name: CMake configure – legacy-win9x
-        shell: pwsh
+        env:
+          CARGO_BUILD_TARGET: i686-pc-windows-gnu
+          CARGO_TARGET_I686_PC_WINDOWS_GNU_LINKER: i686-w64-mingw32-gcc
         run: |
-          $t32 = "$env:TOOLCHAIN_ROOT\mingw32\bin"
-          $env:PATH = "$t32;$env:PATH"
-          $env:CARGO_BUILD_TARGET = 'i686-pc-windows-gnu'
-          $env:CARGO_TARGET_I686_PC_WINDOWS_GNU_LINKER = "$t32\gcc.exe"
-
-          $t32f = $t32.Replace('\', '/')
-          cmake `
-            -S . `
-            -B build-x86-mingw-win9x `
-            -G "MinGW Makefiles" `
-            -DCMAKE_MAKE_PROGRAM=mingw32-make `
-            "-DCMAKE_C_COMPILER=$t32f/gcc.exe" `
-            "-DCMAKE_CXX_COMPILER=$t32f/g++.exe" `
-            "-DCMAKE_RC_COMPILER=$t32f/windres.exe" `
-            "-DCMAKE_RC_FLAGS=--preprocessor=$t32f/cpp.exe --preprocessor-arg=-DRC_INVOKED" `
-            "-DCMAKE_C_FLAGS=-std=gnu11 -Wno-error=implicit-function-declaration" `
-            "-DRUST_COMPILER_TARGET:STRING=i686-pc-windows-gnu"
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          cmake \
+            -S . \
+            -B build-x86-mingw-win9x \
+            -DCMAKE_TOOLCHAIN_FILE=cmake/toolchain-mingw-x86.cmake \
+            "-DCMAKE_C_FLAGS=-std=gnu11 -Wno-error=implicit-function-declaration"
 
       - name: Build ClamAV – legacy-win9x
-        shell: pwsh
+        env:
+          CARGO_BUILD_TARGET: i686-pc-windows-gnu
+          CARGO_TARGET_I686_PC_WINDOWS_GNU_LINKER: i686-w64-mingw32-gcc
         run: |
-          $t32 = "$env:TOOLCHAIN_ROOT\mingw32\bin"
-          $env:PATH = "$t32;$env:PATH"
-          $env:CARGO_BUILD_TARGET = 'i686-pc-windows-gnu'
-          $env:CARGO_TARGET_I686_PC_WINDOWS_GNU_LINKER = "$t32\gcc.exe"
-
-          Set-Location build-x86-mingw-win9x
-          & "$t32\mingw32-make.exe" clambc clamscan freshclam sigtool libclamunrar libclamunrar_iface
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          make -C build-x86-mingw-win9x \
+            clambc clamscan freshclam sigtool \
+            libclamunrar libclamunrar_iface
 
       - name: Collect and upload ClamAV Win9x binaries
         id: collect
-        shell: pwsh
         run: |
-          $outDir = "$env:RUNNER_TEMP\clamav-win9x-output"
-          New-Item -ItemType Directory -Path $outDir -Force | Out-Null
+          outDir="$RUNNER_TEMP/clamav-win9x-output"
+          mkdir -p "$outDir"
 
-          $items = @(
-            'clambc.exe', 'clamscan.exe', 'freshclam.exe', 'sigtool.exe',
-            'libclamav.dll', 'libfreshclam.dll',
-            'libclamunrar.dll', 'libclamunrar_iface.dll'
+          items=(
+            clambc.exe clamscan.exe freshclam.exe sigtool.exe
+            libclamav.dll libfreshclam.dll
+            libclamunrar.dll libclamunrar_iface.dll
           )
 
-          foreach ($f in $items) {
-            $src = "build-x86-mingw-win9x\$f"
-            if (Test-Path $src) { Copy-Item $src $outDir }
-          }
+          for f in "${items[@]}"; do
+            [ -f "build-x86-mingw-win9x/$f" ] && cp "build-x86-mingw-win9x/$f" "$outDir/"
+          done
 
-          Write-Host "=== legacy-win9x ==="
-          Get-ChildItem $outDir | Select-Object Name, Length | Format-Table -AutoSize
+          echo "=== legacy-win9x ===" && ls -lh "$outDir/"
 
-          "output_dir=$outDir" | Out-File -Append -FilePath $env:GITHUB_OUTPUT -Encoding utf8
+          echo "output_dir=$outDir" >> "$GITHUB_OUTPUT"
 
       - name: Upload ClamAV legacy-win9x binaries
         uses: actions/upload-artifact@v7
