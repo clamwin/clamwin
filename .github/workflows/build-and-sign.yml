@@ -16,6 +16,7 @@ on:
 
 permissions:
   actions: read
+  attestations: write
   contents: write
   id-token: write
 
@@ -490,6 +491,11 @@ jobs:
           Write-Host "Unsigned installer: $($installer.FullName)"
           "unsigned_installer=$($installer.FullName)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
 
+      - name: Attest unsigned installer provenance
+        uses: actions/attest-build-provenance@v4
+        with:
+          subject-path: ${{ steps.unsigned.outputs.unsigned_installer }}
+
       - name: Upload unsigned installer artifact
         id: upload_unsigned
         uses: actions/upload-artifact@v7
@@ -527,6 +533,28 @@ jobs:
           }
 
           $signed | ForEach-Object { Write-Host "Signed installer: $($_.FullName)" }
+
+      - name: Locate signed installer
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.sign_installer }}
+        id: signed
+        shell: pwsh
+        run: |
+          $installer = Get-ChildItem -Path "signed" -Filter "*.exe" -File -Recurse |
+            Sort-Object LastWriteTime -Descending |
+            Select-Object -First 1
+
+          if (-not $installer) {
+            throw "No signed ClamWin installer was produced under signed/."
+          }
+
+          Write-Host "Signed installer for attestation: $($installer.FullName)"
+          "signed_installer=$($installer.FullName)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+
+      - name: Attest signed installer provenance
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.sign_installer }}
+        uses: actions/attest-build-provenance@v4
+        with:
+          subject-path: ${{ steps.signed.outputs.signed_installer }}
 
       - name: Upload signed installer
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.sign_installer }}
