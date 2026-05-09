@@ -65,6 +65,7 @@ jobs:
           cmake \
             -S . \
             -B build-x86-mingw-winxp \
+            -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_TOOLCHAIN_FILE=cmake/toolchain-mingw-x86.cmake \
             "-DCMAKE_C_FLAGS=-std=gnu17 -Wno-error=implicit-function-declaration" \
             -DENABLE_LEGACY=ON \
@@ -90,6 +91,7 @@ jobs:
           cmake \
             -S . \
             -B build-x64-mingw \
+            -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_TOOLCHAIN_FILE=cmake/toolchain-mingw-x64.cmake \
             "-DCMAKE_C_FLAGS=-std=gnu17 -Wno-error=implicit-function-declaration" \
             -DENABLE_LEGACY=ON \
@@ -111,6 +113,7 @@ jobs:
         run: |
           outRoot="$RUNNER_TEMP/clamav-output"
           mkdir -p "$outRoot/legacy-x86" "$outRoot/legacy-x64"
+          mkdir -p "$outRoot/gui-link-x86/3rdparty/curl/lib" "$outRoot/gui-link-x64/3rdparty/curl/lib"
 
           items=(
             clambc.exe clamscan.exe freshclam.exe sigtool.exe
@@ -123,6 +126,11 @@ jobs:
             [ -f "build-x86-mingw-winxp/$f" ] && cp "build-x86-mingw-winxp/$f" "$outRoot/legacy-x86/"
             [ -f "build-x64-mingw/$f"       ] && cp "build-x64-mingw/$f"       "$outRoot/legacy-x64/"
           done
+
+          cp "build-x86-mingw-winxp/3rdparty/curl/lib/libcurl.a" "$outRoot/gui-link-x86/3rdparty/curl/lib/"
+          cp "build-x86-mingw-winxp/libclamav_compat.a" "$outRoot/gui-link-x86/"
+          cp "build-x64-mingw/3rdparty/curl/lib/libcurl.a" "$outRoot/gui-link-x64/3rdparty/curl/lib/"
+          cp "build-x64-mingw/libclamav_compat.a" "$outRoot/gui-link-x64/"
 
           echo "=== legacy-x86 ===" && ls -lh "$outRoot/legacy-x86/"
           echo "=== legacy-x64 ===" && ls -lh "$outRoot/legacy-x64/"
@@ -141,6 +149,20 @@ jobs:
         with:
           name: clamav-legacy-x64-gcc12
           path: ${{ steps.collect.outputs.output_root }}/legacy-x64/
+          if-no-files-found: error
+
+      - name: Upload ClamAV GUI link x86 support files
+        uses: actions/upload-artifact@v7
+        with:
+          name: clamav-gui-link-x86-gcc12
+          path: ${{ steps.collect.outputs.output_root }}/gui-link-x86/
+          if-no-files-found: error
+
+      - name: Upload ClamAV GUI link x64 support files
+        uses: actions/upload-artifact@v7
+        with:
+          name: clamav-gui-link-x64-gcc12
+          path: ${{ steps.collect.outputs.output_root }}/gui-link-x64/
           if-no-files-found: error
 
   # ── Job 2: Build ClamAV Win9x from source (branch 1.4) ────────────────────
@@ -185,6 +207,7 @@ jobs:
           cmake \
             -S . \
             -B build-x86-mingw-win9x \
+            -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_TOOLCHAIN_FILE=cmake/toolchain-mingw-x86.cmake \
             "-DCMAKE_C_FLAGS=-std=gnu11 -Wno-error=implicit-function-declaration"
 
@@ -252,6 +275,34 @@ jobs:
         with:
           name: clamav-legacy-x64-gcc12
           path: setup/clamav-binaries/clamav-legacy-x64
+
+      - name: Download ClamAV GUI link x86 support files
+        uses: actions/download-artifact@v8
+        with:
+          name: clamav-gui-link-x86-gcc12
+          path: .ci-link-libs/build-x86-mingw-winxp
+
+      - name: Download ClamAV GUI link x64 support files
+        uses: actions/download-artifact@v8
+        with:
+          name: clamav-gui-link-x64-gcc12
+          path: .ci-link-libs/build-x64-mingw
+
+      - name: Stage ClamAV GUI static link inputs
+        shell: pwsh
+        run: |
+          $siblingWorkspaceRoot = Split-Path $env:GITHUB_WORKSPACE -Parent
+          $siblingClamavRoot = Join-Path $siblingWorkspaceRoot "clamav-win32"
+
+          New-Item -ItemType Directory -Force -Path (Join-Path $siblingClamavRoot "build-x86-mingw-winxp") | Out-Null
+          New-Item -ItemType Directory -Force -Path (Join-Path $siblingClamavRoot "build-x64-mingw") | Out-Null
+
+          Copy-Item ".ci-link-libs\build-x86-mingw-winxp\*" (Join-Path $siblingClamavRoot "build-x86-mingw-winxp") -Recurse -Force
+          Copy-Item ".ci-link-libs\build-x64-mingw\*" (Join-Path $siblingClamavRoot "build-x64-mingw") -Recurse -Force
+
+          Write-Host "Staged GUI link inputs under: $siblingClamavRoot"
+          Get-ChildItem (Join-Path $siblingClamavRoot "build-x86-mingw-winxp") -Recurse -File | Select-Object FullName, Length | Format-Table -AutoSize
+          Get-ChildItem (Join-Path $siblingClamavRoot "build-x64-mingw") -Recurse -File | Select-Object FullName, Length | Format-Table -AutoSize
 
       - name: Validate SignPath configuration
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.sign_installer }}
