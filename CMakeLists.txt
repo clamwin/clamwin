@@ -57,12 +57,12 @@ else()
             "${CLAMWIN_CURL_ROOT}/lib")
     find_library(CW_LIBSSL NAMES libssl.a ssl libssl
         HINTS
-            "${CLAMWIN_CURL_ROOT}/lib"
-            "${_CW_OPENSSL_PREBUILT}")
+            "${_CW_OPENSSL_PREBUILT}"
+            "${CLAMWIN_CURL_ROOT}/lib")
     find_library(CW_LIBCRYPTO NAMES libcrypto.a crypto libcrypto
         HINTS
-            "${CLAMWIN_CURL_ROOT}/lib"
-            "${_CW_OPENSSL_PREBUILT}")
+            "${_CW_OPENSSL_PREBUILT}"
+            "${CLAMWIN_CURL_ROOT}/lib")
 
     if(CW_LIBCURL)
         # Resolve include paths: prefer CLAMWIN_CURL_ROOT, fall back to sibling.
