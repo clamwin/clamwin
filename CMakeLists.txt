@@ -21,13 +21,12 @@ endif()
 #
 # Discovery order:
 #   1. libcurl_static CMake target already defined (parent/sibling build)
-#   2. find_package(CURL) — standard system/toolchain installation
-#   3. Sibling clamav-win32 prebuilt .a files as a last-resort hint
+#   2. Sibling clamav-win32 compatibility archives
 #
-# For standalone builds (as documented in README.md) a MinGW toolchain that
-# ships curl+OpenSSL (e.g. MSYS2 mingw64) satisfies path 2 automatically.
-# To point at a custom installation pass:
-#   cmake ... -DCLAMWIN_CURL_ROOT=<path to curl prefix>
+# CLAMWIN_CURL_ROOT is retained only as a header-location hint for curl headers.
+# Do not fall back to toolchain-provided libcurl/libssl/libcrypto libraries here:
+# those binaries are not compatible with older Windows versions supported by the
+# GUI (XP / Server 2003).
 
 if(TARGET libcurl_static)
     # ── Case 1: already defined by a parent/sibling build ──
@@ -37,9 +36,10 @@ if(TARGET libcurl_static)
     set(CW_CURL_LINK_LIBS libcurl_static)
     set(CW_CURL_IS_STATIC TRUE)
 else()
-    # ── Case 2 & 3: standalone or hint-based discovery ──
-    # Prefer an explicit static archive from CLAMWIN_CURL_ROOT or a sibling
-    # clamav-win32 build tree so the GUI does not depend on libcurl-4.dll.
+    # ── Case 2: sibling compat archives ──
+    # Only use the legacy-compatible curl/OpenSSL archives produced or vendored
+    # by clamav-win32.  Falling back to CLAMWIN_CURL_ROOT/MSYS2 libraries can
+    # introduce imports that fail on XP / Server 2003.
     get_filename_component(_CW_ROOT "${CMAKE_SOURCE_DIR}/.." ABSOLUTE)
     set(_CW_SIBLING_ROOT "${_CW_ROOT}/clamav-win32")
 
@@ -54,54 +54,53 @@ else()
     find_library(CW_LIBCURL NAMES libcurl.a
         HINTS
             "${_CW_SIBLING_BUILD}/3rdparty/curl/lib"
-            "${CLAMWIN_CURL_ROOT}/lib")
+        NO_DEFAULT_PATH)
     find_library(CW_LIBSSL NAMES libssl.a ssl libssl
         HINTS
             "${_CW_OPENSSL_PREBUILT}"
-            "${CLAMWIN_CURL_ROOT}/lib")
+        NO_DEFAULT_PATH)
     find_library(CW_LIBCRYPTO NAMES libcrypto.a crypto libcrypto
         HINTS
             "${_CW_OPENSSL_PREBUILT}"
-            "${CLAMWIN_CURL_ROOT}/lib")
+        NO_DEFAULT_PATH)
 
-    if(CW_LIBCURL)
-        # Resolve include paths: prefer CLAMWIN_CURL_ROOT, fall back to sibling.
+    set(_CW_COMPAT_CURL_MISSING)
+    foreach(_cw_required_var CW_LIBCURL CW_LIBSSL CW_LIBCRYPTO)
+        if(NOT ${_cw_required_var})
+            list(APPEND _CW_COMPAT_CURL_MISSING ${_cw_required_var})
+        endif()
+    endforeach()
+
+    if(NOT _CW_COMPAT_CURL_MISSING)
+        # Resolve include paths: prefer CLAMWIN_CURL_ROOT for headers when it
+        # is provided, otherwise use the sibling curl headers.
         if(CLAMWIN_CURL_ROOT)
             set(CW_CURL_INCLUDE "${CLAMWIN_CURL_ROOT}/include")
         else()
             set(CW_CURL_INCLUDE "${_CW_SIBLING_ROOT}/3rdparty/curl/include")
         endif()
-        set(CW_OPENSSL_INCLUDE "${_CW_SIBLING_ROOT}/3rdparty/openssl/include")
 
-        set(CW_CURL_LINK_LIBS "${CW_LIBCURL}")
-        if(CW_LIBSSL)
-            list(APPEND CW_CURL_LINK_LIBS "${CW_LIBSSL}")
+        if(EXISTS "${_CW_SIBLING_ROOT}/3rdparty/openssl/include")
+            set(CW_OPENSSL_INCLUDE "${_CW_SIBLING_ROOT}/3rdparty/openssl/include")
+        else()
+            set(CW_OPENSSL_INCLUDE "")
         endif()
-        if(CW_LIBCRYPTO)
-            list(APPEND CW_CURL_LINK_LIBS "${CW_LIBCRYPTO}")
-        endif()
+
+        set(CW_CURL_LINK_LIBS
+            "${CW_LIBCURL}"
+            "${CW_LIBSSL}"
+            "${CW_LIBCRYPTO}"
+        )
         set(CW_CURL_IS_STATIC TRUE)
     else()
-        # Final fallback: use a toolchain-provided CURL package if no static
-        # archive is available from the hinted locations.
-        set(CMAKE_PREFIX_PATH
-            "${CLAMWIN_CURL_ROOT}"
-            ${CMAKE_PREFIX_PATH}
+        string(JOIN ", " _cw_missing_desc ${_CW_COMPAT_CURL_MISSING})
+        message(FATAL_ERROR
+            "Missing required legacy-compatible curl/OpenSSL archives: ${_cw_missing_desc}. "
+            "Expected libcurl.a under ${_CW_SIBLING_BUILD}/3rdparty/curl/lib and "
+            "libssl.a/libcrypto.a under ${_CW_OPENSSL_PREBUILT}. "
+            "Toolchain-provided libraries are intentionally rejected because they "
+            "produce binaries that fail on older Windows versions."
         )
-        find_package(CURL QUIET)
-
-        if(CURL_FOUND)
-            set(CW_CURL_INCLUDE "")          # CURL::libcurl carries include dirs
-            set(CW_OPENSSL_INCLUDE "")
-            set(CW_CURL_LINK_LIBS CURL::libcurl)
-            set(CW_CURL_IS_STATIC FALSE)
-        else()
-            message(FATAL_ERROR
-                "libcurl not found. Install curl via your toolchain "
-                "(e.g. pacman -S mingw-w64-x86_64-curl in MSYS2), or "
-                "set -DCLAMWIN_CURL_ROOT=<prefix> on the cmake command line, "
-                "or build clamav-win32 first so the sibling build tree exists.")
-        endif()
     endif()
 endif()
 

@@ -114,6 +114,7 @@ jobs:
           outRoot="$RUNNER_TEMP/clamav-output"
           mkdir -p "$outRoot/legacy-x86" "$outRoot/legacy-x64"
           mkdir -p "$outRoot/gui-link-x86/3rdparty/curl/lib" "$outRoot/gui-link-x64/3rdparty/curl/lib"
+          mkdir -p "$outRoot/gui-link-x86/3rdparty/openssl/lib/mingw/x86" "$outRoot/gui-link-x64/3rdparty/openssl/lib/mingw/x64"
 
           items=(
             clambc.exe clamscan.exe freshclam.exe sigtool.exe
@@ -129,8 +130,12 @@ jobs:
 
           cp "build-x86-mingw-winxp/3rdparty/curl/lib/libcurl.a" "$outRoot/gui-link-x86/3rdparty/curl/lib/"
           cp "build-x86-mingw-winxp/libclamav_compat.a" "$outRoot/gui-link-x86/"
+          cp "3rdparty/openssl/lib/mingw/x86/libssl.a" "$outRoot/gui-link-x86/3rdparty/openssl/lib/mingw/x86/"
+          cp "3rdparty/openssl/lib/mingw/x86/libcrypto.a" "$outRoot/gui-link-x86/3rdparty/openssl/lib/mingw/x86/"
           cp "build-x64-mingw/3rdparty/curl/lib/libcurl.a" "$outRoot/gui-link-x64/3rdparty/curl/lib/"
           cp "build-x64-mingw/libclamav_compat.a" "$outRoot/gui-link-x64/"
+          cp "3rdparty/openssl/lib/mingw/x64/libssl.a" "$outRoot/gui-link-x64/3rdparty/openssl/lib/mingw/x64/"
+          cp "3rdparty/openssl/lib/mingw/x64/libcrypto.a" "$outRoot/gui-link-x64/3rdparty/openssl/lib/mingw/x64/"
 
           echo "=== legacy-x86 ===" && ls -lh "$outRoot/legacy-x86/"
           echo "=== legacy-x64 ===" && ls -lh "$outRoot/legacy-x64/"
@@ -280,13 +285,13 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           name: clamav-gui-link-x86-gcc12
-          path: .ci-link-libs/build-x86-mingw-winxp
+          path: .ci-link-libs/gui-link-x86
 
       - name: Download ClamAV GUI link x64 support files
         uses: actions/download-artifact@v8
         with:
           name: clamav-gui-link-x64-gcc12
-          path: .ci-link-libs/build-x64-mingw
+          path: .ci-link-libs/gui-link-x64
 
       - name: Stage ClamAV GUI static link inputs
         shell: pwsh
@@ -296,9 +301,16 @@ jobs:
 
           New-Item -ItemType Directory -Force -Path (Join-Path $siblingClamavRoot "build-x86-mingw-winxp") | Out-Null
           New-Item -ItemType Directory -Force -Path (Join-Path $siblingClamavRoot "build-x64-mingw") | Out-Null
+          New-Item -ItemType Directory -Force -Path (Join-Path $siblingClamavRoot "3rdparty\openssl\lib\mingw\x86") | Out-Null
+          New-Item -ItemType Directory -Force -Path (Join-Path $siblingClamavRoot "3rdparty\openssl\lib\mingw\x64") | Out-Null
 
-          Copy-Item ".ci-link-libs\build-x86-mingw-winxp\*" (Join-Path $siblingClamavRoot "build-x86-mingw-winxp") -Recurse -Force
-          Copy-Item ".ci-link-libs\build-x64-mingw\*" (Join-Path $siblingClamavRoot "build-x64-mingw") -Recurse -Force
+          Copy-Item ".ci-link-libs\gui-link-x86\libclamav_compat.a" (Join-Path $siblingClamavRoot "build-x86-mingw-winxp") -Force
+          Copy-Item ".ci-link-libs\gui-link-x86\3rdparty\curl\*" (Join-Path $siblingClamavRoot "build-x86-mingw-winxp\3rdparty\curl") -Recurse -Force
+          Copy-Item ".ci-link-libs\gui-link-x86\3rdparty\openssl\*" (Join-Path $siblingClamavRoot "3rdparty\openssl") -Recurse -Force
+
+          Copy-Item ".ci-link-libs\gui-link-x64\libclamav_compat.a" (Join-Path $siblingClamavRoot "build-x64-mingw") -Force
+          Copy-Item ".ci-link-libs\gui-link-x64\3rdparty\curl\*" (Join-Path $siblingClamavRoot "build-x64-mingw\3rdparty\curl") -Recurse -Force
+          Copy-Item ".ci-link-libs\gui-link-x64\3rdparty\openssl\*" (Join-Path $siblingClamavRoot "3rdparty\openssl") -Recurse -Force
 
           Write-Host "Staged GUI link inputs under: $siblingClamavRoot"
           Get-ChildItem (Join-Path $siblingClamavRoot "build-x86-mingw-winxp") -Recurse -File | Select-Object FullName, Length | Format-Table -AutoSize
