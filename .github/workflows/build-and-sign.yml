@@ -301,20 +301,25 @@ jobs:
 
           New-Item -ItemType Directory -Force -Path (Join-Path $siblingClamavRoot "build-x86-mingw-winxp") | Out-Null
           New-Item -ItemType Directory -Force -Path (Join-Path $siblingClamavRoot "build-x64-mingw") | Out-Null
+          New-Item -ItemType Directory -Force -Path (Join-Path $siblingClamavRoot "build-x86-mingw-winxp\3rdparty\curl\lib") | Out-Null
+          New-Item -ItemType Directory -Force -Path (Join-Path $siblingClamavRoot "build-x64-mingw\3rdparty\curl\lib") | Out-Null
           New-Item -ItemType Directory -Force -Path (Join-Path $siblingClamavRoot "3rdparty\openssl\lib\mingw\x86") | Out-Null
           New-Item -ItemType Directory -Force -Path (Join-Path $siblingClamavRoot "3rdparty\openssl\lib\mingw\x64") | Out-Null
 
           Copy-Item ".ci-link-libs\gui-link-x86\libclamav_compat.a" (Join-Path $siblingClamavRoot "build-x86-mingw-winxp") -Force
-          Copy-Item ".ci-link-libs\gui-link-x86\3rdparty\curl\*" (Join-Path $siblingClamavRoot "build-x86-mingw-winxp\3rdparty\curl") -Recurse -Force
-          Copy-Item ".ci-link-libs\gui-link-x86\3rdparty\openssl\*" (Join-Path $siblingClamavRoot "3rdparty\openssl") -Recurse -Force
+          Copy-Item ".ci-link-libs\gui-link-x86\3rdparty\curl\lib\libcurl.a" (Join-Path $siblingClamavRoot "build-x86-mingw-winxp\3rdparty\curl\lib\libcurl.a") -Force
+          Copy-Item ".ci-link-libs\gui-link-x86\3rdparty\openssl\lib\mingw\x86\libssl.a" (Join-Path $siblingClamavRoot "3rdparty\openssl\lib\mingw\x86\libssl.a") -Force
+          Copy-Item ".ci-link-libs\gui-link-x86\3rdparty\openssl\lib\mingw\x86\libcrypto.a" (Join-Path $siblingClamavRoot "3rdparty\openssl\lib\mingw\x86\libcrypto.a") -Force
 
           Copy-Item ".ci-link-libs\gui-link-x64\libclamav_compat.a" (Join-Path $siblingClamavRoot "build-x64-mingw") -Force
-          Copy-Item ".ci-link-libs\gui-link-x64\3rdparty\curl\*" (Join-Path $siblingClamavRoot "build-x64-mingw\3rdparty\curl") -Recurse -Force
-          Copy-Item ".ci-link-libs\gui-link-x64\3rdparty\openssl\*" (Join-Path $siblingClamavRoot "3rdparty\openssl") -Recurse -Force
+          Copy-Item ".ci-link-libs\gui-link-x64\3rdparty\curl\lib\libcurl.a" (Join-Path $siblingClamavRoot "build-x64-mingw\3rdparty\curl\lib\libcurl.a") -Force
+          Copy-Item ".ci-link-libs\gui-link-x64\3rdparty\openssl\lib\mingw\x64\libssl.a" (Join-Path $siblingClamavRoot "3rdparty\openssl\lib\mingw\x64\libssl.a") -Force
+          Copy-Item ".ci-link-libs\gui-link-x64\3rdparty\openssl\lib\mingw\x64\libcrypto.a" (Join-Path $siblingClamavRoot "3rdparty\openssl\lib\mingw\x64\libcrypto.a") -Force
 
           Write-Host "Staged GUI link inputs under: $siblingClamavRoot"
           Get-ChildItem (Join-Path $siblingClamavRoot "build-x86-mingw-winxp") -Recurse -File | Select-Object FullName, Length | Format-Table -AutoSize
           Get-ChildItem (Join-Path $siblingClamavRoot "build-x64-mingw") -Recurse -File | Select-Object FullName, Length | Format-Table -AutoSize
+          Get-ChildItem (Join-Path $siblingClamavRoot "3rdparty\openssl\lib\mingw") -Recurse -File | Select-Object FullName, Length | Format-Table -AutoSize
 
       - name: Validate SignPath configuration
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.sign_installer }}
