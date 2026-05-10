@@ -31,6 +31,15 @@ public:
     static void setDialogMnemonicCues(HWND hwnd, bool show);
     static bool getDialogMnemonicCues(HWND hwnd);
 
+    /* Vertically center the text inside a single-line EDIT control without
+     * changing its outer size. Installs a WM_NCCALCSIZE subclass that
+     * insets the top of the client area so the EDIT renders its single
+     * line of text closer to the geometric center. Safe to call multiple
+     * times on the same control; safe to call on non-EDIT windows (no-op).
+     * Also intercepts Tab to keep focus traversal working when the
+     * subclass otherwise consumes it. */
+    static void centerEditText(HWND edit);
+
 protected:
     HWND m_hwnd;
 

@@ -547,3 +547,104 @@ INT_PTR CALLBACK CWDialog::staticDlgProc(HWND hwnd, UINT msg,
 
     return FALSE;
 }
+
+/* ── Edit text vertical centering helper ─────────────────── */
+
+static const TCHAR* s_cwEditOldProcProp = TEXT("CWDialogEditOldProc");
+static const TCHAR* s_cwEditTopPadProp  = TEXT("CWDialogEditTopPad");
+
+static LRESULT CALLBACK cwCenteredEditSubclassProc(HWND hwnd, UINT msg,
+                                                    WPARAM wp, LPARAM lp)
+{
+    WNDPROC oldProc = (WNDPROC)GetProp(hwnd, s_cwEditOldProcProp);
+    if (!oldProc)
+        return DefWindowProc(hwnd, msg, wp, lp);
+
+    if (msg == WM_KEYDOWN && wp == VK_TAB)
+    {
+        HWND root = GetAncestor(hwnd, GA_ROOT);
+        if (root)
+        {
+            bool prev = (GetKeyState(VK_SHIFT) & 0x8000) != 0;
+            HWND next = GetNextDlgTabItem(root, hwnd, prev ? TRUE : FALSE);
+            if (next)
+            {
+                SetFocus(next);
+                return 0;
+            }
+        }
+    }
+
+    if (msg == WM_GETDLGCODE)
+    {
+        LRESULT code = CallWindowProc(oldProc, hwnd, msg, wp, lp);
+        code &= ~(DLGC_WANTTAB | DLGC_WANTALLKEYS);
+        return code;
+    }
+
+    if (msg == WM_NCCALCSIZE && wp != 0)
+    {
+        int topPad = (int)(INT_PTR)GetProp(hwnd, s_cwEditTopPadProp);
+        LRESULT res = CallWindowProc(oldProc, hwnd, msg, wp, lp);
+        if (topPad > 0)
+        {
+            NCCALCSIZE_PARAMS* p = (NCCALCSIZE_PARAMS*)lp;
+            int avail = p->rgrc[0].bottom - p->rgrc[0].top;
+            if (topPad > avail - 2) topPad = avail - 2;
+            if (topPad > 0)
+                p->rgrc[0].top += topPad;
+        }
+        return res;
+    }
+
+    return CallWindowProc(oldProc, hwnd, msg, wp, lp);
+}
+
+void CWDialog::centerEditText(HWND edit)
+{
+    if (!edit)
+        return;
+
+    TCHAR cls[32] = {0};
+    GetClassName(edit, cls, _countof(cls));
+    if (lstrcmpi(cls, TEXT("EDIT")) != 0)
+        return;
+
+    /* Skip multiline edits — they have their own scrolling/layout. */
+    LONG_PTR style = GetWindowLongPtr(edit, GWL_STYLE);
+    if (style & ES_MULTILINE)
+        return;
+
+    if (!GetProp(edit, s_cwEditOldProcProp))
+    {
+        WNDPROC oldProc = (WNDPROC)SetWindowLongPtr(edit, GWLP_WNDPROC,
+            (LONG_PTR)cwCenteredEditSubclassProc);
+        if (oldProc)
+            SetProp(edit, s_cwEditOldProcProp, (HANDLE)oldProc);
+    }
+
+    RECT wr;
+    GetWindowRect(edit, &wr);
+    int winH = wr.bottom - wr.top;
+
+    HFONT hf = (HFONT)SendMessage(edit, WM_GETFONT, 0, 0);
+    HDC hdc = GetDC(edit);
+    if (!hdc) return;
+    HGDIOBJ old = hf ? SelectObject(hdc, hf) : NULL;
+    TEXTMETRIC tm = {0};
+    GetTextMetrics(hdc, &tm);
+    if (old) SelectObject(hdc, old);
+    ReleaseDC(edit, hdc);
+
+    int textH   = tm.tmHeight > 0 ? tm.tmHeight : CW_Scale(13);
+    int fullPad = (winH - textH) / 2 - CW_Scale(1);
+    int topPad  = fullPad / 2;
+    if (topPad < 0) topPad = 0;
+
+    SetProp(edit, s_cwEditTopPadProp, (HANDLE)(INT_PTR)topPad);
+
+    SetWindowPos(edit, NULL, 0, 0, 0, 0,
+                 SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER |
+                 SWP_NOACTIVATE | SWP_FRAMECHANGED);
+    InvalidateRect(edit, NULL, TRUE);
+}

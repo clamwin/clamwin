@@ -130,40 +130,15 @@ void CWScheduleDialog::setFont(HWND hwnd, bool bold)
 {
     if (!hwnd) return;
     SendMessage(hwnd, WM_SETFONT, (WPARAM)(bold ? m_hFontBold : m_hFont), TRUE);
-    /* Apply EM_SETRECTNP centering on EDIT controls */
+    /* Apply EM_SETRECT centering on EDIT controls */
     configureEditRect(hwnd);
 }
 
 void CWScheduleDialog::configureEditRect(HWND edit)
 {
-    TCHAR cls[32] = {0};
-    GetClassName(edit, cls, _countof(cls));
-    if (lstrcmpi(cls, TEXT("EDIT")) != 0)
-        return;
-
-    RECT rc;
-    GetClientRect(edit, &rc);
-
-    HFONT hf = (HFONT)SendMessage(edit, WM_GETFONT, 0, 0);
-    HDC hdc = GetDC(edit);
-    if (!hdc) return;
-    HGDIOBJ old = hf ? SelectObject(hdc, hf) : NULL;
-    TEXTMETRIC tm = {0};
-    GetTextMetrics(hdc, &tm);
-    if (old) SelectObject(hdc, old);
-    ReleaseDC(edit, hdc);
-
-    int textH = tm.tmHeight > 0 ? tm.tmHeight : CW_Scale(13);
-    int topPad = ((rc.bottom - rc.top) - textH) / 2;
-    if (topPad < 1) topPad = 1;
-
-    RECT textRc;
-    textRc.left   = CW_Scale(8);
-    textRc.right  = rc.right - CW_Scale(8);
-    textRc.top    = topPad;
-    textRc.bottom = topPad + textH + 1;
-    SendMessage(edit, EM_SETRECTNP, 0, (LPARAM)&textRc);
-    InvalidateRect(edit, NULL, TRUE);
+    /* Delegates to shared helper that vertically centers single-line EDIT
+     * text by insetting the client rect via a WM_NCCALCSIZE subclass. */
+    CWDialog::centerEditText(edit);
 }
 
 void CWScheduleDialog::configureComboHeight(HWND combo)
@@ -398,6 +373,10 @@ void CWScheduleDialog::loadFromConfig()
     CW_ToggleSetChecked(m_chkRunMissed,  m_cfg.scanRunMissed);
     SetWindowText(m_edtFolder,      CW_ToT(m_cfg.scanPath).c_str());
     SetWindowText(m_edtDescription, CW_ToT(m_cfg.scanDescription).c_str());
+    configureEditRect(m_edtHour);
+    configureEditRect(m_edtMinute);
+    configureEditRect(m_edtFolder);
+    configureEditRect(m_edtDescription);
     updateDayEnableState();
 }
 
@@ -458,7 +437,10 @@ void CWScheduleDialog::browseForFolder()
     if (pidl)
     {
         if (SHGetPathFromIDList(pidl, path))
+        {
             SetWindowText(m_edtFolder, path);
+            configureEditRect(m_edtFolder);
+        }
         CoTaskMemFree(pidl);
     }
 }
@@ -714,6 +696,6 @@ INT_PTR CWScheduleDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
 int CW_ScheduleDialogRun(HWND hwndParent, CWConfig *cfg)
 {
     CWScheduleDialog dlg(*cfg);
-    return (int)dlg.runModal(hwndParent, 420, 530);
+    return (int)dlg.runModal(hwndParent, 420, 470);
 }
 

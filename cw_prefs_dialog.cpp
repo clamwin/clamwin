@@ -101,39 +101,7 @@ static const TCHAR* s_pageNames[8] = {
 
 static const TCHAR* s_prefsPageOwnerProp = TEXT("CWPrefsPageOwner");
 static const TCHAR* s_prefsSidebarOwnerProp = TEXT("CWPrefsSidebarOwner");
-static const TCHAR* s_prefsEditOldProcProp = TEXT("CWPrefsEditOldProc");
 static const UINT_PTR s_prefsMnemonicTimerId = 0xCA11;
-
-static LRESULT CALLBACK prefsEditSubclassProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
-{
-    WNDPROC oldProc = (WNDPROC)GetProp(hwnd, s_prefsEditOldProcProp);
-    if (!oldProc)
-        return DefWindowProc(hwnd, msg, wp, lp);
-
-    if (msg == WM_KEYDOWN && wp == VK_TAB)
-    {
-        HWND root = GetAncestor(hwnd, GA_ROOT);
-        if (root)
-        {
-            bool prev = (GetKeyState(VK_SHIFT) & 0x8000) != 0;
-            HWND next = GetNextDlgTabItem(root, hwnd, prev ? TRUE : FALSE);
-            if (next)
-            {
-                SetFocus(next);
-                return 0;
-            }
-        }
-    }
-
-    if (msg == WM_GETDLGCODE)
-    {
-        LRESULT code = CallWindowProc(oldProc, hwnd, msg, wp, lp);
-        code &= ~(DLGC_WANTTAB | DLGC_WANTALLKEYS);
-        return code;
-    }
-
-    return CallWindowProc(oldProc, hwnd, msg, wp, lp);
-}
 
 static int findSidebarMnemonicPageIndex(TCHAR ch)
 {
@@ -236,65 +204,9 @@ static void configureThemedCombo(HWND combo)
 
 static void configureCenteredEditTextRect(HWND edit)
 {
-    if (!edit)
-        return;
-
-    TCHAR className[32] = {0};
-    GetClassName(edit, className, _countof(className));
-    if (lstrcmpi(className, TEXT("EDIT")) != 0)
-        return;
-
-    LONG_PTR style = GetWindowLongPtr(edit, GWL_STYLE);
-    if ((style & ES_MULTILINE) == 0)
-    {
-        SetWindowLongPtr(edit, GWL_STYLE, style | ES_MULTILINE);
-    }
-
-    if (!GetProp(edit, s_prefsEditOldProcProp))
-    {
-        WNDPROC oldProc = (WNDPROC)SetWindowLongPtr(edit, GWLP_WNDPROC, (LONG_PTR)prefsEditSubclassProc);
-        if (oldProc)
-            SetProp(edit, s_prefsEditOldProcProp, (HANDLE)oldProc);
-    }
-
-    RECT rc;
-    GetClientRect(edit, &rc);
-
-    HFONT hFont = (HFONT)SendMessage(edit, WM_GETFONT, 0, 0);
-    HDC hdc = GetDC(edit);
-    if (!hdc)
-        return;
-
-    HGDIOBJ oldFont = NULL;
-    if (hFont)
-        oldFont = SelectObject(hdc, hFont);
-
-    TEXTMETRIC tm;
-    ZeroMemory(&tm, sizeof(tm));
-    GetTextMetrics(hdc, &tm);
-
-    if (oldFont)
-        SelectObject(hdc, oldFont);
-    ReleaseDC(edit, hdc);
-
-    int clientH = rc.bottom - rc.top;
-    int textH = tm.tmHeight;
-    if (textH <= 0)
-        textH = CW_Scale(13);
-
-    int topPad = (clientH - textH) / 2;
-    if (topPad < 1)
-        topPad = 1;
-
-    const int leftPad = CW_Scale(8);
-    RECT textRc;
-    textRc.left   = leftPad;
-    textRc.right  = rc.right - CW_Scale(8);
-    textRc.top    = topPad;
-    textRc.bottom = topPad + textH + 1;
-
-    SendMessage(edit, EM_SETRECTNP, 0, (LPARAM)&textRc);
-    InvalidateRect(edit, NULL, TRUE);
+    /* Delegates to the shared CWDialog helper that vertically centers
+     * single-line EDIT text via a WM_NCCALCSIZE subclass. */
+    CWDialog::centerEditText(edit);
 }
 
 /* Prop name matches CW_TOGGLE_PROP in cw_toggle.h */
