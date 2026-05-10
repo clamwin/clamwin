@@ -52,40 +52,40 @@ Inno Setup scripts are located under `setup/`. Use [Inno Setup 5](https://jrsoft
 
 ## GUI Test Workflow
 
-The native Win32 C++ GUI has a dedicated test executable named `clamwin_gui_test.exe`.
+The native Win32 C++ GUI has a dedicated test executable named `clamwin_test.exe`.
 
 The shortest way to run the GUI suite from the repository root is:
 
 ```powershell
-.\test-gui.ps1
+.\tools\test-gui.ps1
 ```
 
 Optional switches:
 
 ```powershell
-.\test-gui.ps1 -RealTools
-.\test-gui.ps1 -RealTools -FreshclamUpdate -FreshclamNegative
-.\test-gui.ps1 -BuildOnly
+.\tools\test-gui.ps1 -RealTools
+.\tools\test-gui.ps1 -RealTools -FreshclamUpdate -FreshclamNegative
+.\tools\test-gui.ps1 -BuildOnly
 ```
 
 Build it from the repository root:
 
 ```powershell
-$env:PATH = "C:\msys64\mingw64\bin;C:\Program Files\CMake\bin;" + $env:PATH
-cmake -S . -B build-gui -G "MinGW Makefiles" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_MAKE_PROGRAM=mingw32-make
-cmake --build build-gui --target clamwin_gui_test
+$env:PATH = "C:\msys64\mingw32\bin;C:\Program Files\CMake\bin;" + $env:PATH
+cmake -S . -B build -G "MinGW Makefiles" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_MAKE_PROGRAM=mingw32-make
+cmake --build build --target clamwin_test
 ```
 
 Run the default GUI tests:
 
 ```powershell
-cmake --build build-gui --target clamwin_check
+cmake --build build --target clamwin_check
 ```
 
 Enable the real-binary smoke tests for `clamscan.exe` and `freshclam.exe`:
 
 ```powershell
-cmake --build build-gui --target clamwin_check_real_tools
+cmake --build build --target clamwin_check_real_tools
 ```
 
 ## License

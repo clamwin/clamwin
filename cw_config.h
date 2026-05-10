@@ -92,8 +92,20 @@ public:
     /* Reset all fields to defaults. */
     void defaults();
 
-    /* Returns the default INI path (%USERPROFILE%\.clamwin\ClamWin.conf) */
+    /* Returns the default INI path.
+     * Legacy behavior uses the per-user AppData profile copy unless the
+     * install template is marked standalone, in which case the install-dir
+     * ClamWin.conf is used directly. */
     static std::string defaultIniPath();
+
+    /* Explicit test hook for overriding legacy path resolution without
+     * affecting production builds. Unit tests should set overrides and
+     * clear them when finished. */
+    static void setPathOverridesForTesting(const std::string& installDir,
+                                           const std::string& appDataDir,
+                                           const std::string& userProfileDir = std::string(),
+                                           const std::string& commonAppDataDir = std::string());
+    static void clearPathOverridesForTesting();
 
     /* Returns the freshclam.conf path (same dir as iniPath, freshclam.conf) */
     std::string freshclamConfPath() const;
