@@ -519,4 +519,98 @@ TEST_SUITE("config")
         CHECK(cfg.iniPath == legacyIni);
         CHECK(cfg.dbMirror == "legacy.real-config.test");
     }
+
+    TEST_CASE("installer-seeded appdata config is preserved when template is missing")
+    {
+        TestTempDir tempDir;
+        std::string installDir = testJoinPath(tempDir.path, "install");
+        std::string appDataDir = testJoinPath(tempDir.path, "appdata");
+        std::string userProfileDir = testJoinPath(tempDir.path, "userprofile");
+        std::string appDataProfileDir = testLegacyProfileRoot(appDataDir);
+        std::string appDataIni = testJoinPath(appDataProfileDir, "ClamWin.conf");
+        std::string legacyIni = testLegacyConfigPath(userProfileDir);
+
+        REQUIRE(testMakeDirectory(installDir));
+        REQUIRE(testMakeDirectory(appDataDir));
+        REQUIRE(testMakeDirectory(appDataProfileDir));
+        REQUIRE(testMakeDirectory(userProfileDir));
+        REQUIRE(testMakeDirectory(testJoinPath(userProfileDir, ".clamwin")));
+        REQUIRE(testWriteFile(appDataIni,
+                              "[ClamAV]\r\n"
+                              "ClamScan=C:\\OldClamWin\\bin\\clamscan.exe\r\n"
+                              "FreshClam=C:\\OldClamWin\\bin\\freshclam.exe\r\n"
+                              "Database=C:\\ProgramData\\.clamwin\\db\r\n"
+                              "[Updates]\r\n"
+                              "Time=10:00:00\r\n"));
+        REQUIRE(testWriteFile(legacyIni,
+                              "[Updates]\r\n"
+                              "DBMirror=legacy.should-not-win.test\r\n"));
+
+        ScopedConfigPathOverrides overrides(installDir, appDataDir, userProfileDir);
+
+        CWConfig cfg;
+        REQUIRE(cfg.load());
+
+        CHECK(cfg.iniPath == appDataIni);
+        CHECK(cfg.dbMirror == "database.clamav.net");
+    }
+
+    TEST_CASE("legacy python-only preference keys keep appdata config authoritative")
+    {
+        TestTempDir tempDir;
+        std::string installDir = testJoinPath(tempDir.path, "install");
+        std::string appDataDir = testJoinPath(tempDir.path, "appdata");
+        std::string userProfileDir = testJoinPath(tempDir.path, "userprofile");
+        std::string appDataProfileDir = testLegacyProfileRoot(appDataDir);
+        std::string appDataIni = testJoinPath(appDataProfileDir, "ClamWin.conf");
+        std::string legacyIni = testLegacyConfigPath(userProfileDir);
+        std::string templateIni = testJoinPath(installDir, "ClamWin.conf");
+
+        REQUIRE(testMakeDirectory(installDir));
+        REQUIRE(testMakeDirectory(appDataDir));
+        REQUIRE(testMakeDirectory(appDataProfileDir));
+        REQUIRE(testMakeDirectory(userProfileDir));
+        REQUIRE(testMakeDirectory(testJoinPath(userProfileDir, ".clamwin")));
+        REQUIRE(testWriteFile(templateIni, "[UI]\r\nStandalone=0\r\n"));
+        REQUIRE(testWriteFile(appDataIni,
+                              "[ClamAV]\r\n"
+                              "ClamScan=C:\\OldClamWin\\bin\\clamscan.exe\r\n"
+                              "FreshClam=C:\\OldClamWin\\bin\\freshclam.exe\r\n"
+                              "RemoveInfected=0\r\n"
+                              "[Updates]\r\n"
+                              "Time=10:00:00\r\n"));
+        REQUIRE(testWriteFile(legacyIni,
+                              "[Updates]\r\n"
+                              "DBMirror=legacy.should-not-win.test\r\n"));
+
+        ScopedConfigPathOverrides overrides(installDir, appDataDir, userProfileDir);
+
+        CWConfig cfg;
+        REQUIRE(cfg.load());
+
+        CHECK(cfg.iniPath == appDataIni);
+        CHECK(cfg.dbMirror == "database.clamav.net");
+    }
+
+    TEST_CASE("explicit sparse config uses config directory for path defaults")
+    {
+        TestTempDir tempDir;
+        std::string customProfileDir = testJoinPath(tempDir.path, "custom-profile");
+        std::string customIni = testJoinPath(customProfileDir, "ClamWin.conf");
+
+        REQUIRE(testMakeDirectory(customProfileDir));
+        REQUIRE(testWriteFile(customIni,
+                              "[Proxy]\r\n"
+                              "Host=proxy.custom.test\r\n"));
+
+        CWConfig cfg;
+        REQUIRE(cfg.load(customIni));
+
+        CHECK(cfg.iniPath == customIni);
+        CHECK(cfg.proxyHost == "proxy.custom.test");
+        CHECK(cfg.databasePath == testJoinPath(customProfileDir, "db"));
+        CHECK(cfg.quarantinePath == testJoinPath(customProfileDir, "Quarantine"));
+        CHECK(cfg.scanLogFile == testJoinPath(customProfileDir, "ClamScan.log"));
+        CHECK(cfg.updateLogFile == testJoinPath(customProfileDir, "FreshClam.log"));
+    }
 }

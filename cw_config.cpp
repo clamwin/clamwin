@@ -305,17 +305,14 @@ static std::string getPreferredLegacyIniPath()
 static bool isPristineBootstrapCopy(const std::string& iniPath)
 {
     std::string templatePath = getTemplateIniPath();
-    if (iniPath.empty())
+    if (iniPath.empty() || templatePath.empty() || !pathExists(templatePath))
         return false;
 
-    if (!templatePath.empty())
-    {
-        if (_stricmp(iniPath.c_str(), templatePath.c_str()) == 0)
-            return false;
+    if (_stricmp(iniPath.c_str(), templatePath.c_str()) == 0)
+        return false;
 
-        if (filesMatch(iniPath, templatePath))
-            return true;
-    }
+    if (filesMatch(iniPath, templatePath))
+        return true;
 
     const LPCTSTR seedClamAvKeys[] = { TEXT("ClamScan"), TEXT("FreshClam") };
     const LPCTSTR seedUpdateKeys[] = { TEXT("Time") };
@@ -327,10 +324,12 @@ static bool isPristineBootstrapCopy(const std::string& iniPath)
         return false;
 
     /* Older C++ installers seeded only tool/path defaults into ClamWin.conf.
-     * A config saved by legacy Python or by this C++ runtime contains scan,
-     * update, UI, proxy, email, or schedule preference keys. Treat only the
-     * sparse installer seed shape as disposable so a real user config is not
-     * bypassed just because another legacy config also exists. */
+    * A config saved by legacy Python or by this C++ runtime contains scan,
+    * update, UI, proxy, email, or schedule preference keys. Some of these
+    * markers are legacy Python-only keys; they intentionally keep old saved
+    * configs from being mistaken for disposable C++ installer seeds. Treat
+    * only the sparse installer seed shape as disposable so a real user config
+    * is not bypassed just because another legacy config also exists. */
     const LPCTSTR userClamAvKeys[] = {
         TEXT("ScanRecursive"), TEXT("ScanArchives"), TEXT("ScanOle2"), TEXT("ScanMail"),
         TEXT("EnableMbox"), TEXT("InfectedAction"), TEXT("InfectedOnly"), TEXT("RemoveInfected"),
@@ -601,6 +600,10 @@ bool CWConfig::load(const std::string& path)
     if (usingDefaultPath)
         iniPath = resolveDefaultIniPathForLoad();
 
+    /* Treat the selected ClamWin.conf as the active profile root.  This applies
+     * to default/legacy resolution and to explicit --config_file paths so the
+     * DB, quarantine, logs, and generated freshclam.conf remain self-contained
+     * beside the chosen config instead of falling back to another profile. */
     std::string loadedProfileRoot = getParentDir(iniPath);
     if (!loadedProfileRoot.empty())
     {
