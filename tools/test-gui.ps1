@@ -4,14 +4,15 @@ param(
     [switch]$FreshclamNegative,
     [switch]$BuildOnly,
     [switch]$NoStopClamwin,
-    [string]$BuildDir = "build-gui"
+    [string]$BuildDir = "build"
 )
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-$repoRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
-$buildPath = Join-Path $repoRoot $BuildDir
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$repoRoot = Split-Path -Parent $scriptDir
+$buildPath = if ([System.IO.Path]::IsPathRooted($BuildDir)) { $BuildDir } else { Join-Path $repoRoot $BuildDir }
 
 if (-not (Test-Path $buildPath))
 {
@@ -20,6 +21,7 @@ if (-not (Test-Path $buildPath))
 
 $pathPrefixes = @(
     "C:\Users\alexc\.cargo\bin",
+    "C:\msys64\mingw32\bin",
     "C:\msys64\mingw64\bin",
     "C:\Program Files\CMake\bin"
 )
@@ -78,15 +80,15 @@ if (-not $NoStopClamwin)
 
 $target = if ($BuildOnly)
 {
-    "clamwin_gui_test"
+    "clamwin_test"
 }
 elseif ($RealTools)
 {
-    "clamwin_gui_check_real_tools"
+    "clamwin_check_real_tools"
 }
 else
 {
-    "clamwin_gui_check"
+    "clamwin_check"
 }
 
 Write-Host "Repository:" $repoRoot

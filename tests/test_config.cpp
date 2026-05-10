@@ -4,6 +4,29 @@
 
 namespace
 {
+struct ScopedConfigPathOverrides
+{
+    ScopedConfigPathOverrides(const std::string& installDir,
+                              const std::string& appDataDir)
+    {
+        CWConfig::setPathOverridesForTesting(installDir, appDataDir);
+    }
+
+    ~ScopedConfigPathOverrides()
+    {
+        CWConfig::clearPathOverridesForTesting();
+    }
+
+private:
+    ScopedConfigPathOverrides(const ScopedConfigPathOverrides&);
+    ScopedConfigPathOverrides& operator=(const ScopedConfigPathOverrides&);
+};
+
+std::string testLegacyProfileRoot(const std::string& appDataDir)
+{
+    return testJoinPath(appDataDir, ".clamwin");
+}
+
 void checkConfigEqual(const CWConfig& expected, const CWConfig& actual)
 {
     CHECK(expected.scanRecursive == actual.scanRecursive);
@@ -162,5 +185,88 @@ TEST_SUITE("config")
         CHECK_FALSE(cfg.updateLogFile.empty());
         CHECK(cfg.scanLogFile.find("ClamScan.log") != std::string::npos);
         CHECK(cfg.updateLogFile.find("FreshClam.log") != std::string::npos);
+    }
+
+    TEST_CASE("default ini path uses appdata profile when template is not standalone")
+    {
+        TestTempDir tempDir;
+        std::string installDir = testJoinPath(tempDir.path, "install");
+        std::string appDataDir = testJoinPath(tempDir.path, "appdata");
+        REQUIRE(testMakeDirectory(installDir));
+        REQUIRE(testMakeDirectory(appDataDir));
+        REQUIRE(testWriteFile(testJoinPath(installDir, "ClamWin.conf"),
+                              "[UI]\r\nStandalone=0\r\n"));
+
+        ScopedConfigPathOverrides overrides(installDir, appDataDir);
+
+        CHECK(CWConfig::defaultIniPath() == testJoinPath(testLegacyProfileRoot(appDataDir), "ClamWin.conf"));
+    }
+
+    TEST_CASE("default ini path uses install template when standalone")
+    {
+        TestTempDir tempDir;
+        std::string installDir = testJoinPath(tempDir.path, "install");
+        std::string appDataDir = testJoinPath(tempDir.path, "appdata");
+        REQUIRE(testMakeDirectory(installDir));
+        REQUIRE(testMakeDirectory(appDataDir));
+        REQUIRE(testWriteFile(testJoinPath(installDir, "ClamWin.conf"),
+                              "[UI]\r\nStandalone=1\r\n"));
+
+        ScopedConfigPathOverrides overrides(installDir, appDataDir);
+
+        CHECK(CWConfig::defaultIniPath() == testJoinPath(installDir, "ClamWin.conf"));
+    }
+
+    TEST_CASE("load bootstraps per-user config from install template")
+    {
+        TestTempDir tempDir;
+        std::string installDir = testJoinPath(tempDir.path, "install");
+        std::string appDataDir = testJoinPath(tempDir.path, "appdata");
+        std::string profileDir = testLegacyProfileRoot(appDataDir);
+        std::string profileIni = testJoinPath(profileDir, "ClamWin.conf");
+        std::string templateIni = testJoinPath(installDir, "ClamWin.conf");
+        std::string copiedContent;
+        std::string templateContent =
+            "[UI]\r\n"
+            "Standalone=0\r\n"
+            "[ClamAV]\r\n"
+            "Database=C:\\Shared\\db\r\n"
+            "QuarantineDir=C:\\Shared\\quarantine\r\n"
+            "LogFile=C:\\Shared\\log\\ClamScanLog.txt\r\n"
+            "EnableMbox=1\r\n"
+            "Priority=Low\r\n"
+            "[Proxy]\r\n"
+            "Host=proxy.example.test\r\n"
+            "Port=8080\r\n"
+            "[Updates]\r\n"
+            "DBUpdateLogFile=C:\\Shared\\log\\ClamUpdateLog.txt\r\n"
+            "UpdateOnLogon=1\r\n"
+            "[EmailAlerts]\r\n"
+            "Enable=1\r\n"
+            "SMTPHost=smtp.example.test\r\n";
+
+        REQUIRE(testMakeDirectory(installDir));
+        REQUIRE(testMakeDirectory(appDataDir));
+        REQUIRE(testWriteFile(templateIni, templateContent));
+
+        ScopedConfigPathOverrides overrides(installDir, appDataDir);
+
+        CWConfig cfg;
+        REQUIRE(cfg.load());
+
+        CHECK(cfg.iniPath == profileIni);
+        CHECK(testPathExists(profileIni));
+        REQUIRE(testReadFile(profileIni, copiedContent));
+        CHECK(copiedContent == templateContent);
+        CHECK(cfg.databasePath == "C:\\Shared\\db");
+        CHECK(cfg.quarantinePath == "C:\\Shared\\quarantine");
+        CHECK(cfg.scanLogFile == "C:\\Shared\\log\\ClamScanLog.txt");
+        CHECK(cfg.updateLogFile == "C:\\Shared\\log\\ClamUpdateLog.txt");
+        CHECK(cfg.scanMail);
+        CHECK(cfg.updateOnStartup);
+        CHECK(cfg.proxyEnabled);
+        CHECK(cfg.emailEnabled);
+        CHECK(cfg.emailSmtp == "smtp.example.test");
+        CHECK(cfg.priority == "l");
     }
 }

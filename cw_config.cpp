@@ -10,6 +10,7 @@
 #include "cw_text_conv.h"
 
 #include <stdio.h>
+#include <shlobj.h>
 #include <string.h>
 
 /* ─── Section names (same as legacy Python ClamWin) ─────────── */
@@ -21,11 +22,180 @@ static const TCHAR* SEC_SCHEDULE = TEXT("Schedule");
 static const TCHAR* SEC_ALERTS   = TEXT("EmailAlerts");
 static const TCHAR* SEC_UI       = TEXT("UI");
 
+static std::string s_testInstallDirOverride;
+static std::string s_testAppDataDirOverride;
+
 static std::string normalizeFilterPatterns(const std::string& raw)
 {
     if (raw == "*.dbx|CLAMWIN_SEP|bb|CLAMWIN_SEP|st")
         return "*.dbx|CLAMWIN_SEP|*.tbb|CLAMWIN_SEP|*.pst";
     return raw;
+}
+
+static std::string stripTrailingSlash(const std::string& path)
+{
+    if (path.empty())
+        return path;
+
+    size_t end = path.size();
+    while (end > 0 && (path[end - 1] == '\\' || path[end - 1] == '/'))
+        --end;
+    return path.substr(0, end);
+}
+
+static std::string appendPath(const std::string& left, const std::string& right)
+{
+    if (left.empty())
+        return right;
+    if (right.empty())
+        return left;
+
+    std::string joined = stripTrailingSlash(left);
+    joined += "\\";
+    joined += right;
+    return joined;
+}
+
+static std::string getEnvValue(LPCTSTR name)
+{
+    TCHAR value[MAX_PATH];
+    DWORD len = GetEnvironmentVariable(name, value, MAX_PATH);
+    if (len == 0 || len >= MAX_PATH)
+        return std::string();
+    return CW_ToNarrow(value);
+}
+
+static std::string getExecutableDir()
+{
+    if (!s_testInstallDirOverride.empty())
+        return s_testInstallDirOverride;
+
+    TCHAR exedir[MAX_PATH];
+    GetModuleFileName(NULL, exedir, MAX_PATH);
+    TCHAR* slash = _tcsrchr(exedir, TEXT('\\'));
+    if (slash)
+        *slash = TEXT('\0');
+    return CW_ToNarrow(exedir);
+}
+
+static std::string getTemplateIniPath()
+{
+    return appendPath(getExecutableDir(), "ClamWin.conf");
+}
+
+static bool pathExists(const std::string& path)
+{
+    if (path.empty())
+        return false;
+
+    std::basic_string<TCHAR> tPath = CW_ToT(path);
+    return GetFileAttributes(tPath.c_str()) != INVALID_FILE_ATTRIBUTES;
+}
+
+static std::string getParentDir(const std::string& path)
+{
+    size_t slash = path.find_last_of("\\/");
+    if (slash == std::string::npos)
+        return std::string();
+    return path.substr(0, slash);
+}
+
+static bool ensureDirectoryExists(const std::string& path)
+{
+    if (path.empty())
+        return false;
+
+    std::basic_string<TCHAR> tPath = CW_ToT(path);
+    if (CreateDirectory(tPath.c_str(), NULL) != 0)
+        return true;
+
+    DWORD attrs = GetFileAttributes(tPath.c_str());
+    return attrs != INVALID_FILE_ATTRIBUTES && (attrs & FILE_ATTRIBUTE_DIRECTORY) != 0;
+}
+
+static bool isStandaloneTemplate(const std::string& path)
+{
+    if (!pathExists(path))
+        return false;
+
+    std::basic_string<TCHAR> tPath = CW_ToT(path);
+    return GetPrivateProfileInt(SEC_UI, TEXT("Standalone"), 0, tPath.c_str()) == 1;
+}
+
+static bool iniHasKey(const std::string& iniPath, LPCTSTR section, LPCTSTR key)
+{
+    if (iniPath.empty())
+        return false;
+
+    TCHAR sentinel[] = TEXT("\x1");
+    TCHAR buffer[4];
+    std::basic_string<TCHAR> tIniPath = CW_ToT(iniPath);
+    DWORD len = GetPrivateProfileString(section, key, sentinel, buffer, _countof(buffer), tIniPath.c_str());
+    return !(len == 1 && buffer[0] == sentinel[0] && buffer[1] == TEXT('\0'));
+}
+
+static std::string normalizePriorityValue(const std::string& value)
+{
+    if (_stricmp(value.c_str(), "low") == 0)
+        return "l";
+    if (_stricmp(value.c_str(), "normal") == 0)
+        return "n";
+    return value;
+}
+
+static std::string getLegacyAppDataDir()
+{
+    if (!s_testAppDataDirOverride.empty())
+        return s_testAppDataDirOverride;
+
+    TCHAR appData[MAX_PATH];
+    if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, appData)) &&
+        appData[0] != TEXT('\0'))
+    {
+        return stripTrailingSlash(CW_ToNarrow(appData));
+    }
+
+    return std::string();
+}
+
+static std::string getLegacyProfileRoot()
+{
+    if (isStandaloneTemplate(getTemplateIniPath()))
+        return getExecutableDir();
+
+    std::string appData = getLegacyAppDataDir();
+    if (!appData.empty())
+        return appendPath(appData, ".clamwin");
+
+    std::string profile = getEnvValue(TEXT("USERPROFILE"));
+    if (!profile.empty())
+        return appendPath(profile, ".clamwin");
+
+    return getExecutableDir();
+}
+
+static void bootstrapLegacyProfile(const std::string& iniPath)
+{
+    if (iniPath.empty())
+        return;
+
+    std::string templatePath = getTemplateIniPath();
+    if (templatePath.empty() || !pathExists(templatePath) || isStandaloneTemplate(templatePath))
+        return;
+
+    if (_stricmp(stripTrailingSlash(templatePath).c_str(), stripTrailingSlash(iniPath).c_str()) == 0)
+        return;
+
+    if (pathExists(iniPath))
+        return;
+
+    std::string profileDir = getParentDir(iniPath);
+    if (!ensureDirectoryExists(profileDir))
+        return;
+
+    std::basic_string<TCHAR> tSource = CW_ToT(templatePath);
+    std::basic_string<TCHAR> tDest = CW_ToT(iniPath);
+    CopyFile(tSource.c_str(), tDest.c_str(), TRUE);
 }
 
 /* ─── Constructor: apply defaults ────────────────────────────── */
@@ -39,21 +209,15 @@ CWConfig::CWConfig()
 
 void CWConfig::defaults()
 {
-    TCHAR exedir[MAX_PATH];
-    GetModuleFileName(NULL, exedir, MAX_PATH);
-    TCHAR* slash = _tcsrchr(exedir, TEXT('\\'));
-    if (slash) *(slash + 1) = '\0';
-    std::string exedirStr = CW_ToNarrow(exedir);
+    std::string exedirStr = appendPath(getExecutableDir(), "");
 
-    TCHAR profile[MAX_PATH];
-    DWORD profileLen = GetEnvironmentVariable(TEXT("USERPROFILE"), profile, MAX_PATH);
-    if (profileLen > 0 && profileLen < MAX_PATH)
+    std::string profileRoot = getLegacyProfileRoot();
+    if (!profileRoot.empty())
     {
-        std::string profileRoot = CW_ToNarrow(profile) + "\\.clamwin";
-        databasePath   = profileRoot + "\\db";
-        quarantinePath = profileRoot + "\\Quarantine";
-        scanLogFile    = profileRoot + "\\ClamScan.log";
-        updateLogFile  = profileRoot + "\\FreshClam.log";
+        databasePath   = appendPath(profileRoot, "db");
+        quarantinePath = appendPath(profileRoot, "Quarantine");
+        scanLogFile    = appendPath(profileRoot, "ClamScan.log");
+        updateLogFile  = appendPath(profileRoot, "FreshClam.log");
     }
     else
     {
@@ -119,18 +283,20 @@ void CWConfig::defaults()
 
 std::string CWConfig::defaultIniPath()
 {
-    TCHAR profile[MAX_PATH];
-    DWORD len = GetEnvironmentVariable(TEXT("USERPROFILE"), profile, MAX_PATH);
-    if (len > 0 && len < MAX_PATH)
-    {
-        return CW_ToNarrow(profile) + "\\.clamwin\\ClamWin.conf";
-    }
-    /* Fallback: same directory as executable */
-    TCHAR exedir[MAX_PATH];
-    GetModuleFileName(NULL, exedir, MAX_PATH);
-    TCHAR* slash = _tcsrchr(exedir, TEXT('\\'));
-    if (slash) *(slash + 1) = '\0';
-    return CW_ToNarrow(exedir) + "ClamWin.conf";
+    return appendPath(getLegacyProfileRoot(), "ClamWin.conf");
+}
+
+void CWConfig::setPathOverridesForTesting(const std::string& installDir,
+                                          const std::string& appDataDir)
+{
+    s_testInstallDirOverride = stripTrailingSlash(installDir);
+    s_testAppDataDirOverride = stripTrailingSlash(appDataDir);
+}
+
+void CWConfig::clearPathOverridesForTesting()
+{
+    s_testInstallDirOverride.clear();
+    s_testAppDataDirOverride.clear();
 }
 
 /* ─── freshclam.conf path ────────────────────────────────────── */
@@ -199,9 +365,13 @@ bool CWConfig::writeFreshclamConf() const
 bool CWConfig::load(const std::string& path)
 {
     defaults();
+    bool usingDefaultPath = path.empty();
 
     if (!path.empty())
         iniPath = path;
+
+    if (usingDefaultPath)
+        bootstrapLegacyProfile(iniPath);
 
     {
         std::basic_string<TCHAR> tIniPath = CW_ToT(iniPath);
@@ -219,6 +389,8 @@ bool CWConfig::load(const std::string& path)
     scanArchives   = getInt(SEC_CLAMAV, TEXT("ScanArchives"),  scanArchives)  != 0;
     scanOle2       = getInt(SEC_CLAMAV, TEXT("ScanOle2"),      scanOle2)      != 0;
     scanMail       = getInt(SEC_CLAMAV, TEXT("ScanMail"),      scanMail)      != 0;
+    if (!iniHasKey(iniPath, SEC_CLAMAV, TEXT("ScanMail")))
+        scanMail = getInt(SEC_CLAMAV, TEXT("EnableMbox"), scanMail ? 1 : 0) != 0;
     infectedAction = getInt(SEC_CLAMAV, TEXT("InfectedAction"), infectedAction);
     infectedOnly   = getInt(SEC_CLAMAV, TEXT("InfectedOnly"),   infectedOnly)   != 0;
     maxScanSizeMb  = getInt(SEC_CLAMAV, TEXT("MaxScanSize"),   maxScanSizeMb);
@@ -226,24 +398,38 @@ bool CWConfig::load(const std::string& path)
     maxFiles       = getInt(SEC_CLAMAV, TEXT("MaxFiles"),      maxFiles);
     maxDepth       = getInt(SEC_CLAMAV, TEXT("MaxRecursion"),  maxDepth);
     quarantinePath = getStr(SEC_CLAMAV, TEXT("Quarantine"),    quarantinePath);
+    if (!iniHasKey(iniPath, SEC_CLAMAV, TEXT("Quarantine")))
+        quarantinePath = getStr(SEC_CLAMAV, TEXT("QuarantineDir"), quarantinePath);
     scanLogFile    = getStr(SEC_CLAMAV, TEXT("LogFile"),       scanLogFile);
-    priority       = getStr(SEC_CLAMAV, TEXT("Priority"),      priority);
+    priority       = normalizePriorityValue(getStr(SEC_CLAMAV, TEXT("Priority"), priority));
 
     dbMirror        = getStr(SEC_UPDATES, TEXT("DBMirror"),        dbMirror);
     updateLogFile   = getStr(SEC_UPDATES, TEXT("UpdateLog"),       updateLogFile);
+    if (!iniHasKey(iniPath, SEC_UPDATES, TEXT("UpdateLog")))
+        updateLogFile = getStr(SEC_UPDATES, TEXT("DBUpdateLogFile"), updateLogFile);
     updateOnStartup = getInt(SEC_UPDATES, TEXT("UpdateOnStartup"), updateOnStartup) != 0;
+    if (!iniHasKey(iniPath, SEC_UPDATES, TEXT("UpdateOnStartup")))
+        updateOnStartup = getInt(SEC_UPDATES, TEXT("UpdateOnLogon"), updateOnStartup ? 1 : 0) != 0;
     checkVersion    = getInt(SEC_UPDATES, TEXT("CheckVersion"),    checkVersion)    != 0;
 
-    proxyEnabled = getInt(SEC_PROXY, TEXT("Enabled"),  proxyEnabled) != 0;
     proxyHost    = getStr(SEC_PROXY, TEXT("Host"),     proxyHost);
     proxyPort    = getInt(SEC_PROXY, TEXT("Port"),     proxyPort);
     proxyUser    = getStr(SEC_PROXY, TEXT("User"),     proxyUser);
     proxyPass    = getStr(SEC_PROXY, TEXT("Password"), proxyPass);
+    if (iniHasKey(iniPath, SEC_PROXY, TEXT("Enabled")))
+        proxyEnabled = getInt(SEC_PROXY, TEXT("Enabled"), proxyEnabled ? 1 : 0) != 0;
+    else
+        proxyEnabled = !proxyHost.empty();
 
-    emailEnabled = getInt(SEC_ALERTS, TEXT("Enabled"), emailEnabled) != 0;
+    if (iniHasKey(iniPath, SEC_ALERTS, TEXT("Enabled")))
+        emailEnabled = getInt(SEC_ALERTS, TEXT("Enabled"), emailEnabled ? 1 : 0) != 0;
+    else
+        emailEnabled = getInt(SEC_ALERTS, TEXT("Enable"), emailEnabled ? 1 : 0) != 0;
     emailFrom    = getStr(SEC_ALERTS, TEXT("From"),    emailFrom);
     emailTo      = getStr(SEC_ALERTS, TEXT("To"),      emailTo);
     emailSmtp    = getStr(SEC_ALERTS, TEXT("SMTP"),    emailSmtp);
+    if (!iniHasKey(iniPath, SEC_ALERTS, TEXT("SMTP")))
+        emailSmtp = getStr(SEC_ALERTS, TEXT("SMTPHost"), emailSmtp);
 
     scanScheduled   = getInt(SEC_SCHEDULE, TEXT("ScanEnabled"),    scanScheduled)   != 0;
     scanHour        = getInt(SEC_SCHEDULE, TEXT("ScanHour"),       scanHour);
@@ -304,11 +490,9 @@ bool CWConfig::load(const std::string& path)
         std::string installScanLog    = exedirStr + "ClamScan.log";
         std::string installUpdateLog  = exedirStr + "FreshClam.log";
 
-        TCHAR profile[MAX_PATH];
-        DWORD profileLen = GetEnvironmentVariable(TEXT("USERPROFILE"), profile, MAX_PATH);
-        if (profileLen > 0 && profileLen < MAX_PATH)
+        std::string profileRoot = getLegacyProfileRoot();
+        if (!profileRoot.empty())
         {
-            std::string profileRoot = CW_ToNarrow(profile) + "\\.clamwin";
             if (databasePath == installDb)
                 databasePath = profileRoot + "\\db";
             if (quarantinePath == installQuarantine)

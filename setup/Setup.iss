@@ -630,10 +630,11 @@ begin
     AllUsersPage.SelectedValueIndex := 1;
 end;
 
-{ Returns the freshclam.conf path alongside ClamWin.conf in the profile dir. }
+{ Returns the install-dir template config that runtime copies into each user's
+  AppData profile on first launch unless running standalone. }
 function ClamWinConfPath(Default: String): String;
 begin
-  Result := CommonProfileDir(Default) + '\.clamwin\ClamWin.conf';
+  Result := ExpandConstant('{app}\bin\ClamWin.conf');
 end;
 
 function ClamWinPostInstallParams(Default: String): String;
