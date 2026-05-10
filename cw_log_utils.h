@@ -12,8 +12,16 @@
 #include <string>
 
 /* Append arbitrary text to a log file using FILE_APPEND_DATA (atomic
- * seek-to-end on NTFS).  Silently emits an OutputDebugString on failure. */
-void CW_AppendToLogFile(const std::string& filePath, const std::string& text);
+ * seek-to-end on NTFS). When maxBytes is non-zero, trims the file back to the
+ * newest maxBytes after the append completes. Silently emits an
+ * OutputDebugString on failure. */
+void CW_AppendToLogFile(const std::string& filePath,
+						const std::string& text,
+						unsigned long long maxBytes = 0);
+
+/* Trim an existing log file down to the newest maxBytes. */
+void CW_TrimLogFileToMaxBytes(const std::string& filePath,
+							  unsigned long long maxBytes);
 
 /* Build a "Scan Started <timestamp>" or "Update Started <timestamp>" line
  * using localtime + strftime. */

@@ -378,9 +378,18 @@ bool shouldCountPath(const std::string& path,
     return true;
 }
 
-void appendDebugLineToFile(const std::string& filePath, const std::string& line)
+unsigned long long maxLogBytes(const CWConfig& cfg)
 {
-    CW_AppendToLogFile(filePath, line);
+    if (cfg.maxLogSizeMb <= 0)
+        return 0;
+    return (unsigned long long)cfg.maxLogSizeMb * 1024ULL * 1024ULL;
+}
+
+void appendDebugLineToFile(const std::string& filePath,
+                           const std::string& line,
+                           unsigned long long maxBytes)
+{
+    CW_AppendToLogFile(filePath, line, maxBytes);
 }
 
 void enumScanPath(const std::string& path,
@@ -1069,11 +1078,13 @@ DWORD WINAPI CWScanDialog::scanWorker(LPVOID param)
                                                         self->m_targetPath,
                                                         exeDir,
                                                         self->m_scanMemoryOnly);
+    const unsigned long long logLimitBytes = maxLogBytes(self->m_cfg);
 
     /* Write "Scan Started <timestamp>" to the log file before spawning —
      * matches legacy Python wxDialogStatus scan-start logging. */
     CW_AppendToLogFile(self->m_cfg.scanLogFile,
-                       CW_BuildStartTimestamp(false));
+                       CW_BuildStartTimestamp(false),
+                       logLimitBytes);
 
     {
         std::string debugLine = "[CWDebug] clamscan command: ";
@@ -1081,13 +1092,15 @@ DWORD WINAPI CWScanDialog::scanWorker(LPVOID param)
         debugLine += "\r\n";
         std::basic_string<TCHAR> tDebugLine = CW_ToT(debugLine);
         OutputDebugString(tDebugLine.c_str());
-        appendDebugLineToFile(self->m_cfg.scanLogFile, debugLine);
+        appendDebugLineToFile(self->m_cfg.scanLogFile, debugLine, logLimitBytes);
     }
 
     if (!self->m_process.start(cmd, self->m_cfg.priority,
                                outputCb, errorCb, finishedCb, self))
     {
-        CW_AppendToLogFile(self->m_cfg.scanLogFile, CW_BuildFailedFooter());
+        CW_AppendToLogFile(self->m_cfg.scanLogFile,
+                           CW_BuildFailedFooter(),
+                           logLimitBytes);
         PostMessage(self->m_hwnd, WM_SCAN_FINISHED, (WPARAM)-1, 0);
     }
     return 0;
@@ -1117,15 +1130,19 @@ DWORD WINAPI CWScanDialog::updateWorker(LPVOID param)
 
     /* Write "Update Started <timestamp>" to the log file before spawning —
      * matches legacy Python behavior. */
+    const unsigned long long logLimitBytes = maxLogBytes(self->m_cfg);
     CW_AppendToLogFile(self->m_cfg.updateLogFile,
-                       CW_BuildStartTimestamp(true));
+                       CW_BuildStartTimestamp(true),
+                       logLimitBytes);
 
     std::string cmd = CWScanLogic::buildFreshclamCommand(self->m_cfg, exeDir);
 
     if (!self->m_process.start(cmd, self->m_cfg.priority,
                                outputCb, errorCb, finishedCb, self))
     {
-        CW_AppendToLogFile(self->m_cfg.updateLogFile, CW_BuildFailedFooter());
+        CW_AppendToLogFile(self->m_cfg.updateLogFile,
+                           CW_BuildFailedFooter(),
+                           logLimitBytes);
         PostMessage(self->m_hwnd, WM_SCAN_FINISHED, (WPARAM)-1, 0);
     }
     return 0;
@@ -1710,7 +1727,9 @@ void CWScanDialog::onScanFinished(int exitCode)
     {
         const std::string& logPath = m_isUpdate ? m_cfg.updateLogFile
                                                 : m_cfg.scanLogFile;
-        CW_AppendToLogFile(logPath, CW_BuildCompletedFooter());
+        CW_AppendToLogFile(logPath,
+                           CW_BuildCompletedFooter(),
+                           maxLogBytes(m_cfg));
     }
 
     if (CW_ShouldAutoClose(m_autoClosePolicy, m_exitCode, m_cancelled != 0))

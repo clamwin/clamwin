@@ -21,12 +21,15 @@ public:
     bool scanArchives;
     bool scanOle2;
     bool scanMail;
+    bool killProcesses;    /* pass --kill to unload infected loaded modules */
     int  infectedAction;   /* 0=report, 1=remove, 2=quarantine */
     bool infectedOnly;     /* show infected files only in scan log (--infected) */
     int  maxScanSizeMb;
     int  maxFileSizeMb;
     int  maxFiles;
     int  maxDepth;
+    int  maxLogSizeMb;
+    std::string clamscanParams;
 
     /* Paths */
     std::string databasePath;

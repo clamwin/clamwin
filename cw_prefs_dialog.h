@@ -24,14 +24,13 @@ protected:
     virtual INT_PTR handleMessage(UINT msg, WPARAM wp, LPARAM lp) override;
 
 private:
-    enum { PAGE_COUNT = 8 };
+    enum { PAGE_COUNT = 7 };
 
     enum PageIndex {
         PAGE_GENERAL = 0,
         PAGE_FILTERS,
         PAGE_UPDATES,
         PAGE_PROXY,
-        PAGE_SCHEDULE,
         PAGE_LIMITS,
         PAGE_FILES,
         PAGE_ADVANCED
@@ -91,16 +90,6 @@ private:
     HWND m_edtProxyUser;
     HWND m_edtProxyPass;
 
-    /* Schedule */
-    HWND m_chkScanScheduled;
-    HWND m_cmbScanFrequency;
-    HWND m_edtScanHour;
-    HWND m_spinScanHour;
-    HWND m_edtScanMinute;
-    HWND m_spinScanMinute;
-    HWND m_cmbScanDay;
-    HWND m_btnScheduleDetails;
-
     /* Limits */
     HWND m_chkScanArchives;
     HWND m_edtMaxScanSize;
@@ -122,6 +111,10 @@ private:
 
     /* Advanced */
     HWND m_chkScanOle2;
+    HWND m_chkKillProcesses;
+    HWND m_edtClamScanParams;
+    HWND m_edtMaxLogSize;
+    HWND m_spinMaxLogSize;
     HWND m_cmbPriority;
 
     void createFonts();
@@ -135,7 +128,6 @@ private:
     void createFiltersPage(HWND page);
     void createUpdatesPage(HWND page);
     void createProxyPage(HWND page);
-    void createSchedulePage(HWND page);
     void createLimitsPage(HWND page);
     void createFilesPage(HWND page);
     void createAdvancedPage(HWND page);

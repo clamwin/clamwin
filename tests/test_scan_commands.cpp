@@ -9,6 +9,7 @@ namespace
 CWConfig makeBaseConfig(void)
 {
     CWConfig cfg;
+    cfg.killProcesses = false;
     cfg.databasePath = "C:\\db path";
     cfg.quarantinePath = "C:\\Quarantine Path";
     cfg.scanLogFile = "C:\\logs\\scan report.log";
@@ -130,5 +131,34 @@ TEST_SUITE("scan_commands")
         CHECK(cmd.find("--include=") == std::string::npos);
         CHECK(cmd.find("--exclude=") == std::string::npos);
         CHECK(cmd.find("\"\"") == std::string::npos);
+    }
+
+    TEST_CASE("clamscan command includes kill switch when enabled")
+    {
+        CWConfig cfg = makeBaseConfig();
+        cfg.killProcesses = true;
+
+        std::string cmd = CWScanLogic::buildClamscanCommand(cfg, "", "C:\\ClamWin", true);
+
+        CHECK(cmd.find("--memory") != std::string::npos);
+        CHECK(cmd.find("--kill") != std::string::npos);
+    }
+
+    TEST_CASE("clamscan command appends legacy additional parameters before target path")
+    {
+        TestTempDir tempDir;
+        std::string targetDir = testJoinPath(tempDir.path, "scan root");
+        REQUIRE(testMakeDirectory(targetDir));
+
+        CWConfig cfg = makeBaseConfig();
+        cfg.clamscanParams = "--official-db-only=no --bytecode-timeout=5000";
+
+        std::string cmd = CWScanLogic::buildClamscanCommand(cfg, targetDir, "C:\\ClamWin");
+        size_t paramsPos = cmd.find(cfg.clamscanParams);
+        size_t targetPos = cmd.rfind(std::string("\"") + targetDir + "\"");
+
+        CHECK(paramsPos != std::string::npos);
+        CHECK(targetPos != std::string::npos);
+        CHECK(paramsPos < targetPos);
     }
 }

@@ -247,6 +247,7 @@ set(clamwin_test_sources
     ${clamwin_test_dir}/test_bg_task.cpp
     ${clamwin_test_dir}/test_shell_extension_command.cpp
     ${clamwin_test_dir}/test_config.cpp
+    ${clamwin_test_dir}/test_log_utils.cpp
     ${clamwin_test_dir}/test_scan_commands.cpp
     ${clamwin_test_dir}/test_scan_parsers.cpp
     ${clamwin_test_dir}/test_scan_transcripts.cpp

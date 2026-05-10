@@ -32,9 +32,38 @@ static bool s_hasTestCommonAppDataDirOverride = false;
 
 static std::string normalizeFilterPatterns(const std::string& raw)
 {
-    if (raw == "*.dbx|CLAMWIN_SEP|bb|CLAMWIN_SEP|st")
-        return "*.dbx|CLAMWIN_SEP|*.tbb|CLAMWIN_SEP|*.pst";
-    return raw;
+    if (raw.empty())
+        return raw;
+
+    static const char* separator = "|CLAMWIN_SEP|";
+    static const size_t separatorLen = 13;
+
+    std::string normalized;
+    size_t pos = 0;
+    while (pos <= raw.size())
+    {
+        size_t next = raw.find(separator, pos);
+        std::string item = (next == std::string::npos)
+            ? raw.substr(pos)
+            : raw.substr(pos, next - pos);
+
+        if (item == "bb")
+            item = "*.tbb";
+        else if (item == "st")
+            item = "*.pst";
+        else if (item.size() > 1 && item[0] == '.')
+            item = std::string("*") + item;
+
+        if (!normalized.empty())
+            normalized += separator;
+        normalized += item;
+
+        if (next == std::string::npos)
+            break;
+        pos = next + separatorLen;
+    }
+
+    return normalized;
 }
 
 static std::string stripTrailingSlash(const std::string& path)
@@ -448,12 +477,15 @@ void CWConfig::defaults()
     scanArchives    = true;
     scanOle2        = true;
     scanMail        = false;
+    killProcesses   = true;
     infectedAction  = 0;
     infectedOnly    = false;
     maxScanSizeMb   = 150;
     maxFileSizeMb   = 100;
     maxFiles        = 500;
     maxDepth        = 50;
+    maxLogSizeMb    = 1;
+    clamscanParams  = "";
 
     dbMirror        = "database.clamav.net";
     updateOnStartup = false;
@@ -634,17 +666,23 @@ bool CWConfig::load(const std::string& path)
     scanMail       = getInt(SEC_CLAMAV, TEXT("ScanMail"),      scanMail)      != 0;
     if (!iniHasKey(iniPath, SEC_CLAMAV, TEXT("ScanMail")))
         scanMail = getInt(SEC_CLAMAV, TEXT("EnableMbox"), scanMail ? 1 : 0) != 0;
+    killProcesses  = getInt(SEC_CLAMAV, TEXT("Kill"),          killProcesses ? 1 : 0) != 0;
     infectedAction = getInt(SEC_CLAMAV, TEXT("InfectedAction"), infectedAction);
     infectedOnly   = getInt(SEC_CLAMAV, TEXT("InfectedOnly"),   infectedOnly)   != 0;
     maxScanSizeMb  = getInt(SEC_CLAMAV, TEXT("MaxScanSize"),   maxScanSizeMb);
     maxFileSizeMb  = getInt(SEC_CLAMAV, TEXT("MaxFileSize"),   maxFileSizeMb);
     maxFiles       = getInt(SEC_CLAMAV, TEXT("MaxFiles"),      maxFiles);
     maxDepth       = getInt(SEC_CLAMAV, TEXT("MaxRecursion"),  maxDepth);
+    maxLogSizeMb   = getInt(SEC_CLAMAV, TEXT("MaxLogSize"),    maxLogSizeMb);
     quarantinePath = getStr(SEC_CLAMAV, TEXT("Quarantine"),    quarantinePath);
     if (!iniHasKey(iniPath, SEC_CLAMAV, TEXT("Quarantine")))
         quarantinePath = getStr(SEC_CLAMAV, TEXT("QuarantineDir"), quarantinePath);
     scanLogFile    = getStr(SEC_CLAMAV, TEXT("LogFile"),       scanLogFile);
     priority       = normalizePriorityValue(getStr(SEC_CLAMAV, TEXT("Priority"), priority));
+    clamscanParams = getStr(SEC_CLAMAV, TEXT("ClamScanParams"), clamscanParams);
+
+    if (maxLogSizeMb < 1)
+        maxLogSizeMb = 1;
 
     dbMirror        = getStr(SEC_UPDATES, TEXT("DBMirror"),        dbMirror);
     updateLogFile   = getStr(SEC_UPDATES, TEXT("UpdateLog"),       updateLogFile);
@@ -778,6 +816,7 @@ bool CWConfig::save() const
     setInt(SEC_CLAMAV, TEXT("ScanArchives"),   scanArchives   ? 1 : 0);
     setInt(SEC_CLAMAV, TEXT("ScanOle2"),       scanOle2       ? 1 : 0);
     setInt(SEC_CLAMAV, TEXT("ScanMail"),       scanMail       ? 1 : 0);
+    setInt(SEC_CLAMAV, TEXT("Kill"),           killProcesses  ? 1 : 0);
     setInt(SEC_CLAMAV, TEXT("InfectedAction"), infectedAction);
     setInt(SEC_CLAMAV, TEXT("InfectedOnly"),   infectedOnly   ? 1 : 0);
     setInt(SEC_CLAMAV, TEXT("MaxScanSize"),    maxScanSizeMb);
@@ -786,7 +825,9 @@ bool CWConfig::save() const
     setInt(SEC_CLAMAV, TEXT("MaxRecursion"),   maxDepth);
     setStr(SEC_CLAMAV, TEXT("Quarantine"),     quarantinePath);
     setStr(SEC_CLAMAV, TEXT("LogFile"),        scanLogFile);
+    setInt(SEC_CLAMAV, TEXT("MaxLogSize"),     maxLogSizeMb < 1 ? 1 : maxLogSizeMb);
     setStr(SEC_CLAMAV, TEXT("Priority"),       priority);
+    setStr(SEC_CLAMAV, TEXT("ClamScanParams"), clamscanParams);
 
     setStr(SEC_UPDATES, TEXT("DBMirror"),         dbMirror);
     setStr(SEC_UPDATES, TEXT("UpdateLog"),        updateLogFile);
