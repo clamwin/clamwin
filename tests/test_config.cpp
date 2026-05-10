@@ -7,9 +7,12 @@ namespace
 struct ScopedConfigPathOverrides
 {
     ScopedConfigPathOverrides(const std::string& installDir,
-                              const std::string& appDataDir)
+                              const std::string& appDataDir,
+                              const std::string& userProfileDir = std::string(),
+                              const std::string& commonAppDataDir = std::string())
     {
-        CWConfig::setPathOverridesForTesting(installDir, appDataDir);
+        CWConfig::setPathOverridesForTesting(installDir, appDataDir,
+                                             userProfileDir, commonAppDataDir);
     }
 
     ~ScopedConfigPathOverrides()
@@ -25,6 +28,11 @@ private:
 std::string testLegacyProfileRoot(const std::string& appDataDir)
 {
     return testJoinPath(appDataDir, ".clamwin");
+}
+
+std::string testLegacyConfigPath(const std::string& rootDir)
+{
+    return testJoinPath(testJoinPath(rootDir, ".clamwin"), "ClamWin.conf");
 }
 
 void checkConfigEqual(const CWConfig& expected, const CWConfig& actual)
@@ -268,5 +276,148 @@ TEST_SUITE("config")
         CHECK(cfg.emailEnabled);
         CHECK(cfg.emailSmtp == "smtp.example.test");
         CHECK(cfg.priority == "l");
+    }
+
+    TEST_CASE("load prefers legacy user profile config before bootstrap")
+    {
+        TestTempDir tempDir;
+        std::string installDir = testJoinPath(tempDir.path, "install");
+        std::string appDataDir = testJoinPath(tempDir.path, "appdata");
+        std::string userProfileDir = testJoinPath(tempDir.path, "userprofile");
+        std::string appDataIni = testJoinPath(testLegacyProfileRoot(appDataDir), "ClamWin.conf");
+        std::string legacyIni = testLegacyConfigPath(userProfileDir);
+        std::string templateIni = testJoinPath(installDir, "ClamWin.conf");
+        std::string templateContent =
+            "[UI]\r\n"
+            "Standalone=0\r\n"
+            "[ClamAV]\r\n"
+            "Database=C:\\Template\\db\r\n";
+        std::string legacyContent =
+            "[ClamAV]\r\n"
+            "Database=C:\\Legacy\\db\r\n"
+            "[Proxy]\r\n"
+            "Host=proxy.legacy.test\r\n";
+
+        REQUIRE(testMakeDirectory(installDir));
+        REQUIRE(testMakeDirectory(appDataDir));
+        REQUIRE(testMakeDirectory(userProfileDir));
+        REQUIRE(testMakeDirectory(testJoinPath(userProfileDir, ".clamwin")));
+        REQUIRE(testWriteFile(templateIni, templateContent));
+        REQUIRE(testWriteFile(legacyIni, legacyContent));
+
+        ScopedConfigPathOverrides overrides(installDir, appDataDir, userProfileDir);
+
+        CWConfig cfg;
+        REQUIRE(cfg.load());
+
+        CHECK(cfg.iniPath == legacyIni);
+        CHECK(cfg.databasePath == "C:\\Legacy\\db");
+        CHECK(cfg.proxyEnabled);
+        CHECK(cfg.proxyHost == "proxy.legacy.test");
+        CHECK_FALSE(testPathExists(appDataIni));
+    }
+
+    TEST_CASE("load prefers legacy common profile config before bootstrap")
+    {
+        TestTempDir tempDir;
+        std::string installDir = testJoinPath(tempDir.path, "install");
+        std::string appDataDir = testJoinPath(tempDir.path, "appdata");
+        std::string commonAppDataDir = testJoinPath(tempDir.path, "commonappdata");
+        std::string appDataIni = testJoinPath(testLegacyProfileRoot(appDataDir), "ClamWin.conf");
+        std::string legacyIni = testLegacyConfigPath(commonAppDataDir);
+        std::string templateIni = testJoinPath(installDir, "ClamWin.conf");
+        std::string templateContent =
+            "[UI]\r\n"
+            "Standalone=0\r\n"
+            "[ClamAV]\r\n"
+            "Database=C:\\Template\\db\r\n";
+        std::string legacyContent =
+            "[Updates]\r\n"
+            "DBMirror=mirror.legacy.test\r\n"
+            "[EmailAlerts]\r\n"
+            "Enable=1\r\n";
+
+        REQUIRE(testMakeDirectory(installDir));
+        REQUIRE(testMakeDirectory(appDataDir));
+        REQUIRE(testMakeDirectory(commonAppDataDir));
+        REQUIRE(testMakeDirectory(testJoinPath(commonAppDataDir, ".clamwin")));
+        REQUIRE(testWriteFile(templateIni, templateContent));
+        REQUIRE(testWriteFile(legacyIni, legacyContent));
+
+        ScopedConfigPathOverrides overrides(installDir, appDataDir, std::string(), commonAppDataDir);
+
+        CWConfig cfg;
+        REQUIRE(cfg.load());
+
+        CHECK(cfg.iniPath == legacyIni);
+        CHECK(cfg.dbMirror == "mirror.legacy.test");
+        CHECK(cfg.emailEnabled);
+        CHECK_FALSE(testPathExists(appDataIni));
+    }
+
+    TEST_CASE("load keeps user legacy config ahead of shared legacy config")
+    {
+        TestTempDir tempDir;
+        std::string installDir = testJoinPath(tempDir.path, "install");
+        std::string appDataDir = testJoinPath(tempDir.path, "appdata");
+        std::string userProfileDir = testJoinPath(tempDir.path, "userprofile");
+        std::string commonAppDataDir = testJoinPath(tempDir.path, "commonappdata");
+        std::string userIni = testLegacyConfigPath(userProfileDir);
+        std::string commonIni = testLegacyConfigPath(commonAppDataDir);
+        std::string templateIni = testJoinPath(installDir, "ClamWin.conf");
+
+        REQUIRE(testMakeDirectory(installDir));
+        REQUIRE(testMakeDirectory(appDataDir));
+        REQUIRE(testMakeDirectory(userProfileDir));
+        REQUIRE(testMakeDirectory(commonAppDataDir));
+        REQUIRE(testMakeDirectory(testJoinPath(userProfileDir, ".clamwin")));
+        REQUIRE(testMakeDirectory(testJoinPath(commonAppDataDir, ".clamwin")));
+        REQUIRE(testWriteFile(templateIni, "[UI]\r\nStandalone=0\r\n"));
+        REQUIRE(testWriteFile(userIni,
+                              "[Updates]\r\n"
+                              "DBMirror=user.legacy.test\r\n"));
+        REQUIRE(testWriteFile(commonIni,
+                              "[Updates]\r\n"
+                              "DBMirror=common.legacy.test\r\n"));
+
+        ScopedConfigPathOverrides overrides(installDir, appDataDir, userProfileDir, commonAppDataDir);
+
+        CWConfig cfg;
+        REQUIRE(cfg.load());
+
+        CHECK(cfg.iniPath == userIni);
+        CHECK(cfg.dbMirror == "user.legacy.test");
+    }
+
+    TEST_CASE("sparse legacy config uses its own profile dir for path defaults")
+    {
+        TestTempDir tempDir;
+        std::string installDir = testJoinPath(tempDir.path, "install");
+        std::string appDataDir = testJoinPath(tempDir.path, "appdata");
+        std::string userProfileDir = testJoinPath(tempDir.path, "userprofile");
+        std::string legacyProfileDir = testJoinPath(userProfileDir, ".clamwin");
+        std::string legacyIni = testJoinPath(legacyProfileDir, "ClamWin.conf");
+        std::string templateIni = testJoinPath(installDir, "ClamWin.conf");
+
+        REQUIRE(testMakeDirectory(installDir));
+        REQUIRE(testMakeDirectory(appDataDir));
+        REQUIRE(testMakeDirectory(userProfileDir));
+        REQUIRE(testMakeDirectory(legacyProfileDir));
+        REQUIRE(testWriteFile(templateIni, "[UI]\r\nStandalone=0\r\n"));
+        REQUIRE(testWriteFile(legacyIni,
+                              "[Proxy]\r\n"
+                              "Host=proxy.sparse.test\r\n"));
+
+        ScopedConfigPathOverrides overrides(installDir, appDataDir, userProfileDir);
+
+        CWConfig cfg;
+        REQUIRE(cfg.load());
+
+        CHECK(cfg.iniPath == legacyIni);
+        CHECK(cfg.proxyHost == "proxy.sparse.test");
+        CHECK(cfg.databasePath == testJoinPath(legacyProfileDir, "db"));
+        CHECK(cfg.quarantinePath == testJoinPath(legacyProfileDir, "Quarantine"));
+        CHECK(cfg.scanLogFile == testJoinPath(legacyProfileDir, "ClamScan.log"));
+        CHECK(cfg.updateLogFile == testJoinPath(legacyProfileDir, "FreshClam.log"));
     }
 }

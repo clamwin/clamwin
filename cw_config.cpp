@@ -24,6 +24,10 @@ static const TCHAR* SEC_UI       = TEXT("UI");
 
 static std::string s_testInstallDirOverride;
 static std::string s_testAppDataDirOverride;
+static std::string s_testUserProfileDirOverride;
+static std::string s_testCommonAppDataDirOverride;
+static bool s_hasTestUserProfileDirOverride = false;
+static bool s_hasTestCommonAppDataDirOverride = false;
 
 static std::string normalizeFilterPatterns(const std::string& raw)
 {
@@ -63,6 +67,64 @@ static std::string getEnvValue(LPCTSTR name)
     if (len == 0 || len >= MAX_PATH)
         return std::string();
     return CW_ToNarrow(value);
+}
+
+static bool getSpecialFolderPathDynamic(int csidl, bool create, TCHAR* out, DWORD outChars)
+{
+    if (!out || outChars == 0)
+        return false;
+
+    out[0] = TEXT('\0');
+
+    /* Resolve shell-folder APIs at runtime: Win98 builds must not carry a
+     * hard import on SHGetFolderPath/SHGetSpecialFolderPath. */
+    const LPCTSTR folderPathDlls[] = { TEXT("shfolder.dll"), TEXT("shell32.dll") };
+    for (size_t i = 0; i < sizeof(folderPathDlls) / sizeof(folderPathDlls[0]); ++i)
+    {
+        HMODULE module = LoadLibrary(folderPathDlls[i]);
+        if (!module)
+            continue;
+
+#ifdef UNICODE
+        const char* procName = "SHGetFolderPathW";
+#else
+        const char* procName = "SHGetFolderPathA";
+#endif
+        typedef HRESULT (WINAPI *SHGetFolderPathFn)(HWND, int, HANDLE, DWORD, LPTSTR);
+        SHGetFolderPathFn fn = (SHGetFolderPathFn)GetProcAddress(module, procName);
+        if (fn)
+        {
+            HRESULT hr = fn(NULL, csidl, NULL, SHGFP_TYPE_CURRENT, out);
+            out[outChars - 1] = TEXT('\0');
+            FreeLibrary(module);
+            return SUCCEEDED(hr) && out[0] != TEXT('\0');
+        }
+
+        FreeLibrary(module);
+    }
+
+    HMODULE shell32 = LoadLibrary(TEXT("shell32.dll"));
+    if (shell32)
+    {
+#ifdef UNICODE
+        const char* procName = "SHGetSpecialFolderPathW";
+#else
+        const char* procName = "SHGetSpecialFolderPathA";
+#endif
+        typedef BOOL (WINAPI *SHGetSpecialFolderPathFn)(HWND, LPTSTR, int, BOOL);
+        SHGetSpecialFolderPathFn fn = (SHGetSpecialFolderPathFn)GetProcAddress(shell32, procName);
+        if (fn)
+        {
+            BOOL ok = fn(NULL, out, csidl, create ? TRUE : FALSE);
+            out[outChars - 1] = TEXT('\0');
+            FreeLibrary(shell32);
+            return ok && out[0] != TEXT('\0');
+        }
+
+        FreeLibrary(shell32);
+    }
+
+    return false;
 }
 
 static std::string getExecutableDir()
@@ -149,13 +211,92 @@ static std::string getLegacyAppDataDir()
         return s_testAppDataDirOverride;
 
     TCHAR appData[MAX_PATH];
-    if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, appData)) &&
-        appData[0] != TEXT('\0'))
-    {
+    if (getSpecialFolderPathDynamic(CSIDL_APPDATA, true, appData, _countof(appData)))
         return stripTrailingSlash(CW_ToNarrow(appData));
-    }
 
     return std::string();
+}
+
+static std::string getLegacyUserProfileDir()
+{
+    if (s_hasTestUserProfileDirOverride)
+        return s_testUserProfileDirOverride;
+
+    return stripTrailingSlash(getEnvValue(TEXT("USERPROFILE")));
+}
+
+static std::string getLegacyCommonAppDataDir()
+{
+    if (s_hasTestCommonAppDataDirOverride)
+        return s_testCommonAppDataDirOverride;
+
+    TCHAR commonAppData[MAX_PATH];
+    if (getSpecialFolderPathDynamic(CSIDL_COMMON_APPDATA, false, commonAppData, _countof(commonAppData)))
+        return stripTrailingSlash(CW_ToNarrow(commonAppData));
+
+    return std::string();
+}
+
+static std::string getLegacyConfigPath(const std::string& rootDir)
+{
+    if (rootDir.empty())
+        return std::string();
+
+    return appendPath(appendPath(rootDir, ".clamwin"), "ClamWin.conf");
+}
+
+static bool readFileContents(const std::string& path, std::string& content)
+{
+    content.clear();
+
+    FILE* fp = fopen(path.c_str(), "rb");
+    if (!fp)
+        return false;
+
+    char buffer[512];
+    size_t bytesRead = 0;
+    while ((bytesRead = fread(buffer, 1, sizeof(buffer), fp)) > 0)
+        content.append(buffer, bytesRead);
+
+    bool ok = ferror(fp) == 0;
+    fclose(fp);
+    return ok;
+}
+
+static bool filesMatch(const std::string& leftPath, const std::string& rightPath)
+{
+    if (!pathExists(leftPath) || !pathExists(rightPath))
+        return false;
+
+    std::string leftContent;
+    std::string rightContent;
+    return readFileContents(leftPath, leftContent) &&
+           readFileContents(rightPath, rightContent) &&
+           leftContent == rightContent;
+}
+
+static std::string getPreferredLegacyIniPath()
+{
+    std::string userProfileIni = getLegacyConfigPath(getLegacyUserProfileDir());
+    std::string commonProfileIni = getLegacyConfigPath(getLegacyCommonAppDataDir());
+
+    if (pathExists(userProfileIni))
+        return userProfileIni;
+    if (pathExists(commonProfileIni))
+        return commonProfileIni;
+
+    return std::string();
+}
+
+static bool isPristineBootstrapCopy(const std::string& iniPath)
+{
+    std::string templatePath = getTemplateIniPath();
+    if (iniPath.empty() || templatePath.empty())
+        return false;
+    if (_stricmp(iniPath.c_str(), templatePath.c_str()) == 0)
+        return false;
+
+    return filesMatch(iniPath, templatePath);
 }
 
 static std::string getLegacyProfileRoot()
@@ -167,11 +308,31 @@ static std::string getLegacyProfileRoot()
     if (!appData.empty())
         return appendPath(appData, ".clamwin");
 
-    std::string profile = getEnvValue(TEXT("USERPROFILE"));
+    std::string profile = getLegacyUserProfileDir();
     if (!profile.empty())
         return appendPath(profile, ".clamwin");
 
     return getExecutableDir();
+}
+
+static std::string resolveDefaultIniPathForLoad()
+{
+    std::string defaultPath = appendPath(getLegacyProfileRoot(), "ClamWin.conf");
+    if (isStandaloneTemplate(getTemplateIniPath()))
+        return defaultPath;
+
+    std::string legacyPath = getPreferredLegacyIniPath();
+    if (pathExists(defaultPath))
+    {
+        if (!legacyPath.empty() && isPristineBootstrapCopy(defaultPath))
+            return legacyPath;
+        return defaultPath;
+    }
+
+    if (!legacyPath.empty())
+        return legacyPath;
+
+    return defaultPath;
 }
 
 static void bootstrapLegacyProfile(const std::string& iniPath)
@@ -209,8 +370,6 @@ CWConfig::CWConfig()
 
 void CWConfig::defaults()
 {
-    std::string exedirStr = appendPath(getExecutableDir(), "");
-
     std::string profileRoot = getLegacyProfileRoot();
     if (!profileRoot.empty())
     {
@@ -221,10 +380,11 @@ void CWConfig::defaults()
     }
     else
     {
-        databasePath   = exedirStr + "db";
-        quarantinePath = exedirStr + "Quarantine";
-        scanLogFile    = exedirStr + "ClamScan.log";
-        updateLogFile  = exedirStr + "FreshClam.log";
+        std::string exedirStr = getExecutableDir();
+        databasePath   = appendPath(exedirStr, "db");
+        quarantinePath = appendPath(exedirStr, "Quarantine");
+        scanLogFile    = appendPath(exedirStr, "ClamScan.log");
+        updateLogFile  = appendPath(exedirStr, "FreshClam.log");
     }
 
     iniPath         = defaultIniPath();
@@ -287,16 +447,26 @@ std::string CWConfig::defaultIniPath()
 }
 
 void CWConfig::setPathOverridesForTesting(const std::string& installDir,
-                                          const std::string& appDataDir)
+                                          const std::string& appDataDir,
+                                          const std::string& userProfileDir,
+                                          const std::string& commonAppDataDir)
 {
     s_testInstallDirOverride = stripTrailingSlash(installDir);
     s_testAppDataDirOverride = stripTrailingSlash(appDataDir);
+    s_testUserProfileDirOverride = stripTrailingSlash(userProfileDir);
+    s_testCommonAppDataDirOverride = stripTrailingSlash(commonAppDataDir);
+    s_hasTestUserProfileDirOverride = true;
+    s_hasTestCommonAppDataDirOverride = true;
 }
 
 void CWConfig::clearPathOverridesForTesting()
 {
     s_testInstallDirOverride.clear();
     s_testAppDataDirOverride.clear();
+    s_testUserProfileDirOverride.clear();
+    s_testCommonAppDataDirOverride.clear();
+    s_hasTestUserProfileDirOverride = false;
+    s_hasTestCommonAppDataDirOverride = false;
 }
 
 /* ─── freshclam.conf path ────────────────────────────────────── */
@@ -369,6 +539,18 @@ bool CWConfig::load(const std::string& path)
 
     if (!path.empty())
         iniPath = path;
+
+    if (usingDefaultPath)
+        iniPath = resolveDefaultIniPathForLoad();
+
+    std::string loadedProfileRoot = getParentDir(iniPath);
+    if (!loadedProfileRoot.empty())
+    {
+        databasePath   = appendPath(loadedProfileRoot, "db");
+        quarantinePath = appendPath(loadedProfileRoot, "Quarantine");
+        scanLogFile    = appendPath(loadedProfileRoot, "ClamScan.log");
+        updateLogFile  = appendPath(loadedProfileRoot, "FreshClam.log");
+    }
 
     if (usingDefaultPath)
         bootstrapLegacyProfile(iniPath);
