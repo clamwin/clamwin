@@ -26,6 +26,7 @@ static std::string s_testInstallDirOverride;
 static std::string s_testAppDataDirOverride;
 static std::string s_testUserProfileDirOverride;
 static std::string s_testCommonAppDataDirOverride;
+static bool s_hasTestAppDataDirOverride = false;
 static bool s_hasTestUserProfileDirOverride = false;
 static bool s_hasTestCommonAppDataDirOverride = false;
 
@@ -196,6 +197,19 @@ static bool iniHasKey(const std::string& iniPath, LPCTSTR section, LPCTSTR key)
     return !(len == 1 && buffer[0] == sentinel[0] && buffer[1] == TEXT('\0'));
 }
 
+static bool iniHasAnyKey(const std::string& iniPath,
+                         const LPCTSTR section,
+                         const LPCTSTR* keys,
+                         size_t keyCount)
+{
+    for (size_t i = 0; i < keyCount; ++i)
+    {
+        if (iniHasKey(iniPath, section, keys[i]))
+            return true;
+    }
+    return false;
+}
+
 static std::string normalizePriorityValue(const std::string& value)
 {
     if (_stricmp(value.c_str(), "low") == 0)
@@ -207,7 +221,7 @@ static std::string normalizePriorityValue(const std::string& value)
 
 static std::string getLegacyAppDataDir()
 {
-    if (!s_testAppDataDirOverride.empty())
+    if (s_hasTestAppDataDirOverride)
         return s_testAppDataDirOverride;
 
     TCHAR appData[MAX_PATH];
@@ -291,12 +305,54 @@ static std::string getPreferredLegacyIniPath()
 static bool isPristineBootstrapCopy(const std::string& iniPath)
 {
     std::string templatePath = getTemplateIniPath();
-    if (iniPath.empty() || templatePath.empty())
-        return false;
-    if (_stricmp(iniPath.c_str(), templatePath.c_str()) == 0)
+    if (iniPath.empty())
         return false;
 
-    return filesMatch(iniPath, templatePath);
+    if (!templatePath.empty())
+    {
+        if (_stricmp(iniPath.c_str(), templatePath.c_str()) == 0)
+            return false;
+
+        if (filesMatch(iniPath, templatePath))
+            return true;
+    }
+
+    const LPCTSTR seedClamAvKeys[] = { TEXT("ClamScan"), TEXT("FreshClam") };
+    const LPCTSTR seedUpdateKeys[] = { TEXT("Time") };
+    bool hasInstallerSeedMarker =
+        iniHasAnyKey(iniPath, SEC_CLAMAV, seedClamAvKeys, _countof(seedClamAvKeys)) ||
+        iniHasAnyKey(iniPath, SEC_UPDATES, seedUpdateKeys, _countof(seedUpdateKeys));
+
+    if (!hasInstallerSeedMarker)
+        return false;
+
+    /* Older C++ installers seeded only tool/path defaults into ClamWin.conf.
+     * A config saved by legacy Python or by this C++ runtime contains scan,
+     * update, UI, proxy, email, or schedule preference keys. Treat only the
+     * sparse installer seed shape as disposable so a real user config is not
+     * bypassed just because another legacy config also exists. */
+    const LPCTSTR userClamAvKeys[] = {
+        TEXT("ScanRecursive"), TEXT("ScanArchives"), TEXT("ScanOle2"), TEXT("ScanMail"),
+        TEXT("EnableMbox"), TEXT("InfectedAction"), TEXT("InfectedOnly"), TEXT("RemoveInfected"),
+        TEXT("MoveInfected"), TEXT("MaxScanSize"), TEXT("MaxFileSize"), TEXT("MaxFiles"),
+        TEXT("MaxRecursion"), TEXT("Priority"), TEXT("IncludePatterns"), TEXT("ExcludePatterns"),
+        TEXT("ClamScanParams"), TEXT("FreshClamParams"), TEXT("Kill"), TEXT("Debug")
+    };
+    const LPCTSTR userUpdateKeys[] = {
+        TEXT("Enable"), TEXT("Frequency"), TEXT("DBMirror"), TEXT("UpdateOnStartup"),
+        TEXT("UpdateOnLogon"), TEXT("WarnOutOfDate"), TEXT("CheckVersion"), TEXT("CheckVersionURL")
+    };
+    const LPCTSTR userProxyKeys[] = { TEXT("Enabled"), TEXT("Host"), TEXT("User"), TEXT("Password") };
+    const LPCTSTR userAlertKeys[] = { TEXT("Enabled"), TEXT("Enable"), TEXT("SMTP"), TEXT("SMTPHost"), TEXT("From"), TEXT("To") };
+    const LPCTSTR userScheduleKeys[] = { TEXT("Path"), TEXT("ScanEnabled"), TEXT("UpdateEnabled"), TEXT("ScanHour"), TEXT("UpdateHour") };
+    const LPCTSTR userUiKeys[] = { TEXT("TrayNotify"), TEXT("CloseOnExit"), TEXT("ReportInfected"), TEXT("Version") };
+
+    return !iniHasAnyKey(iniPath, SEC_CLAMAV, userClamAvKeys, _countof(userClamAvKeys)) &&
+           !iniHasAnyKey(iniPath, SEC_UPDATES, userUpdateKeys, _countof(userUpdateKeys)) &&
+           !iniHasAnyKey(iniPath, SEC_PROXY, userProxyKeys, _countof(userProxyKeys)) &&
+           !iniHasAnyKey(iniPath, SEC_ALERTS, userAlertKeys, _countof(userAlertKeys)) &&
+           !iniHasAnyKey(iniPath, SEC_SCHEDULE, userScheduleKeys, _countof(userScheduleKeys)) &&
+           !iniHasAnyKey(iniPath, SEC_UI, userUiKeys, _countof(userUiKeys));
 }
 
 static std::string getLegacyProfileRoot()
@@ -455,6 +511,7 @@ void CWConfig::setPathOverridesForTesting(const std::string& installDir,
     s_testAppDataDirOverride = stripTrailingSlash(appDataDir);
     s_testUserProfileDirOverride = stripTrailingSlash(userProfileDir);
     s_testCommonAppDataDirOverride = stripTrailingSlash(commonAppDataDir);
+    s_hasTestAppDataDirOverride = true;
     s_hasTestUserProfileDirOverride = true;
     s_hasTestCommonAppDataDirOverride = true;
 }
@@ -465,6 +522,7 @@ void CWConfig::clearPathOverridesForTesting()
     s_testAppDataDirOverride.clear();
     s_testUserProfileDirOverride.clear();
     s_testCommonAppDataDirOverride.clear();
+    s_hasTestAppDataDirOverride = false;
     s_hasTestUserProfileDirOverride = false;
     s_hasTestCommonAppDataDirOverride = false;
 }
@@ -672,7 +730,9 @@ bool CWConfig::load(const std::string& path)
         std::string installScanLog    = exedirStr + "ClamScan.log";
         std::string installUpdateLog  = exedirStr + "FreshClam.log";
 
-        std::string profileRoot = getLegacyProfileRoot();
+        std::string profileRoot = !loadedProfileRoot.empty()
+            ? loadedProfileRoot
+            : getLegacyProfileRoot();
         if (!profileRoot.empty())
         {
             if (databasePath == installDb)

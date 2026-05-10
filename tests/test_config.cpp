@@ -225,6 +225,21 @@ TEST_SUITE("config")
         CHECK(CWConfig::defaultIniPath() == testJoinPath(installDir, "ClamWin.conf"));
     }
 
+    TEST_CASE("default ini path falls back to user profile when appdata is unavailable")
+    {
+        TestTempDir tempDir;
+        std::string installDir = testJoinPath(tempDir.path, "install");
+        std::string userProfileDir = testJoinPath(tempDir.path, "userprofile");
+        REQUIRE(testMakeDirectory(installDir));
+        REQUIRE(testMakeDirectory(userProfileDir));
+        REQUIRE(testWriteFile(testJoinPath(installDir, "ClamWin.conf"),
+                              "[UI]\r\nStandalone=0\r\n"));
+
+        ScopedConfigPathOverrides overrides(installDir, std::string(), userProfileDir);
+
+        CHECK(CWConfig::defaultIniPath() == testLegacyConfigPath(userProfileDir));
+    }
+
     TEST_CASE("load bootstraps per-user config from install template")
     {
         TestTempDir tempDir;
@@ -419,5 +434,89 @@ TEST_SUITE("config")
         CHECK(cfg.quarantinePath == testJoinPath(legacyProfileDir, "Quarantine"));
         CHECK(cfg.scanLogFile == testJoinPath(legacyProfileDir, "ClamScan.log"));
         CHECK(cfg.updateLogFile == testJoinPath(legacyProfileDir, "FreshClam.log"));
+    }
+
+    TEST_CASE("install-dir default migration uses loaded config profile dir")
+    {
+        TestTempDir tempDir;
+        std::string installDir = testJoinPath(tempDir.path, "install");
+        std::string appDataDir = testJoinPath(tempDir.path, "appdata");
+        std::string userProfileDir = testJoinPath(tempDir.path, "userprofile");
+        std::string legacyProfileDir = testJoinPath(userProfileDir, ".clamwin");
+        std::string legacyIni = testJoinPath(legacyProfileDir, "ClamWin.conf");
+        std::string templateIni = testJoinPath(installDir, "ClamWin.conf");
+        std::string exeDir = testExecutableDir();
+        std::string installDb = testJoinPath(exeDir, "db");
+        std::string installQuarantine = testJoinPath(exeDir, "Quarantine");
+        std::string installScanLog = testJoinPath(exeDir, "ClamScan.log");
+        std::string installUpdateLog = testJoinPath(exeDir, "FreshClam.log");
+
+        REQUIRE(testMakeDirectory(installDir));
+        REQUIRE(testMakeDirectory(appDataDir));
+        REQUIRE(testMakeDirectory(userProfileDir));
+        REQUIRE(testMakeDirectory(legacyProfileDir));
+        REQUIRE(testWriteFile(templateIni, "[UI]\r\nStandalone=0\r\n"));
+        REQUIRE(testWriteFile(legacyIni,
+                              "[ClamAV]\r\n"
+                              "Database=" + installDb + "\r\n"
+                              "QuarantineDir=" + installQuarantine + "\r\n"
+                              "LogFile=" + installScanLog + "\r\n"
+                              "[Updates]\r\n"
+                              "DBUpdateLogFile=" + installUpdateLog + "\r\n"));
+
+        ScopedConfigPathOverrides overrides(installDir, appDataDir, userProfileDir);
+
+        CWConfig cfg;
+        REQUIRE(cfg.load());
+
+        CHECK(cfg.iniPath == legacyIni);
+        CHECK(cfg.databasePath == testJoinPath(legacyProfileDir, "db"));
+        CHECK(cfg.quarantinePath == testJoinPath(legacyProfileDir, "Quarantine"));
+        CHECK(cfg.scanLogFile == testJoinPath(legacyProfileDir, "ClamScan.log"));
+        CHECK(cfg.updateLogFile == testJoinPath(legacyProfileDir, "FreshClam.log"));
+    }
+
+    TEST_CASE("old installer-seeded appdata config does not shadow legacy config")
+    {
+        TestTempDir tempDir;
+        std::string installDir = testJoinPath(tempDir.path, "install");
+        std::string appDataDir = testJoinPath(tempDir.path, "appdata");
+        std::string userProfileDir = testJoinPath(tempDir.path, "userprofile");
+        std::string appDataProfileDir = testLegacyProfileRoot(appDataDir);
+        std::string appDataIni = testJoinPath(appDataProfileDir, "ClamWin.conf");
+        std::string legacyIni = testLegacyConfigPath(userProfileDir);
+        std::string templateIni = testJoinPath(installDir, "ClamWin.conf");
+
+        REQUIRE(testMakeDirectory(installDir));
+        REQUIRE(testMakeDirectory(appDataDir));
+        REQUIRE(testMakeDirectory(appDataProfileDir));
+        REQUIRE(testMakeDirectory(userProfileDir));
+        REQUIRE(testMakeDirectory(testJoinPath(userProfileDir, ".clamwin")));
+        REQUIRE(testWriteFile(templateIni,
+                              "[UI]\r\n"
+                              "Standalone=0\r\n"
+                              "[ClamAV]\r\n"
+                              "Database=C:\\CurrentTemplate\\db\r\n"));
+        REQUIRE(testWriteFile(appDataIni,
+                              "[ClamAV]\r\n"
+                              "ClamScan=C:\\OldClamWin\\bin\\clamscan.exe\r\n"
+                              "FreshClam=C:\\OldClamWin\\bin\\freshclam.exe\r\n"
+                              "Database=C:\\ProgramData\\.clamwin\\db\r\n"
+                              "QuarantineDir=C:\\ProgramData\\.clamwin\\quarantine\r\n"
+                              "LogFile=C:\\ProgramData\\.clamwin\\log\\ClamScanLog.txt\r\n"
+                              "[Updates]\r\n"
+                              "DBUpdateLogFile=C:\\ProgramData\\.clamwin\\log\\ClamUpdateLog.txt\r\n"
+                              "Time=10:00:00\r\n"));
+        REQUIRE(testWriteFile(legacyIni,
+                              "[Updates]\r\n"
+                              "DBMirror=legacy.real-config.test\r\n"));
+
+        ScopedConfigPathOverrides overrides(installDir, appDataDir, userProfileDir);
+
+        CWConfig cfg;
+        REQUIRE(cfg.load());
+
+        CHECK(cfg.iniPath == legacyIni);
+        CHECK(cfg.dbMirror == "legacy.real-config.test");
     }
 }
