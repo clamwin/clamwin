@@ -166,8 +166,19 @@ function Resolve-IsccPath {
     )
 
     foreach ($path in $candidates) {
-        if (Test-Path $path) {
-            return $path
+        if ([string]::IsNullOrWhiteSpace($path)) {
+            continue
+        }
+
+        $normalizedPath = $path.Trim()
+        if ($normalizedPath.Length -ge 2 -and
+            $normalizedPath.StartsWith('"') -and
+            $normalizedPath.EndsWith('"')) {
+            $normalizedPath = $normalizedPath.Substring(1, $normalizedPath.Length - 2)
+        }
+
+        if (Test-Path -LiteralPath $normalizedPath) {
+            return $normalizedPath
         }
     }
 

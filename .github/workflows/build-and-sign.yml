@@ -469,6 +469,7 @@ jobs:
         run: |
           $prebuiltClamAvRoot = Join-Path $env:GITHUB_WORKSPACE "setup\clamav-binaries"
           $buildFullDb = '${{ github.event_name == 'workflow_dispatch' && inputs.include_fulldb }}' -eq 'true'
+          $env:CLAMWIN_ISCC_EXE = $env:ISCC_EXE
 
           # Remove the SHA256 manifest so build-setup.ps1 skips hash verification
           # against the vendored binaries - we've replaced x86/x64 with freshly built ones
