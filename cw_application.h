@@ -56,6 +56,7 @@ private:
     CWBgTask*    m_bgScan;      /* in-flight background scan, or NULL  */
     CWBgTask*    m_bgUpdate;    /* in-flight background update, or NULL */
     bool         m_curlInited;  /* true if curl_global_init() succeeded */
+    bool         m_manualVersionCheckPending;
 
     /* Returns dashboard HWND if created, else tray HWND. */
     HWND dialogParent() const;
@@ -86,6 +87,7 @@ private:
     void doUpdateReport();
     void doOpenDashboard();
     void doHelp();
+    void beginVersionCheck(bool userInitiated, bool openDashboard);
     void onVersionCheckResult(WPARAM wp, LPARAM lp);
     void onBgTaskFinished(WPARAM wp, LPARAM lp);
 

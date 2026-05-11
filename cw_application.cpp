@@ -555,6 +555,7 @@ CWApplication::CWApplication()
     , m_bgScan(NULL)
     , m_bgUpdate(NULL)
     , m_curlInited(false)
+    , m_manualVersionCheckPending(false)
 {
     s_instance = this;
 }
@@ -858,11 +859,43 @@ void CWApplication::doHelp()
     ShellExecute(dialogParent(), TEXT("open"), TEXT(CLAMWIN_WEBSITE), NULL, NULL, SW_SHOWNORMAL);
 }
 
+void CWApplication::beginVersionCheck(bool userInitiated, bool openDashboard)
+{
+    if (openDashboard)
+        doOpenDashboard();
+
+    if (userInitiated)
+        m_manualVersionCheckPending = true;
+
+    if (!m_curlInited)
+    {
+        if (userInitiated)
+        {
+            m_manualVersionCheckPending = false;
+            m_dash.setVersionCheckFailed();
+        }
+        return;
+    }
+
+    if (!m_config.iniPath.empty())
+        m_config.load(m_config.iniPath);
+    else
+        m_config.load();
+
+    m_updateChecker.startCheck(m_hwndTray,
+                               m_config.debugEnabled,
+                               CW_GetDebugLogPath(m_config.scanLogFile));
+}
+
 void CWApplication::onVersionCheckResult(WPARAM wp, LPARAM lp)
 {
+    (void)wp;
     CWVersionResult* result = reinterpret_cast<CWVersionResult*>(lp);
     if (!result)
         return;
+
+    const bool manualVersionCheck = m_manualVersionCheckPending;
+    m_manualVersionCheckPending = false;
 
     if (result->available)
     {
@@ -877,6 +910,13 @@ void CWApplication::onVersionCheckResult(WPARAM wp, LPARAM lp)
                   result->versionStr);
         balloon[sizeof(balloon) - 1] = '\0';
         showBalloonNotify(balloon, NIIF_INFO);
+    }
+    else if (manualVersionCheck)
+    {
+        if (result->success)
+            m_dash.setLatestInstalled(CLAMWIN_VERSION_STR);
+        else
+            m_dash.setVersionCheckFailed();
     }
 
     delete result;
@@ -1220,17 +1260,10 @@ LRESULT CWApplication::handleMessage(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
                     doHelp();
                     break;
                 case IDM_TRAY_CHECK_VERSION:
-                    if (m_curlInited)
-                    {
-                        if (!m_config.iniPath.empty())
-                            m_config.load(m_config.iniPath);
-                        else
-                            m_config.load();
-
-                        m_updateChecker.startCheck(m_hwndTray,
-                                                   m_config.debugEnabled,
-                                                   CW_GetDebugLogPath(m_config.scanLogFile));
-                    }
+                    beginVersionCheck(false, false);
+                    break;
+                case IDM_TRAY_CHECK_LATEST_VERSION:
+                    beginVersionCheck(true, true);
                     break;
                 case IDM_TRAY_EXIT:
                     DestroyWindow(hwnd);
@@ -1275,8 +1308,7 @@ LRESULT CWApplication::handleMessage(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
             else if (wp == CW_VERSION_CHECK_TIMER_ID)
             {
                 KillTimer(hwnd, CW_VERSION_CHECK_TIMER_ID);
-                if (m_curlInited)
-                    m_updateChecker.startCheck(m_hwndTray, m_config.debugEnabled, CW_GetDebugLogPath(m_config.scanLogFile));
+                beginVersionCheck(false, false);
             }
             return 0;
 

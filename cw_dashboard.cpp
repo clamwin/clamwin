@@ -43,13 +43,13 @@ CWDashboard::CWDashboard(CWConfig& config)
     , m_hoverCard(-1)
     , m_showMnemonics(false)
     , m_hwndTooltip(NULL)
-    , m_updateAvailable(false)
-    , m_updateLayoutAdjusted(false)
+    , m_versionBannerState(VERSION_BANNER_NONE)
+    , m_versionBannerLayoutAdjusted(false)
     , m_fontTitle(NULL), m_fontDesc(NULL), m_fontBanner(NULL)
     , m_fontBannerSub(NULL), m_fontStatus(NULL)
 {
     memset(&m_dbInfo, 0, sizeof(m_dbInfo));
-    m_newVersion[0] = '\0';
+    m_versionText[0] = '\0';
 }
 
 CWDashboard::~CWDashboard()
@@ -65,7 +65,7 @@ bool CWDashboard::open(HWND parent)
     refreshStatus();
 
     int initialHeight = CW_Scale(MAINWND_HEIGHT);
-    if (m_updateAvailable)
+    if (hasVersionBanner())
         initialHeight += CW_Scale(46);
 
     bool ok = create(MAINWND_CLASS,
@@ -74,7 +74,11 @@ bool CWDashboard::open(HWND parent)
                      WS_EX_APPWINDOW, parent,
                      CW_USEDEFAULT, CW_USEDEFAULT,
                      CW_Scale(MAINWND_WIDTH), initialHeight);
-    if (ok) show();
+    if (ok)
+    {
+        m_versionBannerLayoutAdjusted = hasVersionBanner();
+        show();
+    }
     return ok;
 }
 
@@ -87,25 +91,28 @@ void CWDashboard::refreshStatus()
     if (m_hwnd) invalidate();
 }
 
-void CWDashboard::setUpdateAvailable(const char* versionStr)
+void CWDashboard::applyVersionBannerState(VersionBannerState state, const char* versionStr)
 {
-    m_updateAvailable = true;
+    m_versionBannerState = state;
     if (versionStr)
     {
 #if defined(UNICODE) || defined(_UNICODE)
-    MultiByteToWideChar(CP_ACP, 0, versionStr, -1, m_newVersion, _countof(m_newVersion));
+        MultiByteToWideChar(CP_ACP, 0, versionStr, -1, m_versionText, _countof(m_versionText));
 #else
-    lstrcpyn(m_newVersion, versionStr, _countof(m_newVersion));
+        lstrcpyn(m_versionText, versionStr, _countof(m_versionText));
 #endif
     }
     else
     {
-    m_newVersion[0] = TEXT('\0');
+        m_versionText[0] = TEXT('\0');
     }
+
+    if (!hasVersionBanner())
+        m_versionBannerLayoutAdjusted = false;
 
     if (m_hwnd)
     {
-        if (!m_updateLayoutAdjusted)
+        if (hasVersionBanner() && !m_versionBannerLayoutAdjusted)
         {
             RECT wr;
             if (GetWindowRect(m_hwnd, &wr))
@@ -115,10 +122,25 @@ void CWDashboard::setUpdateAvailable(const char* versionStr)
                 SetWindowPos(m_hwnd, NULL, 0, 0, w, h + CW_Scale(46),
                              SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
             }
-            m_updateLayoutAdjusted = true;
+            m_versionBannerLayoutAdjusted = true;
         }
         invalidate();
     }
+}
+
+void CWDashboard::setUpdateAvailable(const char* versionStr)
+{
+    applyVersionBannerState(VERSION_BANNER_UPDATE_AVAILABLE, versionStr);
+}
+
+void CWDashboard::setLatestInstalled(const char* versionStr)
+{
+    applyVersionBannerState(VERSION_BANNER_LATEST_INSTALLED, versionStr);
+}
+
+void CWDashboard::setVersionCheckFailed()
+{
+    applyVersionBannerState(VERSION_BANNER_CHECK_FAILED, NULL);
 }
 
 /* ─── fillWndClass override ─────────────────────────────────── */
@@ -286,7 +308,7 @@ void CWDashboard::getCardRect(int index, const RECT& client, RECT& out) const
     const int cardW    = (client.right - margin * 3) / 2;
     const int cardH    = CW_Scale(70);
     int       topOff   = CW_Scale(110);
-    if (m_updateAvailable)
+    if (hasVersionBanner())
         topOff += CW_Scale(46);  /* make room for the update banner */
     const int col      = index % 2;
     const int row      = index / 2;
@@ -333,7 +355,7 @@ void CWDashboard::paintBanner(HDC hdc, const RECT& client)
             break;
     }
 
-    const int yOffset = m_updateAvailable ? CW_Scale(46) : 0;
+    const int yOffset = hasVersionBanner() ? CW_Scale(46) : 0;
     RECT bannerRc = { CW_Scale(12), CW_Scale(12) + yOffset,
                       client.right - CW_Scale(12), CW_Scale(95) + yOffset };
     HBRUSH hBr = CreateSolidBrush(bannerColor);
@@ -489,13 +511,18 @@ void CWDashboard::paintStatusBar(HDC hdc, const RECT& client)
     DrawText(hdc, txt, -1, &tr, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
 }
 
-/* ─── Update available banner ───────────────────────────────── */
+/* ─── Version banner ────────────────────────────────────────── */
 
-void CWDashboard::paintUpdateBanner(HDC hdc, const RECT& client)
+void CWDashboard::paintVersionBanner(HDC hdc, const RECT& client)
 {
     CWTheme* theme = CW_GetTheme();
     COLORREF bannerBg   = RGB(216, 102, 0);
     COLORREF bannerText = RGB(255, 255, 255);
+
+    if (m_versionBannerState == VERSION_BANNER_LATEST_INSTALLED)
+        bannerBg = theme ? theme->colorSuccess() : RGB(46, 125, 50);
+    else if (m_versionBannerState == VERSION_BANNER_CHECK_FAILED)
+        bannerBg = theme ? theme->colorWarning() : RGB(198, 40, 40);
 
     /* Positioned just below the status banner */
     RECT rc;
@@ -523,16 +550,18 @@ void CWDashboard::paintUpdateBanner(HDC hdc, const RECT& client)
     if (hMsgFont)
         oldMsgFont = SelectObject(hdc, hMsgFont);
 
+    RECT textRc = { rc.left + CW_Scale(16), rc.top, rc.right - CW_Scale(16), rc.bottom };
+
+    if (m_versionBannerState == VERSION_BANNER_UPDATE_AVAILABLE)
+    {
     TCHAR prefixMsg[220];
     _sntprintf(prefixMsg, _countof(prefixMsg),
               TEXT("New release: ClamWin %s is available!  "),
-              m_newVersion);
+              m_versionText);
     prefixMsg[_countof(prefixMsg) - 1] = TEXT('\0');
 
     const TCHAR* linkMsg = TEXT("Click here to download");
     const TCHAR* suffixMsg = TEXT(".");
-
-    RECT textRc = { rc.left + CW_Scale(16), rc.top, rc.right - CW_Scale(16), rc.bottom };
 
     /* Draw prefix text. */
     DrawText(hdc, prefixMsg, -1, &textRc, DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX);
@@ -568,6 +597,35 @@ void CWDashboard::paintUpdateBanner(HDC hdc, const RECT& client)
 
     RECT suffixRc = { linkX + linkSz.cx, rc.top, rc.right - CW_Scale(16), rc.bottom };
     DrawText(hdc, suffixMsg, -1, &suffixRc, DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX);
+    }
+    else
+    {
+        TCHAR msg[220];
+        if (m_versionBannerState == VERSION_BANNER_LATEST_INSTALLED)
+        {
+            if (m_versionText[0])
+            {
+                _sntprintf(msg, _countof(msg),
+                          TEXT("ClamWin %s is already the latest version."),
+                          m_versionText);
+                msg[_countof(msg) - 1] = TEXT('\0');
+            }
+            else
+            {
+                lstrcpyn(msg,
+                         TEXT("This ClamWin build is already the latest version."),
+                         _countof(msg));
+            }
+        }
+        else
+        {
+            lstrcpyn(msg,
+                     TEXT("Unable to check the latest ClamWin version right now."),
+                     _countof(msg));
+        }
+
+        DrawText(hdc, msg, -1, &textRc, DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX);
+    }
 
     if (oldMsgFont)
         SelectObject(hdc, oldMsgFont);
@@ -591,8 +649,8 @@ void CWDashboard::onPaint(HDC hdc)
     FillRect(hdcMem, &client, hBg);
     DeleteObject(hBg);
 
-    if (m_updateAvailable)
-        paintUpdateBanner(hdcMem, client);
+    if (hasVersionBanner())
+        paintVersionBanner(hdcMem, client);
     paintBanner(hdcMem, client);
     paintCards(hdcMem, client);
     paintStatusBar(hdcMem, client);
@@ -620,7 +678,7 @@ LRESULT CWDashboard::onMessage(UINT msg, WPARAM wp, LPARAM lp)
 
             /* Check if hovering the update banner */
             bool onBanner = false;
-            if (m_updateAvailable)
+            if (m_versionBannerState == VERSION_BANNER_UPDATE_AVAILABLE)
             {
                 RECT bannerRc = { CW_Scale(12), CW_Scale(12),
                                   0, CW_Scale(12) + CW_Scale(38) };
@@ -654,7 +712,7 @@ LRESULT CWDashboard::onMessage(UINT msg, WPARAM wp, LPARAM lp)
             POINT pt = { LOWORD(lp), HIWORD(lp) };
 
             /* Check click on update banner first */
-            if (m_updateAvailable)
+            if (m_versionBannerState == VERSION_BANNER_UPDATE_AVAILABLE)
             {
                 RECT bannerRc = { CW_Scale(12), CW_Scale(12),
                                   0, CW_Scale(12) + CW_Scale(38) };
@@ -745,7 +803,7 @@ LRESULT CWDashboard::onMessage(UINT msg, WPARAM wp, LPARAM lp)
         {
             MINMAXINFO* mmi = reinterpret_cast<MINMAXINFO*>(lp);
             mmi->ptMinTrackSize.x = CW_Scale(460);
-            mmi->ptMinTrackSize.y = CW_Scale(496) + (m_updateAvailable ? CW_Scale(46) : 0);
+            mmi->ptMinTrackSize.y = CW_Scale(496) + (hasVersionBanner() ? CW_Scale(46) : 0);
             return 0;
         }
 

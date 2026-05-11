@@ -344,6 +344,7 @@ void CWUpdateChecker::doCheck()
 
         if (isNewerVersion(remoteVersion))
         {
+            result->success = true;
             result->available = true;
             parseVersion(remoteVersion, result->major, result->minor, result->patch);
             _snprintf(result->versionStr, sizeof(result->versionStr), "%s", remoteVersion);
@@ -351,9 +352,11 @@ void CWUpdateChecker::doCheck()
             if (m_debugEnabled)
                 CW_DebugLog(m_debugLogPath, "[UpdateChecker] Newer version available: remote=%s local=%s", remoteVersion, CLAMWIN_VERSION_STR);
         }
-        else if (m_debugEnabled)
+        else
         {
-            CW_DebugLog(m_debugLogPath, "[UpdateChecker] No update available: remote=%s local=%s", remoteVersion, CLAMWIN_VERSION_STR);
+            result->success = true;
+            if (m_debugEnabled)
+                CW_DebugLog(m_debugLogPath, "[UpdateChecker] No update available: remote=%s local=%s", remoteVersion, CLAMWIN_VERSION_STR);
         }
 
     } while (false);

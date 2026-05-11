@@ -26,6 +26,7 @@
 
 struct CWVersionResult
 {
+    bool  success;             /* true = HTTPS request and parse succeeded */
     bool  available;           /* true = newer version exists */
     int   major, minor, patch; /* remote version components   */
     char  versionStr[64];      /* e.g. "1.2.0"               */

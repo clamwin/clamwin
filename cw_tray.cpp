@@ -36,6 +36,7 @@ static const TCHAR* s_trayVirusScanReport = TEXT("&Virus Scan Report");
 static const TCHAR* s_trayVirusDbUpdateReport = TEXT("Virus &Database Update Report");
 static const TCHAR* s_trayPreferences = TEXT("&Preferences");
 static const TCHAR* s_trayScheduledScans = TEXT("Scheduled S&cans");
+static const TCHAR* s_trayCheckLatestVersion = TEXT("Check &Latest Version");
 static const TCHAR* s_trayAbout = TEXT("&About");
 static const TCHAR* s_trayExit = TEXT("E&xit");
 static const TCHAR* s_trayCustomMenuClass = TEXT("ClamWinDarkTrayMenu");
@@ -636,6 +637,7 @@ static bool cwShowCustomDarkTrayPopup(HWND owner, bool enableScanReport, bool en
     state->items[i++] = { 0, s_traySep, true, true, false, false };
     state->items[i++] = { IDM_TRAY_PREFS, s_trayPreferences, false, false, false, false };
     state->items[i++] = { IDM_TRAY_SCHEDULE, s_trayScheduledScans, false, false, false, false };
+    state->items[i++] = { IDM_TRAY_CHECK_LATEST_VERSION, s_trayCheckLatestVersion, false, false, false, false };
     state->items[i++] = { IDM_TRAY_ABOUT, s_trayAbout, false, false, false, false };
     state->items[i++] = { 0, s_traySep, true, true, false, false };
     state->items[i++] = { IDM_TRAY_EXIT, s_trayExit, false, false, false, false };
@@ -833,6 +835,7 @@ void CWTray::showContextMenu(bool enableScanReport, bool enableUpdateReport)
         AppendMenu(hMenu, MF_SEPARATOR, 0, NULL);
     AppendMenu(hMenu, itemFlags, IDM_TRAY_PREFS, s_trayPreferences);
     AppendMenu(hMenu, itemFlags, IDM_TRAY_SCHEDULE, s_trayScheduledScans);
+    AppendMenu(hMenu, itemFlags, IDM_TRAY_CHECK_LATEST_VERSION, s_trayCheckLatestVersion);
     AppendMenu(hMenu, itemFlags, IDM_TRAY_ABOUT, s_trayAbout);
     if (useOwnerDraw)
         AppendMenu(hMenu, itemFlags | MF_DISABLED, 60004, s_traySep);
