@@ -553,6 +553,48 @@ INT_PTR CALLBACK CWDialog::staticDlgProc(HWND hwnd, UINT msg,
 static const TCHAR* s_cwEditOldProcProp = TEXT("CWDialogEditOldProc");
 static const TCHAR* s_cwEditTopPadProp  = TEXT("CWDialogEditTopPad");
 
+static void paintCenteredEditTopBand(HWND hwnd)
+{
+    int topPad = (int)(INT_PTR)GetProp(hwnd, s_cwEditTopPadProp);
+    if (topPad <= 0)
+        return;
+
+    HDC hdc = GetWindowDC(hwnd);
+    if (!hdc)
+        return;
+
+    RECT windowRect;
+    RECT clientRect;
+    GetWindowRect(hwnd, &windowRect);
+    GetClientRect(hwnd, &clientRect);
+
+    POINT clientOrigin = { clientRect.left, clientRect.top };
+    ClientToScreen(hwnd, &clientOrigin);
+    OffsetRect(&clientRect,
+               clientOrigin.x - windowRect.left,
+               clientOrigin.y - windowRect.top);
+
+    RECT bandRect = clientRect;
+    bandRect.top = clientRect.top - topPad;
+    bandRect.bottom = clientRect.top;
+    if (bandRect.top < 0)
+        bandRect.top = 0;
+
+    if (bandRect.bottom > bandRect.top)
+    {
+        CWTheme* theme = CW_GetTheme();
+        const bool enabled = IsWindowEnabled(hwnd) != FALSE;
+        HBRUSH brush = NULL;
+        if (theme)
+            brush = enabled ? theme->brushSurface() : theme->brushBg();
+        else
+            brush = GetSysColorBrush(enabled ? COLOR_WINDOW : COLOR_3DFACE);
+        FillRect(hdc, &bandRect, brush);
+    }
+
+    ReleaseDC(hwnd, hdc);
+}
+
 static LRESULT CALLBACK cwCenteredEditSubclassProc(HWND hwnd, UINT msg,
                                                     WPARAM wp, LPARAM lp)
 {
@@ -594,6 +636,13 @@ static LRESULT CALLBACK cwCenteredEditSubclassProc(HWND hwnd, UINT msg,
             if (topPad > 0)
                 p->rgrc[0].top += topPad;
         }
+        return res;
+    }
+
+    if (msg == WM_NCPAINT || msg == WM_NCACTIVATE)
+    {
+        LRESULT res = CallWindowProc(oldProc, hwnd, msg, wp, lp);
+        paintCenteredEditTopBand(hwnd);
         return res;
     }
 
@@ -646,5 +695,6 @@ void CWDialog::centerEditText(HWND edit)
     SetWindowPos(edit, NULL, 0, 0, 0, 0,
                  SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER |
                  SWP_NOACTIVATE | SWP_FRAMECHANGED);
-    InvalidateRect(edit, NULL, TRUE);
+    RedrawWindow(edit, NULL, NULL,
+                 RDW_INVALIDATE | RDW_FRAME | RDW_UPDATENOW);
 }

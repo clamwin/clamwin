@@ -174,16 +174,26 @@ Name: {app}\bin; Components: ClamWin ExplorerShell
 [InstallDelete]
 Type: files; Name: {app}\bin\ClamTray.exe
 Type: files; Name: {app}\bin\OlAddin.exe
+Type: files; Name: {app}\bin\WClose.exe
+Type: files; Name: {app}\bin\QRecover.exe
+Type: files; Name: {app}\bin\conagent.pif
 Type: files; Name: {app}\bin\w9xpopen.exe
 Type: files; Name: {app}\bin\python23.dll
 Type: files; Name: {app}\bin\unicows.dll
 Type: files; Name: {app}\bin\ExpShell.dll
 Type: files; Name: {app}\bin\ExpShell64.dll
+Type: files; Name: {app}\bin\libclamav_llvm.dll
+Type: files; Name: {app}\bin\libclamunrar.dll
+Type: files; Name: {app}\bin\libclamunrar_iface.dll
+Type: files; Name: {app}\bin\msvcm80.dll
+Type: files; Name: {app}\bin\msvcr80.dll
+Type: files; Name: {app}\bin\msvcp80.dll
 Type: files; Name: {app}\bin\manual.chm
 Type: files; Name: {app}\bin\manual_en.pdf
 Type: files; Name: {app}\bin\manual_fr.pdf
 Type: files; Name: {app}\bin\manual_nl.pdf
 Type: files; Name: {app}\bin\manual_nl.chm
+Type: filesandordirs; Name: {app}\src
 Type: filesandordirs; Name: {app}\lib
 Type: filesandordirs; Name: {app}\bin\img
 Type: filesandordirs; Name: {app}\bin\Microsoft.VC80.CRT
@@ -199,8 +209,9 @@ Name: {code:DesktopDir}\ClamWin Antivirus; Filename: {app}\bin\clamwin.exe; Work
 Name: {group}\Uninstall ClamWin Free Antivirus; Filename: {uninstallexe}
 
 [Run]
-; Use ClamWin's update dialog for post-install DB downloads.
-Filename: {app}\bin\clamwin.exe;   Parameters: "{code:ClamWinPostInstallParams}"; WorkingDir: {app}\bin; Flags: nowait postinstall skipifsilent; Description: Launch ClamWin Free Antivirus; Components: ClamWin
+; Run the standalone updater first when the download task is selected.
+Filename: {app}\bin\clamwin.exe;   Parameters: "--mode=update --close"; WorkingDir: {app}\bin; Flags: waituntilterminated skipifsilent; Components: ClamWin; Tasks: DownloadDB
+Filename: {app}\bin\clamwin.exe;   Parameters: "--open-dashboard"; WorkingDir: {app}\bin; Flags: nowait postinstall skipifsilent; Description: Launch ClamWin Free Antivirus; Components: ClamWin
 
 [INI]
 Filename: {code:ClamWinConfPath}; Section: ClamAV;  Key: clamscan;        String: {app}\bin\clamscan.exe;   Check: IsIniValueEmpty(ExpandConstant('ClamAV*clamscan*{code:ClamWinConfPath}'))
@@ -275,6 +286,7 @@ var
   AllUsersPage:   TInputOptionWizardPage;
 
 const
+  WM_CLOSE = $0010;
   WM_QUIT = $0012;
 
 function FindWindow(lpClassName: string; lpWindowName: string): Integer;
@@ -283,6 +295,8 @@ function GetWindowThreadProcessId(hWnd: Integer; var ProcessId: Cardinal): Cardi
   external 'GetWindowThreadProcessId@user32.dll stdcall';
 function PostThreadMessage(ThreadId: Cardinal; Msg: Cardinal; wParam: Cardinal; lParam: Cardinal): Boolean;
   external 'PostThreadMessageA@user32.dll stdcall';
+function PostMessage(hWnd: Integer; Msg: Cardinal; wParam: Cardinal; lParam: Cardinal): Boolean;
+  external 'PostMessageA@user32.dll stdcall';
 
 function IsWin98(): Boolean;
 var
@@ -363,6 +377,9 @@ end;
 function IsClamWinRunning(): Boolean;
 forward;
 
+function IsLegacyClamTrayRunning(): Boolean;
+forward;
+
 function PostQuitToClamWin(): Boolean;
 forward;
 
@@ -372,7 +389,7 @@ forward;
 procedure CloseClamTray();
 var i: Integer;
 begin
-  if not CheckForMutexes('ClamWinMutex') then exit;
+  if not IsClamWinRunning() then exit;
   if SuppressibleMsgBox('ClamWin is currently running. Close it now? (Recommended)', mbConfirmation, MB_YESNO, IDYES) = idYes then
   begin
     PostQuitToClamWin();
@@ -380,7 +397,7 @@ begin
     for i := 1 to 30 do
     begin
       Sleep(200);
-      if not CheckForMutexes('ClamWinMutex') then
+      if not IsClamWinRunning() then
         exit;
     end;
 
@@ -389,40 +406,55 @@ begin
     for i := 1 to 10 do
     begin
       Sleep(200);
-      if not CheckForMutexes('ClamWinMutex') then
+      if not IsClamWinRunning() then
         exit;
     end;
 
-    SuppressibleMsgBox('ClamWin is still running. Please close clamwin.exe manually and retry Setup.', mbError, MB_OK, IDOK);
+    SuppressibleMsgBox('ClamWin is still running. Please close clamwin.exe or ClamTray.exe manually and retry Setup.', mbError, MB_OK, IDOK);
   end;
 end;
 
 function IsClamWinRunning(): Boolean;
 begin
-  Result := CheckForMutexes('ClamWinMutex');
+  Result := CheckForMutexes('ClamWinMutex') or IsLegacyClamTrayRunning();
+end;
+
+function IsLegacyClamTrayRunning(): Boolean;
+begin
+  Result := CheckForMutexes('ClamWinTrayMutex01');
 end;
 
 function PostQuitToClamWin(): Boolean;
 var
   hwnd: Integer;
-  processId, threadId: Cardinal;
 begin
   Result := False;
-  hwnd := FindWindow('ClamWinTrayClass', '');
-  if hwnd = 0 then
-    exit;
+  hwnd := FindWindow('ClamWinTrayClass', 'ClamWin');
+  if hwnd <> 0 then
+    Result := PostMessage(hwnd, WM_CLOSE, 0, 0) or Result;
 
-  processId := 0;
-  threadId := GetWindowThreadProcessId(hwnd, processId);
-  if threadId <> 0 then
-    Result := PostThreadMessage(threadId, WM_QUIT, 0, 0);
+  hwnd := FindWindow('ClamWinTrayWindow', 'ClamWin');
+  if hwnd <> 0 then
+    Result := PostMessage(hwnd, WM_CLOSE, 0, 0) or Result;
+
+  hwnd := FindWindow('wxWindowClass', 'ClamWin Free Antivirus');
+  if hwnd <> 0 then
+    Result := PostMessage(hwnd, WM_CLOSE, 0, 0) or Result;
+
+  hwnd := FindWindow('#32770', 'ClamWin Internet Update Status');
+  if hwnd <> 0 then
+    Result := PostMessage(hwnd, WM_CLOSE, 0, 0) or Result;
+
+  hwnd := FindWindow('#32770', 'ClamWin Preferences');
+  if hwnd <> 0 then
+    Result := PostMessage(hwnd, WM_CLOSE, 0, 0) or Result;
 end;
 
 procedure ForceKillClamWin();
 var
   resultcode: Integer;
 begin
-  Exec(ExpandConstant('{cmd}'), '/C taskkill /IM clamwin.exe /T /F >nul 2>&1 & tskill clamwin >nul 2>&1', '', SW_HIDE, ewWaitUntilTerminated, resultcode);
+  Exec(ExpandConstant('{cmd}'), '/C taskkill /IM clamwin.exe /T /F >nul 2>&1 & taskkill /IM ClamTray.exe /T /F >nul 2>&1 & tskill clamwin >nul 2>&1 & tskill clamtray >nul 2>&1', '', SW_HIDE, ewWaitUntilTerminated, resultcode);
 end;
 
 procedure CloseClamWinForUninstall();
@@ -512,14 +544,6 @@ end;
 function ClamWinConfPath(Default: String): String;
 begin
   Result := ExpandConstant('{app}\bin\ClamWin.conf');
-end;
-
-function ClamWinPostInstallParams(Default: String): String;
-begin
-  if IsTaskSelected('DownloadDB') then
-    Result := '--mode=update --close'
-  else
-    Result := '--open-dashboard';
 end;
 
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
