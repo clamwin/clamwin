@@ -28,6 +28,8 @@ public:
 
     /* Set when a newer ClamWin version is available (from CWUpdateChecker). */
     void setUpdateAvailable(const char* versionStr);
+    void setLatestInstalled(const char* versionStr);
+    void setVersionCheckFailed();
 
 protected:
     /* CWWindow overrides */
@@ -38,6 +40,13 @@ protected:
     virtual void fillWndClass(WNDCLASS& wc);
 
 private:
+    enum VersionBannerState {
+        VERSION_BANNER_NONE = 0,
+        VERSION_BANNER_UPDATE_AVAILABLE,
+        VERSION_BANNER_LATEST_INSTALLED,
+        VERSION_BANNER_CHECK_FAILED
+    };
+
     struct CardInfo {
         int          id;
         const TCHAR* title;
@@ -53,9 +62,9 @@ private:
     int                 m_hoverCard;   /* -1 = none */
     bool                m_showMnemonics;
     HWND                m_hwndTooltip;
-    bool                m_updateAvailable;
-    bool                m_updateLayoutAdjusted;
-    TCHAR               m_newVersion[64];
+    VersionBannerState  m_versionBannerState;
+    bool                m_versionBannerLayoutAdjusted;
+    TCHAR               m_versionText[64];
 
     /* Fonts — owned, cleaned up in onDestroy */
     HFONT m_fontTitle;
@@ -67,10 +76,12 @@ private:
     void createFonts();
     void destroyFonts();
     void getCardRect(int index, const RECT& client, RECT& out) const;
+    bool hasVersionBanner() const { return m_versionBannerState != VERSION_BANNER_NONE; }
+    void applyVersionBannerState(VersionBannerState state, const char* versionStr);
     void paintBanner(HDC hdc, const RECT& client);
     void paintCards(HDC hdc, const RECT& client);
     void paintStatusBar(HDC hdc, const RECT& client);
-    void paintUpdateBanner(HDC hdc, const RECT& client);
+    void paintVersionBanner(HDC hdc, const RECT& client);
     int  cardAtPoint(POINT pt) const;
     void initCardTooltips();
     void updateCardTooltipRects();
