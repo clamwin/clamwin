@@ -49,9 +49,118 @@ void ensureParentDirectoryExists(const std::string& filePath)
 
     CreateDirectory(dir.c_str(), NULL);
 }
+
+std::string buildTrimTempPath(const std::string& filePath)
+{
+    char suffix[64];
+    _snprintf(suffix, sizeof(suffix), ".trim.%lu.%lu.tmp",
+              (unsigned long)GetCurrentProcessId(),
+              (unsigned long)GetTickCount());
+    suffix[sizeof(suffix) - 1] = '\0';
+    return filePath + suffix;
 }
 
-void CW_AppendToLogFile(const std::string& filePath, const std::string& text)
+bool getFileSize64(HANDLE fileHandle, unsigned long long& sizeOut)
+{
+    DWORD high = 0;
+    DWORD low = GetFileSize(fileHandle, &high);
+    if (low == INVALID_FILE_SIZE && GetLastError() != NO_ERROR)
+        return false;
+
+    sizeOut = ((unsigned long long)high << 32) | (unsigned long long)low;
+    return true;
+}
+
+bool setFilePointer64(HANDLE fileHandle, unsigned long long offset)
+{
+    LONG high = (LONG)(offset >> 32);
+    DWORD low = SetFilePointer(fileHandle,
+                               (LONG)(offset & 0xffffffffULL),
+                               &high,
+                               FILE_BEGIN);
+    if (low == INVALID_SET_FILE_POINTER && GetLastError() != NO_ERROR)
+        return false;
+
+    return true;
+}
+}
+
+void CW_TrimLogFileToMaxBytes(const std::string& filePath,
+                              unsigned long long maxBytes)
+{
+    if (filePath.empty() || maxBytes == 0)
+        return;
+
+    std::basic_string<TCHAR> tPath = CW_ToT(filePath);
+    HANDLE hSrc = CreateFile(tPath.c_str(), GENERIC_READ,
+                             FILE_SHARE_READ | FILE_SHARE_WRITE,
+                             NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+    if (hSrc == INVALID_HANDLE_VALUE)
+        return;
+
+    unsigned long long fileSize = 0;
+    if (!getFileSize64(hSrc, fileSize) || fileSize == 0 || fileSize <= maxBytes)
+    {
+        CloseHandle(hSrc);
+        return;
+    }
+
+    if (!setFilePointer64(hSrc, fileSize - maxBytes))
+    {
+        CloseHandle(hSrc);
+        return;
+    }
+
+    std::string tempPath = buildTrimTempPath(filePath);
+    std::basic_string<TCHAR> tTempPath = CW_ToT(tempPath);
+    HANDLE hDst = CreateFile(tTempPath.c_str(), GENERIC_WRITE, 0,
+                             NULL, CREATE_ALWAYS,
+                             FILE_ATTRIBUTE_TEMPORARY, NULL);
+    if (hDst == INVALID_HANDLE_VALUE)
+    {
+        CloseHandle(hSrc);
+        return;
+    }
+
+    bool ok = true;
+    unsigned long long remaining = maxBytes;
+    char buffer[64 * 1024];
+
+    while (remaining > 0)
+    {
+        DWORD chunk = remaining > (unsigned long long)sizeof(buffer)
+                    ? (DWORD)sizeof(buffer)
+                    : (DWORD)remaining;
+        DWORD read = 0;
+        if (!ReadFile(hSrc, buffer, chunk, &read, NULL) || read == 0)
+        {
+            ok = false;
+            break;
+        }
+
+        DWORD written = 0;
+        if (!WriteFile(hDst, buffer, read, &written, NULL) || written != read)
+        {
+            ok = false;
+            break;
+        }
+
+        remaining -= read;
+    }
+
+    CloseHandle(hSrc);
+    CloseHandle(hDst);
+
+    if (ok && MoveFileEx(tTempPath.c_str(), tPath.c_str(),
+                         MOVEFILE_REPLACE_EXISTING | MOVEFILE_COPY_ALLOWED))
+        return;
+
+    DeleteFile(tTempPath.c_str());
+}
+
+void CW_AppendToLogFile(const std::string& filePath,
+                        const std::string& text,
+                        unsigned long long maxBytes)
 {
     if (filePath.empty() || text.empty())
         return;
@@ -75,6 +184,9 @@ void CW_AppendToLogFile(const std::string& filePath, const std::string& text)
         OutputDebugStringA("ClamWin: partial or failed write to log file\n");
     }
     CloseHandle(hFile);
+
+    if (maxBytes > 0)
+        CW_TrimLogFileToMaxBytes(filePath, maxBytes);
 }
 
 std::string CW_BuildStartTimestamp(bool isUpdate)

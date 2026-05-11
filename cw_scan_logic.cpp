@@ -516,6 +516,9 @@ std::string buildClamscanCommand(const CWConfig& cfg,
     if (scanMemoryOnly)
         cmd += " --memory";
 
+    if (cfg.killProcesses)
+        cmd += " --kill";
+
     if (!scanMemoryOnly && cfg.scanRecursive)
         cmd += " --recursive";
 
@@ -550,6 +553,12 @@ std::string buildClamscanCommand(const CWConfig& cfg,
     {
         cmd += " --log=";
         cmd += quoteCommandArg(cfg.scanLogFile);
+    }
+
+    if (!cfg.clamscanParams.empty())
+    {
+        cmd += " ";
+        cmd += cfg.clamscanParams;
     }
 
     if (!scanMemoryOnly)

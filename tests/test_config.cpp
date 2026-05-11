@@ -41,11 +41,14 @@ void checkConfigEqual(const CWConfig& expected, const CWConfig& actual)
     CHECK(expected.scanArchives == actual.scanArchives);
     CHECK(expected.scanOle2 == actual.scanOle2);
     CHECK(expected.scanMail == actual.scanMail);
+    CHECK(expected.killProcesses == actual.killProcesses);
     CHECK(expected.infectedAction == actual.infectedAction);
     CHECK(expected.maxScanSizeMb == actual.maxScanSizeMb);
     CHECK(expected.maxFileSizeMb == actual.maxFileSizeMb);
     CHECK(expected.maxFiles == actual.maxFiles);
     CHECK(expected.maxDepth == actual.maxDepth);
+    CHECK(expected.maxLogSizeMb == actual.maxLogSizeMb);
+    CHECK(expected.clamscanParams == actual.clamscanParams);
     CHECK(expected.databasePath == actual.databasePath);
     CHECK(expected.quarantinePath == actual.quarantinePath);
     CHECK(expected.scanLogFile == actual.scanLogFile);
@@ -90,7 +93,9 @@ TEST_SUITE("config")
         bool loaded = cfg.load(iniPath);
         CHECK_FALSE(loaded);
         CHECK(cfg.scanRecursive);
+        CHECK(cfg.killProcesses);
         CHECK(cfg.dbMirror == "database.clamav.net");
+        CHECK(cfg.maxLogSizeMb == 1);
     }
 
     TEST_CASE("save and reload preserves all fields")
@@ -102,11 +107,14 @@ TEST_SUITE("config")
         expected.scanArchives = false;
         expected.scanOle2 = false;
         expected.scanMail = true;
+        expected.killProcesses = false;
         expected.infectedAction = 2;
         expected.maxScanSizeMb = 321;
         expected.maxFileSizeMb = 123;
         expected.maxFiles = 654;
         expected.maxDepth = 33;
+        expected.maxLogSizeMb = 17;
+        expected.clamscanParams = "--official-db-only=no --bytecode-timeout=5000";
         expected.databasePath = "C:\\db folder\\main";
         expected.quarantinePath = "C:\\Quarantine Folder";
         expected.scanLogFile = "C:\\logs\\scan log.txt";
@@ -162,6 +170,36 @@ TEST_SUITE("config")
         CHECK(cfg.excludePatterns == "*.dbx|CLAMWIN_SEP|*.tbb|CLAMWIN_SEP|*.pst");
     }
 
+    TEST_CASE("load normalizes legacy dotted filter patterns")
+    {
+        TestTempDir tempDir;
+        std::string iniPath = testJoinPath(tempDir.path, "legacy-dotted.conf");
+        std::string content =
+            "[ClamAV]\r\n"
+            "ExcludePatterns=*.dbx|CLAMWIN_SEP|.evt|CLAMWIN_SEP|.log|CLAMWIN_SEP|.nsf\r\n";
+
+        REQUIRE(testWriteFile(iniPath, content));
+
+        CWConfig cfg;
+        REQUIRE(cfg.load(iniPath));
+        CHECK(cfg.excludePatterns == "*.dbx|CLAMWIN_SEP|*.evt|CLAMWIN_SEP|*.log|CLAMWIN_SEP|*.nsf");
+    }
+
+    TEST_CASE("load preserves legacy additional clamscan parameters")
+    {
+        TestTempDir tempDir;
+        std::string iniPath = testJoinPath(tempDir.path, "legacy-clamscan-params.conf");
+        std::string content =
+            "[ClamAV]\r\n"
+            "ClamScanParams=--official-db-only=no --bytecode-timeout=5000\r\n";
+
+        REQUIRE(testWriteFile(iniPath, content));
+
+        CWConfig cfg;
+        REQUIRE(cfg.load(iniPath));
+        CHECK(cfg.clamscanParams == "--official-db-only=no --bytecode-timeout=5000");
+    }
+
     TEST_CASE("save creates parent directory")
     {
         TestTempDir tempDir;
@@ -193,6 +231,21 @@ TEST_SUITE("config")
         CHECK_FALSE(cfg.updateLogFile.empty());
         CHECK(cfg.scanLogFile.find("ClamScan.log") != std::string::npos);
         CHECK(cfg.updateLogFile.find("FreshClam.log") != std::string::npos);
+    }
+
+    TEST_CASE("load clamps invalid max log size to default minimum")
+    {
+        TestTempDir tempDir;
+        std::string iniPath = testJoinPath(tempDir.path, "max-log.conf");
+        std::string content =
+            "[ClamAV]\r\n"
+            "MaxLogSize=0\r\n";
+
+        REQUIRE(testWriteFile(iniPath, content));
+
+        CWConfig cfg;
+        REQUIRE(cfg.load(iniPath));
+        CHECK(cfg.maxLogSizeMb == 1);
     }
 
     TEST_CASE("default ini path uses appdata profile when template is not standalone")

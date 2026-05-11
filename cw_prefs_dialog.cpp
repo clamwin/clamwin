@@ -31,6 +31,7 @@ enum
     IDC_PREFS_GENERAL_RECURSIVE,
     IDC_PREFS_GENERAL_SCANMAIL,
     IDC_PREFS_GENERAL_INFECTED_ONLY,
+    IDC_PREFS_GENERAL_KILL,
     IDC_PREFS_GENERAL_ACT_REPORT,
     IDC_PREFS_GENERAL_ACT_REMOVE,
     IDC_PREFS_GENERAL_ACT_QUAR,
@@ -52,13 +53,6 @@ enum
     IDC_PREFS_PROXY_USER,
     IDC_PREFS_PROXY_PASS,
 
-    IDC_PREFS_SCHED_ENABLE,
-    IDC_PREFS_SCHED_FREQ,
-    IDC_PREFS_SCHED_HOUR,
-    IDC_PREFS_SCHED_MINUTE,
-    IDC_PREFS_SCHED_DAY,
-    IDC_PREFS_SCHED_DETAILS,
-
     IDC_PREFS_LIMITS_ARCHIVES,
     IDC_PREFS_LIMITS_MAXSCAN,
     IDC_PREFS_LIMITS_MAXFILE,
@@ -73,6 +67,8 @@ enum
     IDC_PREFS_FILES_UPDATELOG_BROWSE,
 
     IDC_PREFS_ADV_OLE2,
+    IDC_PREFS_ADV_CLAMSCAN_PARAMS,
+    IDC_PREFS_ADV_MAXLOG,
     IDC_PREFS_ADV_PRIORITY,
 
     IDC_PREFS_FILTERS_LST_EXCL,
@@ -86,12 +82,11 @@ enum
 
     IDC_PREFS_UPDATES_SPIN_HOUR,
     IDC_PREFS_UPDATES_SPIN_MIN,
-    IDC_PREFS_SCHED_SPIN_HOUR,
-    IDC_PREFS_SCHED_SPIN_MIN,
     IDC_PREFS_LIMITS_SPIN_MAXSCAN,
     IDC_PREFS_LIMITS_SPIN_MAXFILE,
     IDC_PREFS_LIMITS_SPIN_MAXFILES,
-    IDC_PREFS_LIMITS_SPIN_MAXDEPTH
+    IDC_PREFS_LIMITS_SPIN_MAXDEPTH,
+    IDC_PREFS_ADV_SPIN_MAXLOG
 };
 
 static const TCHAR* s_pageNames[8] = {
@@ -99,7 +94,6 @@ static const TCHAR* s_pageNames[8] = {
     TEXT("&Filters"),
     TEXT("Internet &Updates"),
     TEXT("&Proxy"),
-    TEXT("&Scheduled Scans"),
     TEXT("&Limits"),
     TEXT("File L&ocations"),
     TEXT("&Advanced")
@@ -107,39 +101,7 @@ static const TCHAR* s_pageNames[8] = {
 
 static const TCHAR* s_prefsPageOwnerProp = TEXT("CWPrefsPageOwner");
 static const TCHAR* s_prefsSidebarOwnerProp = TEXT("CWPrefsSidebarOwner");
-static const TCHAR* s_prefsEditOldProcProp = TEXT("CWPrefsEditOldProc");
 static const UINT_PTR s_prefsMnemonicTimerId = 0xCA11;
-
-static LRESULT CALLBACK prefsEditSubclassProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
-{
-    WNDPROC oldProc = (WNDPROC)GetProp(hwnd, s_prefsEditOldProcProp);
-    if (!oldProc)
-        return DefWindowProc(hwnd, msg, wp, lp);
-
-    if (msg == WM_KEYDOWN && wp == VK_TAB)
-    {
-        HWND root = GetAncestor(hwnd, GA_ROOT);
-        if (root)
-        {
-            bool prev = (GetKeyState(VK_SHIFT) & 0x8000) != 0;
-            HWND next = GetNextDlgTabItem(root, hwnd, prev ? TRUE : FALSE);
-            if (next)
-            {
-                SetFocus(next);
-                return 0;
-            }
-        }
-    }
-
-    if (msg == WM_GETDLGCODE)
-    {
-        LRESULT code = CallWindowProc(oldProc, hwnd, msg, wp, lp);
-        code &= ~(DLGC_WANTTAB | DLGC_WANTALLKEYS);
-        return code;
-    }
-
-    return CallWindowProc(oldProc, hwnd, msg, wp, lp);
-}
 
 static int findSidebarMnemonicPageIndex(TCHAR ch)
 {
@@ -202,6 +164,7 @@ static bool isToggleControlId(int id)
         case IDC_PREFS_GENERAL_RECURSIVE:
         case IDC_PREFS_GENERAL_SCANMAIL:
         case IDC_PREFS_GENERAL_INFECTED_ONLY:
+        case IDC_PREFS_GENERAL_KILL:
         case IDC_PREFS_GENERAL_ACT_REPORT:
         case IDC_PREFS_GENERAL_ACT_REMOVE:
         case IDC_PREFS_GENERAL_ACT_QUAR:
@@ -209,7 +172,6 @@ static bool isToggleControlId(int id)
         case IDC_PREFS_UPDATES_ONSTART:
         case IDC_PREFS_UPDATES_CHECKVER:
         case IDC_PREFS_PROXY_ENABLE:
-        case IDC_PREFS_SCHED_ENABLE:
         case IDC_PREFS_LIMITS_ARCHIVES:
         case IDC_PREFS_ADV_OLE2:
             return true;
@@ -228,8 +190,6 @@ static bool isThemedComboId(int id)
 {
     return id == IDC_PREFS_UPDATES_FREQ ||
            id == IDC_PREFS_UPDATES_DAY ||
-           id == IDC_PREFS_SCHED_FREQ ||
-           id == IDC_PREFS_SCHED_DAY ||
            id == IDC_PREFS_ADV_PRIORITY;
 }
 
@@ -244,65 +204,9 @@ static void configureThemedCombo(HWND combo)
 
 static void configureCenteredEditTextRect(HWND edit)
 {
-    if (!edit)
-        return;
-
-    TCHAR className[32] = {0};
-    GetClassName(edit, className, _countof(className));
-    if (lstrcmpi(className, TEXT("EDIT")) != 0)
-        return;
-
-    LONG_PTR style = GetWindowLongPtr(edit, GWL_STYLE);
-    if ((style & ES_MULTILINE) == 0)
-    {
-        SetWindowLongPtr(edit, GWL_STYLE, style | ES_MULTILINE);
-    }
-
-    if (!GetProp(edit, s_prefsEditOldProcProp))
-    {
-        WNDPROC oldProc = (WNDPROC)SetWindowLongPtr(edit, GWLP_WNDPROC, (LONG_PTR)prefsEditSubclassProc);
-        if (oldProc)
-            SetProp(edit, s_prefsEditOldProcProp, (HANDLE)oldProc);
-    }
-
-    RECT rc;
-    GetClientRect(edit, &rc);
-
-    HFONT hFont = (HFONT)SendMessage(edit, WM_GETFONT, 0, 0);
-    HDC hdc = GetDC(edit);
-    if (!hdc)
-        return;
-
-    HGDIOBJ oldFont = NULL;
-    if (hFont)
-        oldFont = SelectObject(hdc, hFont);
-
-    TEXTMETRIC tm;
-    ZeroMemory(&tm, sizeof(tm));
-    GetTextMetrics(hdc, &tm);
-
-    if (oldFont)
-        SelectObject(hdc, oldFont);
-    ReleaseDC(edit, hdc);
-
-    int clientH = rc.bottom - rc.top;
-    int textH = tm.tmHeight;
-    if (textH <= 0)
-        textH = CW_Scale(13);
-
-    int topPad = (clientH - textH) / 2;
-    if (topPad < 1)
-        topPad = 1;
-
-    const int leftPad = CW_Scale(8);
-    RECT textRc;
-    textRc.left   = leftPad;
-    textRc.right  = rc.right - CW_Scale(8);
-    textRc.top    = topPad;
-    textRc.bottom = topPad + textH + 1;
-
-    SendMessage(edit, EM_SETRECTNP, 0, (LPARAM)&textRc);
-    InvalidateRect(edit, NULL, TRUE);
+    /* Delegates to the shared CWDialog helper that vertically centers
+     * single-line EDIT text via a WM_NCCALCSIZE subclass. */
+    CWDialog::centerEditText(edit);
 }
 
 /* Prop name matches CW_TOGGLE_PROP in cw_toggle.h */
@@ -357,6 +261,7 @@ CWPrefsDialog::CWPrefsDialog(CWConfig& cfg)
     , m_chkRecursive(NULL)
     , m_chkScanMail(NULL)
     , m_chkInfectedOnly(NULL)
+    , m_chkKillProcesses(NULL)
     , m_radActionReport(NULL)
     , m_radActionRemove(NULL)
     , m_radActionQuarantine(NULL)
@@ -377,14 +282,6 @@ CWPrefsDialog::CWPrefsDialog(CWConfig& cfg)
     , m_edtProxyPort(NULL)
     , m_edtProxyUser(NULL)
     , m_edtProxyPass(NULL)
-    , m_chkScanScheduled(NULL)
-    , m_cmbScanFrequency(NULL)
-    , m_edtScanHour(NULL)
-    , m_spinScanHour(NULL)
-    , m_edtScanMinute(NULL)
-    , m_spinScanMinute(NULL)
-    , m_cmbScanDay(NULL)
-    , m_btnScheduleDetails(NULL)
     , m_chkScanArchives(NULL)
     , m_edtMaxScanSize(NULL)
     , m_edtMaxFileSize(NULL)
@@ -409,6 +306,9 @@ CWPrefsDialog::CWPrefsDialog(CWConfig& cfg)
     , m_btnInclAdd(NULL)
     , m_btnInclRemove(NULL)
     , m_chkScanOle2(NULL)
+    , m_edtClamScanParams(NULL)
+    , m_edtMaxLogSize(NULL)
+    , m_spinMaxLogSize(NULL)
     , m_cmbPriority(NULL)
 {
     for (int i = 0; i < PAGE_COUNT; ++i)
@@ -631,6 +531,17 @@ static std::string trimAscii(const std::string& s)
         --last;
 
     return s.substr(first, last - first);
+}
+
+static std::string getWindowTextString(HWND hwnd)
+{
+    if (!hwnd)
+        return std::string();
+
+    int len = GetWindowTextLength(hwnd);
+    std::vector<TCHAR> buf((size_t)(len > 0 ? len : 0) + 1, 0);
+    GetWindowText(hwnd, &buf[0], len + 1);
+    return CW_ToNarrow(&buf[0]);
 }
 
 static bool showValidationError(HWND owner, HWND target, const char* msg)
@@ -915,105 +826,6 @@ void CWPrefsDialog::createProxyPage(HWND page)
     setControlFont(m_edtProxyPass);
 }
 
-void CWPrefsDialog::createSchedulePage(HWND page)
-{
-    int x = CW_Scale(16);
-    int y = CW_Scale(16);
-    const int rowStep = CW_Scale(44);
-    const int buttonGap = CW_Scale(56);
-    const int timeX = x + CW_Scale(122);
-    const int hourW = CW_Scale(54);
-    const int spinW = CW_Scale(18);
-    const int colonW = CW_Scale(12);
-    const int minW = CW_Scale(38);
-
-    m_chkScanScheduled = CreateWindowEx(0, TEXT("BUTTON"), TEXT("&Enable scheduled scans"),
-                                         WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW | BS_NOTIFY,
-                                         x, y, CW_Scale(250), CW_Scale(22),
-                                         page, (HMENU)IDC_PREFS_SCHED_ENABLE, NULL, NULL);
-    setControlFont(m_chkScanScheduled);
-    enableNotifyStyle(m_chkScanScheduled);
-    y += rowStep;
-
-    HWND hFreq = CreateWindowEx(0, TEXT("STATIC"), TEXT("F&requency:"),
-                                 WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
-                                 x, y + CW_Scale(4), CW_Scale(120), CW_Scale(20),
-                                 page, NULL, NULL, NULL);
-    setControlFont(hFreq);
-
-    m_cmbScanFrequency = CreateWindowEx(0, TEXT("COMBOBOX"), TEXT(""),
-                                         WS_CHILD | WS_VISIBLE | WS_TABSTOP | CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | CBS_NOINTEGRALHEIGHT,
-                                         x + CW_Scale(122), y, CW_Scale(150), CW_Scale(220),
-                                         page, (HMENU)IDC_PREFS_SCHED_FREQ, NULL, NULL);
-    setControlFont(m_cmbScanFrequency);
-    configureThemedCombo(m_cmbScanFrequency);
-    SendMessage(m_cmbScanFrequency, CB_ADDSTRING, 0, (LPARAM)"Daily");
-    SendMessage(m_cmbScanFrequency, CB_ADDSTRING, 0, (LPARAM)"Weekly");
-    SendMessage(m_cmbScanFrequency, CB_ADDSTRING, 0, (LPARAM)"Workdays");
-    y += rowStep;
-
-    HWND hDay = CreateWindowEx(0, TEXT("STATIC"), TEXT("Day of &week:"),
-                                WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
-                                x, y + CW_Scale(4), CW_Scale(120), CW_Scale(20),
-                                page, NULL, NULL, NULL);
-    setControlFont(hDay);
-
-    m_cmbScanDay = CreateWindowEx(0, TEXT("COMBOBOX"), TEXT(""),
-                                   WS_CHILD | WS_VISIBLE | WS_TABSTOP | CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | CBS_NOINTEGRALHEIGHT,
-                                   x + CW_Scale(122), y, CW_Scale(150), CW_Scale(220),
-                                   page, (HMENU)IDC_PREFS_SCHED_DAY, NULL, NULL);
-    setControlFont(m_cmbScanDay);
-    configureThemedCombo(m_cmbScanDay);
-
-    static const char* days[7] = {"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
-    for (int i = 0; i < 7; ++i)
-        SendMessage(m_cmbScanDay, CB_ADDSTRING, 0, (LPARAM)days[i]);
-    y += rowStep;
-
-    HWND hTime = CreateWindowEx(0, TEXT("STATIC"), TEXT("&Time (HH:MM):"),
-                                 WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
-                                 x, y + CW_Scale(4), CW_Scale(120), CW_Scale(20),
-                                 page, NULL, NULL, NULL);
-    setControlFont(hTime);
-
-    m_edtScanHour = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
-                                    WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_AUTOHSCROLL,
-                                    timeX, y, hourW, CW_Scale(30),
-                                    page, (HMENU)IDC_PREFS_SCHED_HOUR, NULL, NULL);
-    setControlFont(m_edtScanHour);
-
-    m_spinScanHour = CreateWindowEx(0, UPDOWN_CLASS, TEXT(""),
-                                     WS_CHILD | WS_VISIBLE | UDS_ARROWKEYS | UDS_WRAP,
-                                     timeX + hourW, y, spinW, CW_Scale(30),
-                                     page, (HMENU)IDC_PREFS_SCHED_SPIN_HOUR, NULL, NULL);
-    SendMessage(m_spinScanHour, UDM_SETRANGE, 0, MAKELONG(23, 0));
-
-    HWND hColonS = CreateWindowEx(0, TEXT("STATIC"), TEXT(":"),
-                    WS_CHILD | WS_VISIBLE | SS_CENTER,
-                    timeX + hourW + spinW, y + CW_Scale(5), colonW, CW_Scale(20),
-                    page, NULL, NULL, NULL);
-    setControlFont(hColonS);
-
-    m_edtScanMinute = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
-                                      WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_NUMBER | ES_AUTOHSCROLL,
-                                      timeX + hourW + spinW + colonW, y, minW, CW_Scale(30),
-                                      page, (HMENU)IDC_PREFS_SCHED_MINUTE, NULL, NULL);
-    setControlFont(m_edtScanMinute);
-
-    m_spinScanMinute = CreateWindowEx(0, UPDOWN_CLASS, TEXT(""),
-                                       WS_CHILD | WS_VISIBLE | UDS_ARROWKEYS | UDS_WRAP,
-                                       timeX + hourW + spinW + colonW + minW, y, spinW, CW_Scale(30),
-                                       page, (HMENU)IDC_PREFS_SCHED_SPIN_MIN, NULL, NULL);
-    SendMessage(m_spinScanMinute, UDM_SETRANGE, 0, MAKELONG(59, 0));
-    y += buttonGap;
-
-    m_btnScheduleDetails = CreateWindowEx(0, TEXT("BUTTON"), TEXT("Open &Detailed Schedule..."),
-                                           WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW,
-                                           x, y, CW_Scale(272), CW_Scale(28),
-                                           page, (HMENU)IDC_PREFS_SCHED_DETAILS, NULL, NULL);
-    setControlFont(m_btnScheduleDetails);
-}
-
 void CWPrefsDialog::createLimitsPage(HWND page)
 {
     int x = CW_Scale(16);
@@ -1163,9 +975,14 @@ void CWPrefsDialog::createFilesPage(HWND page)
 
 void CWPrefsDialog::createAdvancedPage(HWND page)
 {
+    RECT pageRc = {0};
+    GetClientRect(page, &pageRc);
+
     int x = CW_Scale(16);
     int y = CW_Scale(16);
     const int rowStep = CW_Scale(44);
+    const int rightEdge = pageRc.right - CW_Scale(16);
+    const int paramsWidth = rightEdge - x;
 
     m_chkScanOle2 = CreateWindowEx(0, TEXT("BUTTON"), TEXT("Extract and scan O&LE2 (Office) objects"),
                                     WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW | BS_NOTIFY,
@@ -1175,15 +992,71 @@ void CWPrefsDialog::createAdvancedPage(HWND page)
     enableNotifyStyle(m_chkScanOle2);
     y += rowStep;
 
-    HWND lPriority = CreateWindowEx(0, TEXT("STATIC"), TEXT("Scanner priori&ty:"),
-                                     WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
-                                     x, y + CW_Scale(4), CW_Scale(130), CW_Scale(20),
-                                     page, NULL, NULL, NULL);
-    setControlFont(lPriority);
+    m_chkKillProcesses = CreateWindowEx(0, TEXT("BUTTON"), TEXT("&Unload infected programs from computer memory"),
+                                         WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_OWNERDRAW | BS_NOTIFY,
+                                         x, y, CW_Scale(400), CW_Scale(22),
+                                         page, (HMENU)IDC_PREFS_GENERAL_KILL, NULL, NULL);
+    setControlFont(m_chkKillProcesses);
+    enableNotifyStyle(m_chkKillProcesses);
+    y += rowStep;
+
+        HWND lClamscanParams = CreateWindowEx(0, TEXT("STATIC"), TEXT("Additional &Clamscan Command Line Parameters:"),
+                                           WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
+                                                                                     x, y + CW_Scale(4), paramsWidth, CW_Scale(20),
+                                           page, NULL, NULL, NULL);
+    setControlFont(lClamscanParams);
+    y += CW_Scale(24);
+
+    m_edtClamScanParams = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
+                                          WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_AUTOHSCROLL,
+                                                                                    x, y, paramsWidth, CW_Scale(30),
+                                          page, (HMENU)IDC_PREFS_ADV_CLAMSCAN_PARAMS, NULL, NULL);
+    setControlFont(m_edtClamScanParams);
+    y += CW_Scale(40);
+
+    const int spinW = CW_Scale(18);
+    const int fieldW = CW_Scale(160);
+    const int editW = fieldW - spinW;
+    const int comboW = fieldW;
+    const int leftColX = x;
+    const int rightColX = rightEdge - comboW;
+    const int unitsX = leftColX + fieldW + CW_Scale(10);
+
+        HWND lMaxLog = CreateWindowEx(0, TEXT("STATIC"), TEXT("Limit Lo&g File Size To:"),
+                                   WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
+                                                                     leftColX, y + CW_Scale(4), CW_Scale(180), CW_Scale(20),
+                                   page, NULL, NULL, NULL);
+    setControlFont(lMaxLog);
+
+        HWND lPriority = CreateWindowEx(0, TEXT("STATIC"), TEXT("Scanner Priori&ty:"),
+                                                                         WS_CHILD | WS_VISIBLE | SS_OWNERDRAW,
+                                                                         rightColX, y + CW_Scale(4), CW_Scale(140), CW_Scale(20),
+                                                                         page, NULL, NULL, NULL);
+        setControlFont(lPriority);
+
+        y += CW_Scale(24);
+
+    m_edtMaxLogSize = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
+                                      WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_NUMBER | ES_AUTOHSCROLL,
+                                                                            leftColX, y, editW, CW_Scale(30),
+                                      page, (HMENU)IDC_PREFS_ADV_MAXLOG, NULL, NULL);
+    setControlFont(m_edtMaxLogSize);
+    m_spinMaxLogSize = CreateWindowEx(0, UPDOWN_CLASS, TEXT(""),
+                                       WS_CHILD | WS_VISIBLE | UDS_ARROWKEYS | UDS_SETBUDDYINT | UDS_NOTHOUSANDS,
+                                                                             leftColX + editW, y, spinW, CW_Scale(30),
+                                       page, (HMENU)IDC_PREFS_ADV_SPIN_MAXLOG, NULL, NULL);
+    SendMessage(m_spinMaxLogSize, UDM_SETBUDDY, (WPARAM)m_edtMaxLogSize, 0);
+    SendMessage(m_spinMaxLogSize, UDM_SETRANGE, 0, MAKELONG(4096, 1));
+
+        HWND lUnits = CreateWindowEx(0, TEXT("STATIC"), TEXT("Megabytes"),
+                                      WS_CHILD | WS_VISIBLE,
+                                                                    unitsX, y + CW_Scale(4), CW_Scale(90), CW_Scale(20),
+                                  page, NULL, NULL, NULL);
+    setControlFont(lUnits);
 
     m_cmbPriority = CreateWindowEx(0, TEXT("COMBOBOX"), TEXT(""),
                                     WS_CHILD | WS_VISIBLE | WS_TABSTOP | CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | CBS_NOINTEGRALHEIGHT,
-                                    x + CW_Scale(136), y, CW_Scale(120), CW_Scale(160),
+                                                                        rightColX, y, comboW, CW_Scale(160),
                                     page, (HMENU)IDC_PREFS_ADV_PRIORITY, NULL, NULL);
     setControlFont(m_cmbPriority);
     configureThemedCombo(m_cmbPriority);
@@ -1226,7 +1099,6 @@ void CWPrefsDialog::createPages()
     createFiltersPage(m_hwndPages[PAGE_FILTERS]);
     createUpdatesPage(m_hwndPages[PAGE_UPDATES]);
     createProxyPage(m_hwndPages[PAGE_PROXY]);
-    createSchedulePage(m_hwndPages[PAGE_SCHEDULE]);
     createLimitsPage(m_hwndPages[PAGE_LIMITS]);
     createFilesPage(m_hwndPages[PAGE_FILES]);
     createAdvancedPage(m_hwndPages[PAGE_ADVANCED]);
@@ -1406,15 +1278,6 @@ void CWPrefsDialog::updateEnableStates()
     EnableWindow(m_edtProxyUser, proxyOn);
     EnableWindow(m_edtProxyPass, proxyOn);
 
-    bool scanEnabled = getToggleChecked(m_chkScanScheduled);
-    EnableWindow(m_cmbScanFrequency, scanEnabled);
-    EnableWindow(m_edtScanHour, scanEnabled);
-    EnableWindow(m_spinScanHour, scanEnabled);
-    EnableWindow(m_edtScanMinute, scanEnabled);
-    EnableWindow(m_spinScanMinute, scanEnabled);
-    int sfreq = (int)SendMessage(m_cmbScanFrequency, CB_GETCURSEL, 0, 0);
-    EnableWindow(m_cmbScanDay, scanEnabled && sfreq == 1);
-
     bool archivesOn = getToggleChecked(m_chkScanArchives);
     EnableWindow(m_edtMaxScanSize, archivesOn);
     EnableWindow(m_edtMaxFiles, archivesOn);
@@ -1426,6 +1289,7 @@ void CWPrefsDialog::loadFromConfig()
     setToggleChecked(m_chkRecursive, m_cfg.scanRecursive);
     setToggleChecked(m_chkScanMail, m_cfg.scanMail);
     setToggleChecked(m_chkInfectedOnly, m_cfg.infectedOnly);
+    setToggleChecked(m_chkKillProcesses, m_cfg.killProcesses);
 
     setToggleChecked(m_radActionReport, m_cfg.infectedAction == 0);
     setToggleChecked(m_radActionRemove, m_cfg.infectedAction == 1);
@@ -1450,17 +1314,12 @@ void CWPrefsDialog::loadFromConfig()
     SetWindowText(m_edtProxyUser, CW_ToT(m_cfg.proxyUser).c_str());
     SetWindowText(m_edtProxyPass, CW_ToT(m_cfg.proxyPass).c_str());
 
-    setToggleChecked(m_chkScanScheduled, m_cfg.scanScheduled);
-    SendMessage(m_cmbScanFrequency, CB_SETCURSEL, m_cfg.scanFrequency, 0);
-    CW_WriteHourToEdit(m_edtScanHour, m_cfg.scanHour);
-    CW_WriteMinuteToEdit(m_edtScanMinute, m_cfg.scanMinute);
-    SendMessage(m_cmbScanDay, CB_SETCURSEL, m_cfg.scanDay, 0);
-
     setToggleChecked(m_chkScanArchives, m_cfg.scanArchives);
     writeIntToEdit(m_edtMaxScanSize, m_cfg.maxScanSizeMb);
     writeIntToEdit(m_edtMaxFileSize, m_cfg.maxFileSizeMb);
     writeIntToEdit(m_edtMaxFiles, m_cfg.maxFiles);
     writeIntToEdit(m_edtMaxDepth, m_cfg.maxDepth);
+    writeIntToEdit(m_edtMaxLogSize, m_cfg.maxLogSizeMb);
 
     SetWindowText(m_edtDatabasePath, CW_ToT(m_cfg.databasePath).c_str());
     SetWindowText(m_edtScanLog, CW_ToT(m_cfg.scanLogFile).c_str());
@@ -1470,17 +1329,18 @@ void CWPrefsDialog::loadFromConfig()
     populatePatternList(m_lstInclude, m_cfg.includePatterns);
 
     setToggleChecked(m_chkScanOle2, m_cfg.scanOle2);
+    SetWindowText(m_edtClamScanParams, CW_ToT(m_cfg.clamscanParams).c_str());
     SendMessage(m_cmbPriority, CB_SETCURSEL,
                  (m_cfg.priority == "l" || m_cfg.priority == "L") ? 0 : 1, 0);
 
     InvalidateRect(m_chkRecursive, NULL, TRUE);
     InvalidateRect(m_chkScanMail, NULL, TRUE);
     InvalidateRect(m_chkInfectedOnly, NULL, TRUE);
+    InvalidateRect(m_chkKillProcesses, NULL, TRUE);
     InvalidateRect(m_chkUpdateScheduled, NULL, TRUE);
     InvalidateRect(m_chkUpdateOnStartup, NULL, TRUE);
     InvalidateRect(m_chkCheckVersion, NULL, TRUE);
     InvalidateRect(m_chkProxyEnabled, NULL, TRUE);
-    InvalidateRect(m_chkScanScheduled, NULL, TRUE);
     InvalidateRect(m_chkScanArchives, NULL, TRUE);
     InvalidateRect(m_chkScanOle2, NULL, TRUE);
 
@@ -1492,6 +1352,7 @@ bool CWPrefsDialog::saveToConfig()
     m_cfg.scanRecursive = getToggleChecked(m_chkRecursive);
     m_cfg.scanMail = getToggleChecked(m_chkScanMail);
     m_cfg.infectedOnly = getToggleChecked(m_chkInfectedOnly);
+    m_cfg.killProcesses = getToggleChecked(m_chkKillProcesses);
 
     if (getToggleChecked(m_radActionRemove))
         m_cfg.infectedAction = 1;
@@ -1557,22 +1418,6 @@ bool CWPrefsDialog::saveToConfig()
     GetWindowText(m_edtProxyPass, buf, _countof(buf));
     m_cfg.proxyPass = CW_ToNarrow(buf);
 
-    m_cfg.scanScheduled = getToggleChecked(m_chkScanScheduled);
-    m_cfg.scanFrequency = (int)SendMessage(m_cmbScanFrequency, CB_GETCURSEL, 0, 0);
-    if (m_cfg.scanFrequency < 0)
-    {
-        showPage(PAGE_SCHEDULE);
-        return showValidationError(m_hwnd, m_cmbScanFrequency, "Please select a scan frequency.");
-    }
-    m_cfg.scanHour = CW_ReadHourFromEdit(m_edtScanHour, m_cfg.scanHour);
-    m_cfg.scanMinute = readIntFromEdit(m_edtScanMinute, m_cfg.scanMinute);
-    m_cfg.scanDay = (int)SendMessage(m_cmbScanDay, CB_GETCURSEL, 0, 0);
-    if (m_cfg.scanFrequency == 1 && m_cfg.scanDay < 0)
-    {
-        showPage(PAGE_SCHEDULE);
-        return showValidationError(m_hwnd, m_cmbScanDay, "Please select a scan day of week.");
-    }
-
     m_cfg.scanArchives = getToggleChecked(m_chkScanArchives);
     m_cfg.maxScanSizeMb = readIntFromEdit(m_edtMaxScanSize, m_cfg.maxScanSizeMb);
     m_cfg.maxFileSizeMb = readIntFromEdit(m_edtMaxFileSize, m_cfg.maxFileSizeMb);
@@ -1625,6 +1470,14 @@ bool CWPrefsDialog::saveToConfig()
     }
 
     m_cfg.scanOle2 = getToggleChecked(m_chkScanOle2);
+    m_cfg.clamscanParams = getWindowTextString(m_edtClamScanParams);
+    m_cfg.maxLogSizeMb = readIntFromEdit(m_edtMaxLogSize, m_cfg.maxLogSizeMb);
+    if (m_cfg.maxLogSizeMb < 1 || m_cfg.maxLogSizeMb > 4096)
+    {
+        showPage(PAGE_ADVANCED);
+        return showValidationError(m_hwnd, m_edtMaxLogSize,
+                                   "Log file size limit must be between 1 and 4096 MB.");
+    }
     int prioSel = (int)SendMessage(m_cmbPriority, CB_GETCURSEL, 0, 0);
     if (prioSel < 0)
     {
@@ -1886,7 +1739,6 @@ bool CWPrefsDialog::onCommand(int id, HWND src)
     switch (id)
     {
         case IDC_PREFS_UPDATES_FREQ:
-        case IDC_PREFS_SCHED_FREQ:
             updateEnableStates();
             return true;
 
@@ -1958,11 +1810,6 @@ bool CWPrefsDialog::onCommand(int id, HWND src)
             }
             return true;
         }
-
-        case IDC_PREFS_SCHED_DETAILS:
-            CW_ScheduleDialogRun(m_hwnd, &m_cfg);
-            return true;
-
         case IDOK:
             if (saveToConfig())
                 endDialog(IDOK);
@@ -1991,6 +1838,7 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
                 bool scanRecursive;
                 bool scanMail;
                 bool infectedOnly;
+                bool killProcesses;
                 int infectedAction;
                 std::string quarantinePath;
 
@@ -2009,12 +1857,6 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
                 std::string proxyUser;
                 std::string proxyPass;
 
-                bool scanScheduled;
-                int scanFrequency;
-                int scanHour;
-                int scanMinute;
-                int scanDay;
-
                 bool scanArchives;
                 int maxScanSizeMb;
                 int maxFileSizeMb;
@@ -2026,6 +1868,8 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
                 std::string updateLogFile;
 
                 bool scanOle2;
+                std::string clamscanParams;
+                int maxLogSizeMb;
                 int priority;
 
                 UiState()
@@ -2034,6 +1878,7 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
                     , scanRecursive(false)
                     , scanMail(false)
                     , infectedOnly(false)
+                    , killProcesses(false)
                     , infectedAction(0)
                     , updateScheduled(false)
                     , updateFrequency(0)
@@ -2044,17 +1889,13 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
                     , checkVersion(false)
                     , proxyEnabled(false)
                     , proxyPort(0)
-                    , scanScheduled(false)
-                    , scanFrequency(0)
-                    , scanHour(0)
-                    , scanMinute(0)
-                    , scanDay(0)
                     , scanArchives(false)
                     , maxScanSizeMb(0)
                     , maxFileSizeMb(0)
                     , maxFiles(0)
                     , maxDepth(0)
                     , scanOle2(false)
+                    , maxLogSizeMb(1)
                     , priority(0)
                 {
                 }
@@ -2078,7 +1919,8 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
             auto captureState = [&]() -> UiState
             {
                 UiState state;
-                state.valid = (m_chkRecursive != NULL && m_edtMirror != NULL && m_cmbScanFrequency != NULL);
+                state.valid = (m_chkRecursive != NULL && m_edtMirror != NULL &&
+                               m_edtDatabasePath != NULL && m_edtClamScanParams != NULL);
                 state.activePage = m_activePage;
 
                 if (!state.valid)
@@ -2087,6 +1929,7 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
                 state.scanRecursive = getToggleChecked(m_chkRecursive);
                 state.scanMail = getToggleChecked(m_chkScanMail);
                 state.infectedOnly = getToggleChecked(m_chkInfectedOnly);
+                state.killProcesses = getToggleChecked(m_chkKillProcesses);
                 state.infectedAction = getToggleChecked(m_radActionRemove) ? 1 : (getToggleChecked(m_radActionQuarantine) ? 2 : 0);
                 state.quarantinePath = readText(m_edtQuarantine);
 
@@ -2105,12 +1948,6 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
                 state.proxyUser = readText(m_edtProxyUser);
                 state.proxyPass = readText(m_edtProxyPass);
 
-                state.scanScheduled = getToggleChecked(m_chkScanScheduled);
-                state.scanFrequency = (int)SendMessage(m_cmbScanFrequency, CB_GETCURSEL, 0, 0);
-                state.scanHour = CW_ReadHourFromEdit(m_edtScanHour, 0);
-                state.scanMinute = readIntFromEdit(m_edtScanMinute, 0);
-                state.scanDay = (int)SendMessage(m_cmbScanDay, CB_GETCURSEL, 0, 0);
-
                 state.scanArchives = getToggleChecked(m_chkScanArchives);
                 state.maxScanSizeMb = readIntFromEdit(m_edtMaxScanSize, 0);
                 state.maxFileSizeMb = readIntFromEdit(m_edtMaxFileSize, 0);
@@ -2122,6 +1959,8 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
                 state.updateLogFile = readText(m_edtUpdateLog);
 
                 state.scanOle2 = getToggleChecked(m_chkScanOle2);
+                state.clamscanParams = getWindowTextString(m_edtClamScanParams);
+                state.maxLogSizeMb = readIntFromEdit(m_edtMaxLogSize, 1);
                 state.priority = (int)SendMessage(m_cmbPriority, CB_GETCURSEL, 0, 0);
 
                 return state;
@@ -2138,6 +1977,7 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
                 setToggleChecked(m_chkRecursive, state.scanRecursive);
                 setToggleChecked(m_chkScanMail, state.scanMail);
                 setToggleChecked(m_chkInfectedOnly, state.infectedOnly);
+                setToggleChecked(m_chkKillProcesses, state.killProcesses);
                 setToggleChecked(m_radActionReport, state.infectedAction == 0);
                 setToggleChecked(m_radActionRemove, state.infectedAction == 1);
                 setToggleChecked(m_radActionQuarantine, state.infectedAction == 2);
@@ -2158,12 +1998,6 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
                 SetWindowText(m_edtProxyUser, state.proxyUser.c_str());
                 SetWindowText(m_edtProxyPass, state.proxyPass.c_str());
 
-                setToggleChecked(m_chkScanScheduled, state.scanScheduled);
-                SendMessage(m_cmbScanFrequency, CB_SETCURSEL, state.scanFrequency, 0);
-                writeIntToEdit(m_edtScanHour, state.scanHour);
-                writeIntToEdit(m_edtScanMinute, state.scanMinute);
-                SendMessage(m_cmbScanDay, CB_SETCURSEL, state.scanDay, 0);
-
                 setToggleChecked(m_chkScanArchives, state.scanArchives);
                 writeIntToEdit(m_edtMaxScanSize, state.maxScanSizeMb);
                 writeIntToEdit(m_edtMaxFileSize, state.maxFileSizeMb);
@@ -2175,6 +2009,8 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
                 SetWindowText(m_edtUpdateLog, state.updateLogFile.c_str());
 
                 setToggleChecked(m_chkScanOle2, state.scanOle2);
+                SetWindowText(m_edtClamScanParams, state.clamscanParams.c_str());
+                writeIntToEdit(m_edtMaxLogSize, state.maxLogSizeMb);
                 SendMessage(m_cmbPriority, CB_SETCURSEL, state.priority, 0);
 
                 updateEnableStates();
@@ -2413,22 +2249,20 @@ INT_PTR CWPrefsDialog::handleMessage(UINT msg, WPARAM wp, LPARAM lp)
             {
                 NMUPDOWN* nmud = (NMUPDOWN*)lp;
                 int ctlId = (int)hdr->idFrom;
-                if (ctlId == IDC_PREFS_UPDATES_SPIN_HOUR || ctlId == IDC_PREFS_SCHED_SPIN_HOUR)
+                if (ctlId == IDC_PREFS_UPDATES_SPIN_HOUR)
                 {
-                    HWND edit = (ctlId == IDC_PREFS_UPDATES_SPIN_HOUR) ? m_edtUpdateHour : m_edtScanHour;
-                    int h = CW_ReadHourFromEdit(edit, 0);
+                    int h = CW_ReadHourFromEdit(m_edtUpdateHour, 0);
                     h = (h + nmud->iDelta + 24) % 24;
-                    CW_WriteHourToEdit(edit, h);
+                    CW_WriteHourToEdit(m_edtUpdateHour, h);
                     return 0;
                 }
-                if (ctlId == IDC_PREFS_UPDATES_SPIN_MIN || ctlId == IDC_PREFS_SCHED_SPIN_MIN)
+                if (ctlId == IDC_PREFS_UPDATES_SPIN_MIN)
                 {
-                    HWND edit = (ctlId == IDC_PREFS_UPDATES_SPIN_MIN) ? m_edtUpdateMinute : m_edtScanMinute;
                     TCHAR mbuf[8] = {0};
-                    GetWindowText(edit, mbuf, _countof(mbuf));
+                    GetWindowText(m_edtUpdateMinute, mbuf, _countof(mbuf));
                     int m = _ttoi(mbuf);
                     m = (m + nmud->iDelta + 60) % 60;
-                    CW_WriteMinuteToEdit(edit, m);
+                    CW_WriteMinuteToEdit(m_edtUpdateMinute, m);
                     return 0;
                 }
             }

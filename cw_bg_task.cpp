@@ -57,6 +57,10 @@ std::string CWBgTask::buildCommand(const std::string& exeDir) const
 bool CWBgTask::start()
 {
     std::string exeDir = getExeDir();
+    const unsigned long long logLimitBytes =
+        m_cfg.maxLogSizeMb > 0
+            ? (unsigned long long)m_cfg.maxLogSizeMb * 1024ULL * 1024ULL
+            : 0;
 
     if (m_isUpdate && !CWScanLogic::hasFreshclamExecutable(exeDir))
         return false;
@@ -66,13 +70,13 @@ bool CWBgTask::start()
      * appended '\nScan Started %s' % time.ctime() to the log. */
     const std::string& logPath = m_isUpdate ? m_cfg.updateLogFile
                                             : m_cfg.scanLogFile;
-    CW_AppendToLogFile(logPath, CW_BuildStartTimestamp(m_isUpdate));
+    CW_AppendToLogFile(logPath, CW_BuildStartTimestamp(m_isUpdate), logLimitBytes);
 
     std::string cmd = buildCommand(exeDir);
     if (!m_process.start(cmd, m_cfg.priority,
                            onOutput, onError, onFinished, this))
     {
-        CW_AppendToLogFile(logPath, CW_BuildFailedFooter());
+        CW_AppendToLogFile(logPath, CW_BuildFailedFooter(), logLimitBytes);
         return false;
     }
     return true;
@@ -121,7 +125,11 @@ void CWBgTask::onFinished(int exitCode, void* ud)
      * wxDialogStatus.OnThreadFinished() separator lines. */
     const std::string& logPath = self->m_isUpdate ? self->m_cfg.updateLogFile
                                                   : self->m_cfg.scanLogFile;
-    CW_AppendToLogFile(logPath, CW_BuildCompletedFooter());
+    const unsigned long long logLimitBytes =
+        self->m_cfg.maxLogSizeMb > 0
+            ? (unsigned long long)self->m_cfg.maxLogSizeMb * 1024ULL * 1024ULL
+            : 0;
+    CW_AppendToLogFile(logPath, CW_BuildCompletedFooter(), logLimitBytes);
 
     if (self->m_hwndOwner)
         PostMessage(self->m_hwndOwner, WM_CW_BG_FINISHED,
