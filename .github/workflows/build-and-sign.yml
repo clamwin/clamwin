@@ -481,15 +481,12 @@ jobs:
             Remove-Item $outputDir -Recurse -Force
           }
 
-          $buildArgs = @(
-            '-PrebuiltClamAvRoot', $prebuiltClamAvRoot,
-            '-IsccPath', $env:ISCC_EXE
-          )
           if ($buildFullDb) {
-            $buildArgs += '-IncludeFulldbInstaller'
+            & .\tools\build-setup.ps1 -PrebuiltClamAvRoot $prebuiltClamAvRoot -IsccPath $env:ISCC_EXE -IncludeFulldbInstaller
           }
-
-          & .\tools\build-setup.ps1 @buildArgs
+          else {
+            & .\tools\build-setup.ps1 -PrebuiltClamAvRoot $prebuiltClamAvRoot -IsccPath $env:ISCC_EXE
+          }
 
       - name: Locate unsigned installers
         id: unsigned
