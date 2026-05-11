@@ -490,8 +490,13 @@ function Invoke-PrepareBundledDatabases {
 
     $freshclamDir = Split-Path $FreshclamExe -Parent
     $freshclamCertDir = Join-Path $freshclamDir "certs"
+    $freshclamCertPath = Join-Path $freshclamCertDir "clamav.crt"
     New-Item -ItemType Directory -Force $freshclamCertDir | Out-Null
-    Copy-Item $CertSource (Join-Path $freshclamCertDir "clamav.crt") -Force
+    $resolvedCertSource = [System.IO.Path]::GetFullPath($CertSource)
+    $resolvedFreshclamCertPath = [System.IO.Path]::GetFullPath($freshclamCertPath)
+    if (-not $resolvedCertSource.Equals($resolvedFreshclamCertPath, [System.StringComparison]::OrdinalIgnoreCase)) {
+        Copy-Item $CertSource $freshclamCertPath -Force
+    }
 
     if (Test-Path $CvdDir) {
         Get-ChildItem -Path $CvdDir -File -ErrorAction SilentlyContinue | Remove-Item -Force -ErrorAction SilentlyContinue
@@ -509,21 +514,59 @@ function Invoke-PrepareBundledDatabases {
     )
     Set-Content -Path $freshclamConf -Value $conf -Encoding ascii
 
-    Write-Host "[db] downloading bundled CVD files via $FreshclamExe"
-    & $FreshclamExe --config-file "$freshclamConf"
-    if ($LASTEXITCODE -ne 0) {
-        throw "freshclam failed while preparing setup CVD files (exit $LASTEXITCODE)"
-    }
-
     $required = @("main.cvd", "daily.cvd", "bytecode.cvd")
-    foreach ($name in $required) {
-        $path = Join-Path $CvdDir $name
-        if (-not (Test-Path $path)) {
-            throw "Missing required CVD file for Setup.iss: $path"
+    $maxAttempts = 3
+    $delaySeconds = 15
+    $freshclamConfLeaf = Split-Path $freshclamConf -Leaf
+    $lastFailure = ""
+
+    for ($attempt = 1; $attempt -le $maxAttempts; $attempt++) {
+        Get-ChildItem -Path $CvdDir -File -ErrorAction SilentlyContinue |
+            Where-Object { $_.Name -ne $freshclamConfLeaf } |
+            Remove-Item -Force -ErrorAction SilentlyContinue
+        Set-Content -Path $freshclamConf -Value $conf -Encoding ascii
+
+        Write-Host "[db] downloading bundled CVD files via $FreshclamExe (attempt $attempt/$maxAttempts)"
+        & $FreshclamExe --config-file "$freshclamConf"
+        $exitCode = $LASTEXITCODE
+
+        $missing = @()
+        foreach ($name in $required) {
+            $path = Join-Path $CvdDir $name
+            if (-not (Test-Path $path)) {
+                $missing += $name
+            }
+        }
+
+        if ($exitCode -eq 0 -and $missing.Count -eq 0) {
+            Write-Host "[db] bundled CVD files prepared in $CvdDir"
+            return
+        }
+
+        $failureParts = @()
+        if ($exitCode -ne 0) {
+            $failureParts += "exit $exitCode"
+        }
+        if ($missing.Count -gt 0) {
+            $failureParts += "missing $($missing -join ', ')"
+        }
+        $lastFailure = $failureParts -join "; "
+
+        if (Test-Path $freshclamLog) {
+            $logTail = Get-Content -Path $freshclamLog -Tail 20 -ErrorAction SilentlyContinue
+            foreach ($line in $logTail) {
+                Write-Host "[db] log: $line"
+            }
+        }
+
+        if ($attempt -lt $maxAttempts) {
+            Write-Host "[db] freshclam attempt failed ($lastFailure); retrying in $delaySeconds seconds"
+            Start-Sleep -Seconds $delaySeconds
+            $delaySeconds *= 2
         }
     }
 
-    Write-Host "[db] bundled CVD files prepared in $CvdDir"
+    throw "freshclam failed while preparing setup CVD files after $maxAttempts attempts ($lastFailure)"
 }
 
 function Resolve-CurlCaBundleSource {
