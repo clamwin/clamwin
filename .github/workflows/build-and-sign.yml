@@ -474,34 +474,51 @@ jobs:
             Remove-Item $outputDir -Recurse -Force
           }
 
-          & .\tools\build-setup.ps1 -PrebuiltClamAvRoot $prebuiltClamAvRoot -IsccPath $env:ISCC_EXE
+          & .\tools\build-setup.ps1 -PrebuiltClamAvRoot $prebuiltClamAvRoot -IsccPath $env:ISCC_EXE -IncludeFulldbInstaller
 
-      - name: Locate unsigned installer
+      - name: Locate unsigned installers
         id: unsigned
         shell: pwsh
         run: |
-          $installer = Get-ChildItem -Path "setup\Output" -Filter "clamwin-*-setup-nodb*.exe" -File |
+          $fullDbInstaller = Get-ChildItem -Path "setup\Output" -Filter "clamwin-*-setup*.exe" -File |
+            Where-Object { $_.Name -notlike "*-setup-nodb*" } |
             Sort-Object LastWriteTime -Descending |
             Select-Object -First 1
 
-          if (-not $installer) {
-            throw "No unsigned ClamWin installer was produced under setup\Output."
+          $nodbInstaller = Get-ChildItem -Path "setup\Output" -Filter "clamwin-*-setup-nodb*.exe" -File |
+            Sort-Object LastWriteTime -Descending |
+            Select-Object -First 1
+
+          if (-not $fullDbInstaller) {
+            throw "No unsigned full-db ClamWin installer was produced under setup\Output."
+          }
+          if (-not $nodbInstaller) {
+            throw "No unsigned no-db ClamWin installer was produced under setup\Output."
           }
 
-          Write-Host "Unsigned installer: $($installer.FullName)"
-          "unsigned_installer=$($installer.FullName)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          Write-Host "Unsigned full-db installer: $($fullDbInstaller.FullName)"
+          Write-Host "Unsigned no-db installer: $($nodbInstaller.FullName)"
+          "full_db_installer=$($fullDbInstaller.FullName)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "nodb_installer=$($nodbInstaller.FullName)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
 
-      - name: Attest unsigned installer provenance
+      - name: Attest unsigned full-db installer provenance
         uses: actions/attest-build-provenance@v4
         with:
-          subject-path: ${{ steps.unsigned.outputs.unsigned_installer }}
+          subject-path: ${{ steps.unsigned.outputs.full_db_installer }}
 
-      - name: Upload unsigned installer artifact
+      - name: Attest unsigned no-db installer provenance
+        uses: actions/attest-build-provenance@v4
+        with:
+          subject-path: ${{ steps.unsigned.outputs.nodb_installer }}
+
+      - name: Upload unsigned installers artifact
         id: upload_unsigned
         uses: actions/upload-artifact@v7
         with:
-          name: unsigned-clamwin-installer
-          path: ${{ steps.unsigned.outputs.unsigned_installer }}
+          name: unsigned-clamwin-installers
+          path: |
+            ${{ steps.unsigned.outputs.full_db_installer }}
+            ${{ steps.unsigned.outputs.nodb_installer }}
           if-no-files-found: error
 
       - name: Submit signing request to SignPath
@@ -527,44 +544,72 @@ jobs:
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.sign_installer }}
         shell: pwsh
         run: |
-          $signed = Get-ChildItem -Path "signed" -Filter "*.exe" -File -Recurse
-          if ($signed.Count -eq 0) {
-            throw "SignPath completed but no signed .exe was found under signed/."
+          $signedFullDb = Get-ChildItem -Path "signed" -Filter "clamwin-*-setup*.exe" -File -Recurse |
+            Where-Object { $_.Name -notlike "*-setup-nodb*" } |
+            Sort-Object LastWriteTime -Descending |
+            Select-Object -First 1
+
+          $signedNodb = Get-ChildItem -Path "signed" -Filter "clamwin-*-setup-nodb*.exe" -File -Recurse |
+            Sort-Object LastWriteTime -Descending |
+            Select-Object -First 1
+
+          if (-not $signedFullDb) {
+            throw "SignPath completed but no signed full-db installer was found under signed/."
+          }
+          if (-not $signedNodb) {
+            throw "SignPath completed but no signed no-db installer was found under signed/."
           }
 
-          $signed | ForEach-Object { Write-Host "Signed installer: $($_.FullName)" }
+          Write-Host "Signed full-db installer: $($signedFullDb.FullName)"
+          Write-Host "Signed no-db installer: $($signedNodb.FullName)"
 
-      - name: Locate signed installer
+      - name: Locate signed installers
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.sign_installer }}
         id: signed
         shell: pwsh
         run: |
-          $installer = Get-ChildItem -Path "signed" -Filter "*.exe" -File -Recurse |
+          $fullDbInstaller = Get-ChildItem -Path "signed" -Filter "clamwin-*-setup*.exe" -File -Recurse |
+            Where-Object { $_.Name -notlike "*-setup-nodb*" } |
             Sort-Object LastWriteTime -Descending |
             Select-Object -First 1
 
-          if (-not $installer) {
-            throw "No signed ClamWin installer was produced under signed/."
+          $nodbInstaller = Get-ChildItem -Path "signed" -Filter "clamwin-*-setup-nodb*.exe" -File -Recurse |
+            Sort-Object LastWriteTime -Descending |
+            Select-Object -First 1
+
+          if (-not $fullDbInstaller) {
+            throw "No signed full-db ClamWin installer was produced under signed/."
+          }
+          if (-not $nodbInstaller) {
+            throw "No signed no-db ClamWin installer was produced under signed/."
           }
 
-          Write-Host "Signed installer for attestation: $($installer.FullName)"
-          "signed_installer=$($installer.FullName)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          Write-Host "Signed full-db installer for attestation: $($fullDbInstaller.FullName)"
+          Write-Host "Signed no-db installer for attestation: $($nodbInstaller.FullName)"
+          "full_db_installer=$($fullDbInstaller.FullName)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "nodb_installer=$($nodbInstaller.FullName)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
 
-      - name: Attest signed installer provenance
+      - name: Attest signed full-db installer provenance
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.sign_installer }}
         uses: actions/attest-build-provenance@v4
         with:
-          subject-path: ${{ steps.signed.outputs.signed_installer }}
+          subject-path: ${{ steps.signed.outputs.full_db_installer }}
 
-      - name: Upload signed installer
+      - name: Attest signed no-db installer provenance
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.sign_installer }}
+        uses: actions/attest-build-provenance@v4
+        with:
+          subject-path: ${{ steps.signed.outputs.nodb_installer }}
+
+      - name: Upload signed installers
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.sign_installer }}
         uses: actions/upload-artifact@v7
         with:
-          name: signed-clamwin-installer
+          name: signed-clamwin-installers
           path: signed/**/*.exe
           if-no-files-found: error
 
-      - name: Publish signed installer to GitHub Release
+      - name: Publish signed installers to GitHub Release
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.sign_installer && startsWith(github.ref, 'refs/tags/') }}
         shell: pwsh
         env:
