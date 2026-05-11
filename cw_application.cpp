@@ -864,9 +864,6 @@ void CWApplication::beginVersionCheck(bool userInitiated, bool openDashboard)
     if (openDashboard)
         doOpenDashboard();
 
-    if (userInitiated)
-        m_manualVersionCheckPending = true;
-
     if (!m_curlInited)
     {
         if (userInitiated)
@@ -882,9 +879,16 @@ void CWApplication::beginVersionCheck(bool userInitiated, bool openDashboard)
     else
         m_config.load();
 
-    m_updateChecker.startCheck(m_hwndTray,
-                               m_config.debugEnabled,
-                               CW_GetDebugLogPath(m_config.scanLogFile));
+    const bool started = m_updateChecker.startCheck(m_hwndTray,
+                                                    m_config.debugEnabled,
+                                                    CW_GetDebugLogPath(m_config.scanLogFile));
+
+    if (userInitiated)
+    {
+        m_manualVersionCheckPending = started;
+        if (!started)
+            m_dash.setVersionCheckFailed();
+    }
 }
 
 void CWApplication::onVersionCheckResult(WPARAM wp, LPARAM lp)

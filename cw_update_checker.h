@@ -43,9 +43,10 @@ public:
     static const char* downloadUrl();
 
     /* Launch a background HTTPS check.  When complete a WM_CW_VERSION_RESULT
-     * message is posted to |hwndTarget|.  Only one check runs at a time;
-     * calling again while one is in flight is a no-op. */
-    void startCheck(HWND hwndTarget, bool debugEnabled = false, const std::string& debugLogPath = "");
+     * message is posted to |hwndTarget|. Returns true when a check is now
+     * in flight, including when an existing worker is already running.
+     * Returns false when no worker could be launched. */
+    bool startCheck(HWND hwndTarget, bool debugEnabled = false, const std::string& debugLogPath = "");
 
     /* Block until the background thread finishes (used during shutdown). */
     void waitForThread();

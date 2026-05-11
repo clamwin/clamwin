@@ -133,7 +133,7 @@ void CWUpdateChecker::waitForThread()
 
 /* ─── Start background check ───────────────────────────────── */
 
-void CWUpdateChecker::startCheck(HWND hwndTarget, bool debugEnabled, const std::string& debugLogPath)
+bool CWUpdateChecker::startCheck(HWND hwndTarget, bool debugEnabled, const std::string& debugLogPath)
 {
     if (m_hThread)
     {
@@ -147,7 +147,7 @@ void CWUpdateChecker::startCheck(HWND hwndTarget, bool debugEnabled, const std::
         {
             if (debugEnabled)
                 CW_DebugLog(debugLogPath, "[UpdateChecker] Request ignored because a check is already running");
-            return;   /* already in flight */
+            return true;   /* existing in-flight result will satisfy caller */
         }
     }
 
@@ -160,6 +160,8 @@ void CWUpdateChecker::startCheck(HWND hwndTarget, bool debugEnabled, const std::
     m_hThread = CreateThread(NULL, 0, threadProc, this, 0, &tid);
     if (!m_hThread && m_debugEnabled)
         CW_DebugLog(m_debugLogPath, "[UpdateChecker] Failed to create worker thread (GetLastError=%lu)", GetLastError());
+
+    return m_hThread != NULL;
 }
 
 DWORD WINAPI CWUpdateChecker::threadProc(LPVOID param)
