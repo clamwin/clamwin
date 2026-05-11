@@ -32,9 +32,31 @@ concurrency:
 jobs:
   # ── Job 1: Build ClamAV from source ────────────────────────────────────────
   build_clamav:
-    name: Build ClamAV (MinGW-w64, Linux cross-compile)
+    name: Build ClamAV (${{ matrix.label }})
     runs-on: ubuntu-24.04
     timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: legacy-x86
+            cargo_target: i686-pc-windows-gnu
+            cargo_linker: i686-w64-mingw32-gcc
+            build_dir: build-x86-mingw-winxp
+            toolchain_file: cmake/toolchain-mingw-x86.cmake
+            extra_cmake_args: -DUSE_ZLIB_NG_ON_X86=ON
+            engine_artifact_name: clamav-legacy-x86-gcc12
+            gui_artifact_name: clamav-gui-link-x86-gcc12
+            openssl_arch_dir: x86
+          - label: legacy-x64
+            cargo_target: x86_64-pc-windows-gnu
+            cargo_linker: x86_64-w64-mingw32-gcc
+            build_dir: build-x64-mingw
+            toolchain_file: cmake/toolchain-mingw-x64.cmake
+            extra_cmake_args: ""
+            engine_artifact_name: clamav-legacy-x64-gcc12
+            gui_artifact_name: clamav-gui-link-x64-gcc12
+            openssl_arch_dir: x64
 
     steps:
       - name: Check out clamav-win32 (without submodules)
@@ -57,70 +79,54 @@ jobs:
       - name: Initialise submodules recursively
         run: git submodule update --init --recursive
 
-      - name: Pin Rust to 1.94.1 and add Windows targets
+      - name: Pin Rust to 1.94.1 and add Windows target
         run: |
           rustup toolchain install 1.94.1
           rustup default 1.94.1
-          rustup target add i686-pc-windows-gnu x86_64-pc-windows-gnu
+          rustup target add ${{ matrix.cargo_target }}
 
-      - name: CMake configure – legacy-x86 (WinXP)
+      - name: CMake configure – ${{ matrix.label }}
         env:
-          CARGO_BUILD_TARGET: i686-pc-windows-gnu
-          CARGO_TARGET_I686_PC_WINDOWS_GNU_LINKER: i686-w64-mingw32-gcc
+          CARGO_BUILD_TARGET: ${{ matrix.cargo_target }}
+          CARGO_TARGET_I686_PC_WINDOWS_GNU_LINKER: ${{ matrix.cargo_linker }}
+          CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER: ${{ matrix.cargo_linker }}
         run: |
+          extra_args=()
+          if [ -n "${{ matrix.extra_cmake_args }}" ]; then
+            extra_args+=("${{ matrix.extra_cmake_args }}")
+          fi
+
           cmake \
             -S . \
-            -B build-x86-mingw-winxp \
+            -B ${{ matrix.build_dir }} \
             -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_TOOLCHAIN_FILE=cmake/toolchain-mingw-x86.cmake \
+            -DCMAKE_TOOLCHAIN_FILE=${{ matrix.toolchain_file }} \
             "-DCMAKE_C_FLAGS=-std=gnu17 -Wno-error=implicit-function-declaration" \
             -DENABLE_LEGACY=ON \
             -DCLAMWIN_SHELLEXT_UNICODE=ON \
-            -DUSE_ZLIB_NG_ON_X86=ON
+            "${extra_args[@]}"
 
-      - name: Build ClamAV – legacy-x86 (WinXP)
+      - name: Build ClamAV – ${{ matrix.label }}
         env:
-          CARGO_BUILD_TARGET: i686-pc-windows-gnu
-          CARGO_TARGET_I686_PC_WINDOWS_GNU_LINKER: i686-w64-mingw32-gcc
+          CARGO_BUILD_TARGET: ${{ matrix.cargo_target }}
+          CARGO_TARGET_I686_PC_WINDOWS_GNU_LINKER: ${{ matrix.cargo_linker }}
+          CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER: ${{ matrix.cargo_linker }}
         run: |
-          make -C build-x86-mingw-winxp \
+          make -C ${{ matrix.build_dir }} \
             clamav_rust_target \
             clambc clamscan freshclam sigtool \
             clamd clamdscan clamdtop \
             libclamunrar libclamunrar_iface
 
-      - name: CMake configure – legacy-x64 (Vista+)
-        env:
-          CARGO_BUILD_TARGET: x86_64-pc-windows-gnu
-          CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER: x86_64-w64-mingw32-gcc
-        run: |
-          cmake \
-            -S . \
-            -B build-x64-mingw \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_TOOLCHAIN_FILE=cmake/toolchain-mingw-x64.cmake \
-            "-DCMAKE_C_FLAGS=-std=gnu17 -Wno-error=implicit-function-declaration" \
-            -DENABLE_LEGACY=ON \
-            -DCLAMWIN_SHELLEXT_UNICODE=ON
-
-      - name: Build ClamAV – legacy-x64 (Vista+)
-        env:
-          CARGO_BUILD_TARGET: x86_64-pc-windows-gnu
-          CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER: x86_64-w64-mingw32-gcc
-        run: |
-          make -C build-x64-mingw \
-            clamav_rust_target \
-            clambc clamscan freshclam sigtool \
-            clamd clamdscan clamdtop \
-            libclamunrar libclamunrar_iface
-
-      - name: Collect and upload ClamAV binaries
+      - name: Collect ClamAV binaries
         id: collect
         run: |
-          outRoot="$RUNNER_TEMP/clamav-output"
-          mkdir -p "$outRoot/legacy-x86" "$outRoot/legacy-x64"
-          mkdir -p "$outRoot/gui-link-x86/3rdparty/curl/lib" "$outRoot/gui-link-x64/3rdparty/curl/lib"
-          mkdir -p "$outRoot/gui-link-x86/3rdparty/openssl/lib/mingw/x86" "$outRoot/gui-link-x64/3rdparty/openssl/lib/mingw/x64"
+          outRoot="$RUNNER_TEMP/clamav-output-${{ matrix.label }}"
+          engineOut="$outRoot/engine"
+          guiOut="$outRoot/gui-link"
+          mkdir -p "$engineOut"
+          mkdir -p "$guiOut/3rdparty/curl/lib"
+          mkdir -p "$guiOut/3rdparty/openssl/lib/mingw/${{ matrix.openssl_arch_dir }}"
 
           items=(
             clambc.exe clamscan.exe freshclam.exe sigtool.exe
@@ -130,50 +136,31 @@ jobs:
           )
 
           for f in "${items[@]}"; do
-            [ -f "build-x86-mingw-winxp/$f" ] && cp "build-x86-mingw-winxp/$f" "$outRoot/legacy-x86/"
-            [ -f "build-x64-mingw/$f"       ] && cp "build-x64-mingw/$f"       "$outRoot/legacy-x64/"
+            [ -f "${{ matrix.build_dir }}/$f" ] && cp "${{ matrix.build_dir }}/$f" "$engineOut/"
           done
 
-          cp "build-x86-mingw-winxp/3rdparty/curl/lib/libcurl.a" "$outRoot/gui-link-x86/3rdparty/curl/lib/"
-          cp "build-x86-mingw-winxp/libclamav_compat.a" "$outRoot/gui-link-x86/"
-          cp "3rdparty/openssl/lib/mingw/x86/libssl.a" "$outRoot/gui-link-x86/3rdparty/openssl/lib/mingw/x86/"
-          cp "3rdparty/openssl/lib/mingw/x86/libcrypto.a" "$outRoot/gui-link-x86/3rdparty/openssl/lib/mingw/x86/"
-          cp "build-x64-mingw/3rdparty/curl/lib/libcurl.a" "$outRoot/gui-link-x64/3rdparty/curl/lib/"
-          cp "build-x64-mingw/libclamav_compat.a" "$outRoot/gui-link-x64/"
-          cp "3rdparty/openssl/lib/mingw/x64/libssl.a" "$outRoot/gui-link-x64/3rdparty/openssl/lib/mingw/x64/"
-          cp "3rdparty/openssl/lib/mingw/x64/libcrypto.a" "$outRoot/gui-link-x64/3rdparty/openssl/lib/mingw/x64/"
+          cp "${{ matrix.build_dir }}/3rdparty/curl/lib/libcurl.a" "$guiOut/3rdparty/curl/lib/"
+          cp "${{ matrix.build_dir }}/libclamav_compat.a" "$guiOut/"
+          cp "3rdparty/openssl/lib/mingw/${{ matrix.openssl_arch_dir }}/libssl.a" "$guiOut/3rdparty/openssl/lib/mingw/${{ matrix.openssl_arch_dir }}/"
+          cp "3rdparty/openssl/lib/mingw/${{ matrix.openssl_arch_dir }}/libcrypto.a" "$guiOut/3rdparty/openssl/lib/mingw/${{ matrix.openssl_arch_dir }}/"
 
-          echo "=== legacy-x86 ===" && ls -lh "$outRoot/legacy-x86/"
-          echo "=== legacy-x64 ===" && ls -lh "$outRoot/legacy-x64/"
+          echo "=== ${{ matrix.label }} engine ===" && ls -lh "$engineOut/"
+          echo "=== ${{ matrix.label }} gui-link ===" && find "$guiOut" -type f -print
 
           echo "output_root=$outRoot" >> "$GITHUB_OUTPUT"
 
-      - name: Upload ClamAV legacy-x86 binaries
+      - name: Upload ClamAV engine binaries
         uses: actions/upload-artifact@v7
         with:
-          name: clamav-legacy-x86-gcc12
-          path: ${{ steps.collect.outputs.output_root }}/legacy-x86/
+          name: ${{ matrix.engine_artifact_name }}
+          path: ${{ steps.collect.outputs.output_root }}/engine/
           if-no-files-found: error
 
-      - name: Upload ClamAV legacy-x64 binaries
+      - name: Upload ClamAV GUI link support files
         uses: actions/upload-artifact@v7
         with:
-          name: clamav-legacy-x64-gcc12
-          path: ${{ steps.collect.outputs.output_root }}/legacy-x64/
-          if-no-files-found: error
-
-      - name: Upload ClamAV GUI link x86 support files
-        uses: actions/upload-artifact@v7
-        with:
-          name: clamav-gui-link-x86-gcc12
-          path: ${{ steps.collect.outputs.output_root }}/gui-link-x86/
-          if-no-files-found: error
-
-      - name: Upload ClamAV GUI link x64 support files
-        uses: actions/upload-artifact@v7
-        with:
-          name: clamav-gui-link-x64-gcc12
-          path: ${{ steps.collect.outputs.output_root }}/gui-link-x64/
+          name: ${{ matrix.gui_artifact_name }}
+          path: ${{ steps.collect.outputs.output_root }}/gui-link/
           if-no-files-found: error
 
   # ── Job 2: Build ClamAV Win9x from source (branch 1.4) ────────────────────
