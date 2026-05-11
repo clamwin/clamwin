@@ -221,9 +221,10 @@ Name: {code:DesktopDir}\ClamWin Antivirus; Filename: {app}\bin\clamwin.exe; Work
 Name: {group}\Uninstall ClamWin Free Antivirus; Filename: {uninstallexe}
 
 [Run]
-; Use ClamWin's update dialog for post-install DB downloads.
+; Run the standalone updater first when the download task is selected.
+Filename: {app}\bin\clamwin.exe; Parameters: "--mode=update --close"; WorkingDir: {app}\bin; Flags: waituntilterminated skipifsilent; Components: ClamWin; Tasks: DownloadDB
 ; Launch clamwin.exe when done
-Filename: {app}\bin\clamwin.exe; Parameters: "{code:ClamWinPostInstallParams}"; WorkingDir: {app}\bin; Flags: nowait postinstall skipifsilent; Description: Launch ClamWin Free Antivirus; Components: ClamWin
+Filename: {app}\bin\clamwin.exe; Parameters: "--open-dashboard"; WorkingDir: {app}\bin; Flags: nowait postinstall skipifsilent; Description: Launch ClamWin Free Antivirus; Components: ClamWin
 
 [INI]
 ; Only write these if the key is currently empty — preserves existing config on upgrade
@@ -635,14 +636,6 @@ end;
 function ClamWinConfPath(Default: String): String;
 begin
   Result := ExpandConstant('{app}\bin\ClamWin.conf');
-end;
-
-function ClamWinPostInstallParams(Default: String): String;
-begin
-  if IsTaskSelected('DownloadDB') then
-    Result := '--mode=update --close'
-  else
-    Result := '--open-dashboard';
 end;
 
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
