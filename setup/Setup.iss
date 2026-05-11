@@ -303,6 +303,7 @@ var
   AllUsersPage:   TInputOptionWizardPage;
 
 const
+  WM_CLOSE = $0010;
   WM_QUIT = $0012;
 
 function FindWindow(lpClassName: string; lpWindowName: string): Integer;
@@ -311,6 +312,8 @@ function GetWindowThreadProcessId(hWnd: Integer; var ProcessId: Cardinal): Cardi
   external 'GetWindowThreadProcessId@user32.dll stdcall';
 function PostThreadMessage(ThreadId: Cardinal; Msg: Cardinal; wParam: Cardinal; lParam: Cardinal): Boolean;
   external 'PostThreadMessageA@user32.dll stdcall';
+function PostMessage(hWnd: Integer; Msg: Cardinal; wParam: Cardinal; lParam: Cardinal): Boolean;
+  external 'PostMessageA@user32.dll stdcall';
 
 //────────────────────────────────────────────────────────────────────────────
 // Helpers
@@ -415,6 +418,9 @@ end;
 function IsClamWinRunning(): Boolean;
 forward;
 
+function IsLegacyClamTrayRunning(): Boolean;
+forward;
+
 function PostQuitToClamWin(): Boolean;
 forward;
 
@@ -455,7 +461,7 @@ procedure CloseClamTray();
 var
   i: Integer;
 begin
-  if not CheckForMutexes('ClamWinMutex') then exit;
+  if not IsClamWinRunning() then exit;
 
   if SuppressibleMsgBox(
       'The Setup detected that ClamWin is currently running.' + #13 +
@@ -467,7 +473,7 @@ begin
     for i := 1 to 30 do
     begin
       Sleep(200);
-      if not CheckForMutexes('ClamWinMutex') then
+      if not IsClamWinRunning() then
         exit;
     end;
 
@@ -476,42 +482,57 @@ begin
     for i := 1 to 10 do
     begin
       Sleep(200);
-      if not CheckForMutexes('ClamWinMutex') then
+      if not IsClamWinRunning() then
         exit;
     end;
 
     SuppressibleMsgBox(
-      'ClamWin is still running. Please close clamwin.exe manually and retry Setup.',
+      'ClamWin is still running. Please close clamwin.exe or ClamTray.exe manually and retry Setup.',
       mbError, MB_OK, IDOK);
   end;
 end;
 
 function IsClamWinRunning(): Boolean;
 begin
-  Result := CheckForMutexes('ClamWinMutex');
+  Result := CheckForMutexes('ClamWinMutex') or IsLegacyClamTrayRunning();
+end;
+
+function IsLegacyClamTrayRunning(): Boolean;
+begin
+  Result := CheckForMutexes('ClamWinTrayMutex01');
 end;
 
 function PostQuitToClamWin(): Boolean;
 var
   hwnd: Integer;
-  processId, threadId: Cardinal;
 begin
   Result := False;
-  hwnd := FindWindow('ClamWinTrayClass', '');
-  if hwnd = 0 then
-    exit;
+  hwnd := FindWindow('ClamWinTrayClass', 'ClamWin');
+  if hwnd <> 0 then
+    Result := PostMessage(hwnd, WM_CLOSE, 0, 0) or Result;
 
-  processId := 0;
-  threadId := GetWindowThreadProcessId(hwnd, processId);
-  if threadId <> 0 then
-    Result := PostThreadMessage(threadId, WM_QUIT, 0, 0);
+  hwnd := FindWindow('ClamWinTrayWindow', 'ClamWin');
+  if hwnd <> 0 then
+    Result := PostMessage(hwnd, WM_CLOSE, 0, 0) or Result;
+
+  hwnd := FindWindow('wxWindowClass', 'ClamWin Free Antivirus');
+  if hwnd <> 0 then
+    Result := PostMessage(hwnd, WM_CLOSE, 0, 0) or Result;
+
+  hwnd := FindWindow('#32770', 'ClamWin Internet Update Status');
+  if hwnd <> 0 then
+    Result := PostMessage(hwnd, WM_CLOSE, 0, 0) or Result;
+
+  hwnd := FindWindow('#32770', 'ClamWin Preferences');
+  if hwnd <> 0 then
+    Result := PostMessage(hwnd, WM_CLOSE, 0, 0) or Result;
 end;
 
 procedure ForceKillClamWin();
 var
   resultcode: Integer;
 begin
-  Exec(ExpandConstant('{cmd}'), '/C taskkill /IM clamwin.exe /T /F >nul 2>&1 & tskill clamwin >nul 2>&1', '', SW_HIDE, ewWaitUntilTerminated, resultcode);
+  Exec(ExpandConstant('{cmd}'), '/C taskkill /IM clamwin.exe /T /F >nul 2>&1 & taskkill /IM ClamTray.exe /T /F >nul 2>&1 & tskill clamwin >nul 2>&1 & tskill clamtray >nul 2>&1', '', SW_HIDE, ewWaitUntilTerminated, resultcode);
 end;
 
 procedure CloseClamWinForUninstall();
